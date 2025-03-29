@@ -49,7 +49,7 @@ public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
         String clientId = component.getClientId(context);
         String style = component.getStyle();
         String styleClass = component.getStyleClass();
-        styleClass = styleClass == null ? ConfirmDialog.CONTAINER_CLASS : ConfirmDialog.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? ConfirmDialog.DIALOG_CLASS : ConfirmDialog.DIALOG_CLASS + " " + styleClass;
 
         if (ComponentUtils.isRTL(context, component)) {
             styleClass += " ui-dialog-rtl";
@@ -63,9 +63,14 @@ public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
             writer.writeAttribute("style", style, null);
         }
 
+        writer.startElement("div", null);
+        writer.writeAttribute("class", ConfirmDialog.BOX_CLASS, null);
+
         encodeHeader(context, component);
         encodeContent(context, component);
         encodeButtonPane(context, component);
+
+        writer.endElement("div");
 
         writer.endElement("div");
     }

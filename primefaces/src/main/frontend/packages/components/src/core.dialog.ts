@@ -135,11 +135,10 @@ export class DialogHandler {
         const dialogWidgetVar = cfg.options.widgetVar || cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget';
 
         const styleClass = cfg.options.styleClass || '';
-        const dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-shadow ui-hidden-container ui-overlay-hidden ' + styleClass + '"' +
-            ' data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>')
-            .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix"><span id="' + dialogId + '_title" class="ui-dialog-title"></span></div>');
+        const dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-hidden-container ui-overlay-hidden ' + styleClass + '" data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>');
+        const box = $('<div class="ui-dialog-box ui-widget-content ui-shadow"></div>').appendTo(dialogDOM);
+        const titlebar = $('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix"><span id="' + dialogId + '_title" class="ui-dialog-title"></span></div>').appendTo(box);
 
-        const titlebar = dialogDOM.children('.ui-dialog-titlebar');
         if (cfg.options.closable !== false) {
             titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
         }
@@ -153,7 +152,7 @@ export class DialogHandler {
         }
 
         var iframeStyleClass = cfg.options.iframeStyleClass || '';
-        dialogDOM.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto;">' +
+        box.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto;">' +
             '<iframe class="' + iframeStyleClass + '" style="border:0 none" frameborder="0"></iframe>' +
             '</div>');
 
@@ -323,7 +322,7 @@ export class DialogHandler {
         dlg.attr('data-queuedforremoval', "true");
 
         if (parentDlg) {
-            const parentDlgFrame = parentDlg.find('> .ui-dialog-content > iframe').get(0) as HTMLIFrameElement | undefined;
+            const parentDlgFrame = parentDlg.find('> .ui-dialog-box > .ui-dialog-content > iframe').get(0) as HTMLIFrameElement | undefined;
             windowContext = parentDlgFrame?.contentWindow;
         }
         else {
@@ -386,10 +385,10 @@ export class DialogHandler {
      */
     showMessageInDialog(msg: PrimeType.hook.messageInDialog.DialogMessageData): void {
         if (!this.messageDialog) {
-            $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-shadow ui-hidden-container"></div>')
-                .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix"><span class="ui-dialog-title"></span>' +
+            $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-hidden-container"></div>')
+                .append($('<div class="ui-dialog-box ui-widget-content ui-shadow"></div>').append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix"><span class="ui-dialog-title"></span>' +
                     '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' +
-                    '<div class="ui-dialog-content ui-widget-content" style="height: auto;"></div>')
+                    '<div class="ui-dialog-content ui-widget-content" style="height: auto;"></div>'))
                 .appendTo(document.body);
 
             PrimeFaces.cw('Dialog', 'primefacesmessagedialog', {

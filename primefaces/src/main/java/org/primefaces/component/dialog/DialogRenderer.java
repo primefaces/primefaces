@@ -91,19 +91,31 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
     }
 
     protected void encodeMarkup(FacesContext context, Dialog component) throws IOException {
+        if (component.isBlockScroll() && !component.isModal()) {
+            throw new IllegalArgumentException("blockScroll=true can only be used when modal=true");
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
         String positionType = component.getPositionType();
         String style = getStyleBuilder(context).add(component.getStyle()).add("display", "none").build();
         String styleClass = component.getStyleClass();
-        styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : Dialog.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Dialog.DIALOG_CLASS : Dialog.DIALOG_CLASS + " " + styleClass;
 
         if (ComponentUtils.isRTL(context, component)) {
             styleClass += " ui-dialog-rtl";
         }
 
         if ("absolute".equals(positionType)) {
+            if (component.isBlockScroll()) {
+                throw new IllegalArgumentException("blockScroll=true cannot be used when positionType=absolute");
+            }
+
             styleClass += " ui-dialog-absolute";
+        }
+
+        if (component.isFitViewport()) {
+            styleClass += " ui-dialog-fitviewport";
         }
 
         writer.startElement("div", null);
@@ -114,6 +126,9 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
             writer.writeAttribute("style", style, null);
         }
 
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Dialog.BOX_CLASS, null);
+
         if (component.isShowHeader()) {
             encodeHeader(context, component);
         }
@@ -121,6 +136,8 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
         encodeContent(context, component);
 
         encodeFooter(context, component);
+
+        writer.endElement("div");
 
         writer.endElement("div");
     }
