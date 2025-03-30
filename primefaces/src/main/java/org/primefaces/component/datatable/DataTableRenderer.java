@@ -667,23 +667,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             }
         }
 
-        String style = column.getStyle();
-        String width = column.getWidth();
-
-        if (columnMeta != null && columnMeta.getWidth() != null) {
-            width = columnMeta.getWidth();
-        }
-
-        if (width != null) {
-            String unit = endsWithLenghtUnit(width) ? Constants.EMPTY_STRING : "px";
-            if (style != null) {
-                style = style + ";width:" + width + unit;
-            }
-            else {
-                style = "width:" + width + unit;
-            }
-        }
-
+        String style = resolveColumnStyle(columnMeta, column);
         String ariaHeaderLabel = resolveColumnAriaHeaderText(context, column);
         UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
 
@@ -729,6 +713,27 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         writer.endElement("th");
+    }
+
+    protected String resolveColumnStyle(ColumnMeta columnMeta, UIColumn column) {
+        String style = column.getStyle();
+        String width = column.getWidth();
+
+        if (columnMeta != null && columnMeta.getWidth() != null) {
+            width = columnMeta.getWidth();
+        }
+
+        if (width != null) {
+            String unit = endsWithLenghtUnit(width) ? Constants.EMPTY_STRING : "px";
+            if (style != null) {
+                style = style + ";width:" + width + unit;
+            }
+            else {
+                style = "width:" + width + unit;
+            }
+        }
+
+        return style;
     }
 
     protected String resolveDefaultSortIcon(SortMeta sortMeta) {
@@ -891,7 +896,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         ResponseWriter writer = context.getResponseWriter();
 
         int responsivePriority = column.getResponsivePriority();
-        String style = column.getStyle();
+        String style = resolveColumnStyle(columnMeta, column);
 
         boolean columnVisible = column.isVisible();
         if (columnMeta != null && columnMeta.getVisible() != null) {
