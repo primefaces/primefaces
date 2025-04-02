@@ -998,11 +998,11 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
                     if (suggestion.value) {
                         itemValue = $("<div>").text(suggestion.value).html();
                     }
-                    html += '<li id="' + $this.id + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
+                    html += '<li id="' + $this.id + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item" data-item-value="' + PrimeFaces.escapeHTML(itemValue, true) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded, true) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded, true) + '</li>';
                 });
                 if (suggestions.moreAvailable && $this.cfg.moreText) {
                     var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
-                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
+                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded, true) + '</li>';
                 }
                 html += '</ul>';
 
