@@ -326,6 +326,11 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * Makes this dialog fit the current browser window, if the `fitViewport` option is enabled.
      */
     protected fitViewport(): void {
+       this.fitHeight();
+       this.fitWidth();
+    }
+
+    private fitHeight(): void {
         const windowHeight = $(window).height() ?? 0;
 
         const margin = (this.box.outerHeight(true) ?? 0) - (this.box.outerHeight() ?? 0);
@@ -342,6 +347,20 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         }
     }
 
+    private fitWidth(): void {
+        const windowWidth = $(window).width() ?? 0;
+
+        const margin = (this.box.outerWidth(true) ?? 0) - (this.box.outerWidth() ?? 0);
+        const contentPadding = (this.content.innerWidth() ?? 0) - (this.content.width() ?? 0);
+
+        const maxWidth = windowWidth - (margin + contentPadding);
+
+        this.box.css('max-width', maxWidth + 'px');
+
+        if (this.cfg.hasIframe) {
+            this.content.children('iframe').css('max-width', maxWidth + 'px');
+        }
+    }
 
     /**
      * @returns The DOM elements which are allowed to be focused via tabbing.
