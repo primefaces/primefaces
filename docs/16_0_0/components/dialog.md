@@ -31,7 +31,7 @@ Dialog is a panel component that can overlay other elements on page.
 | dir | ltr | String | Defines text direction, valid values are ltr and rtl.
 | draggable | true | Boolean | Specifies draggability
 | dynamic | false | Boolean | Enables lazy loading of the content with ajax.
-| fitViewport | false | Boolean | Dialog size might exceed viewport if content is bigger than viewport in terms of height. fitViewport option automatically adjusts height to fit dialog within the viewport.
+| fitViewport | false | Boolean | Dialog size might exceed viewport if content is bigger than viewport in terms of height or width. fitViewport option automatically adjusts height and width to fit dialog within the viewport.
 | focus | null | String | Defines which component to apply focus by search expression.
 | footer | null | String | Text of the footer.
 | header | null | String | Text of the header
