@@ -13440,7 +13440,8 @@ declare namespace PrimeFaces.widget {
         dynamic: boolean;
         /**
          * Dialog size might exceed the viewport if the content is taller than viewport in terms
-         * of height. When this is set to `true`, automatically adjust the height to fit the dialog within the viewport.
+         * of height or wider in terms of width. When this is set to `true`, automatically adjust
+         * the height and width to fit the dialog within the viewport.
          */
         fitViewport: boolean;
         /**
