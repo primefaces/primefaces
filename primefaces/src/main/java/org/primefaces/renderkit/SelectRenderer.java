@@ -142,6 +142,9 @@ public abstract class SelectRenderer extends InputRenderer {
                             addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
+                    else {
+                        throw new FacesException("SelectItems' value type is not compatible: " + value.getClass());
+                    }
                 }
             }
         }
