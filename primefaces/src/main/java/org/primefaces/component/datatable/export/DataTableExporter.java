@@ -102,7 +102,7 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
             LazyDataModel<Object> lazyDataModel = (LazyDataModel<Object>) table.getValue();
             Integer bufferSize = exportConfiguration.getBufferSize();
             boolean bufferized = bufferSize != null;
-            int batchSize = Objects.requireNonNullElseGet(bufferSize, () -> lazyDataModel.count(table.getActiveFilterMeta()));
+            int batchSize = Objects.requireNonNullElseGet(bufferSize, () -> table.getRows());
 
             if (batchSize > 0) {
                 List<?> wrappedData = lazyDataModel.getWrappedData();
