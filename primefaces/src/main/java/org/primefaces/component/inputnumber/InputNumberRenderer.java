@@ -36,6 +36,8 @@ import org.primefaces.validate.bean.PositiveClientValidationConstraint;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.el.PropertyNotFoundException;
 import jakarta.el.ValueExpression;
@@ -50,6 +52,9 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
     // Default values for "minValue"/"maxValue" properties of the AutoNumeric Plugin
     private static final String DEFAULT_MIN_VALUE = "-10000000000000";
     private static final String DEFAULT_MAX_VALUE = "10000000000000";
+
+    private Map<Class<?>, String> typesMinimums = new HashMap<>();
+    private Map<Class<?>, String> typesMaximums = new HashMap<>();
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue)
@@ -385,7 +390,7 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
                 return Integer.toString(Integer.MIN_VALUE);
             }
             else if (value instanceof Double) {
-                return Double.toString(Double.MIN_VALUE);
+                return Double.toString(-Double.MAX_VALUE);
             }
             else if (value instanceof Short) {
                 return Short.toString(Short.MIN_VALUE);
@@ -394,30 +399,33 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
                 return Byte.toString(Byte.MIN_VALUE);
             }
             else if (value instanceof Float) {
-                return Float.toString(Float.MIN_VALUE);
+                return Float.toString(-Float.MAX_VALUE);
             }
         }
 
         Class<?> type = getTypeFromValueExpression(context, component);
         if (type != null) {
-            if (type.isAssignableFrom(Long.class)) {
-                return Long.toString(Long.MIN_VALUE);
-            }
-            else if (type.isAssignableFrom(Integer.class)) {
-                return Integer.toString(Integer.MIN_VALUE);
-            }
-            else if (type.isAssignableFrom(Double.class)) {
-                return Double.toString(Double.MIN_VALUE);
-            }
-            else if (type.isAssignableFrom(Short.class)) {
-                return Short.toString(Short.MIN_VALUE);
-            }
-            else if (type.isAssignableFrom(Byte.class)) {
-                return Byte.toString(Byte.MIN_VALUE);
-            }
-            else if (type.isAssignableFrom(Float.class)) {
-                return Float.toString(Float.MIN_VALUE);
-            }
+            return typesMinimums.computeIfAbsent(type, tp -> {
+                if (tp == Long.class || tp == long.class) {
+                    return Long.toString(Long.MIN_VALUE);
+                }
+                else if (tp == Integer.class || tp == int.class) {
+                    return Integer.toString(Integer.MIN_VALUE);
+                }
+                else if (tp == Double.class || tp == double.class) {
+                    return Double.toString(-Double.MAX_VALUE);
+                }
+                else if (tp == Short.class || tp == short.class) {
+                    return Short.toString(Short.MIN_VALUE);
+                }
+                else if (tp == Byte.class || tp == byte.class) {
+                    return Byte.toString(Byte.MIN_VALUE);
+                }
+                else if (tp == Float.class || tp == float.class) {
+                    return Float.toString(-Float.MAX_VALUE);
+                }
+                return null;
+            });
         }
 
         return null;
@@ -468,24 +476,27 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
 
         Class<?> type = getTypeFromValueExpression(context, component);
         if (type != null) {
-            if (type.isAssignableFrom(Long.class)) {
-                return Long.toString(Long.MAX_VALUE);
-            }
-            else if (type.isAssignableFrom(Integer.class)) {
-                return Integer.toString(Integer.MAX_VALUE);
-            }
-            else if (type.isAssignableFrom(Double.class)) {
-                return Double.toString(Double.MAX_VALUE);
-            }
-            else if (type.isAssignableFrom(Short.class)) {
-                return Short.toString(Short.MAX_VALUE);
-            }
-            else if (type.isAssignableFrom(Byte.class)) {
-                return Byte.toString(Byte.MAX_VALUE);
-            }
-            else if (type.isAssignableFrom(Float.class)) {
-                return Float.toString(Float.MAX_VALUE);
-            }
+            return typesMaximums.computeIfAbsent(type, tp -> {
+                if (tp == Long.class || tp == long.class) {
+                    return Long.toString(Long.MAX_VALUE);
+                }
+                else if (tp == Integer.class || tp == int.class) {
+                    return Integer.toString(Integer.MAX_VALUE);
+                }
+                else if (tp == Double.class || tp == double.class) {
+                    return Double.toString(Double.MAX_VALUE);
+                }
+                else if (tp  == Short.class || tp  == short.class) {
+                    return Short.toString(Short.MAX_VALUE);
+                }
+                else if (tp == Byte.class || tp == byte.class) {
+                    return Byte.toString(Byte.MAX_VALUE);
+                }
+                else if (tp == Float.class || tp == float.class) {
+                    return Float.toString(Float.MAX_VALUE);
+                }
+                return null;
+            });
         }
 
         return null;
