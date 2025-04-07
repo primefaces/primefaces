@@ -388,7 +388,7 @@ public class InputNumberRenderer extends InputRenderer {
                 return Integer.toString(Integer.MIN_VALUE);
             }
             else if (value instanceof Double) {
-                return Double.toString(Double.MIN_VALUE);
+                return Double.toString(-Double.MAX_VALUE);
             }
             else if (value instanceof Short) {
                 return Short.toString(Short.MIN_VALUE);
@@ -397,29 +397,29 @@ public class InputNumberRenderer extends InputRenderer {
                 return Byte.toString(Byte.MIN_VALUE);
             }
             else if (value instanceof Float) {
-                return Float.toString(Float.MIN_VALUE);
+                return Float.toString(-Float.MAX_VALUE);
             }
         }
 
         Class<?> type = getTypeFromValueExpression(context, component);
         if (type != null) {
-            if (type.isAssignableFrom(Long.class)) {
+            if (type == Long.class || type == long.class) {
                 return Long.toString(Long.MIN_VALUE);
             }
-            else if (type.isAssignableFrom(Integer.class)) {
+            else if (type == Integer.class || type == int.class) {
                 return Integer.toString(Integer.MIN_VALUE);
             }
-            else if (type.isAssignableFrom(Double.class)) {
-                return Double.toString(Double.MIN_VALUE);
+            else if (type == Double.class || type == double.class) {
+                return Double.toString(-Double.MAX_VALUE);
             }
-            else if (type.isAssignableFrom(Short.class)) {
+            else if (type == Short.class || type == short.class) {
                 return Short.toString(Short.MIN_VALUE);
             }
-            else if (type.isAssignableFrom(Byte.class)) {
+            else if (type == Byte.class || type == byte.class) {
                 return Byte.toString(Byte.MIN_VALUE);
             }
-            else if (type.isAssignableFrom(Float.class)) {
-                return Float.toString(Float.MIN_VALUE);
+            else if (type == Float.class || type == float.class) {
+                return Float.toString(-Float.MAX_VALUE);
             }
         }
 
@@ -471,22 +471,22 @@ public class InputNumberRenderer extends InputRenderer {
 
         Class<?> type = getTypeFromValueExpression(context, component);
         if (type != null) {
-            if (type.isAssignableFrom(Long.class)) {
+            if (type == Long.class || type == long.class) {
                 return Long.toString(Long.MAX_VALUE);
             }
-            else if (type.isAssignableFrom(Integer.class)) {
+            else if (type == Integer.class || type == int.class) {
                 return Integer.toString(Integer.MAX_VALUE);
             }
-            else if (type.isAssignableFrom(Double.class)) {
+            else if (type == Double.class || type == double.class) {
                 return Double.toString(Double.MAX_VALUE);
             }
-            else if (type.isAssignableFrom(Short.class)) {
+            else if (type == Short.class || type == short.class) {
                 return Short.toString(Short.MAX_VALUE);
             }
-            else if (type.isAssignableFrom(Byte.class)) {
+            else if (type == Byte.class || type == byte.class) {
                 return Byte.toString(Byte.MAX_VALUE);
             }
-            else if (type.isAssignableFrom(Float.class)) {
+            else if (type == Float.class || type == float.class) {
                 return Float.toString(Float.MAX_VALUE);
             }
         }
