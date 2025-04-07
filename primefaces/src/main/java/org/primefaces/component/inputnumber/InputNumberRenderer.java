@@ -36,8 +36,6 @@ import org.primefaces.validate.bean.PositiveClientValidationConstraint;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
 
 import jakarta.el.PropertyNotFoundException;
 import jakarta.el.ValueExpression;
@@ -52,9 +50,6 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
     // Default values for "minValue"/"maxValue" properties of the AutoNumeric Plugin
     private static final String DEFAULT_MIN_VALUE = "-10000000000000";
     private static final String DEFAULT_MAX_VALUE = "10000000000000";
-
-    private Map<Class<?>, String> typesMinimums = new HashMap<>();
-    private Map<Class<?>, String> typesMaximums = new HashMap<>();
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue)
@@ -405,27 +400,24 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
 
         Class<?> type = getTypeFromValueExpression(context, component);
         if (type != null) {
-            return typesMinimums.computeIfAbsent(type, tp -> {
-                if (tp == Long.class || tp == long.class) {
-                    return Long.toString(Long.MIN_VALUE);
-                }
-                else if (tp == Integer.class || tp == int.class) {
-                    return Integer.toString(Integer.MIN_VALUE);
-                }
-                else if (tp == Double.class || tp == double.class) {
-                    return Double.toString(-Double.MAX_VALUE);
-                }
-                else if (tp == Short.class || tp == short.class) {
-                    return Short.toString(Short.MIN_VALUE);
-                }
-                else if (tp == Byte.class || tp == byte.class) {
-                    return Byte.toString(Byte.MIN_VALUE);
-                }
-                else if (tp == Float.class || tp == float.class) {
-                    return Float.toString(-Float.MAX_VALUE);
-                }
-                return null;
-            });
+            if (type == Long.class || type == long.class) {
+                return Long.toString(Long.MIN_VALUE);
+            }
+            else if (type == Integer.class || type == int.class) {
+                return Integer.toString(Integer.MIN_VALUE);
+            }
+            else if (type == Double.class || type == double.class) {
+                return Double.toString(-Double.MAX_VALUE);
+            }
+            else if (type == Short.class || type == short.class) {
+                return Short.toString(Short.MIN_VALUE);
+            }
+            else if (type == Byte.class || type == byte.class) {
+                return Byte.toString(Byte.MIN_VALUE);
+            }
+            else if (type == Float.class || type == float.class) {
+                return Float.toString(-Float.MAX_VALUE);
+            }
         }
 
         return null;
@@ -476,27 +468,24 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
 
         Class<?> type = getTypeFromValueExpression(context, component);
         if (type != null) {
-            return typesMaximums.computeIfAbsent(type, tp -> {
-                if (tp == Long.class || tp == long.class) {
-                    return Long.toString(Long.MAX_VALUE);
-                }
-                else if (tp == Integer.class || tp == int.class) {
-                    return Integer.toString(Integer.MAX_VALUE);
-                }
-                else if (tp == Double.class || tp == double.class) {
-                    return Double.toString(Double.MAX_VALUE);
-                }
-                else if (tp  == Short.class || tp  == short.class) {
-                    return Short.toString(Short.MAX_VALUE);
-                }
-                else if (tp == Byte.class || tp == byte.class) {
-                    return Byte.toString(Byte.MAX_VALUE);
-                }
-                else if (tp == Float.class || tp == float.class) {
-                    return Float.toString(Float.MAX_VALUE);
-                }
-                return null;
-            });
+            if (type == Long.class || type == long.class) {
+                return Long.toString(Long.MAX_VALUE);
+            }
+            else if (type == Integer.class || type == int.class) {
+                return Integer.toString(Integer.MAX_VALUE);
+            }
+            else if (type == Double.class || type == double.class) {
+                return Double.toString(Double.MAX_VALUE);
+            }
+            else if (type == Short.class || type == short.class) {
+                return Short.toString(Short.MAX_VALUE);
+            }
+            else if (type == Byte.class || type == byte.class) {
+                return Byte.toString(Byte.MAX_VALUE);
+            }
+            else if (type == Float.class || type == float.class) {
+                return Float.toString(Float.MAX_VALUE);
+            }
         }
 
         return null;
