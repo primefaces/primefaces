@@ -404,7 +404,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         var allowedNegativeValuesByParentOffset = this.jq.offsetParent().offset();
 
         this.targetElement = this.getTarget(target);
-        if (this.targetElement.hasClass('ui-splitbutton-menubutton')) {
+        if (this.targetElement && this.targetElement.hasClass('ui-splitbutton-menubutton')) {
             this.targetElement = this.targetElement.parent();
         }
         if (this.targetElement) {
