@@ -1656,6 +1656,11 @@ $.extend( Datepicker.prototype, {
 			newDate.setSeconds( 0 );
 			newDate.setMilliseconds( 0 );
 		}
+		// AASYS
+		else {
+		    newDate = defaultDate;
+        }
+        // AASYS
 		return this._daylightSavingAdjust( newDate );
 	},
 
