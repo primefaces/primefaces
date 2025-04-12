@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Log.DEFAULT_RENDERER, componentFamily = Log.COMPONENT_FAMILY)
 public class LogRenderer extends CoreRenderer<Log> {
 
     @Override

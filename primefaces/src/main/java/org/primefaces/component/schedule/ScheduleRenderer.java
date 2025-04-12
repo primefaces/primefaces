@@ -47,10 +47,12 @@ import java.util.stream.Stream;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+@FacesRenderer(rendererType = Schedule.DEFAULT_RENDERER, componentFamily = Schedule.COMPONENT_FAMILY)
 public class ScheduleRenderer extends CoreRenderer<Schedule> {
 
     @Override

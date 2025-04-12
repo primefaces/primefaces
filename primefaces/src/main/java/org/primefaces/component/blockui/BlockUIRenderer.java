@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = BlockUI.DEFAULT_RENDERER, componentFamily = BlockUI.COMPONENT_FAMILY)
 public class BlockUIRenderer extends CoreRenderer<BlockUI> {
 
     @Override

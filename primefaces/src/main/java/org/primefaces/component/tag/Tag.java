@@ -24,7 +24,9 @@
 package org.primefaces.component.tag;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Tag.COMPONENT_TYPE, namespace = Tag.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Tag extends TagBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tag";

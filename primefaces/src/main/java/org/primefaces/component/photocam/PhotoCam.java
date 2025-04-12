@@ -25,8 +25,10 @@ package org.primefaces.component.photocam;
 
 import jakarta.el.MethodExpression;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
+@FacesComponent(value = PhotoCam.COMPONENT_TYPE, namespace = PhotoCam.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
