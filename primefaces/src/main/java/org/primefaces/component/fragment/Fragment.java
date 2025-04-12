@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.fragment;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = Fragment.COMPONENT_TYPE, namespace = Fragment.COMPONENT_FAMILY)
 public class Fragment extends FragmentBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Fragment";

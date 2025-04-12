@@ -51,9 +51,11 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
 import org.json.JSONObject;
 
+@FacesRenderer(rendererType = DatePicker.DEFAULT_RENDERER, componentFamily = DatePicker.COMPONENT_FAMILY)
 public class DatePickerRenderer extends BaseCalendarRenderer<DatePicker> {
 
     @Override

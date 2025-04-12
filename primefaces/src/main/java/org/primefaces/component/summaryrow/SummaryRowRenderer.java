@@ -34,7 +34,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = SummaryRow.DEFAULT_RENDERER, componentFamily = SummaryRow.COMPONENT_FAMILY)
 public class SummaryRowRenderer extends CoreRenderer<SummaryRow> {
 
     @Override
