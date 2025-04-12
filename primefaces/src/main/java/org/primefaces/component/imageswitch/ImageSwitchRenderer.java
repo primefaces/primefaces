@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ImageSwitch.DEFAULT_RENDERER, componentFamily = ImageSwitch.COMPONENT_FAMILY)
 public class ImageSwitchRenderer extends CoreRenderer<ImageSwitch> {
 
     @Override

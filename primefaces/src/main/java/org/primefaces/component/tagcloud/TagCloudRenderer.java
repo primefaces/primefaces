@@ -32,7 +32,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = TagCloud.DEFAULT_RENDERER, componentFamily = TagCloud.COMPONENT_FAMILY)
 public class TagCloudRenderer extends CoreRenderer<TagCloud> {
 
     @Override

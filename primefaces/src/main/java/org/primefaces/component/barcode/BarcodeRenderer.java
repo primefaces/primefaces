@@ -39,7 +39,9 @@ import java.util.UUID;
 import jakarta.faces.application.Resource;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Barcode.DEFAULT_RENDERER, componentFamily = Barcode.COMPONENT_FAMILY)
 public class BarcodeRenderer extends CoreRenderer<Barcode> {
 
     private static final String SB_BUILD = BarcodeRenderer.class.getName() + "#build";

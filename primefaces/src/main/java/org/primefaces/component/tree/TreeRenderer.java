@@ -52,7 +52,9 @@ import jakarta.faces.FacesException;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Tree.DEFAULT_RENDERER, componentFamily = Tree.COMPONENT_FAMILY)
 public class TreeRenderer extends CoreRenderer<Tree> {
 
     private static final String SB_DECODE_SELECTION = TreeRenderer.class.getName() + "#decodeSelection";
