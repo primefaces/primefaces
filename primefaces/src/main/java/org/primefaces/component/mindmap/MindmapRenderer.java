@@ -32,7 +32,9 @@ import java.util.List;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Mindmap.DEFAULT_RENDERER, componentFamily = Mindmap.COMPONENT_FAMILY)
 public class MindmapRenderer extends CoreRenderer<Mindmap> {
 
     @Override

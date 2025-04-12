@@ -42,7 +42,9 @@ import java.util.List;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = MegaMenu.DEFAULT_RENDERER, componentFamily = MegaMenu.COMPONENT_FAMILY)
 public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
 
     @Override

@@ -38,7 +38,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Galleria.DEFAULT_RENDERER, componentFamily = Galleria.COMPONENT_FAMILY)
 public class GalleriaRenderer extends CoreRenderer<Galleria> {
 
     @Override

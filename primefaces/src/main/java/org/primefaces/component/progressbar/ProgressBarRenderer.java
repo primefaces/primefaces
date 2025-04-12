@@ -32,7 +32,9 @@ import java.util.Map;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ProgressBar.DEFAULT_RENDERER, componentFamily = ProgressBar.COMPONENT_FAMILY)
 public class ProgressBarRenderer extends CoreRenderer<ProgressBar> {
 
     @Override

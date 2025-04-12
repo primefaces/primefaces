@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.roweditor;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = RowEditor.COMPONENT_TYPE, namespace = RowEditor.COMPONENT_FAMILY)
 public class RowEditor extends RowEditorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowEditor";

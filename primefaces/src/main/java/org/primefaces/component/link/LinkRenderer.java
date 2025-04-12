@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Link.DEFAULT_RENDERER, componentFamily = Link.COMPONENT_FAMILY)
 public class LinkRenderer extends OutcomeTargetRenderer<Link> {
 
     @Override

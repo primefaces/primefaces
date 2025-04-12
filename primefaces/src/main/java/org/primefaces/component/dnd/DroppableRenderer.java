@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Droppable.DEFAULT_RENDERER, componentFamily = Droppable.COMPONENT_FAMILY)
 public class DroppableRenderer extends CoreRenderer<Droppable> {
 
     @Override
