@@ -38,7 +38,9 @@ import java.util.Map;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = DataScroller.DEFAULT_RENDERER, componentFamily = DataScroller.COMPONENT_FAMILY)
 public class DataScrollerRenderer extends CoreRenderer<DataScroller> {
 
     @Override

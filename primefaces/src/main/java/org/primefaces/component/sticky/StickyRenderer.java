@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Sticky.DEFAULT_RENDERER, componentFamily = Sticky.COMPONENT_FAMILY)
 public class StickyRenderer extends CoreRenderer<Sticky> {
 
     @Override

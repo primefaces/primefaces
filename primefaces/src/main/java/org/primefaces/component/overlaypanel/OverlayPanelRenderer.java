@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = OverlayPanel.DEFAULT_RENDERER, componentFamily = OverlayPanel.COMPONENT_FAMILY)
 public class OverlayPanelRenderer extends CoreRenderer<OverlayPanel> {
 
     @Override
