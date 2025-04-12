@@ -38,7 +38,9 @@ import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = TabView.DEFAULT_RENDERER, componentFamily = TabView.COMPONENT_FAMILY)
 public class TabViewRenderer extends CoreRenderer<TabView> {
 
     @Override

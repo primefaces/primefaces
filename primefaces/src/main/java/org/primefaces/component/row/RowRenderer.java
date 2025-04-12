@@ -35,7 +35,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Row.DEFAULT_RENDERER, componentFamily = Row.COMPONENT_FAMILY)
 public class RowRenderer extends CoreRenderer<Row> {
 
     static final Map<String, HelperRowRenderer> RENDERERS;

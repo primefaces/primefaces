@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = StaticMessage.DEFAULT_RENDERER, componentFamily = StaticMessage.COMPONENT_FAMILY)
 public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
 
     @Override

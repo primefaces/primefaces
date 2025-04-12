@@ -25,8 +25,10 @@ package org.primefaces.component.signature;
 
 import jakarta.el.ValueExpression;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
+@FacesComponent(value = Signature.COMPONENT_TYPE, namespace = Signature.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "signature/signature.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

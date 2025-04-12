@@ -24,7 +24,9 @@
 package org.primefaces.component.skeleton;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Skeleton.COMPONENT_TYPE, namespace = Skeleton.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Skeleton extends SkeletonBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Skeleton";
