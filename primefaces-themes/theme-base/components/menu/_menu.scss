@@ -231,12 +231,6 @@ body {
           box-shadow: $overlayMenuShadow;
         }
       }
-
-      .ui-divider {
-        width: 100%;
-        margin: $menuSeparatorMargin;
-        border-top: $menuBorder;
-      }
     }
 
     &.ui-menubar {
