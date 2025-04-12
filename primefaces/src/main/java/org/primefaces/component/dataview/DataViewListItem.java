@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.dataview;
 
+import jakarta.faces.component.FacesComponent;
+@FacesComponent(value = DataViewListItem.COMPONENT_TYPE, namespace = DataViewListItem.COMPONENT_FAMILY)
 public class DataViewListItem extends DataViewListItemBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataViewListItem";
