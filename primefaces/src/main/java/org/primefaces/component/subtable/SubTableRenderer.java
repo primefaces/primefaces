@@ -37,7 +37,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = SubTable.DEFAULT_RENDERER, componentFamily = SubTable.COMPONENT_FAMILY)
 public class SubTableRenderer extends CoreRenderer<SubTable> {
 
     @Override

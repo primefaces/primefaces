@@ -27,7 +27,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Galleria.COMPONENT_TYPE, namespace = Galleria.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "galleria/galleria.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

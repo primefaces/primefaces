@@ -65,7 +65,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = DataTable.DEFAULT_RENDERER, componentFamily = DataTable.COMPONENT_FAMILY)
 public class DataTableRenderer extends DataRenderer<DataTable> {
 
     private static final Logger LOGGER = Logger.getLogger(DataTableRenderer.class.getName());

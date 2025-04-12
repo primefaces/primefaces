@@ -33,7 +33,9 @@ import java.util.List;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Stack.DEFAULT_RENDERER, componentFamily = Stack.COMPONENT_FAMILY)
 public class StackRenderer extends BaseMenuRenderer<Stack> {
 
     @Override

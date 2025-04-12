@@ -32,7 +32,9 @@ import java.util.Map;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Signature.DEFAULT_RENDERER, componentFamily = Signature.COMPONENT_FAMILY)
 public class SignatureRenderer extends InputRenderer<Signature> {
 
     @Override

@@ -36,11 +36,13 @@ import java.util.Map;
 
 import jakarta.el.MethodExpression;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AbortProcessingException;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.validator.ValidatorException;
 
+@FacesComponent(value = FileUpload.COMPONENT_TYPE, namespace = FileUpload.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

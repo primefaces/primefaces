@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.toolbar;
 
+import jakarta.faces.component.FacesComponent;
+@FacesComponent(value = ToolbarGroup.COMPONENT_TYPE, namespace = ToolbarGroup.COMPONENT_FAMILY)
 public class ToolbarGroup extends ToolbarGroupBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ToolbarGroup";

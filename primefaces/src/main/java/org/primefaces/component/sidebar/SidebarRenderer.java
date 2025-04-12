@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Sidebar.DEFAULT_RENDERER, componentFamily = Sidebar.COMPONENT_FAMILY)
 public class SidebarRenderer extends CoreRenderer<Sidebar> {
 
     @Override

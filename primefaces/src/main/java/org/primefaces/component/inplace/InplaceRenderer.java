@@ -37,7 +37,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Inplace.DEFAULT_RENDERER, componentFamily = Inplace.COMPONENT_FAMILY)
 public class InplaceRenderer extends CoreRenderer<Inplace> {
 
     @Override

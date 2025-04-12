@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Divider.DEFAULT_RENDERER, componentFamily = Divider.COMPONENT_FAMILY)
 public class DividerRenderer extends CoreRenderer<Divider> {
 
     @Override

@@ -35,7 +35,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = SelectBooleanButton.DEFAULT_RENDERER, componentFamily = SelectBooleanButton.COMPONENT_FAMILY)
 public class SelectBooleanButtonRenderer extends InputRenderer<SelectBooleanButton> {
 
     @Override

@@ -24,7 +24,9 @@
 package org.primefaces.component.imageswitch;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = ImageSwitch.COMPONENT_TYPE, namespace = ImageSwitch.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")

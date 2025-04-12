@@ -34,8 +34,10 @@ import java.util.Set;
 import jakarta.el.MethodExpression;
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.behavior.ClientBehaviorHint;
+import jakarta.faces.component.behavior.FacesBehavior;
 import jakarta.faces.event.AjaxBehaviorListener;
 
+@FacesBehavior(AjaxBehavior.BEHAVIOR_ID)
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

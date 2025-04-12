@@ -36,7 +36,9 @@ import java.util.Objects;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Growl.DEFAULT_RENDERER, componentFamily = Growl.COMPONENT_FAMILY)
 public class GrowlRenderer extends UINotificationRenderer<Growl> {
 
     @Override

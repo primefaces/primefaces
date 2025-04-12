@@ -41,7 +41,9 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = OrderList.DEFAULT_RENDERER, componentFamily = OrderList.COMPONENT_FAMILY)
 public class OrderListRenderer extends CoreRenderer<OrderList> {
 
     @Override

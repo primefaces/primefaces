@@ -30,10 +30,12 @@ import java.util.Collection;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = Chart.COMPONENT_TYPE, namespace = Chart.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
@@ -41,6 +43,7 @@ import jakarta.faces.event.FacesEvent;
 @ResourceDependency(library = "primefaces", name = "chart/chart.js")
 public class Chart extends ChartBase {
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Chart";
     private static final String DEFAULT_EVENT = "itemSelect";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()

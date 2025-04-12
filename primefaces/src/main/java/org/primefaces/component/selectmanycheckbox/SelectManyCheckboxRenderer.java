@@ -43,8 +43,10 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = SelectManyCheckbox.DEFAULT_RENDERER, componentFamily = SelectManyCheckbox.COMPONENT_FAMILY)
 public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyCheckbox> {
 
     @Override

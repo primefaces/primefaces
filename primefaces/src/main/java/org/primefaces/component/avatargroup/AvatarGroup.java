@@ -24,7 +24,9 @@
 package org.primefaces.component.avatargroup;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = AvatarGroup.COMPONENT_TYPE, namespace = AvatarGroup.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class AvatarGroup extends AvatarGroupBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.AvatarGroup";

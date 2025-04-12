@@ -32,7 +32,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIGraphic;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Resizable.DEFAULT_RENDERER, componentFamily = Resizable.COMPONENT_FAMILY)
 public class ResizableRenderer extends CoreRenderer<Resizable> {
 
     @Override

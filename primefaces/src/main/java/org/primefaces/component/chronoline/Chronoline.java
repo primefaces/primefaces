@@ -24,7 +24,9 @@
 package org.primefaces.component.chronoline;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Chronoline.COMPONENT_TYPE, namespace = Chronoline.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Chronoline extends ChronolineBase {
 

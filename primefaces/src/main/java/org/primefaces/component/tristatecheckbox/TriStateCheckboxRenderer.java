@@ -33,7 +33,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = TriStateCheckbox.DEFAULT_RENDERER, componentFamily = TriStateCheckbox.COMPONENT_FAMILY)
 public class TriStateCheckboxRenderer extends InputRenderer<TriStateCheckbox> {
 
     @Override

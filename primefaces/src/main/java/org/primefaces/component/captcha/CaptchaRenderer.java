@@ -35,7 +35,9 @@ import jakarta.el.ELException;
 import jakarta.faces.FacesException;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Captcha.DEFAULT_RENDERER, componentFamily = Captcha.COMPONENT_FAMILY)
 public class CaptchaRenderer extends CoreRenderer<Captcha> {
 
     private static final Logger LOGGER = Logger.getLogger(CaptchaRenderer.class.getName());

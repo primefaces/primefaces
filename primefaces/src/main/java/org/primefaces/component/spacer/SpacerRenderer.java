@@ -29,7 +29,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Spacer.DEFAULT_RENDERER, componentFamily = Spacer.COMPONENT_FAMILY)
 public class SpacerRenderer extends CoreRenderer<Spacer> {
 
     @Override

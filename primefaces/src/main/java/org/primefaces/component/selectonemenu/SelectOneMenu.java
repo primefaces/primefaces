@@ -39,6 +39,7 @@ import java.util.Map;
 
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
@@ -47,6 +48,7 @@ import jakarta.faces.render.Renderer;
 import jakarta.faces.validator.Validator;
 import jakarta.faces.validator.ValidatorException;
 
+@FacesComponent(value = SelectOneMenu.COMPONENT_TYPE, namespace = SelectOneMenu.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

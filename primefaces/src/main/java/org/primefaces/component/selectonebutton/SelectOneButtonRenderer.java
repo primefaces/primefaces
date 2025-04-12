@@ -39,8 +39,10 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = SelectOneButton.DEFAULT_RENDERER, componentFamily = SelectOneButton.COMPONENT_FAMILY)
 public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> {
 
     @Override

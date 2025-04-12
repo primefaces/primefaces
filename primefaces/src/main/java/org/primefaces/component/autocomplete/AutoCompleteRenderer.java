@@ -48,7 +48,9 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.event.PhaseId;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = AutoComplete.DEFAULT_RENDERER, componentFamily = AutoComplete.COMPONENT_FAMILY)
 public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
     @Override

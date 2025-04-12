@@ -35,7 +35,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Menubar.DEFAULT_RENDERER, componentFamily = Menubar.COMPONENT_FAMILY)
 public class MenubarRenderer extends TieredMenuRenderer {
 
     @Override

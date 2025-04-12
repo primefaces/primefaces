@@ -36,7 +36,9 @@ import java.util.List;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = PanelMenu.DEFAULT_RENDERER, componentFamily = PanelMenu.COMPONENT_FAMILY)
 public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
 
     @Override

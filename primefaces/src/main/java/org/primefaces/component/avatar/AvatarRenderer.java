@@ -37,7 +37,9 @@ import java.util.regex.Pattern;
 import jakarta.faces.FacesException;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Avatar.DEFAULT_RENDERER, componentFamily = Avatar.COMPONENT_FAMILY)
 public class AvatarRenderer extends CoreRenderer<Avatar> {
 
     private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[\\p{L}\\p{M}]", Pattern.UNICODE_CHARACTER_CLASS);

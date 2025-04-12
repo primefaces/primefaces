@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.dataview;
 
+import jakarta.faces.component.FacesComponent;
+@FacesComponent(value = DataViewGridItem.COMPONENT_TYPE, namespace = DataViewGridItem.COMPONENT_FAMILY)
 public class DataViewGridItem extends DataViewGridItemBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataViewGridItem";

@@ -40,7 +40,9 @@ import jakarta.faces.component.ContextCallback;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Message.DEFAULT_RENDERER, componentFamily = Message.COMPONENT_FAMILY)
 public class MessageRenderer extends UINotificationRenderer<Message> {
 
     @Override

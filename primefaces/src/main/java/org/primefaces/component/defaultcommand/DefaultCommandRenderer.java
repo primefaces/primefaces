@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = DefaultCommand.DEFAULT_RENDERER, componentFamily = DefaultCommand.COMPONENT_FAMILY)
 public class DefaultCommandRenderer extends CoreRenderer<DefaultCommand> {
 
     @Override

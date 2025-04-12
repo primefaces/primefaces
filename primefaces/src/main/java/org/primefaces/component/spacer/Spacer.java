@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.spacer;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = Spacer.COMPONENT_TYPE, namespace = Spacer.COMPONENT_FAMILY)
 public class Spacer extends SpacerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Spacer";

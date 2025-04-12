@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.feedreader;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = FeedReader.COMPONENT_TYPE, namespace = FeedReader.COMPONENT_FAMILY)
 public class FeedReader extends FeedReaderBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.FeedReader";

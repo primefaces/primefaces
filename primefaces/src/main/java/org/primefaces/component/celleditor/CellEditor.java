@@ -26,9 +26,11 @@ package org.primefaces.component.celleditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
+@FacesComponent(value = CellEditor.COMPONENT_TYPE, namespace = CellEditor.COMPONENT_FAMILY)
 public class CellEditor extends CellEditorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CellEditor";

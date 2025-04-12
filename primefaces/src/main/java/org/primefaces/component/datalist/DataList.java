@@ -42,6 +42,7 @@ import java.util.function.Consumer;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
@@ -50,6 +51,7 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 import jakarta.faces.model.DataModel;
 
+@FacesComponent(value = DataList.COMPONENT_TYPE, namespace = DataList.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

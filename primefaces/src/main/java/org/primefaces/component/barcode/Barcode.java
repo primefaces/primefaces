@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.barcode;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = Barcode.COMPONENT_TYPE, namespace = Barcode.COMPONENT_FAMILY)
 public class Barcode extends BarcodeBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Barcode";

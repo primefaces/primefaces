@@ -25,6 +25,9 @@ package org.primefaces.component.video;
 
 import org.primefaces.component.api.UIMedia;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = Video.COMPONENT_TYPE, namespace = Video.COMPONENT_FAMILY)
 public class Video extends UIMedia {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

@@ -40,7 +40,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIParameter;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Media.DEFAULT_RENDERER, componentFamily = Media.COMPONENT_FAMILY)
 public class MediaRenderer extends CoreRenderer<Media> {
 
     @Override

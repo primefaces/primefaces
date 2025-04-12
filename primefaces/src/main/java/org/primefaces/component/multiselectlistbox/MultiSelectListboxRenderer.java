@@ -37,8 +37,10 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = MultiSelectListbox.DEFAULT_RENDERER, componentFamily = MultiSelectListbox.COMPONENT_FAMILY)
 public class MultiSelectListboxRenderer extends SelectOneRenderer<MultiSelectListbox> {
 
     @Override

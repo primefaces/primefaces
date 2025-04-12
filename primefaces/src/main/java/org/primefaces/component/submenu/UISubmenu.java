@@ -28,7 +28,9 @@ import org.primefaces.model.menu.MenuElement;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = UISubmenu.COMPONENT_TYPE, namespace = UISubmenu.COMPONENT_FAMILY)
 public class UISubmenu extends UISubmenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UISubmenu";

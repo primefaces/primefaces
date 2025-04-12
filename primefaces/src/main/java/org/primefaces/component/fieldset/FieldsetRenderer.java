@@ -34,7 +34,9 @@ import java.util.Map;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Fieldset.DEFAULT_RENDERER, componentFamily = Fieldset.COMPONENT_FAMILY)
 public class FieldsetRenderer extends CoreRenderer<Fieldset> {
 
     @Override

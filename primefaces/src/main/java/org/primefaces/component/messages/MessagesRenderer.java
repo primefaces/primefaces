@@ -38,7 +38,9 @@ import java.util.Objects;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Messages.DEFAULT_RENDERER, componentFamily = Messages.COMPONENT_FAMILY)
 public class MessagesRenderer extends UINotificationRenderer<Messages> {
 
     @Override
