@@ -136,7 +136,7 @@ class InputNumber004Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("31.90", inputNumber.getValue());
-        assertConfiguration(inputNumber.getWidgetConfiguration(), "2", "0.0000001", "999999.99");
+        assertConfiguration(inputNumber.getWidgetConfiguration(), "2", "0", "999999.99");
     }
 
     @Test
@@ -155,7 +155,7 @@ class InputNumber004Test extends AbstractPrimePageTest {
         catch (JavascriptException ex) {
             // Assert
             assertEquals(
-                        "The value [-8.23] being set falls outside of the minimumValue [0.0000001] and maximumValue [999999.99] range set for this element",
+                        "The value [-8.23] being set falls outside of the minimumValue [0] and maximumValue [999999.99] range set for this element",
                         StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
         }
     }
@@ -177,7 +177,7 @@ class InputNumber004Test extends AbstractPrimePageTest {
             // Assert
             assertEquals(
                         "The value [4599999999999] being set falls outside of the minimumValue "
-                                + "[0.0000001] and maximumValue [999999.99] range set for this element",
+                                + "[0] and maximumValue [999999.99] range set for this element",
                         StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
         }
     }
