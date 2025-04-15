@@ -416,7 +416,7 @@
             <dependency>
                 <groupId>com.apptasticsoftware</groupId>
                 <artifactId>rssreader</artifactId>
-                <version>3.9.1</version>
+                <version>3.9.2</version>
             </dependency>
 
             <!-- File Upload -->
