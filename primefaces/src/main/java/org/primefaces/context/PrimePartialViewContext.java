@@ -74,12 +74,13 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     public PartialResponseWriter getPartialResponseWriter() {
         if (writer == null) {
             PartialResponseWriter parentWriter = getWrapped().getPartialResponseWriter();
-            writer = new PrimePartialResponseWriter(parentWriter);
-
             FacesContext context = FacesContext.getCurrentInstance();
             PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
             if (config.isCsp()) {
-                writer = new CspPartialResponseWriter(writer, context, PrimeFacesContext.getCspState(context));
+                writer = new CspPartialResponseWriter(parentWriter, context, PrimeFacesContext.getCspState(context));
+            }
+            else {
+                writer = new PrimePartialResponseWriter(parentWriter);
             }
         }
 
