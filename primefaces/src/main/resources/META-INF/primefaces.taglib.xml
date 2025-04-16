@@ -23933,7 +23933,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Layout of the checkboxes, valid values are lineDirection , pageDirection, grid, responsive and custom.]]>
+                <![CDATA[Layout of the checkboxes, valid values are lineDirection, pageDirection, responsive and custom.]]>
             </description>
             <name>layout</name>
             <required>false</required>
