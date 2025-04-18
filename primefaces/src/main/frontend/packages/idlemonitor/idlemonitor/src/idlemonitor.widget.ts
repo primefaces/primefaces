@@ -65,7 +65,7 @@ export class IdleMonitor<Cfg extends IdleMonitorCfg = IdleMonitorCfg> extends Pr
 
 
         if (cfg.multiWindowSupport) {
-            var globalLastActiveKey = PrimeFaces.createStorageKey(this.getId(), 'IdleMonitor_lastActive', undefined);
+            var globalLastActiveKey = PrimeFaces.createStorageKey(this.getId(), 'IdleMonitor_lastActive', true);
 
             // always reset with current time on init
             localStorage.setItem(globalLastActiveKey, $(document).data('idleTimerObj' + this.cfg.id).lastActive);
