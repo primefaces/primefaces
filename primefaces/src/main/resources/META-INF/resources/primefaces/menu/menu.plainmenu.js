@@ -278,7 +278,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
             for (let collapsedId of this.collapsedIds) {
                 if (collapsedId) {
-                    this.collapseSubmenu($(PrimeFaces.escapeClientId(collapsedId).replace(/\|/g, "\\|")), false);
+                    this.collapseSubmenu($(PrimeFaces.escapeClientId(collapsedId)), false);
                 }
             }
         }
