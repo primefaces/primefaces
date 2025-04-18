@@ -35,7 +35,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Chart.DEFAULT_RENDERER, componentFamily = Chart.COMPONENT_FAMILY)
 public class ChartRenderer extends CoreRenderer<Chart> {
 
     @Override

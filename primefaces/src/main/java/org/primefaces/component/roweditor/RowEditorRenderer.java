@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = RowEditor.DEFAULT_RENDERER, componentFamily = RowEditor.COMPONENT_FAMILY)
 public class RowEditorRenderer extends CoreRenderer<RowEditor> {
 
     @Override
