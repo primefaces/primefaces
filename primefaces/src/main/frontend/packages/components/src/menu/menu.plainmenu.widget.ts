@@ -286,7 +286,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
 
             for (let collapsedId of this.collapsedIds) {
                 if (collapsedId) {
-                    this.collapseSubmenu($(PrimeFaces.escapeClientId(collapsedId).replace(/\|/g, "\\|")), false);
+                    this.collapseSubmenu($(PrimeFaces.escapeClientId(collapsedId)), false);
                 }
             }
         }
