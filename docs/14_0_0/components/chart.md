@@ -32,7 +32,7 @@ A bar chart provides a way of showing data values represented as vertical bars. 
 | extender | null | String | Name of JavaScript function to extend the options of the underlying Chart.js plugin.
 | style | null | String | Inline style of the component.
 | styleClass | null | String | Style class of the component.
-| value | null | String | XDEV Model object of data and settings or raw JSON string.
+| value | null | String | Chart model data as a JSON string, either generated from an XDEV model object or provided as raw JSON configuration.
 | widgetVar | null | String | Name of the client side widget.
 
 ### Raw JSON
