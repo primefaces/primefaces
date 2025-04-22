@@ -160,6 +160,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             }
 
             PrimeFaces.skinButton(this.triggerButton);
+            if (this.cfg.disabled) {
+                PrimeFaces.utils.disableButton(this.triggerButton);
+            }
         }
 
         //mark target and descendants of target as a trigger for a PrimeFaces overlay
