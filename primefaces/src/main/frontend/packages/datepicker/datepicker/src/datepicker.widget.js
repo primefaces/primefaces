@@ -144,23 +144,8 @@ PrimeFaces.widget.DatePicker = class DatePicker extends PrimeFaces.widget.BaseWi
         
         this.jq.datePicker(this.cfg);
 
-        //extensions
-        if(!this.cfg.inline && this.cfg.showIcon) {
-            this.triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
-            this.triggerButton.attr('aria-label',this.getLabel('chooseDate')).attr('aria-haspopup', true);
-
-            var title = this.jqEl.attr('title');
-            if(title) {
-                this.triggerButton.attr('title', title);
-            }
-
-            var buttonIndex = this.cfg.buttonTabindex||this.jqEl.attr('tabindex');
-            if(buttonIndex) {
-                this.triggerButton.attr('tabindex', buttonIndex);
-            }
-
-            PrimeFaces.skinButton(this.triggerButton);
-        }
+        // create the trigger button if showIcon is enabled
+        this.bindTriggerButton();
 
         //mark target and descendants of target as a trigger for a PrimeFaces overlay
         if(!this.cfg.inline) {
@@ -273,6 +258,35 @@ PrimeFaces.widget.DatePicker = class DatePicker extends PrimeFaces.widget.BaseWi
             }
             this.input.inputmask('remove').inputmask(maskCfg);
             this.input.off("blur"); // GitHub #9259/#12428
+        }
+    }
+
+    /**
+     * Initializes and configures the trigger button for the datepicker.
+     * Only applies when the datepicker is not inline and showIcon is enabled.
+     * Sets up accessibility attributes, copies title from input, handles tabindex,
+     * applies skinning, and manages disabled state.
+     * @private
+     */
+    bindTriggerButton() {
+        if(!this.cfg.inline && this.cfg.showIcon) {
+            this.triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
+            this.triggerButton.attr('aria-label',this.getLabel('chooseDate')).attr('aria-haspopup', true);
+
+            var title = this.jqEl.attr('title');
+            if(title) {
+                this.triggerButton.attr('title', title);
+            }
+
+            var buttonIndex = this.cfg.buttonTabindex||this.jqEl.attr('tabindex');
+            if(buttonIndex) {
+                this.triggerButton.attr('tabindex', buttonIndex);
+            }
+
+            PrimeFaces.skinButton(this.triggerButton);
+            if (this.cfg.disabled) {
+                PrimeFaces.utils.disableButton(this.triggerButton);
+            }
         }
     }
 
