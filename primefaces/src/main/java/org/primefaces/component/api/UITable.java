@@ -449,6 +449,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
                 ColumnMeta meta = columMeta.computeIfAbsent(columnKey, ColumnMeta::new);
                 meta.setVisible(visible);
+                meta.setDisplayPriority(0);
             }
         }
 
