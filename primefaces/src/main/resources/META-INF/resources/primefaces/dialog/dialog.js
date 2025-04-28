@@ -989,20 +989,25 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
                         // Temporarily remove the click handler and execute the new one
                         source.prop('onclick', null).off("click").on("click", function(event) {
                             PrimeFaces.csp.executeEvent(id, js, event);
-                        }).click();
+                        }).trigger("click");
 
                         // Restore the original click handler if it exists
                         if (originalOnClick) {
                             source.off("click").on("click", originalOnClick);
                         }
                     } else {
-                        // command is ajax=false
-                        if (command.prop('onclick')) {
-                            command.removeAttr("onclick");
+                        // #13736: regular button just execute its javascript
+                        if (source.attr('type') === "button") {
+                            PrimeFaces.csp.executeEvent(id, js, e);
                         } else {
-                            command.off("click");
+                            // command is ajax=false
+                            if (command.prop('onclick')) {
+                                command.removeAttr("onclick");
+                            } else {
+                                command.off("click");
+                            }
+                            command.removeAttr("data-pfconfirmcommand").trigger("click");
                         }
-                        command.removeAttr("data-pfconfirmcommand").click();
                     }
 
                     PrimeFaces.confirmDialog.hide();
