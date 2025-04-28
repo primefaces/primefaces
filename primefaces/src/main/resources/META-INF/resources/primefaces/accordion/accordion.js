@@ -450,7 +450,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         if (this.hasBehavior('tabClose')) {
             var ext = {
                 params: [
-                    { name: this.id + '_tabId', value: panel.attr('id') },
+                    { name: this.id + '_currentTab', value: panel.attr('id') },
                     { name: this.id + '_tabindex', value: parseInt(index) }
                 ]
             };
