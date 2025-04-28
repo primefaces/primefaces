@@ -5607,7 +5607,12 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     updateEmptyColspan() {
         var emptyRow = this.tbody.children('tr:first');
         if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
-            this.updateColspan(emptyRow);
+            let colspanValue = this.calculateColspan();
+            // #13742 need to re-add the grouped column to fill out the empty row
+            if (this.thead.find('> tr:first th.ui-grouped-column').length > 0) {
+                colspanValue = colspanValue + 1;
+            }
+            this.updateColspan(emptyRow, colspanValue);
         }
     }
 
