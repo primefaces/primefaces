@@ -34,7 +34,7 @@ validatorMessage | null | String | Message to be displayed when validation field
 widgetVar | null | String | Name of the client side widget.
 disabled | false | Boolean | Disables the component.
 label | null | String | User presentable name. 
-layout | lineDirection | String | Layout of the radiobuttons, valid values are lineDirection , pageDirection , custom, responsive and grid.
+layout | lineDirection | String | Layout of the radiobuttons, valid values are lineDirection , pageDirection , custom, and responsive.
 flex | false | Boolean | Use modern PrimeFlex-Grid in responsive mode instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
 columns | 12 | Integer | Number of columns in responsive layout.
 onchange | null | String | Callback to execute on value change.
