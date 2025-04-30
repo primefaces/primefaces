@@ -134,6 +134,9 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         writer.startElement("li", null);
         writer.writeAttribute("class", styleClass, null);
+        if (shouldRenderId(submenu)) {
+            writer.writeAttribute("id", submenu.getClientId(), null);
+        }
         if (LangUtils.isNotEmpty(style)) {
             writer.writeAttribute("style", style, null);
         }
@@ -231,6 +234,9 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         //title
         writer.startElement("li", null);
+        if (shouldRenderId(submenu)) {
+            writer.writeAttribute("id", submenu.getClientId(), null);
+        }
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
