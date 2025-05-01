@@ -35,8 +35,8 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
 
         this.jqValue = this.jq.children('.ui-progressbar-value');
         this.jqLabel = this.jqValue.children('.ui-progressbar-label');
-        this.value = this.cfg.initialValue;
         this.cfg.global = this.cfg.global !== false;
+        this.setValue(this.cfg.initialValue || 0, 0);
 
         this.enableARIA();
     }
@@ -44,25 +44,37 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
     /**
      * Sets the value (progress) of this progress bar to a value between zero and a hundred percent.
      * @param {number} value New value for this progress bar, between `0` and `100`.
+     * @param {number} [animationDuration] Optional animation duration in milliseconds. If not specified, 
+     * the widget's configured animation duration will be used.
      */
-    setValue(value) {
+    setValue(value, animationDuration) {
         if (value >= 0 && value <= 100) {
-            if (value == 0) {
-                this.jqValue.hide().css('width', '0%');
+            const valueWidth = Math.max(value, 2); // min 2 to display full label of 0% and 1%
 
-                this.jqLabel.hide();
+            // Handle styling based on value
+            const styles = value === 0 ? 
+            {   value: {'background-color': 'transparent'},
+                label: {'color': getComputedStyle(document.documentElement).getPropertyValue('--text-color')}
+            } : 
+            {   value: {'background-color': ''},
+                label: {'color': ''}
+            };
+
+            this.jqValue.css(styles.value);
+
+            // Animate width
+            const animation = animationDuration !== undefined ? animationDuration : (this.cfg.animationDuration || 0);
+            this.jqValue.show().animate({
+                'width': valueWidth + '%'
+            }, animation, 'easeInOutCirc');
+
+            // Update label if template exists
+            if (this.cfg.labelTemplate) {
+                this.jqLabel.css(styles.label);
+                this.jqLabel.text(this.cfg.labelTemplate.replace(/{value}/gi, value)).show();
             }
-            else {
-                this.jqValue.show().animate({
-                    'width': value + '%'
-                }, this.cfg.animationDuration, 'easeInOutCirc');
 
-                if (this.cfg.labelTemplate) {
-                    var formattedLabel = this.cfg.labelTemplate.replace(/{value}/gi, value);
-                    this.jqLabel.text(formattedLabel).show();
-                }
-            }
-
+            // Update internal state and ARIA
             this.value = value;
             this.jq.attr('aria-valuenow', value);
         }
