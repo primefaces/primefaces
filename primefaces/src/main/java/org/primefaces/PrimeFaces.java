@@ -618,6 +618,8 @@ public class PrimeFaces {
         }
 
         private void clearMVSKeys(Set<MVSKey> keysToRemove, boolean reset, Consumer<String> clientIdConsumer) {
+            String currentViewId = getFacesContext().getViewRoot().getViewId();
+
             Set<MVSKey> mvsKeys = getMVSKeys();
             for (MVSKey mvsKey : keysToRemove) {
                 if (!mvsKeys.remove(mvsKey)) {
@@ -627,7 +629,7 @@ public class PrimeFaces {
                     continue;
                 }
 
-                if (reset) {
+                if (reset && mvsKey.viewId.equals(currentViewId)) {
                     reset(mvsKey.clientId);
                 }
 
