@@ -3055,7 +3055,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             this.cursorRowMeta = rowMeta;
 
             if (event && event.shiftKey) {
-                this.selectRowsInRange(row, silent);
+                this.selectRowsInRange(row, true);
                 rangeSelected = true;
             }
         }
