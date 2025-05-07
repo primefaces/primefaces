@@ -520,9 +520,12 @@ public class CalendarUtils {
         if (date == null) {
             return null;
         }
-        else {
-            return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
+
+        if (date instanceof java.sql.Time) {
+            return ((java.sql.Time) date).toLocalTime();
         }
+
+        return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
     }
 
     public static Date convertLocalDate2Date(LocalDate localDate, ZoneId zoneId) {
