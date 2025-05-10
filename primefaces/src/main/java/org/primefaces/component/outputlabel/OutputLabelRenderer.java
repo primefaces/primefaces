@@ -50,10 +50,12 @@ import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.component.UISelectBoolean;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.metadata.ConstraintDescriptor;
 
+@FacesRenderer(rendererType = OutputLabel.DEFAULT_RENDERER, componentFamily = OutputLabel.COMPONENT_FAMILY)
 public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
 
     private static final Logger LOGGER = Logger.getLogger(OutputLabelRenderer.class.getName());

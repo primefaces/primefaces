@@ -43,7 +43,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = TextEditor.DEFAULT_RENDERER, componentFamily = TextEditor.COMPONENT_FAMILY)
 public class TextEditorRenderer extends InputRenderer<TextEditor> {
 
     private static final Logger LOGGER = Logger.getLogger(TextEditorRenderer.class.getName());

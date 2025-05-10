@@ -40,7 +40,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.PhaseId;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = InputTextarea.DEFAULT_RENDERER, componentFamily = InputTextarea.COMPONENT_FAMILY)
 public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
 
     @Override

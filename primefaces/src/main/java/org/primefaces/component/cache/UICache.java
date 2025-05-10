@@ -23,10 +23,11 @@
  */
 package org.primefaces.component.cache;
 
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.visit.VisitContext;
 import jakarta.faces.context.FacesContext;
 
-
+@FacesComponent(value = UICache.COMPONENT_TYPE, namespace = UICache.COMPONENT_FAMILY)
 public class UICache extends UICacheBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Cache";

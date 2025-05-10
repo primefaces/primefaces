@@ -39,7 +39,9 @@ import java.util.Locale;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Clock.DEFAULT_RENDERER, componentFamily = Clock.COMPONENT_FAMILY)
 public class ClockRenderer extends CoreRenderer<Clock> {
 
     @Override

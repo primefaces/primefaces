@@ -24,7 +24,9 @@
 package org.primefaces.component.divider;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Divider.COMPONENT_TYPE, namespace = Divider.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Divider extends DividerBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Divider";
