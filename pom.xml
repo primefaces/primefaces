@@ -430,7 +430,7 @@
             <dependency>
                 <groupId>uk.org.okapibarcode</groupId>
                 <artifactId>okapibarcode</artifactId>
-                <version>0.5.0</version>
+                <version>0.5.1</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.beust</groupId>

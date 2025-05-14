@@ -48,36 +48,70 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
      * the widget's configured animation duration will be used.
      */
     setValue(value, animationDuration) {
-        if (value >= 0 && value <= 100) {
-            const valueWidth = Math.max(value, 2); // min 2 to display full label of 0% and 1%
-
-            // Handle styling based on value
-            const styles = value === 0 ? 
-            {   value: {'background-color': 'transparent'},
-                label: {'color': getComputedStyle(document.documentElement).getPropertyValue('--text-color')}
-            } : 
-            {   value: {'background-color': ''},
-                label: {'color': ''}
-            };
-
-            this.jqValue.css(styles.value);
-
-            // Animate width
-            const animation = animationDuration !== undefined ? animationDuration : (this.cfg.animationDuration || 0);
-            this.jqValue.show().animate({
-                'width': valueWidth + '%'
-            }, animation, 'easeInOutCirc');
-
-            // Update label if template exists
-            if (this.cfg.labelTemplate) {
-                this.jqLabel.css(styles.label);
-                this.jqLabel.text(this.cfg.labelTemplate.replace(/{value}/gi, value)).show();
-            }
-
-            // Update internal state and ARIA
-            this.value = value;
-            this.jq.attr('aria-valuenow', value);
+        if (value < 0 || value > 100) {
+            return;
         }
+        let valueWidth = value;
+
+        // This code handles measuring the width of the label text to ensure proper display
+        if (this.cfg.labelTemplate) {
+            // Create a temporary span element that's invisible but has the same styling as the label
+            // This allows us to measure the exact width the text will occupy without affecting the UI
+            var $span = $("<span></span>")
+                .text(this.jqLabel.text())
+                .css({
+                    visibility: "hidden", // Make it invisible
+                    position: "absolute", // Take it out of the document flow
+                    whiteSpace: "nowrap", // Prevent text wrapping
+                    // Copy all font properties from the actual label to ensure accurate measurement
+                    font: this.jqLabel.css("font"),
+                    fontSize: this.jqLabel.css("fontSize"),
+                    fontWeight: this.jqLabel.css("fontWeight"),
+                    fontFamily: this.jqLabel.css("fontFamily"),
+                })
+                .appendTo(document.body); // Add to document to calculate dimensions
+
+            // Calculate the width of the label as a percentage of the progressbar's width
+            var labelWidthPx = $span.outerWidth(true);
+            var progressBarWidthPx = this.jq.width();
+
+            // Convert the label width to a percentage of the progressbar width
+            var labelWidthPercentage = (labelWidthPx / progressBarWidthPx) * 100;
+
+            // Ensure the value width is at least the percentage needed to display the label
+            valueWidth = Math.max(value, labelWidthPercentage);
+
+            // Remove the temporary element to avoid memory leaks
+            $span.remove();
+        }
+
+        // Handle styling based on value
+        const styles = value === 0 ?
+            {
+                value: { 'background-color': 'transparent' },
+                label: { 'text-align': 'left', 'color': getComputedStyle(document.documentElement).getPropertyValue('--text-color') }
+            } :
+            {
+                value: { 'background-color': '' },
+                label: { 'text-align': 'center', 'color': '' }
+            };
+        this.jqValue.css(styles.value);
+
+        // Animate width
+        const animation = animationDuration !== undefined ? animationDuration : (this.cfg.animationDuration || 0);
+        this.jqValue.show().animate({
+            'width': valueWidth + '%'
+        }, animation, 'easeInOutCirc');
+
+        // Update label if template exists
+        if (this.cfg.labelTemplate) {
+            this.jqLabel.css(styles.label);
+            this.jqLabel.text(this.cfg.labelTemplate.replace(/{value}/gi, value)).show();
+        }
+
+        // Update internal state and ARIA
+        this.value = value;
+        this.jq.attr('aria-valuenow', value);
     }
 
     /**
