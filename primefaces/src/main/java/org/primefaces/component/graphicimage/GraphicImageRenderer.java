@@ -56,7 +56,7 @@ public class GraphicImageRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("src", imageSrc, null);
 
-        if (LangUtils.isBlank(component.getAlt())) {
+        if (LangUtils.isBlank(image.getAlt())) {
             // #13790 decorative images should have an empty alt attribute
             writer.writeAttribute("alt", "", null);
         }
