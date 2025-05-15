@@ -106,6 +106,7 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
             this.cloneItems();
         }
 
+        this.renderAria();
         this.calculatePosition();
         this.updatePage();
         this.bindEvents();
@@ -124,6 +125,16 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
         this.stopAutoplay();
 
         super.refresh(cfg);
+    }
+
+    /**
+     * Renders ARIA labels for the carousel navigation elements.
+     * @private
+     */
+    renderAria() {
+        this.ariaPageLabel = this.getAriaLabel('pageLabel');
+        this.prevNav.attr('aria-label', this.getAriaLabel('prevPageLabel'));
+        this.nextNav.attr('aria-label', this.getAriaLabel('nextPageLabel'));
     }
 
     /**
@@ -665,7 +676,7 @@ PrimeFaces.widget.Carousel = class Carousel extends PrimeFaces.widget.DeferredWi
 
         if (this.cfg.paginator) {
             for (var i = 0; i < this.totalIndicators; i++) {
-                indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i ? 'ui-state-highlight' : '') + '"><button class="ui-link" type="button"></button></li>';
+                indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i ? 'ui-state-highlight' : '') + '"><button class="ui-link" type="button" aria-label="' + this.ariaPageLabel.replace('{page}', (i+1)) + '"></button></li>';
             }
         }
         
