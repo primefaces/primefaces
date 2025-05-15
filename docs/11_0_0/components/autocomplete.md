@@ -97,6 +97,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | requiredMessage | null | String | Message to be displayed when required field validation fails.
 | scrollHeight | null | Integer | Defines the height of the items viewport.
 | selectLimit | null | Integer | Limits the multiple selection. Default is unlimited.
+| size | null | Integer | Number of characters used to determine the width of the input element.
 | tabindex | null | String | Position of the input field in the tabbing order.
 | type | text | String | Input field type.
 | unique | false | Boolean | Ensures uniqueness of selected items.

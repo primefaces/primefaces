@@ -102,6 +102,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | scrollHeight | null | Integer | Defines the height of the items viewport.
 | selectLimit | null | Integer | Limits the multiple selection. Default is unlimited.
 | showEmptyMessage | true | Boolean | Should the empty message be displayed when no items are found?
+| size | null | Integer | Number of characters used to determine the width of the input element.
 | tabindex | null | String | Position of the input field in the tabbing order.
 | type | text | String | Input field type.
 | unique | false | Boolean | Ensures uniqueness of selected items.
