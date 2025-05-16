@@ -3,6 +3,7 @@
  * Carousel is a content slider featuring various customization options.
  *
  * @prop {boolean} allowAutoplay Whether autoplay is allowed or not.
+ * @prop {string} ariaPageLabel ARIA LABEL attribute for the page links.
  * @prop {HTMLStyleElement} carouselStyle Style element with the custom CSS for the carousel. 
  * @prop {boolean} circular Whether the viewport is circular or not.
  * @prop {JQuery} content The DOM element for the content of the carousel that shows the carousel.
@@ -106,6 +107,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.cloneItems();
         }
 
+        this.renderAria();
         this.calculatePosition();
         this.updatePage();
         this.bindEvents();
@@ -124,6 +126,16 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.stopAutoplay();
 
         this._super(cfg);
+    },
+
+    /**
+     * Renders ARIA labels for the carousel navigation elements.
+     * @private
+     */
+    renderAria: function () {
+        this.ariaPageLabel = this.getAriaLabel('pageLabel');
+        this.prevNav.attr('aria-label', this.getAriaLabel('prevPageLabel'));
+        this.nextNav.attr('aria-label', this.getAriaLabel('nextPageLabel'));
     },
 
     /**
@@ -665,7 +677,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
         if (this.cfg.paginator) {
             for (var i = 0; i < this.totalIndicators; i++) {
-                indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i ? 'ui-state-highlight' : '') + '"><button class="ui-link" type="button"></button></li>';
+                indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i ? 'ui-state-highlight' : '') + '"><button class="ui-link" type="button" aria-label="' + this.ariaPageLabel.replace('{page}', (i+1)) + '"></button></li>';
             }
         }
         
