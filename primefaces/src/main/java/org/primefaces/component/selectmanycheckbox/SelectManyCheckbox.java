@@ -24,7 +24,9 @@
 package org.primefaces.component.selectmanycheckbox;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = SelectManyCheckbox.COMPONENT_TYPE, namespace = SelectManyCheckbox.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

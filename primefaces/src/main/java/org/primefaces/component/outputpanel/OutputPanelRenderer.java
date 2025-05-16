@@ -33,7 +33,9 @@ import java.util.Map;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = OutputPanel.DEFAULT_RENDERER, componentFamily = OutputPanel.COMPONENT_FAMILY)
 public class OutputPanelRenderer extends CoreRenderer<OutputPanel> {
 
     private static final String BLOCK = "div";

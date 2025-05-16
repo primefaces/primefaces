@@ -24,7 +24,9 @@
 package org.primefaces.component.panelgrid;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = PanelGrid.COMPONENT_TYPE, namespace = PanelGrid.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class PanelGrid extends PanelGridBase {
 
