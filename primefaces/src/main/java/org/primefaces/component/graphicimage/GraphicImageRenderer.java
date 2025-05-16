@@ -26,6 +26,7 @@ package org.primefaces.component.graphicimage;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 import org.primefaces.util.ResourceUtils;
 
@@ -53,7 +54,8 @@ public class GraphicImageRenderer extends CoreRenderer<GraphicImage> {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("src", imageSrc, null);
 
-        if (component.getAlt() == null) {
+        if (LangUtils.isBlank(component.getAlt())) {
+            // #13790 decorative images should have an empty alt attribute
             writer.writeAttribute("alt", "", null);
         }
         if (component.getStyleClass() != null) {
