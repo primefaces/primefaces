@@ -50,6 +50,7 @@
  * @prop {number | null} min If restricting the timeline to a certain range, the lower bound.
  * @prop {number} pFactor The current preload factor, see {@link TimelineCfg.preloadFactor}.
  * @prop {PrimeFaces.widget.Timeline.TimeRange} rangeLoadedEvents Time range of the events that were loaded.
+ * @prop {PrimeFaces.widget.ContextMenu} contextMenuWidget The context menu widget to use for the timeline.
  *
  * @interface {PrimeFaces.widget.TimelineCfg} cfg The configuration for the {@link  Timeline| Timeline widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -144,6 +145,12 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
         // bind timeline events
         this._bindTimelineEvents(el);
+
+        // bind context menu
+        if (this.contextMenuWidget) {
+            this.bindContextMenu(this.contextMenuWidget, this, this.id, this.cfg);
+            this.contextMenuWidget = null;
+        }
     },
 
     /**
@@ -488,7 +495,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-   /**
+    /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.widget.ContextMenu} menuWidget
@@ -497,7 +504,12 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
      */
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
-        // block default context menu
+        // if the timeline is not yet initialized, store the menu widget and bind later
+        if (!targetWidget.instance) {
+            this.contextMenuWidget = menuWidget;
+            return;
+        }
+
         targetWidget.instance.on('contextmenu', function (properties) {
            menuWidget.show(properties.event);
            properties.event.preventDefault();
