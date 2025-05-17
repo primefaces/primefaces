@@ -887,7 +887,7 @@ if (!PrimeFaces.utils) {
                                 requestAnimationFrame(function() {
                                     PrimeFaces.queueTask(function() {
                                         element.addClass(classNameStates.enterActive);
-                                    });
+                                    }, 1);
 
                                     element.one('transitionrun.css-transition-show', function(event) {
                                         callTransitionEvent(callbacks, 'onEntering', event);
