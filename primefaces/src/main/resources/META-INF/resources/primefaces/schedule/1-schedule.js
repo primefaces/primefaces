@@ -314,6 +314,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     source: $this.id,
                     process: $this.id,
                     update: $this.id,
+                    ignoreAutoUpdate: true,
                     formId: $this.getParentFormId(),
                     params: [
                         {name: $this.id + '_event', value: true},
