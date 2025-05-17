@@ -953,7 +953,7 @@ export class Utils {
                             requestAnimationFrame(() => {
                                 core.queueTask(() => {
                                     element.addClass(classNameStates.enterActive);
-                                });
+                                }, 1);
 
                                 element.one('transitionrun.css-transition-show', (event) => {
                                     callTransitionEvent(callbacks, 'onEntering', event);
