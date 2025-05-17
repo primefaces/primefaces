@@ -1,12 +1,11 @@
 import { Calendar } from "@fullcalendar/core";
-import allLocales from "@fullcalendar/core/locales-all.js"
-
-import interactionPlugin from "@fullcalendar/interaction";
+import allLocales from "@fullcalendar/core/locales-all.js";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import momentPlugin from "@fullcalendar/moment";
 import momentTimezonePlugin from "@fullcalendar/moment-timezone";
+import timeGridPlugin from "@fullcalendar/timegrid";
 
 /**
  * __PrimeFaces Schedule Widget__
@@ -324,6 +323,7 @@ PrimeFaces.widget.Schedule = class Schedule extends PrimeFaces.widget.DeferredWi
                     source: $this.id,
                     process: $this.id,
                     update: $this.id,
+                    ignoreAutoUpdate: true,
                     formId: $this.getParentFormId(),
                     params: [
                         {name: $this.id + '_event', value: true},
