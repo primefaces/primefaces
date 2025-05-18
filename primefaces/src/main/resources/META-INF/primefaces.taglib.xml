@@ -24833,6 +24833,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Controls browser autocomplete behavior for editable input field.]]>
+            </description>
+            <name>autocomplete</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Flag indicating whether the component should be disabled.]]>
             </description>
             <name>disabled</name>
