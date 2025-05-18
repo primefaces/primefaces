@@ -38,30 +38,31 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
 
     public enum PropertyKeys {
 
-        widgetVar,
-        panelStyle,
-        panelStyleClass,
-        var,
-        height,
+        alwaysDisplayLabel,
+        appendTo,
+        autoWidth,
+        autocomplete,
+        caseSensitive,
+        dir,
+        dynamic,
         editable,
         filter,
-        filterMatchMode,
         filterFunction,
+        filterMatchMode,
+        filterNormalize,
         filterPlaceholder,
-        caseSensitive,
-        maxlength,
-        appendTo,
-        title,
-        syncTooltip,
-        alwaysDisplayLabel,
+        height,
         label,
         labelTemplate,
+        maxlength,
+        panelStyle,
+        panelStyleClass,
         placeholder,
-        autoWidth,
-        dynamic,
-        dir,
+        syncTooltip,
+        title,
         touchable,
-        filterNormalize
+        var,
+        widgetVar
     }
 
     public SelectOneMenuBase() {
@@ -271,5 +272,13 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
 
     public void setFilterNormalize(boolean filterNormalize) {
         getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
+    }
+
+    public String getAutocomplete() {
+        return (String) getStateHelper().eval(PropertyKeys.autocomplete);
+    }
+
+    public void setAutocomplete(String autocomplete) {
+        getStateHelper().put(PropertyKeys.autocomplete, autocomplete);
     }
 }

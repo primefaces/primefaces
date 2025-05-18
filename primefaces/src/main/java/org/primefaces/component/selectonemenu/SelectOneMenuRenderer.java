@@ -241,6 +241,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
             writer.writeAttribute("name", component.getClientId(context) + "_editableInput", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
             writer.writeAttribute("tabindex", tabIndex, null);
+            writer.writeAttribute("autocomplete", component.getAutocomplete(), null);
             encodeAriaLabel(writer, component);
 
             if (component.isDisabled()) {
