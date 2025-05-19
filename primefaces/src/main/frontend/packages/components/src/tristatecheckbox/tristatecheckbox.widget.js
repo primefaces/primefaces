@@ -16,6 +16,7 @@
  * @prop {JQuery} icon The DOM element for the icon showing the current state of this checkbox widget.
  * @prop {JQuery} input The DOM element for the hidden input field storing the value of this widget.
  * @prop {JQuery} itemLabel The DOM element for the label of the checkbox.
+ * @prop {JQuery} ariaHelper The DOM element for the aria-label of the checkbox.
  * @prop {boolean} readonly Whether the user can change the state of the checkbox.
  * 
  * @interface {PrimeFaces.widget.TriStateCheckboxCfg} cfg The configuration for the {@link  TriStateCheckbox| TriStateCheckbox widget}.
@@ -37,6 +38,8 @@ PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.w
         this.box = this.jq.find('.ui-chkbox-box');
         this.icon = this.box.children('.ui-chkbox-icon');
         this.itemLabel = this.jq.find('.ui-chkbox-label');
+        this.ariaHelper = $('<span class="ui-helper-hidden-accessible" aria-live="polite"></span>').prependTo(this.jq);
+        this.updateAriaLabel();
         this.updateStatus();
         this.fixedMod = function(number, mod){
             return ((number % mod) + mod) % mod;
@@ -66,6 +69,7 @@ PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.w
             .on('keydown.triStateCheckbox', function (e) {
                 switch (e.key) {
                     case ' ':
+                    case 'Enter':    
                     case 'ArrowUp':
                     case 'ArrowDown':
                     case 'ArrowLeft':
@@ -77,6 +81,7 @@ PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.w
             .on('keyup.triStateCheckbox', function (e) {
                 switch(e.key) {
                     case ' ':
+                    case 'Enter':
                     case 'ArrowUp':
                     case 'ArrowRight':
                         $this.toggle(1);
@@ -120,7 +125,7 @@ PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.w
             this.input.val(newValue);
 
             // remove / add def. icon and active classes
-            if (newValue == 0) {
+            if (newValue === 0) {
                 this.box.removeClass('ui-state-active');
             } else {
                 this.box.addClass('ui-state-active');
@@ -136,9 +141,35 @@ PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.w
                 this.box.attr('title', iconTitles.titles[newValue]);
             }
 
+            this.updateAriaLabel();
+
             // fire change event
             this.input.trigger('change');
         }
+    }
+
+    /**
+     * Updates the aria-label of the component based on its current state.
+     * If a title is set on the box element, that will be used as the aria-label.
+     * Otherwise, a default label will be used based on the current value:
+     * - 0: nullLabel
+     * - 1: trueLabel  
+     * - 2: falseLabel
+     * @private
+     */
+    updateAriaLabel() {
+        let ariaLabel = this.box.attr('title');
+        if (!ariaLabel) {
+            const value = parseInt(this.input.val());
+            if (value === 0) {
+                ariaLabel = this.getAriaLabel('nullLabel');
+            } else if (value === 1) {
+                ariaLabel = this.getAriaLabel('trueLabel');
+            } else if (value === 2) {
+                ariaLabel = this.getAriaLabel('falseLabel');
+            }
+        }
+        this.ariaHelper.text(ariaLabel);
     }
     
     /**
