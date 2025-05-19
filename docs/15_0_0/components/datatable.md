@@ -1083,6 +1083,10 @@ Map<String, FilterMeta> filterMeta = Collections.emptyMap();
 List<MyEntity> result = lazyDataModel.load(0, lazyDataModel.count(filterMeta), sortMeta, filterMeta);
 ```
 
+#### Unsupported features
+
+Due to its implementation based on Criteria API, certain features of `DataTable` simply cannot work with `JPALazyDataModel` but may "fail silently". To aid implementors in avoiding running into issues, we've compiled (and will continue to add to) a list of features in this category:
+* `filterFunction` - `p:column`'s `filterFunction` attribute will have no effect if `JPALazyDataModel` is used; alternative filter customizations listed above should be used instead
 
 ### FlowLogix JPALazyDataModel (PrimeFaces Community)
 `JPALazyDataModel` implementation that's fully integrated with Jakarta EE and `@Inject`able.
