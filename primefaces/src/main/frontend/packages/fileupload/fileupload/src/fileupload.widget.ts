@@ -387,7 +387,7 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
 
                 const fileLimit = dataFileInput?.data('p-filelimit') ?? null;
                 const currentFileCount = this.uploadedFileCount + Math.max(data.originalFiles?.length ?? 0, this.files.length + 1);
-                if (fileLimit && currentFileCount > fileLimit) {
+                if (fileLimit && (currentFileCount > fileLimit)) {
                     this.clearMessages();
 
                     // try to render the msg first with our CSV framework
