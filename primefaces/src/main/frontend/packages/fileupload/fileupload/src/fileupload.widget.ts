@@ -385,8 +385,9 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
                 // CSV metadata
                 dataFileInput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
-                var fileLimit = dataFileInput ? dataFileInput.data('p-filelimit') : null;
-                if (fileLimit && (this.uploadedFileCount + this.files.length + 1) > fileLimit) {
+                const fileLimit = dataFileInput?.data('p-filelimit') ?? null;
+                const currentFileCount = this.uploadedFileCount + Math.max(data.originalFiles?.length ?? 0, this.files.length + 1);
+                if (fileLimit && (currentFileCount > fileLimit)) {
                     this.clearMessages();
 
                     // try to render the msg first with our CSV framework
@@ -967,9 +968,14 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
     }
 
     /**
-     * Clears this file upload field, i.e. removes all uploaded files.
+     * Clears this file upload field by:
+     * 1. Removing all file rows from the UI
+     * 2. Clearing validation context
+     * 3. Clearing error messages
+     * 4. Resetting files array and upload count
      */
     clear(): void {
+        // Remove all file rows from UI and clear row references
         for (const file of this.files) {
             if (file.row) {
                 this.removeFileRow(file.row);
@@ -977,9 +983,13 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
             }
         }
 
+        // Clear validation context and error messages
+        PrimeFaces.validation.ValidationContext.clear();
         this.clearMessages();
 
+        // Reset internal state
         this.files = [];
+        this.uploadedFileCount = 0;
     }
 
     /**
