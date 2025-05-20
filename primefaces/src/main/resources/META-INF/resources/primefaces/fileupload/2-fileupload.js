@@ -210,8 +210,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 // CSV metadata
                 dataFileInput.data(PrimeFaces.CLIENT_ID_DATA, $this.id);
 
-                var fileLimit = dataFileInput ? dataFileInput.data('p-filelimit') : null;
-                if (fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > fileLimit) {
+                const fileLimit = dataFileInput ? dataFileInput.data('p-filelimit') : null;
+                const originalFileCount = data.originalFiles ? data.originalFiles.length : 0;
+                const currentFileCount = $this.uploadedFileCount + Math.max(originalFileCount, $this.files.length + 1);
+                if (fileLimit && (currentFileCount > fileLimit)) {
                     $this.clearMessages();
 
                     // try to render the msg first with our CSV framework
@@ -803,9 +805,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             file.row = null;
         }
 
+        // Clear validation context and error messages
+        PrimeFaces.validation.ValidationContext.clear();
         this.clearMessages();
 
+        // Reset internal state
         this.files = [];
+        this.uploadedFileCount = 0;
     },
 
     /**
