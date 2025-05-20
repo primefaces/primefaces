@@ -30,7 +30,7 @@
         <sonar.skip>true</sonar.skip>
 
         <!-- dependency versions -->
-        <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
+        <hibernate-validator.version>9.0.0.Final</hibernate-validator.version>
         <jetty.version>12.0.21</jetty.version>
         <lombok.version>1.18.38</lombok.version>
     </properties>
