@@ -292,9 +292,11 @@ public class ScheduleRenderer extends CoreRenderer {
         if (schedule.getStyle() != null) {
             writer.writeAttribute("style", schedule.getStyle(), "style");
         }
-        if (schedule.getStyleClass() != null) {
-            writer.writeAttribute("class", schedule.getStyleClass(), "style");
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add("ui-widget")
+                .add(schedule.getStyleClass())
+                .build();
+        writer.writeAttribute("class", styleClass, "class");
 
         encodeStateParam(context, schedule);
 
