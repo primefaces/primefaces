@@ -293,7 +293,7 @@ public class ScheduleRenderer extends CoreRenderer<Schedule> {
                 .add(component.getStyleClass())
                 .build();
         writer.writeAttribute("class", styleClass, "class");
- 
+
         encodeStateParam(context, component);
 
         writer.endElement("div");
