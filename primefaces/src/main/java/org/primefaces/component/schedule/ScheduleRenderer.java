@@ -288,10 +288,12 @@ public class ScheduleRenderer extends CoreRenderer<Schedule> {
         if (component.getStyle() != null) {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
-        if (component.getStyleClass() != null) {
-            writer.writeAttribute("class", component.getStyleClass(), "style");
-        }
-
+        String styleClass = getStyleClassBuilder(context)
+                .add("ui-widget")
+                .add(component.getStyleClass())
+                .build();
+        writer.writeAttribute("class", styleClass, "class");
+ 
         encodeStateParam(context, component);
 
         writer.endElement("div");
