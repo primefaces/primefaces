@@ -37,3 +37,9 @@ jobs:
           context: primefaces-showcase/.
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/primefaces-showcase:${{ github.ref_name }}-latest
+      - name: Deploy to DigitalOcean
+        uses: digitalocean/app_action@v1.1.5
+        with:
+          app_name: seashell-app
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          
