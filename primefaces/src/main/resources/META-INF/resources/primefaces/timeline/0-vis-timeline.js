@@ -42394,7 +42394,9 @@
 	    // Create the DOM, props, and emitter
 	    _this._create(container);
 	    if (!options || options && typeof options.rtl == "undefined") {
-	      _this.dom.root.style.visibility = 'hidden';
+	      //AASYS (ensure timeline does not "blink" on refresh)
+	      _this.dom.root.style.visibility = 'visible';
+	      //AASYS
 	      var directionFromDom;
 	      var domNode = _this.dom.root;
 	      while (!directionFromDom && domNode) {
