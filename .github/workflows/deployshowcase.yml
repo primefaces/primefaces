@@ -3,7 +3,7 @@ name: Deploy Showcase
 on:
   push:
     branches:
-      - main
+      - master
       - 15.x
       - 14.x
   workflow_dispatch:
