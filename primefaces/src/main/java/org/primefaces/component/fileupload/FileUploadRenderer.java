@@ -38,7 +38,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = FileUpload.DEFAULT_RENDERER, componentFamily = FileUpload.COMPONENT_FAMILY)
 public class FileUploadRenderer extends CoreRenderer<FileUpload> {
 
     @Override

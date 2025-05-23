@@ -43,7 +43,9 @@ import java.util.Map.Entry;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = BreadCrumb.DEFAULT_RENDERER, componentFamily = BreadCrumb.COMPONENT_FAMILY)
 public class BreadCrumbRenderer extends BaseMenuRenderer<BreadCrumb> {
 
     @Override

@@ -31,12 +31,14 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
 import org.apache.commons.io.FilenameUtils;
 
 /**
  * The HTML <audio> element is used to embed sound content in documents.
  */
+@FacesRenderer(rendererType = Audio.DEFAULT_RENDERER, componentFamily = Audio.COMPONENT_FAMILY)
 public class AudioRenderer extends CoreRenderer<Audio> {
 
     @Override

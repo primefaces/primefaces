@@ -53,7 +53,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = TreeTable.DEFAULT_RENDERER, componentFamily = TreeTable.COMPONENT_FAMILY)
 public class TreeTableRenderer extends DataRenderer<TreeTable> {
 
     @Override

@@ -35,7 +35,9 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.ActionEvent;
 import jakarta.faces.event.PhaseId;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = RemoteCommand.DEFAULT_RENDERER, componentFamily = RemoteCommand.COMPONENT_FAMILY)
 public class RemoteCommandRenderer extends CoreRenderer<RemoteCommand> {
 
     @Override

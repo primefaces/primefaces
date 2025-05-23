@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ScrollTop.DEFAULT_RENDERER, componentFamily = ScrollTop.COMPONENT_FAMILY)
 public class ScrollTopRenderer extends CoreRenderer<ScrollTop> {
     @Override
     public void encodeEnd(FacesContext context, ScrollTop component) throws IOException {

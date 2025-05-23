@@ -27,6 +27,9 @@ import org.primefaces.util.LangUtils;
 
 import java.util.List;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = Media.COMPONENT_TYPE, namespace = Media.COMPONENT_FAMILY)
 public class Media extends MediaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Media";

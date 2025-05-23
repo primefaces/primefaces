@@ -31,8 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.event.PhaseId;
 
+@FacesComponent(value = SubTable.COMPONENT_TYPE, namespace = SubTable.COMPONENT_FAMILY)
 public class SubTable extends SubTableBase implements ColumnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";
