@@ -34,7 +34,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -43,8 +43,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DataTable048Test extends AbstractDataTableTest {
 
-    //@Test
-    @RepeatedTest(100)
+    @Test
     @Order(1)
     @DisplayName("DataTable: In filter BigDecimal")
     public void testInEqualsFilterBigDecimal(Page page) {
