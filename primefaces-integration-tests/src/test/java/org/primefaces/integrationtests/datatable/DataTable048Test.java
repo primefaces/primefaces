@@ -59,7 +59,7 @@ class DataTable048Test extends AbstractDataTableTest {
         List<WebElement> filterTypeCheckboxes = filter1.getPanel().findElements(By.cssSelector(".ui-chkbox-box"));
         // In filter all
 //        filter1.checkAll(); // alternative to the following line probably without Ajax guard
-        PrimeSelenium.guardAjax(filterTypeCheckboxes.get(0)).click(); // this line fails sometimes
+        PrimeSelenium.guardAjax(filterTypeCheckboxes.get(0)).click();
         filter1.hide();
 
         // Equals filter 2
