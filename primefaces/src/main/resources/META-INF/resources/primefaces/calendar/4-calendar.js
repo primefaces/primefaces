@@ -39,6 +39,7 @@
  * can use this element to interact with the date picker.
  * @prop {boolean} [readonly] Whether the calendar is read-only and cannot be edited.
  * @prop {boolean} refocusInput Whether the input needs to be refocused.
+ * @prop {Date | null | undefined} valueOnFocus The value of the input field when it was focused.
  *
  * @interface {PrimeFaces.widget.CalendarCfg} cfg The configuration for the {@link  Calendar| Calendar widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -278,7 +279,30 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 maskCfg.mask = this.cfg.mask;
             }
             this.input.inputmask('remove').inputmask(maskCfg);
+            this.applyBlurEvents();
         }
+    },
+
+    /**
+     * Attaches focus and blur events to track changes in the input value.
+     * On focus, it stores the current date value.
+     * On blur, if the value has changed, it calls the onSelect callback (if defined).
+     * This ensures that changes to the input value are detected and handled appropriately.
+     * @private
+     */
+    applyBlurEvents: function() {
+        this.input.on('focus', (e) => {
+            this.valueOnFocus = this.getDate();
+        });
+
+        this.input.on('blur', (e) => {
+            if (this.valueOnFocus !== this.getDate()) {
+                this.valueOnFocus = undefined;
+                if (typeof this.cfg.onSelect === 'function') {
+                    this.cfg.onSelect();
+                }
+            }
+        });
     },
 
     /**
