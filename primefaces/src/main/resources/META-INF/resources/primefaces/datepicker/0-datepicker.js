@@ -2399,7 +2399,6 @@
         onInputKeyDown: function(event) {
             switch (event.key) {
                 case 'ArrowDown':
-                case 'Enter':
                     this.inputfield.val(this.getValueToRender());
                     this.showOverlay();
                     break;

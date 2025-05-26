@@ -69,6 +69,9 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
             this.listElement.attr('aria-activedescendant', selectedItem.attr('id'));
         }
 
+        // aria-label
+        this.listElement.attr('aria-label', this.getAriaLabel('listLabel'));
+
         this.bindEvents();
 
         //pfs metadata
