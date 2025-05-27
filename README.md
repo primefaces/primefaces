@@ -151,12 +151,19 @@ Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=15.0.4` to update all modules versions
-- Commit and push the changes to GitHub
-- In GitHub create a new Release titled `15.0.4` to tag this release
-- Run `mvn clean deploy -Prelease` to push to Maven Central
-- Rename Milestone in GitHub Issues and close it
-- Create a new Milestone
+
+1. Go to the `Actions` tab in GitHub
+2. Select the "Release" workflow
+3. Click "Run workflow"
+4. You will be prompted for:
+   - Branch (default to `master`)
+   - Version to release (e.g. 8.0.2)
+   - Next development version (e.g. 8.0.3-SNAPSHOT)
+5. The workflow will automatically:
+   - Set the release version in all pom.xml files
+   - Create and push a release tag
+   - Build and deploy artifacts to Maven Central
+   - Update version to the next development version
 
 
 ### License
