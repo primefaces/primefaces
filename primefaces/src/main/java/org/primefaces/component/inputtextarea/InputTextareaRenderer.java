@@ -35,6 +35,7 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -42,6 +43,8 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.PhaseId;
 
 public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
+
+    private static final Pattern NEWLINE_NORMALIZE_PATTERN = Pattern.compile("\\r\\n?");
 
     @Override
     public void decode(FacesContext context, InputTextarea component) {
@@ -57,7 +60,7 @@ public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
 
         if (submittedValue != null) {
             // #5381: normalize new lines to match JavaScript
-            submittedValue = submittedValue.replaceAll("\\r\\n?", "\n");
+            submittedValue = NEWLINE_NORMALIZE_PATTERN.matcher(submittedValue).replaceAll("\n");
             int maxlength = component.getMaxlength();
             if (submittedValue.length() > maxlength) {
                 submittedValue = LangUtils.substring(submittedValue, 0, maxlength);

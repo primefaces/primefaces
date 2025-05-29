@@ -62,6 +62,12 @@ public class FileContentMarkerUtil {
 
     private static final Pattern SC_BEAN_PATTERN = Pattern.compile("#\\{([^.]*)\\.?.*?}");
 
+    private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
+
+    private static final Pattern EIGHT_SPACES_PATTERN = Pattern.compile("\\s{8}");
+
+    private static final Pattern LINE_SPLIT_PATTERN = Pattern.compile("(?<=\\n)");
+
     private static final String SC_PREFIX = "org.primefaces.showcase";
 
     private FileContentMarkerUtil() {
@@ -228,12 +234,12 @@ public class FileContentMarkerUtil {
     }
 
     private static String prettyFormat(String value) {
-        String[] chunks = value.split("(?<=\\n)");
-        String pretty = "";
+        String[] chunks = LINE_SPLIT_PATTERN.split(value, 0);
+        StringBuilder pretty = new StringBuilder();
         for (String chunk : chunks) {
-            pretty += chunk.replaceFirst("\\s{8}", "");
+            pretty.append(EIGHT_SPACES_PATTERN.matcher(chunk).replaceFirst(""));
         }
-        return pretty;
+        return pretty.toString();
     }
 
     /**
@@ -256,6 +262,6 @@ public class FileContentMarkerUtil {
     }
 
     private static String createFullPath(String filename) {
-        return "/" + filename.replaceAll("\\.", "/") + ".java";
+        return "/" + DOT_PATTERN.matcher(filename).replaceAll("/") + ".java";
     }
 }
