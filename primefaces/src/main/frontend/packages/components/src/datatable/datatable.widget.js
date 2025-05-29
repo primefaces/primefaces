@@ -280,6 +280,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             }
         }
 
+        if(this.cfg.groupColumnIndexes) {
+            this.groupRows();
+        }
+
         this.updateEmptyColspan();
         this.renderDeferred();
     }
@@ -5476,6 +5480,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @protected
      */
     groupRows() {
+        if (!this.tbody) {
+            return;
+        }
         var rows = this.tbody.children('tr');
 
         // see #8027
