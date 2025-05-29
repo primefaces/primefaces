@@ -144,9 +144,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         if (customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
             writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
             writer.startElement("tbody", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent, totalItems, i);
@@ -157,7 +158,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
             writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);

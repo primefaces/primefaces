@@ -468,10 +468,11 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 writer.startElement("table", null);
                 writer.writeAttribute("id", menu.getClientId(context) + "_list", null);
                 writer.writeAttribute("class", SelectCheckboxMenu.TABLE_CLASS, null);
-                writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
                 writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "true", null);
                 encodeColumnsHeader(context, menu, columns);
                 writer.startElement("tbody", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
                 encodeOptionsAsTable(context, menu, selectItems, columns);
                 writer.endElement("tbody");
                 writer.endElement("table");

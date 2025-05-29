@@ -167,7 +167,7 @@ public abstract class InputRenderer extends CoreRenderer {
     protected void renderARIACombobox(FacesContext context, UIInput component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, HTML.ARIA_ROLE_LISTBOX, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
     }
 

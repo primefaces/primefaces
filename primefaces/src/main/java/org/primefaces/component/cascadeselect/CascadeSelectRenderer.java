@@ -145,7 +145,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", CascadeSelect.TRIGGER_CLASS, null);
         writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, HTML.ARIA_ROLE_LISTBOX, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
 
         writer.startElement("span", null);
@@ -178,7 +178,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "listbox", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
         writer.writeAttribute("aria-orientation", "horizontal", null);
         renderARIARequired(context, cascadeSelect);
 
