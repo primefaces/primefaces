@@ -380,9 +380,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.startElement("table", null);
                 writer.writeAttribute("id", menu.getClientId(context) + "_table", null);
                 writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
-                writer.writeAttribute("role", "listbox", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
+                writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
                 encodeColumnsHeader(context, menu, columns);
                 writer.startElement("tbody", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
                 encodeOptionsAsTable(context, menu, selectItems, columns);
                 writer.endElement("tbody");
                 writer.endElement("table");
