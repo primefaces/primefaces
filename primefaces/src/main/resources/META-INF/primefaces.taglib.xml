@@ -30299,7 +30299,6 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-        <attribute>
             <description>
                 <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
             </description>
