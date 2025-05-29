@@ -704,10 +704,10 @@ public class TreeTableRenderer extends DataRenderer {
             headerFacet.encodeAll(context);
         }
         else if (headerText != null) {
-            writer.writeText(headerText, "headerText");
             if (LangUtils.isNotBlank(title)) {
                 writer.writeAttribute("title", title, null);
             }
+            writer.writeText(headerText, "headerText");
         }
 
         writer.endElement("span");
