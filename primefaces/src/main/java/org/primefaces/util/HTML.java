@@ -301,12 +301,13 @@ public class HTML {
     public static final String ARIA_VALUE_MIN = "aria-valuemin";
     public static final String ARIA_VALUE_MAX = "aria-valuemax";
     public static final String ARIA_ROLE = "role";
-    public static final String ARIA_ROLE_NONE = "none";
     public static final String ARIA_ROLE_COMBOBOX = "combobox";
+    public static final String ARIA_ROLE_GROUP = "group";
     public static final String ARIA_ROLE_LISTBOX = "listbox";
     public static final String ARIA_ROLE_MENU = "menu";
-    public static final String ARIA_ROLE_MENUITEM = "menuitem";
     public static final String ARIA_ROLE_MENUBAR = "menubar";
+    public static final String ARIA_ROLE_MENUITEM = "menuitem";
+    public static final String ARIA_ROLE_NONE = "none";
     public static final String ARIA_ROLE_OPTION = "option";
     public static final String ARIA_ROLE_SEPARATOR = "separator";
 

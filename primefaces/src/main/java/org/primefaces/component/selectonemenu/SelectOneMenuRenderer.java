@@ -376,9 +376,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
                 writer.startElement("table", null);
                 writer.writeAttribute("id", component.getClientId(context) + "_table", null);
                 writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
-                writer.writeAttribute("role", "listbox", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
+                writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
                 encodeColumnsHeader(context, component, columns);
                 writer.startElement("tbody", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
                 encodeOptionsAsTable(context, component, selectItems, columns);
                 writer.endElement("tbody");
                 writer.endElement("table");
