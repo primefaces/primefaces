@@ -28,7 +28,9 @@ import org.primefaces.util.LangUtils;
 import java.util.List;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = AjaxStatus.COMPONENT_TYPE, namespace = AjaxStatus.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

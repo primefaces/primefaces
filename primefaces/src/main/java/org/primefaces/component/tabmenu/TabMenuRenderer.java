@@ -35,7 +35,9 @@ import java.util.List;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = TabMenu.DEFAULT_RENDERER, componentFamily = TabMenu.COMPONENT_FAMILY)
 public class TabMenuRenderer extends BaseMenuRenderer<TabMenu> {
 
     @Override

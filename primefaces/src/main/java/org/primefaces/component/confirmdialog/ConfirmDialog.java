@@ -24,7 +24,9 @@
 package org.primefaces.component.confirmdialog;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = ConfirmDialog.COMPONENT_TYPE, namespace = ConfirmDialog.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

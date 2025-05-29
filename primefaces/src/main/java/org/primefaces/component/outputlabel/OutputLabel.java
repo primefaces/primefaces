@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.outputlabel;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = OutputLabel.COMPONENT_TYPE, namespace = OutputLabel.COMPONENT_FAMILY)
 public class OutputLabel extends OutputLabelBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OutputLabel";

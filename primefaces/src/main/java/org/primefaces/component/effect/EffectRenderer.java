@@ -32,7 +32,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIParameter;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Effect.DEFAULT_RENDERER, componentFamily = Effect.COMPONENT_FAMILY)
 public class EffectRenderer extends CoreRenderer<Effect> {
 
     @Override

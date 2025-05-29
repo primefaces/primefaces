@@ -26,9 +26,11 @@ package org.primefaces.component.tabview;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.util.FacetUtils;
 
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
+@FacesComponent(value = Tab.COMPONENT_TYPE, namespace = Tab.COMPONENT_FAMILY)
 public class Tab extends TabBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tab";

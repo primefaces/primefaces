@@ -40,7 +40,8 @@ import jakarta.faces.FacesException;
 import jakarta.faces.component.UIForm;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
-
+import jakarta.faces.render.FacesRenderer;
+@FacesRenderer(rendererType = MenuButton.DEFAULT_RENDERER, componentFamily = MenuButton.COMPONENT_FAMILY)
 public class MenuButtonRenderer extends TieredMenuRenderer {
 
     @Override

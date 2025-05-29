@@ -26,7 +26,9 @@ package org.primefaces.component.messages;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Messages.COMPONENT_TYPE, namespace = Messages.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
