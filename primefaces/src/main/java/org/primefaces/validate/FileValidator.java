@@ -60,14 +60,15 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         fileLimit,
         sizeLimit,
         contentType,
-        virusScan;
+        virusScan,
+        allowMediaTypes;
     }
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
         if (component instanceof FileUpload) {
-            String accept = Boolean.TRUE.equals(getContentType()) ? ((FileUpload) component).getAccept() : null;
+            String accept = determineAcceptValue(((FileUpload) component).getAccept());
             if (value instanceof UploadedFile) {
                 UploadedFile uploadedFile = (UploadedFile) value;
 
@@ -83,8 +84,7 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
             }
         }
         else if (component instanceof HtmlInputFile) {
-            String accept = Boolean.TRUE.equals(getContentType()) ? (String) component.getAttributes().get("accept") : null;
-
+            String accept = determineAcceptValue((String) component.getAttributes().get("accept"));
             if (value instanceof Part) {
                 UploadedFile uploadedFile = new NativeUploadedFile((Part) value, getSizeLimit(), null);
                 validateUploadedFile(context, uploadedFile, accept);
@@ -102,6 +102,22 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         else {
             throw new IllegalArgumentException("Component of type '" + component.getClass() + "' not supported");
         }
+    }
+
+    /**
+     * Determines the accept value based on configuration and component attributes.
+     * @param componentAccept the accept attribute from the component
+     * @return the accept value to use for validation, or null if content type validation is disabled
+     */
+    private String determineAcceptValue(String componentAccept) {
+        if (!Boolean.TRUE.equals(getContentType())) {
+            return null;
+        }
+        // Priority: allowMediaTypes configuration > component accept attribute
+        if (getAllowMediaTypes() != null && !getAllowMediaTypes().isEmpty()) {
+            return getAllowMediaTypes();
+        }
+        return componentAccept;
     }
 
     protected void validateUploadedFiles(FacesContext context, UploadedFiles uploadedFiles, String accept) {
@@ -239,5 +255,13 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
 
     public void setVirusScan(Boolean virusScan) {
         getStateHelper().put(PropertyKeys.virusScan, virusScan);
+    }
+
+    public String getAllowMediaTypes() {
+        return (String) getStateHelper().eval(PropertyKeys.allowMediaTypes, null);
+    }
+
+    public void setAllowMediaTypes(String allowMediaTypes) {
+        getStateHelper().put(PropertyKeys.allowMediaTypes, allowMediaTypes);
     }
 }
