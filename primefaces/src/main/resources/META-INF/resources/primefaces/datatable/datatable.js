@@ -280,6 +280,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
+        if(this.cfg.groupColumnIndexes) {
+            this.groupRows();
+        }
+
         this.updateEmptyColspan();
         this.renderDeferred();
     },
