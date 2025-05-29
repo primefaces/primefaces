@@ -305,12 +305,12 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.paginator, paginator);
     }
 
-    public Boolean isResizeMode() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.resizeMode, false);
+    public String getResizeMode() {
+        return (String) getStateHelper().eval(PropertyKeys.resizeMode, null);
     }
 
-    public Boolean setResizeMode(boolean resizeMode) {
-        return (Boolean) getStateHelper().put(PropertyKeys.resizeMode, resizeMode);
+    public void setResizeMode(String resizeMode) {
+        getStateHelper().put(PropertyKeys.resizeMode, resizeMode);
     }
 
     @Override
