@@ -212,7 +212,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, HTML.ARIA_ROLE_LISTBOX, null);
 
         if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
@@ -481,7 +481,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, HTML.ARIA_ROLE_LISTBOX, null);
 
         renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
@@ -553,7 +553,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
         writer.startElement("table", component);
         writer.writeAttribute("class", AutoComplete.TABLE_CLASS, null);
-        writer.writeAttribute("role", HTML.ARIA_ROLE_LISTBOX, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
 
         if (hasHeader) {
             writer.startElement("thead", component);
@@ -587,6 +587,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         }
 
         writer.startElement("tbody", component);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
 
         if (items != null) {
             int index = 0;
