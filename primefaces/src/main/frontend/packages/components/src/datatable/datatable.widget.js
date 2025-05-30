@@ -5335,6 +5335,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         }).get();
 
         this.writeRowExpansions();
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.expansion-' + this.id, null, function(e) {
+            $this.updateExpandedRowsColspan();
+        });
     }
 
     /**
@@ -5574,7 +5578,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @return {number} The computed `colspan` value.
      */
     calculateColspan() {
-        var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column)'),
+        var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column):visible'),
             colSpanValue = 0;
 
         for(var i = 0; i < visibleHeaderColumns.length; i++) {
