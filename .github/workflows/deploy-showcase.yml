@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - master
-      - 15.x
-      - 14.x
+      - 15.X
+      - 14.X
   workflow_dispatch:
 
 jobs:
