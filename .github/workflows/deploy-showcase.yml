@@ -40,6 +40,6 @@ jobs:
       - name: Deploy to DigitalOcean
         uses: digitalocean/app_action@v2.0.9
         with:
-          app_name: seashell-app
+          app_name: primefaces-showcase
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           
