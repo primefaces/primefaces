@@ -53,6 +53,7 @@ public class LangUtils {
 
     public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
     private static final Pattern CAPITAL_CASE = Pattern.compile("(?<=.)(?=\\p{Lu})");
+    private static final Pattern DIACRITICS_PATTERN = Pattern.compile("\\p{M}");
 
     private LangUtils() {
     }
@@ -555,7 +556,7 @@ public class LangUtils {
             return Constants.EMPTY_STRING;
         }
 
-        return java.text.Normalizer.normalize(strValue, java.text.Normalizer.Form.NFD).replaceAll("\\p{M}", Constants.EMPTY_STRING);
+        return DIACRITICS_PATTERN.matcher(java.text.Normalizer.normalize(strValue, java.text.Normalizer.Form.NFD)).replaceAll(Constants.EMPTY_STRING);
     }
 
     private static boolean withDecimalsParsing(final String str, final int beginIdx) {
