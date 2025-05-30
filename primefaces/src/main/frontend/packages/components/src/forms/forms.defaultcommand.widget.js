@@ -62,7 +62,7 @@ PrimeFaces.widget.DefaultCommand = class DefaultCommand extends PrimeFaces.widge
         });
 
         // Add keydown listener to scope if available
-        if (this.scope) {
+        if (this.scope && this.scope[0] !== closestForm[0]) {
             this.scope.off(scopeKeydown).on(scopeKeydown, function(e) {
                 if (e.key === 'Enter') {
                     closestForm.trigger(e, {scopeEnter: true, scopeDefaultCommandId: $this.id});
