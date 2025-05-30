@@ -61,7 +61,7 @@ PrimeFaces.widget.DefaultCommand = class DefaultCommand extends PrimeFaces.widge
             }
         });
 
-        // Add keydown listener to scope if available
+        // Add keydown listener to scope if not the closest form to prevent recursion
         if (this.scope && this.scope[0] !== closestForm[0]) {
             this.scope.off(scopeKeydown).on(scopeKeydown, function(e) {
                 if (e.key === 'Enter') {
