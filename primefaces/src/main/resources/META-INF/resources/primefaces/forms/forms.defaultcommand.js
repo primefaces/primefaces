@@ -46,7 +46,7 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
             data = data || e.data;
-            if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id) || (!$this.scope && !data.scopeEnter)) {
+            if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id) || (!$this.scope && !data.scopeEnter) || $this.scope[0] === closestForm[0]) {
                 var eventTarget = $(e.target);
                 // Do not proceed if target is a textarea, button, link, or TextEditor
                 if (eventTarget.is('textarea,button,input[type="submit"],a,.ql-editor')) {
@@ -61,8 +61,8 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        // Add keydown listener to scope if available
-        if (this.scope) {
+        // Add keydown listener to scope if not the closest form to prevent recursion
+        if (this.scope && this.scope[0] !== closestForm[0]) {
             this.scope.off(scopeKeydown).on(scopeKeydown, function(e) {
                 if (e.key === 'Enter') {
                     closestForm.trigger(e, {scopeEnter: true, scopeDefaultCommandId: $this.id});
