@@ -32,8 +32,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: primefaces-showcase/.
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/primefaces-showcase:${{ github.ref_name }}-latest
+      - name: Deploy to DigitalOcean
+        uses: digitalocean/app_action/deploy@v2
+        with:
+          project_id: 49e2f18d-d811-49ca-a2a6-b19a29c6b713
+          app_name: primefaces15-showcase
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          
