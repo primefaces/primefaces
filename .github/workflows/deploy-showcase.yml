@@ -40,6 +40,7 @@ jobs:
       - name: Deploy to DigitalOcean
         uses: digitalocean/app_action@v2.0.9
         with:
+          project_id: 49e2f18d-d811-49ca-a2a6-b19a29c6b713
           app_name: primefaces-showcase
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           
