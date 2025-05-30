@@ -38,7 +38,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/primefaces-showcase:${{ github.ref_name }}-latest
       - name: Deploy to DigitalOcean
-        uses: digitalocean/app_action@v2.0.9
+        uses: digitalocean/app_action/deploy@v2
         with:
           project_id: 49e2f18d-d811-49ca-a2a6-b19a29c6b713
           app_name: primefaces-showcase
