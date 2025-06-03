@@ -1,4 +1,4 @@
-name: IT Safari
+name: Nightly Build (Safari)
 
 on:
   schedule:
