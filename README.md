@@ -56,11 +56,11 @@ Version | Status | JSF version | Java version | Documentation
 ![8.0](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=8&color=cyan) | LTS | 2.0 - 2.3 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/8_0/#/)
 ![7.0](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=7&color=cyan) | LTS | 2.0 - 2.3 | 7 - ? | [HTML](https://primefaces.github.io/primefaces/7_0/#/)
 ![6.2](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=6.2&color=cyan) | Legacy | 2.0 - 2.3 | 6 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
-6.1| Legacy | 2.0 - 2.3 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
-6.0| Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_0.pdf)
-5.3| Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf)
-5.2| Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_2.pdf)
-5.1| Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
+![6.1](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=6.1&color=cyan) | Legacy | 2.0 - 2.3 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
+![6.0](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=6.0&color=cyan) | Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_0.pdf)
+![5.3](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=5.3&color=cyan) | Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf)
+![5.2](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=5.2&color=cyan) | Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_2.pdf)
+![5.1](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=5.1&color=cyan) | Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
 </details>
 
 
