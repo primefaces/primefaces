@@ -48,7 +48,7 @@ unreleased | unreleased | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.sv
   <summary>Archive</summary>
   
 
-Version | JSF version | Java version | | Docs
+Version | JSF version | Java version | Docs
 ------------ | ------------- | ------------- | ------------- |
 ![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [Documentation](https://primefaces.github.io/primefaces/12_0_0/#/) 
 11.0.0| 2.0 - 4.0 | 8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
