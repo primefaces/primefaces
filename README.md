@@ -48,19 +48,19 @@ unreleased | unreleased | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.sv
   <summary>Archive</summary>
   
 
-Version | JSF version | Java version | Documentation
------------- | ------------- | ------------- | ------------- |
+Version | Status | JSF version | Java version | Documentation
+------------ | ------------- | ------------- | ------------- | ------------- |
 ![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/12_0_0/#/) 
-11.0.0| 2.0 - 4.0 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/11_0_0/#/)
-10.0.0| 2.0 - 3.0 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/10_0_0/#/)
-8.0| 2.0 - 2.3 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/8_0/#/)
-7.0| 2.0 - 2.3 | 7 - ? | [HTML](https://primefaces.github.io/primefaces/7_0/#/)
-6.2| 2.0 - 2.3 | 6 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
-6.1| 2.0 - 2.3 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
-6.0| 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_0.pdf)
-5.3| 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf)
-5.2| 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_2.pdf)
-5.1| 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
+11.0.0| LTS | 2.0 - 4.0 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/11_0_0/#/)
+10.0.0| LTS | 2.0 - 3.0 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/10_0_0/#/)
+8.0| LTS | 2.0 - 2.3 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/8_0/#/)
+7.0| LTS | 2.0 - 2.3 | 7 - ? | [HTML](https://primefaces.github.io/primefaces/7_0/#/)
+6.2| Legacy | 2.0 - 2.3 | 6 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
+6.1| Legacy | 2.0 - 2.3 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
+6.0| Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_0.pdf)
+5.3| Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf)
+5.2| Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_2.pdf)
+5.1| Legacy | 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
 </details>
 
 
