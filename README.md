@@ -37,30 +37,30 @@ What does that mean?
 ### Versions
 ***
 
-Version | Status | JSF version | Java version | Docs | Showcase
+Version | Status | JSF version | Java version | Documentation | Showcase
 ------------ | ------------- | ------------- | -------------  | ------------- | ------------- |
-unreleased | unreleased | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) |  [Docs](https://primefaces.github.io/primefaces/16_0_0/#/) | [HTTPS](https://primefaces-showcase-zvbjj.ondigitalocean.app/)
-![15.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=15&color=cyan)| STS | ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [Docs](https://primefaces.github.io/primefaces/15_0_0/#/) | [HTTPS](https://primefaces15-showcase-f233g.ondigitalocean.app/)
-![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| LTS | ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [Docs](https://primefaces.github.io/primefaces/14_0_0/#/) | [HTTPS](https://primefaces14-showcase-ifqw8.ondigitalocean.app/)
-![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan)| LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [Docs](https://primefaces.github.io/primefaces/13_0_0/#/) |
+unreleased | unreleased | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) |  [HTML](https://primefaces.github.io/primefaces/16_0_0/#/) | [HTTPS](https://primefaces-showcase-zvbjj.ondigitalocean.app/)
+![15.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=15&color=cyan)| STS | ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/15_0_0/#/) | [HTTPS](https://primefaces15-showcase-f233g.ondigitalocean.app/)
+![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| LTS | ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/14_0_0/#/) | [HTTPS](https://primefaces14-showcase-ifqw8.ondigitalocean.app/)
+![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan)| LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/13_0_0/#/) |
 
 <details>
   <summary>Archive</summary>
   
 
-Version | JSF version | Java version | Docs
+Version | JSF version | Java version | Documentation
 ------------ | ------------- | ------------- | ------------- |
-![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [Documentation](https://primefaces.github.io/primefaces/12_0_0/#/) 
-11.0.0| 2.0 - 4.0 | 8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
-10.0.0| 2.0 - 3.0 | 8 - ? | [10.0.0 Documentation](https://primefaces.github.io/primefaces/10_0_0/#/)
-8.0| 2.0 - 2.3 | 8 - ? | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
-7.0| 2.0 - 2.3 | 7 - ? | [7.0 Documentation](https://primefaces.github.io/primefaces/7_0/#/)
-6.2| 2.0 - 2.3 | 6 - ? | [6.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
-6.1| 2.0 - 2.3 | 5 - ? | [6.1 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
-6.0| 2.0 - 2.2 | 5 - ? | [6.0 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_0.pdf)
-5.3| 2.0 - 2.2 | 5 - ? | [5.3 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf)
-5.2| 2.0 - 2.2 | 5 - ? | [5.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_2.pdf)
-5.1| 2.0 - 2.2 | 5 - ? | [5.1 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
+![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/12_0_0/#/) 
+11.0.0| 2.0 - 4.0 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/11_0_0/#/)
+10.0.0| 2.0 - 3.0 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/10_0_0/#/)
+8.0| 2.0 - 2.3 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/8_0/#/)
+7.0| 2.0 - 2.3 | 7 - ? | [HTML](https://primefaces.github.io/primefaces/7_0/#/)
+6.2| 2.0 - 2.3 | 6 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
+6.1| 2.0 - 2.3 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
+6.0| 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_0.pdf)
+5.3| 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf)
+5.2| 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_2.pdf)
+5.1| 2.0 - 2.2 | 5 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
 </details>
 
 
