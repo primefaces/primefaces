@@ -112,6 +112,7 @@ Version | JSF version | Java version | Binary | Source | Docs
   ```
 
 ### Manual Download
+***
 
 PrimeFaces JAR can be downloaded manually via the [Maven Repository](https://repo1.maven.org/maven2/org/primefaces/primefaces/).
 
@@ -150,7 +151,7 @@ The VDL documentation for the PrimeFaces tag library can be found here: https://
 ***
 Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase are available within module [primefaces-showcase](https://github.com/primefaces/primefaces/tree/master/primefaces-showcase).
 
-You can also download the PrimeFaces Showcase WAR via the [Maven Repository](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/).
+You can also download the PrimeFaces Showcase WAR via the [Maven Repository](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/). This is the version for plain Servlet containers like Tomcat.
 
 ### Contribution
 ***
