@@ -1,6 +1,11 @@
-name: CI
+name: Continuous Integration
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    paths-ignore:
+      - '**/**.md'
+  workflow_dispatch:
+  pull_request:
 
 env:
     MAVEN_OPTS: >-
