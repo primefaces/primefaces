@@ -111,7 +111,7 @@ Version | JSF version | Java version | Binary | Source | Docs
   </repositories>
   ```
 
-##### Manual Download
+### Manual Download
 
 PrimeFaces JAR can be downloaded manually via the [Maven Repository](https://repo1.maven.org/maven2/org/primefaces/primefaces/).
 
