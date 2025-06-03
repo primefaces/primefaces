@@ -51,8 +51,8 @@ unreleased | unreleased | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.sv
 Version | Status | JSF version | Java version | Documentation
 ------------ | ------------- | ------------- | ------------- | ------------- |
 ![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/12_0_0/#/) 
-![11.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=11&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | 8 - ? | [HTML](https://primefaces.github.io/primefaces/11_0_0/#/)
-![10.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=10&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF40](https://img.shields.io/badge/JSF-3.0-yellow.svg) | 8 - ? | [HTML](https://primefaces.github.io/primefaces/10_0_0/#/)
+![11.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=11&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/11_0_0/#/)
+![10.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=10&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF40](https://img.shields.io/badge/JSF-3.0-yellow.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/10_0_0/#/)
 8.0| LTS | 2.0 - 2.3 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/8_0/#/)
 7.0| LTS | 2.0 - 2.3 | 7 - ? | [HTML](https://primefaces.github.io/primefaces/7_0/#/)
 6.2| Legacy | 2.0 - 2.3 | 6 - ? | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
