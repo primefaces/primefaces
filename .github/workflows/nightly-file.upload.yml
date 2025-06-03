@@ -1,4 +1,4 @@
-name: IT FileUpload
+name: Nightly Build (FileUpload)
 
 on:
   schedule:
