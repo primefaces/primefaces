@@ -39,10 +39,10 @@ What does that mean?
 
 Version | Status | JSF version | Java version | Documentation | Showcase
 ------------ | ------------- | ------------- | -------------  | ------------- | ------------- |
-unreleased | unreleased | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) |  [HTML](https://primefaces.github.io/primefaces/16_0_0/#/) | [HTTPS](https://primefaces-showcase-zvbjj.ondigitalocean.app/)
-![15.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=15&color=cyan)| STS | ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/15_0_0/#/) | [HTTPS](https://primefaces15-showcase-f233g.ondigitalocean.app/)
-![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| LTS | ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/14_0_0/#/) | [HTTPS](https://primefaces14-showcase-ifqw8.ondigitalocean.app/)
-![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan)| LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/13_0_0/#/) |
+unreleased | unreleased | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/16_0_0/#/) | [HTTPS](https://primefaces-showcase-zvbjj.ondigitalocean.app/)
+![15.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=15&color=cyan) | STS | ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/15_0_0/#/) | [HTTPS](https://primefaces15-showcase-f233g.ondigitalocean.app/)
+![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan) | LTS | ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/14_0_0/#/) | [HTTPS](https://primefaces14-showcase-ifqw8.ondigitalocean.app/)
+![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/13_0_0/#/) |
 
 <details>
   <summary>Archive</summary>
@@ -50,7 +50,7 @@ unreleased | unreleased | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.sv
 
 Version | Status | JSF version | Java version | Documentation
 ------------ | ------------- | ------------- | ------------- | ------------- |
-![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/12_0_0/#/) 
+![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/12_0_0/#/) 
 11.0.0| LTS | 2.0 - 4.0 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/11_0_0/#/)
 10.0.0| LTS | 2.0 - 3.0 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/10_0_0/#/)
 8.0| LTS | 2.0 - 2.3 | 8 - ? | [HTML](https://primefaces.github.io/primefaces/8_0/#/)
