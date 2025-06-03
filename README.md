@@ -38,7 +38,7 @@ What does that mean?
 ***
 
 Version | Status | JSF version | Java version | Docs | Showcase
------------- | ------------- | ------------- | -------------  | ------------- | ------------- | ------------- | ------------- |
+------------ | ------------- | ------------- | -------------  | ------------- | ------------- |
 not released yet | |  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) |   | [Docs](https://primefaces.github.io/primefaces/16_0_0/#/) | [HTTPS](https://primefaces-showcase-zvbjj.ondigitalocean.app/) | 
 ![15.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=15&color=cyan)| STS | ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [Docs](https://primefaces.github.io/primefaces/15_0_0/#/) | [HTTPS](https://primefaces15-showcase-f233g.ondigitalocean.app/)
 ![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| LTS | ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [Docs](https://primefaces.github.io/primefaces/14_0_0/#/) | [HTTPS](https://primefaces14-showcase-ifqw8.ondigitalocean.app/)
