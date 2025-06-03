@@ -1415,7 +1415,7 @@ $.widget("prime.datePicker", {
             'ui-state-disabled': disabled
         });
 
-        return '<a tabindex="0" class="ui-monthpicker-month' + monthClass + '">' + content + '</a>';
+        return '<a tabindex="0" class="ui-monthpicker-month' + monthClass + '" aria-disabled="' + disabled + '">' + content + '</a>';
     },
 
     renderMonthViewMonths: function() {
@@ -1634,22 +1634,28 @@ $.widget("prime.datePicker", {
         var sundayIndex = this.getSundayIndex();
         for (var i = 0; i < weekDates.length; i++) {
             var date = weekDates[i],
+                disabled = !weekDates[i].selectable,
+                selected = this.isSelected(date),
                 cellClass = this.getClassesToAdd({
                     'ui-datepicker-other-month': date.otherMonth,
                     'ui-datepicker-today': date.today,
                     'ui-datepicker-week-end': i == sundayIndex || i == saturdayIndex,
                     'ui-datepicker-other-month-hidden': date.otherMonth && !this.options.showOtherMonths
-                }),
+                }).trim(),
                 dateClass = this.getClassesToAdd({
                     'ui-state-default': true,
-                    'ui-state-active': this.isSelected(date),
-                    'ui-state-disabled': !date.selectable,
+                    'ui-state-active': selected,
+                    'ui-state-disabled': disabled,
                     'ui-state-highlight': date.today
-                }),
+                }).trim(),
                 content = this.renderDateCellContent(date, dateClass);
 
             weekHtml += (
-                '<td class="' + cellClass + '" aria-label="' + this.options.locale.monthNames[date.month] + ' ' + date.day + '">' +
+                '<td role="gridcell"' +
+                (cellClass ? ' class="' + cellClass + '"' : '') + 
+                (disabled ? ' aria-disabled="true"' : '') + 
+                (selected ? ' aria-selected="true"' : '') + 
+                ' aria-label="' + this.options.locale.monthNames[date.month] + ' ' + date.day + '">' +
                 content +
                 '</td>'
             );
@@ -1669,8 +1675,7 @@ $.widget("prime.datePicker", {
             }
         }
         if (date.selectable) {
-            var selected = this.isSelected(date);
-            return '<a tabindex="0" class="' + dateClass + '" aria-selected="' + selected + '">' + content + '</a>';
+            return '<a tabindex="0" class="' + dateClass + '">' + content + '</a>';
         }
         else {
             return '<span class="' + dateClass + '">' + content + '</span>';
@@ -2384,7 +2389,6 @@ $.widget("prime.datePicker", {
     onInputKeyDown: function(event) {
         switch (event.key) {
             case 'ArrowDown':
-            case 'Enter':
                 this.inputfield.val(this.getValueToRender());
                 this.showOverlay();
                 break;

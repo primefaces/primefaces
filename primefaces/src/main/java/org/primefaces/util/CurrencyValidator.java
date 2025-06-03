@@ -26,6 +26,7 @@ package org.primefaces.util;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -45,6 +46,7 @@ public class CurrencyValidator extends BigDecimalValidator {
     /** DecimalFormat's currency symbol */
     public static final char CURRENCY_SYMBOL = '\u00A4';
     public static final String CURRENCY_SYMBOL_STR = Character.toString(CURRENCY_SYMBOL);
+    private static final Pattern SPACE_PATTERN = Pattern.compile(Constants.SPACE);
 
     private static final long serialVersionUID = -4201640771171486514L;
 
@@ -141,7 +143,7 @@ public class CurrencyValidator extends BigDecimalValidator {
 
         // between JDK8 and 11 some space characters became non breaking space '\u00A0'
         if (formatter.getPositivePrefix().indexOf(Constants.NON_BREAKING_SPACE) >= 0) {
-            value = value.replaceAll(Constants.SPACE, Constants.NON_BREAKING_SPACE_STR);
+            value = SPACE_PATTERN.matcher(value).replaceAll(Constants.NON_BREAKING_SPACE_STR);
         }
 
         // Initial parse of the value

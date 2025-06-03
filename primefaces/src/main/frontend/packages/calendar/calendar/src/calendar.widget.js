@@ -278,8 +278,31 @@ PrimeFaces.widget.Calendar = class Calendar extends PrimeFaces.widget.BaseWidget
                 maskCfg.mask = this.cfg.mask;
             }
             this.input.inputmask('remove').inputmask(maskCfg);
+            this.applyBlurEvents();
         }
     }
+
+    /**
+     * Attaches focus and blur events to track changes in the input value.
+     * On focus, it stores the current date value.
+     * On blur, if the value has changed, it calls the onSelect callback (if defined).
+     * This ensures that changes to the input value are detected and handled appropriately.
+     * @private
+     */
+    applyBlurEvents() {
+        this.input.on('focus', (e) => {
+            this.valueOnFocus = this.getDate();
+        });
+
+        this.input.on('blur', (e) => {
+            if (this.valueOnFocus !== this.getDate()) {
+                this.valueOnFocus = undefined;
+                if (typeof this.cfg.onSelect === 'function') {
+                    this.cfg.onSelect();
+                }
+            }
+        });
+    };
 
     /**
      * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay

@@ -778,6 +778,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
     showSuggestions(query) {
         this.items = this.panel.find('.ui-autocomplete-item');
         this.items.attr('role', 'option');
+        this.panel.children('.ui-autocomplete-items').attr('aria-label', this.getAriaLabel('listLabel'));
 
         if (this.cfg.grouping) {
             this.groupItems();

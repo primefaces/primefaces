@@ -46,6 +46,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -63,6 +64,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 @FacesRenderer(rendererType = ImageCropper.DEFAULT_RENDERER, componentFamily = ImageCropper.COMPONENT_FAMILY)
 public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
+
+    private static final Pattern IMAGE_TYPE_PATTERN = Pattern.compile("^image/([^;]+);?.*$");
 
     @Override
     public void decode(FacesContext context, ImageCropper component) {
@@ -236,7 +239,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         }
 
         if (contentType != null) {
-            format = contentType.replaceFirst("^image/([^;]+);?.*$", "$1");
+            format = IMAGE_TYPE_PATTERN.matcher(contentType).replaceFirst("$1");
         }
         else {
             int queryStringIndex = imagePath.indexOf('?');

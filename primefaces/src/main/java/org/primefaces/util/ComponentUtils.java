@@ -93,6 +93,9 @@ public class ComponentUtils {
     // regex for finding ID's
     private static final Pattern ID_PATTERN = Pattern.compile("\\sid=\"(.*?)\"");
 
+    // regex for finding Sources
+    private static final Pattern SOURCE_PATTERN = Pattern.compile("source:&quot;(.*?)&quot;");
+
 
     private ComponentUtils() {
     }
@@ -605,8 +608,8 @@ public class ComponentUtils {
         }
 
         // replace 'id=' and 'source:' values
-        encodedComponent = encodedComponent.replaceAll("\\sid=\"(.*?)\"", " id=\"$1" + separator + index + "\"");
-        encodedComponent = encodedComponent.replaceAll("source:&quot;(.*?)&quot;", " source:&quot;$1" + separator + index + "&quot;");
+        encodedComponent = ID_PATTERN.matcher(encodedComponent).replaceAll(" id=\"$1" + separator + index + "\"");
+        encodedComponent = SOURCE_PATTERN.matcher(encodedComponent).replaceAll(" source:&quot;$1" + separator + index + "&quot;");
 
         originalWriter.write(encodedComponent);
     }
