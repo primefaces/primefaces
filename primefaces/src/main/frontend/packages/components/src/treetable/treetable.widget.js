@@ -1948,7 +1948,8 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             table = this.thead.parent(),
             change = null,
             newWidth = null,
-            nextColumnWidth = null;
+            nextColumnWidth = null,
+            expandMode = (this.cfg.resizeMode === 'expand');
 
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left);
@@ -1961,23 +1962,49 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
 
-        if(newWidth > 15 && nextColumnWidth > 15) {
-            columnHeader.width(newWidth);
-            nextColumnHeader.width(nextColumnWidth);
-            this.updateResizableState(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth);
-
+        const tableWidthChange = change > 0 ? -change : change;
+        const scrollbarWidth = this.getScrollbarWidth();
+        if(newWidth > scrollbarWidth && nextColumnWidth > scrollbarWidth || (expandMode && newWidth > scrollbarWidth)) {
+            if (expandMode) {
+                table.width(table.width() + tableWidthChange);
+                setTimeout(function () {
+                    columnHeader.width(newWidth);
+                }, 1);
+            }
+            else {
+                columnHeader.width(newWidth);
+                nextColumnHeader.width(nextColumnWidth);
+                this.updateResizableState(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth);
+            }
             var colIndex = columnHeader.index();
 
             if(this.cfg.scrollable) {
-                this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
-                this.theadClone.find(PrimeFaces.escapeClientId(nextColumnHeader.attr('id') + '_clone')).width(nextColumnWidth);
+                var cloneTable = this.theadClone.parent();
 
-                if(this.footerCols.length > 0) {
-                    var footerCol = this.footerCols.eq(colIndex),
-                    nextFooterCol = footerCol.next();
+                if (expandMode) {
+                    var $this = this;
 
-                    footerCol.width(newWidth);
-                    nextFooterCol.width(nextColumnWidth);
+                    //body
+                    cloneTable.width(cloneTable.width() + tableWidthChange);
+
+                    //footer
+                    this.footerTable.width(this.footerTable.width() + change);
+
+                    setTimeout(function () {
+                        $this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);   //body
+                        $this.footerCols.eq(colIndex).width(newWidth);                                                          //footer
+                    }, 1);
+                } else {
+                    this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
+                    this.theadClone.find(PrimeFaces.escapeClientId(nextColumnHeader.attr('id') + '_clone')).width(nextColumnWidth);
+
+                    if (this.footerCols.length > 0) {
+                        var footerCol = this.footerCols.eq(colIndex),
+                            nextFooterCol = footerCol.next();
+
+                        footerCol.width(newWidth);
+                        nextFooterCol.width(nextColumnWidth);
+                    }
                 }
             }
         }
