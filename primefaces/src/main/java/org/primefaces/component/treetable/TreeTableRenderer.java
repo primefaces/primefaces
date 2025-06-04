@@ -744,7 +744,7 @@ public class TreeTableRenderer extends DataRenderer {
                 writer.writeAttribute("class", sortIcon, null);
                 writer.endElement("span");
 
-                if (tt.isMultiSort()) {
+                if (component.isMultiSort()) {
                     writer.startElement("span", null);
                     writer.writeAttribute("class", TreeTable.SORTABLE_PRIORITY_CLASS, null);
                     writer.endElement("span");
