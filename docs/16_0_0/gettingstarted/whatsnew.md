@@ -10,4 +10,5 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
 
 * Spinner
     * Added `dir="rtl"` right to left support.
-    
+* TreeTable
+  * Added `resizeMode` attribute to support column resizing using the "expand" mode.
