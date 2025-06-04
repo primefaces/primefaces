@@ -627,15 +627,7 @@ public class TreeTableRenderer extends DataRenderer {
         ColumnMeta columnMeta = tt.getColumnMeta().get(column.getColumnKey());
 
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent headerFacet = column.getFacet("header");
-        String headerText = resolveColumnHeaderText(context, column);
         String ariaHeaderText = resolveColumnAriaHeaderText(context, column);
-        String title = column.getTitle();
-
-        String titlestyleClass = getStyleClassBuilder(context)
-                .add("ui-column-title")
-                .add(isColumnAriaHeaderTextDefined(context, column), "ui-helper-hidden-accessible")
-                .build();
 
         boolean columnVisible = column.isVisible();
         if (columnMeta != null && columnMeta.getVisible() != null) {
@@ -697,6 +689,39 @@ public class TreeTableRenderer extends DataRenderer {
             writer.writeAttribute("colspan", colspan, null);
         }
 
+        if (filterable) {
+            String filterPosition = column.getFilterPosition();
+
+            if ("bottom".equals(filterPosition)) {
+                encodeColumnHeaderContent(context, tt, column, sortMeta);
+                encodeFilter(context, tt, column);
+            }
+            else if ("top".equals(filterPosition)) {
+                encodeFilter(context, tt, column);
+                encodeColumnHeaderContent(context, tt, column, sortMeta);
+            }
+            else {
+                throw new FacesException(filterPosition + " is an invalid option for filterPosition, valid values are 'bottom' or 'top'.");
+            }
+        }
+        else {
+            encodeColumnHeaderContent(context, tt, column, sortMeta);
+        }
+
+        writer.endElement("th");
+    }
+
+    protected void encodeColumnHeaderContent(FacesContext context, TreeTable component, UIColumn column,
+                SortMeta sortMeta) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        UIComponent headerFacet = column.getFacet("header");
+        String headerText = resolveColumnHeaderText(context, column);
+        boolean sortable = component.isColumnSortable(context, column);
+        String title = column.getTitle();
+        String titlestyleClass = getStyleClassBuilder(context)
+                .add("ui-column-title")
+                .add(isColumnAriaHeaderTextDefined(context, column), "ui-helper-hidden-accessible")
+                .build();
         writer.startElement("span", null);
         writer.writeAttribute("class", titlestyleClass, null);
 
@@ -726,12 +751,6 @@ public class TreeTableRenderer extends DataRenderer {
                 }
             }
         }
-
-        if (filterable) {
-            encodeFilter(context, tt, column);
-        }
-
-        writer.endElement("th");
     }
 
     protected String resolveDefaultSortIcon(SortMeta sortMeta) {
