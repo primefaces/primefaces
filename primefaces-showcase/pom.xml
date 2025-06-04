@@ -18,7 +18,7 @@
 
     <properties>
         <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
-        <jetty.version>12.0.21</jetty.version>
+        <jetty.version>12.0.22</jetty.version>
         <faces.project.stage>Production</faces.project.stage>
         <sonar.skip>true</sonar.skip>
     </properties>
