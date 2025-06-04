@@ -1962,8 +1962,9 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
 
-        var tableWidthChange = change > 0 ? -change : change;
-        if(newWidth > this.getScrollbarWidth() && nextColumnWidth > this.getScrollbarWidth() || (expandMode && newWidth > this.getScrollbarWidth())) {
+        const tableWidthChange = change > 0 ? -change : change;
+        const scrollbarWidth = this.getScrollbarWidth();
+        if(newWidth > scrollbarWidth && nextColumnWidth > scrollbarWidth || (expandMode && newWidth > scrollbarWidth)) {
             if (expandMode) {
                 table.width(table.width() + tableWidthChange);
                 setTimeout(function () {
