@@ -66,12 +66,12 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
             if (stateHolderVal != null && stateHolderVal.length > 0) {
                 var indexes = this.stateHolder.val().split(',');
                 for (const index of indexes) {
-                    this.cfg.active.push(parseInt(index));
+                    this.cfg.active.push(index);
                 }
             }
         }
         else if (stateHolderVal != null) {
-            this.cfg.active = parseInt(this.stateHolder.val());
+            this.cfg.active = this.stateHolder.val();
         }
 
         this.headers.each(function() {
@@ -233,11 +233,13 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
 
         var shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
 
+        let key = header.attr('tabKey') ?? index;
+
         //update state
         if (this.cfg.multiple)
-            this.addToSelection(index);
+            this.addToSelection(key);
         else
-            this.cfg.active = index;
+            this.cfg.active = key;
 
         this.saveState();
 
@@ -260,8 +262,12 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
      */
     selectAll() {
         var $this = this;
-        this.panels.each(function(index) {
-            $this.select(index);
+        this.panels.each(function(index, element) {
+            let header = element.prev();
+            let key = header.attr('tabKey') ?? index;
+
+            $this.select(key);
+
             if (!$this.cfg.multiple) {
                 return false; // breaks
             }
@@ -281,14 +287,11 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
             return;
         }
 
-        if (this.cfg.controlled) {
-            this.fireTabCloseEvent(index);
-        }
-        else {
+        if (!this.cfg.controlled) {
             this.hide(index);
-
-            this.fireTabCloseEvent(index);
         }
+
+        this.fireTabCloseEvent(index);
     }
 
     /**
@@ -296,8 +299,11 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
      */
     unselectAll() {
         var $this = this;
-        this.panels.each(function(index) {
-            $this.unselect(index);
+        this.panels.each(function(index, element) {
+            let header = element.prev();
+            let key = header.attr('tabKey') ?? index;
+
+            $this.unselect(key);
         });
     }
 
@@ -347,7 +353,9 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
                 $this.cfg.onTabClose.call($this, panel);
         });
 
-        this.removeFromSelection(index);
+        let key = header.attr('tabKey') ?? index;
+
+        this.removeFromSelection(key);
         this.saveState();
     }
 

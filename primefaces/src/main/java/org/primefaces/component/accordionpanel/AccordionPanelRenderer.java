@@ -212,7 +212,14 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
     }
 
     protected boolean isActive(Tab tab, List<String> activeIndexes, int index) {
-        boolean active = activeIndexes.indexOf(Integer.toString(index)) != -1;
+        String key = tab.getKey();
+
+        // fallback to index-based approach
+        if (key == null) {
+            key = Integer.toString(index);
+        }
+
+        boolean active = activeIndexes.indexOf(key) != -1;
         return active && !tab.isDisabled();
     }
 
@@ -252,6 +259,9 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
         writer.writeAttribute(HTML.ARIA_CONTROLS, clientId, null);
         writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
         writer.writeAttribute("tabindex", tabindex, null);
+        if (tab.getKey() != null) {
+            writer.writeAttribute("tabKey", tab.getKey(), null);
+        }
         if (tab.getTitleStyle() != null) {
             writer.writeAttribute("style", tab.getTitleStyle(), null);
         }
