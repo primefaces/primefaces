@@ -37,6 +37,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: primefaces-showcase/.
+          dockerfile: primefaces-showcase/src/main/docker/Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/primefaces-showcase:${{ github.ref_name }}-latest
       - name: Deploy to DigitalOcean
