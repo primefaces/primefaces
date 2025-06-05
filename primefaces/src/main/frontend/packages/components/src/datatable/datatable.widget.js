@@ -2933,7 +2933,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     updateSelectionAria(row) {
         if (row) {
             var jq = row.children('td.ui-selection-column').find(":radio,:checkbox,div.ui-chkbox-box");
-            if (jq) {
+            // Only update aria-label if one doesn't already exist
+            if (jq && !jq.attr('aria-label')) {
                 var rowMeta = this.getRowMeta(row);
                 var checked = row.attr('aria-selected') === "true"
                 var ariaLabel = checked ? this.getAriaLabel('unselectLabel') : this.getAriaLabel('selectLabel');
