@@ -1,5 +1,8 @@
 FROM tomee:10.0.1-ubuntu-plus
 
+# Add custom server.xml with enabled gzip
+ADD tomee-server.xml /usr/local/tomee/conf/
+
 # Install unzip if not already available
 RUN apt-get update && apt-get install -y unzip && rm -rf /var/lib/apt/lists/*
 

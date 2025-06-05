@@ -2,7 +2,7 @@ services:
   webapp:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: src/main/docker/Dockerfile
     container_name: primefaces-showcase-webapp
     restart: always
     ports:
