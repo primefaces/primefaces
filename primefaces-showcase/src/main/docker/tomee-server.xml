@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Server port="8005" shutdown="SHUTDOWN">
+    <Listener className="org.apache.tomee.catalina.ServerListener"/>
+    <Listener className="org.apache.catalina.startup.VersionLoggerListener"/>
+    <Listener className="org.apache.catalina.core.AprLifecycleListener"/>
+    <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
+    <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"/>
+    <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
+
+    <GlobalNamingResources>
+        <Resource name="UserDatabase" auth="Container"
+                  type="org.apache.catalina.UserDatabase"
+                  description="User database that can be updated and saved"
+                  factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+                  pathname="conf/tomcat-users.xml"/>
+    </GlobalNamingResources>
+
+    <Service name="Catalina">
+
+        <Connector port="8080" protocol="HTTP/1.1"
+                   connectionTimeout="20000"
+                   redirectPort="8443"
+                   maxParameterCount="1000"
+                   xpoweredBy="false" server="Apache TomEE"
+                   compression="on"
+                   compressableMimeType="text/html,text/xml,text/plain,text/css,text/javascript,application/javascript"/>
+
+        <Engine name="Catalina" defaultHost="localhost">
+
+            <Realm className="org.apache.catalina.realm.LockOutRealm">
+                <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+                       resourceName="UserDatabase"/>
+            </Realm>
+
+            <Host name="localhost" appBase="webapps"
+                  unpackWARs="true" autoDeploy="true">
+            </Host>
+        </Engine>
+    </Service>
+</Server>
