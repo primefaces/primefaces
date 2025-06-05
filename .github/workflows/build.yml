@@ -6,6 +6,8 @@ on:
       - '**/**.md'
   workflow_dispatch:
   pull_request:
+    paths-ignore:
+      - '**/**.md'
 
 env:
     MAVEN_OPTS: >-
