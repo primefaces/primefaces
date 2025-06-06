@@ -756,7 +756,7 @@ When it comes to incell editing there are two possible options: _row_ and _cell_
 
 Row editing is the default mode. p:cellEditor is used to define the cell editor of a 
 particular column. By adding a _p:rowEditor_ component you get row controls to 
-start edit columns and commit or cancel changes for one row.
+start editing and commit or cancel changes for one row.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" editable="true" editMode="row">
@@ -779,9 +779,10 @@ start edit columns and commit or cancel changes for one row.
     </p:column>
 </p:dataTable>
 ```
-When pencil icon is clicked, row is displayed in editable mode meaning input facets are displayed
-and output facets are hidden. Clicking tick icon only saves that particular row and cancel icon
-reverts the changes, both options are implemented with ajax interaction.
+When the pencil icon is clicked, the row is displayed in editable mode, 
+meaning input facets are displayed and output facets are hidden. 
+Clicking the tick icon only saves that particular row and the 
+cancel icon reverts the changes. Both options are implemented with ajax interaction.
 
 ### Cell Editing
 
