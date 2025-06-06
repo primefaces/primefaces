@@ -13,7 +13,7 @@
  * read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  *
- * @prop {number[]} cfg.active List of tabs that are currently active (open). Each item is a 0-based index of a tab.
+ * @prop {number[]} cfg.active List of tabs that are currently active (open). Each item is either a key or a 0-based index of a tab.
  * @prop {boolean} cfg.cache `true` if activating a dynamic tab should not load the contents from server again and use
  * the cached contents; or `false` if the caching is disabled.
  * @prop {string} cfg.collapsedIcon The icon class name for the collapsed icon.
@@ -64,9 +64,9 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
             this.cfg.active = [];
 
             if (stateHolderVal != null && stateHolderVal.length > 0) {
-                var indexes = this.stateHolder.val().split(',');
-                for (const index of indexes) {
-                    this.cfg.active.push(index);
+                var activated = this.stateHolder.val().split(',');
+                for (const active of activated) {
+                    this.cfg.active.push(active);
                 }
             }
         }

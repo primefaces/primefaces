@@ -45,7 +45,7 @@ import jakarta.faces.context.ResponseWriter;
 
 public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
-    private static final String SB_RESOLVE_ACTIVE_INDEX = AccordionPanelRenderer.class.getName() + "#resolveActiveIndex";
+    private static final String SB_RESOLVE_ACTIVE_INDEX = AccordionPanelRenderer.class.getName() + "#resolveActive";
 
     @Override
     public void decode(FacesContext context, AccordionPanel component) {
@@ -56,15 +56,15 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
             if (isValueBlank(active)) {
                 // set an empty string instead of null - otherwise the stateHelper will re-evaluate to the default value
                 // see GitHub #3140
-                component.setActiveIndex("");
+                component.setActive("");
             }
             else {
-                component.setActiveIndex(active);
+                component.setActive(active);
             }
 
             if (component.isMultiViewState()) {
                 AccordionState as = component.getMultiViewState(true);
-                as.setActiveIndex(component.getActiveIndex());
+                as.setActive(component.getActive());
             }
         }
 
@@ -117,7 +117,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
         String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
 
-        String activeIndex = resolveActiveIndex(context, component);
+        String active = resolveActive(context, component);
 
         if (ComponentUtils.isRTL(context, component)) {
             styleClass = styleClass + " ui-accordion-rtl";
@@ -134,9 +134,9 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
         renderDynamicPassThruAttributes(context, component);
 
-        encodeTabs(context, component, activeIndex);
+        encodeTabs(context, component, active);
 
-        encodeStateHolder(context, component, activeIndex);
+        encodeStateHolder(context, component, active);
 
         writer.endElement("div");
     }
@@ -168,21 +168,21 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
         wb.finish();
     }
 
-    protected void encodeStateHolder(FacesContext context, AccordionPanel component, String activeIndex) throws IOException {
+    protected void encodeStateHolder(FacesContext context, AccordionPanel component, String active) throws IOException {
         String clientId = component.getClientId(context);
         String stateHolderId = clientId + "_active";
 
-        renderHiddenInput(context, stateHolderId, activeIndex, false);
+        renderHiddenInput(context, stateHolderId, active, false);
     }
 
-    protected void encodeTabs(FacesContext context, AccordionPanel component, String activeIndex) throws IOException {
+    protected void encodeTabs(FacesContext context, AccordionPanel component, String active) throws IOException {
         boolean dynamic = component.isDynamic();
         boolean repeating = component.isRepeating();
         boolean rtl = component.getDir().equalsIgnoreCase("rtl");
 
-        List<String> activeIndexes = activeIndex == null
+        List<String> activeList = active == null
                                      ? Collections.emptyList()
-                                     : Arrays.asList(activeIndex.split(","));
+                                     : Arrays.asList(active.split(","));
 
         if (repeating) {
             int dataCount = component.getRowCount();
@@ -190,8 +190,8 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
             for (int i = 0; i < dataCount; i++) {
                 component.setIndex(i);
-                boolean active = isActive(tab, activeIndexes, i);
-                encodeTab(context, component, tab, i, active, dynamic, repeating, rtl);
+                boolean activated = isActive(tab, activeList, i);
+                encodeTab(context, component, tab, i, activated, dynamic, repeating, rtl);
             }
 
             component.setIndex(-1);
@@ -203,15 +203,15 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
                 UIComponent child = component.getChildren().get(i);
                 if (child.isRendered() && child instanceof Tab) {
                     Tab tab = (Tab) child;
-                    boolean active = isActive(tab, activeIndexes, j);
-                    encodeTab(context, component, tab, j, active, dynamic, repeating, rtl);
+                    boolean activated = isActive(tab, activeList, j);
+                    encodeTab(context, component, tab, j, activated, dynamic, repeating, rtl);
                     j++;
                 }
             }
         }
     }
 
-    protected boolean isActive(Tab tab, List<String> activeIndexes, int index) {
+    protected boolean isActive(Tab tab, List<String> active, int index) {
         String key = tab.getKey();
 
         // fallback to index-based approach
@@ -219,8 +219,8 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
             key = Integer.toString(index);
         }
 
-        boolean active = activeIndexes.indexOf(key) != -1;
-        return active && !tab.isDisabled();
+        boolean activated = active.indexOf(key) != -1;
+        return activated && !tab.isDisabled();
     }
 
     protected void encodeTab(FacesContext context, AccordionPanel component, Tab tab, int index, boolean active, boolean dynamic,
@@ -373,10 +373,10 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
         writer.endElement("a");
     }
 
-    protected String resolveActiveIndex(FacesContext context, AccordionPanel accordionPanel) {
+    protected String resolveActive(FacesContext context, AccordionPanel accordionPanel) {
 
-        String activeIndex = accordionPanel.getActiveIndex();
-        if ("all".equals(activeIndex)) {
+        String active = accordionPanel.getActive();
+        if ("all".equals(active)) {
             int childCount = 0;
 
             String var = accordionPanel.getVar();
@@ -402,9 +402,9 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
                 sb.append(i);
             }
 
-            activeIndex = sb.toString();
+            active = sb.toString();
         }
 
-        return activeIndex;
+        return active;
     }
 }
