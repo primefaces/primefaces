@@ -377,29 +377,32 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
         String active = accordionPanel.getActive();
         if ("all".equals(active)) {
-            int childCount = 0;
+            StringBuilder sb = SharedStringBuilder.get(context, SB_RESOLVE_ACTIVE_INDEX);
 
-            String var = accordionPanel.getVar();
-            if (var == null) {
+            if (accordionPanel.getVar() == null) {
+                int childIndex = 0;
                 for (UIComponent child : accordionPanel.getChildren()) {
                     if (child.isRendered() && child instanceof Tab) {
-                        childCount++;
+                        if (childIndex > 0) {
+                            sb.append(",");
+                        }
+
+                        Tab tab = (Tab) child;
+                        sb.append(tab.getKey() != null ? tab.getKey() : Integer.toString(childIndex));
+
+                        childIndex++;
                     }
                 }
             }
             else {
-                childCount = accordionPanel.getRowCount();
-
-                // add some puffer for dynamic added tabs
-                childCount += childCount * 2;
-            }
-
-            StringBuilder sb = SharedStringBuilder.get(context, SB_RESOLVE_ACTIVE_INDEX);
-            for (int i = 0; i < childCount; i++) {
-                if (i > 0) {
-                    sb.append(",");
+                Tab tab = accordionPanel.getDynamicTab();
+                for (int i = 0; i < accordionPanel.getRowCount(); i++) {
+                    accordionPanel.setIndex(i);
+                    if (i > 0) {
+                        sb.append(",");
+                    }
+                    sb.append(tab.getKey() != null ? tab.getKey() : Integer.toString(i));
                 }
-                sb.append(i);
             }
 
             active = sb.toString();
