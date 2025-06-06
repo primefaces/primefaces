@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ImageCompare.DEFAULT_RENDERER, componentFamily = ImageCompare.COMPONENT_FAMILY)
 public class ImageCompareRenderer extends CoreRenderer<ImageCompare> {
 
     @Override

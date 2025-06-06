@@ -40,7 +40,9 @@ import jakarta.faces.component.UIForm;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.ActionEvent;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = CommandButton.DEFAULT_RENDERER, componentFamily = CommandButton.COMPONENT_FAMILY)
 public class CommandButtonRenderer extends CoreRenderer<CommandButton> {
 
     private static final Logger LOGGER = Logger.getLogger(CommandButtonRenderer.class.getName());

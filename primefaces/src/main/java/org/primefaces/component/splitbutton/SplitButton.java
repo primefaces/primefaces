@@ -34,11 +34,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AbortProcessingException;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = SplitButton.COMPONENT_TYPE, namespace = SplitButton.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
