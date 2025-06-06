@@ -535,9 +535,12 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
             throws IOException {
 
         // do not render table if empty message and there are no records
-        if (items == null || ((Collection<?>) items).isEmpty()) {
+        if (items == null
+                || (items instanceof Collection<?> && ((Collection<?>) items).isEmpty())
+                || (items instanceof Map<?, ?> && ((Map<?, ?>) items).isEmpty())) {
             return;
         }
+
         ResponseWriter writer = context.getResponseWriter();
         String var = component.getVar();
         boolean pojo = var != null;
