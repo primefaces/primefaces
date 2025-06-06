@@ -212,15 +212,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
     }
 
     protected boolean isActive(Tab tab, List<String> active, int index) {
-        String key = tab.getKey();
-
-        // fallback to index-based approach
-        if (key == null) {
-            key = Integer.toString(index);
-        }
-
-        boolean activated = active.indexOf(key) != -1;
-        return activated && !tab.isDisabled();
+        return (active.contains(tab.getKey()) || active.contains(Integer.toString(index))) && !tab.isDisabled();
     }
 
     protected void encodeTab(FacesContext context, AccordionPanel component, Tab tab, int index, boolean active, boolean dynamic,
