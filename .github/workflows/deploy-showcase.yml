@@ -7,7 +7,6 @@ on:
     branches:
       - master
       - 15.X
-      - 14.X
   workflow_dispatch:
 
 jobs:
