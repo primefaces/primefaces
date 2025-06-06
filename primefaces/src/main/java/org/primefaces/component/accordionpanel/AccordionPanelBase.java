@@ -42,6 +42,7 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
 
         widgetVar,
         active,
+        activeIndex,
         style,
         styleClass,
         onTabChange,
@@ -75,11 +76,19 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
     }
 
     public String getActive() {
-        return (String) getStateHelper().eval(PropertyKeys.active, "0");
+        return (String) getStateHelper().eval(PropertyKeys.active, "first");
     }
 
     public void setActive(String active) {
         getStateHelper().put(PropertyKeys.active, active);
+    }
+
+    public String getActiveIndex() {
+        return (String) getStateHelper().eval(PropertyKeys.activeIndex, "0");
+    }
+
+    public void setActiveIndex(String activeIndex) {
+        getStateHelper().put(PropertyKeys.active, activeIndex);
     }
 
     public String getStyle() {

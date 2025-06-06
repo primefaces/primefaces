@@ -374,8 +374,13 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
     }
 
     protected String resolveActive(FacesContext context, AccordionPanel accordionPanel) {
-
         String active = accordionPanel.getActive();
+
+        // Deprecated
+        if (active == null) {
+            accordionPanel.getActiveIndex();
+        }
+
         if ("all".equals(active)) {
             StringBuilder sb = SharedStringBuilder.get(context, SB_RESOLVE_ACTIVE_INDEX);
 
