@@ -46,10 +46,11 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
             data = data || e.data;
-            if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id) || (!$this.scope && !data.scopeEnter) || $this.scope[0] === closestForm[0]) {
+            if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id) || (!$this.scope && !data.scopeEnter) ||
+                ($this.scope && $this.scope[0] === closestForm[0])) {
                 var eventTarget = $(e.target);
                 // Do not proceed if target is a textarea, button, link, or TextEditor
-                if (eventTarget.is('textarea,button,input[type="submit"],a,.ql-editor')) {
+                 if ($this.scope && $this.scope.find(e.target).length === 0 || eventTarget.is('textarea,button,input[type="submit"],a,.ql-editor')) {
                     return true;
                 }
                 if (!$this.jqTarget.is(':disabled, .ui-state-disabled')) {
