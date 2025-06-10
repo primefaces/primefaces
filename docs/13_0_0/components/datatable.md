@@ -784,13 +784,17 @@ Additionally, rowExpandMode attribute defines if multiple rows can be expanded a
 or not, valid values are "single" and "multiple" (default).
 
 ## Editing
-Incell editing provides an easy way to display editable data. _p:cellEditor_ is used to define the cell
-editor of a particular column. There are two types of editing, `row` and `cell`. Row editing is the
-default mode and used by adding a _p:rowEditor_ component as row controls.
 
+When it comes to incell editing there are two possible options: _row_ and _cell_
+
+### Row Editing
+
+Row editing is the default mode. p:cellEditor is used to define the cell editor of a 
+particular column. By adding a _p:rowEditor_ component you get row controls to 
+start editing and commit or cancel changes for one row.
 
 ```xhtml
-<p:dataTable var="car" value="#{carBean.cars}" editable="true">
+<p:dataTable var="car" value="#{carBean.cars}" editable="true" editMode="row">
     <f:facet name="header">
         In-Cell Editing
     </f:facet>
@@ -810,12 +814,40 @@ default mode and used by adding a _p:rowEditor_ component as row controls.
     </p:column>
 </p:dataTable>
 ```
-When pencil icon is clicked, row is displayed in editable mode meaning input facets are displayed
-and output facets are hidden. Clicking tick icon only saves that particular row and cancel icon
-reverts the changes, both options are implemented with ajax interaction.
+When the pencil icon is clicked, the row is displayed in editable mode, 
+meaning input facets are displayed and output facets are hidden. 
+Clicking the tick icon only saves that particular row and the 
+cancel icon reverts the changes. Both options are implemented with ajax interaction.
 
-Another option for incell editing is cell editing, in this mode a cell switches to edit mode when it is
-clicked, losing focus triggers an ajax event to save the change value.
+### Cell Editing
+
+**WARNING**: With _cell_ edting mode _required_ attributes and bean validation annotations
+do not apply. See this [discussion](https://github.com/orgs/primefaces/discussions/1766)
+
+_p:cellEditor_ is again used to define the cell editor of a particular column. In contrast
+to _row_ editing there is no _p:rowEditor_ component and the _editMode_ attribute must
+be set to _cell_.
+
+```xhtml
+<p:dataTable var="car" value="#{carBean.cars}" editable="true" editMode="cell">
+    <f:facet name="header">
+        In-Cell Editing
+    </f:facet>
+    <p:column headerText="Model">
+        <p:cellEditor>
+            <f:facet name="output">
+                <h:outputText value="#{car.model}" />
+            </f:facet>
+            <f:facet name="input">
+                <h:inputText value="#{car.model}"/>
+            </f:facet>
+        </p:cellEditor>
+    </p:column>
+    //more columns with cell editors
+
+
+</p:dataTable>
+```
 
 ## Lazy Loading
 Lazy Loading is an approach to deal with huge datasets efficiently, regular AJAX based pagination
