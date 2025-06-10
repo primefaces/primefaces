@@ -262,11 +262,8 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
      */
     selectAll() {
         var $this = this;
-        this.panels.each(function(index, element) {
-            let header = element.prev();
-            let key = header.attr('tabKey') ?? index;
-
-            $this.select(key);
+        this.panels.each(function(index) {
+            $this.select(index);
 
             if (!$this.cfg.multiple) {
                 return false; // breaks
@@ -299,11 +296,8 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
      */
     unselectAll() {
         var $this = this;
-        this.panels.each(function(index, element) {
-            let header = element.prev();
-            let key = header.attr('tabKey') ?? index;
-
-            $this.unselect(key);
+        this.panels.each(function(index) {
+            $this.unselect(index);
         });
     }
 
