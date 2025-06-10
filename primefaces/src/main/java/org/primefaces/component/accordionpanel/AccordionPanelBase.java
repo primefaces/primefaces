@@ -76,7 +76,7 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
     }
 
     public String getActive() {
-        return (String) getStateHelper().eval(PropertyKeys.active, "first");
+        return (String) getStateHelper().eval(PropertyKeys.active, null);
     }
 
     public void setActive(String active) {

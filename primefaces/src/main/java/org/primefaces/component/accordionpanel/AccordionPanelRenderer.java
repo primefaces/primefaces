@@ -370,7 +370,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
         // Deprecated
         if (active == null) {
-            accordionPanel.getActiveIndex();
+            active = accordionPanel.getActiveIndex();
         }
 
         if ("all".equals(active)) {
