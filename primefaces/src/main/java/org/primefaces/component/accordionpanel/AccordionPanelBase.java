@@ -88,7 +88,7 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
     }
 
     public void setActiveIndex(String activeIndex) {
-        getStateHelper().put(PropertyKeys.active, activeIndex);
+        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
     }
 
     public String getStyle() {
