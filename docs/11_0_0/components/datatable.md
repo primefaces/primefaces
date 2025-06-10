@@ -790,7 +790,7 @@ cancel icon reverts the changes. Both options are implemented with ajax interact
 
 ### Cell Editing
 
-**WARNING**: With _cell_ edting mode _required_ attributes and bean validations annotations
+**WARNING**: With _cell_ edting mode _required_ attributes and bean validation annotations
 do not apply. See this [discussion](https://github.com/orgs/primefaces/discussions/1766)
 
 _p:cellEditor_ is again used to define the cell editor of a particular column. In contrast
