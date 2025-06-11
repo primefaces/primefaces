@@ -93,7 +93,7 @@ public abstract class FileUpload extends AbstractInputComponent {
                             runnable,
                             200,
                             ConfigProvider.getInstance().getTimeoutFileUpload(),
-                            PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
+                            PrimeExpectedConditions.script("return (" + getWidgetByIdScript() + ".files?.length ?? 0) === 0;"));
 
                     guarded.run();
                 }
