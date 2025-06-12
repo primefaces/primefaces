@@ -38662,7 +38662,7 @@
 	            this.redraw();
 	          }
 	          var baseGroupIndex = this._getGroupIndex(item.data.group);
-	          var itemsToDrag = this.options.itemsAlwaysDraggable.item && !item.selected ? [item.id] : this.getSelection();
+	          var itemsToDrag = [item.id];
 	          this.touchParams.itemProps = _mapInstanceProperty(itemsToDrag).call(itemsToDrag, function (id) {
 	            var item = me.items[id];
 	            var groupIndex = me._getGroupIndex(item.data.group);
