@@ -233,7 +233,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
 
         var shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
 
-        let key = header.attr('tabKey') ?? index;
+        let key = header.attr('data-key') ?? index;
 
         //update state
         if (this.cfg.multiple)
@@ -347,7 +347,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
                 $this.cfg.onTabClose.call($this, panel);
         });
 
-        let key = header.attr('tabKey') ?? index;
+        let key = header.attr('data-key') ?? index;
 
         this.removeFromSelection(key);
         this.saveState();

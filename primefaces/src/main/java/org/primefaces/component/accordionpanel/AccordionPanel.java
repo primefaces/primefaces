@@ -161,22 +161,22 @@ public class AccordionPanel extends AccordionPanelBase {
         ELContext elContext = getFacesContext().getELContext();
         ValueExpression activeExpr = ValueExpressionAnalyzer.getExpression(elContext,
                 getValueExpression(PropertyKeys.active.toString()), true);
-        if (activeExpr != null && !activeExpr.isReadOnly(elContext)) {
-            activeExpr.setValue(elContext, getActive());
-            resetActive();
+
+        // Fallback to deprecated activeIndex
+        if (activeExpr == null) {
+            activeExpr = ValueExpressionAnalyzer.getExpression(elContext,
+                    getValueExpression(PropertyKeys.activeIndex.toString()), true);
         }
 
-        // Deprecated
-        ValueExpression activeIndexExpr = ValueExpressionAnalyzer.getExpression(elContext,
-                getValueExpression(PropertyKeys.activeIndex.toString()), true);
-        if (activeIndexExpr != null && !activeIndexExpr.isReadOnly(elContext)) {
-            activeIndexExpr.setValue(elContext, getActive());
+        if (activeExpr != null && !activeExpr.isReadOnly(elContext)) {
+            activeExpr.setValue(elContext, getActive());
             resetActive();
         }
     }
 
     protected void resetActive() {
         getStateHelper().remove(PropertyKeys.active);
+        getStateHelper().remove(PropertyKeys.activeIndex);
     }
 
     @Override

@@ -64,7 +64,12 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
             if (component.isMultiViewState()) {
                 AccordionState as = component.getMultiViewState(true);
-                as.setActive(component.getActive());
+                String activeState = component.getActive();
+                if (activeState == null) {
+                    activeState = component.getActiveIndex();
+                }
+
+                as.setActive(activeState);
             }
         }
 
@@ -252,7 +257,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
         writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
         writer.writeAttribute("tabindex", tabindex, null);
         if (tab.getKey() != null) {
-            writer.writeAttribute("tabKey", tab.getKey(), null);
+            writer.writeAttribute("data-key", tab.getKey(), null);
         }
         if (tab.getTitleStyle() != null) {
             writer.writeAttribute("style", tab.getTitleStyle(), null);
