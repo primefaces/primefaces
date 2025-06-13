@@ -43,7 +43,9 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Chips.DEFAULT_RENDERER, componentFamily = Chips.COMPONENT_FAMILY)
 public class ChipsRenderer extends InputRenderer<Chips> {
 
     @Override

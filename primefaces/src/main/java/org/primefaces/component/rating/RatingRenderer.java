@@ -33,7 +33,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Rating.DEFAULT_RENDERER, componentFamily = Rating.COMPONENT_FAMILY)
 public class RatingRenderer extends InputRenderer<Rating> {
 
     @Override

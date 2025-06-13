@@ -43,10 +43,12 @@ import jakarta.el.ELException;
 import jakarta.faces.FacesException;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 import org.json.JSONObject;
 
+@FacesComponent(value = Captcha.COMPONENT_TYPE, namespace = Captcha.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")

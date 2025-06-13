@@ -34,7 +34,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Checkbox.DEFAULT_RENDERER, componentFamily = Checkbox.COMPONENT_FAMILY)
 public class CheckboxRenderer extends InputRenderer<Checkbox> {
 
     private static final String SB_BUILD_EVENT = RadioButtonRenderer.class.getName() + "#buildEvent";

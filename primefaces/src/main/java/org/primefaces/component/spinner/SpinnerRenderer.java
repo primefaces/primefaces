@@ -34,7 +34,9 @@ import java.math.BigInteger;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Spinner.DEFAULT_RENDERER, componentFamily = Spinner.COMPONENT_FAMILY)
 public class SpinnerRenderer extends InputRenderer<Spinner> {
 
     @Override
