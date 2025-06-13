@@ -17,7 +17,7 @@
     <name>PrimeFaces Showcase</name>
 
     <properties>
-        <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
+        <hibernate-validator.version>9.0.1.Final</hibernate-validator.version>
         <jetty.version>12.0.22</jetty.version>
         <faces.project.stage>Production</faces.project.stage>
         <sonar.skip>true</sonar.skip>
