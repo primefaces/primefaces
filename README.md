@@ -74,14 +74,14 @@ Version | Status | JSF version | Java version | Documentation
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>15.0.4</version>
+      <version>15.0.5</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>15.0.4</version>
+      <version>15.0.5</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
@@ -159,9 +159,9 @@ Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=15.0.4` to update all modules versions
+- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=15.0.5` to update all modules versions
 - Commit and push the changes to GitHub
-- In GitHub create a new Release titled `15.0.4` to tag this release
+- In GitHub create a new Release titled `15.0.5` to tag this release
 - Run `mvn clean deploy -Prelease` to push to Maven Central
 - Rename Milestone in GitHub Issues and close it
 - Create a new Milestone
