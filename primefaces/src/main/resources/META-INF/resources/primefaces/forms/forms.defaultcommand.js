@@ -50,7 +50,7 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
                 ($this.scope && $this.scope[0] === closestForm[0])) {
                 var eventTarget = $(e.target);
                 // Do not proceed if target is a textarea, button, link, or TextEditor
-                 if ($this.scope && $this.scope.find(e.target).length === 0 || eventTarget.is('textarea,button,input[type="submit"],a,.ql-editor')) {
+                if (($this.scope && $this.scope.find(e.target).length === 0) || eventTarget.is('textarea,button,input[type="submit"],a')) {
                     return true;
                 }
                 if (!$this.jqTarget.is(':disabled, .ui-state-disabled')) {
