@@ -594,7 +594,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
             $this.checkMatchedItem = true;
         }).on('change.autoComplete', function(e) {
             var value = e.currentTarget.value,
-                valid = $this.isValid(value, true);
+                valid = $this.isValid(value, false);
 
             if ($this.cfg.forceSelection && $this.currentInputValue === '' && !valid) {
                 $this.preventInputChangeEvent = true;
