@@ -17,7 +17,6 @@
     <name>PrimeFaces Showcase</name>
 
     <properties>
-        <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
         <jetty.version>12.0.22</jetty.version>
         <faces.project.stage>Production</faces.project.stage>
         <sonar.skip>true</sonar.skip>
@@ -351,6 +350,7 @@
             </activation>
             <properties>
                 <resteasy.version>6.2.11.Final</resteasy.version>
+				<hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
                 <weld.version>5.1.5.Final</weld.version>
                 <jakarta.version>10.0.0</jakarta.version>
             </properties>
@@ -363,6 +363,7 @@
             </activation>
             <properties>
                 <resteasy.version>7.0.0.Beta1</resteasy.version>
+				<hibernate-validator.version>9.0.1.Final</hibernate-validator.version>
                 <jakarta.version>11.0.0</jakarta.version>
                 <weld.version>6.0.3.Final</weld.version>
             </properties>
