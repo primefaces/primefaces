@@ -5575,10 +5575,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Computes the `colspan value for the table rows.
      * @private
+     * @param {boolean} visibleOnly If true, only visible columns are considered.
      * @return {number} The computed `colspan` value.
      */
-    calculateColspan: function() {
-        var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column):visible'),
+    calculateColspan: function(visibleOnly = false) {
+        var headerSelector = '> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column)';
+        if (visibleOnly) {
+            headerSelector += ':visible';
+        }
+        var visibleHeaderColumns = this.thead.find(headerSelector),
             colSpanValue = 0;
 
         for(var i = 0; i < visibleHeaderColumns.length; i++) {
@@ -5652,7 +5657,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     updateExpandedRowsColspan: function() {
-        var colspanValue = this.calculateColspan(),
+        var colspanValue = this.calculateColspan(true),
             $this = this;
         this.getExpandedRows().each(function() {
             $this.updateColspan($(this).next('.ui-expanded-row-content'), colspanValue);
