@@ -24,6 +24,7 @@
 package org.primefaces.component.dataview;
 
 import jakarta.faces.component.FacesComponent;
+
 @FacesComponent(value = DataViewListItem.COMPONENT_TYPE, namespace = DataViewListItem.COMPONENT_FAMILY)
 public class DataViewListItem extends DataViewListItemBase {
 
