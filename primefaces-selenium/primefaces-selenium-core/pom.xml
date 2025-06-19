@@ -55,7 +55,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.32.0</version>
+            <version>4.33.0</version>
         </dependency>
 
         <!-- org.seleniumhq.selenium and com.googlecode.owasp-java-html-sanitizer need guava; resolved version-conflicts -->
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.17.5</version>
+            <version>1.17.6</version>
         </dependency>
     </dependencies>
 </project>

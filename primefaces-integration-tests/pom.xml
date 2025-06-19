@@ -31,7 +31,7 @@
 
         <!-- dependency versions -->
         <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
-        <jetty.version>12.0.21</jetty.version>
+        <jetty.version>12.0.22</jetty.version>
         <lombok.version>1.18.38</lombok.version>
     </properties>
 
@@ -329,8 +329,8 @@
                 <jdk>[17,)</jdk>
             </activation>
             <properties>
-                <resteasy.version>7.0.0.Alpha4</resteasy.version>
-                <jakarta.version>11.0.0-RC1</jakarta.version>
+                <resteasy.version>7.0.0.Beta1</resteasy.version>
+                <jakarta.version>11.0.0</jakarta.version>
                 <weld.version>6.0.3.Final</weld.version>
             </properties>
         </profile>

@@ -145,9 +145,10 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
         if (customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
             writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "" + component.isMetaKeySelection(), null);
             writer.startElement("tbody", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, component, selectItem, values, submittedValues, converter, customContent, showCheckbox);
@@ -158,7 +159,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
             writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "" + component.isMetaKeySelection(), null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);

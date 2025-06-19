@@ -2933,7 +2933,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     updateSelectionAria(row) {
         if (row) {
             var jq = row.children('td.ui-selection-column').find(":radio,:checkbox,div.ui-chkbox-box");
-            if (jq) {
+            // Only update aria-label if one doesn't already exist
+            if (jq && !jq.attr('aria-label')) {
                 var rowMeta = this.getRowMeta(row);
                 var checked = row.attr('aria-selected') === "true"
                 var ariaLabel = checked ? this.getAriaLabel('unselectLabel') : this.getAriaLabel('selectLabel');
@@ -5335,6 +5336,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         }).get();
 
         this.writeRowExpansions();
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.expansion-' + this.id, null, function(e) {
+            $this.updateExpandedRowsColspan();
+        });
     }
 
     /**
@@ -5574,7 +5579,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @return {number} The computed `colspan` value.
      */
     calculateColspan() {
-        var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column)'),
+        var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column):visible'),
             colSpanValue = 0;
 
         for(var i = 0; i < visibleHeaderColumns.length; i++) {

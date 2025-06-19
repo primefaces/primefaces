@@ -56,6 +56,7 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 required | false | Boolean | Validation constraint for selection.
 requiredMessage | null | String | Message for required selection validation.
 resizableColumns | false | Boolean | Defines if columns can be resized or not.
+resizeMode | null | String | Defines the resize behavior, valid values are "fit" (default) and expand.
 rows | 0 | Integer | Number of rows to display per page. Default value is 0 meaning to display all data available.
 rowsPerPageTemplate | null | String | Template of the rowsPerPage dropdown.
 rowStyleClass | null | String | Style class for each row.
