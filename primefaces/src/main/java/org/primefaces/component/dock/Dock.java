@@ -25,6 +25,7 @@ package org.primefaces.component.dock;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
+
 @FacesComponent(value = Dock.COMPONENT_TYPE, namespace = Dock.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "dock/dock.css")
