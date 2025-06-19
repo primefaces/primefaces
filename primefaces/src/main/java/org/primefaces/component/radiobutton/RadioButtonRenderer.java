@@ -33,7 +33,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = RadioButton.DEFAULT_RENDERER, componentFamily = RadioButton.COMPONENT_FAMILY)
 public class RadioButtonRenderer extends InputRenderer<RadioButton> {
 
     private static final String SB_BUILD_EVENT = RadioButtonRenderer.class.getName() + "#buildEvent";

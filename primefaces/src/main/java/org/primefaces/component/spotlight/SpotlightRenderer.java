@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Spotlight.DEFAULT_RENDERER, componentFamily = Spotlight.COMPONENT_FAMILY)
 public class SpotlightRenderer extends CoreRenderer<Spotlight> {
 
     @Override

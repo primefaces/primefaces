@@ -24,7 +24,9 @@
 package org.primefaces.component.card;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Card.COMPONENT_TYPE, namespace = Card.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Card extends CardBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Card";

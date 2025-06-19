@@ -35,7 +35,9 @@ import java.io.IOException;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ContextMenu.DEFAULT_RENDERER, componentFamily = ContextMenu.COMPONENT_FAMILY)
 public class ContextMenuRenderer extends TieredMenuRenderer {
 
     @Override

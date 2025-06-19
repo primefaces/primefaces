@@ -28,8 +28,10 @@ import org.primefaces.PrimeFaces;
 import jakarta.el.MethodExpression;
 import jakarta.el.ValueExpression;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
+@FacesComponent(value = Poll.COMPONENT_TYPE, namespace = Poll.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

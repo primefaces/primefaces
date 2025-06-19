@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.summaryrow;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = SummaryRow.COMPONENT_TYPE, namespace = SummaryRow.COMPONENT_FAMILY)
 public class SummaryRow extends SummaryRowBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SummaryRow";

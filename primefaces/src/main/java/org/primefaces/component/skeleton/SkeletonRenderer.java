@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Skeleton.DEFAULT_RENDERER, componentFamily = Skeleton.COMPONENT_FAMILY)
 public class SkeletonRenderer extends CoreRenderer<Skeleton> {
 
     @Override
