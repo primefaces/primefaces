@@ -47,9 +47,8 @@ PrimeFaces.widget.DefaultCommand = class DefaultCommand extends PrimeFaces.widge
             }
             data = data || e.data;
             if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id) || (!$this.scope && !data.scopeEnter) || $this.scope[0] === closestForm[0]) {
-                var eventTarget = $(e.target);
-                // Do not proceed if target is a textarea, button, link, or TextEditor
-                if (eventTarget.is('textarea,button,input[type="submit"],a,.ql-editor')) {
+                // #7028/#13927 Do not proceed if target is a textarea, button, link, or TextEditor
+                if (PrimeFaces.utils.isEnterKeyBlocked(e)) {
                     return true;
                 }
                 if (!$this.jqTarget.is(':disabled, .ui-state-disabled')) {
