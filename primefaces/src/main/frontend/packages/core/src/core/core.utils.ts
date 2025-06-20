@@ -728,6 +728,21 @@ export class Utils {
         }
         return false;
     }
+
+    /**
+     * Checks if the ENTER key should be allowed for the given event target. This is useful for determining
+     * whether to block or allow ENTER key events based on the type of element that received the event.
+     * @param e The key event that occurred.
+     * @returns `true` if ENTER key should be allowed for the target element, `false` otherwise.
+     */
+    isEnterKeyBlocked(e: JQuery.TriggeredEvent): boolean {
+        // #7028/#13927 Do not proceed if target is a textarea, button, link, or TextEditor
+        const eventTarget = $(e.target);
+        if (eventTarget.is('textarea,button,input[type="submit"],a,.ql-editor')) {
+            return true;
+        }
+        return false;
+    }
     
     /**
      * Is this CMD on MacOs or CTRL key on other OSes. 
