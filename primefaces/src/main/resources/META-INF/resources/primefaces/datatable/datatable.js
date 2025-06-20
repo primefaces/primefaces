@@ -3606,9 +3606,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         .on("keydown" + namespace, $this.jqId + " tr.ui-row-editing", function(e) {
                             switch (e.key) {
                                 case 'Enter':
-                                    var target = $(e.target);
-                                    // GitHub #7028
-                                    if(target.is("textarea")) {
+                                    // #7028/#13927 Do not proceed if target is a textarea, button, link, or TextEditor
+                                    if(PrimeFaces.utils.isEnterKeyBlocked(e)) {
                                          return true;
                                     }
                                     $(this).closest("tr").find(".ui-row-editor-check").trigger("click");
@@ -3897,8 +3896,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         input = $(this);
 
                         if(key === 'Enter') {
-                            // GitHub #7028
-                            if(input.is("textarea")) {
+                            // #7028/#13927 Do not proceed if target is a textarea, button, link, or TextEditor
+                            if(PrimeFaces.utils.isEnterKeyBlocked(e)) {
                                 return true;
                             }
                             $this.saveCell(cell);
