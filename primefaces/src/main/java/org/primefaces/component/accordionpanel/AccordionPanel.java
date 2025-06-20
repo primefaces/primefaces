@@ -159,15 +159,23 @@ public class AccordionPanel extends AccordionPanelBase {
         super.processUpdates(context);
 
         ELContext elContext = getFacesContext().getELContext();
-        ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
-                getValueExpression(PropertyKeys.activeIndex.toString()), true);
-        if (expr != null && !expr.isReadOnly(elContext)) {
-            expr.setValue(elContext, getActiveIndex());
-            resetActiveIndex();
+        ValueExpression activeExpr = ValueExpressionAnalyzer.getExpression(elContext,
+                getValueExpression(PropertyKeys.active.toString()), true);
+
+        // Fallback to deprecated activeIndex
+        if (activeExpr == null) {
+            activeExpr = ValueExpressionAnalyzer.getExpression(elContext,
+                    getValueExpression(PropertyKeys.activeIndex.toString()), true);
+        }
+
+        if (activeExpr != null && !activeExpr.isReadOnly(elContext)) {
+            activeExpr.setValue(elContext, getActive());
+            resetActive();
         }
     }
 
-    protected void resetActiveIndex() {
+    protected void resetActive() {
+        getStateHelper().remove(PropertyKeys.active);
         getStateHelper().remove(PropertyKeys.activeIndex);
     }
 
@@ -188,7 +196,7 @@ public class AccordionPanel extends AccordionPanelBase {
     public void restoreMultiViewState() {
         AccordionState as = getMultiViewState(false);
         if (as != null) {
-            setActiveIndex(as.getActiveIndex());
+            setActive(as.getActive());
         }
     }
 
@@ -203,6 +211,6 @@ public class AccordionPanel extends AccordionPanelBase {
 
     @Override
     public void resetMultiViewState() {
-        setActiveIndex(null);
+        setActive(null);
     }
 }

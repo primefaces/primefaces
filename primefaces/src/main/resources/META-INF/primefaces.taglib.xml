@@ -735,9 +735,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Index of the active tab or a comma separated string of indexes when multiple mode is on. Alternative: all. Default: 0.]]>
+                <![CDATA[(DEPRECATED, use active instead!) Index of the active tab or a comma separated string of indexes when multiple mode is on. Alternative: all. Default: 0.]]>
             </description>
             <name>activeIndex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Index or key of the active tab or a comma separated string of indexes/keys when multiple mode is on. Alternative: all. Default: 0.]]>
+            </description>
+            <name>active</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -27923,6 +27931,14 @@
                 <![CDATA[Title attribute for menu element on tab header.]]>
             </description>
             <name>menuTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Unique key to identify this tab]]>
+            </description>
+            <name>key</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
