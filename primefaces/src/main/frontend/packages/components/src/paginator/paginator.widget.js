@@ -101,6 +101,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
      */
     configureAria(){
         this.ariaPageLabel = this.getAriaLabel('pageLabel');
+        this.navigator.attr('aria-label', this.getAriaLabel('navigation'));
         this.rppSelect.attr('aria-label', this.getAriaLabel('rowsPerPageLabel'));
         this.jtpSelect.attr('aria-label', this.getAriaLabel('jumpToPageDropdownLabel'));
         this.jtpInput.attr('aria-label', this.getAriaLabel('jumpToPageInputLabel'));
