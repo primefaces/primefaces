@@ -43,6 +43,7 @@ public abstract class CascadeSelectBase extends UISelectOne implements Widget, I
         appendTo,
         placeholder,
         disabled,
+        readonly,
         tabindex,
         style,
         styleClass
@@ -119,5 +120,13 @@ public abstract class CascadeSelectBase extends UISelectOne implements Widget, I
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public boolean isReadonly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+    }
+
+    public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
     }
 }
