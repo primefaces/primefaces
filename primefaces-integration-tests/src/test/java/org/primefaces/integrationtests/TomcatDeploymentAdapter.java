@@ -51,7 +51,7 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
         tomcat = new Tomcat();
         tomcat.setBaseDir(tempDir.toString());
         tomcat.setPort(createRandomPort());
-
+        tomcat.getConnector().setMaxPartCount(10);
         tomcat.getHost().setAppBase(".");
 
         Context context = tomcat.addWebapp("", new File("target/primefaces-integration-tests/").getAbsolutePath());
