@@ -213,6 +213,9 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
             sb.append(" ui-state-disabled");
         }
 
+        if (isReadOnly(component)) {
+            sb.append(" ui-state-readonly");
+        }
 
         if (LangUtils.isNotBlank(styleClassProperty)) {
             String styleClass = Objects.toString(component.getAttributes().get(styleClassProperty), Constants.EMPTY_STRING);

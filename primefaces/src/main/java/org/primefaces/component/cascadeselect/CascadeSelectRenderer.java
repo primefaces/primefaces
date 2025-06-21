@@ -69,6 +69,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         String styleClass = getStyleClassBuilder(context)
                 .add(CascadeSelect.STYLE_CLASS)
                 .add(component.isDisabled(), "ui-state-disabled")
+                .add(component.isReadonly(), "ui-state-readonly")
                 .add(component.getStyleClass())
                 .build();
 

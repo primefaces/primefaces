@@ -26,7 +26,8 @@ binding | null | Object | An el expression that maps to a server side UIComponen
 widgetVar | null | String | Name of the client side widget.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
-disabled | false | Boolean | If true, disables the component.
+disabled | false | Boolean | Disables or enables the component.
+readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
 effect | null | String | Effect to use when showing a group of items.
 showHeaders | false | Boolean | Displays label of a group at header section of the children items.
 header | null | String | Label of the root group items.

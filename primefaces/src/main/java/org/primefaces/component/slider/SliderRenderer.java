@@ -28,6 +28,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
@@ -53,13 +54,18 @@ public class SliderRenderer extends CoreRenderer<Slider> {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
 
+        String styleClass = getStyleClassBuilder(context)
+                .add(component.getStyleClass())
+                .add(component.isReadonly(), "ui-state-readonly")
+                .build();
+
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         if (component.getStyle() != null) {
             writer.writeAttribute("style", component.getStyle(), null);
         }
-        if (component.getStyleClass() != null) {
-            writer.writeAttribute("class", component.getStyleClass(), null);
+        if (LangUtils.isNotEmpty(styleClass)) {
+            writer.writeAttribute("class", styleClass, null);
         }
 
         writer.endElement("div");

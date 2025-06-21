@@ -32,7 +32,8 @@ styleClass | null | String | Style class of the container element
 animate | true | Boolean | Boolean value to enable/disable the animated move when background of slider is clicked
 type | horizontal | String | Sets the type of the slider, "horizontal" or "vertical".
 step | 1 | Double | Fixed pixel increments that the slider move in
-disabled | false | Boolean | Disables or enables the slider.
+disabled | false | Boolean | Disables or enables the component.
+readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
 onSlideStart | null | String | Client side callback to execute when slide begins.
 onSlide | null | String | Client side callback to execute during sliding.
 onSlideEnd | null | String | Client side callback to execute when slide ends.
