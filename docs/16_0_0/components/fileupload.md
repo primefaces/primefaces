@@ -361,6 +361,11 @@ folder.
 **Note** that uploadDirectory is used internally, you always need to implement the logic to save the file
 contents yourself in your backing bean.
 
+## Configuration for Tomcat since June 2025 (>= 9.0.106, >= 10.1.42, >= 11.0.8)
+> maxPartCount limits the total number of parts in a multi-part request and maxPartHeaderSize limits the size of the headers provided with each part.
+
+See https://tomcat.apache.org/tomcat-11.0-doc/config/http.html#Common_Attributes for additional information.
+
 ## Chunking and Resume
 FileUpload supports chunked upload using the `maxChunkSize` attribute but only in advanced mode!
 

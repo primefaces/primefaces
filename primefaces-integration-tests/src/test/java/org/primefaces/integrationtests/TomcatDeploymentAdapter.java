@@ -51,7 +51,8 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
         tomcat = new Tomcat();
         tomcat.setBaseDir(tempDir.toString());
         tomcat.setPort(createRandomPort());
-
+        tomcat.getConnector().setMaxPartCount(20); // increase multipart limit
+        tomcat.getConnector().setMaxPartHeaderSize(5 * 1024); // increase multipart header size limit
         tomcat.getHost().setAppBase(".");
 
         Context context = tomcat.addWebapp("", new File("target/primefaces-integration-tests/").getAbsolutePath());
