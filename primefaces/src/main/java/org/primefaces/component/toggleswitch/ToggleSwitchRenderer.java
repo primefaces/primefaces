@@ -72,6 +72,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
                 .add(toggleSwitch.getStyleClass())
                 .add(checked, ToggleSwitch.CHECKED_CLASS)
                 .add(disabled, "ui-state-disabled")
+                .add(toggleSwitch.isReadonly(), "ui-state-readonly")
                 .add(toggleSwitch.getOffIcon() != null, "ui-toggleswitch-dual-icon")
                 .build();
 

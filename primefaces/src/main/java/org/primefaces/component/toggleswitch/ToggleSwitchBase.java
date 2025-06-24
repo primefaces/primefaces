@@ -38,18 +38,19 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
 
     public enum PropertyKeys {
 
-        widgetVar,
-        label,
         ariaLabel,
         disabled,
+        label,
+        offIcon,
+        onblur,
         onchange,
+        onfocus,
+        onIcon,
+        readonly,
         style,
         styleClass,
         tabindex,
-        onfocus,
-        onblur,
-        onIcon,
-        offIcon;
+        widgetVar,
     }
 
     public ToggleSwitchBase() {
@@ -155,6 +156,15 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
 
     public void setOffIcon(String offIcon) {
         getStateHelper().put(PropertyKeys.offIcon, offIcon);
+    }
+
+    public boolean isReadonly() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+
+    }
+
+    public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
     }
 
     @Override

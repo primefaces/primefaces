@@ -73,10 +73,18 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         boolean disabled = checkbox.isDisabled();
         String title = checkbox.getTitle();
 
+        String clientId = checkbox.getClientId(context);
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, component));
+        boolean disabled = checkbox.isDisabled();
+        String title = checkbox.getTitle();
+
         String style = checkbox.getStyle();
-        String styleClass = checkbox.getStyleClass();
-        styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
-        styleClass = "ui-selectbooleancheckbox " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add("ui-selectbooleancheckbox")
+                .add(HTML.CHECKBOX_CLASS)
+                .add(checkbox.getStyleClass())
+                .add(checkbox.isReadonly(), "ui-state-readonly")
+                .build();
 
         writer.startElement("div", checkbox);
         writer.writeAttribute("id", clientId, "id");
