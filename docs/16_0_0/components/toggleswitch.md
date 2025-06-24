@@ -35,7 +35,8 @@ converterMessage | null | String | Message to be displayed when conversion fails
 validatorMessage | null | String | Message to be displayed when validation fields.
 widgetVar | null | String | Name of the client side widget.
 label | null | String | User presentable name.
-disabled | null | String | Disables or enables the switch.
+disabled | false | Boolean | Disables or enables the component.
+readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
 onchange | false | Boolean | Client side callback to execute on value change event.
 style | null | String | Inline style of the main container.
 styleClass | null | String | Style class of the main container.
