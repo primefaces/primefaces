@@ -1608,7 +1608,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -3325,7 +3325,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -4801,7 +4801,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -5438,7 +5438,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -13540,7 +13540,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -14079,7 +14079,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -14738,7 +14738,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -15246,7 +15246,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -15817,7 +15817,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -18548,11 +18548,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Disables the component.]]>
+                <![CDATA[Disables or enables the component.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+        <description>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -20389,7 +20397,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -23193,9 +23201,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables or enables the component.]]>
             </description>
             <name>disabled</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+        <description>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
             <required>false</required>
             <type>boolean</type>
         </attribute>
@@ -24593,9 +24609,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables or enables the component.]]>
             </description>
             <name>disabled</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+        <description>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
             <required>false</required>
             <type>boolean</type>
         </attribute>
@@ -24851,7 +24875,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -25334,7 +25358,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -25985,11 +26009,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Disables or enables the slider.]]>
+                <![CDATA[Disables or enables the component.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+        <description>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -26534,7 +26566,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -29470,7 +29502,15 @@
             </description>
             <name>disabled</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+        <description>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -31022,7 +31062,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -31937,7 +31977,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
             </description>
             <name>readonly</name>
             <required>false</required>
@@ -33926,11 +33966,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Disables the component.]]>
+                <![CDATA[Disables or enables the component.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+        <description>
+                <![CDATA[Flag indicating that this component will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>
