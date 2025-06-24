@@ -72,12 +72,6 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, checkbox));
         boolean disabled = checkbox.isDisabled();
         String title = checkbox.getTitle();
-
-        String clientId = checkbox.getClientId(context);
-        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, checkbox));
-        boolean disabled = checkbox.isDisabled();
-        String title = checkbox.getTitle();
-
         String style = checkbox.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add("ui-selectbooleancheckbox")
