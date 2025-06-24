@@ -41,6 +41,7 @@ public abstract class MultiSelectListboxBase extends UISelectOne implements Widg
         style,
         styleClass,
         disabled,
+        readonly,
         effect,
         showHeaders,
         header
@@ -109,5 +110,13 @@ public abstract class MultiSelectListboxBase extends UISelectOne implements Widg
 
     public void setHeader(String header) {
         getStateHelper().put(PropertyKeys.header, header);
+    }
+
+    public boolean isReadonly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+    }
+
+    public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
     }
 }

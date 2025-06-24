@@ -49,6 +49,7 @@ public abstract class SliderBase extends UIInput implements Widget, ClientBehavi
         type,
         step,
         disabled,
+        readonly,
         onSlideStart,
         onSlide,
         onSlideEnd,
@@ -206,6 +207,14 @@ public abstract class SliderBase extends UIInput implements Widget, ClientBehavi
 
     public void setDisplayTemplate(String displayTemplate) {
         getStateHelper().put(PropertyKeys.displayTemplate, displayTemplate);
+    }
+
+    public boolean isReadonly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+    }
+
+    public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
     }
 
     @Override
