@@ -43,15 +43,15 @@ Columns is used by datatable to create columns dynamically.
 | draggable | true | Boolean | Defines if columns are draggable if draggableColumns is set. Default true.
 | filterFunction | null | MethodExpr | Custom implementation to filter a value against a constraint.
 | field | null | String | Name of the field associated to bean "var". If not specified, filterBy-sortBy values are used to identify the field name.
-| responsivePriority | 0 | Integer | Responsive rriority of the column, lower values have more priority.
+| responsivePriority | 0 | Integer | Responsive priority of the column, lower values have more priority.
 | sortable | true | Boolean | Boolean value to mark column as sortable.
 | filterable | true | Boolean | Boolean value to mark column as filterable.
-| visible | true | Boolean | Controls the visibilty of the column.
+| visible | true | Boolean | Controls the visibility of the column.
 | selectRow | true | Boolean | Whether clicking the column selects the row when parent component has row selection enabled, default is true.
-| ariaHeaderText | null | String | Label to read by screen readers, when not specified headerText is used.
+| ariaHeaderText | null | String | Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified. Only necessary when the column header is not human readable (e.g. empty header or icon-only header).
 | exportFunction | null | MethodExpression | Custom pluggable exportFunction.
 | exportValue | null | String | Defines the value of the cell to be exported if something other than the cell contents or exportFunction.
-| groupRow | false | Boolean | Speficies whether to group rows based on the column data.
+| groupRow | false | Boolean | Specifies whether to group rows based on the column data.
 | exportHeaderValue | null | String | Defines if the header value of column to be exported.
 | exportFooterValue | null | String | Defines if the footer value of column to be exported.
 | nullSortOrder             | 1                  | Integer          |  Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.

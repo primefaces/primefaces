@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,59 +23,52 @@
  */
 package org.primefaces.component.blockui;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class BlockUIRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class BlockUIRenderer extends CoreRenderer<BlockUI> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        BlockUI blockUI = (BlockUI) component;
-
+    public void encodeEnd(FacesContext context, BlockUI component) throws IOException {
         encodeMarkup(context, component);
-        encodeScript(context, blockUI);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, BlockUI blockUI) throws IOException {
+    protected void encodeScript(FacesContext context, BlockUI component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("BlockUI", blockUI);
+        wb.init("BlockUI", component);
 
-        wb.attr("block", SearchExpressionFacade.resolveClientIds(context, blockUI, blockUI.getBlock(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
-        wb.attr("triggers", SearchExpressionFacade.resolveClientIds(context, blockUI, blockUI.getTrigger(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
-        wb.attr("blocked", blockUI.isBlocked(), false);
-        wb.attr("animate", blockUI.isAnimate(), true);
-        wb.attr("styleClass", blockUI.getStyleClass(), null);
-        wb.attr("delay", blockUI.getDelay(), 0);
+        wb.attr("block", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getBlock()))
+            .attr("triggers", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getTrigger()))
+            .attr("blocked", component.isBlocked(), false)
+            .attr("animate", component.isAnimate(), true)
+            .attr("styleClass", component.getStyleClass(), null)
+            .attr("delay", component.getDelay(), 0);
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, UIComponent component) throws IOException {
+    protected void encodeMarkup(FacesContext context, BlockUI component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        BlockUI blockUI = (BlockUI) component;
-        String clientId = blockUI.getClientId(context);
+        String clientId = component.getClientId(context);
 
-        writer.startElement("div", blockUI);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", "ui-blockui-content ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow", null);
+        writer.writeAttribute("class", "ui-blockui-content ui-widget ui-widget-content ui-helper-hidden ui-shadow", null);
 
-        renderChildren(context, blockUI);
+        renderChildren(context, component);
 
         writer.endElement("div");
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, BlockUI component) throws IOException {
         //Do nothing
     }
 

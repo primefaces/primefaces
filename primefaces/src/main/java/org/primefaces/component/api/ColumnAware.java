@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,13 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
+import org.primefaces.component.row.Row;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.util.ComponentUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,18 +39,11 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
-import org.primefaces.component.row.Row;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.util.ComponentUtils;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.component.visit.VisitResult;
+import jakarta.faces.context.FacesContext;
 
 public interface ColumnAware {
 
@@ -129,11 +129,11 @@ public interface ColumnAware {
                     }
                 }
             }
-            else if (child.getClass().getName().endsWith("UIRepeat")) {
+            else if (ComponentUtils.isUIRepeat(child)) {
                 VisitContext visitContext = VisitContext.createVisitContext(context, null,
                         ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
                 child.visitTree(visitContext, (ctx, target) -> {
-                    if (target.getClass().getName().endsWith("UIRepeat")) {
+                    if (ComponentUtils.isUIRepeat(target)) {
                         return VisitResult.ACCEPT;
                     }
 
@@ -165,17 +165,34 @@ public interface ColumnAware {
         if (cg == null || cg.getChildCount() == 0) {
             return false;
         }
-        for (UIComponent component : cg.getChildren()) {
-            if (!(component instanceof Row)) {
-                continue;
-            }
-            Row row = (Row) component;
-            if (skipUnrendered && !row.isRendered()) {
-                continue;
-            }
+        for (UIComponent child : cg.getChildren()) {
+            if (ComponentUtils.isUIRepeat(child)) {
+                VisitContext visitContext = VisitContext.createVisitContext(context, null,
+                        ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                child.visitTree(visitContext, (ctx, target) -> {
+                    if (ComponentUtils.isUIRepeat(target)) {
+                        return VisitResult.ACCEPT;
+                    }
 
-            if (!callback.test(row)) {
-                return false;
+                    if (target instanceof Row) {
+                        Row row = (Row) target;
+                        if (!callback.test(row)) {
+                            return VisitResult.COMPLETE;
+                        }
+                    }
+
+                    return VisitResult.REJECT;
+                });
+            }
+            else if (child instanceof Row) {
+                Row row = (Row) child;
+                if (skipUnrendered && !row.isRendered()) {
+                    continue;
+                }
+
+                if (!callback.test(row)) {
+                    return false;
+                }
             }
         }
         return true;
@@ -297,6 +314,7 @@ public interface ColumnAware {
             }
             else if (child instanceof Columns) {
                 Columns uiColumns = (Columns) child;
+                uiColumns.setRowIndex(-1);
                 for (int j = 0; j < uiColumns.getRowCount(); j++) {
                     DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns, context);
                     columns.add(dynaColumn);
@@ -366,16 +384,6 @@ public interface ColumnAware {
         });
 
         return columnsCountWithSpan.intValue();
-    }
-
-    default void resetDynamicColumns() {
-        forEachColumn(false, false, false, column ->  {
-            if (column instanceof Columns) {
-                ((Columns) column).setRowIndex(-1);
-                setColumns(null);
-            }
-            return true;
-        });
     }
 
     Map<String, ColumnMeta> getColumnMeta();

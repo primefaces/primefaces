@@ -19,7 +19,7 @@ AjaxBehavior is an extension to standard f:ajax.
 | async | false | Boolean | When set to true, ajax requests are not queued. |
 | process | @this | String | Component(s) to process in partial request. |
 | update | @none | String | Component(s) to update with ajax. |
-| onstart | null | String | Client-side javascript callback to execute before ajax request is begins. |
+| onstart | null | String | Client-side javascript callback to execute before ajax request begins. |
 | oncomplete | null | String | Client-side javascript callback to execute when ajax request is completed. |
 | onsuccess | null | String | Client-side javascript callback to execute when ajax request succeeds. |
 | onerror | null | String | Client-side javascript callback to execute when ajax request fails. |

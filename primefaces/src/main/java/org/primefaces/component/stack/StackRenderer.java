@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,49 +23,45 @@
  */
 package org.primefaces.component.stack;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.WidgetBuilder;
 
-public class StackRenderer extends BaseMenuRenderer {
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class StackRenderer extends BaseMenuRenderer<Stack> {
 
     @Override
-    protected void encodeScript(FacesContext context, AbstractMenu menu) throws IOException {
-        Stack stack = (Stack) menu;
+    protected void encodeScript(FacesContext context, Stack component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Stack", stack)
-                .attr("openSpeed", stack.getOpenSpeed())
-                .attr("closeSpeed", stack.getCloseSpeed())
-                .attr("expanded", stack.isExpanded(), false);
+        wb.init("Stack", component)
+                .attr("openSpeed", component.getOpenSpeed())
+                .attr("closeSpeed", component.getCloseSpeed())
+                .attr("expanded", component.isExpanded(), false);
 
         wb.finish();
     }
 
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException {
+    protected void encodeMarkup(FacesContext context, Stack component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Stack stack = (Stack) menu;
-        String clientId = stack.getClientId(context);
+        String clientId = component.getClientId(context);
 
-        writer.startElement("div", stack);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", "ui-stack", null);
 
         writer.startElement("img", null);
-        writer.writeAttribute("src", getResourceURL(context, stack.getIcon()), null);
+        writer.writeAttribute("src", getResourceURL(context, component.getIcon()), null);
         writer.endElement("img");
 
-        if (stack.getElementsCount() > 0) {
-            List<MenuElement> elements = stack.getElements();
+        if (component.getElementsCount() > 0) {
+            List<MenuElement> elements = component.getElements();
 
             writer.startElement("ul", null);
             writer.writeAttribute("id", clientId + "_stack", "id");
@@ -84,7 +80,7 @@ public class StackRenderer extends BaseMenuRenderer {
                         writer.writeAttribute("class", containerStyleClass, null);
                     }
 
-                    encodeMenuItem(context, stack, menuItem, "-1");
+                    encodeMenuItem(context, component, menuItem, "-1");
                     writer.endElement("li");
                 }
             }
@@ -96,7 +92,7 @@ public class StackRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
+    protected void encodeMenuItemContent(FacesContext context, Stack component, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("span", null);
@@ -112,12 +108,17 @@ public class StackRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Stack component) throws IOException {
         //Do nothing
     }
 
     @Override
     public boolean getRendersChildren() {
+        return true;
+    }
+
+    @Override
+    protected boolean shouldBeRendered(FacesContext context, Stack component) {
         return true;
     }
 }

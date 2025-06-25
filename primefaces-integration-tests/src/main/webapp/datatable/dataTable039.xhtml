@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
 
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
     <h:head>
@@ -17,7 +17,7 @@
             </p:messages>
 
             <p:dataTable id="datatable" widgetVar="datatable" value="#{dataTable039.lazyDataModel}" var="lang"
-                         paginator="true" rows="10" selectionMode="single" filterEvent="enter"
+                         paginator="true" rows="10" filterEvent="enter"
                          selection="#{dataTable039.selectedProgrammingLanguage}">
                 <p:column field="id" headerText="ID"/>
 
@@ -30,7 +30,7 @@
                         <p:selectCheckboxMenu id="filterType" multiple="true" updateLabel="true"
                             value="#{dataTable039.selectedProgrammingLanguageTypes}">
                             <f:selectItems value="#{dataTable039.types}"/>
-                            <p:ajax event="change" process="@this" update="datatable"/>
+                            <p:ajax oncomplete="PF('datatable').filter()"/>
                         </p:selectCheckboxMenu>
                     </f:facet>
                 </p:column>

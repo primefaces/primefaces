@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.feedreader;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 
 public abstract class FeedReaderBase extends UIComponentBase {
@@ -36,7 +36,8 @@ public abstract class FeedReaderBase extends UIComponentBase {
 
         value,
         var,
-        size
+        size,
+        podcast
     }
 
     public FeedReaderBase() {
@@ -70,6 +71,14 @@ public abstract class FeedReaderBase extends UIComponentBase {
 
     public void setSize(int size) {
         getStateHelper().put(PropertyKeys.size, size);
+    }
+
+    public boolean isPodcast() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.podcast, Boolean.FALSE);
+    }
+
+    public void setPodcast(Boolean podcast) {
+        getStateHelper().put(PropertyKeys.podcast, podcast);
     }
 
 }

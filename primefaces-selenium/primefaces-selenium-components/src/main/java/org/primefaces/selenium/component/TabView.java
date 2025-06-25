@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,11 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.AbstractComponent;
+import org.primefaces.selenium.component.base.ComponentUtils;
+import org.primefaces.selenium.component.model.Tab;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +35,6 @@ import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.AbstractComponent;
-import org.primefaces.selenium.component.base.ComponentUtils;
-import org.primefaces.selenium.component.model.Tab;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:tabView}.
@@ -89,13 +90,13 @@ public abstract class TabView extends AbstractComponent {
      * @return the selected tab
      */
     public Tab getSelectedTab() {
-        WebElement selectedTabHeader = findElement(new By.ByClassName("ui-tabs-selected"));
+        WebElement selectedTabHeader = findElement(By.className("ui-tabs-selected"));
         int index = getIndexOfHeader(selectedTabHeader);
 
         return getTabs().get(index);
     }
 
     private Integer getIndexOfHeader(WebElement headerElt) {
-        return Integer.parseInt(headerElt.getAttribute("data-index"));
+        return Integer.parseInt(headerElt.getDomAttribute("data-index"));
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,50 +23,52 @@
  */
 package org.primefaces.component.inplace;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.password.Password;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
 
-public class InplaceRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class InplaceRenderer extends CoreRenderer<Inplace> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Inplace component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Inplace inplace = (Inplace) component;
-
-        encodeMarkup(context, inplace);
-        encodeScript(context, inplace);
+    public void encodeEnd(FacesContext context, Inplace component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Inplace inplace) throws IOException {
+    protected void encodeMarkup(FacesContext context, Inplace component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = inplace.getClientId(context);
-        String widgetVar = inplace.resolveWidgetVar(context);
-        String userStyle = inplace.getStyle();
-        boolean disabled = inplace.isDisabled();
-        boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
-        UIComponent outputFacet = inplace.getFacet("output");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(outputFacet);
-        boolean withPassword = !shouldRenderFacet && isPassword(inplace.getChildren().get(0));
+        String clientId = component.getClientId(context);
+        String widgetVar = component.resolveWidgetVar(context);
+        String userStyle = component.getStyle();
+        boolean disabled = component.isDisabled();
+        boolean validationFailed = context.isValidationFailed() && !component.isValid();
+        UIComponent outputFacet = component.getFacet("output");
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(outputFacet);
+        boolean withPassword = !shouldRenderFacet && isPassword(component.getChildren().get(0));
         String styleClass = getStyleClassBuilder(context)
-                .add(Inplace.CONTAINER_CLASS, inplace.getStyleClass())
+                .add(Inplace.CONTAINER_CLASS, component.getStyleClass())
                 .add(withPassword, "p-password")
                 .build();
-        String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
-        String mode = inplace.getMode();
+        String mode = component.getMode();
 
         //container
-        writer.startElement("span", inplace);
+        writer.startElement("span", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
         if (userStyle != null) {
@@ -76,16 +78,19 @@ public class InplaceRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
         //output
-        String outputStyle = validationFailed
-                ? Inplace.DISPLAY_NONE
-                : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE);
+        String outputStyleClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
+        String outputStyle = getStyleBuilder(context)
+                .add(validationFailed, "display", Inplace.DISPLAY_NONE)
+                .add(!validationFailed && Inplace.MODE_OUTPUT.equals(mode), "display", Inplace.DISPLAY_INLINE)
+                .add(!validationFailed && Inplace.MODE_INPUT.equals(mode), "display", Inplace.DISPLAY_NONE)
+                .build();
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId + "_display", "id");
-        writer.writeAttribute("class", displayClass, null);
-        writer.writeAttribute("style", "display:" + outputStyle, null);
-        if (inplace.getTabindex() != null) {
-            writer.writeAttribute("tabindex", inplace.getTabindex(), null);
+        writer.writeAttribute("class", outputStyleClass, null);
+        writer.writeAttribute("style", outputStyle, null);
+        if (component.getTabindex() != null) {
+            writer.writeAttribute("tabindex", component.getTabindex(), null);
             writer.writeAttribute("role", "button", null);
         }
 
@@ -93,33 +98,35 @@ public class InplaceRenderer extends CoreRenderer {
             outputFacet.encodeAll(context);
         }
         else {
-            encodeLabel(context, inplace, withPassword);
+            encodeLabel(context, component, withPassword);
         }
 
         writer.endElement("span");
 
 
         //input
-        String inputStyle = validationFailed
-                ? Inplace.DISPLAY_INLINE
-                : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_NONE : Inplace.DISPLAY_INLINE);
-        UIComponent inputFacet = inplace.getFacet("input");
+        String inputStyle = getStyleBuilder(context)
+                .add(validationFailed, "display", Inplace.DISPLAY_INLINE)
+                .add(!validationFailed && Inplace.MODE_OUTPUT.equals(mode), "display", Inplace.DISPLAY_NONE)
+                .add(!validationFailed && Inplace.MODE_INPUT.equals(mode), "display", Inplace.DISPLAY_INLINE)
+                .build();
+        UIComponent inputFacet = component.getFacet("input");
 
-        if (!inplace.isDisabled()) {
+        if (!component.isDisabled()) {
             writer.startElement("span", null);
             writer.writeAttribute("id", clientId + "_content", "id");
             writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
-            writer.writeAttribute("style", "display:" + inputStyle, null);
+            writer.writeAttribute("style", inputStyle, null);
 
-            if (ComponentUtils.shouldRenderFacet(inputFacet)) {
+            if (FacetUtils.shouldRenderFacet(inputFacet)) {
                 inputFacet.encodeAll(context);
             }
             else {
-                renderChildren(context, inplace);
+                renderChildren(context, component);
             }
 
-            if (inplace.isEditor()) {
-                encodeEditor(context, inplace);
+            if (component.isEditor()) {
+                encodeEditor(context, component);
             }
 
             writer.endElement("span");
@@ -128,12 +135,12 @@ public class InplaceRenderer extends CoreRenderer {
         writer.endElement("span");
     }
 
-    protected void encodeLabel(FacesContext context, Inplace inplace, boolean withPassword) throws IOException {
+    protected void encodeLabel(FacesContext context, Inplace component, boolean withPassword) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent editor = inplace.getChildren().get(0);
+        UIComponent editor = component.getChildren().get(0);
         String value = ComponentUtils.getValueToRender(context, editor);
         boolean needsWrapping = withPassword
-                && LangUtils.isBlank(inplace.getLabel())
+                && LangUtils.isBlank(component.getLabel())
                 && !LangUtils.isBlank(value);
         if (needsWrapping) {
             writer.startElement("span", null);
@@ -141,7 +148,7 @@ public class InplaceRenderer extends CoreRenderer {
             writer.writeText(Constants.EMPTY_STRING, null);
         }
         else {
-            writer.writeText(getLabelToRender(context, inplace, value), null);
+            writer.writeText(getLabelToRender(context, component, value), null);
         }
         if (needsWrapping) {
             writer.endElement("span");
@@ -153,14 +160,14 @@ public class InplaceRenderer extends CoreRenderer {
                 || "password".equalsIgnoreCase(String.valueOf(editor.getAttributes().get("type")));
     }
 
-    protected String getLabelToRender(FacesContext context, Inplace inplace, String value) {
-        String label = inplace.getLabel();
+    protected String getLabelToRender(FacesContext context, Inplace component, String value) {
+        String label = component.getLabel();
         if (!isValueBlank(label)) {
             return label;
         }
 
         if (LangUtils.isBlank(value)) {
-            String emptyLabel = inplace.getEmptyLabel();
+            String emptyLabel = component.getEmptyLabel();
             if (emptyLabel != null) {
                 return emptyLabel;
             }
@@ -171,30 +178,30 @@ public class InplaceRenderer extends CoreRenderer {
         return value;
     }
 
-    protected void encodeScript(FacesContext context, Inplace inplace) throws IOException {
+    protected void encodeScript(FacesContext context, Inplace component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Inplace", inplace)
-                .attr("effect", inplace.getEffect())
-                .attr("effectSpeed", inplace.getEffectSpeed())
-                .attr("event", inplace.getEvent())
-                .attr("toggleable", inplace.isToggleable(), false)
-                .attr("disabled", inplace.isDisabled(), false)
-                .attr("editor", inplace.isEditor(), false);
+        wb.init("Inplace", component)
+                .attr("effect", component.getEffect())
+                .attr("effectSpeed", component.getEffectSpeed())
+                .attr("event", component.getEvent())
+                .attr("toggleable", component.isToggleable(), false)
+                .attr("disabled", component.isDisabled(), false)
+                .attr("editor", component.isEditor(), false);
 
-        encodeClientBehaviors(context, inplace);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected void encodeEditor(FacesContext context, Inplace inplace) throws IOException {
+    protected void encodeEditor(FacesContext context, Inplace component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("span", null);
-        writer.writeAttribute("id", inplace.getClientId(context) + "_editor", null);
+        writer.writeAttribute("id", component.getClientId(context) + "_editor", null);
         writer.writeAttribute("class", Inplace.EDITOR_CLASS, null);
 
-        encodeButton(context, inplace.getSaveLabel(), Inplace.SAVE_BUTTON_CLASS, "ui-icon-check");
-        encodeButton(context, inplace.getCancelLabel(), Inplace.CANCEL_BUTTON_CLASS, "ui-icon-close");
+        encodeButton(context, component.getSaveLabel(), Inplace.SAVE_BUTTON_CLASS, "ui-icon-check");
+        encodeButton(context, component.getCancelLabel(), Inplace.CANCEL_BUTTON_CLASS, "ui-icon-close");
 
         writer.endElement("span");
     }
@@ -222,7 +229,7 @@ public class InplaceRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Inplace component) throws IOException {
         //Do Nothing
     }
 

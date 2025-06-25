@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,15 +29,14 @@ public interface DashboardModel {
 
     void addWidget(DashboardWidget widget);
 
-    void addColumn(DashboardWidget column);
-
     List<DashboardWidget> getWidgets();
 
-    int getColumnCount();
-
-    DashboardWidget getColumn(int index);
+    int getWidgetCount();
 
     DashboardWidget getWidget(String widgetId);
 
+    DashboardWidget getWidget(int index);
+
     void transferWidget(DashboardWidget fromWidget, DashboardWidget toWidget, String widgetId, int index, boolean swap);
+
 }

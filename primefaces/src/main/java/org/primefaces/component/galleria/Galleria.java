@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,8 @@ package org.primefaces.component.galleria;
 
 import java.util.Collection;
 import java.util.Collections;
-import javax.faces.application.ResourceDependency;
+
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "galleria/galleria.css")
@@ -38,7 +39,7 @@ public class Galleria extends GalleriaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Galleria";
 
-    public static final String CONTAINER_CLASS = "ui-galleria ui-widget ui-widget-content ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-galleria ui-widget ui-widget-content";
     public static final String CONTENT_CLASS = "ui-galleria-content";
     public static final String HEADER_CLASS = "ui-galleria-header";
     public static final String FOOTER_CLASS = "ui-galleria-footer";

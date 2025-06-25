@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,13 @@
  */
 package org.primefaces.component.selectmanymenu;
 
-import javax.faces.component.html.HtmlSelectManyMenu;
-
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, InputHolder {
+import jakarta.faces.component.html.HtmlSelectManyMenu;
+
+public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, InputHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

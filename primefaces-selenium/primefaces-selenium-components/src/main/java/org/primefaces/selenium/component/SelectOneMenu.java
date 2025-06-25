@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,6 @@
  */
 package org.primefaces.selenium.component;
 
-import org.json.JSONObject;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
@@ -34,6 +31,10 @@ import org.primefaces.selenium.findby.FindByParentPartialId;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.json.JSONObject;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:selectOneMenu}.
@@ -139,7 +140,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         if (PrimeSelenium.isElementDisplayed(label)) {
             return label.getText();
         }
-        return label.getAttribute("textContent");
+        return label.getDomProperty("textContent");
     }
 
     public boolean isSelected(String label) {
@@ -165,12 +166,12 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
 
             return getItems().findElements(By.cssSelector("li.ui-selectonemenu-item")).stream()
                     .filter(listElt -> listElt.isDisplayed())
-                    .map(e -> e.getAttribute("innerHTML"))
+                    .map(e -> e.getDomProperty("innerHTML"))
                     .collect(Collectors.toList());
         }
         else {
             return getInput().findElements(By.tagName("option")).stream()
-                    .map(e -> e.getAttribute("innerHTML"))
+                    .map(e -> e.getDomProperty("innerHTML"))
                     .collect(Collectors.toList());
         }
     }
@@ -204,6 +205,11 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     @Override
+    public WebElement getAssignedLabel() {
+        return getWebDriver().findElement(By.cssSelector("label[for='" + getId() + (isEditable() ? "_focus" : "_label") + "']"));
+    }
+
+    @Override
     public WebElement getInput() {
         return input;
     }
@@ -216,8 +222,20 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         return getRoot().findElement(By.id(getId() + "_label"));
     }
 
+    /**
+     * Gets items when using normal rendering.
+     * @return the WebElement of the items
+     */
     public WebElement getItems() {
         return getWebDriver().findElement(By.id(getId() + "_items"));
+    }
+
+    /**
+     * Gets the table element when using advanced rendering.
+     * @return the WebElement of the table
+     */
+    public WebElement getTable() {
+        return getWebDriver().findElement(By.id(getId() + "_table"));
     }
 
     public WebElement getPanel() {
@@ -235,5 +253,9 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
 
     public WebElement getFilterInput() {
         return filterInput;
+    }
+
+    public boolean isEditable() {
+        return getWidgetConfiguration().optBoolean("editable");
     }
 }

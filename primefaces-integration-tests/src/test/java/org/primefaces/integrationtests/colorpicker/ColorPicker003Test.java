@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,26 @@
  */
 package org.primefaces.integrationtests.colorpicker;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.ColorPicker;
 import org.primefaces.selenium.component.Messages;
 
-public class ColorPicker003Test extends AbstractColorPickerTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class ColorPicker003Test extends AbstractColorPickerTest {
 
     @Test
     @Order(1)
     @DisplayName("ColorPicker: AJAX open event")
-    public void testAjaxOpen(Page page) {
+    void ajaxOpen(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPickerOpenClose;
 
@@ -56,7 +58,7 @@ public class ColorPicker003Test extends AbstractColorPickerTest {
     @Test
     @Order(2)
     @DisplayName("ColorPicker: AJAX close event")
-    public void testAjaxClose(Page page) {
+    void ajaxClose(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPickerOpenClose;
 
@@ -73,10 +75,10 @@ public class ColorPicker003Test extends AbstractColorPickerTest {
     @Test
     @Order(3)
     @DisplayName("ColorPicker: AJAX change event same format")
-    public void testAjaxChangeSameFormat(Page page) {
+    void ajaxChangeSameFormat(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPickerAjax;
-        Assertions.assertEquals("#e9c46a", colorPicker.getColor());
+        assertEquals("#e9c46a", colorPicker.getColor());
 
         // Act
         colorPicker.setColor("#ff00ff");
@@ -89,10 +91,10 @@ public class ColorPicker003Test extends AbstractColorPickerTest {
     @Test
     @Order(3)
     @DisplayName("ColorPicker: AJAX change event new format")
-    public void testAjaxChangeNewFormat(Page page) {
+    void ajaxChangeNewFormat(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPickerAjax;
-        Assertions.assertEquals("#e9c46a", colorPicker.getColor());
+        assertEquals("#e9c46a", colorPicker.getColor());
 
         // Act
         colorPicker.setColor("rgb(0, 183, 255)");
@@ -106,12 +108,14 @@ public class ColorPicker003Test extends AbstractColorPickerTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("ColorPicker Config = " + cfg);
-        Assertions.assertEquals("popup", cfg.getString("mode"));
-        Assertions.assertEquals("auto", cfg.getString("themeMode"));
-        Assertions.assertEquals("default", cfg.getString("theme"));
-        Assertions.assertEquals("en", cfg.getString("locale"));
-        Assertions.assertTrue(cfg.getBoolean("clearButton"));
-        Assertions.assertTrue(cfg.getBoolean("closeButton"));
+        assertEquals("popup", cfg.getString("mode"));
+        if (cfg.has("themeMode")) {
+            assertEquals("light", cfg.getString("themeMode"));
+        }
+        assertFalse(cfg.has("theme"));
+        assertEquals("en", cfg.getString("locale"));
+        assertTrue(cfg.getBoolean("clearButton"));
+        assertTrue(cfg.getBoolean("closeButton"));
     }
 
     public static class Page extends AbstractPrimePage {

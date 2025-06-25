@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,17 +48,12 @@ public class DefaultDashboardModel implements DashboardModel, Serializable {
     }
 
     @Override
-    public void addColumn(DashboardWidget column) {
-        widgets.add(column);
-    }
-
-    @Override
-    public int getColumnCount() {
+    public int getWidgetCount() {
         return widgets.size();
     }
 
     @Override
-    public DashboardWidget getColumn(int index) {
+    public DashboardWidget getWidget(int index) {
         return widgets.get(index);
     }
 
@@ -87,8 +82,5 @@ public class DefaultDashboardModel implements DashboardModel, Serializable {
             toWidget.addWidget(index, widgetId);
         }
     }
-
-
-
 
 }

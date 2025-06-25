@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,14 @@
  */
 package org.primefaces.integrationtests.overlaypanel;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.OverlayPanel;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,77 +38,75 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.OverlayPanel;
 
-public class OverlayPanel001Test extends AbstractPrimePageTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class OverlayPanel001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("OverlayPanel: Show panel on button click")
-    public void testShow(Page page) {
+    void show(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
-        Assertions.assertFalse(overlayPanel.isDisplayed());
+        assertFalse(overlayPanel.isDisplayed());
 
         // Act
         page.btnShow.click();
         overlayPanel.waitForDisplay();
 
         // Assert
-        Assertions.assertTrue(overlayPanel.isDisplayed());
+        assertTrue(overlayPanel.isDisplayed());
         assertConfiguration(overlayPanel.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("OverlayPanel: Show/Hide panel using API methods")
-    public void testWidgetShowHide(Page page) {
+    void widgetShowHide(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
-        Assertions.assertFalse(overlayPanel.isVisible());
+        assertFalse(overlayPanel.isVisible());
 
         // Act
         overlayPanel.show();
 
         // Assert
-        Assertions.assertTrue(overlayPanel.isDisplayed());
+        assertTrue(overlayPanel.isDisplayed());
 
         // Act
         overlayPanel.hide();
 
         // Assert
-        Assertions.assertFalse(overlayPanel.isDisplayed());
+        assertFalse(overlayPanel.isDisplayed());
         assertConfiguration(overlayPanel.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("OverlayPanel: Update overlay")
-    public void testUpdate(Page page) {
+    void update(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
         overlayPanel.show();
-        Assertions.assertTrue(overlayPanel.isDisplayed());
+        assertTrue(overlayPanel.isDisplayed());
 
         // Act
         page.btnUpdate.click();
 
         // Assert
-        Assertions.assertFalse(overlayPanel.isDisplayed());
+        assertFalse(overlayPanel.isDisplayed());
         assertConfiguration(overlayPanel.getWidgetConfiguration());
     }
 
     @Test
     @Order(4)
     @DisplayName("OverlayPanel: Unrender overlay")
-    public void testUnrender(Page page) {
+    void unrender(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
         overlayPanel.show();
-        Assertions.assertTrue(overlayPanel.isDisplayed());
+        assertTrue(overlayPanel.isDisplayed());
 
         // Act
         page.btnDestroy.click();
@@ -112,7 +114,7 @@ public class OverlayPanel001Test extends AbstractPrimePageTest {
         // Assert
         try {
             overlayPanel.isDisplayed();
-            Assertions.fail("OverlayPanel should have been unrendered.");
+            fail("OverlayPanel should have been unrendered.");
         }
         catch (NoSuchElementException ex) {
             // overlay panel should be destroyed
@@ -122,18 +124,18 @@ public class OverlayPanel001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("OverlayPanel: Destroy widget and make sure DOM elements removed")
-    public void testDestroy(Page page) {
+    void destroy(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
         overlayPanel.show();
-        Assertions.assertTrue(overlayPanel.isVisible());
-        Assertions.assertEquals(1, getOverlays().size());
+        assertTrue(overlayPanel.isVisible());
+        assertEquals(1, getOverlays().size());
 
         // Act
         overlayPanel.destroy();
 
         // Assert
-        Assertions.assertEquals(0, getOverlays().size());
+        assertEquals(0, getOverlays().size());
         assertNoJavascriptErrors();
     }
 
@@ -144,11 +146,11 @@ public class OverlayPanel001Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("OverlayPanel Config = " + cfg);
-        Assertions.assertTrue(cfg.has("widgetVar"));
-        Assertions.assertFalse(cfg.has("appendTo"));
-        Assertions.assertTrue(cfg.getBoolean("dismissable"));
-        Assertions.assertEquals("form:btnShow", cfg.getString("target"));
-        Assertions.assertEquals(100, cfg.getInt("showDelay"));
+        assertTrue(cfg.has("widgetVar"));
+        assertFalse(cfg.has("appendTo"));
+        assertTrue(cfg.getBoolean("dismissable"));
+        assertEquals("form:btnShow", cfg.getString("target"));
+        assertEquals(100, cfg.getInt("showDelay"));
     }
 
     public static class Page extends AbstractPrimePage {

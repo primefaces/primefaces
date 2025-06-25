@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,48 +36,44 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
 
     public enum PropertyKeys {
 
-        placeholder,
-        widgetVar,
-        pages,
-        mode,
-        navigator,
-        showButtonPanel,
+        beforeShow,
+        beforeShowDay,
+        buttonTabindex,
+        disabledWeekends,
         effect,
         effectDuration,
-        showOn,
-        showWeek,
-        disabledWeekends,
-        showOtherMonths,
+        focusOnSelect,
+        maxHour,
+        maxMinute,
+        maxSecond,
+        minHour,
+        minMinute,
+        minSecond,
+        mode,
+        navigator,
+        oneLine,
+        pagedate,
+        pages,
+        placeholder,
         selectOtherMonths,
-        yearRange,
+        shortYearCutoff,
+        showButtonPanel,
+        showHour,
+        showMillisec,
+        showMinute,
+        showOn,
+        showOtherMonths,
+        showSecond,
+        showTodayButton,
+        showWeek,
         stepHour,
         stepMinute,
         stepSecond,
-        minHour,
-        maxHour,
-        minMinute,
-        maxMinute,
-        minSecond,
-        maxSecond,
-        pagedate,
-        beforeShowDay,
-        timeControlType,
-        beforeShow,
         timeControlObject,
+        timeControlType,
         timeInput,
-        showHour,
-        showMinute,
-        showSecond,
-        showMillisec,
-        showTodayButton,
-        buttonTabindex,
-        focusOnSelect,
-        oneLine,
-        defaultHour,
-        defaultMinute,
-        defaultSecond,
-        defaultMillisec,
-        shortYearCutoff
+        widgetVar,
+        yearRange
     }
 
     public CalendarBase() {
@@ -384,38 +380,6 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
 
     public void setOneLine(boolean oneLine) {
         getStateHelper().put(PropertyKeys.oneLine, oneLine);
-    }
-
-    public int getDefaultHour() {
-        return (Integer) getStateHelper().eval(PropertyKeys.defaultHour, 0);
-    }
-
-    public void setDefaultHour(int defaultHour) {
-        getStateHelper().put(PropertyKeys.defaultHour, defaultHour);
-    }
-
-    public int getDefaultMinute() {
-        return (Integer) getStateHelper().eval(PropertyKeys.defaultMinute, 0);
-    }
-
-    public void setDefaultMinute(int defaultMinute) {
-        getStateHelper().put(PropertyKeys.defaultMinute, defaultMinute);
-    }
-
-    public int getDefaultSecond() {
-        return (Integer) getStateHelper().eval(PropertyKeys.defaultSecond, 0);
-    }
-
-    public void setDefaultSecond(int defaultSecond) {
-        getStateHelper().put(PropertyKeys.defaultSecond, defaultSecond);
-    }
-
-    public int getDefaultMillisec() {
-        return (Integer) getStateHelper().eval(PropertyKeys.defaultMillisec, 0);
-    }
-
-    public void setDefaultMillisec(int defaultMillisec) {
-        getStateHelper().put(PropertyKeys.defaultMillisec, defaultMillisec);
     }
 
     public String getShortYearCutoff() {

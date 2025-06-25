@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -41,13 +41,13 @@
                                  ajax="false"
                                  value="Throw ViewExpiredException!" styleClass="mr-2"/>
                 <!-- NullPointerException has no specific error-page defined in web.xml compared to ViewExpiredException -->
-                <!-- https://github.com/primefaces/showcase-facelift/blob/master/src/main/webapp/WEB-INF/web.xml -->
+                <!-- https://github.com/primefaces/primefaces/blob/master/primefaces-showcase/src/main/webapp/WEB-INF/web.xml -->
                 <p:commandButton action="#{exceptionHandlerView.throwNullPointerException}"
                                  ajax="false"
                                  value="Throw NullPointerException!"/>
 
 
-                <p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException"
+                <p:ajaxExceptionHandler type="jakarta.faces.application.ViewExpiredException"
                                         update="exceptionDialog"
                                         onexception="PF('exceptionDialog').show()" />
 
@@ -55,7 +55,7 @@
                                         update="exceptionDialog"
                                         onexception="PF('exceptionDialog').show()"/>
 
-                <p:dialog id="exceptionDialog" header="Exception '#{pfExceptionHandler.type}' occured!"
+                <p:dialog id="exceptionDialog" header="Exception '#{pfExceptionHandler.type}' occurred!"
                           widgetVar="exceptionDialog"
                           height="500px">
                     Message: #{pfExceptionHandler.message} <br/>
@@ -63,7 +63,7 @@
 
                     <p:button onclick="document.location.href = document.location.href;"
                               value="Reload!"
-                              rendered="#{pfExceptionHandler.type == 'javax.faces.application.ViewExpiredException'}"/>
+                              rendered="#{pfExceptionHandler.type == 'jakarta.faces.application.ViewExpiredException'}"/>
                 </p:dialog>
             </h:form>
         </div>

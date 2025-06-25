@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,24 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-
-
-import lombok.Data;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.model.datepicker.DefaultDateMetadata;
 import org.primefaces.model.datepicker.DefaultDateMetadataModel;
 import org.primefaces.model.datepicker.LazyDateMetadataModel;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

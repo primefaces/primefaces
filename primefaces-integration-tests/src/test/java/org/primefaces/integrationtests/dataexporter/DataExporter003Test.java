@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,36 @@
  */
 package org.primefaces.integrationtests.dataexporter;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.junit.jupiter.api.*;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataExporter003Test extends AbstractDataExporterTest {
+import java.io.File;
+import java.io.IOException;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class DataExporter003Test extends AbstractDataExporterTest {
 
     @Test
     @Order(1)
     @DisplayName("Exporter: #8205 XML ExportTag and ExportRowTag attributes ")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testXml(Page page) throws IOException {
+    void xml(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages-custom-tags.xml");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(3, dataTable.getRows().size());
+        assertEquals(3, dataTable.getRows().size());
 
         // Act
         page.buttonXml.click();

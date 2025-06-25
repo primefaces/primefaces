@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,48 +23,45 @@
  */
 package org.primefaces.component.imageswitch;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class ImageSwitchRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class ImageSwitchRenderer extends CoreRenderer<ImageSwitch> {
 
     @Override
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        ImageSwitch imageSwitch = (ImageSwitch) component;
+    public void encodeBegin(FacesContext context, ImageSwitch component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = imageSwitch.getClientId(context);
+        String clientId = component.getClientId(context);
 
-        writer.startElement("div", imageSwitch);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
 
-        if (imageSwitch.getStyle() != null) {
-            writer.writeAttribute("style", imageSwitch.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
-        if (imageSwitch.getStyleClass() != null) {
-            writer.writeAttribute("class", imageSwitch.getStyleClass(), null);
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), null);
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ImageSwitch imageSwitch = (ImageSwitch) component;
+    public void encodeEnd(FacesContext context, ImageSwitch component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        int slideshowSpeed = imageSwitch.isSlideshowAuto() ? imageSwitch.getSlideshowSpeed() : 0;
+        int slideshowSpeed = component.isSlideshowAuto() ? component.getSlideshowSpeed() : 0;
 
         writer.endElement("div");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ImageSwitch", imageSwitch)
-                .attr("fx", imageSwitch.getEffect())
-                .attr("speed", imageSwitch.getSpeed())
+        wb.init("ImageSwitch", component)
+                .attr("fx", component.getEffect())
+                .attr("speed", component.getSpeed())
                 .attr("timeout", slideshowSpeed)
-                .attr("startingSlide", imageSwitch.getActiveIndex(), 0);
+                .attr("startingSlide", component.getActiveIndex(), 0);
 
         wb.finish();
     }

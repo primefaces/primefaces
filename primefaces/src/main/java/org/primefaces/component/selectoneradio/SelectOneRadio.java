@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.selectoneradio;
 
+import org.primefaces.util.LangUtils;
+
 import java.util.List;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.util.LangUtils;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -43,9 +43,28 @@ public class SelectOneRadio extends SelectOneRadioBase {
     public static final List<String> DOM_EVENTS = LangUtils.unmodifiableList("onchange", "onclick");
 
     public static final String STYLE_CLASS = "ui-selectoneradio ui-widget";
-    public static final String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
 
     public String getRadioButtonId(FacesContext context, int index) {
         return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
+    }
+
+    @Override
+    public String getInputClientId() {
+        return getRadioButtonId(getFacesContext(), 0);
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return getRadioButtonId(getFacesContext(), 0);
+    }
+
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
     }
 }

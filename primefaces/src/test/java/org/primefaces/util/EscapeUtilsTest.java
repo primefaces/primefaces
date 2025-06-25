@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,14 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
 
-public class EscapeUtilsTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class EscapeUtilsTest {
 
     @Test
-    public void forXmlTag() {
+    void forXmlTag() {
         final String input = "hello world & >";
 
         // invalid
@@ -42,12 +42,12 @@ public class EscapeUtilsTest {
     }
 
     @Test
-    public void forJavascriptVarName() {
+    void forJavascriptVarName() {
         assertEquals("form_datatable_0_my_input_text", EscapeUtils.forJavaScriptVarName("form:datatable:0:my_input_text"));
     }
 
     @Test
-    public void forJavascriptNullInput() {
+    void forJavascriptNullInput() {
         assertEquals("null", EscapeUtils.forJavaScript(null));
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,33 @@
  */
 package org.primefaces.component.autoupdate;
 
-import java.io.IOException;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
 
-import javax.el.ELException;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.view.facelets.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import jakarta.el.ELException;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.facelets.ComponentHandler;
+import jakarta.faces.view.facelets.FaceletContext;
+import jakarta.faces.view.facelets.FaceletException;
+import jakarta.faces.view.facelets.TagAttribute;
+import jakarta.faces.view.facelets.TagConfig;
+import jakarta.faces.view.facelets.TagHandler;
 
 public class AutoUpdateTagHandler extends TagHandler {
 
+    private static final Logger LOGGER = Logger.getLogger(AutoUpdateTagHandler.class.getName());
+
     private final TagAttribute disabledAttribute;
     private final TagAttribute onAttribute;
+
+    private Lazy<ProjectStage> projectStage = new Lazy<>(() -> FacesContext.getCurrentInstance().getApplication().getProjectStage());
 
     public AutoUpdateTagHandler(TagConfig tagConfig) {
         super(tagConfig);
@@ -45,6 +61,14 @@ public class AutoUpdateTagHandler extends TagHandler {
     @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
         if (!ComponentHandler.isNew(parent)) {
+            return;
+        }
+
+        if (LangUtils.isBlank(parent.getRendererType())) {
+            if (projectStage.get() == ProjectStage.Development) {
+                LOGGER.log(Level.WARNING, "Can not auto-update component \"{0}\" with id \"{1}\" without an attached renderer.",
+                        new Object[] {parent.getClass().getName(), parent.getClientId()});
+            }
             return;
         }
 

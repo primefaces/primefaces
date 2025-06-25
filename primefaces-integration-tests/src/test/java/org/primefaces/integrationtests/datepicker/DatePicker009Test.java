@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,23 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.DatePicker;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.DatePicker;
 
-public class DatePicker009Test extends AbstractDatePickerTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class DatePicker009Test extends AbstractDatePickerTest {
 
     private static final List<String> MONTHS = Arrays.asList(new String[] {
         "January", "February", "March", "April", "May", "June", "July",
@@ -47,10 +49,10 @@ public class DatePicker009Test extends AbstractDatePickerTest {
     @Test
     @Order(1)
     @DisplayName("DatePicker: numberOfMonths greater than 12. See GitHub #7563")
-    public void testWithShowNumberOfMonths(Page page) throws Exception {
+    void withShowNumberOfMonths(Page page) throws Exception {
         // Arrange
         DatePicker datePicker = page.datePicker;
-        Assertions.assertEquals(LocalDateTime.of(2020, 11, 01, 00, 00, 00), datePicker.getValue());
+        assertEquals(LocalDateTime.of(2020, 11, 01, 00, 00, 00), datePicker.getValue());
 
         // Act
         datePicker.click(); // focus to bring up panel
@@ -58,18 +60,18 @@ public class DatePicker009Test extends AbstractDatePickerTest {
         // Assert
         assertNoJavascriptErrors();
         WebElement panel = datePicker.getPanel();
-        Assertions.assertNotNull(panel);
+        assertNotNull(panel);
         List<WebElement> elements = panel.findElements(By.cssSelector(".ui-datepicker-group"));
-        Assertions.assertNotNull(elements);
-        Assertions.assertEquals(27, elements.size());
+        assertNotNull(elements);
+        assertEquals(27, elements.size());
         for (WebElement mon : elements) {
             List<WebElement> titles = mon.findElements(By.cssSelector(".ui-datepicker-title .ui-datepicker-month"));
-            Assertions.assertNotNull(titles);
-            Assertions.assertEquals(1, titles.size());
+            assertNotNull(titles);
+            assertEquals(1, titles.size());
             WebElement title = titles.get(0);
-            Assertions.assertNotNull(title);
+            assertNotNull(title);
             String monthName = title.getText();
-            Assertions.assertTrue(MONTHS.contains(monthName), "unknown month `" + monthName + "´");
+            assertTrue(MONTHS.contains(monthName), "unknown month `" + monthName + "´");
         }
     }
 

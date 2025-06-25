@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.convert;
 
-public class FloatConverter extends javax.faces.convert.FloatConverter implements ClientConverter {
+public class FloatConverter extends jakarta.faces.convert.FloatConverter implements ClientConverter {
 
     @Override
     public String getConverterId() {

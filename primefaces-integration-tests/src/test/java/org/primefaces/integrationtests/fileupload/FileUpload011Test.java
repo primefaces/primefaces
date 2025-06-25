@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,10 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.FileUpload;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -32,19 +36,24 @@ import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.UUID;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.FileUpload;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests advanced single file upload. p:fileUpload mode=advanced auto=false
- * multiple=false dragDropSupport=false maxChunkSize="1024k"
+ * multiple=false dragDrop=false maxChunkSize="1024k"
  */
-@Tag("SafariExclude") // Selenium SafariDriver does not support file uploads
-public class FileUpload011Test extends AbstractFileUploadTest {
+// Selenium SafariDriver does not support file uploads
+@Tag("SafariExclude")
+class FileUpload011Test extends AbstractFileUploadTest {
 
     // must be equal to p:fileUpload components sizeLimit
     private static final int SIZE_LIMIT = 2097152;
@@ -53,7 +62,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
     private static final Path[] BIG_FILES = new Path[3];
 
     @BeforeAll
-    public static void setupFiles() {
+    static void setupFiles() {
         // resolves to the projects `target´ folder
         Path dir = new File(Thread.currentThread().getContextClassLoader().getResource(".")
                 .getPath()).getParentFile().toPath();
@@ -82,7 +91,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
     }
 
     @AfterAll
-    public static void teardownFiles() {
+    static void teardownFiles() {
         if (bigFilesFolder != null) {
             deleteFolder(bigFilesFolder);
         }
@@ -105,15 +114,15 @@ public class FileUpload011Test extends AbstractFileUploadTest {
 
     @Test
     @Order(1)
-    public void testAdvancedSingleChunkedUpload(Page page) {
+    void advancedSingleChunkedUpload(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = chooseBigFile(0);
         fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file.getName()), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getFilename().startsWith(file.getName()), fileUpload.getFilename().toString());
         fileUpload.getAdvancedUploadButton().click();
 
         // Assert
@@ -124,15 +133,15 @@ public class FileUpload011Test extends AbstractFileUploadTest {
 
     @Test
     @Order(2)
-    public void testAdvancedSingleChunkedUploadTwice(Page page) {
+    void advancedSingleChunkedUploadTwice(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file1 = chooseBigFile(0);
         fileUpload.setValue(file1);
-        Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
 
         // Assert
@@ -142,7 +151,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         // Act
         File file2 = chooseBigFile(1);
         fileUpload.setValue(file2);
-        Assertions.assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
 
         // Assert
@@ -153,17 +162,17 @@ public class FileUpload011Test extends AbstractFileUploadTest {
 
     @Test
     @Order(3)
-    public void testAdvancedSingleChunkedUploadCancel(Page page) {
+    void advancedSingleChunkedUploadCancel(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = chooseBigFile(0);
         fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValues().contains(file.getName()), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().contains(file.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedCancelButton().click();
-        Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -173,18 +182,15 @@ public class FileUpload011Test extends AbstractFileUploadTest {
 
     @Test
     @Order(4)
-    public void testAdvancedSingleChunkedUploadFileLimit(Page page) {
+    void advancedSingleChunkedUploadFileLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
-        String fileLimitMsg = fileUpload.getWidgetConfiguration().getString("fileLimitMessage");
-        Assertions.assertNotNull(fileLimitMsg);
-        Assertions.assertFalse(fileLimitMsg.isEmpty());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file1 = chooseBigFile(0);
         fileUpload.setValue(file1);
-        Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
 
         // Assert
@@ -194,7 +200,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         // Act
         File file2 = chooseBigFile(1);
         fileUpload.setValue(file2);
-        Assertions.assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
 
         // Assert
@@ -204,9 +210,9 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         // Act
         File file3 = chooseBigFile(2);
         fileUpload.setValue(file3);
-        Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(fileLimitMsg), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Maximum number of files exceeded"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -216,20 +222,17 @@ public class FileUpload011Test extends AbstractFileUploadTest {
 
     @Test
     @Order(5)
-    public void testAdvancedSingleChunkedUploadSizeLimit(Page page) {
+    void advancedSingleChunkedUploadSizeLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
-        String invalidSizeMsg = fileUpload.getWidgetConfiguration().getString("invalidSizeMessage");
-        Assertions.assertNotNull(invalidSizeMsg);
-        Assertions.assertFalse(invalidSizeMsg.isEmpty());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = chooseBigFile(2);
         fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidSizeMsg), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file size"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -239,20 +242,17 @@ public class FileUpload011Test extends AbstractFileUploadTest {
 
     @Test
     @Order(6)
-    public void testAdvancedSingleChunkedUploadAllowTypes(Page page) {
+    void advancedSingleChunkedUploadAllowTypes(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
-        String invalidTypeMsg = fileUpload.getWidgetConfiguration().getString("invalidFileMessage");
-        Assertions.assertNotNull(invalidTypeMsg);
-        Assertions.assertFalse(invalidTypeMsg.isEmpty());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file1.png");
         fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidTypeMsg), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file type"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -263,14 +263,14 @@ public class FileUpload011Test extends AbstractFileUploadTest {
     private void assertConfiguration(FileUpload fileUpload) {
         JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
-        Assertions.assertFalse(cfg.has("skinSimple"));
-        Assertions.assertFalse(cfg.has("auto"));
-        Assertions.assertFalse(cfg.getBoolean("dnd"));
-        Assertions.assertEquals(2, cfg.getInt("fileLimit"));
-        Assertions.assertEquals(2097152, cfg.getInt("maxFileSize"));
-        Assertions.assertEquals("/(\\.|\\/)(.ar)$/", cfg.getString("allowTypes"));
-        Assertions.assertNull(fileUpload.getInput().getAttribute("multiple"));
-        Assertions.assertEquals(65536, cfg.getInt("maxChunkSize"));
+        assertFalse(cfg.has("skinSimple"));
+        assertFalse(cfg.has("auto"));
+        assertFalse(cfg.getBoolean("dnd"));
+        assertEquals(2, Integer.parseInt(fileUpload.getInput().getAttribute("data-p-filelimit")));
+        assertEquals(2097152, Long.parseLong(fileUpload.getInput().getAttribute("data-p-sizelimit")));
+        assertEquals("/(\\.|\\/)(.ar)$/", fileUpload.getInput().getAttribute("data-p-allowtypes"));
+        assertNull(fileUpload.getInput().getAttribute("multiple"));
+        assertEquals(65536, cfg.getInt("maxChunkSize"));
     }
 
     public static class Page extends AbstractPrimePage {

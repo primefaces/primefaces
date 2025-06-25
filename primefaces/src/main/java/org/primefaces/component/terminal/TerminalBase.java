@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.terminal;
 
-import javax.faces.component.UIPanel;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIPanel;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TerminalBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -96,11 +96,11 @@ public abstract class TerminalBase extends UIPanel implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.prompt, prompt);
     }
 
-    public javax.el.MethodExpression getCommandHandler() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.commandHandler, null);
+    public jakarta.el.MethodExpression getCommandHandler() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.commandHandler, null);
     }
 
-    public void setCommandHandler(javax.el.MethodExpression commandHandler) {
+    public void setCommandHandler(jakarta.el.MethodExpression commandHandler) {
         getStateHelper().put(PropertyKeys.commandHandler, commandHandler);
     }
 

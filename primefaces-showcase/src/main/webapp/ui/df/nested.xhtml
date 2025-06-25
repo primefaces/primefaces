@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -51,6 +51,18 @@
 
         </h:form>
 
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/ui/df/level1.xhtml">
+            <f:attribute name="flatten" value="true"/>
+        </p:tab>
+        <p:tab title="/ui/df/level2.xhtml">
+            <f:attribute name="flatten" value="true"/>
+        </p:tab>
+        <p:tab title="/ui/df/level3.xhtml">
+            <f:attribute name="flatten" value="true"/>
+        </p:tab>
     </ui:define>
 
 </ui:composition>

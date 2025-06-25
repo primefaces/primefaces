@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,22 @@
  */
 package org.primefaces.component.dashboard;
 
-import java.util.Collection;
-import java.util.Map;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.model.dashboard.DashboardModel;
 import org.primefaces.model.dashboard.DashboardWidget;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Map;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -111,13 +111,13 @@ public class Dashboard extends DashboardBase {
     protected void updateDashboardModel(DashboardModel model, String widgetId, Integer itemIndex, Integer receiverColumnIndex, Integer senderColumnIndex) {
         if (senderColumnIndex == null) {
             //Reorder widget in same column
-            DashboardWidget column = model.getColumn(receiverColumnIndex);
+            DashboardWidget column = model.getWidget(receiverColumnIndex);
             column.reorderWidget(itemIndex, widgetId);
         }
         else {
             //Transfer widget
-            DashboardWidget oldColumn = model.getColumn(senderColumnIndex);
-            DashboardWidget newColumn = model.getColumn(receiverColumnIndex);
+            DashboardWidget oldColumn = model.getWidget(senderColumnIndex);
+            DashboardWidget newColumn = model.getWidget(receiverColumnIndex);
             model.transferWidget(oldColumn, newColumn, widgetId, itemIndex, this.isResponsive());
         }
     }

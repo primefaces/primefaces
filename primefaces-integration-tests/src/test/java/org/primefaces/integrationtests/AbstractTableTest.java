@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,15 @@
  */
 package org.primefaces.integrationtests;
 
-import org.junit.jupiter.api.Assertions;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AbstractTableTest extends AbstractPrimePageTest {
 
@@ -44,13 +47,13 @@ public class AbstractTableTest extends AbstractPrimePageTest {
             default:
                 break;
         }
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
+        assertTrue(PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
         WebElement badge = header.findElement(By.className("ui-sortable-column-badge"));
         if (sortPriority > 0) {
-            Assertions.assertEquals(sortPriority, Integer.parseInt(badge.getText()));
+            assertEquals(sortPriority, Integer.parseInt(badge.getText()));
         }
         else {
-            Assertions.assertEquals("", badge.getText());
+            assertEquals("", badge.getText());
         }
     }
 

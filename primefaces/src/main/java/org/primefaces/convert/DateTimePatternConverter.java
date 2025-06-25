@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.convert;
 
+import org.primefaces.convert.PatternReader.TokenVisitor;
+
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.primefaces.convert.PatternReader.TokenVisitor;
 
 /**
  * Utility class for converting between {@link SimpleDateFormat} /

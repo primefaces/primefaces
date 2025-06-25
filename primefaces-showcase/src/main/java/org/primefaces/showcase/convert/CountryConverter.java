@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,21 @@
  */
 package org.primefaces.showcase.convert;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.primefaces.showcase.domain.Country;
 import org.primefaces.showcase.service.CountryService;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
+import jakarta.faces.convert.FacesConverter;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
 @Named
+@ApplicationScoped
 @FacesConverter(value = "countryConverter", managed = true)
 public class CountryConverter implements Converter<Country> {
 
@@ -44,7 +46,7 @@ public class CountryConverter implements Converter<Country> {
 
     @Override
     public Country getAsObject(FacesContext context, UIComponent component, String value) {
-        if (value != null && value.trim().length() > 0) {
+        if (value != null && !value.trim().isEmpty()) {
             try {
                 return countryService.getCountriesAsMap().get(Integer.parseInt(value));
             }

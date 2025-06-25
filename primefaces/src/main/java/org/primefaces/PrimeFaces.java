@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +24,10 @@
 package org.primefaces;
 
 import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.component.api.Widget;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.expression.ComponentNotFoundException;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.DialogFrameworkOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -35,25 +35,36 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
 
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialViewContext;
-import javax.faces.lifecycle.ClientWindow;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.component.search.ComponentNotFoundException;
+import jakarta.faces.component.search.SearchExpressionContext;
+import jakarta.faces.component.search.SearchExpressionHint;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.PartialViewContext;
+import jakarta.faces.lifecycle.ClientWindow;
 
 public class PrimeFaces {
 
@@ -166,7 +177,7 @@ public class PrimeFaces {
 
         FacesContext facesContext = getFacesContext();
 
-        String clientId = SearchExpressionFacade.resolveClientId(facesContext,
+        String clientId = SearchExpressionUtils.resolveClientId(facesContext,
                 base,
                 expression);
         executeScript("PrimeFaces.focus('" + clientId + "');");
@@ -188,7 +199,7 @@ public class PrimeFaces {
 
         UIViewRoot root = facesContext.getViewRoot();
         for (String expression : expressions) {
-            List<UIComponent> components = SearchExpressionFacade.resolveComponents(facesContext, root, expression);
+            List<UIComponent> components = SearchExpressionUtils.contextlessResolveComponents(facesContext, root, expression);
             for (UIComponent component : components) {
                 component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
             }
@@ -206,6 +217,30 @@ public class PrimeFaces {
         }
 
         resetInputs(Arrays.asList(expressions));
+    }
+
+    /**
+     * Search for a {@code Widget} by the given widgetVar and invokes the callback.
+     *
+     * @param widgetVar the widgetVar.
+     * @param callback the callback.
+     * @param <T> the type of the widget.
+     * @throws ComponentNotFoundException if the widget can't be found.
+     */
+    public <T extends UIComponent & Widget> void resolveWidget(String widgetVar, Consumer<T> callback) {
+        FacesContext facesContext = getFacesContext();
+
+        SearchExpressionContext context = SearchExpressionContext.createSearchExpressionContext(facesContext,
+                facesContext.getViewRoot(),
+                EnumSet.of(SearchExpressionHint.RESOLVE_SINGLE_COMPONENT, SearchExpressionHint.SKIP_VIRTUAL_COMPONENTS),
+                null);
+
+        facesContext.getApplication().getSearchExpressionHandler().resolveComponent(
+                context,
+                "@widgetVar(" + widgetVar + ")",
+                (ctx, target) -> {
+                    callback.accept((T) target);
+                });
     }
 
     /**
@@ -349,14 +384,14 @@ public class PrimeFaces {
 
                 try {
                     String clientId =
-                            SearchExpressionFacade.resolveClientId(facesContext, facesContext.getViewRoot(), expression);
+                            SearchExpressionUtils.resolveClientId(facesContext, facesContext.getViewRoot(), expression);
 
                     facesContext.getPartialViewContext().getRenderIds().add(clientId);
                 }
                 catch (ComponentNotFoundException e) {
                     if (facesContext.isProjectStage(ProjectStage.Development)) {
                         LOGGER.log(Level.WARNING,
-                                "PrimeFaces.current().ajax().update() called but component can't be resolved!"
+                                "PrimeFaces.current().ajax().update() called but component can not be resolved!"
                                 + " Expression will just be added to the renderIds: {0}", expression);
                     }
 
@@ -548,8 +583,7 @@ public class PrimeFaces {
 
             PrimeApplicationContext primeApplicationContext = PrimeApplicationContext.getCurrentInstance(fc);
             String clientWindowId = "session";
-            if (primeApplicationContext.getEnvironment().isAtLeastJsf22() &&
-                    "client-window".equals(primeApplicationContext.getConfig().getMultiViewStateStore())) {
+            if ("client-window".equals(primeApplicationContext.getConfig().getMultiViewStateStore())) {
                 ExternalContext externalContext = fc.getExternalContext();
                 ClientWindow clientWindow = externalContext.getClientWindow();
                 if (clientWindow != null && LangUtils.isNotBlank(clientWindow.getId())) {
@@ -557,12 +591,7 @@ public class PrimeFaces {
                 }
             }
 
-            Map<String, Map<MVSKey, Object>> clientWindowMap = (Map) sessionMap.get(Constants.MULTI_VIEW_STATES);
-            if (clientWindowMap == null) {
-                clientWindowMap = new ConcurrentHashMap<>();
-                sessionMap.put(Constants.MULTI_VIEW_STATES, clientWindowMap);
-            }
-
+            Map<String, Map<MVSKey, Object>> clientWindowMap = (Map) sessionMap.computeIfAbsent(Constants.MULTI_VIEW_STATES, k -> new ConcurrentHashMap<>());
             Map<MVSKey, Object> mvsMap = clientWindowMap.get(clientWindowId);
 
             if (mvsMap == null) {
@@ -589,6 +618,8 @@ public class PrimeFaces {
         }
 
         private void clearMVSKeys(Set<MVSKey> keysToRemove, boolean reset, Consumer<String> clientIdConsumer) {
+            String currentViewId = getFacesContext().getViewRoot().getViewId();
+
             Set<MVSKey> mvsKeys = getMVSKeys();
             for (MVSKey mvsKey : keysToRemove) {
                 if (!mvsKeys.remove(mvsKey)) {
@@ -598,7 +629,7 @@ public class PrimeFaces {
                     continue;
                 }
 
-                if (reset) {
+                if (reset && mvsKey.viewId.equals(currentViewId)) {
                     reset(mvsKey.clientId);
                 }
 

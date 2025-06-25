@@ -1,9 +1,9 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" 
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-    xmlns:h="http://xmlns.jcp.org/jsf/html" 
-    xmlns:f="http://xmlns.jcp.org/jsf/core" 
-    xmlns:p="http://primefaces.org/ui"
-    xmlns:composite="http://xmlns.jcp.org/jsf/composite/composite" 
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core"
+    xmlns:p="primefaces"
+    xmlns:composite="jakarta.faces.composite"
     template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -84,7 +84,7 @@
                         </div>
                         <div class="field">
                             <span class="ui-float-label"> 
-                               <p:datePicker /> 
+                               <p:datePicker mask="true" pattern="dd.MM.yyyy" showIcon="true" showOnFocus="false" /> 
                                <p:outputLabel for="@previous" value="Datepicker" />
                             </span>
                         </div>
@@ -105,6 +105,12 @@
                             <span class="ui-float-label"> 
                                <p:inputTextarea rows="3" cols="30" /> 
                                <p:outputLabel for="@previous" value="Textarea" />
+                            </span>
+                        </div>
+                        <div class="field">
+                            <span class="ui-float-label"> 
+                               <p:password toggleMask="true" /> 
+                               <p:outputLabel for="@previous" value="Password" />
                             </span>
                         </div>
                     </div>

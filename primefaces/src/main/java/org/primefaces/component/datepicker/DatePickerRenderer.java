@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,8 @@
  */
 package org.primefaces.component.datepicker;
 
-import java.io.IOException;
-import java.text.DateFormatSymbols;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.Map.Entry;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
-
-import org.json.JSONObject;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.datepicker.DateMetadata;
 import org.primefaces.model.datepicker.DateMetadataModel;
@@ -50,17 +33,58 @@ import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class DatePickerRenderer extends BaseCalendarRenderer {
+import java.io.IOException;
+import java.text.DateFormatSymbols;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.ConverterException;
+
+import org.json.JSONObject;
+
+public class DatePickerRenderer extends BaseCalendarRenderer<DatePicker> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        DatePicker datePicker = (DatePicker) component;
-
-        if (datePicker.getModel() instanceof LazyDateMetadataModel && ComponentUtils.isRequestSource(datePicker, context, "viewChange")) {
-            encodeDateMetadata(context, datePicker);
+    public void decode(FacesContext context, DatePicker component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
+        initializeDefaults(context, component);
+        super.decode(context, component);
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context, DatePicker component) throws IOException {
+        if (component.getModel() instanceof LazyDateMetadataModel && ComponentUtils.isRequestSource(component, context, "viewChange")) {
+            encodeDateMetadata(context, component);
+            return;
+        }
+
+        initializeDefaults(context, component);
+
+        super.encodeEnd(context, component);
+    }
+
+    /**
+     * Initializes the default settings for the DatePicker component based on its pattern and value type.
+     *
+     * @param context the FacesContext instance
+     * @param datePicker the DatePicker component to initialize
+     */
+    protected void initializeDefaults(FacesContext context, DatePicker datePicker) {
         String pattern = datePicker.getPattern() == null ? datePicker.calculatePattern() : datePicker.getPattern();
 
         if (datePicker.isShowTimeWithoutDefault() == null) {
@@ -89,23 +113,21 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         if (datePicker.isShowMillisecondsWithoutDefault() == null) {
             datePicker.setShowMilliseconds(pattern.contains("S"));
         }
-
-        super.encodeEnd(context, component);
     }
 
-    protected void encodeDateMetadata(FacesContext context, DatePicker datePicker) throws IOException {
-        LazyDateMetadataModel model = (LazyDateMetadataModel) datePicker.getModel();
+    protected void encodeDateMetadata(FacesContext context, DatePicker component) throws IOException {
+        LazyDateMetadataModel model = (LazyDateMetadataModel) component.getModel();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = datePicker.getClientId(context);
+        String clientId = component.getClientId(context);
         int year = Integer.parseInt(params.get(clientId + "_year"));
         int month = Integer.parseInt(params.get(clientId + "_month")) + 1;
 
         LocalDate startDate = LocalDate.of(year, month, 1);
-        LocalDate endDate = startDate.plusMonths(datePicker.getNumberOfMonths()).minusDays(1);
+        LocalDate endDate = startDate.plusMonths(component.getNumberOfMonths()).minusDays(1);
 
         model.clear();
         model.loadDateMetadata(startDate, endDate);
-        encodeDateMetadataAsJSON(context, datePicker, model);
+        encodeDateMetadataAsJSON(context, component, model);
     }
 
     protected void encodeDateMetadataAsJSON(FacesContext context, DatePicker datePicker, DateMetadataModel model) throws IOException {
@@ -116,6 +138,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             DateMetadata metadata = entry.getValue();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("disabled", metadata.isDisabled());
+            jsonObject.put("enabled", metadata.isEnabled());
             jsonObject.put("styleClass", metadata.getStyleClass());
             jsonDateMetadata.put(date, jsonObject);
         }
@@ -128,44 +151,42 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     }
 
     @Override
-    protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
-        DatePicker datePicker = (DatePicker) uicalendar;
+    protected void encodeMarkup(FacesContext context, DatePicker component, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = datePicker.getClientId(context);
-        String styleClass = datePicker.getStyleClass();
+        String clientId = component.getClientId(context);
+        String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? UICalendar.CONTAINER_CLASS : UICalendar.CONTAINER_CLASS + " " + styleClass;
         styleClass = DatePicker.CONTAINER_EXTENSION_CLASS + " " + styleClass;
         String inputId = clientId + "_input";
-        boolean inline = datePicker.isInline();
+        boolean inline = component.isInline();
 
-        writer.startElement("span", datePicker);
+        writer.startElement("span", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
 
-        if (datePicker.getStyle() != null) {
-            writer.writeAttribute("style", datePicker.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
 
         //input
-        encodeInput(context, datePicker, inputId, value, !inline);
+        encodeInput(context, component, inputId, value, !inline);
 
         writer.endElement("span");
 
     }
 
     @Override
-    protected void encodeScript(FacesContext context, UICalendar uicalendar, String value) throws IOException {
-        DatePicker datePicker = (DatePicker) uicalendar;
-        Locale locale = datePicker.calculateLocale(context);
-        String pattern = datePicker.calculateWidgetPattern();
+    protected void encodeScript(FacesContext context, DatePicker component, String value) throws IOException {
+        Locale locale = component.calculateLocale(context);
+        String pattern = component.calculateWidgetPattern();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DatePicker", datePicker);
+        wb.init("DatePicker", component);
 
         String defaultDate = null;
 
-        if (datePicker.isConversionFailed()) {
-            Class<?> dateType = resolveDateType(context, datePicker);
-            defaultDate = CalendarUtils.getValueAsString(context, datePicker, CalendarUtils.now(uicalendar, dateType), true);
+        if (component.isConversionFailed()) {
+            Class<?> dateType = resolveDateType(context, component);
+            defaultDate = CalendarUtils.getValueAsString(context, component, CalendarUtils.now(component, dateType), true);
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;
@@ -175,135 +196,153 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         DateFormatSymbols symbols = new DateFormatSymbols(locale);
         String[] ampm = symbols.getAmPmStrings();
 
+        String selectionMode = component.getSelectionMode();
+
         wb.attr("defaultDate", defaultDate, null)
-            .attr("inline", datePicker.isInline())
+            .attr("inline", component.isInline())
             .attr("userLocale", locale.toString())
-            .attr("flex", ComponentUtils.isFlex(context, datePicker), false)
+            .attr("flex", ComponentUtils.isFlex(context, component), false)
             .attr("localeAm", ampm[0], "AM")
             .attr("localePm", ampm[1], "PM")
             .attr("dateFormat", CalendarUtils.convertPattern(pattern))
-            .attr("showIcon", datePicker.isShowIcon(), false)
-            .attr("buttonTabindex", datePicker.getButtonTabindex())
-            .attr("focusOnSelect", datePicker.isFocusOnSelect(), false)
-            .attr("disabled", datePicker.isDisabled(), false)
-            .attr("valid", datePicker.isValid(), true)
-            .attr("yearRange", datePicker.getYearRange(), null)
-            .attr("minDate", getMinMaxDate(context, datePicker, datePicker.getMindate(), false), null)
-            .attr("maxDate", getMinMaxDate(context, datePicker, datePicker.getMaxdate(), true), null)
-            .attr("selectionMode", datePicker.getSelectionMode(), null)
-            .attr("showOnFocus", datePicker.isShowOnFocus())
-            .attr("shortYearCutoff", datePicker.getShortYearCutoff(), null)
-            .attr("monthNavigator", datePicker.isMonthNavigator(), false)
-            .attr("yearNavigator", datePicker.isYearNavigator(), false)
-            .attr("showButtonBar", datePicker.isShowButtonBar(), false)
-            .attr("showMinMaxRange", datePicker.isShowMinMaxRange(), true)
-            .attr("autoMonthFormat", datePicker.isAutoMonthFormat(), true)
-            .attr("panelStyleClass", datePicker.getPanelStyleClass(), null)
-            .attr("panelStyle", datePicker.getPanelStyle(), null)
-            .attr("keepInvalid", datePicker.isKeepInvalid(), false)
-            .attr("maxDateCount", datePicker.getMaxDateCount(), Integer.MAX_VALUE)
-            .attr("numberOfMonths", datePicker.getNumberOfMonths(), 1)
-            .attr("view", datePicker.getView(), null)
-            .attr("autoDetectDisplay", datePicker.isAutoDetectDisplay(), true)
-            .attr("responsiveBreakpoint", datePicker.getResponsiveBreakpoint(), DatePicker.RESPONSIVE_BREAKPOINT_SMALL)
-            .attr("touchUI", datePicker.isTouchUI(), false)
-            .attr("showWeek", datePicker.isShowWeek(), false)
-            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datePicker, datePicker.getAppendTo(),
-                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
-            .attr("icon", datePicker.getTriggerButtonIcon(), null)
-            .attr("rangeSeparator", datePicker.getRangeSeparator(), "-")
-            .attr("timeSeparator", datePicker.getTimeSeparator(), ":")
-            .attr("fractionSeparator", datePicker.getFractionSeparator(), ".")
-            .attr("timeInput", datePicker.isTimeInput())
-            .attr("touchable", ComponentUtils.isTouchable(context, datePicker), true)
-            .attr("lazyModel", datePicker.getModel() instanceof LazyDateMetadataModel, false);
+            .attr("showIcon", component.isShowIcon(), false)
+            .attr("buttonTabindex", component.getButtonTabindex())
+            .attr("focusOnSelect", component.isFocusOnSelect(), false)
+            .attr("disabled", component.isDisabled(), false)
+            .attr("valid", component.isValid(), true)
+            .attr("yearRange", component.getYearRange(), null)
+            .attr("minDate", getMinMaxDate(context, component, component.getMindate(), false), null)
+            .attr("maxDate", getMinMaxDate(context, component, component.getMaxdate(), true), null)
+            .attr("selectionMode", selectionMode, null)
+            .attr("showOnFocus", component.isShowOnFocus())
+            .attr("shortYearCutoff", component.getShortYearCutoff(), null)
+            .attr("monthNavigator", component.isMonthNavigator(), false)
+            .attr("yearNavigator", component.getYearNavigator().toLowerCase(Locale.ROOT), "false")
+            .attr("showButtonBar", component.isShowButtonBar(), false)
+            .attr("showMinMaxRange", component.isShowMinMaxRange(), true)
+            .attr("autoMonthFormat", component.isAutoMonthFormat(), true)
+            .attr("panelStyleClass", component.getPanelStyleClass(), null)
+            .attr("panelStyle", component.getPanelStyle(), null)
+            .attr("keepInvalid", component.isKeepInvalid(), false)
+            .attr("maxDateCount", component.getMaxDateCount(), Integer.MAX_VALUE)
+            .attr("numberOfMonths", component.getNumberOfMonths(), 1)
+            .attr("view", component.getView(), null)
+            .attr("autoDetectDisplay", component.isAutoDetectDisplay(), true)
+            .attr("responsiveBreakpoint", component.getResponsiveBreakpoint(), DatePicker.RESPONSIVE_BREAKPOINT_SMALL)
+            .attr("touchUI", component.isTouchUI(), false)
+            .attr("showWeek", component.isShowWeek(), false)
+            .attr("showLongMonthNames", component.isShowLongMonthNames(), false)
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()))
+            .attr("icon", component.getTriggerButtonIcon(), null)
+            .attr("rangeSeparator", component.getRangeSeparator(), "-")
+            .attr("timeSeparator", component.getTimeSeparator(), ":")
+            .attr("fractionSeparator", component.getFractionSeparator(), ".")
+            .attr("timeInput", component.isTimeInput())
+            .attr("timeZone", component.getTimeZone() == null ? null : CalendarUtils.calculateZoneId(component.getTimeZone()).toString(), null)
+            .attr("touchable", ComponentUtils.isTouchable(context, component), true)
+            .attr("readonly", component.isReadonly(), false)
+            .attr("lazyModel", component.getModel() instanceof LazyDateMetadataModel, false);
 
-        List<Integer> disabledDays = datePicker.getDisabledDays();
+        List<Integer> disabledDays = component.getDisabledDays();
         if (disabledDays != null) {
-            CalendarUtils.encodeListValue(context, datePicker, "disabledDays", disabledDays, pattern);
+            CalendarUtils.encodeListValue(context, component, "disabledDays", disabledDays, pattern);
         }
 
-        List<Object> disabledDates = datePicker.getInitialDisabledDates(context);
+        List<Object> disabledDates = component.getInitialDisabledDates(context);
         if (disabledDates != null) {
-            CalendarUtils.encodeListValue(context, datePicker, "disabledDates", disabledDates, pattern);
+            CalendarUtils.encodeListValue(context, component, "disabledDates", disabledDates, pattern);
         }
-        encodeScriptDateStyleClasses(wb, datePicker);
 
-        String dateTemplate = datePicker.getDateTemplate();
+        List enabledDates = component.getInitialEnabledDates(context);
+        if (enabledDates != null && !enabledDates.isEmpty()) {
+            CalendarUtils.encodeListValue(context, component, "enabledDates", enabledDates, pattern);
+        }
+        encodeScriptDateStyleClasses(wb, component);
+
+        String dateTemplate = component.getDateTemplate();
         if (dateTemplate != null) {
             wb.nativeAttr("dateTemplate", dateTemplate);
         }
 
-        String beforeShow = datePicker.getBeforeShow();
+        String beforeShow = component.getBeforeShow();
         if (beforeShow != null) {
             wb.nativeAttr("preShow", beforeShow);
         }
 
-        String onMonthChange = datePicker.getOnMonthChange();
+        String onMonthChange = component.getOnMonthChange();
         if (onMonthChange != null) {
             wb.nativeAttr("onMonthChange", onMonthChange);
         }
 
-        String onYearChange = datePicker.getOnYearChange();
+        String onYearChange = component.getOnYearChange();
         if (onYearChange != null) {
             wb.nativeAttr("onYearChange", onYearChange);
         }
 
-        String weekCalculator = datePicker.getWeekCalculator();
+        String weekCalculator = component.getWeekCalculator();
         if (weekCalculator != null) {
             wb.nativeAttr("weekCalculator", weekCalculator);
         }
 
-        if (datePicker.isShowOtherMonths()) {
-            wb.attr("showOtherMonths", true).attr("selectOtherMonths", datePicker.isSelectOtherMonths());
+        if (component.isShowOtherMonths()) {
+            wb.attr("showOtherMonths", true).attr("selectOtherMonths", component.isSelectOtherMonths());
         }
 
-        if (datePicker.hasTime()) {
-            wb.attr("showTime", datePicker.isShowTime(), false)
-                .attr("hourFormat", datePicker.getHourFormat(), null)
-                .attr("timeOnly", datePicker.isTimeOnly(), false)
-                .attr("showSeconds", datePicker.isShowSeconds(), false)
-                .attr("showMilliseconds", datePicker.isShowMilliseconds(), false)
-                .attr("stepHour", datePicker.getStepHour(), 1)
-                .attr("stepMinute", datePicker.getStepMinute(), 1)
-                .attr("stepSecond", datePicker.getStepSecond(), 1)
-                .attr("stepMillisecond", datePicker.getStepSecond(), 1)
-                .attr("hideOnDateTimeSelect", datePicker.isHideOnDateTimeSelect(), false);
+        if (component.hasTime()) {
+            wb.attr("showTime", component.isShowTime(), false)
+                .attr("hourFormat", component.getHourFormat(), null)
+                .attr("timeOnly", component.isTimeOnly(), false)
+                .attr("showSeconds", component.isShowSeconds(), false)
+                .attr("showMilliseconds", component.isShowMilliseconds(), false)
+                .attr("stepHour", component.getStepHour(), 1)
+                .attr("stepMinute", component.getStepMinute(), 1)
+                .attr("stepSecond", component.getStepSecond(), 1)
+                .attr("stepMillisecond", component.getStepSecond(), 1)
+                .attr("hideOnDateTimeSelect", component.isHideOnDateTimeSelect(), false)
+                .attr("defaultHour", component.getDefaultHour())
+                .attr("defaultMinute", component.getDefaultMinute())
+                .attr("defaultSecond", component.getDefaultSecond())
+                .attr("defaultMillisecond", component.getDefaultMillisecond());
         }
 
-        String mask = datePicker.getMask();
+
+        if ("range".equalsIgnoreCase(selectionMode)) {
+            wb.attr("hideOnRangeSelection", component.isHideOnRangeSelection(), false);
+        }
+
+        String mask = component.getMask();
         if (mask != null && !"false".equals(mask)) {
-            wb.attr("mask", resolveMask(datePicker, mask))
-                .attr("maskSlotChar", datePicker.getMaskSlotChar(), "_")
-                .attr("maskAutoClear", datePicker.isMaskAutoClear(), true);
+            wb.attr("mask", resolveMask(component, mask))
+                .attr("maskSlotChar", component.getMaskSlotChar(), "_")
+                .attr("maskAutoClear", component.isMaskAutoClear(), true);
         }
 
-        encodeClientBehaviors(context, datePicker);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected String resolveMask(DatePicker datePicker, String mask) {
+    protected String resolveMask(DatePicker component, String mask) {
         if (!"true".equals(mask)) {
             return mask;
         }
-        String patternMask = datePicker.convertPattern(datePicker.calculatePattern());
-        switch (datePicker.getSelectionMode()) {
+        String patternMask = component.convertPattern(component.calculatePattern());
+        switch (component.getSelectionMode()) {
             case "multiple":
                 throw new FacesException("Mask is not supported on selectionMode multiple");
             case "range":
-                return patternMask + " " + datePicker.getRangeSeparator() + " " + patternMask;
+                return patternMask + " " + component.getRangeSeparator() + " " + patternMask;
             default:
                 return patternMask;
         }
     }
 
-    protected void encodeScriptDateStyleClasses(WidgetBuilder wb, DatePicker datePicker) throws IOException {
-        if (datePicker.getModel() == null) {
+    protected void encodeScriptDateStyleClasses(WidgetBuilder wb, DatePicker component) throws IOException {
+        if (component.getModel() == null) {
             return;
         }
         JSONObject styleClasses = new JSONObject();
-        for (Entry<LocalDate, DateMetadata> entry : datePicker.getModel().getDateMetadata().entrySet()) {
+        for (Entry<LocalDate, DateMetadata> entry : component.getModel().getDateMetadata().entrySet()) {
             DateMetadata metadata = entry.getValue();
             if (metadata.getStyleClass() != null) {
                 styleClasses.put(entry.getKey().toString(), metadata.getStyleClass());
@@ -332,7 +371,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
                 return multi;
             case "range":
-                List<String> rangeStr = CalendarUtils.splitRange(submittedValue, datePicker.calculatePattern(), datePicker.getRangeSeparator());
+                List<String> rangeStr = CalendarUtils.splitRange(submittedValue, datePicker.calculatePattern(),
+                        datePicker.getRangeSeparator(), "week".equals(datePicker.getView()));
                 List<Object> range = new ArrayList<>();
                 if (rangeStr.size() == 2) {
                     for (int i = 0; i < rangeStr.size(); i++) {
@@ -355,12 +395,12 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         }
     }
 
-    private String getMinMaxDate(FacesContext context, DatePicker datePicker, Object value, boolean max) {
-        if (value instanceof LocalDate && datePicker.isShowTime()) {
+    private String getMinMaxDate(FacesContext context, DatePicker component, Object value, boolean max) {
+        if (value instanceof LocalDate && component.isShowTime()) {
             LocalDate date = (LocalDate) value;
             value = date.atTime(max ? LocalTime.MAX : LocalTime.MIN);
         }
-        return CalendarUtils.getValueAsString(context, datePicker, value);
+        return CalendarUtils.getValueAsString(context, component, value);
     }
 }
 

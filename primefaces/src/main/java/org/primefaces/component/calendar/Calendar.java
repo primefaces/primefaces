@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,12 @@
  */
 package org.primefaces.component.calendar;
 
+import org.primefaces.event.DateViewChangeEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -31,20 +37,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-
-import org.primefaces.event.DateViewChangeEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.PhaseId;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "inputmask/inputmask.js")
 @ResourceDependency(library = "primefaces", name = "calendar/calendar.css")
@@ -71,7 +72,7 @@ public class Calendar extends CalendarBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
+        FacesContext context = event.getFacesContext();
 
         if (ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -106,7 +107,7 @@ public class Calendar extends CalendarBase {
 
         if (isValid() && ComponentUtils.isRequestSource(this, context) && customEvents != null) {
             for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
-                SelectEvent selectEvent = new SelectEvent(this, event.getValue().getBehavior(), getValue());
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, event.getValue().getBehavior(), getValue());
 
                 if (event.getValue().getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
                     selectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);

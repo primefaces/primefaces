@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.log;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "log/log.css")
@@ -36,14 +36,14 @@ public class Log extends LogBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Log";
 
-    public static final String CONTAINER_CLASS = "ui-log ui-widget ui-widget-content ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-log ui-widget ui-widget-content";
     public static final String HEADER_CLASS = "ui-log-header ui-widget-header ui-helper-clearfix";
     public static final String CONTENT_CLASS = "ui-log-content";
     public static final String ITEMS_CLASS = "ui-log-items";
-    public static final String CLEAR_BUTTON_CLASS = "ui-log-button ui-log-clear ui-corner-all";
-    public static final String ALL_BUTTON_CLASS = "ui-log-button ui-log-all ui-corner-all";
-    public static final String INFO_BUTTON_CLASS = "ui-log-button ui-log-info ui-corner-all";
-    public static final String DEBUG_BUTTON_CLASS = "ui-log-button ui-log-debug ui-corner-all";
-    public static final String WARN_BUTTON_CLASS = "ui-log-button ui-log-warn ui-corner-all";
-    public static final String ERROR_BUTTON_CLASS = "ui-log-button ui-log-error ui-corner-all";
+    public static final String CLEAR_BUTTON_CLASS = "ui-log-button ui-log-clear";
+    public static final String ALL_BUTTON_CLASS = "ui-log-button ui-log-all";
+    public static final String INFO_BUTTON_CLASS = "ui-log-button ui-log-info";
+    public static final String DEBUG_BUTTON_CLASS = "ui-log-button ui-log-debug";
+    public static final String WARN_BUTTON_CLASS = "ui-log-button ui-log-warn";
+    public static final String ERROR_BUTTON_CLASS = "ui-log-button ui-log-error";
 }

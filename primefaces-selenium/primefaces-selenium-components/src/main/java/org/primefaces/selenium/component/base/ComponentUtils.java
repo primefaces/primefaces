@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,9 @@
  */
 package org.primefaces.selenium.component.base;
 
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
+
+import org.openqa.selenium.WebElement;
 
 public final class ComponentUtils {
 
@@ -37,7 +38,7 @@ public final class ComponentUtils {
             return false;
         }
 
-        String id = element.getAttribute("id");
+        String id = element.getDomAttribute("id");
         String result = PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + ".getBehavior('" + behavior + "').toString();");
         return isAjaxScript(result);
     }
@@ -47,12 +48,12 @@ public final class ComponentUtils {
             return false;
         }
 
-        String id = element.getAttribute("id");
+        String id = element.getDomAttribute("id");
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + ".hasBehavior('" + behavior + "');");
     }
 
     public static boolean isWidget(WebElement element) {
-        String id = element.getAttribute("id");
+        String id = element.getDomAttribute("id");
         if (id == null || id.isEmpty()) {
             return false;
         }
@@ -68,11 +69,11 @@ public final class ComponentUtils {
         return script.contains("PrimeFaces.ab(") || script.contains("pf.ab(")
                 || script.contains("mojarra.ab(")
                 || script.contains("myfaces.ab(")
-                || script.contains("jsf.ajax.request") || script.contains("faces.ajax.request");
+                || script.contains("faces.ajax.request");
     }
 
     public static String getWidgetConfiguration(WebElement element) {
-        String id = element.getAttribute("id");
+        String id = element.getDomAttribute("id");
         return PrimeSelenium.executeScript("return JSON.stringify(" + getWidgetByIdScript(id) + ".cfg, function(key, value) {\n" +
                     "  if (typeof value === 'function') {\n" +
                     "    return value.toString();\n" +

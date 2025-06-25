@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,20 @@
  */
 package org.primefaces.csp;
 
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
-
-import org.owasp.encoder.Encode;
 import org.primefaces.PrimeFaces;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeFacesContext;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
+
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.PhaseEvent;
+import jakarta.faces.event.PhaseId;
+import jakarta.faces.event.PhaseListener;
+
+import org.owasp.encoder.Encode;
 
 public class CspPhaseListener implements PhaseListener {
 
@@ -86,7 +88,7 @@ public class CspPhaseListener implements PhaseListener {
         state.setInitialized(true);
 
         if (LangUtils.isNotBlank(reportOnlyPolicy)) {
-            String policy = "script-src 'self' 'nonce-" + state.getNonce() + "'; " + reportOnlyPolicy + ";";
+            String policy = reportOnlyPolicy + " 'nonce-" + state.getNonce() + "';";
             externalContext.addResponseHeader("Content-Security-Policy-Report-Only", policy);
         }
         else {
@@ -95,7 +97,10 @@ public class CspPhaseListener implements PhaseListener {
             externalContext.addResponseHeader("Content-Security-Policy", policy);
         }
 
-        String init = "if(window.PrimeFaces){PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');};";
+        String init = "if(window.PrimeFaces){PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');}";
+        if (context.isProjectStage(ProjectStage.Development)) {
+            init += "else{console.log('CSP active but PrimeFaces not included in current view!');}";
+        }
         PrimeFaces.current().executeInitScript(init);
     }
 

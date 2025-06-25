@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,12 @@
  */
 package org.primefaces.component.texteditor;
 
-import java.util.List;
-import javax.faces.component.UIInput;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.Widget;
+
+import java.util.List;
+
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorHolder {
 
@@ -71,11 +72,11 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public int getHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.height, Integer.MIN_VALUE);
+    public String getHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
-    public void setHeight(int height) {
+    public void setHeight(String height) {
         getStateHelper().put(PropertyKeys.height, height);
     }
 

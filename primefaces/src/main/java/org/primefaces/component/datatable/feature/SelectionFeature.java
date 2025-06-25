@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,23 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.lang.reflect.Array;
-import java.util.*;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableBase;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.util.LangUtils;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
 
 public class SelectionFeature implements DataTableFeature {
 
@@ -43,7 +50,7 @@ public class SelectionFeature implements DataTableFeature {
         String clientId = table.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Object originalValue = table.getValue();
-        boolean isFiltered = table.isFilteringCurrentlyActive();
+        boolean allEligibleToSelection = table.isFilteringCurrentlyActive() && !table.isSelectAllFilteredOnly();
 
         String selection = params.get(clientId + "_selection");
         Set<String> rowKeys = Collections.emptySet();
@@ -56,13 +63,13 @@ public class SelectionFeature implements DataTableFeature {
             table.setSelectAll(false);
         }
 
-        if (isFiltered) {
+        if (allEligibleToSelection) {
             table.setValue(null);
         }
 
         decodeSelection(context, table, rowKeys);
 
-        if (isFiltered) {
+        if (allEligibleToSelection) {
             table.setValue(originalValue);
         }
 
@@ -98,9 +105,9 @@ public class SelectionFeature implements DataTableFeature {
                 }
                 else {
                     Class<?> clazz = selection.getClass();
-                    boolean isArray = clazz != null && clazz.isArray();
+                    boolean isArray = clazz.isArray();
 
-                    if (clazz != null && !isArray && !List.class.isAssignableFrom(clazz)) {
+                    if (!isArray && !List.class.isAssignableFrom(clazz)) {
                         throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
                     }
 
@@ -134,9 +141,9 @@ public class SelectionFeature implements DataTableFeature {
                 List<Object> selectionTmp = Collections.emptyList();
                 Set<String> rowKeysTmp = Collections.emptySet();
                 if (isSelectable(table, var, requestMap, o)) {
-                    selectionTmp = new ArrayList(1);
+                    selectionTmp = new ArrayList<>(1);
                     selectionTmp.add(o);
-                    rowKeysTmp = new HashSet(1);
+                    rowKeysTmp = new HashSet<>(1);
                     rowKeysTmp.add(rowKey);
                 }
 
@@ -204,7 +211,7 @@ public class SelectionFeature implements DataTableFeature {
             requestMap.put(var, o);
         }
 
-        boolean selectable = table.isSelectionEnabled() && !table.isDisabledSelection();
+        boolean selectable = table.isSelectionEnabled() && !table.isSelectionDisabled();
 
         if (!containsVar) {
             requestMap.remove(var);

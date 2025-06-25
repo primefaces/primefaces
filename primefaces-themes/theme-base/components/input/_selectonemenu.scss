@@ -1,0 +1,172 @@
+@use 'sass:list';
+@use 'sass:math';
+
+body {
+  .ui-selectonemenu {
+    vertical-align: middle;
+    border: $inputBorder;
+    position: relative;
+    padding: 0;
+    transition: $transition;
+    border-radius: $borderRadius;
+    background: $inputBg;
+
+    .ui-selectonemenu-label {
+      background: transparent;
+      padding-right: $buttonIconOnlyWidth;
+      
+      &.ui-selectonemenu-label-placeholder {
+        color:  $inputPlaceholderTextColor;
+      }
+    }
+
+    .ui-selectonemenu-trigger {
+      border: 0 none;
+      cursor: pointer;
+      height: 100%;
+      position: absolute;
+      padding: 0;
+      @include flex();
+      @include flex-align-center();
+      @include flex-justify-center();
+      width: $buttonIconOnlyWidth;
+      background: transparent;
+      border-top-right-radius: $borderRadius;
+      border-bottom-right-radius: $borderRadius;
+
+      .ui-icon {
+        position: static;
+        margin: 0;
+        color: $inputIconColor;
+        @include icon-override("\e902");
+      }
+    }
+
+    &.ui-state-hover {
+      border-color: $inputHoverBorderColor;
+    }
+
+    &.ui-state-focus {
+      @include focused-input();
+    }
+
+    &.ui-state-error {
+      @include invalid-input();
+    }
+  }
+
+  .ui-fluid {
+    .ui-selectonemenu-label {
+      width: calc(100% - #{$buttonIconOnlyWidth});
+      padding: $inputPadding;
+    }
+    .ui-selectonemenu {
+      .ui-selectonemenu-trigger {
+        width: $buttonIconOnlyWidth;
+        padding: 0;
+      }
+    }
+  }
+
+  &.ui-input-filled,
+  .ui-input-filled {
+    .ui-selectonemenu {
+      background: $inputFilledBg;
+
+      &.ui-state-hover {
+        background-color: $inputFilledHoverBg;
+      }
+
+      &.ui-state-focus {
+        background-color: $inputFilledFocusBg;
+      }
+    }
+  }
+
+  .ui-selectonemenu-panel {
+    background: $inputListBg;
+    border: $inputOverlayBorder;
+    box-shadow: $inputOverlayShadow;
+    border-radius: $borderRadius;
+
+    .ui-selectonemenu-filter-container {
+      padding: $inputListHeaderPadding;
+      margin: 0;
+      border-bottom: $inputListHeaderBorder;
+      background: $inputListHeaderBg;
+      color: $inputListHeaderTextColor;
+
+      .ui-selectonemenu-filter.ui-inputfield {
+        padding: $inputPadding;
+        width: 100%;
+        padding-left: 2 * list.nth($inputPadding, 2) + $iconSize;
+      }
+
+      .ui-icon {
+        @include icon-override("\e908");
+        position: absolute;
+        left: list.nth($inputListHeaderPadding, 2) + list.nth($inputPadding, 2);
+        top: 50%;
+        right: auto;
+        bottom: auto;
+        margin-top: math.div(-1 * $iconSize, 2);
+        color: $inputIconColor;
+      }
+    }
+
+    .ui-selectonemenu-items {
+      padding: $inputListPadding;
+
+      &.ui-selectonemenu-table {
+        > thead tr th {
+          background: $panelHeaderBg;
+          border: $datatableHeaderCellBorder;
+          color: $panelHeaderTextColor;
+          font-weight: $panelHeaderFontWeight;
+        }
+      }
+
+      .ui-selectonemenu-item {
+        margin: $inputListItemMargin;
+        padding: $inputListItemPadding;
+        background: $inputListItemBg;
+        color: $inputListItemTextColor;
+        outline: 0 none;
+        border-radius: $inputListItemBorderRadius;
+        transition: $transition;
+
+        &.ui-selectonemenu-row {
+          background: $datatableBodyRowBg;
+          color: $datatableBodyRowTextColor;
+          border: $datatableBodyRowBorder;
+
+          > td {
+            padding: $datatableBodyCellPadding;
+          }
+
+          &:first-child {
+            border-top-color: transparent;
+          }
+        }
+
+        &.ui-state-hover {
+          background: $inputListItemHoverBg;
+          color: $inputListItemTextHoverColor;
+        }
+
+        &.ui-state-highlight {
+          background: $inputListItemHighlightBg;
+          color: $inputListItemHighlightTextColor;
+          overflow: auto;
+        }
+      }
+
+      .ui-selectonemenu-item-group {
+        background: $submenuHeaderBg;
+        margin: $submenuHeaderMargin;
+        padding: $submenuHeaderPadding;
+        color: $submenuHeaderTextColor;
+      }
+    }
+  }
+}

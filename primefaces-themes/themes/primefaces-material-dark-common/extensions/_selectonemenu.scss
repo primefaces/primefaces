@@ -1,0 +1,40 @@
+body {
+  .ui-selectonemenu {
+    &.ui-state-focus:not(.ui-state-error) {
+      box-shadow: inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor;
+    }
+
+    &.ui-state-error.ui-state-focus:not(.ui-state-disabled) {
+      box-shadow: inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor;
+
+    }
+
+    .ui-inputfield {
+      background-image: none;
+      background: transparent;
+      border: 0 none;
+    }
+  }
+
+  &.ui-input-filled, .ui-input-filled {
+    .ui-selectonemenu {
+      @include filled-input-wrapper();
+
+      .ui-inputfield {
+        border: 0 none;
+      }
+
+      &.ui-state-error {
+        @include invalid-filled-input();
+
+        &:not(.ui-state-disabled).ui-state-hover {
+          @include invalid-filled-input();
+        }
+
+        &:not(.ui-state-disabled).ui-state-focus {
+          @include invalid-filled-input-wrapper();
+        }
+      }
+    }
+  }
+}

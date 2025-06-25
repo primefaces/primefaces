@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
 
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
     <h:head>
@@ -22,11 +22,11 @@
 
                 <p:column headerText="ID" field="id"/>
                 <p:column headerText="salary notEquals" field="salary" filterMatchMode="notEquals"
-                          converter="javax.faces.Integer"/>
+                          converter="jakarta.faces.Integer"/>
                 <p:column headerText="last login notBetween" field="lastLoginDateTime" filterMatchMode="notBetween">
                     <f:facet name="filter">
                         <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateTimeFilter"
-                                      pattern="yyyy-MM-dd" rangeSeparator="-">
+                                      pattern="yyyy-MM-dd" rangeSeparator="-" showOnFocus="false">
                             <f:convertDateTime type="localDateTime"/>
                         </p:datePicker>
                     </f:facet>

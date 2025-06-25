@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,34 @@
  */
 package org.primefaces.component.gmap;
 
-import java.util.*;
-
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.PrimeFaces;
-import org.primefaces.event.map.*;
+import org.primefaces.event.map.GeocodeEvent;
+import org.primefaces.event.map.MarkerDragEvent;
+import org.primefaces.event.map.OverlaySelectEvent;
+import org.primefaces.event.map.PointSelectEvent;
+import org.primefaces.event.map.ReverseGeocodeEvent;
+import org.primefaces.event.map.StateChangeEvent;
 import org.primefaces.model.map.GeocodeResult;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.LatLngBounds;
 import org.primefaces.model.map.Marker;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
@@ -76,7 +85,7 @@ public class GMap extends GMapBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
+        FacesContext context = event.getFacesContext();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
@@ -87,7 +96,7 @@ public class GMap extends GMapBase {
             FacesEvent wrapperEvent = null;
 
             if ("overlaySelect".equals(eventName) || "overlayDblSelect".equals(eventName)) {
-                wrapperEvent = new OverlaySelectEvent(this, behaviorEvent.getBehavior(), getModel().findOverlay(params.get(clientId + "_overlayId")));
+                wrapperEvent = new OverlaySelectEvent<>(this, behaviorEvent.getBehavior(), getModel().findOverlay(params.get(clientId + "_overlayId")));
 
                 //if there is info window, update and show it
                 GMapInfoWindow infoWindow = getInfoWindow();
@@ -114,12 +123,12 @@ public class GMap extends GMapBase {
                 wrapperEvent = new PointSelectEvent(this, behaviorEvent.getBehavior(), position);
             }
             else if ("markerDrag".equals(eventName)) {
-                Marker marker = (Marker) getModel().findOverlay(params.get(clientId + "_markerId"));
+                Marker<?> marker = (Marker<?>) getModel().findOverlay(params.get(clientId + "_markerId"));
                 double lat = Double.parseDouble(params.get(clientId + "_lat"));
                 double lng = Double.parseDouble(params.get(clientId + "_lng"));
                 marker.setLatlng(new LatLng(lat, lng));
 
-                wrapperEvent = new MarkerDragEvent(this, behaviorEvent.getBehavior(), marker);
+                wrapperEvent = new MarkerDragEvent<>(this, behaviorEvent.getBehavior(), marker);
             }
             else if ("geocode".equals(eventName)) {
                 List<GeocodeResult> results = new ArrayList<>();
@@ -159,12 +168,6 @@ public class GMap extends GMapBase {
     }
 
     public GMapInfoWindow getInfoWindow() {
-        for (UIComponent kid : getChildren()) {
-            if (kid instanceof GMapInfoWindow) {
-                return (GMapInfoWindow) kid;
-            }
-        }
-
-        return null;
+        return ComponentTraversalUtils.firstChildRendered(GMapInfoWindow.class, this);
     }
 }

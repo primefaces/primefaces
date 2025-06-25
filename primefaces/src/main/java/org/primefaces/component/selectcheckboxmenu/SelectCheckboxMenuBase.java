@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,13 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
-import javax.faces.component.html.HtmlSelectManyCheckbox;
-
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, PrimeClientBehaviorHolder {
+import jakarta.faces.component.html.HtmlSelectManyCheckbox;
+
+public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, InputHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -36,28 +37,30 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public enum PropertyKeys {
 
-        widgetVar,
-        scrollHeight,
-        onShow,
-        onHide,
-        filter,
-        filterMatchMode,
-        filterFunction,
-        filterPlaceholder,
+        appendTo,
         caseSensitive,
+        dynamic,
+        emptyLabel,
+        filter,
+        filterFunction,
+        filterMatchMode,
+        filterNormalize,
+        filterPlaceholder,
+        labelSeparator,
+        multiple,
+        onHide,
+        onShow,
         panelStyle,
         panelStyleClass,
-        var,
-        appendTo,
+        scrollHeight,
+        selectedLabel,
+        showHeader,
+        showSelectAll,
         tabindex,
         title,
-        showHeader,
         updateLabel,
-        multiple,
-        dynamic,
-        labelSeparator,
-        emptyLabel,
-        filterNormalize
+        var,
+        widgetVar
     }
 
     public SelectCheckboxMenuBase() {
@@ -201,6 +204,14 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         getStateHelper().put(PropertyKeys.showHeader, showHeader);
     }
 
+    public boolean isShowSelectAll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSelectAll, true);
+    }
+
+    public void setShowSelectAll(boolean showSelectAll) {
+        getStateHelper().put(PropertyKeys.showSelectAll, showSelectAll);
+    }
+
     public boolean isUpdateLabel() {
         return (Boolean) getStateHelper().eval(PropertyKeys.updateLabel, false);
     }
@@ -239,6 +250,14 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public void setEmptyLabel(String emptyLabel) {
         getStateHelper().put(PropertyKeys.emptyLabel, emptyLabel);
+    }
+
+    public String getSelectedLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.selectedLabel, null);
+    }
+
+    public void setSelectedLabel(String selectedLabel) {
+        getStateHelper().put(PropertyKeys.selectedLabel, selectedLabel);
     }
 
     public boolean isFilterNormalize() {

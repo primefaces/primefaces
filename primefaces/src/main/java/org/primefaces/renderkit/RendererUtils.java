@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,20 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+
 import java.io.IOException;
 
-import javax.faces.FactoryFinder;
-import javax.faces.application.Application;
-import javax.faces.application.ViewHandler;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.render.RenderKit;
-import javax.faces.render.RenderKitFactory;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.util.HTML;
+import jakarta.faces.FactoryFinder;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.ViewHandler;
+import jakarta.faces.component.Doctype;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.RenderKit;
+import jakarta.faces.render.RenderKitFactory;
 
 public class RendererUtils {
 
@@ -54,7 +54,7 @@ public class RendererUtils {
         ResponseWriter writer = context.getResponseWriter();
         String icon;
         String boxClass = disabled ? HTML.CHECKBOX_BOX_CLASS + " ui-state-disabled" : HTML.CHECKBOX_BOX_CLASS;
-        boxClass += checked ? " ui-state-active" : "";
+        boxClass += checked ? " ui-state-active" : Constants.EMPTY_STRING;
         String containerClass = (styleClass == null) ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
 
         if (checked) {
@@ -131,13 +131,38 @@ public class RendererUtils {
      * @throws IOException if any error occurs
      */
     public static void encodeScriptTypeIfNecessary(FacesContext context) throws IOException {
-        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
-        PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
-        if (applicationContext.getConfig().isHtml5Compliant()) {
+        if (isOutputHtml5Doctype(context)) {
             return;
         }
         ResponseWriter writer = context.getResponseWriter();
         writer.writeAttribute("type", SCRIPT_TYPE, null);
     }
 
+    /**
+     * Returns <code>true</code> if the view root associated with the given {@link FacesContext}
+     * will be rendered with a HTML5 doctype.
+     *
+     * @param context Involved faces context.
+     * @return <code>true</code> if the view root associated with the given faces context
+     *      will be rendered with a HTML5 doctype.
+     */
+    public static boolean isOutputHtml5Doctype(FacesContext context) {
+        UIViewRoot viewRoot = context.getViewRoot();
+        if (viewRoot == null) {
+            return false;
+        }
+
+        Doctype doctype = viewRoot.getDoctype();
+        if (doctype == null) {
+            return false;
+        }
+
+        String rootElement = doctype.getRootElement();
+        String publicVal = doctype.getPublic();
+        String system = doctype.getSystem();
+
+        return "html".equalsIgnoreCase(rootElement)
+                && publicVal == null
+                && system == null;
+    }
 }

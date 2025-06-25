@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,30 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.util.Callbacks;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import javax.faces.FacesException;
-
-import org.primefaces.util.SerializableConsumer;
-import org.primefaces.util.SerializableSupplier;
+import jakarta.faces.FacesException;
 
 /**
  * Default implementation of a StreamedContent
  */
 public class DefaultStreamedContent implements StreamedContent, Serializable {
 
+    public static final DefaultStreamedContent DUMMY = new DefaultStreamedContent();
+
     private static final long serialVersionUID = 1L;
-    private SerializableSupplier<InputStream> stream;
+    private Callbacks.SerializableSupplier<InputStream> stream;
     private String contentType;
     private String name;
     private String contentEncoding;
     private Long contentLength;
-    private SerializableConsumer<OutputStream> writer;
+    private Callbacks.SerializableConsumer<OutputStream> writer;
 
     public DefaultStreamedContent() {
         // NOOP
@@ -93,7 +94,7 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
             streamedContent = new DefaultStreamedContent();
         }
 
-        public Builder stream(SerializableSupplier<InputStream> is) {
+        public Builder stream(Callbacks.SerializableSupplier<InputStream> is) {
             streamedContent.stream = is;
             return this;
         }
@@ -118,7 +119,7 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
             return this;
         }
 
-        public Builder writer(SerializableConsumer<OutputStream> writer) {
+        public Builder writer(Callbacks.SerializableConsumer<OutputStream> writer) {
             streamedContent.writer = writer;
             return this;
         }

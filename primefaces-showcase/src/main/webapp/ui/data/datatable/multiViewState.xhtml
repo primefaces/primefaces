@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -48,7 +48,7 @@
                     <f:facet name="header">
                         <p:outputPanel>
                             <h:outputText value="Search all fields:"/>
-                            <p:inputText id="globalFilter" onkeyup="PF('customersTable').filter()" style="width:150px"
+                            <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('customersTable').filter())" style="width:150px"
                                          placeholder="Enter keyword"/>
                         </p:outputPanel>
                     </f:facet>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,36 @@
  */
 package org.primefaces.integrationtests.dataexporter;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.junit.jupiter.api.*;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataExporter002Test extends AbstractDataExporterTest {
+import java.io.File;
+import java.io.IOException;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class DataExporter002Test extends AbstractDataExporterTest {
 
     @Test
     @Order(1)
     @DisplayName("Exporter: CSV download page only with non-exportable column")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testCsv(Page page) throws IOException {
+    void csv(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages-pageonly.csv");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(3, dataTable.getRows().size());
+        assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(2);
@@ -63,12 +69,12 @@ public class DataExporter002Test extends AbstractDataExporterTest {
     @DisplayName("Exporter: XML download page only with non-exportable column")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testXml(Page page) throws IOException {
+    void xml(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages-pageonly.xml");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(3, dataTable.getRows().size());
+        assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(2);
@@ -85,12 +91,12 @@ public class DataExporter002Test extends AbstractDataExporterTest {
     @DisplayName("Exporter: TXT download page only with non-exportable column")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testTxt(Page page) throws IOException {
+    void txt(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages-pageonly.txt");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(3, dataTable.getRows().size());
+        assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(2);
@@ -107,12 +113,12 @@ public class DataExporter002Test extends AbstractDataExporterTest {
     @DisplayName("Exporter: XLSX download page only with non-exportable column")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testXlsx(Page page) throws IOException {
+    void xlsx(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages-pageonly.xlsx");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(3, dataTable.getRows().size());
+        assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(2);
@@ -129,12 +135,12 @@ public class DataExporter002Test extends AbstractDataExporterTest {
     @DisplayName("Exporter: PDF download page only with non-exportable column")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testPdf(Page page) throws IOException {
+    void pdf(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages-pageonly.pdf");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(3, dataTable.getRows().size());
+        assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(2);

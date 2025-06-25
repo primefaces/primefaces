@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -130,12 +130,8 @@ public class MarkerLabel implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof MarkerLabel)) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         MarkerLabel other = (MarkerLabel) obj;
         return Objects.equals(className, other.className) && Objects.equals(color, other.color) && Objects.equals(fontFamily, other.fontFamily)
                     && Objects.equals(fontSize, other.fontSize) && Objects.equals(fontWeight, other.fontWeight) && Objects.equals(text, other.text);

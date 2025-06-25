@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,6 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import java.util.List;
-import java.util.function.Supplier;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
@@ -38,19 +30,29 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 
-public class DataTable036Test extends AbstractDataTableTest {
+import java.util.List;
+import java.util.function.Supplier;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class DataTable036Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: MultiViewState - selection with non-lazy-mode")
-    public void multiViewStateSelection(PageNonLazy page, OtherPage otherPage) {
+    void multiViewStateSelection(PageNonLazy page, OtherPage otherPage) {
         testImplementationMultiViewStateSelection(page, otherPage, () -> languages);
     }
 
     @Test
     @Order(2)
     @DisplayName("DataTable: MultiViewState - selection with lazy-mode")
-    public void multiViewStateSelection(PageLazy page, OtherPage otherPage) {
+    void multiViewStateSelection(PageLazy page, OtherPage otherPage) {
         testImplementationMultiViewStateSelection(page, otherPage, model::getLangs);
     }
 
@@ -60,7 +62,7 @@ public class DataTable036Test extends AbstractDataTableTest {
         PrimeSelenium.goTo(page);
         PrimeSelenium.guardAjax(page.buttonClearTableState).click();
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Act
@@ -74,8 +76,8 @@ public class DataTable036Test extends AbstractDataTableTest {
 
         // Assert - selection must not be lost after navigating to another page and back
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(2).getWebElement(), "ui-state-highlight"));
-        Assertions.assertEquals("true", dataTable.getRow(2).getWebElement().getAttribute("aria-selected"));
+        assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(2).getWebElement(), "ui-state-highlight"));
+        assertEquals("true", dataTable.getRow(2).getWebElement().getAttribute("aria-selected"));
     }
 
     private void assertMessage(PageWithMultiViewStateSelection page, String summary, String detail) {
@@ -83,8 +85,8 @@ public class DataTable036Test extends AbstractDataTableTest {
         System.out.println("\t" + summary);
         System.out.println(page.messages.getMessage(0).getDetail());
         System.out.println("\t" + detail);
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains(summary));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains(detail));
+        assertTrue(page.messages.getMessage(0).getSummary().contains(summary));
+        assertTrue(page.messages.getMessage(0).getDetail().contains(detail));
     }
 
     public abstract static class PageWithMultiViewStateSelection extends AbstractPrimePage {

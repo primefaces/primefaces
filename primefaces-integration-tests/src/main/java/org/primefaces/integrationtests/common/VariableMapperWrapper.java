@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,9 +26,9 @@ package org.primefaces.integrationtests.common;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.el.ELException;
-import javax.el.ValueExpression;
-import javax.el.VariableMapper;
+import jakarta.el.ELException;
+import jakarta.el.ValueExpression;
+import jakarta.el.VariableMapper;
 
 /**
  * Utility class for wrapping a VariableMapper. Modifications occur to the internal Map instance.

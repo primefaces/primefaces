@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -118,7 +118,7 @@
             <div class="card">
                 <h5>Frozen Columns</h5>
                 <p:dataTable var="customer" value="#{dtScrollView.customers5}" scrollable="true" scrollHeight="250"
-                             scrollWidth="300" frozenColumns="1">
+                             scrollWidth="300" frozenColumns="1" frozenColumnsAlignment="left">
                     <p:column headerText="Name" footerText="Name">
                         <h:outputText value="#{customer.name}"/>
                     </p:column>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,17 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.component.columns.Columns;
+
 import java.io.IOException;
 import java.util.List;
 
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.component.columns.Columns;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
 
 public class DynamicColumn implements UIColumn {
 
@@ -49,6 +49,11 @@ public class DynamicColumn implements UIColumn {
         this.baseColumnKey = columns.getColumnKey();
         this.separatorChar = UINamingContainer.getSeparatorChar(context);
         this.columnKey = baseColumnKey + separatorChar + index;
+    }
+
+    @Override
+    public UIComponent asUIComponent() {
+        return columns;
     }
 
     public int getIndex() {
@@ -100,8 +105,8 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public String getSelectionMode() {
-        return columns.getSelectionMode();
+    public boolean isSelectionBox() {
+        return columns.isSelectionBox();
     }
 
     @Override
@@ -299,12 +304,12 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public String getExportHeaderValue() {
+    public Object getExportHeaderValue() {
         return columns.getExportHeaderValue();
     }
 
     @Override
-    public String getExportFooterValue() {
+    public Object getExportFooterValue() {
         return columns.getExportFooterValue();
     }
 
@@ -339,7 +344,7 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public String getExportValue() {
+    public Object getExportValue() {
         return columns.getExportValue();
     }
 
@@ -363,4 +368,13 @@ public class DynamicColumn implements UIColumn {
         return columns.getTitle();
     }
 
+    @Override
+    public String getFilterPlaceholder() {
+        return columns.getFilterPlaceholder();
+    }
+
+    @Override
+    public Object getConverter() {
+        return columns.getConverter();
+    }
 }

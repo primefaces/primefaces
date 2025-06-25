@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,43 @@
  */
 package org.primefaces.showcase.view.misc;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.primefaces.shaded.json.JSONArray;
+import org.primefaces.shaded.json.JSONException;
+import org.primefaces.shaded.json.JSONObject;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Serializable;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
+
 @Named
 @ApplicationScoped
 public class PrimeIconsView implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private List<Icon> iconsPrevious;
     private List<Icon> icons;
 
     @PostConstruct
     public void init() {
-        iconsPrevious = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/5.0.0/selection.json");
-        icons = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/6.0.1/selection.json");
-        Collections.sort(icons, Comparator.comparing(Icon::getName));
+        iconsPrevious = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/6.0.1/selection.json");
+        icons = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/7.0.0/selection.json");
+        icons.sort(Comparator.comparing(Icon::getName));
     }
 
     private List<Icon> getIcons(String url) {
@@ -96,7 +103,7 @@ public class PrimeIconsView implements Serializable {
         return !iconsPrevious.contains(icon);
     }
 
-    public class Icon {
+    public static class Icon {
 
         private String name;
         private int key;

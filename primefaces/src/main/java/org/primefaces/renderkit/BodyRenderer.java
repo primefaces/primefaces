@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,19 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.HTML;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.ListIterator;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.util.HTML;
-
-public class BodyRenderer extends CoreRenderer {
+public class BodyRenderer extends CoreRenderer<UIComponent> {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -48,7 +48,7 @@ public class BodyRenderer extends CoreRenderer {
         }
 
         String styleClass = (String) component.getAttributes().get("styleClass");
-        if (styleClass != null && styleClass.length() != 0) {
+        if (styleClass != null && !styleClass.isEmpty()) {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
 
@@ -75,14 +75,17 @@ public class BodyRenderer extends CoreRenderer {
             writer.startElement("script", null);
             RendererUtils.encodeScriptTypeIfNecessary(context);
 
-            writer.write("$(function(){");
+            writer.write("(function(){const pfLoad=() => {");
 
             for (int i = 0; i < scripts.size(); i++) {
                 writer.write(scripts.get(i));
                 writer.write(';');
             }
 
-            writer.write("});");
+            writer.write("};if(window.$){$(function(){pfLoad()})}");
+            writer.write("else if(document.readyState==='complete'){pfLoad()}");
+            writer.write("else{document.addEventListener('DOMContentLoaded', pfLoad)}})();");
+
             writer.endElement("script");
         }
     }

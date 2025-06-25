@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,39 +23,38 @@
  */
 package org.primefaces.component.rowtoggler;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 
-public class RowTogglerRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class RowTogglerRenderer extends CoreRenderer<RowToggler> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, RowToggler component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        RowToggler toggler = (RowToggler) component;
-        DataTable parentTable = toggler.getParentTable(context);
+        DataTable parentTable = component.getParentTable(context);
         String rowKey = parentTable.getRowKey(parentTable.getRowData());
         boolean expanded = parentTable.isExpandedRow() || parentTable.getExpandedRowKeys().contains(rowKey);
-        String icon = expanded ? RowToggler.EXPANDED_ICON : RowToggler.COLLAPSED_ICON;
-        String expandLabel = toggler.getExpandLabel();
-        String collapseLabel = toggler.getCollapseLabel();
+        String expandIcon = component.getExpandIcon();
+        String collapseIcon = component.getCollapseIcon();
+        String icon = "ui-icon " + (expanded ? collapseIcon : expandIcon);
+        String expandLabel = component.getExpandLabel();
+        String collapseLabel = component.getCollapseLabel();
         boolean iconOnly = (expandLabel == null && collapseLabel == null);
         String togglerClass = iconOnly ? DataTable.ROW_TOGGLER_CLASS + " " + icon : DataTable.ROW_TOGGLER_CLASS;
-        String ariaLabel = MessageFactory.getMessage(RowToggler.ROW_TOGGLER);
 
-        writer.startElement("div", toggler);
+        writer.startElement("div", component);
         writer.writeAttribute("class", togglerClass, null);
-        writer.writeAttribute("tabindex", toggler.getTabindex(), null);
+        writer.writeAttribute("tabindex", component.getTabindex(), null);
         writer.writeAttribute("role", "button", null);
+        writer.writeAttribute("data-expand-icon", expandIcon, null);
+        writer.writeAttribute("data-collapse-icon", collapseIcon, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
         if (!iconOnly) {
             writeLabel(writer, expandLabel, !expanded);

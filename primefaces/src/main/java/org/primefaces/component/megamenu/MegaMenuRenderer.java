@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,85 +23,82 @@
  */
 package org.primefaces.component.megamenu;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
+import org.primefaces.component.divider.Divider;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
-import org.primefaces.component.separator.UISeparator;
-import org.primefaces.model.menu.*;
+import org.primefaces.model.menu.MenuColumn;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Separator;
+import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class MegaMenuRenderer extends BaseMenuRenderer {
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
 
     @Override
-    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        MegaMenu menu = (MegaMenu) abstractMenu;
-
+    protected void encodeScript(FacesContext context, MegaMenu component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("MegaMenu", menu)
-                .attr("autoDisplay", menu.isAutoDisplay())
-                .attr("delay", menu.getDelay())
-                .attr("activeIndex", menu.getActiveIndex(), Integer.MIN_VALUE);
+        wb.init("MegaMenu", component)
+                .attr("tabIndex", component.getTabindex(), "0")
+                .attr("autoDisplay", component.isAutoDisplay())
+                .attr("delay", component.getDelay())
+                .attr("activeIndex", component.getActiveIndex(), Integer.MIN_VALUE);
 
         wb.finish();
     }
 
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+    protected void encodeMarkup(FacesContext context, MegaMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        MegaMenu menu = (MegaMenu) abstractMenu;
-        boolean vertical = menu.getOrientation().equals("vertical");
-        String clientId = menu.getClientId(context);
-        String style = menu.getStyle();
-        String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? MegaMenu.CONTAINER_CLASS : MegaMenu.CONTAINER_CLASS + " " + styleClass;
+        boolean vertical = component.getOrientation().equals("vertical");
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        String styleClass = getStyleClassBuilder(context)
+                .add(MegaMenu.CONTAINER_CLASS)
+                .add(component.getStyleClass())
+                .add(vertical, MegaMenu.VERTICAL_CLASS)
+                .add(ComponentUtils.isRTL(context, component), AbstractMenu.MENU_RTL_CLASS)
+                .build();
 
-        if (vertical) {
-            styleClass = styleClass + " " + MegaMenu.VERTICAL_CLASS;
-        }
-
-        writer.startElement("div", menu);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("tabindex", "-1", "tabindex");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-
-        encodeKeyboardTarget(context, menu);
 
         writer.startElement("ul", null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
-        if (menu.getElementsCount() > 0) {
-            encodeRootItems(context, menu);
+        encodeFacet(context, component, "start", Menu.START_CLASS);
+
+        if (component.getElementsCount() > 0) {
+            encodeRootItems(context, component);
         }
 
-        UIComponent optionsFacet = menu.getFacet("options");
-        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
-            writer.startElement("li", null);
-            writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-            optionsFacet.encodeAll(context);
-            writer.endElement("li");
-        }
+        encodeFacet(context, component, "options", Menu.OPTIONS_CLASS);
+        encodeFacet(context, component, "end", Menu.END_CLASS);
 
         writer.endElement("ul");
 
         writer.endElement("div");
     }
 
-    protected void encodeRootItems(FacesContext context, MegaMenu menu) throws IOException {
+    protected void encodeRootItems(FacesContext context, MegaMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<MenuElement> elements = menu.getElements();
+        List<MenuElement> elements = component.getElements();
 
         for (MenuElement element : elements) {
             if (element.isRendered()) {
@@ -109,11 +106,11 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-                    encodeMenuItem(context, menu, (MenuItem) element, "-1");
+                    encodeMenuItem(context, component, (MenuItem) element, "-1");
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu) {
-                    encodeRootSubmenu(context, menu, (Submenu) element);
+                    encodeRootSubmenu(context, component, (Submenu) element);
                 }
                 else if (element instanceof Separator) {
                     encodeSeparator(context, (Separator) element);
@@ -122,18 +119,22 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         }
     }
 
-    protected void encodeRootSubmenu(FacesContext context, MegaMenu menu, Submenu submenu) throws IOException {
+    protected void encodeRootSubmenu(FacesContext context, MegaMenu component, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean vertical = menu.getOrientation().equals("vertical");
-        String icon = submenu.getIcon();
-        String label = submenu.getLabel();
+        boolean isRtl = ComponentUtils.isRTL(context, component);
+        boolean isVertical = component.getOrientation().equals("vertical");
         String style = submenu.getStyle();
-        String styleClass = submenu.getStyleClass();
-        styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(Menu.TIERED_SUBMENU_CLASS)
+                .add(submenu.getStyleClass())
+                .build();
 
         writer.startElement("li", null);
         writer.writeAttribute("class", styleClass, null);
-        if (style != null) {
+        if (shouldRenderId(submenu)) {
+            writer.writeAttribute("id", submenu.getClientId(), null);
+        }
+        if (LangUtils.isNotEmpty(style)) {
             writer.writeAttribute("style", style, null);
         }
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
@@ -146,25 +147,17 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("class", Menu.SUBMENU_LINK_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
 
-        if (icon != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
-            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
-            writer.endElement("span");
+        if (isRtl) {
+            encodeSubmenuIcon(context, submenu, isRtl, isVertical);
+            encodeMenuLabel(context, submenu);
+            encodeMenuIcon(context, submenu);
+        }
+        else {
+            encodeMenuIcon(context, submenu);
+            encodeMenuLabel(context, submenu);
+            encodeSubmenuIcon(context, submenu, isRtl, isVertical);
         }
 
-        if (label != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_TEXT_CLASS, null);
-            writer.writeText(submenu.getLabel(), "value");
-            writer.endElement("span");
-        }
-
-        //submenu icon
-        String submenuIcon = (vertical) ? Menu.SUBMENU_RIGHT_ICON_CLASS : Menu.SUBMENU_DOWN_ICON_CLASS;
-        writer.startElement("span", null);
-        writer.writeAttribute("class", submenuIcon, null);
-        writer.endElement("span");
 
         writer.endElement("a");
 
@@ -183,7 +176,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
             for (MenuElement submenuElement : submenuElements) {
                 if (submenuElement.isRendered() && submenuElement instanceof MenuColumn) {
-                    encodeColumn(context, menu, (MenuColumn) submenuElement);
+                    encodeColumn(context, component, (MenuColumn) submenuElement);
                 }
             }
 
@@ -197,7 +190,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.endElement("li");
     }
 
-    protected void encodeColumn(FacesContext context, MegaMenu menu, MenuColumn column) throws IOException {
+    protected void encodeColumn(FacesContext context, MegaMenu component, MenuColumn column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", null);
@@ -213,7 +206,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             for (MenuElement element : columnElements) {
                 if (element.isRendered()) {
                     if (element instanceof Submenu) {
-                        encodeDescendantSubmenu(context, menu, (Submenu) element);
+                        encodeDescendantSubmenu(context, component, (Submenu) element);
                     }
                     else if (element instanceof Separator) {
                         encodeSubmenuSeparator(context, (Separator) element);
@@ -238,13 +231,16 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         //title
         writer.startElement("li", null);
+        if (shouldRenderId(submenu)) {
+            writer.writeAttribute("id", submenu.getClientId(), null);
+        }
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
         writer.startElement("span", null);
-        if (label != null) {
+        if (LangUtils.isNotEmpty(label)) {
             writer.writeText(label, "value");
         }
         writer.endElement("span");
@@ -275,17 +271,21 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeSubmenuSeparator(FacesContext context, Separator separator) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? UISeparator.DEFAULT_STYLE_CLASS : UISeparator.DEFAULT_STYLE_CLASS + " " + styleClass;
+        String title = separator.getTitle();
+        String style = separator.getStyle();
+        String styleClass = getStyleClassBuilder(context)
+                .add(Divider.STYLE_CLASS)
+                .add(separator.getStyleClass())
+                .build();
 
         writer.startElement("hr", null);
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (separator.getTitle() != null) {
-            writer.writeAttribute("title", separator.getTitle(), "title");
+        if (LangUtils.isNotEmpty(title)) {
+            writer.writeAttribute("title", title, "title");
         }
-        if (separator.getStyle() != null) {
-            writer.writeAttribute("style", separator.getStyle(), "style");
+        if (LangUtils.isNotEmpty(style)) {
+            writer.writeAttribute("style", style, "style");
         }
 
         writer.endElement("hr");

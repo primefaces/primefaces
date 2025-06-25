@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.contextmenu;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -35,5 +35,5 @@ public class ContextMenu extends ContextMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ContextMenu";
 
-    public static final String CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-contextmenu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
+    public static final String CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-contextmenu ui-widget ui-widget-content ui-helper-clearfix ui-shadow";
 }

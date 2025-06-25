@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,19 @@
  */
 package org.primefaces.showcase.view.multimedia;
 
-import javax.faces.view.ViewScoped;
 import org.primefaces.event.CaptureEvent;
 
-import javax.faces.FacesException;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.imageio.stream.FileImageOutputStream;
-import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+
+import javax.imageio.stream.FileImageOutputStream;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,6 @@
  */
 package org.primefaces.integrationtests.tabview;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
@@ -34,26 +30,32 @@ import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.SelectOneButton;
 import org.primefaces.selenium.component.TabView;
 
-public class TabView003Test extends AbstractPrimePageTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class TabView003Test extends AbstractPrimePageTest {
 
     @Test
     @DisplayName("TabView: Test dynamic & repeating tabs should only be processed when loaded")
-    public void testDynamic(Page page) {
-        Assertions.assertEquals("0", page.setterCalled.getValue());
+    void dynamic(Page page) {
+        assertEquals("0", page.setterCalled.getValue());
 
         // Only tab 0 loaded, setter should be called once
         page.button.click();
-        Assertions.assertEquals("1", page.setterCalled.getValue());
+        assertEquals("1", page.setterCalled.getValue());
 
         // tab 1 will be loaded now, setter should be called for tab 0+1
         page.tabView.toggleTab(1);
         page.button.click();
-        Assertions.assertEquals("3", page.setterCalled.getValue());
+        assertEquals("3", page.setterCalled.getValue());
 
         // tab 2 will be loaded now, setter should be called for tab 0+1+2
         page.tabView.toggleTab(2);
         page.button.click();
-        Assertions.assertEquals("6", page.setterCalled.getValue());
+        assertEquals("6", page.setterCalled.getValue());
     }
 
     public static class Page extends AbstractPrimePage {

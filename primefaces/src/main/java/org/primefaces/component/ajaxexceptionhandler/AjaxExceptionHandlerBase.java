@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,16 @@
  */
 package org.primefaces.component.ajaxexceptionhandler;
 
-import javax.faces.component.UIComponentBase;
+import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIComponentBase;
 
 
-public abstract class AjaxExceptionHandlerBase extends UIComponentBase {
+public abstract class AjaxExceptionHandlerBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
+
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.AjaxExceptionHandlerRenderer";
 
     public enum PropertyKeys {
 
@@ -38,7 +42,7 @@ public abstract class AjaxExceptionHandlerBase extends UIComponentBase {
     }
 
     public AjaxExceptionHandlerBase() {
-        setRendererType(null);
+        setRendererType(DEFAULT_RENDERER);
     }
 
     @Override

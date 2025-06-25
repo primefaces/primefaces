@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ package org.primefaces.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -39,15 +40,14 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
-import javax.faces.application.Application;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextWrapper;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.FacesContextWrapper;
 
 public class MessageFactory {
 
-    private static final String DEFAULT_BUNDLE_BASENAME = "javax.faces.Messages";
+    private static final String DEFAULT_BUNDLE_BASENAME = "jakarta.faces.Messages";
     private static final String PRIMEFACES_BUNDLE_BASENAME = "org.primefaces.Messages";
     private static final String DEFAULT_DETAIL_SUFFIX = "_detail";
 
@@ -55,16 +55,15 @@ public class MessageFactory {
         // NOOP
     }
 
-    public static FacesMessage getFacesMessage(String messageId, FacesMessage.Severity severity, Object... params) {
-        FacesMessage facesMessage = getFacesMessage(LocaleUtils.getCurrentLocale(), messageId, params);
+    public static FacesMessage getFacesMessage(FacesContext context, String messageId, FacesMessage.Severity severity, Object... params) {
+        FacesMessage facesMessage = getFacesMessage(context, LocaleUtils.getCurrentLocale(context), messageId, params);
         facesMessage.setSeverity(severity);
         return facesMessage;
     }
 
-    public static FacesMessage getFacesMessage(Locale locale, String messageId, Object... params) {
+    public static FacesMessage getFacesMessage(FacesContext facesContext, Locale locale, String messageId, Object... params) {
         String summary = null;
         String detail = null;
-        FacesContext facesContext = FacesContext.getCurrentInstance();
         Application application = facesContext.getApplication();
         String userBundleName = application.getMessageBundle();
         ResourceBundle bundle = null;
@@ -87,9 +86,6 @@ public class MessageFactory {
         if (summary == null) {
             try {
                 bundle = getBundle(PRIMEFACES_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
-                if (bundle == null) {
-                    throw new NullPointerException();
-                }
                 if (bundle.containsKey(messageId)) {
                     summary = bundle.getString(messageId);
                 }
@@ -99,13 +95,10 @@ public class MessageFactory {
             }
         }
 
-        // fallback to default jsf bundle
+        // fallback to default Faces bundle
         if (summary == null) {
             try {
                 bundle = getBundle(DEFAULT_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
-                if (bundle == null) {
-                    throw new NullPointerException();
-                }
                 if (bundle.containsKey(messageId)) {
                     summary = bundle.getString(messageId);
                 }
@@ -132,13 +125,12 @@ public class MessageFactory {
         return new FacesMessage(summary, detail);
     }
 
-    public static String getMessage(String messageId, Object... params) {
-        return getMessage(LocaleUtils.getCurrentLocale(), messageId, params);
+    public static String getMessage(FacesContext facesContext, String messageId, Object... params) {
+        return getMessage(facesContext, LocaleUtils.getCurrentLocale(facesContext), messageId, params);
     }
 
-    public static String getMessage(Locale locale, String messageId, Object... params) {
+    public static String getMessage(FacesContext facesContext, Locale locale, String messageId, Object... params) {
         String summary = null;
-        FacesContext facesContext = FacesContext.getCurrentInstance();
         Application application = facesContext.getApplication();
         String userBundleName = application.getMessageBundle();
         ResourceBundle bundle = null;
@@ -161,9 +153,6 @@ public class MessageFactory {
         if (summary == null) {
             try {
                 bundle = getBundle(PRIMEFACES_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
-                if (bundle == null) {
-                    throw new NullPointerException();
-                }
                 if (bundle.containsKey(messageId)) {
                     summary = bundle.getString(messageId);
                 }
@@ -173,13 +162,10 @@ public class MessageFactory {
             }
         }
 
-        // fallback to default jsf bundle
+        // fallback to default Faces bundle
         if (summary == null) {
             try {
                 bundle = getBundle(DEFAULT_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
-                if (bundle == null) {
-                    throw new NullPointerException();
-                }
                 if (bundle.containsKey(messageId)) {
                     summary = bundle.getString(messageId);
                 }
@@ -210,16 +196,6 @@ public class MessageFactory {
         return messageFormat.format(params);
     }
 
-    public static Object getLabel(FacesContext facesContext, UIComponent component) {
-        String label = (String) component.getAttributes().get("label");
-
-        if (label == null) {
-            label = component.getClientId(facesContext);
-        }
-
-        return label;
-    }
-
     private static ResourceBundle getBundle(String baseName, Locale locale, ClassLoader classLoader,
                 FacesContext facesContext) {
 
@@ -232,17 +208,17 @@ public class MessageFactory {
         }
         else if (DEFAULT_BUNDLE_BASENAME.equals(baseName)) {
 
-            ClassLoader jsfImplClassLoader = getJSFImplClassLoader(facesContext);
+            ClassLoader facesImplClassLoader = getFacesImplClassLoader(facesContext);
 
-            if (!jsfImplClassLoader.equals(classLoader)) {
-                return ResourceBundle.getBundle(baseName, locale, classLoader, new PrimeFacesControl(jsfImplClassLoader));
+            if (!facesImplClassLoader.equals(classLoader)) {
+                return ResourceBundle.getBundle(baseName, locale, classLoader, new PrimeFacesControl(facesImplClassLoader));
             }
         }
 
         return ResourceBundle.getBundle(baseName, locale, classLoader, new PrimeFacesControl(primeFacesClassLoader));
     }
 
-    private static ClassLoader getJSFImplClassLoader(FacesContext facesContext) {
+    private static ClassLoader getFacesImplClassLoader(FacesContext facesContext) {
         facesContext = unwrapFacesContext(facesContext);
 
         Class<? extends FacesContext> facesContextImplClass = FacesContext.class;
@@ -368,12 +344,9 @@ public class MessageFactory {
                     }
 
                     if (stream != null) {
-                        try {
+                        try (Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                             // Only this line is changed to make it to read properties files as UTF-8.
-                            bundle = new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8));
-                        }
-                        finally {
-                            stream.close();
+                            bundle = new PropertyResourceBundle(reader);
                         }
                     }
                 }

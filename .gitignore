@@ -1,23 +1,29 @@
 /target/
 **/target/**
+**/target-ide/**
 .settings/
 nbactions.xml
+**/dynamichart
 .DS_STORE
-.idea/
+/.idea/*
+!/.idea/codeStyles
 *.iml
 **/pom.xml.versionsBackup
 *~
 .classpath
 .
 .project
-.vscode/
+.vscode
 .checkstyle
 .factorypath
 nb-configuration.xml
 faces-config.NavData
 dependency-reduced-pom.xml
-/primefaces/src/main/type-definitions/src/PrimeFaces-modules.d.ts
-/primefaces/src/main/type-definitions/src/PrimeFaces.d.ts
+
+# Snapshots taken by photocam when running the showcase
+primefaces-showcase/src/main/webapp/resources/demo/images/photocam/*.jpg
+primefaces-showcase/src/main/webapp/resources/demo/images/photocam/*.jpeg
+primefaces-showcase/src/main/webapp/resources/demo/images/photocam/*.png
 
 # Selenium Drivers
 *.exe
@@ -59,4 +65,6 @@ node_modules/
 /primefaces-selenium/primefaces-selenium-core/target/
 /primefaces-selenium/primefaces-selenium-components/target/
 /primefaces-integration-tests/target/
-/primefaces-integration-tests-jakarta/target/
+/primefaces-theme/*.css
+/primefaces-theme/target/
+/primefaces-coverage/target/

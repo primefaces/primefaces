@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,16 +25,15 @@ package org.primefaces.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class TreeNodeTest {
+class TreeNodeTest {
 
     @Test
-    public void shouldAddChildNodes() {
+    void shouldAddChildNodes() {
         TreeNode node = new DefaultTreeNode("Parent", null);
 
         new DefaultTreeNode("Child1", node);
@@ -44,7 +43,7 @@ public class TreeNodeTest {
     }
 
     @Test
-    public void shouldHaveParent() {
+    void shouldHaveParent() {
         TreeNode root = new DefaultTreeNode("Parent", null);
 
         TreeNode child1 = new DefaultTreeNode("Child1", root);
@@ -55,7 +54,7 @@ public class TreeNodeTest {
     }
 
     @Test
-    public void setChildren() {
+    void setChildren() {
         TreeNode root = new DefaultTreeNode("Root");
 
         DefaultTreeNode level1 = new DefaultTreeNode("Level 1", root);
@@ -65,14 +64,14 @@ public class TreeNodeTest {
 
         level1.setChildren(level2);
 
-        Assertions.assertNotNull(level1.getRowKey());
-        Assertions.assertSame(1, level1.getChildCount());
-        Assertions.assertSame(1, level1.getChildren().size());
-        Assertions.assertNotNull(((TreeNode) level1.getChildren().get(0)).getRowKey());
+        assertNotNull(level1.getRowKey());
+        assertSame(1, level1.getChildCount());
+        assertSame(1, level1.getChildren().size());
+        assertNotNull(((TreeNode) level1.getChildren().get(0)).getRowKey());
     }
 
     @Test
-    public void shouldHaveUnequalChildNodes() {
+    void shouldHaveUnequalChildNodes() {
         TreeNode root = new DefaultTreeNode(null);
 
         TreeNode child0 = new DefaultTreeNode(null, root);
@@ -96,7 +95,7 @@ public class TreeNodeTest {
     }
 
     @Test
-    public void shouldHaveConsistenKeys() {
+    void shouldHaveConsistenKeys() {
         TreeNode<?> root = new DefaultTreeNode(null);
 
         TreeNode child0 = new DefaultTreeNode(null, root);

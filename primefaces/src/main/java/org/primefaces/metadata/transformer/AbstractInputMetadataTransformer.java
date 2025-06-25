@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,17 @@
  */
 package org.primefaces.metadata.transformer;
 
-import java.io.IOException;
-
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.html.HtmlInputSecret;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.context.PrimeApplicationContext;
+
+import java.io.IOException;
+
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.html.HtmlInputSecret;
+import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.context.FacesContext;
 
 public abstract class AbstractInputMetadataTransformer implements MetadataTransformer {
 
@@ -72,7 +72,7 @@ public abstract class AbstractInputMetadataTransformer implements MetadataTransf
         return Integer.MIN_VALUE;
     }
 
-    protected boolean isMaxlenghtSet(UIInput input) {
+    protected boolean isMaxlengthSet(UIInput input) {
         return getMaxlength(input) != Integer.MIN_VALUE;
     }
 

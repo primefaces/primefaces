@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.slidemenu;
 
-import java.io.IOException;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class SlideMenuRenderer extends TieredMenuRenderer {
 
@@ -101,4 +101,5 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
 
         writer.endElement("div");
     }
+
 }

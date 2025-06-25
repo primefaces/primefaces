@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,7 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import javax.el.ELContext;
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
@@ -43,6 +32,17 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.util.ComponentUtils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import jakarta.el.ELContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.PhaseId;
 
 public class FilterFeature implements DataTableFeature {
 
@@ -90,23 +90,7 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        if (table.isLazy()) {
-            if (table.isLiveScroll()) {
-                table.loadLazyScrollData(0, table.getScrollRows());
-            }
-            else if (table.isVirtualScroll()) {
-                int rows = table.getRows();
-                int scrollRows = table.getScrollRows();
-                int virtualScrollRows = (scrollRows * 2);
-                scrollRows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
-
-                table.loadLazyScrollData(0, scrollRows);
-            }
-            else {
-                table.loadLazyData();
-            }
-        }
-        else {
+        if (!table.loadLazyDataIfEnabled()) {
             filter(context, table);
 
             // update filtered value accordingly to take account sorting
@@ -165,16 +149,6 @@ public class FilterFeature implements DataTableFeature {
 
                 FilterConstraint constraint = filter.getConstraint();
                 Object filterValue = filter.getFilterValue();
-                if (filterValue instanceof String && column instanceof ColumnBase) {
-                    ColumnBase columnBase = (ColumnBase) column;
-                    try {
-                        filterValue = ComponentUtils.getConvertedValue(
-                                context, columnBase, columnBase.getConverter(), filterValue);
-                    }
-                    catch (Exception ex) {
-                        filterValue = null;
-                    }
-                }
 
                 localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
                 return localMatch.get();
@@ -197,7 +171,7 @@ public class FilterFeature implements DataTableFeature {
 
         //save filtered data
         table.setFilteredValue(filtered);
-        table.setValue(filtered);
+        table.setValue(DataTable.convertIntoObjectValueType(context, table, filtered));
         table.setRowIndex(-1); //reset datamodel
     }
 }

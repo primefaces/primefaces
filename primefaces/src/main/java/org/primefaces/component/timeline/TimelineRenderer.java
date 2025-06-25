@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,17 @@
  */
 package org.primefaces.component.timeline;
 
-import static java.util.stream.Collectors.toList;
+import org.primefaces.model.timeline.TimelineEvent;
+import org.primefaces.model.timeline.TimelineGroup;
+import org.primefaces.model.timeline.TimelineModel;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -31,59 +41,57 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
-import org.primefaces.model.timeline.TimelineEvent;
-import org.primefaces.model.timeline.TimelineGroup;
-import org.primefaces.model.timeline.TimelineModel;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
-
-public class TimelineRenderer extends CoreRenderer {
+public class TimelineRenderer extends CoreRenderer<Timeline> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Timeline component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Timeline timeline = (Timeline) component;
-        encodeMarkup(context, timeline);
-        encodeScript(context, timeline);
+    public void encodeEnd(FacesContext context, Timeline component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Timeline timeline) throws IOException {
+    protected void encodeMarkup(FacesContext context, Timeline component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = timeline.getClientId(context);
-        writer.startElement("div", timeline);
+        String clientId = component.getClientId(context);
+        writer.startElement("div", component);
 
         writer.writeAttribute("id", clientId, "id");
-        if (timeline.getStyle() != null) {
-            writer.writeAttribute("style", timeline.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        if (timeline.getStyleClass() != null) {
-            writer.writeAttribute("class", timeline.getStyleClass(), "styleClass");
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), "styleClass");
         }
 
-        UIComponent menuFacet = timeline.getFacet("menu");
-        if (ComponentUtils.shouldRenderFacet(menuFacet)) {
+        UIComponent menuFacet = component.getFacet("menu");
+        if (FacetUtils.shouldRenderFacet(menuFacet)) {
             writer.startElement("div", null);
             StringBuilder cssMenu = new StringBuilder("timeline-menu");
 
-            if ("top".equals(timeline.getOrientationAxis())) {
+            if ("top".equals(component.getOrientationAxis())) {
                 cssMenu.append(" timeline-menu-axis-top");
             }
-            else if ("both".equals(timeline.getOrientationAxis())) {
+            else if ("both".equals(component.getOrientationAxis())) {
                 cssMenu.append(" timeline-menu-axis-both");
             }
 
-            if (ComponentUtils.isRTL(context, timeline)) {
+            if (ComponentUtils.isRTL(context, component)) {
                 cssMenu.append(" timeline-menu-rtl");
             }
 
@@ -97,22 +105,22 @@ public class TimelineRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, Timeline timeline) throws IOException {
-        TimelineModel<Object, Object> model = timeline.getValue();
+    protected void encodeScript(FacesContext context, Timeline component) throws IOException {
+        TimelineModel<Object, Object> model = component.getValue();
         if (model == null) {
             return;
         }
 
         ResponseWriter writer = context.getResponseWriter();
 
-        ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
+        ZoneId zoneId = CalendarUtils.calculateZoneId(component.getTimeZone());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId);
 
         FastStringWriter fsw = new FastStringWriter();
         FastStringWriter fswHtml = new FastStringWriter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Timeline", timeline);
+        wb.init("Timeline", component);
 
         List<TimelineEvent<Object>> events = model.getEvents();
         List<TimelineGroup<Object>> groups = calculateGroupsFromModel(model);
@@ -122,7 +130,7 @@ public class TimelineRenderer extends CoreRenderer {
             groupsContent = new HashMap<>();
         }
 
-        UIComponent groupFacet = timeline.getFacet("group");
+        UIComponent groupFacet = component.getFacet("group");
         int groupsSize = groups.size();
         if (groupFacet != null || groupsSize > 0) {
             if (groupsSize > 0) {
@@ -131,7 +139,7 @@ public class TimelineRenderer extends CoreRenderer {
                     //If groups was not set in model then order by content.
                     Integer order = model.getGroups() != null ? i : null;
                     //encode groups
-                    writer.write(encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, groups.get(i), order));
+                    writer.write(encodeGroup(context, fsw, fswHtml, component, groupFacet, groupsContent, groups.get(i), order));
                     if (i + 1 < groupsSize) {
                         writer.write(",");
                     }
@@ -144,11 +152,11 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         writer.write(",data:[");
-        UIComponent eventTitleFacet = timeline.getFacet("eventTitle");
+        UIComponent eventTitleFacet = component.getFacet("eventTitle");
         int size = events != null ? events.size() : 0;
         for (int i = 0; i < size; i++) {
             // encode events
-            writer.write(encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, zoneId, groups, events.get(i)));
+            writer.write(encodeEvent(context, fsw, fswHtml, component, eventTitleFacet, zoneId, groups, events.get(i)));
             if (i + 1 < size) {
                 writer.write(",");
             }
@@ -156,112 +164,112 @@ public class TimelineRenderer extends CoreRenderer {
 
         writer.write("]");
 
-        if (timeline.isShowCurrentTime()) {
-            wb.nativeAttr("currentTime", encodeDate(dateTimeFormatter, LocalDateTime.now(CalendarUtils.calculateZoneId(timeline.getClientTimeZone()))));
+        if (component.isShowCurrentTime()) {
+            wb.nativeAttr("currentTime", encodeDate(dateTimeFormatter, LocalDateTime.now(CalendarUtils.calculateZoneId(component.getClientTimeZone()))));
         }
 
-        if (timeline.getPreloadFactor() < 0) {
+        if (component.getPreloadFactor() < 0) {
             wb.attr("preloadFactor", 0);
         }
         else {
-            wb.attr("preloadFactor", timeline.getPreloadFactor());
+            wb.attr("preloadFactor", component.getPreloadFactor());
         }
 
-        if (timeline.getDropHoverStyleClass() != null) {
-            wb.attr("hoverClass", timeline.getDropHoverStyleClass());
+        if (component.getDropHoverStyleClass() != null) {
+            wb.attr("hoverClass", component.getDropHoverStyleClass());
         }
 
-        if (timeline.getDropActiveStyleClass() != null) {
-            wb.attr("activeClass", timeline.getDropActiveStyleClass());
+        if (component.getDropActiveStyleClass() != null) {
+            wb.attr("activeClass", component.getDropActiveStyleClass());
         }
 
-        if (timeline.getDropAccept() != null) {
-            wb.attr("accept", timeline.getDropAccept());
+        if (component.getDropAccept() != null) {
+            wb.attr("accept", component.getDropAccept());
         }
 
-        if (timeline.getDropScope() != null) {
-            wb.attr("scope", timeline.getDropScope());
+        if (component.getDropScope() != null) {
+            wb.attr("scope", component.getDropScope());
         }
 
-        if (timeline.getExtender() != null) {
-            wb.nativeAttr("extender", timeline.getExtender());
+        if (component.getExtender() != null) {
+            wb.nativeAttr("extender", component.getExtender());
         }
-        UIComponent menuFacet = timeline.getFacet("menu");
-        if (ComponentUtils.shouldRenderFacet(menuFacet)) {
+        UIComponent menuFacet = component.getFacet("menu");
+        if (FacetUtils.shouldRenderFacet(menuFacet)) {
             wb.attr("isMenuPresent", Boolean.TRUE);
         }
 
         writer.write(",opts:{");
 
         // encode options
-        writer.write("autoResize: " + timeline.isResponsive());
-        if (timeline.getClientTimeZone() != null) {
-            ZoneOffset zoneOffset = CalendarUtils.calculateZoneOffset(timeline.getClientTimeZone());
+        writer.write("autoResize: " + component.isResponsive());
+        if (component.getClientTimeZone() != null) {
+            ZoneOffset zoneOffset = CalendarUtils.calculateZoneOffset(component.getClientTimeZone());
             if (ZoneOffset.UTC.equals(zoneOffset)) {
-                wb.callback("moment", "function(date)", "return vis.moment(date).utc();");
+                wb.callback("moment", "function(date)", "return moment(date).utc();");
             }
             else {
-                wb.callback("moment", "function(date)", "return vis.moment(date).utcOffset('" + EscapeUtils.forJavaScript(zoneOffset.toString()) + "');");
+                wb.callback("moment", "function(date)", "return moment(date).utcOffset('" + EscapeUtils.forJavaScript(zoneOffset.toString()) + "');");
             }
         }
-        if (timeline.getHeight() != null) {
-            wb.attr("height", timeline.getHeight());
+        if (component.getHeight() != null) {
+            wb.attr("height", component.getHeight());
         }
-        if (timeline.getMinHeight() != null) {
-            wb.attr("minHeight", timeline.getMinHeight());
+        if (component.getMinHeight() != null) {
+            wb.attr("minHeight", component.getMinHeight());
         }
-        if (timeline.getMaxHeight() != null) {
-            wb.attr("maxHeight", timeline.getMaxHeight());
+        if (component.getMaxHeight() != null) {
+            wb.attr("maxHeight", component.getMaxHeight());
         }
-        wb.attr("horizontalScroll", timeline.isHorizontalScroll(), false);
-        wb.attr("verticalScroll", timeline.isVerticalScroll(), false);
-        wb.attr("width", timeline.getWidth());
-        wb.nativeAttr("orientation", "{axis:'" + timeline.getOrientationAxis() + "',"
-                + "item:'" + timeline.getOrientationItem() + "'}" );
-        wb.nativeAttr("editable", "{add:" + timeline.isEditableAdd() + ","
-                + "remove:" + timeline.isEditableRemove() + ","
-                + "updateTime:" + timeline.isEditableTime() + ","
-                + "updateGroup:" + timeline.isEditableGroup() + ","
-                + "overrideItems:" + timeline.isEditableOverrideItems() + "}" );
-        wb.attr("selectable", timeline.isSelectable());
+        wb.attr("horizontalScroll", component.isHorizontalScroll(), false);
+        wb.attr("verticalScroll", component.isVerticalScroll(), false);
+        wb.attr("width", component.getWidth());
+        wb.nativeAttr("orientation", "{axis:'" + component.getOrientationAxis() + "',"
+                + "item:'" + component.getOrientationItem() + "'}" );
+        wb.nativeAttr("editable", "{add:" + component.isEditableAdd() + ","
+                + "remove:" + component.isEditableRemove() + ","
+                + "updateTime:" + component.isEditableTime() + ","
+                + "updateGroup:" + component.isEditableGroup() + ","
+                + "overrideItems:" + component.isEditableOverrideItems() + "}" );
+        wb.attr("selectable", component.isSelectable());
 
-        if (timeline.getStart() != null) {
-            wb.nativeAttr("start", encodeDate(dateTimeFormatter, timeline.getStart()));
-        }
-
-        if (timeline.getEnd() != null) {
-            wb.nativeAttr("end", encodeDate(dateTimeFormatter, timeline.getEnd()));
+        if (component.getStart() != null) {
+            wb.nativeAttr("start", encodeDate(dateTimeFormatter, component.getStart()));
         }
 
-        if (timeline.getMin() != null) {
-            wb.nativeAttr("min", encodeDate(dateTimeFormatter, timeline.getMin()));
+        if (component.getEnd() != null) {
+            wb.nativeAttr("end", encodeDate(dateTimeFormatter, component.getEnd()));
         }
 
-        if (timeline.getMax() != null) {
-            wb.nativeAttr("max", encodeDate(dateTimeFormatter, timeline.getMax()));
+        if (component.getMin() != null) {
+            wb.nativeAttr("min", encodeDate(dateTimeFormatter, component.getMin()));
         }
 
-        boolean zoomable = timeline.isZoomable();
-        boolean moveable = timeline.isMoveable();
+        if (component.getMax() != null) {
+            wb.nativeAttr("max", encodeDate(dateTimeFormatter, component.getMax()));
+        }
+
+        boolean zoomable = component.isZoomable();
+        boolean moveable = component.isMoveable();
         wb.attr("zoomable", zoomable);
         wb.attr("moveable", moveable);
         if (zoomable) {
-            wb.attr("zoomMin", timeline.getZoomMin());
-            wb.attr("zoomMax", timeline.getZoomMax());
-            if (moveable && LangUtils.isNotBlank(timeline.getZoomKey())) {
-                wb.attr("zoomKey", timeline.getZoomKey());
+            wb.attr("zoomMin", component.getZoomMin());
+            wb.attr("zoomMax", component.getZoomMax());
+            if (moveable && LangUtils.isNotBlank(component.getZoomKey())) {
+                wb.attr("zoomKey", component.getZoomKey());
             }
         }
 
-        wb.nativeAttr("margin", "{axis:" + timeline.getEventMarginAxis() + ","
-                + "item:{horizontal:" + timeline.getEventHorizontalMargin() + ","
-                + "vertical:" + timeline.getEventVerticalMargin() + "}}");
+        wb.nativeAttr("margin", "{axis:" + component.getEventMarginAxis() + ","
+                + "item:{horizontal:" + component.getEventHorizontalMargin() + ","
+                + "vertical:" + component.getEventVerticalMargin() + "}}");
 
-        if (timeline.getEventStyle() != null) {
-            wb.attr("type", timeline.getEventStyle());
+        if (component.getEventStyle() != null) {
+            wb.attr("type", component.getEventStyle());
         }
 
-        if (timeline.isGroupsOrder()) {
+        if (component.isGroupsOrder()) {
             //If groups was setted to model then order by order property, else order by content alphabetically
             List<TimelineGroup<Object>> modelGroups = model.getGroups();
             if (modelGroups != null && !modelGroups.isEmpty()) {
@@ -272,52 +280,52 @@ public class TimelineRenderer extends CoreRenderer {
             }
         }
 
-        if (timeline.getSnap() != null) {
-            wb.nativeAttr("snap", timeline.getSnap());
+        if (component.getSnap() != null) {
+            wb.nativeAttr("snap", component.getSnap());
         }
-        wb.attr("stack", timeline.isStackEvents());
+        wb.attr("stack", component.isStackEvents());
 
-        wb.attr("showCurrentTime", timeline.isShowCurrentTime());
+        wb.attr("showCurrentTime", component.isShowCurrentTime());
 
-        wb.attr("showMajorLabels", timeline.isShowMajorLabels());
-        wb.attr("showMinorLabels", timeline.isShowMinorLabels());
+        wb.attr("showMajorLabels", component.isShowMajorLabels());
+        wb.attr("showMinorLabels", component.isShowMinorLabels());
 
-        wb.attr("locale", timeline.calculateLocale(context).toString());
-        wb.attr("clickToUse", timeline.isClickToUse());
-        wb.attr("showTooltips", timeline.isShowTooltips());
+        wb.attr("locale", component.calculateLocale(context).toString());
+        wb.attr("clickToUse", component.isClickToUse());
+        wb.attr("showTooltips", component.isShowTooltips());
 
-        wb.nativeAttr("tooltip", "{followMouse:" + timeline.isTooltipFollowMouse() + ","
-                + "overflowMethod:'" + timeline.getTooltipOverflowMethod() + "',"
-                + "delay:" + timeline.getTooltipDelay() + "}");
+        wb.nativeAttr("tooltip", "{followMouse:" + component.isTooltipFollowMouse() + ","
+                + "overflowMethod:'" + component.getTooltipOverflowMethod() + "',"
+                + "delay:" + component.getTooltipDelay() + "}");
 
-        if (ComponentUtils.isRTL(context, timeline)) {
+        if (ComponentUtils.isRTL(context, component)) {
             wb.attr("rtl", Boolean.TRUE);
         }
 
-        UIComponent loadingFacet = timeline.getFacet("loading");
-        if (ComponentUtils.shouldRenderFacet(loadingFacet)) {
+        UIComponent loadingFacet = component.getFacet("loading");
+        if (FacetUtils.shouldRenderFacet(loadingFacet)) {
             String loading = encodeAllToString(context, writer, fswHtml, loadingFacet);
             // writing facet content's
             wb.nativeAttr("loadingScreenTemplate", "function() { return \"" + EscapeUtils.forJavaScript(loading) + "\";}");
         }
 
         writer.write("}");
-        encodeClientBehaviors(context, timeline);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected String encodeGroup(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline timeline, UIComponent groupFacet,
+    protected String encodeGroup(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline component, UIComponent groupFacet,
             Map<String, String> groupsContent, TimelineGroup<?> group, Integer order) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         fsw.write("{id: \"" + EscapeUtils.forJavaScriptBlock(group.getId()) + "\"");
 
         Object data = group.getData();
-        if (LangUtils.isNotBlank(timeline.getVarGroup()) && data != null) {
-            context.getExternalContext().getRequestMap().put(timeline.getVarGroup(), data);
+        if (LangUtils.isNotBlank(component.getVarGroup()) && data != null) {
+            context.getExternalContext().getRequestMap().put(component.getVarGroup(), data);
         }
-        if (ComponentUtils.shouldRenderFacet(groupFacet)) {
+        if (FacetUtils.shouldRenderFacet(groupFacet)) {
             String groupRender = encodeAllToString(context, writer, fswHtml, groupFacet);
             // extract the content of the group, first buffer and then render it
             groupsContent.put(group.getId(), EscapeUtils.forJavaScript(groupRender));
@@ -350,13 +358,13 @@ public class TimelineRenderer extends CoreRenderer {
                 }
 
                 else {
-                    fsw.write(", showNested: " + timeline.isShowNested());
+                    fsw.write(", showNested: " + component.isShowNested());
                 }
             }
         }
 
-        if (timeline.getGroupStyle() != null) {
-            fsw.write(", style: \"" + timeline.getGroupStyle() + "\"");
+        if (component.getGroupStyle() != null) {
+            fsw.write(", style: \"" + component.getGroupStyle() + "\"");
         }
 
         if (group.getStyleClass() != null) {
@@ -391,7 +399,7 @@ public class TimelineRenderer extends CoreRenderer {
         return groupJson;
     }
 
-    protected String encodeEvent(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline timeline,
+    protected String encodeEvent(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline component,
                               UIComponent eventTitleFacet, ZoneId zoneId, List<TimelineGroup<Object>> groups,
                               TimelineEvent<?> event) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -432,7 +440,6 @@ public class TimelineRenderer extends CoreRenderer {
                     fsw.write(",");
                 }
                 fsw.write("remove: " + event.isEditableRemove());
-                isSet = true;
             }
             fsw.write("}");
         }
@@ -472,8 +479,8 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         Object data = event.getData();
-        if (LangUtils.isNotBlank(timeline.getVar()) && data != null) {
-            context.getExternalContext().getRequestMap().put(timeline.getVar(), data);
+        if (LangUtils.isNotBlank(component.getVar()) && data != null) {
+            context.getExternalContext().getRequestMap().put(component.getVar(), data);
         }
 
         if (event.getTitle() != null) {
@@ -481,7 +488,7 @@ public class TimelineRenderer extends CoreRenderer {
             fsw.write(EscapeUtils.forJavaScript(event.getTitle()));
             fsw.write("\"");
         }
-        else if (ComponentUtils.shouldRenderFacet(eventTitleFacet)) {
+        else if (FacetUtils.shouldRenderFacet(eventTitleFacet)) {
             String title = encodeAllToString(context, writer, fswHtml, eventTitleFacet);
             fsw.write(", title:\"");
             fsw.write(EscapeUtils.forJavaScript(title));
@@ -489,11 +496,11 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         fsw.write(", content:\"");
-        if (timeline.getChildCount() > 0) {
+        if (component.getChildCount() > 0) {
             ResponseWriter clonedWriter = writer.cloneWithWriter(fswHtml);
             context.setResponseWriter(clonedWriter);
 
-            renderChildren(context, timeline);
+            renderChildren(context, component);
 
             // restore writer
             context.setResponseWriter(writer);
@@ -535,7 +542,7 @@ public class TimelineRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Timeline component) throws IOException {
         //do nothing
     }
 
@@ -568,6 +575,6 @@ public class TimelineRenderer extends CoreRenderer {
                 .filter(Objects::nonNull)
                 .distinct()
                 .map(group -> new TimelineGroup<Object>(group, group))
-                .collect(toList());
+                .collect(Collectors.toList());
     }
 }

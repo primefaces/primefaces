@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,10 +26,10 @@ package org.primefaces.component.fileupload;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.facelets.MethodRule;
 
-import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.MetaRuleset;
+import jakarta.faces.view.facelets.ComponentConfig;
+import jakarta.faces.view.facelets.ComponentHandler;
+import jakarta.faces.view.facelets.MetaRule;
+import jakarta.faces.view.facelets.MetaRuleset;
 
 public class FileUploadHandler extends ComponentHandler {
 

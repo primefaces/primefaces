@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,15 @@
  */
 package org.primefaces.selenium.component;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.findby.FindByParentPartialId;
+
+import java.util.Objects;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:triStateCheckbox}.
@@ -59,18 +62,28 @@ public abstract class TriStateCheckbox extends AbstractInputComponent {
         }
     }
 
-    public void setValue(String value) {
-        while (!getValue().equals(value)) {
+    public void setValue(Boolean value) {
+        while (!Objects.equals(getValue(), value)) {
             click();
         }
     }
 
-    public String getValue() {
-        return input.getAttribute("value");
+    public Boolean getValue() {
+        String value = input.getDomProperty("value");
+        if ("0".equals(value)) {
+            return null;
+        }
+        else if ("1".equals(value)) {
+            return Boolean.TRUE;
+        }
+        else if ("2".equals(value)) {
+            return Boolean.FALSE;
+        }
+        throw new IllegalStateException();
     }
 
     /**
-     * Toggles between its three states. (0, 1, 2)
+     * Toggles between its three states. (null, true, false)
      */
     public void toggle() {
         PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".toggle();");

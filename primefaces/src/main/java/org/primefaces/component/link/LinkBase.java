@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.link;
 
-import javax.faces.component.html.HtmlOutcomeTargetLink;
-
 import org.primefaces.component.api.UIOutcomeTarget;
+
+import jakarta.faces.component.html.HtmlOutcomeTargetLink;
 
 
 public abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget {

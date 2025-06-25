@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,25 @@
  */
 package org.primefaces.showcase.view.data.timeline;
 
+import org.primefaces.event.timeline.TimelineAddEvent;
+import org.primefaces.event.timeline.TimelineDragDropEvent;
+import org.primefaces.event.timeline.TimelineLazyLoadEvent;
+import org.primefaces.event.timeline.TimelineModificationEvent;
+import org.primefaces.event.timeline.TimelineRangeEvent;
+import org.primefaces.event.timeline.TimelineSelectEvent;
+import org.primefaces.model.timeline.TimelineEvent;
+import org.primefaces.model.timeline.TimelineModel;
+import org.primefaces.showcase.domain.Event;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-
-import org.primefaces.event.timeline.*;
-import org.primefaces.model.timeline.TimelineEvent;
-import org.primefaces.model.timeline.TimelineModel;
-import org.primefaces.showcase.domain.Event;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named("allEventsTimelineView")
 @ViewScoped

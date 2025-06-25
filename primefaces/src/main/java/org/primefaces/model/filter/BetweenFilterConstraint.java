@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,21 @@
  */
 package org.primefaces.model.filter;
 
-import javax.faces.context.FacesContext;
 import java.util.List;
 import java.util.Locale;
 
+import jakarta.faces.context.FacesContext;
+
 public class BetweenFilterConstraint implements FilterConstraint {
+
+    private static final long serialVersionUID = 1L;
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
         if (filter != null && !(filter instanceof List)) {
             throw new IllegalArgumentException("Filter should be a java.util.List");
         }
-        List<?> filterList = (List) filter;
+        List<?> filterList = (List<?>) filter;
         if (filterList == null || filterList.size() != 2 || value == null) {
             return false;
         }

@@ -1,0 +1,11 @@
+@use 'sass:list';
+
+body {
+  .ui-paginator {
+    .ui-paginator-rpp-options {
+      padding: .5rem;
+      border-radius: $borderRadius;
+      border-color: list.nth($inputBorder, 3);
+    }
+  }
+}

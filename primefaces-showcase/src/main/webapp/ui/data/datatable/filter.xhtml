@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -38,7 +38,7 @@
                         <div class="flex align-items-center justify-content-between">
                             <span>List of Customers</span>
                             <div>
-                            <p:inputText id="globalFilter" onkeyup="PF('customersTable').filter()" style="width:10rem"
+                            <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('customersTable').filter())" style="width:10rem"
                                          placeholder="Enter keyword" />
                             <p:commandButton value="Global Filter Only" update="@form" styleClass="ml-2"
                                              action="#{dtFilterView.toggleGlobalFilter()}"/>
@@ -47,7 +47,7 @@
 
                     </f:facet>
 
-                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains">
+                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains" filterPlaceholder="Filter By Name">
                         <h:outputText value="#{customer.name}" />
                     </p:column>
 
@@ -72,7 +72,7 @@
 
                     <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" />
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" converter="jakarta.faces.DateTime" />
                         </f:facet>
                     </p:column>
 
@@ -88,7 +88,7 @@
                     </p:column>
 
                     <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt"
-                              converter="javax.faces.Integer">
+                              converter="jakarta.faces.Integer">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
 
@@ -147,7 +147,7 @@
                     </p:column>
 
                     <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}"
-                              converter="javax.faces.Integer">
+                              converter="jakarta.faces.Integer">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
                 </p:dataTable>
@@ -163,7 +163,7 @@
 
                     <f:facet name="header">
                         <div class="flex justify-content-end">
-                            <p:inputText id="globalFilter" onkeyup="PF('customersTable3').filter()" style="width:300px"
+                            <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('customersTable3').filter())" style="width:300px"
                                          placeholder="Search all fields using global function" />
                         </div>
                     </f:facet>
@@ -190,6 +190,75 @@
                     <p:column headerText="Activity" sortBy="#{customer.activity}">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Filter toggling</h5>
+            <p>1. Hide filter components initially by adding <code>ui-filter-toggleable</code> as <em>styleClass</em> to the datatable. <br/>
+                2. To show/hide the filter components call <code>PF('customersTable4').toggleFilter()</code>.</p>
+            <h:form id="customersForm4">
+                <p:dataTable id="customers" var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable4"
+                             emptyMessage="No customers found with given criteria" stickyHeader="true" stickyTopAt=".layout-topbar"
+                             filteredValue="#{dtFilterView.filteredCustomers1}" styleClass="ui-filter-toggleable">
+
+                    <f:facet name="header">
+                        <div class="flex align-items-center justify-content-between">
+                            <span>List of Customers</span>
+                            <div align="right">
+                                <span>Switch toggle with manual toggleFilter()</span>
+                                <p:toggleSwitch id="manualToggle" styleClass="vertical-align-middle ml-3" onchange="PF('customersTable4').toggleFilter()" onIcon="pi pi-filter" offIcon="pi pi-filter-slash"/>
+                            </div>
+                        </div>
+
+                    </f:facet>
+
+                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains" filterPlaceholder="Filter By Name">
+                        <h:outputText value="#{customer.name}" />
+                    </p:column>
+
+                    <p:column headerText="Country" sortBy="#{customer.country.name}" filterBy="#{customer.country.name}">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px" />
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.country.name}" />
+                    </p:column>
+
+                    <p:column field="representative" headerText="Representative" filterMatchMode="exact"
+                              sortBy="#{customer.representative.name}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="ui-custom-filter">
+                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{dtFilterView.representatives}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+
+                        <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo" width="32"
+                                        style="vertical-align: middle" />
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.representative.name}" />
+                    </p:column>
+
+                    <p:column field="date" headerText="Join Date" filterMatchMode="between">
+                        <f:facet name="filter">
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" converter="jakarta.faces.DateTime" />
+                        </f:facet>
+                    </p:column>
+
+                    <p:column field="status" headerText="Status" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="ui-custom-filter">
+                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{dtFilterView.customerStatus}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
+                    </p:column>
+
+                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt"
+                              converter="jakarta.faces.Integer">
+                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
+                    </p:column>
+
                 </p:dataTable>
             </h:form>
         </div>

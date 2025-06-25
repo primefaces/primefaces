@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.poll;
 
-import javax.faces.component.UIComponentBase;
-
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIComponentBase;
 
 public abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
@@ -35,30 +35,31 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PollRenderer";
 
     public enum PropertyKeys {
-
-        widgetVar,
-        interval,
-        update,
-        listener,
-        immediate,
-        onstart,
-        oncomplete,
-        process,
-        onerror,
-        onsuccess,
-        global,
-        delay,
-        timeout,
         async,
         autoStart,
-        stop,
-        partialSubmit,
-        resetValues,
-        ignoreAutoUpdate,
-        partialSubmitFilter,
+        delay,
         form,
+        global,
+        ignoreAutoUpdate,
+        ignoreComponentNotFound,
+        immediate,
+        interval,
         intervalType,
-        ignoreComponentNotFound
+        listener,
+        onactivated,
+        oncomplete,
+        ondeactivated,
+        onerror,
+        onstart,
+        onsuccess,
+        partialSubmit,
+        partialSubmitFilter,
+        process,
+        resetValues,
+        stop,
+        timeout,
+        update,
+        widgetVar
     }
 
     public PollBase() {
@@ -95,11 +96,11 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
         getStateHelper().put(PropertyKeys.update, update);
     }
 
-    public javax.el.MethodExpression getListener() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
+    public jakarta.el.MethodExpression getListener() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
     }
 
-    public void setListener(javax.el.MethodExpression listener) {
+    public void setListener(jakarta.el.MethodExpression listener) {
         getStateHelper().put(PropertyKeys.listener, listener);
     }
 
@@ -268,5 +269,21 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
         getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
+
+    public String getOnactivated() {
+        return (String) getStateHelper().eval(PropertyKeys.onactivated, null);
+    }
+
+    public void setOnactivated(String onactivated) {
+        getStateHelper().put(PropertyKeys.onactivated, onactivated);
+    }
+
+    public String getOndeactivated() {
+        return (String) getStateHelper().eval(PropertyKeys.ondeactivated, null);
+    }
+
+    public void setOndeactivated(String ondeactivated) {
+        getStateHelper().put(PropertyKeys.ondeactivated, ondeactivated);
     }
 }

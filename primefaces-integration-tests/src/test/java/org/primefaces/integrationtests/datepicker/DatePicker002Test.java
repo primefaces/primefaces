@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,26 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.DatePicker;
+
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.DatePicker;
 
-public class DatePicker002Test extends AbstractDatePickerTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class DatePicker002Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
-    public void testWithoutShowOtherMonths(Page page) {
+    void withoutShowOtherMonths(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker1;
 
@@ -49,25 +52,25 @@ public class DatePicker002Test extends AbstractDatePickerTest {
         // Assert
         assertNoJavascriptErrors();
         WebElement panel = datePicker.getPanel();
-        Assertions.assertNotNull(panel);
+        assertNotNull(panel);
         List<WebElement> elements = panel.findElements(By.cssSelector("table.ui-datepicker-calendar"));
-        Assertions.assertNotNull(elements);
-        Assertions.assertEquals(1, elements.size());
+        assertNotNull(elements);
+        assertEquals(1, elements.size());
         WebElement table = elements.get(0);
 
         List<WebElement> days = table.findElements(By.cssSelector("td a"));
-        Assertions.assertNotNull(days);
-        Assertions.assertEquals(28, days.size());
+        assertNotNull(days);
+        assertEquals(28, days.size());
 
         List<WebElement> daysOtherMonths = table.findElements(By.cssSelector("td.ui-datepicker-other-month"));
-        Assertions.assertNotNull(daysOtherMonths);
-        Assertions.assertEquals(7, daysOtherMonths.size());
-        Assertions.assertEquals(0, daysOtherMonths.stream().filter(dayOtherMonth -> dayOtherMonth.isDisplayed()).count());
+        assertNotNull(daysOtherMonths);
+        assertEquals(7, daysOtherMonths.size());
+        assertEquals(0, daysOtherMonths.stream().filter(dayOtherMonth -> dayOtherMonth.isDisplayed()).count());
     }
 
     @Test
     @Order(2)
-    public void testWithShowOtherMonths(Page page) {
+    void withShowOtherMonths(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker2;
 
@@ -77,20 +80,20 @@ public class DatePicker002Test extends AbstractDatePickerTest {
         // Assert
         assertNoJavascriptErrors();
         WebElement panel = datePicker.getPanel();
-        Assertions.assertNotNull(panel);
+        assertNotNull(panel);
         List<WebElement> elements = panel.findElements(By.cssSelector("table.ui-datepicker-calendar"));
-        Assertions.assertNotNull(elements);
-        Assertions.assertEquals(1, elements.size());
+        assertNotNull(elements);
+        assertEquals(1, elements.size());
         WebElement table = elements.get(0);
 
         List<WebElement> days = table.findElements(By.cssSelector("td a"));
-        Assertions.assertNotNull(days);
-        Assertions.assertEquals(28, days.size());
+        assertNotNull(days);
+        assertEquals(28, days.size());
 
         List<WebElement> daysOtherMonths = table.findElements(By.cssSelector("td.ui-datepicker-other-month"));
-        Assertions.assertNotNull(daysOtherMonths);
-        Assertions.assertEquals(7, daysOtherMonths.size());
-        Assertions.assertEquals(7, daysOtherMonths.stream().filter(dayOtherMonth -> dayOtherMonth.isDisplayed()).count());
+        assertNotNull(daysOtherMonths);
+        assertEquals(7, daysOtherMonths.size());
+        assertEquals(7, daysOtherMonths.stream().filter(dayOtherMonth -> dayOtherMonth.isDisplayed()).count());
     }
 
     public static class Page extends AbstractPrimePage {

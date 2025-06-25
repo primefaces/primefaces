@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,21 @@
  */
 package org.primefaces.selenium.component;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.Guard;
+
+import java.io.File;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:fileUpload}.
@@ -46,7 +47,7 @@ public abstract class FileUpload extends AbstractInputComponent {
     @Override
     public WebElement getInput() {
         // in case of mode=simple skinSimple=false the input element is this element
-        boolean isInputFile = "input".equals(getTagName()) && "file".equals(getAttribute("type"));
+        boolean isInputFile = "input".equals(getTagName()) && "file".equals(getDomAttribute("type"));
         return isInputFile ? this : findElement(By.id(getId() + "_input"));
     }
 
@@ -55,7 +56,7 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the file name
      */
     public String getValue() {
-        return getInput().getAttribute("value");
+        return getInput().getDomProperty("value");
     }
 
     /**
@@ -174,11 +175,11 @@ public abstract class FileUpload extends AbstractInputComponent {
     }
 
     /**
-     * Gets the value displayed by the widget.
+     * Gets the displayed filename.
      *
      * @return the widget's value
      */
-    public String getWidgetValue() {
+    public String getFilename() {
         return findElement(By.className("ui-fileupload-filename")).getText();
     }
 

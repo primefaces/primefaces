@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,26 @@
  */
 package org.primefaces.integrationtests.updateform;
 
-import org.junit.jupiter.api.*;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.InputText;
-import org.primefaces.selenium.component.InputNumber;
 import org.primefaces.selenium.component.Calendar;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.InputNumber;
+import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.InputTextarea;
 
-public class UpdateForm001Test extends AbstractPrimePageTest {
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class UpdateForm001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    public void testUpdateForm(Page page) {
+    void updateForm(Page page) {
 
         // Act
         page.calendar.setValue(System.currentTimeMillis());
@@ -54,17 +59,17 @@ public class UpdateForm001Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertNotNull(page.calendar.getValue());
-        Assertions.assertEquals("0.00", page.inputnumber0.getWidgetValue());
-        Assertions.assertEquals("Text 1", page.inputtext1.getValue());
-        Assertions.assertEquals("1.00", page.inputnumber1.getWidgetValue());
-        Assertions.assertEquals("Text 2", page.inputtext2.getValue());
-        Assertions.assertEquals("2.00", page.inputnumber2.getWidgetValue());
-        Assertions.assertEquals("Text 3", page.inputtext3.getValue());
-        Assertions.assertEquals("3.00", page.inputnumber3.getWidgetValue());
-        Assertions.assertEquals("Text 4", page.inputtext4.getValue());
-        Assertions.assertEquals("4.00", page.inputnumber4.getWidgetValue());
-        Assertions.assertEquals("This is a long text", page.textarea1.getValue());
+        assertNotNull(page.calendar.getValue());
+        assertEquals("0.00", page.inputnumber0.getWidgetValue());
+        assertEquals("Text 1", page.inputtext1.getValue());
+        assertEquals("1.00", page.inputnumber1.getWidgetValue());
+        assertEquals("Text 2", page.inputtext2.getValue());
+        assertEquals("2.00", page.inputnumber2.getWidgetValue());
+        assertEquals("Text 3", page.inputtext3.getValue());
+        assertEquals("3.00", page.inputnumber3.getWidgetValue());
+        assertEquals("Text 4", page.inputtext4.getValue());
+        assertEquals("4.00", page.inputnumber4.getWidgetValue());
+        assertEquals("This is a long text", page.textarea1.getValue());
     }
 
     public static class Page extends AbstractPrimePage {

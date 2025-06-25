@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,37 +23,40 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataTable038Test extends AbstractDataTableTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class DataTable038Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: #9171 not compatible with MyFaces tree manipulation")
-    public void testDynamicColumnsMyFacesIssue(Page page) throws InterruptedException {
+    void dynamicColumnsMyFacesIssue(Page page) throws InterruptedException {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Page1 - check first row (25 rows)
-        Assertions.assertEquals("s2", dataTable.getCell(1, 0).getText());
-        Assertions.assertEquals("d2", dataTable.getCell(1, 1).getText());
+        assertEquals("s2", dataTable.getCell(1, 0).getText());
+        assertEquals("d2", dataTable.getCell(1, 1).getText());
 
         dataTable.selectPage(2);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Page2 - check first row (25 rows)
-        Assertions.assertEquals("s27", dataTable.getCell(1, 0).getText());
-        Assertions.assertEquals("d27", dataTable.getCell(1, 1).getText());
+        assertEquals("s27", dataTable.getCell(1, 0).getText());
+        assertEquals("d27", dataTable.getCell(1, 1).getText());
 
         assertNoJavascriptErrors();
     }

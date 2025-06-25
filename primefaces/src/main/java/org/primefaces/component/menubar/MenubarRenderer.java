@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,14 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class MenubarRenderer extends TieredMenuRenderer {
 
@@ -42,7 +45,9 @@ public class MenubarRenderer extends TieredMenuRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Menubar", menubar)
                 .attr("autoDisplay", menubar.isAutoDisplay())
-                .attr("delay", menubar.getDelay())
+                .attr("showDelay", menubar.getShowDelay(), 0)
+                .attr("hideDelay", menubar.getHideDelay(), 0)
+                .attr("tabIndex", menubar.getTabindex(), "0")
                 .attr("toggleEvent", menubar.getToggleEvent(), null);
 
         wb.finish();
@@ -52,27 +57,32 @@ public class MenubarRenderer extends TieredMenuRenderer {
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menubar menubar = (Menubar) abstractMenu;
         String style = menubar.getStyle();
-        String styleClass = menubar.getStyleClass();
-        styleClass = styleClass == null ? Menubar.CONTAINER_CLASS : Menubar.CONTAINER_CLASS + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(menubar.getStyleClass())
+                .add(Menubar.CONTAINER_CLASS)
+                .add(ComponentUtils.isRTL(context, abstractMenu), AbstractMenu.MENU_RTL_CLASS)
+                .build();
 
-        encodeMenu(context, menubar, style, styleClass, "menubar");
+        encodeMenu(context, menubar, style, styleClass, HTML.ARIA_ORIENTATION_HORIZONTAL);
     }
 
     @Override
-    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu, boolean isRtl, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object parent = submenu.getParent();
         String icon = null;
+        String rtlStyleClass = isRtl ? Menu.SUBMENU_LEFT_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
 
         if (parent == null) {
-            icon = (submenu.getId().startsWith("_")) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+            icon = (submenu.getId().startsWith("_")) ? Menu.SUBMENU_DOWN_ICON_CLASS : rtlStyleClass;
         }
         else {
-            icon = (parent instanceof Menubar) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+            icon = (parent instanceof Menubar) ? Menu.SUBMENU_DOWN_ICON_CLASS : rtlStyleClass;
         }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", icon, null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         writer.endElement("span");
     }
 }

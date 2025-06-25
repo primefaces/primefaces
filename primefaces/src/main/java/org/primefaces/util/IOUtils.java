@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,12 +24,14 @@
 package org.primefaces.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.util.function.Consumer;
 
 public class IOUtils {
 
@@ -68,6 +70,25 @@ public class IOUtils {
         int read = 0;
         while ((read = input.read(buffer)) != -1) {
             output.write(buffer, 0, read);
+        }
+    }
+
+    /**
+     * Closes the given {@link Closeable} as a null-safe operation while consuming IOException by the given {@code consumer}.
+     *
+     * @param closeable The resource to close, may be null.
+     * @param consumer Consumes the IOException thrown by {@link Closeable#close()}.
+     */
+    public static void closeQuietly(final AutoCloseable closeable, final Consumer<Exception> consumer) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            }
+            catch (final Exception e) {
+                if (consumer != null) {
+                    consumer.accept(e);
+                }
+            }
         }
     }
 }

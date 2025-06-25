@@ -1,6 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -17,7 +17,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h5>Horizontal</h5>
-            <p:splitter style="height: 300px" styleClass="mb-5">
+            <p:splitter style="height: 300px" styleClass="mb-5" widgetVar="splitter">
                 <p:splitterPanel styleClass="flex align-items-center justify-content-center">
                     Panel 1
                 </p:splitterPanel>

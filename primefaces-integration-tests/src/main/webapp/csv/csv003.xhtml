@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <h:outputStylesheet name="css/primeflex3.css" library="it"/><!-- latest primeflex -->
+
+        <style type="text/css">
+            body .ui-panelgrid .ui-panelgrid-cell {
+                padding: 0.5rem;
+            }
+
+            button.ui-state-csv-valid, input.ui-state-csv-valid, .ui-inputfield.ui-state-error.ui-state-csv-valid, .ui-selectonemenu.ui-state-csv-valid {
+                border-left-color: green !important; /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+
+            button.ui-state-csv-invalid, input.ui-state-csv-invalid, span.ui-inputnumber.ui-state-csv-invalid, .ui-selectonemenu.ui-state-csv-invalid {
+                border-left-color: red !important; /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+
+            <p:panelGrid id="gridEverythingElse" columns="4" layout="flex"
+                         columnClasses="col-12 xl:col-2, col-12 xl:col-4, col-12 xl:col-5, col-12 xl:col-1"
+                         contentStyleClass="align-items-baseline ui-fluid">
+
+                    <p:outputLabel for="@next" value="Time (@Past)"/>
+                    <p:inputText id="datePast" value="#{csv003.datePast}">
+                        <f:convertDateTime pattern="HH:mm:ss"/>
+                    </p:inputText>
+                    <p:message for="@previous" id="msgDatePast"/>
+                    <h:outputText value="#{csv003.datePast}"/>
+                    
+                    <p:outputLabel for="@next" value="Date (@PastOrPresent)"/>
+                    <p:inputText id="datePastOrPresent" value="#{csv003.datePastOrPresent}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </p:inputText>
+                    <p:message for="@previous" id="msgDatePastOrPresent"/>
+                    <h:outputText value="#{csv003.datePastOrPresent}"/>
+                
+                    <p:outputLabel for="@next" value="DateTime (@Future)"/>
+                    <p:inputText id="dateFuture" value="#{csv003.dateFuture}">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                    </p:inputText>
+                    <p:message for="@previous" id="msgDateFuture"/>
+                    <h:outputText value="#{csv003.dateFuture}"/>
+                    
+                    <p:outputLabel for="@next" value="Date (@FutureOrPresent)"/>
+                    <p:inputText id="dateFutureOrPresent" value="#{csv003.dateFutureOrPresent}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </p:inputText>
+                    <p:message for="@previous" id="msgDateFutureOrPresent"/>
+                    <h:outputText value="#{csv003.dateFutureOrPresent}"/>
+            </p:panelGrid>
+
+            <div class="pt-3">
+                <p:commandButton id="btnSave" value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="mr-3" />
+            </div>
+
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,12 @@
  */
 package org.primefaces.component.outputlabel;
 
-import javax.faces.component.html.HtmlOutputLabel;
+import org.primefaces.component.api.RTLAware;
+
+import jakarta.faces.component.html.HtmlOutputLabel;
 
 
-public abstract class OutputLabelBase extends HtmlOutputLabel {
+public abstract class OutputLabelBase extends HtmlOutputLabel implements RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

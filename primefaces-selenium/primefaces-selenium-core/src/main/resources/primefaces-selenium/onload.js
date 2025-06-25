@@ -1,6 +1,7 @@
 window.pfselenium = {
     navigating : false,
     submitting : false,
+    validationFailed: false,
     xhr : null
 };
 
@@ -45,3 +46,19 @@ window.addEventListener("unload", function() {
     window.pfselenium.navigating = true;
     window.pfselenium.submitting = false;
 });
+
+document.addEventListener("click", function(event){
+    window.pfselenium.validationFailed = false;
+});
+
+if (window.PrimeFaces && PrimeFaces.validation) {
+    var originalValidate = PrimeFaces.validation.validate;
+
+    PrimeFaces.validation.validate = function() {
+        var success = originalValidate.apply(this, arguments);
+
+        window.pfselenium.validationFailed = !success;
+
+        return success;
+    };
+}

@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -19,7 +19,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form id="form">
-                <p:dataTable id="products" var="product" value="#{dtContextMenuView.products}" rowKey="#{product.id}"
+                <p:dataTable id="products" var="product" value="#{dtContextMenuView.products}" rowKey="#{product.code}"
                              selection="#{dtContextMenuView.selectedProduct}" selectionMode="single">
                     <f:facet name="header">
                         RightClick to View Options
@@ -41,7 +41,7 @@
 
                 <p:contextMenu for="products">
                     <p:menuitem value="View" update="productDetail" icon="pi pi-search"
-                                oncomplete="PF('productDialog').show()"/>
+                                oncomplete="PF('productDialog').show()" actionListener="#{dtContextMenuView.viewProduct}"/>
                     <p:menuitem value="Delete" update="products" icon="pi pi-times"
                                 action="#{dtContextMenuView.deleteProduct}"/>
                 </p:contextMenu>

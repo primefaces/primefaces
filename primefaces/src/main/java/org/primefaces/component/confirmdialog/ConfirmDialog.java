@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.confirmdialog;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -34,7 +34,8 @@ public class ConfirmDialog extends ConfirmDialogBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ConfirmDialog";
 
-    public static final String CONTAINER_CLASS = "ui-confirm-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container";
+    public static final String DIALOG_CLASS = "ui-confirm-dialog ui-dialog ui-widget ui-hidden-container";
+    public static final String BOX_CLASS = "ui-dialog-box ui-widget-content ui-shadow";
     public static final String BUTTONPANE_CLASS = "ui-dialog-buttonpane ui-dialog-footer ui-widget-content ui-helper-clearfix";
     public static final String SEVERITY_ICON_CLASS = "ui-confirm-dialog-severity";
     public static final String MESSAGE_CLASS = "ui-confirm-dialog-message";

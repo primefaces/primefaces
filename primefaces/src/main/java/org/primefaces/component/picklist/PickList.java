@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,31 @@
  */
 package org.primefaces.component.picklist;
 
-import java.util.*;
-
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MapBuilder;
+import org.primefaces.util.MessageFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -58,9 +67,9 @@ public class PickList extends PickListBase {
     public static final String BUTTONS_CELL_CLASS = "ui-picklist-buttons-cell";
     public static final String SOURCE_CONTROLS = "ui-picklist-source-controls ui-picklist-buttons";
     public static final String TARGET_CONTROLS = "ui-picklist-target-controls ui-picklist-buttons";
-    public static final String ITEM_CLASS = "ui-picklist-item ui-corner-all";
+    public static final String ITEM_CLASS = "ui-picklist-item";
     public static final String ITEM_DISABLED_CLASS = "ui-state-disabled";
-    public static final String CAPTION_CLASS = "ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr";
+    public static final String CAPTION_CLASS = "ui-picklist-caption ui-widget-header";
     public static final String ADD_BUTTON_CLASS = "ui-picklist-button-add";
     public static final String ADD_ALL_BUTTON_CLASS = "ui-picklist-button-add-all";
     public static final String REMOVE_BUTTON_CLASS = "ui-picklist-button-remove";
@@ -81,7 +90,7 @@ public class PickList extends PickListBase {
     public static final String MOVE_DOWN_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-s";
     public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
-    public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
@@ -105,6 +114,11 @@ public class PickList extends PickListBase {
     }
 
     @Override
+    public String getDefaultEventName() {
+        return "transfer";
+    }
+
+    @Override
     protected void validateValue(FacesContext facesContext, Object newValue) {
         super.validateValue(facesContext, newValue);
 
@@ -125,24 +139,58 @@ public class PickList extends PickListBase {
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
             }
             else {
-                message = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
+                message = MessageFactory.getFacesMessage(facesContext, REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
             }
             facesContext.addMessage(clientId, message);
             setValid(false);
         }
 
-        checkDisabled(facesContext, label, newModel.getSource(), oldModel == null ? Collections.emptyList() : oldModel.getSource());
-        checkDisabled(facesContext, label, newModel.getTarget(), oldModel == null ? Collections.emptyList() : oldModel.getTarget());
+        if (isValid()) {
+            List<?> oldModelSource = oldModel == null ? Collections.emptyList() : oldModel.getSource();
+            List<?> oldModelTarget = oldModel == null ? Collections.emptyList() : oldModel.getTarget();
+
+            validateTarget(facesContext, label, newModel.getTarget(), oldModelSource, oldModelTarget);
+            validateDisabled(facesContext, label, newModel.getSource(), oldModelSource);
+            validateDisabled(facesContext, label, newModel.getTarget(), oldModelTarget);
+        }
     }
 
     /**
-     * Prohibits client-side manipulation of disabled entries, when CSS style-class ui-state-disabled is removed. See
-     * <a href="https://github.com/primefaces/primefaces/issues/2127">https://github.com/primefaces/primefaces/issues/2127</a>
+     * Validates the target entries against the source entries. If a target entry is not found in the source entries,
+     * an error message is added to the FacesContext and the component is marked as invalid.
      *
+     * @param facesContext The current FacesContext.
+     * @param label The label to be used in the error message.
+     * @param targetEntries The list of target entries to be validated.
+     * @param oldSource The original list of source entries to validate against.
+     * @param oldTarget The original list of target entries to validate against.
+     * @see <a href="https://github.com/primefaces/primefaces/issues/12059">GitHub #12059</a>
+     */
+    private void validateTarget(FacesContext facesContext, String label, List<?> targetEntries, List<?> oldSource, List<?> oldTarget) {
+        String clientId = getClientId(facesContext);
+
+        for (int i = 0; i < targetEntries.size(); i++) {
+            Object targetItem = targetEntries.get(i);
+            // Check if target item exists in source list
+            if (!oldSource.contains(targetItem) && !oldTarget.contains(targetItem)) {
+                FacesMessage message = MessageFactory.getFacesMessage(facesContext, UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
+                facesContext.addMessage(clientId, message);
+                setValid(false);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Prohibits client-side manipulation of disabled entries, when CSS style-class ui-state-disabled is removed.
+     *
+     * @param facesContext The current FacesContext.
+     * @param label The label to be used in the error message.
      * @param newEntries new/set entries of model source/target list
      * @param oldEntries old/former entries of model source/target list
+     * @see <a href="https://github.com/primefaces/primefaces/issues/2127">GitHub #2127</a>
      */
-    protected void checkDisabled(FacesContext facesContext, String label, List<?> newEntries, List<?> oldEntries) {
+    protected void validateDisabled(FacesContext facesContext, String label, List<?> newEntries, List<?> oldEntries) {
         if (!isValid()) {
             return;
         }
@@ -159,7 +207,7 @@ public class PickList extends PickListBase {
             boolean itemDisabled = isItemDisabled();
             // Check if disabled item has been moved from its former/original list
             if (itemDisabled && !oldEntries.contains(item)) {
-                FacesMessage message = MessageFactory.getFacesMessage(UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
+                FacesMessage message = MessageFactory.getFacesMessage(facesContext, UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
                 facesContext.addMessage(clientId, message);
                 setValid(false);
                 break;
@@ -188,10 +236,10 @@ public class PickList extends PickListBase {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
 
                     if ("target".equals(listName)) {
-                        wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
+                        wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
                     }
                     else {
-                        wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
+                        wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
                     }
                 }
                 else if ("unselect".equals(eventName)) {
@@ -199,10 +247,10 @@ public class PickList extends PickListBase {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
 
                     if ("target".equals(listName)) {
-                        wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
+                        wrapperEvent = new UnselectEvent<>(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
                     }
                     else {
-                        wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
+                        wrapperEvent = new UnselectEvent<>(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
                     }
                 }
                 else if ("reorder".equals(eventName)) {
@@ -254,7 +302,7 @@ public class PickList extends PickListBase {
 
     @SuppressWarnings("unchecked")
     public void populateModel(FacesContext context, String[] values, List model) {
-        Converter converter = getConverter();
+        Converter<?> converter = getConverter();
 
         if (values != null) {
             for (String item : values) {

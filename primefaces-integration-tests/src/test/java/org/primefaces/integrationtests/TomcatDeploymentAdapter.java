@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,7 @@
  */
 package org.primefaces.integrationtests;
 
-import org.apache.catalina.LifecycleException;
-import org.apache.catalina.startup.Tomcat;
+import org.primefaces.selenium.spi.DeploymentAdapter;
 
 import java.io.File;
 import java.net.HttpURLConnection;
@@ -34,9 +33,11 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.UUID;
+
 import org.apache.catalina.Context;
+import org.apache.catalina.LifecycleException;
+import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.scan.StandardJarScanner;
-import org.primefaces.selenium.spi.DeploymentAdapter;
 
 public class TomcatDeploymentAdapter implements DeploymentAdapter {
 
@@ -50,7 +51,8 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
         tomcat = new Tomcat();
         tomcat.setBaseDir(tempDir.toString());
         tomcat.setPort(createRandomPort());
-
+        tomcat.getConnector().setMaxPartCount(20); // increase multipart limit
+        tomcat.getConnector().setMaxPartHeaderSize(5 * 1024); // increase multipart header size limit
         tomcat.getHost().setAppBase(".");
 
         Context context = tomcat.addWebapp("", new File("target/primefaces-integration-tests/").getAbsolutePath());
@@ -63,7 +65,7 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
 
         Thread.sleep(1000);
 
-        // trigger jsf lazy startup
+        // trigger Jakarta Faces impl lazy startup
         URL url = new URL(getBaseUrl());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");

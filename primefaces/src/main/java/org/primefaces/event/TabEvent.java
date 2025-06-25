@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,47 @@ package org.primefaces.event;
 
 import org.primefaces.component.tabview.Tab;
 
-public interface TabEvent<T> {
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
 
-    Tab getTab();
+public abstract class TabEvent<T> extends AbstractAjaxBehaviorEvent {
 
-    T getData();
+    private transient Tab tab;
+    private T data;
+    private String type;
+    private int index;
+
+    public TabEvent(UIComponent component, Behavior behavior, Tab tab, T data, String type, int index) {
+        super(component, behavior);
+        this.tab = tab;
+        this.data = data;
+        this.type = type;
+        this.index = index;
+    }
+
+    public Tab getTab() {
+        return tab;
+    }
+
+    @Deprecated
+    public void setTab(Tab tab) {
+        this.tab = tab;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    @Deprecated
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public String getType() {
+        return type;
+    }
 }

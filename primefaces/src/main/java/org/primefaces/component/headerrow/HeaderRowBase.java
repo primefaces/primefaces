@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.headerrow;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 
 public abstract class HeaderRowBase extends UIComponentBase {
@@ -118,11 +118,11 @@ public abstract class HeaderRowBase extends UIComponentBase {
         getStateHelper().put(PropertyKeys.colspan, colspan);
     }
 
-    public javax.el.MethodExpression getSortFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
+    public jakarta.el.MethodExpression getSortFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
     }
 
-    public void setSortFunction(javax.el.MethodExpression sortFunction) {
+    public void setSortFunction(jakarta.el.MethodExpression sortFunction) {
         getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
     }
 

@@ -1,0 +1,11 @@
+body {
+  .ui-tabmenu {
+    .ui-tabmenu-nav {
+      .ui-tabmenuitem {
+        &.ui-state-focus {
+          background-color: rgba($primaryColor, .12);
+        }
+      }
+    }
+  }
+}

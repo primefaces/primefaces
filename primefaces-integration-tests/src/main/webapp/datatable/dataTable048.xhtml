@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataTable id="datatable" widgetVar="datatable" value="#{dataTable048.progLanguages}" var="lang">
+                <p:column headerText="ID">
+                    <h:outputText value="#{lang.id}"/>
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{lang.name}"/>
+                </p:column>
+
+                <p:column field="popularity" filterMatchMode="in" headerText="Popularity 1">
+                    <f:facet name="filter">
+                        <p:selectCheckboxMenu id="filterPopularity1" onchange="PF('datatable').filter()" multiple="true" updateLabel="true">
+                            <f:converter converterId="jakarta.faces.BigDecimal" />
+                            <f:selectItems value="#{dataTable048.popularities}"/>
+                        </p:selectCheckboxMenu>
+                    </f:facet>
+                </p:column>
+
+                <p:column field="popularity" filterMatchMode="equals" headerText="Popularity 2">
+                    <f:facet name="filter">
+                        <p:selectOneMenu id="filterPopularity2" onchange="PF('datatable').filter()" multiple="true" updateLabel="true">
+                            <f:converter converterId="jakarta.faces.BigDecimal" />
+                            <f:selectItems value="#{dataTable048.popularities}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

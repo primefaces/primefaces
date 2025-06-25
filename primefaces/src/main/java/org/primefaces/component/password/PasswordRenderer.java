@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,73 +23,68 @@
  */
 package org.primefaces.component.password;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class PasswordRenderer extends InputRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class PasswordRenderer extends InputRenderer<Password> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Password password = (Password) component;
-
-        if (!shouldDecode(password)) {
+    public void decode(FacesContext context, Password component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        decodeBehaviors(context, password);
+        decodeBehaviors(context, component);
 
-        String submittedValue = context.getExternalContext().getRequestParameterMap().get(password.getClientId(context));
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(component.getClientId(context));
 
         if (submittedValue != null) {
-            password.setSubmittedValue(submittedValue);
+            component.setSubmittedValue(submittedValue);
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Password password = (Password) component;
-
-        encodeMarkup(context, password);
-        encodeScript(context, password);
+    public void encodeEnd(FacesContext context, Password component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, Password password) throws IOException {
-        boolean feedback = password.isFeedback();
+    protected void encodeScript(FacesContext context, Password component) throws IOException {
+        boolean feedback = component.isFeedback();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Password", password);
-        wb.attr("unmaskable", password.isToggleMask(), false);
+        wb.init("Password", component);
+        wb.attr("unmaskable", component.isToggleMask(), false);
 
         if (feedback) {
             wb.attr("feedback", true)
-                    .attr("inline", password.isInline())
-                    .attr("showEvent", password.getShowEvent(), null)
-                    .attr("hideEvent", password.getHideEvent(), null)
-                    .attr("promptLabel", password.getPromptLabel())
-                    .attr("weakLabel", password.getWeakLabel())
-                    .attr("goodLabel", password.getGoodLabel())
-                    .attr("strongLabel", password.getStrongLabel());
+                    .attr("inline", component.isInline())
+                    .attr("showEvent", component.getShowEvent(), null)
+                    .attr("hideEvent", component.getHideEvent(), null)
+                    .attr("promptLabel", component.getPromptLabel(), null)
+                    .attr("weakLabel", component.getWeakLabel(), null)
+                    .attr("goodLabel", component.getGoodLabel(), null)
+                    .attr("strongLabel", component.getStrongLabel(), null);
         }
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, Password password) throws IOException {
+    protected void encodeMarkup(FacesContext context, Password component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = password.getClientId(context);
-        boolean toggleMask = password.isToggleMask();
+        String clientId = component.getClientId(context);
+        boolean toggleMask = component.isToggleMask();
 
         if (toggleMask) {
             writer.startElement("span", null);
-            boolean isRTL = ComponentUtils.isRTL(context, password);
+            boolean isRTL = ComponentUtils.isRTL(context, component);
             String positionClass = getStyleClassBuilder(context)
                         .add(Password.STYLE_CLASS)
                         .add(Password.MASKED_CLASS)
@@ -101,31 +96,31 @@ public class PasswordRenderer extends InputRenderer {
 
         String inputClass = getStyleClassBuilder(context)
                         .add(!toggleMask, Password.STYLE_CLASS)
-                        .add(createStyleClass(password, Password.INPUT_CLASS))
+                        .add(createStyleClass(component, Password.INPUT_CLASS))
                         .build();
 
-        writer.startElement("input", password);
+        writer.startElement("input", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", "password", null);
         writer.writeAttribute("class", inputClass, null);
-        if (password.getStyle() != null) {
-            writer.writeAttribute("style", password.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
-        if (password.isIgnoreLastPass()) {
+        if (component.isIgnoreLastPass()) {
             writer.writeAttribute("data-lpignore", "true", null);
         }
 
-        String valueToRender = ComponentUtils.getValueToRender(context, password);
-        if (LangUtils.isNotBlank(valueToRender) && password.isRedisplay()) {
+        String valueToRender = ComponentUtils.getValueToRender(context, component);
+        if (LangUtils.isNotBlank(valueToRender) && component.isRedisplay()) {
             writer.writeAttribute("value", valueToRender, null);
         }
 
-        renderAccessibilityAttributes(context, password);
-        renderRTLDirection(context, password);
-        renderPassThruAttributes(context, password, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, password, HTML.INPUT_TEXT_EVENTS);
-        renderValidationMetadata(context, password);
+        renderAccessibilityAttributes(context, component);
+        renderRTLDirection(context, component);
+        renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, component);
 
         writer.endElement("input");
 

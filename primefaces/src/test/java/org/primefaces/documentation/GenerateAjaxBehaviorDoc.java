@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 /**
  * Utility class to scan a component and generated the Markdown information for
@@ -46,7 +46,7 @@ public class GenerateAjaxBehaviorDoc {
         try {
             for (String className : args) {
                 Class<?> clazz = Class.forName(className);
-                generateMarkdown((UIComponentBase) clazz.newInstance());
+                generateMarkdown((UIComponentBase) clazz.getDeclaredConstructor().newInstance());
             }
         }
         catch (Exception e) {
@@ -68,7 +68,7 @@ public class GenerateAjaxBehaviorDoc {
         System.out.println("**Available Events:** `" + eventString + "`  ");
         System.out.println();
         System.out.println("```xhtml");
-        System.out.println(String.format("<p:ajax event=\"%s\" listener=\"#{bean.handle%s}\" update=\"msgs\" />", defaultEvent, defaultEvent));
+        System.out.printf("<p:ajax event=\"%s\" listener=\"#{bean.handle%s}\" update=\"msgs\" />%n", defaultEvent, defaultEvent);
         System.out.println("```");
     }
 

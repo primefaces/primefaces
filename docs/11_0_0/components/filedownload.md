@@ -30,7 +30,7 @@ First parameter of the constructor is the binary stream, second is the mimeType 
 public class FileBean {
     private StreamedContent file;
 
-    public FileDownloadController() {
+    public FileBean() {
         file = DefaultStreamedContent.builder()
                     .contentType("application/pdf")
                     .name("downloaded_file.pdf")

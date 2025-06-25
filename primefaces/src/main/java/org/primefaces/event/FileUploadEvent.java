@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,20 +24,23 @@
 package org.primefaces.event;
 
 
-import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
 import org.primefaces.model.file.UploadedFile;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.FacesListener;
 
 public class FileUploadEvent extends FacesEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private UploadedFile file;
+    private final UploadedFile file;
+    private final int totalFilesCount;
 
-    public FileUploadEvent(UIComponent component, UploadedFile file) {
+    public FileUploadEvent(UIComponent component, UploadedFile file, int totalFilesCount) {
         super(component);
         this.file = file;
+        this.totalFilesCount = totalFilesCount;
     }
 
     @Override
@@ -52,5 +55,13 @@ public class FileUploadEvent extends FacesEvent {
 
     public UploadedFile getFile() {
         return file;
+    }
+
+    /**
+     * The total files count if advanced mode is used.
+     * @return total files count.
+     */
+    public int getTotalFilesCount() {
+        return totalFilesCount;
     }
 }

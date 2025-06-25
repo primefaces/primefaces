@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,25 +24,24 @@
 package org.primefaces.component.columntoggler;
 
 import org.primefaces.component.api.UITable;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-public class ColumnTogglerRenderer extends CoreRenderer {
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class ColumnTogglerRenderer extends CoreRenderer<ColumnToggler> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        ColumnToggler columnToggler = (ColumnToggler) component;
-        UIComponent dataSource = columnToggler.getDataSourceComponent();
+    public void decode(FacesContext context, ColumnToggler component) {
+        UIComponent dataSource = component.getDataSourceComponent();
 
         if (dataSource instanceof UITable) {
-            UITable table = (UITable) dataSource;
+            UITable<?> table = (UITable<?>) dataSource;
             table.decodeColumnTogglerState(context);
         }
 
@@ -50,32 +49,28 @@ public class ColumnTogglerRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ColumnToggler columnToggler = (ColumnToggler) component;
-
-        encodeMarkup(context, columnToggler);
-        encodeScript(context, columnToggler);
+    public void encodeEnd(FacesContext context, ColumnToggler component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, ColumnToggler columnToggler) throws IOException {
+    protected void encodeMarkup(FacesContext context, ColumnToggler component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = columnToggler.getClientId(context);
+        String clientId = component.getClientId(context);
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, ColumnToggler columnToggler) throws IOException {
+    protected void encodeScript(FacesContext context, ColumnToggler component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("ColumnToggler", columnToggler);
-        wb.attr("trigger", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getTrigger(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
-        wb.attr("datasource", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getDatasource(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
+        wb.init("ColumnToggler", component);
+        wb.attr("trigger", SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, component, component.getTrigger()));
+        wb.attr("datasource", SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, component, component.getDatasource()));
 
-        encodeClientBehaviors(context, columnToggler);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }

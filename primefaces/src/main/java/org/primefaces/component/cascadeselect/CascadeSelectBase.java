@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.cascadeselect;
 
-import javax.faces.component.UISelectOne;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.InputHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UISelectOne;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class CascadeSelectBase extends UISelectOne implements Widget, InputHolder, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -43,6 +43,7 @@ public abstract class CascadeSelectBase extends UISelectOne implements Widget, I
         appendTo,
         placeholder,
         disabled,
+        readonly,
         tabindex,
         style,
         styleClass
@@ -119,5 +120,13 @@ public abstract class CascadeSelectBase extends UISelectOne implements Widget, I
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public boolean isReadonly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+    }
+
+    public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
     }
 }

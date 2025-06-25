@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,15 @@
  */
 package org.primefaces.component.chronoline;
 
-import javax.faces.component.UIComponentBase;
+import org.primefaces.component.api.PrimeUIData;
 
-public abstract class ChronolineBase extends UIComponentBase {
+public abstract class ChronolineBase extends PrimeUIData {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.Chronoline";
 
     public enum PropertyKeys {
-
-        var,
-        value,
         align,
         layout,
         style,
@@ -48,22 +45,6 @@ public abstract class ChronolineBase extends UIComponentBase {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
-
-    public Object getValue() {
-        return getStateHelper().eval(PropertyKeys.value, null);
-    }
-
-    public void setValue(Object value) {
-        getStateHelper().put(PropertyKeys.value, value);
     }
 
     public String getAlign() {

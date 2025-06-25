@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,7 @@
  */
 package org.primefaces.component.panel;
 
-import java.util.Collection;
-import java.util.Map;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
 import org.primefaces.PrimeFaces;
-
 import org.primefaces.component.menu.Menu;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.CloseEvent;
@@ -43,7 +31,20 @@ import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Map;
+
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -54,17 +55,13 @@ public class Panel extends PanelBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Panel";
 
-    public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content ui-corner-all";
-    public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all";
+    public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content";
+    public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-helper-clearfix";
     public static final String PANEL_TITLE_CLASS = "ui-panel-title";
-    public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-corner-all ui-state-default";
+    public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-state-default";
     public static final String PANEL_CONTENT_CLASS = "ui-panel-content ui-widget-content";
     public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
     public static final String PANEL_ACTIONS_CLASS = "ui-panel-actions";
-
-    public static final String ARIA_CLOSE = "primefaces.dialog.aria.CLOSE";
-    public static final String ARIA_TOGGLE = "primefaces.panel.aria.TOGGLE";
-    public static final String ARIA_OPTIONS_MENU = "primefaces.panel.aria.OPTIONS_MENU";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("toggle", ToggleEvent.class)
@@ -85,7 +82,7 @@ public class Panel extends PanelBase {
 
     public Menu getOptionsMenu() {
         UIComponent optionsFacet = getFacet("options");
-        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
+        if (FacetUtils.shouldRenderFacet(optionsFacet)) {
             if (optionsFacet instanceof Menu) {
                 return (Menu) optionsFacet;
             }

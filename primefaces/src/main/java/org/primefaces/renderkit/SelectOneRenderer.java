@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,36 +28,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectOne;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
+import jakarta.faces.component.UISelectOne;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
 
-public abstract class SelectOneRenderer extends SelectRenderer {
+public abstract class SelectOneRenderer<T extends UISelectOne> extends SelectRenderer<T> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        UISelectOne selectOne = (UISelectOne) component;
-        if (!shouldDecode(selectOne)) {
+    public void decode(FacesContext context, T component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        String clientId = getSubmitParam(context, selectOne);
+        String clientId = getSubmitParam(context, component);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String submittedValue = params.containsKey(clientId) ? params.get(clientId) : "";
-        List<String> validSubmittedValues = validateSubmittedValues(context, selectOne, (Object[]) getValues(selectOne), submittedValue);
-        selectOne.setSubmittedValue(validSubmittedValues.isEmpty() || validSubmittedValues.contains(submittedValue)
+        List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component), submittedValue);
+        component.setSubmittedValue(validSubmittedValues.isEmpty() || validSubmittedValues.contains(submittedValue)
                 ? submittedValue
                 : validSubmittedValues.get(0));
 
-        decodeBehaviors(context, selectOne);
+        decodeBehaviors(context, component);
     }
 
-    protected Object getValues(UISelectOne selectOne) {
-        Object value = selectOne.getValue();
+    protected Object getValues(T component) {
+        Object value = component.getValue();
 
         if (value != null) {
             return new Object[]{value};
@@ -66,10 +64,8 @@ public abstract class SelectOneRenderer extends SelectRenderer {
         return null;
     }
 
-    protected Object getSubmittedValues(UIComponent component) {
-        UISelectOne select = (UISelectOne) component;
-
-        Object val = select.getSubmittedValue();
+    protected Object getSubmittedValues(T component) {
+        Object val = component.getSubmittedValue();
         if (val != null) {
             return new Object[]{val};
         }
@@ -86,7 +82,7 @@ public abstract class SelectOneRenderer extends SelectRenderer {
      * @param valueOrLabel the input value/label to search for
      * @return either the SelectItem found or NULL if not found
      */
-    protected SelectItem findSelectItemByLabel(FacesContext fc, UIComponent component, Converter converter, List<SelectItem> selectItems,
+    protected SelectItem findSelectItemByLabel(FacesContext fc, T component, Converter converter, List<SelectItem> selectItems,
                 String valueOrLabel) {
         return findSelectItem(fc, component, converter, selectItems, valueOrLabel, false);
     }
@@ -100,7 +96,7 @@ public abstract class SelectOneRenderer extends SelectRenderer {
      * @param valueOrLabel the input value/label to search for
      * @return either the SelectItem found or NULL if not found
      */
-    protected SelectItem findSelectItemByValue(FacesContext fc, UIComponent component, Converter converter, List<SelectItem> selectItems,
+    protected SelectItem findSelectItemByValue(FacesContext fc, T component, Converter converter, List<SelectItem> selectItems,
                 String valueOrLabel) {
         return findSelectItem(fc, component, converter, selectItems, valueOrLabel, true);
     }
@@ -115,7 +111,7 @@ public abstract class SelectOneRenderer extends SelectRenderer {
      * @param byValue true if searching by value false if by label
      * @return either the SelectItem found or NULL if not found
      */
-    private SelectItem findSelectItem(FacesContext fc, UIComponent component, Converter converter, List<SelectItem> selectItems,
+    private SelectItem findSelectItem(FacesContext fc, T component, Converter converter, List<SelectItem> selectItems,
                 String valueOrLabel, boolean byValue) {
 
         for (int i = 0; i < selectItems.size(); i++) {
@@ -147,5 +143,5 @@ public abstract class SelectOneRenderer extends SelectRenderer {
         return null;
     }
 
-    protected abstract String getSubmitParam(FacesContext context, UISelectOne selectOne);
+    protected abstract String getSubmitParam(FacesContext context, T component);
 }

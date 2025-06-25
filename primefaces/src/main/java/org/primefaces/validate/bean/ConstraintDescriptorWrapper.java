@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.faces.FacesWrapper;
-import javax.validation.ConstraintTarget;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.Payload;
-import javax.validation.metadata.ConstraintDescriptor;
+import jakarta.faces.FacesWrapper;
+import jakarta.validation.ConstraintTarget;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.Payload;
+import jakarta.validation.metadata.ConstraintDescriptor;
 
 public class ConstraintDescriptorWrapper<T extends Annotation> implements ConstraintDescriptor<T>, FacesWrapper<ConstraintDescriptor<T>> {
 
@@ -82,25 +82,21 @@ public class ConstraintDescriptorWrapper<T extends Annotation> implements Constr
         return wrapped;
     }
 
-    //@Override - BV 1.1
     @Override
     public String getMessageTemplate() {
         return wrapped.getMessageTemplate();
     }
 
-    //@Override - BV 1.1
     @Override
     public ConstraintTarget getValidationAppliesTo() {
         return wrapped.getValidationAppliesTo();
     }
 
-    //BV 2.0.2
     @Override
-    public javax.validation.metadata.ValidateUnwrappedValue getValueUnwrapping() {
+    public jakarta.validation.metadata.ValidateUnwrappedValue getValueUnwrapping() {
         return wrapped.getValueUnwrapping();
     }
 
-    //BV 2.0.2
     @Override
     public <U> U unwrap(Class<U> type) {
         return wrapped.unwrap(type);

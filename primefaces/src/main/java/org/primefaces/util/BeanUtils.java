@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class BeanUtils {
 
-    private static final List<Class<?>> PRIMITIVES = LangUtils.<Class<?>>unmodifiableList(Boolean.class,
+    private static final List<Class<?>> PRIMITIVES = LangUtils.unmodifiableList(Boolean.class,
             Byte.class,
             Character.class,
             Double.class,
@@ -62,11 +62,8 @@ public class BeanUtils {
         else if (value.getClass().isArray()) {
             return isBean(value.getClass().getComponentType());
         }
-        else if (value.getClass().isPrimitive()) {
-            return false;
-        }
 
-        return true;
+        return !value.getClass().isPrimitive();
     }
 
     public static boolean isPrimitiveOrPrimitiveWrapper(Class<?> valueClass) {

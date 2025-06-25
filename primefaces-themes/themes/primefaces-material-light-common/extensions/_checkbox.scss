@@ -1,0 +1,94 @@
+@use 'sass:list';
+
+body {
+  .ui-chkbox {
+    border-radius: 50%;
+    transition: box-shadow $transitionDuration;
+
+    .ui-chkbox-box {
+      border-color: list.nth($checkboxBorder, 3);
+      border-radius: 2px;
+      position: relative;
+
+      &:not(.ui-state-disabled).ui-state-hover {
+        border-color: list.nth($checkboxBorder, 3);
+      }
+
+      &:not(.ui-state-disabled).ui-state-focus {
+        border-color: list.nth($checkboxBorder, 3);
+      }
+
+      &.ui-state-active {
+        &:not(.ui-state-disabled).ui-state-hover {
+          border-color: $checkboxActiveBorderColor;
+        }
+
+        &:not(.ui-state-disabled).ui-state-focus {
+          border-color: $checkboxActiveBorderColor;
+        }
+
+        .ui-chkbox-icon:before {
+          content: "";
+          position: absolute;
+          top: 6px;
+          left: 1px;
+          border-right: 2px solid transparent;
+          border-bottom: 2px solid transparent;
+          transform: rotate(45deg);
+          transform-origin: 0% 100%;
+          animation: checkbox-check 125ms 50ms linear forwards;
+        }
+      }
+    }
+
+    &:has(:not(.ui-state-disabled).ui-state-hover) {
+      box-shadow: 0 0 1px 10px rgba($overlayColor, .04);
+    }
+
+    &:has(:not(.ui-state-disabled).ui-state-focus) {
+      box-shadow: 0 0 1px 10px rgba($overlayColor, .12);
+    }
+
+    &:has(.ui-state-active) {
+      &:has(:not(.ui-state-disabled).ui-state-hover) {
+        box-shadow: 0 0 1px 10px rgba($checkboxActiveBg, .04);
+      }
+  
+      &:has(:not(.ui-state-disabled).ui-state-focus) {
+        box-shadow: 0 0 1px 10px rgba($checkboxActiveBg, .12);
+      }
+    }
+
+    &.ui-input-filled, .ui-input-filled {
+      .ui-chkbox {
+        .ui-chkbox-box {
+          background-color: $inputBg;
+
+          &:not(.ui-state-disabled):not(.ui-state-active).ui-state-hover {
+            background-color: $inputBg;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes checkbox-check {
+  0%{
+    width: 0;
+    height: 0;
+    border-color: $checkboxTextActiveColor;
+    transform: translate3d(0,0,0) rotate(45deg);
+  }
+  33%{
+    width: 4px;
+    height: 0;
+    transform: translate3d(0,0,0) rotate(45deg);
+  }
+  100%{    
+    width: 4px;
+    height: 10px;    
+    border-color: $checkboxTextActiveColor;
+    transform: translate3d(0,-10px,0) rotate(45deg);
+  }
+}

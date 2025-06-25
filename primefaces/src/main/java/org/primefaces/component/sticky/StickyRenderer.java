@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,41 +23,36 @@
  */
 package org.primefaces.component.sticky;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class StickyRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class StickyRenderer extends CoreRenderer<Sticky> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Sticky sticky = (Sticky) component;
-
-        encodeMarkup(context, sticky);
-        encodeScript(context, sticky);
+    public void encodeEnd(FacesContext context, Sticky component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Sticky sticky) throws IOException {
+    protected void encodeMarkup(FacesContext context, Sticky component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", sticky);
-        writer.writeAttribute("id", sticky.getClientId(context), null);
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), null);
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, Sticky sticky) throws IOException {
-        String target = sticky.getTarget();
+    protected void encodeScript(FacesContext context, Sticky component) throws IOException {
+        String target = component.getTarget();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Sticky", sticky)
-                .attr("target", SearchExpressionFacade.resolveClientIds(context, sticky, target,
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE))
-                .attr("margin", sticky.getMargin(), 0)
-                .finish();
+        wb.init("Sticky", component)
+            .attr("target", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, target))
+            .attr("margin", component.getMargin(), 0)
+            .finish();
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package org.primefaces.config;
 
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -32,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.context.FacesContext;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -40,7 +42,9 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.primefaces.util.LangUtils;
+
+import jakarta.faces.context.FacesContext;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -202,10 +206,7 @@ public class WebXmlParser {
             String key = Throwable.class.getName().equals(exceptionType) ? null : exceptionType;
 
             String location = xpath.compile(LOCATION_EXPRESSION).evaluate(node.getParentNode()).trim();
-
-            if (!errorPages.containsKey(key)) {
-                errorPages.put(key, location);
-            }
+            errorPages.putIfAbsent(key, location);
         }
 
         if (!errorPages.containsKey(null)) {

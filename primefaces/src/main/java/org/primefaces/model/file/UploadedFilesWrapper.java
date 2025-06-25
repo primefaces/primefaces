@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,20 @@
  */
 package org.primefaces.model.file;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
-import javax.faces.FacesWrapper;
-import javax.faces.component.StateHolder;
-import javax.faces.context.FacesContext;
+
+import jakarta.faces.FacesWrapper;
+import jakarta.faces.component.StateHolder;
+import jakarta.faces.context.FacesContext;
 
 /**
  * Internal wrapper to avoid the file binaries to beeing saved in the ViewState.
  */
 public class UploadedFilesWrapper extends UploadedFiles implements FacesWrapper<UploadedFiles>, StateHolder, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private UploadedFiles wrapped;
 
@@ -80,7 +84,7 @@ public class UploadedFilesWrapper extends UploadedFiles implements FacesWrapper<
     }
 
     @Override
-    public void write(String path) throws Exception {
-        getWrapped().write(path);
+    public File write(String path) throws Exception {
+        return getWrapped().write(path);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,49 +23,44 @@
  */
 package org.primefaces.component.api;
 
-import java.util.Map;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.util.MessageFactory;
 
+import java.util.Map;
+
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.context.FacesContext;
+
 /**
  * UIData for pageable components
  */
-public class UIPageableData extends UIData implements Pageable, TouchAware {
+public class UIPageableData extends PrimeUIData implements Pageable, TouchAware {
 
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
     public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "ui-paginator ui-paginator-bottom ui-widget-header";
     public static final String PAGINATOR_PAGES_CLASS = "ui-paginator-pages";
+    public static final String PAGINATOR_CENTER_CONTENT_CLASS = "ui-paginator-center-content";
     public static final String PAGINATOR_TOP_LEFT_CONTENT_CLASS = "ui-paginator-top-left-content";
     public static final String PAGINATOR_TOP_RIGHT_CONTENT_CLASS = "ui-paginator-top-right-content";
     public static final String PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS = "ui-paginator-bottom-left-content";
     public static final String PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS = "ui-paginator-bottom-right-content";
-    public static final String PAGINATOR_PAGE_CLASS = "ui-paginator-page ui-state-default ui-corner-all";
-    public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "ui-paginator-page ui-state-default ui-state-active ui-corner-all";
+    public static final String PAGINATOR_PAGE_CLASS = "ui-paginator-page ui-button ui-button-flat ui-state-default";
+    public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "ui-paginator-page ui-button ui-button-flat ui-state-default ui-state-active";
     public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current";
-    public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options ui-widget ui-state-default ui-corner-left";
+    public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options ui-widget ui-state-default";
     public static final String PAGINATOR_RPP_LABEL_CLASS = "ui-paginator-rpp-label ui-helper-hidden";
-    public static final String PAGINATOR_JTP_SELECT_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default ui-corner-left";
+    public static final String PAGINATOR_JTP_SELECT_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default";
     public static final String PAGINATOR_JTP_INPUT_CLASS = "ui-paginator-jtp-input " + InputText.STYLE_CLASS;
-    public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "ui-paginator-first ui-state-default ui-corner-all";
+    public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "ui-paginator-first ui-state-default";
     public static final String PAGINATOR_FIRST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-first";
-    public static final String PAGINATOR_PREV_PAGE_LINK_CLASS = "ui-paginator-prev ui-state-default ui-corner-all";
+    public static final String PAGINATOR_PREV_PAGE_LINK_CLASS = "ui-paginator-prev ui-state-default";
     public static final String PAGINATOR_PREV_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-prev";
-    public static final String PAGINATOR_NEXT_PAGE_LINK_CLASS = "ui-paginator-next ui-state-default ui-corner-all";
+    public static final String PAGINATOR_NEXT_PAGE_LINK_CLASS = "ui-paginator-next ui-state-default";
     public static final String PAGINATOR_NEXT_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-next";
-    public static final String PAGINATOR_LAST_PAGE_LINK_CLASS = "ui-paginator-last ui-state-default ui-corner-all";
+    public static final String PAGINATOR_LAST_PAGE_LINK_CLASS = "ui-paginator-last ui-state-default";
     public static final String PAGINATOR_LAST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-end";
-    public static final String ARIA_HEADER_LABEL = "primefaces.paginator.aria.HEADER";
-    public static final String ARIA_FIRST_PAGE_LABEL = "primefaces.paginator.aria.FIRST_PAGE";
-    public static final String ARIA_PREVIOUS_PAGE_LABEL = "primefaces.paginator.aria.PREVIOUS_PAGE";
-    public static final String ARIA_NEXT_PAGE_LABEL = "primefaces.paginator.aria.NEXT_PAGE";
-    public static final String ARIA_LAST_PAGE_LABEL = "primefaces.paginator.aria.LAST_PAGE";
-    public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
     public static final String EMPTY_MESSAGE = "primefaces.data.EMPTY_MESSAGE";
 
     public enum PropertyKeys {
@@ -74,7 +69,6 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         paginator,
         paginatorTemplate,
         rowsPerPageTemplate,
-        rowsPerPageLabel,
         currentPageReportTemplate,
         pageLinks,
         paginatorPosition,
@@ -87,7 +81,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
     }
 
     public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(EMPTY_MESSAGE));
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(getFacesContext(), EMPTY_MESSAGE));
     }
 
     public void setEmptyMessage(String emptyMessage) {
@@ -129,15 +123,6 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
 
     public void setRowsPerPageTemplate(String rowsPerPageTemplate) {
         getStateHelper().put(PropertyKeys.rowsPerPageTemplate, rowsPerPageTemplate);
-    }
-
-    @Override
-    public String getRowsPerPageLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
-    }
-
-    public void setRowsPerPageLabel(String rowsPerPageLabel) {
-        getStateHelper().put(PropertyKeys.rowsPerPageLabel, rowsPerPageLabel);
     }
 
     @Override
@@ -225,12 +210,10 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
             //ValueExpression --> remove state to ensure the VE is re-evaluated
             getStateHelper().remove(PropertyKeys.rows);
         }
-        else {
-            //normal attribute value --> restore inital rows
-            Object rows = getStateHelper().eval(InternalPropertyKeys.rowsInitialValue);
-            if (rows != null) {
-                setRows((int) rows);
-            }
+        //normal attribute value --> restore initial rows
+        Object rows = getStateHelper().eval(InternalPropertyKeys.rowsInitialValue);
+        if (rows != null) {
+            setRows((int) rows);
         }
     }
 
@@ -244,7 +227,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         }
     }
 
-    public void calculateFirst() {
+    public boolean calculateFirst() {
         int rows = getRows();
 
         if (rows > 0) {
@@ -253,10 +236,15 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
 
             if (rowCount > 0 && first >= rowCount) {
                 int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
+                int newFirst = Math.max((numberOfPages - 1) * rows, 0);
 
-                setFirst(Math.max((numberOfPages - 1) * rows, 0));
+                setFirst(newFirst);
+
+                return first != newFirst;
             }
         }
+
+        return false;
     }
 
     @Override
@@ -327,11 +315,11 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
 
     public void updatePaginationData(FacesContext context) {
         setRowIndex(-1);
-        String componentClientId = getClientId(context);
+        String clientId = getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        String firstParam = params.get(componentClientId + "_first");
-        String rowsParam = params.get(componentClientId + "_rows");
+        String firstParam = params.get(clientId + "_first");
+        String rowsParam = params.get(clientId + "_rows");
 
         if (!isRowsPerPageValid(rowsParam)) {
             throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);

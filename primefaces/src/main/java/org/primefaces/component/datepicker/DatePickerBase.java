@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,21 @@
  */
 package org.primefaces.component.datepicker;
 
+import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.component.api.Widget;
+import org.primefaces.model.datepicker.DateMetadataModel;
+import org.primefaces.util.CalendarUtils;
+
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
-
-import org.primefaces.component.api.*;
-import org.primefaces.model.datepicker.DateMetadataModel;
-import org.primefaces.util.CalendarUtils;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder, FlexAware {
 
@@ -50,55 +55,58 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public enum PropertyKeys {
 
-        placeholder,
-        widgetVar,
-        timeOnly,
-        inline,
-        buttonTabindex,
-        showIcon,
-        beforeShow,
-        focusOnSelect,
-        yearRange,
-        selectionMode,
-        showOtherMonths,
-        selectOtherMonths,
-        showOnFocus,
-        shortYearCutoff,
-        monthNavigator,
-        yearNavigator,
-        showTime,
-        hourFormat,
-        showSeconds,
-        showMilliseconds,
-        stepHour,
-        stepMinute,
-        stepSecond,
-        stepMillisecond,
-        showButtonBar,
-        panelStyleClass,
-        panelStyle,
-        keepInvalid,
-        hideOnDateTimeSelect,
-        maxDateCount,
-        numberOfMonths,
-        view,
-        autoDetectDisplay,
-        responsiveBreakpoint,
-        touchUI,
-        dateTemplate,
         appendTo,
-        triggerButtonIcon,
+        autoDetectDisplay,
+        autoMonthFormat,
+        beforeShow,
+        buttonTabindex,
+        dateTemplate,
         disabledDates,
         disabledDays,
+        enabledDates,
+        flex,
+        focusOnSelect,
+        hideOnDateTimeSelect,
+        hideOnRangeSelection,
+        hourFormat,
+        inline,
+        keepInvalid,
+        maxDateCount,
+        model,
+        monthNavigator,
+        numberOfMonths,
         onMonthChange,
         onYearChange,
-        timeInput,
-        showWeek,
-        weekCalculator,
+        panelStyle,
+        panelStyleClass,
+        placeholder,
+        responsiveBreakpoint,
+        selectOtherMonths,
+        selectionMode,
+        shortYearCutoff,
+        showButtonBar,
+        showIcon,
+        showMilliseconds,
         showMinMaxRange,
-        autoMonthFormat,
-        model,
-        flex
+        showOnFocus,
+        showOtherMonths,
+        showLongMonthNames,
+        showSeconds,
+        showTime,
+        showWeek,
+        stepHour,
+        stepMillisecond,
+        stepMinute,
+        stepSecond,
+        timeInput,
+        timeOnly,
+        touchUI,
+        triggerButtonIcon,
+        view,
+        weekCalculator,
+        widgetVar,
+        yearNavigator,
+        yearRange
     }
 
     public DatePickerBase() {
@@ -176,7 +184,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     @Override
     public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, "single");
+        return (String) getStateHelper().eval(PropertyKeys.selectionMode,
+                () -> "week".equals(getView()) ? "range" : "single");
     }
 
     public void setSelectionMode(String selectionMode) {
@@ -223,11 +232,11 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.monthNavigator, monthNavigator);
     }
 
-    public boolean isYearNavigator() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.yearNavigator, false);
+    public String getYearNavigator() {
+        return (String) getStateHelper().eval(PropertyKeys.yearNavigator, "false");
     }
 
-    public void setYearNavigator(boolean yearNavigator) {
+    public void setYearNavigator(String yearNavigator) {
         getStateHelper().put(PropertyKeys.yearNavigator, yearNavigator);
     }
 
@@ -347,6 +356,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.hideOnDateTimeSelect, hideOnDateTimeSelect);
     }
 
+    public boolean isHideOnRangeSelection() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.hideOnRangeSelection, false);
+    }
+
+    public void setHideOnRangeSelection(boolean hideOnRangeSelection) {
+        getStateHelper().put(PropertyKeys.hideOnRangeSelection, hideOnRangeSelection);
+    }
+
     public int getMaxDateCount() {
         return (Integer) getStateHelper().eval(PropertyKeys.maxDateCount, Integer.MAX_VALUE);
     }
@@ -419,6 +436,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.disabledDates, disabledDates);
     }
 
+    public List getEnabledDates() {
+        return (List) getStateHelper().eval(PropertyKeys.enabledDates, null);
+    }
+
+    public void setEnabledDates(List enabledDates) {
+        getStateHelper().put(PropertyKeys.enabledDates, enabledDates);
+    }
+
     public List<Integer> getDisabledDays() {
         return (List<Integer>) getStateHelper().eval(PropertyKeys.disabledDays, null);
     }
@@ -452,7 +477,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     }
 
     public boolean isShowWeek() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showWeek, false);
+        return (boolean) getStateHelper().eval(PropertyKeys.showWeek,
+                () -> "week".equals(getView()));
     }
 
     public void setShowWeek(boolean showWeek) {
@@ -499,12 +525,20 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.autoMonthFormat, autoMonthFormat);
     }
 
-    @Override
-    public boolean isFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    public boolean isShowLongMonthNames() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showLongMonthNames, false);
     }
 
-    public void setFlex(boolean flex) {
+    public void setShowLongMonthNames(boolean showLongMonthNames) {
+        getStateHelper().put(PropertyKeys.showLongMonthNames, showLongMonthNames);
+    }
+
+    @Override
+    public Boolean getFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
+    }
+
+    public void setFlex(Boolean flex) {
         getStateHelper().put(PropertyKeys.flex, flex);
     }
 
@@ -564,9 +598,16 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         if (fractionSeparator == null) {
             // Determine separator for locale
             Locale locale = calculateLocale(getFacesContext());
-            char ds = ((DecimalFormat) DecimalFormat.getInstance(locale)).getDecimalFormatSymbols().getDecimalSeparator();
+            char ds = ((DecimalFormat) NumberFormat.getInstance(locale)).getDecimalFormatSymbols().getDecimalSeparator();
             fractionSeparator = Character.toString(ds);
         }
         return fractionSeparator;
     }
+
+    @Override
+    public boolean isReadonlyInput() {
+        return (boolean) getStateHelper().eval(UICalendar.PropertyKeys.readonlyInput,
+                () -> "week".equals(getView()) ? true : false);
+    }
+
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,20 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.component.rowexpansion.RowExpansion;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.LangUtils;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class RowExpandFeature implements DataTableFeature {
 
@@ -70,16 +72,16 @@ public class RowExpandFeature implements DataTableFeature {
     public void encodeExpansion(FacesContext context, DataTableRenderer renderer, DataTable table, int rowIndex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
-        RowExpansion rowExpansion = table.getRowExpansion();
-
-        String styleClass = DataTable.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content";
-        if (rowExpansion.getStyleClass() != null) {
-            styleClass = styleClass + " " + rowExpansion.getStyleClass();
-        }
-
         table.setRowIndex(rowIndex);
 
-        if (rowExpansion.isRendered()) {
+        RowExpansion rowExpansion = table.getRowExpansion();
+        if (rowExpansion != null && rowExpansion.isRendered()) {
+            String styleClass = PrimeRequestContext.getCurrentInstance(context).getStyleClassBuilder()
+                .add(DataTable.EXPANDED_ROW_CONTENT_CLASS)
+                .add("ui-widget-content")
+                .add(rowExpansion.getStyleClass())
+                .build();
+
             if (rowIndexVar != null) {
                 context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
             }
@@ -90,7 +92,7 @@ public class RowExpandFeature implements DataTableFeature {
             writer.startElement("td", null);
             writer.writeAttribute("colspan", table.getColumnsCount(), null);
 
-            table.getRowExpansion().encodeAll(context);
+            rowExpansion.encodeAll(context);
 
             writer.endElement("td");
 

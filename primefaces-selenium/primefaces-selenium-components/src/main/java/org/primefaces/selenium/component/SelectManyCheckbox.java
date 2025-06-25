@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,11 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.AbstractComponent;
+import org.primefaces.selenium.component.model.SelectItem;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,10 +35,6 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.AbstractComponent;
-import org.primefaces.selenium.component.model.SelectItem;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:selectManyCheckbox}.
@@ -122,13 +123,13 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
         int idx = 0;
         for (WebElement checkbox : getCheckboxes()) {
             WebElement input = checkbox.findElement(By.tagName("input"));
-            WebElement label = getRoot().findElement(By.cssSelector("label[for='" + input.getAttribute("id") + "']"));
+            WebElement label = getRoot().findElement(By.cssSelector("label[for='" + input.getDomAttribute("id") + "']"));
             WebElement box = checkbox.findElement(By.className("ui-chkbox-box"));
 
             SelectItem item = new SelectItem();
             item.setIndex(idx);
             item.setLabel(label.getText());
-            item.setValue(input.getAttribute("value"));
+            item.setValue(input.getDomProperty("value"));
             item.setSelected(PrimeSelenium.hasCssClass(box, "ui-state-active"));
             items.add(item);
 

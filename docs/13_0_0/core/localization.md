@@ -15,6 +15,7 @@ Source code bundles:  [GitHub Server Message Bundle Files](https://github.com/pr
 
 ```
 primefaces.autocomplete.aria.DROPDOWN_LABEL=Show Options
+primefaces.autocomplete.RESULTS_MESSAGE=results are available, use up and down arrow keys to navigate
 primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID = {0}: Validation Error: Start date is greater than the end date.
 primefaces.calendar.INVALID = {0}: Validation Error: Value is not valid.
 primefaces.calendar.MAX_DATE = {0}: Validation Error: Value must be {2} or before.
@@ -128,6 +129,7 @@ Side Validation, messages property is used as the bundle for the locale.
      moreLinkText: 'More...',
      noEventsText: 'No Events',
      today: 'Today',
+     now: 'Now',
      clear: 'Clear',
      aria: {
          'paginator.PAGE': 'Page {0}',
@@ -146,7 +148,9 @@ Side Validation, messages property is used as the bundle for the locale.
          'colorpicker.INPUT': 'Color value field',
          'colorpicker.FORMAT': 'Color format',
          'colorpicker.SWATCH': 'Color swatch',
-         'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.'
+         'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.',
+         'spinner.INCREASE': 'Increase Value',
+         'spinner.DECREASE': 'Decrease Value'
      },
      messages: { //optional for Client Side Validation
          'javax.faces.component.UIInput.REQUIRED': '{0}: Validation Error: Value is required.',

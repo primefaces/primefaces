@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,29 @@
  */
 package org.primefaces.integrationtests.menubar;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Menubar;
 import org.primefaces.selenium.component.Messages;
 
-public class MenuBar001Test extends AbstractPrimePageTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class MenuBar001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("MenuBar: basic (click)")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         Menubar menubar = page.menubar;
 
@@ -51,7 +54,7 @@ public class MenuBar001Test extends AbstractPrimePageTest {
         PrimeSelenium.guardAjax(eltMenuMainC).click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Main C"));
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Main C"));
 
         // Act
         WebElement eltMenuMainA = menubar.findElement(By.id("form:mainA"));
@@ -60,7 +63,7 @@ public class MenuBar001Test extends AbstractPrimePageTest {
         PrimeSelenium.guardAjax(eltMenuSubA2).click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Sub A-2"));
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Sub A-2"));
 
         assertConfiguration(menubar.getWidgetConfiguration());
     }
@@ -68,7 +71,7 @@ public class MenuBar001Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("MenuBar: basic (click, selection via value)")
-    public void testBasicByValue(Page page) {
+    void basicByValue(Page page) {
         // Arrange
         Menubar menubar = page.menubar;
 
@@ -76,14 +79,14 @@ public class MenuBar001Test extends AbstractPrimePageTest {
         menubar.selectMenuitemByValue("Main C");
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Main C"));
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Main C"));
 
         // Act
         WebElement eltMenuMainA = menubar.selectMenuitemByValue("Main A");
         menubar.selectMenuitemByValue(eltMenuMainA, "Sub A-2");
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Sub A-2"));
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Sub A-2"));
 
         assertConfiguration(menubar.getWidgetConfiguration());
     }
@@ -91,8 +94,8 @@ public class MenuBar001Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("MenuBar Config = " + cfg);
-        Assertions.assertTrue(cfg.has("toggleEvent")); // click or hover
-        Assertions.assertEquals("click", cfg.getString("toggleEvent"));
+        assertTrue(cfg.has("toggleEvent")); // click or hover
+        assertEquals("click", cfg.getString("toggleEvent"));
     }
 
     public static class Page extends AbstractPrimePage {

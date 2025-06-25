@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,6 @@
  */
 package org.primefaces.integrationtests.colorpicker;
 
-import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
@@ -33,7 +30,31 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.util.LangUtils;
 
+import java.time.Duration;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public abstract class AbstractColorPickerTest extends AbstractPrimePageTest {
+
+    private Duration defaultImplicitWaitTimeout;
+
+    @BeforeEach
+    public void beforeEach() {
+        super.beforeEach();
+
+        defaultImplicitWaitTimeout = getWebDriver().manage().timeouts().getImplicitWaitTimeout();
+        getWebDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+    }
+
+    @AfterEach
+    public void afterEach() {
+        getWebDriver().manage().timeouts().implicitlyWait(defaultImplicitWaitTimeout);
+    }
 
     protected void assertAriaLabel(WebElement panel, String id, String value) {
         WebElement ariaElement = panel.findElement(By.id(id));
@@ -42,14 +63,14 @@ public abstract class AbstractColorPickerTest extends AbstractPrimePageTest {
         if (LangUtils.isBlank(ariaLabel)) {
             ariaLabel = ariaElement.getAttribute("textContent");
         }
-        Assertions.assertEquals(value, ariaLabel);
+        assertEquals(value, ariaLabel);
     }
 
     protected void assertMessage(Messages messages, String summary, String detail) {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
         Msg msg = messages.getMessage(0);
-        Assertions.assertEquals(summary, msg.getSummary());
-        Assertions.assertEquals(detail, msg.getDetail());
+        assertEquals(summary, msg.getSummary());
+        assertEquals(detail, msg.getDetail());
     }
 
 }

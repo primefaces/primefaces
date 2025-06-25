@@ -29,7 +29,7 @@ What is the first step to be taken?
 -----------------------------------
 
 First of all, **Discuss with the [project members](http://forum.primefaces.org/)** (a new thread should do) about
-your ideas: new features, fixes, documentation... whatever you would like to contribute to the project. Let we
+your ideas: new features, fixes, documentation... whatever you would like to contribute to the project. Let us
 discuss the possibilities with you so that we make sure your contribution goes in the right direction and aligns
 with the project's standards, intentions and roadmap.
 
@@ -58,7 +58,20 @@ About the code you contribute
   - Deactivate auto-formatting features of your IDE.
 
 ### Performance guidelines:
-  - Use index-loop instead of for-each over ArrayLists (see https://issues.apache.org/jira/browse/MYFACES-3130)
+
+#### Use index-loop over for-each over ArrayLists (especially for looping through the Faces component tree)
+See:  https://issues.apache.org/jira/browse/MYFACES-3130
+
+Our loops usually looks like:
+```
+for (int i = 0; i < component.getChildCount(); i++) {
+    UIComponent child = component.getChildren().get(i);
+    ...
+}
+```
+This has 2 benefits:
+1) Avoid an internal List instance when there are no childs, as they are initialized lazy by the Faces implementation (because we do `component.getChildCount()` over `component.getChildren().size()`)
+2) Avoid a new iterator instance on each loop. This might not be faster in modern VMs but reduces GC a lot.
 
 ### Detailed Java code quality standards:
 
@@ -81,7 +94,7 @@ About the code you contribute
 ### Detailed HTML/XML code quality standards:
 
   - All tags, CSS styles, file names, etc. must be **in English**.
-  - Lower case should be prefered for HTML/XML artifacts. The only exceptions are `DOCTYPE` and `CDATA` clauses.
+  - Lower case should be preferred for HTML/XML artifacts. The only exceptions are `DOCTYPE` and `CDATA` clauses.
   - All HTML code should be XML-valid (i.e. all tags should be closed, attributes surrounded by commas, etc.)
   - Maximum line size is 160 characters.
   - Indentation should be made with 4 spaces, not tabs.

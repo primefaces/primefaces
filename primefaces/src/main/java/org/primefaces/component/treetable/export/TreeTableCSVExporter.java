@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,78 +23,85 @@
  */
 package org.primefaces.component.treetable.export;
 
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.export.CSVOptions;
+import org.primefaces.component.export.ColumnValue;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.Objects;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.EnumSet;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
 
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.export.CSVOptions;
-import org.primefaces.component.export.ExportConfiguration;
-import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
+public class TreeTableCSVExporter extends TreeTableExporter<PrintWriter, CSVOptions> {
 
-public class TreeTableCSVExporter extends TreeTableExporter {
-
-    private CSVOptions csvOptions;
+    public TreeTableCSVExporter() {
+        super(CSVOptions.EXCEL,  EnumSet.of(FacetType.COLUMN), false);
+    }
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
-        csvOptions = CSVOptions.EXCEL;
-        ExporterOptions options = exportConfiguration.getOptions();
-        if (options != null) {
-            if (options instanceof CSVOptions) {
-                csvOptions = (CSVOptions) options;
-            }
-            else {
-                throw new IllegalArgumentException("Options must be an instance of CSVOptions.");
-            }
+    protected void postExport(FacesContext context) throws IOException {
+        super.postExport(context);
+
+        if (document != null) {
+            document.flush();
         }
     }
 
     @Override
-    public void doExport(FacesContext context, TreeTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
-        try (OutputStreamWriter osw = new OutputStreamWriter(getOutputStream(), exportConfiguration.getEncodingType());
-            PrintWriter writer = new PrintWriter(osw);) {
-
-            if (exportConfiguration.getPreProcessor() != null) {
-                // PF 9 - attention: breaking change to PreProcessor (PrintWriter instead of writer)
-                exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
+    protected PrintWriter createDocument(FacesContext context) throws IOException {
+        try {
+            String encoding = exportConfiguration.getEncodingType();
+            OutputStreamWriter osw = new OutputStreamWriter(os(), encoding);
+            PrintWriter writer = new PrintWriter(osw);
+            if (StandardCharsets.UTF_8.name().equals(encoding)) {
+                writer.write("\ufeff"); // byte order mark for UTF-8
             }
-
-            if (exportConfiguration.isExportHeader()) {
-                addColumnFacets(writer, table, ColumnType.HEADER);
-            }
-
-            if (exportConfiguration.isPageOnly()) {
-                exportPageOnly(context, table, writer);
-            }
-            else if (exportConfiguration.isSelectionOnly()) {
-                exportSelectionOnly(context, table, writer);
-            }
-            else {
-                exportAll(context, table, writer);
-            }
-
-            if (exportConfiguration.isExportFooter() && table.hasFooterColumn()) {
-                addColumnFacets(writer, table, ColumnType.FOOTER);
-            }
-
-            if (exportConfiguration.getPostProcessor() != null) {
-                // PF 9 - attention: breaking change to PostProcessor (PrintWriter instead of writer)
-                exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{writer});
-            }
-
-            writer.flush();
+            return writer;
         }
+        catch (UnsupportedEncodingException e) {
+            throw new FacesException(e);
+        }
+    }
+
+    @Override
+    protected void postRowExport(FacesContext context, TreeTable table) {
+        document.append(options().getEndOfLineSymbols());
+
+        super.postRowExport(context, table);
+    }
+
+    @Override
+    protected void exportColumnFacetValue(FacesContext context, TreeTable table, ColumnValue columnValue, int index) {
+        if (index != 0) { // not first
+            document.append(options().getDelimiterChar());
+        }
+
+        String text = columnValue.toString();
+        String exportValue = Constants.EMPTY_STRING;
+        if (LangUtils.isNotBlank(text)) {
+            exportValue = text.replace(options().getQuoteString(), options().getDoubleQuoteString());
+        }
+
+        document.append(options().getQuoteChar()).append(exportValue).append(options().getQuoteChar());
+    }
+
+    @Override
+    protected void exportCellValue(FacesContext context, TreeTable table, UIColumn col, ColumnValue columnValue, int index) {
+        if (index != 0) {
+            document.append(options().getDelimiterChar());
+        }
+
+        document.append(options().getQuoteChar())
+                .append(escapeQuotes(columnValue.toString()))
+                .append(options().getQuoteChar());
     }
 
     @Override
@@ -107,103 +114,7 @@ public class TreeTableCSVExporter extends TreeTableExporter {
         return ".csv";
     }
 
-    protected void addColumnFacets(PrintWriter writer, TreeTable table, ColumnType columnType) throws IOException {
-        boolean firstCellWritten = false;
-
-        for (UIColumn col : getExportableColumns(table)) {
-            if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyStatelessModel();
-            }
-
-            if (firstCellWritten) {
-                writer.append(csvOptions.getDelimiterChar());
-            }
-
-            UIComponent facet = col.getFacet(columnType.facet());
-            String textValue;
-            switch (columnType) {
-                case HEADER:
-                    textValue = col.getExportHeaderValue() != null ? col.getExportHeaderValue() : col.getHeaderText();
-                    break;
-                case FOOTER:
-                    textValue = col.getExportFooterValue() != null ? col.getExportFooterValue() : col.getFooterText();
-                    break;
-                default:
-                    textValue = null;
-                    break;
-            }
-
-            if (textValue != null) {
-                addColumnValue(writer, textValue);
-            }
-            else if (ComponentUtils.shouldRenderFacet(facet)) {
-                addColumnValue(writer, facet);
-            }
-            else {
-                addColumnValue(writer, Constants.EMPTY_STRING);
-            }
-
-            firstCellWritten = true;
-        }
-
-        writer.append(csvOptions.getEndOfLineSymbols());
-    }
-
-    @Override
-    protected void exportCells(TreeTable table, Object document) {
-        PrintWriter writer = (PrintWriter) document;
-        boolean firstCellWritten = false;
-
-        for (UIColumn col : getExportableColumns(table)) {
-            if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyStatelessModel();
-            }
-
-            if (firstCellWritten) {
-                writer.append(csvOptions.getDelimiterChar());
-            }
-
-            try {
-                addColumnValue(writer, table, col.getChildren(), col);
-            }
-            catch (IOException ex) {
-                throw new FacesException(ex);
-            }
-
-            firstCellWritten = true;
-        }
-    }
-
-    protected void addColumnValue(PrintWriter writer, UIComponent component) throws IOException {
-        String value = component == null ? Constants.EMPTY_STRING : exportValue(FacesContext.getCurrentInstance(), component);
-
-        addColumnValue(writer, value);
-    }
-
-    protected void addColumnValue(PrintWriter writer, String value) throws IOException {
-        value = (value == null) ? Constants.EMPTY_STRING : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
-
-        writer.append(csvOptions.getQuoteChar()).append(value).append(csvOptions.getQuoteChar());
-    }
-
-    protected void addColumnValue(PrintWriter writer, TreeTable table, List<UIComponent> components, UIColumn column) throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        writer.append(csvOptions.getQuoteChar());
-
-        exportColumn(context, table, column, components, false, (s) -> {
-            writer.append(escapeQuotes(Objects.toString(s, Constants.EMPTY_STRING)));
-        });
-
-        writer.append(csvOptions.getQuoteChar());
-    }
-
     protected String escapeQuotes(String value) {
-        return value == null ? Constants.EMPTY_STRING : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
-    }
-
-    @Override
-    protected void postRowExport(TreeTable table, Object document) {
-        ((PrintWriter) document).append(csvOptions.getEndOfLineSymbols());
+        return value == null ? Constants.EMPTY_STRING : value.replace(options().getQuoteString(), options().getDoubleQuoteString());
     }
 }

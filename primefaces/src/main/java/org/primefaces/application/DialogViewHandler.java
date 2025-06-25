@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,18 @@
  */
 package org.primefaces.application;
 
-import java.util.Map;
-import javax.faces.application.ViewHandler;
-import javax.faces.application.ViewHandlerWrapper;
-import javax.faces.context.FacesContext;
 import org.primefaces.util.Constants;
+
+import java.util.Map;
+
+import jakarta.faces.application.ViewHandler;
+import jakarta.faces.application.ViewHandlerWrapper;
+import jakarta.faces.context.FacesContext;
 
 public class DialogViewHandler extends ViewHandlerWrapper {
 
-    private ViewHandler wrapped;
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public DialogViewHandler(ViewHandler wrapped) {
-        this.wrapped = wrapped;
-    }
-
-    @Override
-    public ViewHandler getWrapped() {
-        return this.wrapped;
+        super(wrapped);
     }
 
     @Override

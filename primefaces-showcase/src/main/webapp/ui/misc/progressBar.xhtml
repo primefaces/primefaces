@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -68,6 +68,8 @@
                                labelTemplate="{value}%" styleClass="mt-3" global="false">
                     <p:ajax event="complete" listener="#{progressBarView.onComplete}" update="growl"
                             oncomplete="PF('startButton2').enable()" />
+                    <p:ajax event="start" listener="#{progressBarView.onStart}" update="growl" />
+                    <p:ajax event="progress" listener="#{progressBarView.onProgress}" update="growl" />
                 </p:progressBar>
 
                 <h5>Ajax ProgressBar (with long running method)</h5>
@@ -88,6 +90,12 @@
 
                 <h5>Indeterminate</h5>
                 <p:progressBar id="progressBarIndeterminate" style="height:6px" mode="indeterminate"/>
+
+                <h5>Severities</h5>
+                <p:progressBar id="progressBarDanger" value="25" severity="danger" displayOnly="true"/>
+                <p:progressBar id="progressBarWarning" value="50" severity="warning" displayOnly="true" styleClass="mt-3"/>
+                <p:progressBar id="progressBarInfo" value="75" severity="info" displayOnly="true" styleClass="mt-3"/>
+                <p:progressBar id="progressBarSuccess" value="100" severity="success" displayOnly="true" styleClass="mt-3"/>
             </h:form>
         </div>
     </ui:define>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,42 +23,37 @@
  */
 package org.primefaces.component.spotlight;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class SpotlightRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class SpotlightRenderer extends CoreRenderer<Spotlight> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Spotlight spotlight = (Spotlight) component;
-
-        encodeMarkup(context, spotlight);
-        encodeScript(context, spotlight);
+    public void encodeEnd(FacesContext context, Spotlight component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    private void encodeMarkup(FacesContext context, Spotlight spotlight) throws IOException {
+    private void encodeMarkup(FacesContext context, Spotlight component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("span", spotlight);
-        writer.writeAttribute("id", spotlight.getClientId(context), null);
+        writer.startElement("span", component);
+        writer.writeAttribute("id", component.getClientId(context), null);
         writer.endElement("span");
     }
 
-    private void encodeScript(FacesContext context, Spotlight spotlight) throws IOException {
+    private void encodeScript(FacesContext context, Spotlight component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Spotlight", spotlight)
-                .attr("target", SearchExpressionFacade.resolveClientIds(context, spotlight, spotlight.getTarget(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE))
-                .attr("active", spotlight.isActive(), false)
-                .attr("blockScroll", spotlight.isBlockScroll(), false);
+        wb.init("Spotlight", component)
+            .attr("target", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getTarget()))
+            .attr("active", component.isActive(), false)
+            .attr("blockScroll", component.isBlockScroll(), false);
 
         wb.finish();
     }

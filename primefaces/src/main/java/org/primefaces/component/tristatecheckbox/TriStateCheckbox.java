@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,9 @@
  */
 package org.primefaces.component.tristatecheckbox;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ValueChangeEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -40,4 +42,24 @@ public class TriStateCheckbox extends TriStateCheckboxBase {
         return "valueChange";
     }
 
+    @Override
+    public void validate(FacesContext context) {
+        Object submittedValue = getSubmittedValue();
+        if (submittedValue != null) {
+            super.validate(context);
+            return;
+        }
+
+        // special handling for allowed null value
+        Boolean newValue = null;
+
+        validateValue(context, newValue);
+
+        Object previousValue = getValue();
+        setValue(newValue);
+        setSubmittedValue(null);
+        if (compareValues(previousValue, newValue)) {
+            queueEvent(new ValueChangeEvent(this, previousValue, newValue));
+        }
+    }
 }

@@ -30,7 +30,7 @@ immediate | false | Boolean | Boolean value that determines the phaseId, when tr
 async | false | Boolean | When set to true, ajax requests are not queued.
 process | null | String | Component id(s) to process partially instead of whole view.
 update | null | String | Client side id of the component(s) to be updated after async partial submit request.
-onstart | null | String | Javascript handler to execute before ajax request is begins.
+onstart | null | String | Javascript handler to execute before ajax request begins.
 oncomplete | null | String | Javascript handler to execute when ajax request is completed.
 onsuccess | null | String | Javascript handler to execute when ajax request succeeds.
 onerror | null | String | Javascript handler to execute when ajax request fails.
@@ -138,4 +138,4 @@ Following form can be submitted with the `ctrl+shift+s` combination.
 </h:form>
 ```
 
-Note that hotkey will not be triggered if there is a focused input on page.
+> :warning: Hotkey will not be triggered if there is a focused input on page.

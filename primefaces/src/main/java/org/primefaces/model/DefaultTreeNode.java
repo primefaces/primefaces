@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,40 +33,32 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     private static final long serialVersionUID = 1L;
 
 
-    private String type;
+    protected String type;
 
-    private T data;
+    protected T data;
 
-    private List<TreeNode<T>> children;
+    protected TreeNodeChildren<T> children;
 
-    private TreeNode parent;
+    protected TreeNode parent;
 
-    private boolean expanded;
+    protected boolean expanded;
 
-    private boolean selected;
+    protected boolean selected;
 
-    private boolean selectable = true;
+    protected boolean selectable = true;
 
-    private String rowKey;
+    protected String rowKey;
 
     public DefaultTreeNode() {
-        this.type = DEFAULT_TYPE;
-        this.children = initChildren();
+        this(null);
     }
 
     public DefaultTreeNode(T data) {
-        this.type = DEFAULT_TYPE;
-        this.children = initChildren();
-        this.data = data;
+        this(data, null);
     }
 
     public DefaultTreeNode(T data, TreeNode parent) {
-        this.type = DEFAULT_TYPE;
-        this.data = data;
-        this.children = initChildren();
-        if (parent != null) {
-            parent.getChildren().add(this);
-        }
+        this(DEFAULT_TYPE, data, parent);
     }
 
     public DefaultTreeNode(String type, T data, TreeNode parent) {
@@ -78,8 +70,8 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
         }
     }
 
-    protected List<TreeNode<T>> initChildren() {
-        return new TreeNodeChildren(this);
+    protected TreeNodeChildren<T> initChildren() {
+        return new DefaultTreeNodeChildren<>(this);
     }
 
     @Override
@@ -102,16 +94,16 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     }
 
     @Override
-    public List<TreeNode<T>> getChildren() {
+    public TreeNodeChildren<T> getChildren() {
         return children;
     }
 
     public void setChildren(List<TreeNode<T>> children) {
         if (children instanceof TreeNodeChildren) {
-            this.children = children;
+            this.children = (TreeNodeChildren) children;
         }
         else {
-            this.children = new TreeNodeChildren(this);
+            this.children = initChildren();
             this.children.addAll(children);
         }
     }
@@ -220,15 +212,10 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
         }
 
         if (rowKey == null) {
-            if (other.rowKey != null) {
-                return false;
-            }
-        }
-        else if (!rowKey.equals(other.rowKey)) {
-            return false;
+            return other.rowKey == null;
         }
 
-        return true;
+        return rowKey.equals(other.rowKey);
     }
 
     @Override

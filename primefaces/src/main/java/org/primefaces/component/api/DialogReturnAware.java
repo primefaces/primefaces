@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,16 @@
  */
 package org.primefaces.component.api;
 
-import java.util.Map;
-import java.util.function.Consumer;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.Constants;
+
+import java.util.Map;
+import java.util.function.Consumer;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 public interface DialogReturnAware {
 
@@ -55,6 +57,6 @@ public interface DialogReturnAware {
         Object selectedValue = session.get(dcid);
         session.remove(dcid);
 
-        queueEvent.accept(new SelectEvent(source, behaviorEvent.getBehavior(), selectedValue));
+        queueEvent.accept(new SelectEvent<>(source, behaviorEvent.getBehavior(), selectedValue));
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,15 @@
  */
 package org.primefaces.showcase.view.ajax;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Named;
 import java.io.Serializable;
-
-import javax.faces.view.ViewScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped
@@ -81,7 +80,9 @@ public class BasicView implements Serializable {
     }
 
     public void handleKeyEvent() {
-        text5 = text5.toUpperCase();
+        if (text5 != null) {
+            text5 = text5.toUpperCase();
+        }
     }
 
     public String getText1() {

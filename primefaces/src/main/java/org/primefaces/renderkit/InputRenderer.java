@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,30 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
+
 import java.io.IOException;
 import java.util.Objects;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
 
-import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.RTLAware;
-import org.primefaces.util.*;
+public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<T> {
 
-public abstract class InputRenderer extends CoreRenderer {
-
-    public static final String ARIA_FILTER = "primefaces.input.aria.filter";
     private static final String SB_STYLECLASS = InputRenderer.class.getName() + "#createStyleClass";
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        Converter converter = ComponentUtils.getConverter(context, component);
+        Converter<?> converter = ComponentUtils.getConverter(context, component);
 
         if (converter != null) {
             String convertableValue = submittedValue == null ? null : submittedValue.toString();
@@ -65,12 +67,6 @@ public abstract class InputRenderer extends CoreRenderer {
 
     protected boolean shouldDecode(UIInput component) {
         return !isDisabled(component) && !isReadOnly(component);
-    }
-
-    public <T extends UIComponent & RTLAware> void renderRTLDirection(FacesContext context, T component) throws IOException {
-        if (ComponentUtils.isRTL(context, component)) {
-            context.getResponseWriter().writeAttribute("dir", "rtl", null);
-        }
     }
 
     /**
@@ -171,7 +167,7 @@ public abstract class InputRenderer extends CoreRenderer {
     protected void renderARIACombobox(FacesContext context, UIInput component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, HTML.ARIA_ROLE_LISTBOX, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
     }
 
@@ -217,10 +213,15 @@ public abstract class InputRenderer extends CoreRenderer {
             sb.append(" ui-state-disabled");
         }
 
+        if (isReadOnly(component)) {
+            sb.append(" ui-state-readonly");
+        }
 
         if (LangUtils.isNotBlank(styleClassProperty)) {
             String styleClass = Objects.toString(component.getAttributes().get(styleClassProperty), Constants.EMPTY_STRING);
-            sb.append(" ").append(styleClass);
+            if (LangUtils.isNotBlank(styleClass)) {
+                sb.append(" ").append(styleClass);
+            }
         }
 
         return sb.toString();

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,6 @@ public abstract class InputMaskBase extends AbstractPrimeHtmlInputText implement
         mask,
         slotChar,
         autoClear,
-        type,
         validateMask,
         showMaskOnFocus,
         showMaskOnHover
@@ -92,14 +91,6 @@ public abstract class InputMaskBase extends AbstractPrimeHtmlInputText implement
 
     public void setAutoClear(boolean autoClear) {
         getStateHelper().put(PropertyKeys.autoClear, autoClear);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public boolean isValidateMask() {

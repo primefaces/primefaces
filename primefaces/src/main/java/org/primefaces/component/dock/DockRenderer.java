@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,6 @@
  */
 package org.primefaces.component.dock;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -40,40 +30,45 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-public class DockRenderer extends BaseMenuRenderer {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class DockRenderer extends BaseMenuRenderer<Dock> {
 
     @Override
-    protected void encodeScript(FacesContext context, AbstractMenu menu) throws IOException {
-        Dock dock = (Dock) menu;
-
+    protected void encodeScript(FacesContext context, Dock component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dock", dock)
-                .attr("position", dock.getPosition())
-                .attr("halign", dock.getHalign())
-                .attr("blockScroll", dock.isBlockScroll(), false)
-                .attr("animate", dock.isAnimate())
-                .attr("animationDuration", dock.getAnimationDuration());
+        wb.init("Dock", component)
+                .attr("position", component.getPosition())
+                .attr("halign", component.getHalign())
+                .attr("blockScroll", component.isBlockScroll(), false)
+                .attr("animate", component.isAnimate())
+                .attr("animationDuration", component.getAnimationDuration());
 
         wb.finish();
     }
 
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException {
+    protected void encodeMarkup(FacesContext context, Dock component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Dock dock = (Dock) menu;
-        String clientId = dock.getClientId(context);
-        String position = dock.getPosition();
+        String clientId = component.getClientId(context);
+        String position = component.getPosition();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", "ui-dock " + position + " ui-widget", "styleClass");
-        renderPassThruAttributes(context, dock);
+        renderPassThruAttributes(context, component);
 
         writer.startElement("ul", null);
-        writer.writeAttribute("class", "ui-dock-container " + dock.getHalign() + " " + position, null);
+        writer.writeAttribute("class", "ui-dock-container " + component.getHalign() + " " + position, null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
-        encodeMenuItems(context, dock);
+        encodeMenuItems(context, component);
 
         writer.endElement("ul");
         writer.endElement("div");
@@ -101,7 +96,7 @@ public class DockRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
+    protected void encodeMenuItemContent(FacesContext context, Dock component, MenuItem menuitem) throws IOException {
         encodeItemLabel(context, menuitem);
         encodeItemIcon(context, menuitem);
     }
@@ -135,7 +130,7 @@ public class DockRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Dock component) throws IOException {
         //Do nothing
     }
 

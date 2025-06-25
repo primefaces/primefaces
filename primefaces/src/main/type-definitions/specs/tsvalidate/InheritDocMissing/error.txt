@@ -1,7 +1,0 @@
-Error: Program failed to validate:
-
-[tsMissingParentDoc] at Bar (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/InheritDocMissing/input.d.ts:4:6)
-Type 'Bar' specifies '@inheritdoc' in doc comments, but no parent type has got a doc comment. Add a doc comment.
-
-[tsMissingParentDoc] at Bar (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/InheritDocMissing/input.d.ts:8:32)
-'@inheritdoc found on property 'foo' of type 'Bar', but none of the parent methods Foo#foo have got a doc comment. Add a doc comment.

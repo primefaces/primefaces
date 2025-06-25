@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,28 @@
  */
 package org.primefaces.component.tabview;
 
-import java.util.Collection;
-import java.util.Map;
-import javax.el.ELContext;
-
-import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
+import org.primefaces.event.TabEvent;
+import org.primefaces.util.Callbacks;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.ConsumerThree;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Map;
+
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -55,16 +57,16 @@ public class TabView extends TabViewBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.TabView";
 
 
-    public static final String CONTAINER_CLASS = "ui-tabs ui-widget ui-widget-content ui-corner-all ui-hidden-container";
-    public static final String NAVIGATOR_CLASS = "ui-tabs-nav ui-helper-reset ui-widget-header ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-tabs ui-widget ui-widget-content ui-hidden-container";
+    public static final String NAVIGATOR_CLASS = "ui-tabs-nav ui-helper-reset ui-widget-header";
     public static final String INACTIVE_TAB_HEADER_CLASS = "ui-tabs-header ui-state-default";
     public static final String ACTIVE_TAB_HEADER_CLASS = "ui-tabs-header ui-state-default ui-tabs-selected ui-state-active";
     public static final String PANELS_CLASS = "ui-tabs-panels";
-    public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content ui-corner-bottom";
-    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content ui-corner-bottom ui-helper-hidden";
+    public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content";
+    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content ui-helper-hidden";
     public static final String NAVIGATOR_SCROLLER_CLASS = "ui-tabs-navscroller";
-    public static final String NAVIGATOR_LEFT_CLASS = "ui-tabs-navscroller-btn ui-tabs-navscroller-btn-left ui-state-default ui-corner-right";
-    public static final String NAVIGATOR_RIGHT_CLASS = "ui-tabs-navscroller-btn ui-tabs-navscroller-btn-right ui-state-default ui-corner-left";
+    public static final String NAVIGATOR_LEFT_CLASS = "ui-tabs-navscroller-btn ui-tabs-navscroller-btn-left ui-state-default";
+    public static final String NAVIGATOR_RIGHT_CLASS = "ui-tabs-navscroller-btn ui-tabs-navscroller-btn-right ui-state-default";
     public static final String NAVIGATOR_LEFT_ICON_CLASS = "ui-icon ui-icon-carat-1-w";
     public static final String NAVIGATOR_RIGHT_ICON_CLASS = "ui-icon ui-icon-carat-1-e";
     public static final String SCROLLABLE_TABS_CLASS = "ui-tabs-scrollable";
@@ -111,43 +113,33 @@ public class TabView extends TabViewBase {
             boolean repeating = isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
+            String tabClientId = params.get(clientId + "_currentTab");
+            int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
+
+            if (repeating) {
+                setIndex(tabindex);
+            }
+
+            Object data = repeating ? getIndexData() : null;
+            Tab tab = repeating ? getDynamicTab() : findTab(tabClientId);
+
+            TabEvent<?> changeEvent;
             if ("tabChange".equals(eventName)) {
-                String tabClientId = params.get(clientId + "_newTab");
-                TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
-
-                if (repeating) {
-                    int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
-                    setIndex(tabindex);
-                    changeEvent.setData(getIndexData());
-                    changeEvent.setTab(getDynamicTab());
-                }
-
-                changeEvent.setPhaseId(behaviorEvent.getPhaseId());
-
-                super.queueEvent(changeEvent);
-
-                if (repeating) {
-                    setIndex(-1);
-                }
+                changeEvent = new TabChangeEvent<>(this, behaviorEvent.getBehavior(), tab, data, eventName, tabindex);
             }
             else if ("tabClose".equals(eventName)) {
-                String tabClientId = params.get(clientId + "_closeTab");
-                TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
+                changeEvent  = new TabCloseEvent<>(this, behaviorEvent.getBehavior(), tab, data, eventName, tabindex);
+            }
+            else {
+                throw new FacesException("Unsupported event: " + eventName);
+            }
 
-                if (repeating) {
-                    int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
-                    setIndex(tabindex);
-                    closeEvent.setData(getIndexData());
-                    closeEvent.setTab(getDynamicTab());
-                }
+            changeEvent.setPhaseId(behaviorEvent.getPhaseId());
 
-                closeEvent.setPhaseId(behaviorEvent.getPhaseId());
+            super.queueEvent(changeEvent);
 
-                super.queueEvent(closeEvent);
-
-                if (repeating) {
-                    setIndex(-1);
-                }
+            if (repeating) {
+                setIndex(-1);
             }
         }
         else {
@@ -176,7 +168,7 @@ public class TabView extends TabViewBase {
         }
     }
 
-    public void forEachTab(ConsumerThree<Tab, Integer, Boolean> callback) {
+    public void forEachTab(Callbacks.TriConsumer<Tab, Integer, Boolean> callback) {
         int activeIndex = getActiveIndex();
         boolean activeTabRendered = false;
 

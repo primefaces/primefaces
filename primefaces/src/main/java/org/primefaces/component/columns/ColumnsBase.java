@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.columns;
 
+import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UIData;
 import org.primefaces.model.SortMeta;
 
 
-public abstract class ColumnsBase extends UIData implements UIColumn {
+public abstract class ColumnsBase extends PrimeUIData implements UIColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -37,6 +37,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         ariaHeaderText,
         caseSensitiveSort,
         colspan,
+        converter,
         displayPriority,
         draggable,
         exportFooterValue,
@@ -53,6 +54,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         filterMatchMode,
         filterMaxLength,
         filterPosition,
+        filterPlaceholder,
         filterStyle,
         filterStyleClass,
         filterValue,
@@ -65,6 +67,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         responsivePriority,
         rowspan,
         selectRow,
+        selectionBox,
         sortBy,
         sortFunction,
         sortOrder,
@@ -115,11 +118,11 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     @Override
-    public javax.el.MethodExpression getSortFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
+    public jakarta.el.MethodExpression getSortFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
     }
 
-    public void setSortFunction(javax.el.MethodExpression sortFunction) {
+    public void setSortFunction(jakarta.el.MethodExpression sortFunction) {
         getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
     }
 
@@ -166,6 +169,15 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     public void setFilterPosition(String filterPosition) {
         getStateHelper().put(PropertyKeys.filterPosition, filterPosition);
+    }
+
+    @Override
+    public String getFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+    }
+
+    public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
     }
 
     @Override
@@ -268,11 +280,11 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     @Override
-    public javax.el.MethodExpression getFilterFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
+    public jakarta.el.MethodExpression getFilterFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
-    public void setFilterFunction(javax.el.MethodExpression filterFunction) {
+    public void setFilterFunction(jakarta.el.MethodExpression filterFunction) {
         getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
     }
 
@@ -340,11 +352,11 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     @Override
-    public javax.el.MethodExpression getExportFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.exportFunction, null);
+    public jakarta.el.MethodExpression getExportFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.exportFunction, null);
     }
 
-    public void setExportFunction(javax.el.MethodExpression exportFunction) {
+    public void setExportFunction(jakarta.el.MethodExpression exportFunction) {
         getStateHelper().put(PropertyKeys.exportFunction, exportFunction);
     }
 
@@ -358,11 +370,11 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     @Override
-    public String getExportValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportValue, null);
+    public Object getExportValue() {
+        return getStateHelper().eval(PropertyKeys.exportValue, null);
     }
 
-    public void setExportValue(String exportValue) {
+    public void setExportValue(Object exportValue) {
         getStateHelper().put(PropertyKeys.exportValue, exportValue);
     }
 
@@ -394,20 +406,20 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     @Override
-    public String getExportHeaderValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
+    public Object getExportHeaderValue() {
+        return getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
     }
 
-    public void setExportHeaderValue(String exportHeaderValue) {
+    public void setExportHeaderValue(Object exportHeaderValue) {
         getStateHelper().put(PropertyKeys.exportHeaderValue, exportHeaderValue);
     }
 
     @Override
-    public String getExportFooterValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportFooterValue, null);
+    public Object getExportFooterValue() {
+        return getStateHelper().eval(PropertyKeys.exportFooterValue, null);
     }
 
-    public void setExportFooterValue(String exportFooterValue) {
+    public void setExportFooterValue(Object exportFooterValue) {
         getStateHelper().put(PropertyKeys.exportFooterValue, exportFooterValue);
     }
 
@@ -465,4 +477,20 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         getStateHelper().put(PropertyKeys.title, title);
     }
 
+    public boolean isSelectionBox() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionBox, false);
+    }
+
+    public void setSelectionBox(boolean selectionBox) {
+        getStateHelper().put(PropertyKeys.selectionBox, selectionBox);
+    }
+
+    @Override
+    public Object getConverter() {
+        return getStateHelper().eval(PropertyKeys.converter, null);
+    }
+
+    public void setConverter(Object converter) {
+        getStateHelper().put(PropertyKeys.converter, converter);
+    }
 }

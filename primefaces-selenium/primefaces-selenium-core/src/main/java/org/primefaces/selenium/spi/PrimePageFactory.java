@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,10 @@
  */
 package org.primefaces.selenium.spi;
 
+import org.primefaces.selenium.AbstractPrimePage;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
-import org.primefaces.selenium.AbstractPrimePage;
 
 public class PrimePageFactory {
 

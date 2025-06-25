@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,10 @@ import java.util.function.BiPredicate;
 
 public class ExactFilterConstraint extends StringFilterConstraint {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     protected BiPredicate<String, String> getPredicate() {
-        return String::equalsIgnoreCase;
+        return String::equals;
     }
 }

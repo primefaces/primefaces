@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,28 @@
  */
 package org.primefaces.integrationtests.treetable;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
 
-public class TreeTable004Test extends AbstractTreeTableTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class TreeTable004Test extends AbstractTreeTableTest {
 
     @Test
     @Order(6)
     @DisplayName("TreeTable: multiple select")
-    public void testShowSelectedNodes(Page page) {
+    void showSelectedNodes(Page page) {
         TreeTable treeTable = page.treeTable;
         treeTable.sort("Name");
 
@@ -71,7 +73,7 @@ public class TreeTable004Test extends AbstractTreeTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("TreeTable Config = " + cfg);
-        Assertions.assertEquals("treeTable", cfg.getString("widgetVar"));
+        assertEquals("treeTable", cfg.getString("widgetVar"));
     }
 
     public static class Page extends AbstractPrimePage {

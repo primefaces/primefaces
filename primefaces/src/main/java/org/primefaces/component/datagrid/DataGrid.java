@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,25 @@
  */
 package org.primefaces.component.datagrid;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.model.DataModel;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.model.DataModel;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -53,9 +54,8 @@ public class DataGrid extends DataGridBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataGrid";
 
     public static final String DATAGRID_CLASS = "ui-datagrid ui-widget";
-    public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header ui-corner-top";
-    public static final String FOOTER_CLASS = "ui-datagrid-footer ui-widget-header ui-corner-bottom";
-    public static final String TABLE_CONTENT_CLASS = "ui-datagrid-content ui-widget-content";
+    public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header";
+    public static final String FOOTER_CLASS = "ui-datagrid-footer ui-widget-header";
     public static final String EMPTY_CONTENT_CLASS = "ui-datagrid-content ui-datagrid-content-empty ui-widget-content";
     public static final String TABLE_CLASS = "ui-datagrid-data";
     public static final String TABLE_ROW_CLASS = "ui-datagrid-row";
@@ -81,10 +81,10 @@ public class DataGrid extends DataGridBase {
     public void loadLazyData() {
         // duplicate of DataView#loadLazyData
 
-        DataModel model = getDataModel();
+        DataModel<?> model = getDataModel();
 
         if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
+            LazyDataModel<?> lazyModel = (LazyDataModel<?>) model;
 
             lazyModel.setRowCount(lazyModel.count(Collections.emptyMap()));
             calculateFirst();
@@ -116,8 +116,10 @@ public class DataGrid extends DataGridBase {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (int) (first / rows) : 0;
+                String rowsPerPageParam = params.get(clientId + "_rows");
+                Integer rowsPerPage = LangUtils.isNotBlank(rowsPerPageParam) ? Integer.parseInt(rowsPerPageParam) : null;
 
-                PageEvent pageEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
+                PageEvent pageEvent = new PageEvent(this, behaviorEvent.getBehavior(), page, rowsPerPage);
                 pageEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 super.queueEvent(pageEvent);

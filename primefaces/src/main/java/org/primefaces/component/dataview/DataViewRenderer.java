@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,173 +23,180 @@
  */
 package org.primefaces.component.dataview;
 
+import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.*;
-
-public class DataViewRenderer extends DataRenderer {
+public class DataViewRenderer extends DataRenderer<DataView> {
 
     private static final Logger LOGGER = Logger.getLogger(DataViewRenderer.class.getName());
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, DataView component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        DataView dataview = (DataView) component;
-        String clientId = dataview.getClientId(context);
+    public void encodeEnd(FacesContext context, DataView component) throws IOException {
+        String clientId = component.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        dataview.findViewItems();
+        component.findViewItems();
 
-        if (dataview.isPaginationRequest(context)) {
-            dataview.updatePaginationData(context);
+        if (component.isPaginationRequest(context)) {
+            component.updatePaginationData(context);
 
-            if (dataview.isLazy()) {
-                dataview.loadLazyData();
+            if (component.isLazy()) {
+                component.loadLazyData();
             }
 
-            encodeLayout(context, dataview);
+            encodeLayout(context, component);
 
-            if (dataview.isMultiViewState()) {
-                saveMultiViewState(dataview);
+            if (component.isMultiViewState()) {
+                saveMultiViewState(component);
             }
         }
-        else if (dataview.isLayoutRequest(context)) {
+        else if (component.isLayoutRequest(context)) {
             String layout = params.get(clientId + "_layout");
-            dataview.setLayout(layout);
+            component.setLayout(layout);
 
-            encodeLayout(context, dataview);
+            encodeLayout(context, component);
 
-            if (dataview.isMultiViewState()) {
-                saveMultiViewState(dataview);
+            if (component.isMultiViewState()) {
+                saveMultiViewState(component);
             }
         }
         else {
-            if (dataview.isMultiViewState()) {
-                dataview.restoreMultiViewState();
+            if (component.isMultiViewState()) {
+                component.restoreMultiViewState();
             }
 
-            encodeMarkup(context, dataview);
-            encodeScript(context, dataview);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
 
-            if (dataview.isPaginator() && dataview.getRows() == 0) {
-                LOGGER.log(Level.WARNING, "DataView with paginator=true should also set the rows attribute. ClientId: {0}", dataview.getClientId());
+            if (component.isPaginator() && component.getRows() == 0) {
+                LOGGER.log(Level.WARNING, "DataView with paginator=true should also set the rows attribute. ClientId: {0}", component.getClientId());
             }
         }
     }
 
-    protected void encodeMarkup(FacesContext context, DataView dataview) throws IOException {
-        if (dataview.isLazy()) {
-            dataview.loadLazyData();
+    protected void encodeMarkup(FacesContext context, DataView component) throws IOException {
+        if (component.isLazy()) {
+            component.loadLazyData();
         }
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = dataview.getClientId(context);
-        String layout = dataview.getLayout();
-        boolean hasPaginator = dataview.isPaginator();
-        String paginatorPosition = dataview.getPaginatorPosition();
-        String style = dataview.getStyle();
+        String clientId = component.getClientId(context);
+        String layout = component.getLayout();
+        boolean hasPaginator = component.isPaginator();
+        String paginatorPosition = component.getPaginatorPosition();
+        String style = component.getStyle();
         String styleClass = getStyleClassBuilder(context)
-                .add(DataView.DATAVIEW_CLASS, dataview.getStyleClass())
+                .add(DataView.DATAVIEW_CLASS, component.getStyleClass())
                 .add(layout.contains("grid"), DataView.GRID_LAYOUT_CLASS, DataView.LIST_LAYOUT_CLASS)
                 .build();
 
         if (hasPaginator) {
-            dataview.calculateFirst();
+            component.calculateFirst();
         }
 
-        writer.startElement("div", dataview);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeHeader(context, dataview);
+        encodeHeader(context, component);
 
         if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
-            encodePaginatorMarkup(context, dataview, "top");
+            encodePaginatorMarkup(context, component, "top");
         }
 
-        encodeContent(context, dataview);
+        encodeContent(context, component);
 
         if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
-            encodePaginatorMarkup(context, dataview, "bottom");
+            encodePaginatorMarkup(context, component, "bottom");
         }
 
-        encodeFacet(context, dataview, "footer", DataView.FOOTER_CLASS);
+        encodeFacet(context, component, "footer", DataView.FOOTER_CLASS);
 
         writer.endElement("div");
     }
 
-    protected void encodeHeader(FacesContext context, DataView dataview) throws IOException {
+    protected void encodeHeader(FacesContext context, DataView component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent fHeader = dataview.getFacet("header");
+        UIComponent fHeader = component.getFacet("header");
+        boolean isRenderFacet = FacetUtils.shouldRenderFacet(fHeader);
 
-        writer.startElement("div", dataview);
-        writer.writeAttribute("class", DataView.HEADER_CLASS, null);
+        if (isRenderFacet || hasLayoutOptions(context, component)) {
+            writer.startElement("div", component);
+            writer.writeAttribute("class", DataView.HEADER_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(fHeader)) {
-            fHeader.encodeAll(context);
+            if (isRenderFacet) {
+                fHeader.encodeAll(context);
+            }
+
+            encodeLayoutOptions(context, component);
+
+            writer.endElement("div");
         }
-
-        encodeLayoutOptions(context, dataview);
-
-        writer.endElement("div");
     }
 
-    protected void encodeContent(FacesContext context, DataView dataview) throws IOException {
+    protected void encodeContent(FacesContext context, DataView component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = dataview.getClientId(context);
-        writer.startElement("div", dataview);
+        String clientId = component.getClientId(context);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId + "_content", null);
         writer.writeAttribute("class", DataView.CONTENT_CLASS, null);
 
-        encodeLayout(context, dataview);
+        encodeLayout(context, component);
 
         writer.endElement("div");
     }
 
-    protected void encodeLayoutOptions(FacesContext context, DataView dataview) throws IOException {
+    protected boolean hasLayoutOptions(FacesContext context, DataView component) {
+        boolean hasGridItem = (component.getGridItem() != null);
+        boolean hasListItem = (component.getListItem() != null);
+        return hasGridItem && hasListItem;
+    }
+
+    protected void encodeLayoutOptions(FacesContext context, DataView component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean hasGridItem = (dataview.getGridItem() != null);
-        boolean hasListItem = (dataview.getListItem() != null);
-        String layout = dataview.getLayout();
+        String layout = component.getLayout();
         boolean isGridLayout = layout.contains("grid");
         String containerClass = DataView.BUTTON_CONTAINER_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", containerClass, null);
 
-        if (hasListItem) {
-            String listIcon = dataview.getListIcon() != null ? dataview.getListIcon() : "ui-icon-grip-dotted-horizontal";
+        if (hasLayoutOptions(context, component)) {
+            String listIcon = component.getListIcon() != null ? component.getListIcon() : "ui-icon-grip-dotted-horizontal";
+            encodeButton(context, component, "list", listIcon, !isGridLayout);
 
-            encodeButton(context, dataview, "list", listIcon, !isGridLayout);
-        }
-
-        if (hasGridItem) {
-            String gridIcon = dataview.getGridIcon() != null ? dataview.getGridIcon() : "ui-icon-grip-dotted-vertical";
-
-            encodeButton(context, dataview, "grid", gridIcon, isGridLayout);
+            String gridIcon = component.getGridIcon() != null ? component.getGridIcon() : "ui-icon-grip-dotted-vertical";
+            encodeButton(context, component, "grid", gridIcon, isGridLayout);
         }
 
         writer.endElement("div");
 
     }
 
-    protected void encodeButton(FacesContext context, DataView dataview, String layout, String icon, boolean isActive) throws IOException {
+    protected void encodeButton(FacesContext context, DataView component, String layout, String icon, boolean isActive) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = dataview.getClientId(context);
+        String clientId = component.getClientId(context);
         String buttonClass = isActive ? DataView.BUTTON_CLASS + " ui-state-active" : DataView.BUTTON_CLASS;
 
         //button
@@ -228,40 +235,40 @@ public class DataViewRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeLayout(FacesContext context, DataView dataview) throws IOException {
-        String layout = dataview.getLayout();
+    protected void encodeLayout(FacesContext context, DataView component) throws IOException {
+        String layout = component.getLayout();
 
-        if (dataview.getRowCount() == 0) {
+        if (component.getRowCount() == 0) {
             ResponseWriter writer = context.getResponseWriter();
-            UIComponent emptyFacet = dataview.getFacet("emptyMessage");
-            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
+            UIComponent emptyFacet = component.getFacet("emptyMessage");
+            if (FacetUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {
-                writer.writeText(dataview.getEmptyMessage(), "emptyMessage");
+                writer.writeText(component.getEmptyMessage(), "emptyMessage");
             }
         }
         else {
             if (layout.contains("grid")) {
-                encodeGridLayout(context, dataview);
+                encodeGridLayout(context, component);
             }
             else {
-                encodeListLayout(context, dataview);
+                encodeListLayout(context, component);
             }
         }
     }
 
-    protected void encodeGridLayout(FacesContext context, DataView dataview) throws IOException {
-        DataViewGridItem grid = dataview.getGridItem();
+    protected void encodeGridLayout(FacesContext context, DataView component) throws IOException {
+        DataViewGridItem grid = component.getGridItem();
 
         if (grid != null) {
             ResponseWriter writer = context.getResponseWriter();
             int columns = grid.getColumns();
-            int rowIndex = dataview.getFirst();
-            int rows = dataview.getRows();
-            int itemsToRender = rows != 0 ? rows : dataview.getRowCount();
+            int rowIndex = component.getFirst();
+            int rows = component.getRows();
+            int itemsToRender = rows != 0 ? rows : component.getRowCount();
             int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
-            boolean flex = ComponentUtils.isFlex(context, dataview);
+            boolean flex = ComponentUtils.isFlex(context, component);
 
             String rowClass = getStyleClassBuilder(context)
                     .add(DataView.GRID_LAYOUT_ROW_CLASS)
@@ -270,20 +277,20 @@ public class DataViewRenderer extends DataRenderer {
 
             String columnClass = getStyleClassBuilder(context)
                     .add(DataView.GRID_LAYOUT_COLUMN_CLASS)
-                    .add(flex, GridLayoutUtils.getColumnClass(flex, columns))
-                    .add(dataview.getGridRowStyleClass())
+                    .add(GridLayoutUtils.getColumnClass(flex, columns))
+                    .add(component.getGridRowStyleClass())
                     .build();
 
-            String columnInlineStyle = dataview.getGridRowStyle();
+            String columnInlineStyle = component.getGridRowStyle();
 
             writer.startElement("div", null);
             writer.writeAttribute("class", rowClass, null);
-            writer.writeAttribute("title", dataview.getRowTitle(), null);
+            writer.writeAttribute("title", component.getRowTitle(), null);
 
             int renderedCount = 0;
             for (int i = 0; i < numberOfRowsToRender; i++) {
-                dataview.setRowIndex(rowIndex);
-                if (!dataview.isRowAvailable()) {
+                component.setRowIndex(rowIndex);
+                if (!component.isRowAvailable()) {
                     break;
                 }
 
@@ -299,8 +306,8 @@ public class DataViewRenderer extends DataRenderer {
                         writer.writeAttribute("style", columnInlineStyle, null);
                     }
 
-                    dataview.setRowIndex(rowIndex);
-                    if (dataview.isRowAvailable()) {
+                    component.setRowIndex(rowIndex);
+                    if (component.isRowAvailable()) {
                         renderChildren(context, grid);
                     }
                     rowIndex++;
@@ -311,35 +318,35 @@ public class DataViewRenderer extends DataRenderer {
 
             writer.endElement("div");
 
-            dataview.setRowIndex(-1); //cleanup
+            component.setRowIndex(-1); //cleanup
         }
     }
 
-    protected void encodeListLayout(FacesContext context, DataView dataview) throws IOException {
-        DataViewListItem list = dataview.getListItem();
+    protected void encodeListLayout(FacesContext context, DataView component) throws IOException {
+        DataViewListItem list = component.getListItem();
 
         if (list != null) {
             ResponseWriter writer = context.getResponseWriter();
 
-            int first = dataview.getFirst();
-            int rows = dataview.getRows() == 0 ? dataview.getRowCount() : dataview.getRows();
+            int first = component.getFirst();
+            int rows = component.getRows() == 0 ? component.getRowCount() : component.getRows();
             int pageSize = first + rows;
 
             writer.startElement("ul", null);
             writer.writeAttribute("class", DataView.LIST_LAYOUT_CONTAINER_CLASS, null);
 
             for (int i = first; i < pageSize; i++) {
-                dataview.setRowIndex(i);
+                component.setRowIndex(i);
 
-                if (!dataview.isRowAvailable()) {
+                if (!component.isRowAvailable()) {
                     break;
                 }
 
                 writer.startElement("li", null);
                 writer.writeAttribute("class", DataView.ROW_CLASS, null);
 
-                dataview.setRowIndex(i);
-                if (dataview.isRowAvailable()) {
+                component.setRowIndex(i);
+                if (component.isRowAvailable()) {
                     renderChildren(context, list);
                 }
 
@@ -349,25 +356,25 @@ public class DataViewRenderer extends DataRenderer {
             writer.endElement("ul");
 
             //cleanup
-            dataview.setRowIndex(-1);
+            component.setRowIndex(-1);
         }
     }
 
-    protected void encodeScript(FacesContext context, DataView dataview) throws IOException {
+    protected void encodeScript(FacesContext context, DataView component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataView", dataview);
+        wb.init("DataView", component);
 
-        if (dataview.isPaginator()) {
-            encodePaginatorConfig(context, dataview, wb);
+        if (component.isPaginator()) {
+            encodePaginatorConfig(context, component, wb);
         }
 
-        encodeClientBehaviors(context, dataview);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, DataView component) throws IOException {
         //Do Nothing
     }
 
@@ -376,12 +383,12 @@ public class DataViewRenderer extends DataRenderer {
         return true;
     }
 
-    private void saveMultiViewState(DataView dataview) {
-        if (dataview.isMultiViewState()) {
-            DataViewState viewState = dataview.getMultiViewState(true);
-            viewState.setFirst(dataview.getFirst());
-            viewState.setRows(dataview.getRows());
-            viewState.setLayout(dataview.getLayout());
+    private void saveMultiViewState(DataView component) {
+        if (component.isMultiViewState()) {
+            DataViewState viewState = component.getMultiViewState(true);
+            viewState.setFirst(component.getFirst());
+            viewState.setRows(component.getRows());
+            viewState.setLayout(component.getLayout());
         }
     }
 }

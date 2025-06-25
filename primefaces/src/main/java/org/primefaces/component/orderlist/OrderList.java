@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,23 @@
  */
 package org.primefaces.component.orderlist;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -53,8 +53,8 @@ public class OrderList extends OrderListBase {
     public static final String CONTAINER_CLASS = "ui-orderlist ui-widget";
     public static final String LIST_CLASS = "ui-widget-content ui-orderlist-list";
     public static final String CONTROLS_CLASS = "ui-orderlist-controls";
-    public static final String CAPTION_CLASS = "ui-orderlist-caption ui-widget-header ui-corner-top";
-    public static final String ITEM_CLASS = "ui-orderlist-item ui-corner-all";
+    public static final String CAPTION_CLASS = "ui-orderlist-caption ui-widget-header";
+    public static final String ITEM_CLASS = "ui-orderlist-item";
     public static final String MOVE_UP_BUTTON_CLASS = "ui-orderlist-button-move-up";
     public static final String MOVE_DOWN_BUTTON_CLASS = "ui-orderlist-button-move-down";
     public static final String MOVE_TOP_BUTTON_CLASS = "ui-orderlist-button-move-top";
@@ -116,11 +116,11 @@ public class OrderList extends OrderListBase {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     boolean metaKey = Boolean.parseBoolean(params.get(clientId + "_metaKey"));
                     boolean ctrlKey = Boolean.parseBoolean(params.get(clientId + "_ctrlKey"));
-                    wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
+                    wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
                 }
                 else if ("unselect".equals(eventName)) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
-                    wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex));
+                    wrapperEvent = new UnselectEvent<>(this, behaviorEvent.getBehavior(), list.get(itemIndex));
                 }
                 else if ("reorder".equals(eventName)) {
                     wrapperEvent = behaviorEvent;

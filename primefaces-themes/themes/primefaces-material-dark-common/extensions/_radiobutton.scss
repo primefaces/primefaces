@@ -1,0 +1,52 @@
+@use 'sass:list';
+
+body {
+  .ui-radiobutton {
+    .ui-radiobutton-box {
+      border: $radiobuttonBorder;
+
+      &:not(.ui-state-disabled):not(.ui-state-active).ui-state-hover {
+        border-color: list.nth($radiobuttonBorder, 3);
+        box-shadow: 0 0 1px 10px rgba($overlayColor, .04);
+      }
+
+      &:not(.ui-state-disabled):not(.ui-state-active).ui-state-focus {
+        box-shadow: 0 0 1px 10px rgba($overlayColor, .12);
+      }
+
+      &.ui-state-active {
+        .ui-icon-bullet {
+          transform: translateZ(0) scale(1);
+          visibility: visible;
+        }
+
+        &:not(.ui-state-disabled).ui-state-hover {
+          box-shadow: 0 0 1px 10px rgba($radiobuttonActiveBorderColor, .04);
+        }
+
+        &:not(.ui-state-disabled).ui-state-focus {
+          box-shadow: 0 0 1px 10px rgba($radiobuttonActiveBorderColor, .12);
+        }
+      }
+
+      .ui-radiobutton-icon {
+        backface-visibility: hidden;
+        transform: translateZ(0) scale(.1);
+        visibility: hidden;
+        transition-duration: 0.2s;
+      }
+    }
+  }
+
+  &.ui-input-filled, .ui-input-filled {
+    .ui-radiobutton {
+      .ui-radiobutton-box {
+        background-color: $inputBg;
+
+        &:not(.ui-state-disabled):not(.ui-state-active).ui-state-hover {
+          background-color: $inputBg;
+        }
+      }
+    }
+  }
+}

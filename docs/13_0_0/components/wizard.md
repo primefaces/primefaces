@@ -90,7 +90,7 @@ that last tab contains read-only data for confirmation and the submit button.
             </p:panel>
         </p:tab>
         <p:tab id="address">
-            <p:panel header="Adress Details">
+            <p:panel header="Address Details">
                 <h:messages errorClass="error"/>
                 <h:panelGrid columns="2" columnClasses="label, value">
                     <h:outputText value="Street: " />
@@ -164,8 +164,10 @@ with your own UI, set _showNavBar_ to false and use the provided the client side
 <p:wizard showNavBar="false" widgetVar="wiz">
 ...
 </p:wizard>
-<h:outputLink value="#" onclick="PF('wiz').next();">Next</h:outputLink>
-<h:outputLink value="#" onclick="PF('wiz').back();">Back</h:outputLink>
+<p:outputPanel id="pnlNav">
+    <p:commandButton value="#{wizard.backLabel}" icon="pi pi-arrow-left" onclick="PF('wiz').back();" rendered="#{wizard.displayBackButton}" update="pnlNav" />
+    <p:commandButton value="#{wizard.nextLabel}" icon="pi pi-arrow-right" onclick="PF('wiz').next();" iconPos="right" update="pnlNav" />
+</p:outputPanel>
 ```
 ## FlowListener
 If you’d like get notified on server side when wizard attempts to go back or forward, define a
@@ -178,12 +180,12 @@ flowListener.
 ```
 ```java
 public String handleFlow(FlowEvent event) {
-    String currentStepId = event.getCurrentStep();
-    String stepToGo = event.getNextStep();
+    String currentStepId = event.getOldStep();
+    String stepToGo = event.getNewStep();
     if(skip)
         return "confirm";
     else
-        return event.getNextStep();
+        return event.getNewStep();
 }
 ```
 Steps here are simply the ids of tab, by using a flowListener you can decide which step to display

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,26 @@
  */
 package org.primefaces.component.slider;
 
-import java.util.Collection;
-import java.util.Map;
-import javax.faces.FacesException;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.SlideEndEvent;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
 import org.primefaces.util.MessageFactory;
+
+import java.util.Collection;
+import java.util.Map;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -108,8 +108,8 @@ public class Slider extends SliderBase {
 
         if ("true".equals(getRange())) {
             String[] inputIds = getFor().split(",");
-            UIInput inputFrom = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0]);
-            UIInput inputTo = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[1]);
+            UIInput inputFrom = (UIInput) SearchExpressionUtils.contextlessResolveComponent(context, this, inputIds[0]);
+            UIInput inputTo = (UIInput) SearchExpressionUtils.contextlessResolveComponent(context, this, inputIds[1]);
             String valueFromStr = getValueAsStringOfAttachedInput(context, inputFrom);
             String valueToStr = getValueAsStringOfAttachedInput(context, inputTo);
             if (LangUtils.isBlank(valueFromStr) || LangUtils.isBlank(valueToStr)) {
@@ -135,7 +135,7 @@ public class Slider extends SliderBase {
             }
         }
         else {
-            UIInput input = (UIInput) SearchExpressionFacade.resolveComponent(context, this, getFor());
+            UIInput input = (UIInput) SearchExpressionUtils.contextlessResolveComponent(context, this, getFor());
             String value = getValueAsStringOfAttachedInput(context, input);
             if (LangUtils.isBlank(value)) {
                 return;
@@ -156,7 +156,7 @@ public class Slider extends SliderBase {
             }
             else {
                 Object params = ComponentUtils.getLabel(context, this);
-                msg = MessageFactory.getFacesMessage(VALUE_OUT_OF_RANGE, FacesMessage.SEVERITY_ERROR, params);
+                msg = MessageFactory.getFacesMessage(context, VALUE_OUT_OF_RANGE, FacesMessage.SEVERITY_ERROR, params);
             }
             context.addMessage(getClientId(context), msg);
         }

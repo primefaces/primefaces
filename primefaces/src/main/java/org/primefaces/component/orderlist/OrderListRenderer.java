@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,63 +23,61 @@
  */
 package org.primefaces.component.orderlist;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
 
-import org.primefaces.component.column.Column;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.GridLayoutUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
-
-public class OrderListRenderer extends CoreRenderer {
+public class OrderListRenderer extends CoreRenderer<OrderList> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        OrderList pickList = (OrderList) component;
+    public void decode(FacesContext context, OrderList component) {
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
 
-        String[] values = params.get(pickList.getClientId(context) + "_values");
-        pickList.setSubmittedValue(values);
+        String[] values = params.get(component.getClientId(context) + "_values");
+        component.setSubmittedValue(values);
 
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        OrderList ol = (OrderList) component;
-
-        encodeMarkup(context, ol);
-        encodeScript(context, ol);
+    public void encodeEnd(FacesContext context, OrderList component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, OrderList ol) throws IOException {
+    protected void encodeMarkup(FacesContext context, OrderList component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = ol.getClientId(context);
-        String controlsLocation = ol.getControlsLocation();
-        String style = ol.getStyle();
-        boolean flex = ComponentUtils.isFlex(context, ol);
+        String clientId = component.getClientId(context);
+        String controlsLocation = component.getControlsLocation();
+        String style = component.getStyle();
+        boolean flex = ComponentUtils.isFlex(context, component);
 
         //style class
         String containerClass = getStyleClassBuilder(context)
                 .add(OrderList.CONTAINER_CLASS)
                 .add(flex, GridLayoutUtils.getResponsiveClass(flex))
-                .add(ol.isResponsive() && !flex, GridLayoutUtils.getResponsiveClass(false))
-                .add(ol.getStyleClass())
-                .add(ol.isDisabled(), "ui-state-disabled")
-                .add("right".equals(ol.getControlsLocation()), OrderList.CONTROLS_RIGHT_CLASS)
+                .add(component.isResponsive() && !flex, GridLayoutUtils.getResponsiveClass(false))
+                .add(component.getStyleClass())
+                .add(component.isDisabled(), "ui-state-disabled")
+                .add("right".equals(component.getControlsLocation()), OrderList.CONTROLS_RIGHT_CLASS)
                 .build();
 
-        writer.startElement("div", ol);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", containerClass, null);
         if (style != null) {
@@ -90,43 +88,44 @@ public class OrderListRenderer extends CoreRenderer {
         writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
 
         if ("left".equals(controlsLocation)) {
-            encodeControls(context, ol, flex);
+            encodeControls(context, component, flex);
         }
 
-        encodeList(context, ol, flex);
+        encodeList(context, component, flex);
 
         if ("right".equals(controlsLocation)) {
-            encodeControls(context, ol, flex);
+            encodeControls(context, component, flex);
         }
 
         writer.endElement("div");
         writer.endElement("div");
     }
 
-    protected void encodeList(FacesContext context, OrderList ol, boolean flex) throws IOException {
+    protected void encodeList(FacesContext context, OrderList component, boolean flex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = ol.getClientId(context);
-        UIComponent caption = ol.getFacet("caption");
+        String clientId = component.getClientId(context);
+        UIComponent caption = component.getFacet("caption");
         String listStyleClass = OrderList.LIST_CLASS;
-        String columnGridClass = ol.getControlsLocation().equals("none")
-                ? GridLayoutUtils.getColumnClass(flex, 1)
-                : (flex ? "col-12 md:col-10" : "ui-g-12 ui-md-10");
+
+        String columnGridClass;
+        if ("none".equals(component.getControlsLocation())) {
+            columnGridClass = GridLayoutUtils.getColumnClass(flex, 1);
+        }
+        else {
+            columnGridClass = flex ? "col-12 md:col-10" : "ui-g-12 ui-md-10";
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", columnGridClass, null);
 
-        if (ComponentUtils.shouldRenderFacet(caption)) {
+        if (FacetUtils.shouldRenderFacet(caption)) {
             encodeCaption(context, caption);
-            listStyleClass += " ui-corner-bottom";
-        }
-        else {
-            listStyleClass += " ui-corner-all";
         }
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", listStyleClass, null);
 
-        encodeOptions(context, ol, (List) ol.getValue());
+        encodeOptions(context, component, (List) component.getValue());
 
         writer.endElement("ul");
 
@@ -148,40 +147,41 @@ public class OrderListRenderer extends CoreRenderer {
         writer.endElement("select");
     }
 
-    protected void encodeControls(FacesContext context, OrderList ol, boolean flex) throws IOException {
+    protected void encodeControls(FacesContext context, OrderList component, boolean flex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         String css = OrderList.CONTROLS_CLASS + " " + GridLayoutUtils.getColumnClass(flex, 6);
         writer.startElement("div", null);
         writer.writeAttribute("class", css, null);
-        encodeButton(context, ol.getMoveUpLabel(), OrderList.MOVE_UP_BUTTON_CLASS, OrderList.MOVE_UP_BUTTON_ICON_CLASS);
-        encodeButton(context, ol.getMoveTopLabel(), OrderList.MOVE_TOP_BUTTON_CLASS, OrderList.MOVE_TOP_BUTTON_ICON_CLASS);
-        encodeButton(context, ol.getMoveDownLabel(), OrderList.MOVE_DOWN_BUTTON_CLASS, OrderList.MOVE_DOWN_BUTTON_ICON_CLASS);
-        encodeButton(context, ol.getMoveBottomLabel(), OrderList.MOVE_BOTTOM_BUTTON_CLASS, OrderList.MOVE_BOTTOM_BUTTON_ICON_CLASS);
+        encodeButton(context, component.getMoveUpLabel(), OrderList.MOVE_UP_BUTTON_CLASS, OrderList.MOVE_UP_BUTTON_ICON_CLASS);
+        encodeButton(context, component.getMoveTopLabel(), OrderList.MOVE_TOP_BUTTON_CLASS, OrderList.MOVE_TOP_BUTTON_ICON_CLASS);
+        encodeButton(context, component.getMoveDownLabel(), OrderList.MOVE_DOWN_BUTTON_CLASS, OrderList.MOVE_DOWN_BUTTON_ICON_CLASS);
+        encodeButton(context, component.getMoveBottomLabel(), OrderList.MOVE_BOTTOM_BUTTON_CLASS, OrderList.MOVE_BOTTOM_BUTTON_ICON_CLASS);
         writer.endElement("div");
     }
 
     @SuppressWarnings("unchecked")
-    protected void encodeOptions(FacesContext context, OrderList old, List model) throws IOException {
+    protected void encodeOptions(FacesContext context, OrderList component, List model) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String var = old.getVar();
-        Converter converter = old.getConverter();
+        String var = component.getVar();
+        Converter converter = component.getConverter();
+        int index = 0;
 
         for (Object item : model) {
             context.getExternalContext().getRequestMap().put(var, item);
-            String value = converter != null ? converter.getAsString(context, old, old.getItemValue()) : old.getItemValue().toString();
+            String value = converter != null ? converter.getAsString(context, component, component.getItemValue()) : component.getItemValue().toString();
 
             writer.startElement("li", null);
             writer.writeAttribute("class", OrderList.ITEM_CLASS, null);
             writer.writeAttribute("data-item-value", value, null);
 
-            if (old.getChildCount() > 0) {
+            if (component.getChildCount() > 0) {
 
                 writer.startElement("table", null);
                 writer.startElement("tbody", null);
                 writer.startElement("tr", null);
 
-                for (UIComponent kid : old.getChildren()) {
+                for (UIComponent kid : component.getChildren()) {
                     if (kid instanceof Column && kid.isRendered()) {
                         Column column = (Column) kid;
 
@@ -193,7 +193,7 @@ public class OrderListRenderer extends CoreRenderer {
                             writer.writeAttribute("class", column.getStyleClass(), null);
                         }
 
-                        renderChildren(context, column);
+                        encodeIndexedId(context, column, index++);
                         writer.endElement("td");
                     }
                 }
@@ -203,7 +203,7 @@ public class OrderListRenderer extends CoreRenderer {
                 writer.endElement("table");
             }
             else {
-                writer.writeText(old.getItemLabel(), null);
+                writer.writeText(component.getItemLabel(), null);
             }
 
             writer.endElement("li");
@@ -282,7 +282,7 @@ public class OrderListRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, OrderList component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

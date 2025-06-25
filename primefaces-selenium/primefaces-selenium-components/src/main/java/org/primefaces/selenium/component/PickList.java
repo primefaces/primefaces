@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,12 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.AbstractComponent;
+import org.primefaces.selenium.component.base.ComponentUtils;
+import org.primefaces.selenium.findby.FindByParentPartialId;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -34,11 +40,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.AbstractComponent;
-import org.primefaces.selenium.component.base.ComponentUtils;
-import org.primefaces.selenium.findby.FindByParentPartialId;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:pickList}.
@@ -49,16 +50,16 @@ public abstract class PickList extends AbstractComponent {
     private static final String ITEM_VALUE_ATTR = "data-item-value";
     private static final By CHECK_SELECTOR = By.cssSelector("div[class*='ui-chkbox']");
 
-    @FindBy(css = "button[title='Add']")
+    @FindBy(css = "button[class*='ui-picklist-button-add']")
     private WebElement add;
 
-    @FindBy(css = "button[title='Add all']")
+    @FindBy(css = "button[class*='ui-picklist-button-add-all']")
     private WebElement addAll;
 
-    @FindBy(css = "button[title='Remove']")
+    @FindBy(css = "button[class*='ui-picklist-button-remove']")
     private WebElement remove;
 
-    @FindBy(css = "button[title='Remove all']")
+    @FindBy(css = "button[class*='ui-picklist-button-remove-all']")
     private WebElement removeAll;
 
     @FindBy(css = "ul[class*='ui-picklist-source']")
@@ -287,7 +288,7 @@ public abstract class PickList extends AbstractComponent {
      */
     public List<String> getSourceListValues() {
         return getSourceListElements().stream()
-                    .map(e -> e.getAttribute(ITEM_VALUE_ATTR)).collect(Collectors.toList());
+                    .map(e -> e.getDomAttribute(ITEM_VALUE_ATTR)).collect(Collectors.toList());
     }
 
     /**
@@ -297,7 +298,7 @@ public abstract class PickList extends AbstractComponent {
      */
     public List<String> getSourceListLabels() {
         return getSourceListElements().stream()
-                    .map(e -> e.getAttribute(ITEM_LABEL_ATTR)).collect(Collectors.toList());
+                    .map(e -> e.getDomAttribute(ITEM_LABEL_ATTR)).collect(Collectors.toList());
     }
 
     /**
@@ -317,7 +318,7 @@ public abstract class PickList extends AbstractComponent {
      */
     public List<String> getTargetListValues() {
         return getTargetListElements().stream()
-                    .map(e -> e.getAttribute(ITEM_VALUE_ATTR)).collect(Collectors.toList());
+                    .map(e -> e.getDomAttribute(ITEM_VALUE_ATTR)).collect(Collectors.toList());
     }
 
     /**
@@ -327,7 +328,7 @@ public abstract class PickList extends AbstractComponent {
      */
     public List<String> getTargetListLabels() {
         return getTargetListElements().stream()
-                    .map(e -> e.getAttribute(ITEM_LABEL_ATTR)).collect(Collectors.toList());
+                    .map(e -> e.getDomAttribute(ITEM_LABEL_ATTR)).collect(Collectors.toList());
     }
 
     /**
@@ -386,7 +387,7 @@ public abstract class PickList extends AbstractComponent {
      * @return the "Move up" button
      */
     private WebElement getMoveUpButton(final WebElement controls) {
-        return controls.findElement(By.cssSelector("button[title='Move up']"));
+        return controls.findElement(By.cssSelector("button[title='Move Up']"));
     }
 
     /**
@@ -396,7 +397,7 @@ public abstract class PickList extends AbstractComponent {
      * @return the "Move down" button
      */
     private WebElement getMoveDownButton(final WebElement controls) {
-        return controls.findElement(By.cssSelector("button[title='Move down']"));
+        return controls.findElement(By.cssSelector("button[title='Move Down']"));
     }
 
     /**
@@ -406,7 +407,7 @@ public abstract class PickList extends AbstractComponent {
      * @return the "Move top" button
      */
     private WebElement getMoveTopButton(final WebElement controls) {
-        return controls.findElement(By.cssSelector("button[title='Move top']"));
+        return controls.findElement(By.cssSelector("button[title='Move Top']"));
     }
 
     /**
@@ -416,7 +417,7 @@ public abstract class PickList extends AbstractComponent {
      * @return the "Move bottom" button
      */
     private WebElement getMoveBottomButton(final WebElement controls) {
-        return controls.findElement(By.cssSelector("button[title='Move bottom']"));
+        return controls.findElement(By.cssSelector("button[title='Move Bottom']"));
     }
 
     /**
@@ -456,8 +457,8 @@ public abstract class PickList extends AbstractComponent {
      */
     private WebElement findListItem(final WebElement listElement, final String item) {
         final Optional<WebElement> listItem = listElement.findElements(By.tagName("li")).stream().filter(e -> {
-            final String value = e.getAttribute(ITEM_VALUE_ATTR);
-            final String label = e.getAttribute(ITEM_LABEL_ATTR);
+            final String value = e.getDomAttribute(ITEM_VALUE_ATTR);
+            final String label = e.getDomAttribute(ITEM_LABEL_ATTR);
             return value.equals(item) || label.equals(item);
         }).findFirst();
 

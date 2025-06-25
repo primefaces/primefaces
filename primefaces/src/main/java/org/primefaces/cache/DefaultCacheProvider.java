@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ public class DefaultCacheProvider implements CacheProvider {
 
     public DefaultCacheProvider() {
         cache = new ConcurrentHashMap<>();
-        LOGGER.warning("DefaultCacheProvider is for development purposes only, prefer another provider such as EhCache and HazelCast in production.");
+        LOGGER.warning("DefaultCacheProvider is for development purposes only, prefer another provider such as EhCache, HazelCast, or Caffeine in production.");
     }
 
     @Override

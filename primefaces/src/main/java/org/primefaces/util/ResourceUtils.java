@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,44 @@
  */
 package org.primefaces.util;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.Consumer;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIOutput;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.Resource;
+import jakarta.faces.application.ResourceHandler;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIOutput;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+
 public class ResourceUtils {
 
-    public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
-    public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
+    public static final String RENDERER_SCRIPT = "jakarta.faces.resource.Script";
+    public static final String RENDERER_STYLESHEET = "jakarta.faces.resource.Stylesheet";
+    public static final String RES_NOT_FOUND = "RES_NOT_FOUND";
+
+    /**
+     * Used to extract resource name (e.g. "#{resource['picture.png'}")
+     */
+    private static final Pattern RESOURCE_PATTERN = Pattern.compile("^#\\{resource\\['(.+)']}$");
 
     private ResourceUtils() {
+        // prevent instantiation
     }
 
     public static String getResourceURL(FacesContext context, String value) {
@@ -120,30 +135,20 @@ public class ResourceUtils {
     }
 
     public static byte[] toByteArray(InputStream is) {
-        try {
-            try (ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
-                int nRead;
-                byte[] data = new byte[16384];
+        try (ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+            int nRead;
+            byte[] data = new byte[16384];
 
-                while ((nRead = is.read(data, 0, data.length)) != -1) {
-                    buffer.write(data, 0, nRead);
-                }
-
-                buffer.flush();
-
-                return buffer.toByteArray();
+            while ((nRead = is.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
             }
+
+            buffer.flush();
+
+            return buffer.toByteArray();
         }
         catch (Exception e) {
             throw new FacesException("Could not read InputStream to byte[]", e);
-        }
-        finally {
-            try {
-                is.close();
-            }
-            catch (IOException ex) {
-                // ignore
-            }
         }
     }
 
@@ -155,7 +160,23 @@ public class ResourceUtils {
      * @see <a href="https://github.com/primefaces/primefaces/issues/6359">FileDownload: configure Cache-Control</a>
      */
     public static void addNoCacheControl(ExternalContext externalContext) {
-        externalContext.setResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        addNoCacheControl(externalContext, false);
+    }
+
+    /**
+     * Adds no cache pragma to the response to ensure it is not cached.  Dynamic downloads should always add this
+     * to prevent caching and for GDPR.
+     *
+     * @param externalContext the ExternalContext we add the pragma to
+     * @param store used to add no-store or exclude it if false
+     * @see <a href="https://github.com/primefaces/primefaces/issues/6359">FileDownload: configure Cache-Control</a>
+     */
+    public static void addNoCacheControl(ExternalContext externalContext, boolean store) {
+        String cacheControl = "no-cache, no-store, must-revalidate";
+        if (store) {
+            cacheControl = "no-cache, must-revalidate";
+        }
+        externalContext.setResponseHeader("Cache-Control", cacheControl);
         externalContext.setResponseHeader("Pragma", "no-cache");
         externalContext.setResponseHeader("Expires", "0");
     }
@@ -178,13 +199,16 @@ public class ResourceUtils {
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
         PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
 
-        if (requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure()) {
-            properties.put("secure", true);
+        boolean isSecure = requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure();
 
-            if (applicationContext.getEnvironment().isAtLeastJsf40()) {
-                properties.put("SameSite", applicationContext.getConfig().getCookiesSameSite());
-            }
+        properties.put("secure", isSecure);
+
+        String sameSite = applicationContext.getConfig().getCookiesSameSite();
+        // "None" is only allowed when Secure attribute so default to Lax if unsecure
+        if (LangUtils.isBlank(sameSite) || (!isSecure && "None".equalsIgnoreCase(sameSite))) {
+            sameSite = "Lax";
         }
+        properties.put("SameSite", sameSite);
 
         context.getExternalContext().addResponseCookie(name, value, properties);
     }
@@ -197,7 +221,7 @@ public class ResourceUtils {
         url += Constants.DYNAMIC_CONTENT_CACHE_PARAM + "=" + cache;
 
         if (!cache) {
-            url += "&uid=" + UUID.randomUUID().toString();
+            url += "&uid=" + UUID.randomUUID();
         }
         return url;
     }
@@ -205,27 +229,6 @@ public class ResourceUtils {
     public static String getResourceRequestPath(FacesContext context, String resourceName) {
         Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
         return resource.getRequestPath();
-    }
-
-    public static void addComponentResource(FacesContext context, String name, String library, String target) {
-
-        Application application = context.getApplication();
-
-        UIComponent componentResource = application.createComponent(UIOutput.COMPONENT_TYPE);
-        componentResource.setRendererType(application.getResourceHandler().getRendererTypeForResourceName(name));
-        componentResource.getAttributes().put("name", name);
-        componentResource.getAttributes().put("library", library);
-        componentResource.getAttributes().put("target", target);
-
-        context.getViewRoot().addComponentResource(context, componentResource, target);
-    }
-
-    public static void addComponentResource(FacesContext context, String name, String library) {
-        addComponentResource(context, name, library, "head");
-    }
-
-    public static void addComponentResource(FacesContext context, String name) {
-        addComponentResource(context, name, Constants.LIBRARY, "head");
     }
 
     public static boolean isScript(UIComponent component) {
@@ -236,60 +239,30 @@ public class ResourceUtils {
         return RENDERER_STYLESHEET.equals(component.getRendererType());
     }
 
-    public static List<ResourceInfo> getComponentResources(FacesContext context) {
-        List<ResourceInfo> resourceInfos = new ArrayList<>();
-
-        List<UIComponent> resources = context.getViewRoot().getComponentResources(context, "head");
-        if (resources != null) {
-            for (int i = 0; i < resources.size(); i++) {
-                UIComponent resource = resources.get(i);
-                ResourceUtils.ResourceInfo resourceInfo = newResourceInfo(resource);
-                if (resourceInfo != null && !resourceInfos.contains(resourceInfo)) {
-                    resourceInfos.add(resourceInfo);
-                }
-            }
-        }
-
-        return resourceInfos;
+    public static String getResourceName(UIComponent component) {
+        return (String) component.getAttributes().get("name");
     }
 
-    public static boolean isInline(ResourceInfo resourceInfo) {
-        if (resourceInfo != null) {
-            return LangUtils.isBlank(resourceInfo.getLibrary()) && LangUtils.isBlank(resourceInfo.getName());
+    public static String getResourceLibrary(UIComponent component) {
+        return (String) component.getAttributes().get("library");
+    }
+
+    public static boolean isInline(UIComponent component) {
+        if (component != null) {
+            return LangUtils.isBlank(getResourceName(component))
+                    && LangUtils.isBlank(getResourceLibrary(component));
         }
 
         return false;
     }
 
-    public static ResourceInfo newResourceInfo(UIComponent component) {
-
-        if (!(component instanceof UIOutput)) {
-            return null;
-        }
-
-        String library = (String) component.getAttributes().get("library");
-        String name = (String) component.getAttributes().get("name");
-
-        return new ResourceInfo(library, name, component);
-    }
-
-    public static Resource newResource(ResourceInfo resourceInfo, FacesContext context) {
-        Resource resource = context.getApplication().getResourceHandler().createResource(resourceInfo.getName(), resourceInfo.getLibrary());
-
-        if (resource == null) {
-            throw new FacesException("Resource '" + resourceInfo.getName() + "' in library '" + resourceInfo.getLibrary() + "' not found!");
-        }
-
-        return resource;
-    }
-
     public static String getMonitorKeyCookieName(FacesContext context, ValueExpression monitorKey) {
         String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId();
         monitorKeyCookieName = monitorKeyCookieName.replace('/', '_');
-        // #9521 remove file extension like .xhtml or .jsf as it violates cookie naming rules
+        // #9521 remove file extension like .xhtml or .faces as it violates cookie naming rules
         monitorKeyCookieName = monitorKeyCookieName.substring(0, monitorKeyCookieName.lastIndexOf('.'));
         if (monitorKey != null) {
-            String evaluated = (String) monitorKey.getValue(context.getELContext());
+            String evaluated = monitorKey.getValue(context.getELContext());
             if (LangUtils.isNotBlank(evaluated)) {
                 monitorKeyCookieName += "_" + evaluated;
             }
@@ -297,56 +270,150 @@ public class ResourceUtils {
         return monitorKeyCookieName;
     }
 
-    public static class ResourceInfo implements Serializable {
 
-        private static final long serialVersionUID = 1L;
+    public static boolean isResourceNotFound(Resource resource) {
+        return resource != null && (RES_NOT_FOUND.equals(resource.toString()) || RES_NOT_FOUND.equals(resource.getRequestPath()));
+    }
 
-        private String library;
-        private String name;
-        private UIComponent resource;
+    /**
+     * Per default the Faces implementation evaluates resource expressions as String and returns {@link Resource#getRequestPath()}.
+     * This method resolves the expression to the {@link Resource} itself.
+     *
+     * @param facesContext The {@link FacesContext}
+     * @param valueExpression The {@link ValueExpression}
+     *
+     * @return Null if the valueExpression is not of the form #{resource['path/to/resource']} or #{resource['library:name']}.
+     * Otherwise the value obtained by {@link ResourceHandler#createResource(java.lang.String)}.
+     */
+    public static Resource evaluateResourceExpression(FacesContext facesContext, ValueExpression valueExpression) {
+        Resource resource = null;
 
-        public ResourceInfo(String library, String name, UIComponent resource) {
-            this.library = library;
-            this.name = name;
-            this.resource = resource;
+        if (valueExpression != null) {
+            String expressionString = valueExpression.getExpressionString();
+
+            Matcher matcher = RESOURCE_PATTERN.matcher(expressionString);
+            if (matcher.find()) {
+                String[] resourceInfo = matcher.group(1).split(":");
+
+                Application application = facesContext.getApplication();
+                ResourceHandler resourceHandler = application.getResourceHandler();
+
+                if (resourceInfo.length == 2) {
+                    String resourceLibrary = resourceInfo[0];
+                    String resourceName = resourceInfo[1];
+                    resource = resourceHandler.createResource(resourceName, resourceLibrary);
+                }
+                else {
+                    String resourceName = resourceInfo[0];
+                    resource = resourceHandler.createResource(resourceName);
+                }
+            }
         }
 
-        public String getLibrary() {
-            return library;
+        return !isResourceNotFound(resource) ? resource : null;
+    }
+
+    /**
+     * Adds a JavaScript resource to the view.
+     *
+     * @param context The FacesContext
+     * @param libraryName The library name containing the resource
+     * @param resourceName The name of the JavaScript resource
+     */
+    public static void addJavascriptResource(FacesContext context, String libraryName, String resourceName) {
+        addResource(context, RENDERER_SCRIPT, libraryName, resourceName);
+    }
+    /**
+     * Adds a JavaScript resource from the default PrimeFaces library to the view.
+     *
+     * @param context The FacesContext
+     * @param resourceName The name of the JavaScript resource
+     */
+    public static void addJavascriptResource(FacesContext context, String resourceName) {
+        addJavascriptResource(context, Constants.LIBRARY, resourceName);
+    }
+
+    /**
+     * Adds a CSS resource to the view.
+     *
+     * @param context The FacesContext
+     * @param libraryName The library name containing the resource
+     * @param resourceName The name of the CSS resource
+     */
+    public static void addStyleSheetResource(FacesContext context, String libraryName, String resourceName) {
+        addResource(context, RENDERER_STYLESHEET, libraryName, resourceName);
+    }
+
+    /**
+     * Adds a CSS resource from the default PrimeFaces library to the view.
+     *
+     * @param context The FacesContext
+     * @param resourceName The name of the CSS resource
+     */
+    public static void addStyleSheetResource(FacesContext context, String resourceName) {
+        addStyleSheetResource(context, Constants.LIBRARY, resourceName);
+    }
+
+    /**
+     * Adds a resource to the view if it hasn't been rendered yet.
+     *
+     * @param context The FacesContext
+     * @param type The renderer type (CSS or JS)
+     * @param libraryName The library name containing the resource
+     * @param resourceName The name of the resource
+     */
+    public static void addResource(FacesContext context, String type, String libraryName, String resourceName) {
+        boolean isRendered = context.getApplication().getResourceHandler().isResourceRendered(context, resourceName, libraryName);
+        if (!isRendered) {
+            addResourceToHead(context, type, libraryName, resourceName);
+        }
+    }
+
+    /**
+     * Adds a resource component to the specified target, avoiding duplicates based on ID.
+     *
+     * @param context The FacesContext
+     * @param type The renderer type
+     * @param libraryName The library name
+     * @param resourceName The resource name
+     * @param target The target location ("head" or "body")
+     * @return The added or existing UIComponent
+     */
+    public static UIComponent addScriptResourceToTarget(FacesContext context, String type, String libraryName, String resourceName, String target) {
+        UIOutput outputResource = createResource(type);
+
+        if (libraryName != null) {
+            outputResource.getAttributes().put("library", libraryName);
         }
 
-        public void setLibrary(String library) {
-            this.library = library;
-        }
+        outputResource.getAttributes().put("name", resourceName);
+        context.getViewRoot().addComponentResource(context, outputResource, target);
+        return outputResource;
+    }
 
-        public String getName() {
-            return name;
-        }
+    /**
+     * Creates a new UIOutput component with the specified renderer type.
+     *
+     * @param type The renderer type
+     * @return New UIOutput component
+     */
+    public static UIOutput createResource(String type) {
+        UIOutput outputScript = new UIOutput();
+        outputScript.setRendererType(type);
+        return outputScript;
+    }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+    /**
+     * Adds a resource to the head section.
+     */
+    public static void addResourceToHead(FacesContext context, String type, String libraryName, String resourceName) {
+        addScriptResourceToTarget(context, type, libraryName, resourceName, "head");
+    }
 
-        public UIComponent getResource() {
-            return resource;
-        }
-
-        public void setResource(UIComponent resource) {
-            this.resource = resource;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ResourceInfo that = (ResourceInfo) o;
-            return Objects.equals(library, that.library) &&
-                    Objects.equals(name, that.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(library, name);
-        }
+    /**
+     * Adds a resource to the body section.
+     */
+    public static void addResourceToBody(FacesContext context, String type, String libraryName, String resourceName) {
+        addScriptResourceToTarget(context, type, libraryName, resourceName, "body");
     }
 }

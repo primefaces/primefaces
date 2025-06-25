@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,11 @@
  */
 package org.primefaces.csp;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
@@ -31,15 +36,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.context.ResponseWriterWrapper;
 
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.Lazy;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.context.ResponseWriterWrapper;
 
 public class CspResponseWriter extends ResponseWriterWrapper {
 
@@ -58,8 +59,6 @@ public class CspResponseWriter extends ResponseWriterWrapper {
                     "onselect", "onshow", "onstalled", "onstorage", "onsubmit", "onsuspend", "ontimeupdate", "ontoggle", "ontouchcancel",
                     "ontouchend", "ontouchmove", "ontouchstart", "ontransitionend", "onunload", "onvolumechange", "onwaiting", "onwheel"));
 
-    private ResponseWriter wrapped;
-
     private CspState cspState;
 
     private String lastElement;
@@ -69,9 +68,8 @@ public class CspResponseWriter extends ResponseWriterWrapper {
 
     private Lazy<Boolean> policyProvided;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public CspResponseWriter(ResponseWriter wrapped, CspState cspState) {
-        this.wrapped = wrapped;
+        super(wrapped);
         this.cspState = cspState;
 
         policyProvided = new Lazy<>(() ->
@@ -202,7 +200,7 @@ public class CspResponseWriter extends ResponseWriterWrapper {
             // no id written -> generate a new one and write it
             // otherwise we can't identify the element for our scripts
             if (LangUtils.isBlank(id)) {
-                id = lastElement.toLowerCase() + "-" + UUID.randomUUID().toString();
+                id = lastElement.toLowerCase() + "-" + UUID.randomUUID();
                 getWrapped().writeAttribute("id", id, null);
             }
 
@@ -259,11 +257,27 @@ public class CspResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public ResponseWriter cloneWithWriter(Writer writer) {
-        return getWrapped().cloneWithWriter(writer);
+        return new CspResponseWriter(getWrapped().cloneWithWriter(writer), this.cspState);
     }
 
-    @Override
-    public ResponseWriter getWrapped() {
-        return wrapped;
+    /**
+     * Special scenario where for indexed id's we need to replace the old id with new one.
+     *
+     * @param oldId the old id
+     * @param newId the new id
+     */
+    public void updateId(String oldId, String newId) {
+        Map<String, String> events = cspState.getEventHandlers().remove(oldId);
+        if (events != null && !events.isEmpty()) {
+            for (Map.Entry<String, String> entry : events.entrySet()) {
+                String oldValue = entry.getValue();
+                // replace 'id=' and 'source:' values
+                String newValue = oldValue.replaceAll("\\sid=\"" + oldId + "\"", " id=\"" + newId + "\"");
+                newValue = newValue.replaceAll("source:\"" + oldId + "\"", " source:\"" + newId + "\"");
+                entry.setValue(newValue);
+            }
+            CspState cspState = this.cspState;
+            cspState.getEventHandlers().put(newId, events);
+        }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,21 @@
  */
 package org.primefaces.component.resetinput;
 
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.visit.ResetInputVisitCallback;
+
 import java.io.Serializable;
 import java.util.List;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
-
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.visit.ResetInputVisitCallback;
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.ActionEvent;
+import jakarta.faces.event.ActionListener;
 
 public class ResetInputActionListener implements ActionListener, Serializable {
 
@@ -60,11 +60,11 @@ public class ResetInputActionListener implements ActionListener, Serializable {
 
     @Override
     public void processAction(ActionEvent event) throws AbortProcessingException {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = event.getFacesContext();
         ELContext elContext = context.getELContext();
         VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 
-        String expressions = (String) target.getValue(elContext);
+        String expressions = target.getValue(elContext);
         boolean resetModel = false;
         if (clearModel != null) {
             resetModel = clearModel.isLiteralText()
@@ -76,7 +76,7 @@ public class ResetInputActionListener implements ActionListener, Serializable {
                                                 ? ResetInputVisitCallback.INSTANCE_CLEAR_MODEL
                                                 : ResetInputVisitCallback.INSTANCE;
 
-        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), expressions);
+        List<UIComponent> components = SearchExpressionUtils.contextlessResolveComponents(context, event.getComponent(), expressions);
         for (int i = 0; i < components.size(); i++) {
             UIComponent component = components.get(i);
             component.visitTree(visitContext, visitCallback);

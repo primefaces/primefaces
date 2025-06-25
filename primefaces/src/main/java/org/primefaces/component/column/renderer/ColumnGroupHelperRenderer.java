@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,6 @@
  */
 package org.primefaces.component.column.renderer;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
@@ -35,6 +30,11 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.util.ComponentUtils;
+
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 
 public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
 

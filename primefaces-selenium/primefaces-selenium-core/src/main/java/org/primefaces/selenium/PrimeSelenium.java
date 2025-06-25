@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,6 @@
  */
 package org.primefaces.selenium;
 
-import java.time.Duration;
-import java.util.List;
-
-import org.openqa.selenium.*;
-import org.openqa.selenium.html5.WebStorage;
-import org.openqa.selenium.support.decorators.WebDriverDecorator;
-import org.openqa.selenium.support.pagefactory.ElementLocator;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.Guard;
 import org.primefaces.selenium.spi.DeploymentAdapter;
@@ -38,11 +30,23 @@ import org.primefaces.selenium.spi.PrimePageFactory;
 import org.primefaces.selenium.spi.PrimePageFragmentFactory;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.HasCapabilities;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.decorators.WebDriverDecorator;
+import org.openqa.selenium.support.pagefactory.ElementLocator;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 public final class PrimeSelenium {
-
-    private static final String HEADLESS_MODE_SYSPROP_NAME = "webdriver.headless";
-
-    private static final String HEADLESS_MODE_SYSPROP_VAL_DEFAULT = "false";
 
     private PrimeSelenium() {
         super();
@@ -121,6 +125,7 @@ public final class PrimeSelenium {
     public static void goTo(AbstractPrimePage page) {
         WebDriver driver = WebDriverProvider.get();
         driver.get(getUrl(page));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
         if (isSafari()) {
             /*
              * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
@@ -137,6 +142,7 @@ public final class PrimeSelenium {
     public static void goTo(String partialUrl) {
         WebDriver driver = WebDriverProvider.get();
         driver.get(getUrl(partialUrl));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
         if (isSafari()) {
             /*
              * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
@@ -152,13 +158,19 @@ public final class PrimeSelenium {
      * @return the URL of the page
      */
     public static String getUrl(AbstractPrimePage page) {
-        DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
-
         String baseLocation = page.getBaseLocation();
-        if (deploymentAdapter != null) {
+        if (baseLocation == null) {
             baseLocation = getBaseUrl();
         }
-
+        if (baseLocation == null) {
+            DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
+            String message = "Cannot determine base url. Please either configure " + ConfigProvider.DEPLOYMENT_BASEURL + " or " +
+                    (deploymentAdapter != null ?
+                            ("implement " + deploymentAdapter.getClass().getCanonicalName() + "#getBaseUrl") :
+                            ("define " + ConfigProvider.DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl")) +
+                    " or implement " + page.getClass().getCanonicalName() + "#getBaseLocation";
+            throw new RuntimeException(message);
+        }
         return baseLocation + page.getLocation();
     }
 
@@ -169,7 +181,16 @@ public final class PrimeSelenium {
      * @return the full URL
      */
     public static String getUrl(String url) {
-        return getBaseUrl() + url;
+        String baseUrl = getBaseUrl();
+        if (baseUrl == null) {
+            DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
+            String message = "Cannot determine base url. Please either configure " + ConfigProvider.DEPLOYMENT_BASEURL + " or " +
+                    (deploymentAdapter != null ?
+                            ("implement " + deploymentAdapter.getClass().getCanonicalName() + "#getBaseUrl") :
+                            ("define " + ConfigProvider.DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl"));
+            throw new RuntimeException(message);
+        }
+        return baseUrl + url;
     }
 
     public static String getBaseUrl() {
@@ -188,7 +209,7 @@ public final class PrimeSelenium {
      * @return true if this element has the CSS class
      */
     public static boolean hasCssClass(WebElement element, String... cssClass) {
-        String elementClass = element.getAttribute("class");
+        String elementClass = element.getDomAttribute("class");
         if (elementClass == null) {
             return false;
         }
@@ -277,7 +298,7 @@ public final class PrimeSelenium {
     }
 
     /**
-     * Is the Element visisible in the current viewport??
+     * Is the Element visible in the current viewport??
      *
      * @param element the WebElement to check
      * @return true if visible
@@ -338,7 +359,7 @@ public final class PrimeSelenium {
         return isElementDisplayed(element) &&
                     isElementEnabled(element) &&
                     !hasCssClass(element, "ui-state-disabled") &&
-                    !Boolean.parseBoolean(element.getAttribute("aria-busy"));
+                    !Boolean.parseBoolean(element.getDomAttribute("aria-busy"));
     }
 
     /**
@@ -476,7 +497,7 @@ public final class PrimeSelenium {
      * @see <a href="https://stackoverflow.com/questions/11858366/how-to-type-some-text-in-hidden-field-in-selenium-webdriver-using-java">Stack Overflow</a>
      */
     public static void setHiddenInput(WebElement input, String value) {
-        executeScript(" document.getElementById('" + input.getAttribute("id") + "').value='" + value + "'");
+        executeScript(" document.getElementById('" + input.getDomAttribute("id") + "').value='" + value + "'");
     }
 
     /**
@@ -489,7 +510,7 @@ public final class PrimeSelenium {
     public static void clearInput(WebElement input, boolean isAjaxified) {
         if (PrimeSelenium.isSafari()) {
             // Safari hack https://stackoverflow.com/a/64067604/502366
-            String inputText = input.getAttribute("value");
+            String inputText = input.getDomProperty("value");
             if (inputText != null && inputText.length() > 0) {
                 CharSequence[] clearText = new CharSequence[inputText.length()];
                 for (int i = 0; i < inputText.length(); i++) {
@@ -562,7 +583,7 @@ public final class PrimeSelenium {
      * @return true if headless, false if not
      */
     public static boolean isHeadless() {
-        return Boolean.parseBoolean(System.getProperty(HEADLESS_MODE_SYSPROP_NAME, HEADLESS_MODE_SYSPROP_VAL_DEFAULT));
+        return ConfigProvider.getInstance().isWebdriverHeadless();
     }
 
     /**
@@ -581,27 +602,6 @@ public final class PrimeSelenium {
                 Thread.currentThread().interrupt();
             }
         }
-    }
-
-    /**
-     * Get WebStorage of WebDriver.
-     *
-     * @return Returns WebStorage of WebDriver when this feature is supported by the browser. Some browsers like Safari (as of january 2021) do not support
-     *         WebStorage via WebDriver. In this case null is returned.
-     */
-    public static WebStorage getWebStorage() {
-        WebDriver webDriver = getWebDriver();
-
-        if (webDriver instanceof WebDriverDecorator) {
-            WebDriverDecorator driver = (WebDriverDecorator) webDriver;
-            webDriver = (WebDriver) driver.getDecoratedDriver().getOriginal();
-        }
-
-        if (webDriver instanceof WebStorage) {
-            return (WebStorage) webDriver;
-        }
-
-        return null;
     }
 
     /**

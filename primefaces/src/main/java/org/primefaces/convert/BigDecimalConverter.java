@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.convert;
 
-public class BigDecimalConverter extends javax.faces.convert.BigDecimalConverter implements ClientConverter {
+public class BigDecimalConverter extends jakarta.faces.convert.BigDecimalConverter implements ClientConverter {
 
     @Override
     public String getConverterId() {

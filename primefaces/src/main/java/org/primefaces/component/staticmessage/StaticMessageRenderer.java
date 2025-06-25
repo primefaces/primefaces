@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,44 +23,52 @@
  */
 package org.primefaces.component.staticmessage;
 
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.component.messages.Messages;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
-public class StaticMessageRenderer extends UINotificationRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        StaticMessage staticMessage = (StaticMessage) component;
+    public void decode(FacesContext context, StaticMessage component) {
+        decodeBehaviors(context, component);
+    }
 
+    @Override
+    public void encodeEnd(FacesContext context, StaticMessage component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        String display = staticMessage.getDisplay();
+        String display = component.getDisplay();
         boolean iconOnly = "icon".equals(display);
-        boolean escape = staticMessage.isEscape();
-        String summary = staticMessage.getSummary();
-        String detail = staticMessage.getDetail();
-        String severity = staticMessage.getSeverity();
+        boolean escape = component.isEscape();
+        String summary = component.getSummary();
+        String detail = component.getDetail();
+        String severity = component.getSeverity();
         severity = severity == null ? "info" : severity.toLowerCase();
 
-        String styleClass = "ui-message ui-staticmessage ui-message-" + severity + " ui-widget ui-corner-all";
-        if (iconOnly) {
-            styleClass += " ui-message-icon-only ui-helper-clearfix";
-        }
-        if (staticMessage.getStyleClass() != null) {
-            styleClass += " " + staticMessage.getStyleClass();
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add("ui-message ui-staticmessage ui-message-" + severity + " ui-widget")
+                .add(iconOnly, "ui-message-icon-only ui-helper-clearfix")
+                .add(component.getStyleClass())
+                .build();
 
-        String style = staticMessage.getStyle();
+        String style = component.getStyle();
 
-        writer.startElement("div", staticMessage);
-        writer.writeAttribute("id", staticMessage.getClientId(context), null);
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("aria-live", "polite", null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
+        }
+
+        if (component.isClosable()) {
+            encodeCloseIcon(context, component);
         }
 
         if (!"text".equals(display)) {
@@ -72,6 +80,8 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         }
 
         writer.endElement("div");
+
+        encodeScript(context, component);
     }
 
     protected void encodeText(ResponseWriter writer, String text, String severity, boolean escape) throws IOException {
@@ -97,5 +107,29 @@ public class StaticMessageRenderer extends UINotificationRenderer {
             writer.writeAttribute("title", title, null);
         }
         writer.endElement("span");
+    }
+
+    protected void encodeCloseIcon(FacesContext context, StaticMessage component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", Messages.CLOSE_LINK_CLASS, null);
+        writer.writeAttribute("onclick", "$(this).parent().slideUp();return false;", null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Messages.CLOSE_ICON_CLASS, null);
+        writer.endElement("span");
+
+        writer.endElement("a");
+    }
+
+    protected void encodeScript(FacesContext context, StaticMessage component) throws IOException {
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("StaticMessage", component);
+
+        encodeClientBehaviors(context, component);
+
+        wb.finish();
     }
 }

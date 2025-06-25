@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,6 @@ package org.primefaces.showcase.service;
 
 import org.primefaces.showcase.domain.Country;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -36,6 +32,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 @Named
 @ApplicationScoped
@@ -70,8 +70,12 @@ public class CountryService {
         locales = new ArrayList<>();
 
         locales.add(CountryService.toCountry(Locale.US));
+        locales.add(CountryService.toCountry(Locale.UK));
+        locales.add(CountryService.toCountry(new Locale("en", "AU")));
         locales.add(CountryService.toCountry(Locale.FRANCE));
         locales.add(CountryService.toCountry(Locale.GERMANY));
+        locales.add(CountryService.toCountry(new Locale("de", "AT")));
+        locales.add(CountryService.toCountry(new Locale("de", "CH")));
         locales.add(CountryService.toCountry(Locale.ITALY));
         locales.add(CountryService.toCountry(Locale.KOREA));
         locales.add(CountryService.toCountry(new Locale("es", "ES")));
@@ -80,28 +84,44 @@ public class CountryService {
         locales.add(CountryService.toCountry(new Locale("pt", "BR")));
         locales.add(CountryService.toCountry(new Locale("pt", "PT")));
         locales.add(CountryService.toCountry(new Locale("ar", "SA"), true));
+        locales.add(CountryService.toCountry(new Locale("ar", "TN"), true));
+        locales.add(CountryService.toCountry(new Locale("bg", "BG")));
+        locales.add(CountryService.toCountry(new Locale("bn", "BD")));
+        locales.add(CountryService.toCountry(new Locale("bs", "BA")));
         locales.add(CountryService.toCountry(new Locale("cs", "CZ")));
         locales.add(CountryService.toCountry(new Locale("el", "GR")));
+        locales.add(CountryService.toCountry(new Locale("et", "EE")));
         locales.add(CountryService.toCountry(new Locale("fa", "IR"), true));
+        locales.add(CountryService.toCountry(new Locale("fi", "FI")));
+        locales.add(CountryService.toCountry(new Locale("da", "DK")));
         locales.add(CountryService.toCountry(new Locale("hi", "IN")));
         locales.add(CountryService.toCountry(new Locale("in", "ID")));
+        locales.add(CountryService.toCountry(new Locale("is", "IS")));
         locales.add(CountryService.toCountry(new Locale("hr", "HR")));
         locales.add(CountryService.toCountry(new Locale("ja", "JP")));
         locales.add(CountryService.toCountry(new Locale("hu", "HU")));
-        locales.add(CountryService.toCountry(new Locale("iw", "IL"), true));
+        locales.add(CountryService.toCountry(new Locale("he", "IL"), true));
         locales.add(CountryService.toCountry(new Locale("ka", "GE")));
+        locales.add(CountryService.toCountry(new Locale("ckb", "IQ"), true));
+        locales.add(CountryService.toCountry(new Locale("km", "KH")));
+        locales.add(CountryService.toCountry(new Locale("ky", "KG")));
+        locales.add(CountryService.toCountry(new Locale("kk", "KZ")));
         locales.add(CountryService.toCountry(new Locale("lt", "LT")));
         locales.add(CountryService.toCountry(new Locale("lv", "LV")));
+        locales.add(CountryService.toCountry(new Locale("ms", "MY")));
         locales.add(CountryService.toCountry(new Locale("no", "NO")));
         locales.add(CountryService.toCountry(new Locale("pl", "PL")));
         locales.add(CountryService.toCountry(new Locale("ro", "RO")));
         locales.add(CountryService.toCountry(new Locale("ru", "RU")));
         locales.add(CountryService.toCountry(new Locale("sk", "SK")));
         locales.add(CountryService.toCountry(new Locale("sl", "SI")));
+        locales.add(CountryService.toCountry(new Locale("sr", "BA")));
         locales.add(CountryService.toCountry(new Locale("sr", "RS")));
         locales.add(CountryService.toCountry(new Locale("sv", "SE")));
+        locales.add(CountryService.toCountry(new Locale("th", "TH")));
         locales.add(CountryService.toCountry(new Locale("tr", "TR")));
         locales.add(CountryService.toCountry(new Locale("uk", "UA")));
+        locales.add(CountryService.toCountry(new Locale("uz", "UZ")));
         locales.add(CountryService.toCountry(new Locale("vi", "VN")));
         locales.add(CountryService.toCountry(Locale.SIMPLIFIED_CHINESE));
         locales.add(CountryService.toCountry(Locale.TRADITIONAL_CHINESE));

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,9 @@
  */
 package org.primefaces.application.resource;
 
+import org.primefaces.model.StreamedContent;
+import org.primefaces.util.Constants;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,16 +35,13 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.application.ProjectStage;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.primefaces.model.StreamedContent;
-import org.primefaces.util.Constants;
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
@@ -59,7 +59,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
             try {
                 ExternalContext externalContext = context.getExternalContext();
                 Map<String, Object> session = externalContext.getSessionMap();
-                Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+                Map<String, String> dynamicResourcesMapping = (Map<String, String>) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
 
                 if (dynamicResourcesMapping != null) {
                     String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
@@ -139,8 +139,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
             externalContext.setResponseContentType(streamedContent.getContentType());
         }
         if (streamedContent.getContentLength() != null) {
-            // GitHub #9485 Faces 4 will switch from int to long contentLength
-            // externalContext.setResponseContentLength(streamedContent.getContentLength());
+            // we can't use externalContext.setResponseContentLength as our contentLength is a long
             externalContext.setResponseHeader("Content-Length", String.valueOf(streamedContent.getContentLength()));
         }
         if (streamedContent.getContentEncoding() != null) {

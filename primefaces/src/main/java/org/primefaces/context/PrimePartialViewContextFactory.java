@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,14 @@
  */
 package org.primefaces.context;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialViewContext;
-import javax.faces.context.PartialViewContextFactory;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.PartialViewContext;
+import jakarta.faces.context.PartialViewContextFactory;
 
 public class PrimePartialViewContextFactory extends PartialViewContextFactory {
 
-    private PartialViewContextFactory parent;
-
-    // #6212 - don't remove it
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
-    public PrimePartialViewContextFactory() {
-
-    }
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
-    public PrimePartialViewContextFactory(PartialViewContextFactory parent) {
-        this.parent = parent;
-    }
-
-    @Override
-    public PartialViewContextFactory getWrapped() {
-        return this.parent;
+    public PrimePartialViewContextFactory(PartialViewContextFactory wrapped) {
+        super(wrapped);
     }
 
     @Override

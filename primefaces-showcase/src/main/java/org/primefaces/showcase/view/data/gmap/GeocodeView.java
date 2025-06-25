@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,17 @@ package org.primefaces.showcase.view.data.gmap;
 
 import org.primefaces.event.map.GeocodeEvent;
 import org.primefaces.event.map.ReverseGeocodeEvent;
-import org.primefaces.model.map.*;
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.GeocodeResult;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
 import java.util.List;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 
 @Named
 @RequestScoped

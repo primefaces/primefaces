@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,10 @@
  */
 package org.primefaces.component.avatar;
 
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -30,44 +34,38 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.SharedStringBuilder;
-
-public class AvatarRenderer extends CoreRenderer {
+public class AvatarRenderer extends CoreRenderer<Avatar> {
 
     private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[\\p{L}\\p{M}]", Pattern.UNICODE_CHARACTER_CLASS);
     private static final String GRAVATAR_URL = "https://www.gravatar.com/avatar/";
     private static final String SB_AVATAR = AvatarRenderer.class.getName() + "#avatar";
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Avatar avatar = (Avatar) component;
+    public void encodeEnd(FacesContext context, Avatar component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
                 .add(Avatar.STYLE_CLASS)
-                .add(avatar.getStyleClass())
-                .add("circle".equals(avatar.getShape()), Avatar.CIRCLE_CLASS)
-                .add("large".equals(avatar.getSize()), Avatar.SIZE_LARGE_CLASS)
-                .add("xlarge".equals(avatar.getSize()), Avatar.SIZE_XLARGE_CLASS)
-                .add(avatar.isDynamicColor(), Avatar.DYNAMIC_COLOR_CLASS)
-                .add(avatar.isDynamicColor(), avatar.getLightness() > 50
+                .add(component.getStyleClass())
+                .add("circle".equals(component.getShape()), Avatar.CIRCLE_CLASS)
+                .add("large".equals(component.getSize()), Avatar.SIZE_LARGE_CLASS)
+                .add("xlarge".equals(component.getSize()), Avatar.SIZE_XLARGE_CLASS)
+                .add(component.isDynamicColor(), Avatar.DYNAMIC_COLOR_CLASS)
+                .add(component.isDynamicColor(), component.getLightness() > 50
                         ? Avatar.DYNAMIC_COLOR_LIGHT_CLASS : Avatar.DYNAMIC_COLOR_DARK_CLASS)
                 .build();
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", avatar.getClientId(context), "id");
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        String label = calculateLabel(context, avatar);
-        String style = avatar.getStyle();
-        String title = avatar.getTitle();
-        if (avatar.isDynamicColor() && label != null) {
-            String colorCss = generateBackgroundColor(avatar);
+        String label = calculateLabel(context, component);
+        String style = component.getStyle();
+        String title = component.getTitle();
+        if (component.isDynamicColor() && label != null) {
+            String colorCss = generateBackgroundColor(component);
             style = style == null ? colorCss : colorCss + style;
         }
 
@@ -79,8 +77,8 @@ public class AvatarRenderer extends CoreRenderer {
             writer.writeAttribute("title", title, null);
         }
 
-        encodeDefaultContent(context, avatar, label);
-        renderChildren(context, avatar);
+        encodeDefaultContent(context, component, label);
+        renderChildren(context, component);
 
         writer.endElement("div");
     }
@@ -112,7 +110,7 @@ public class AvatarRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Avatar component) throws IOException {
         //Do nothing
     }
 
@@ -124,11 +122,11 @@ public class AvatarRenderer extends CoreRenderer {
     /**
      * Generates a label based on the text if its more than 2 characters. Example: PrimeFaces Rocks = PR
      *
-     * @param avatar the Avatar component
+     * @param component the Avatar component
      * @return the calculated label text.
      */
-    protected String calculateLabel(FacesContext context, Avatar avatar) {
-        String value = avatar.getLabel();
+    protected String calculateLabel(FacesContext context, Avatar component) {
+        String value = component.getLabel();
         if (value == null || value.length() <= 2) {
             return value;
         }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,4 +48,8 @@ public interface DashboardWidget {
     void setStyle(String style);
 
     void setStyleClass(String styleClass);
+
+    Object getValue();
+
+    void setValue(Object value);
 }

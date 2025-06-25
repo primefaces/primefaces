@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,11 @@
 package org.primefaces.component.timeline;
 
 
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PhaseListener;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.PhaseListener;
+import jakarta.faces.event.SystemEvent;
+import jakarta.faces.event.SystemEventListener;
 
 public class TimelineListener implements SystemEventListener {
 
@@ -44,12 +44,13 @@ public class TimelineListener implements SystemEventListener {
             if (listener instanceof DefaultTimelineUpdater
                     && ((DefaultTimelineUpdater) listener).getWidgetVar().equals(widgetVar)) {
                 alreadyRegistred = true;
+                break;
             }
         }
 
         if (!alreadyRegistred) {
-            DefaultTimelineUpdater timelineUpdater = new DefaultTimelineUpdater();
-            timelineUpdater.setWidgetVar(widgetVar);
+            DefaultTimelineUpdater timelineUpdater = new DefaultTimelineUpdater(
+                    timeline.getClientId(context), widgetVar);
             context.getViewRoot().addPhaseListener(timelineUpdater);
         }
     }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,35 @@
  */
 package org.primefaces.integrationtests.texteditor;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.AccordionPanel;
 import org.primefaces.selenium.component.CommandButton;
 
-public class TextEditor002Test extends AbstractPrimePageTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+class TextEditor002Test extends AbstractPrimePageTest {
 
     @Test
     @DisplayName("TextEditor: Prevent regression of GitHub #2802 when upgrading QuillJS: https://github.com/primefaces/primefaces/issues/2802")
-    public void testSubmit(Page page) {
-        // Arrange
-        assertClickable(page.updateForm);
-        assertDisplayed(page.accordionPanel);
+    void submit(Page page) {
+        assertDoesNotThrow(() -> {
+            // Arrange
+            assertClickable(page.updateForm);
+            assertDisplayed(page.accordionPanel);
 
-        // Act
-        page.updateForm.click(); // update form
-        page.accordionPanel.toggleTab(1); // expand tab 2
+            // Act
+            page.updateForm.click(); // update form
+            page.accordionPanel.toggleTab(1); // expand tab 2
 
-        // Assert
-        // NOTE: if we get Javascript errors someone upgraded QuillJS but did not reapply the patch
-        assertNoJavascriptErrors();
+            // Assert
+            // NOTE: if we get Javascript errors someone upgraded QuillJS but did not reapply the patch
+            assertNoJavascriptErrors();
+        });
     }
 
     public static class Page extends AbstractPrimePage {

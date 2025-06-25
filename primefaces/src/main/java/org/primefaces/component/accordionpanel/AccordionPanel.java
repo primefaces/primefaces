@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,6 @@
  */
 package org.primefaces.component.accordionpanel;
 
-import java.util.Collection;
-import java.util.Map;
-import javax.el.ELContext;
-
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.el.ValueExpressionAnalyzer;
@@ -46,6 +32,21 @@ import org.primefaces.event.TabEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Map;
+
+import jakarta.el.ELContext;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -57,8 +58,8 @@ public class AccordionPanel extends AccordionPanelBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.AccordionPanel";
 
     public static final String CONTAINER_CLASS = "ui-accordion ui-widget ui-helper-reset ui-hidden-container";
-    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top";
-    public static final String TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-corner-all";
+    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-state-active";
+    public static final String TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default";
     public static final String TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
     public static final String TAB_HEADER_ICON_RTL_CLASS = "ui-icon ui-icon-triangle-1-w";
     public static final String ACTIVE_TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
@@ -106,7 +107,7 @@ public class AccordionPanel extends AccordionPanelBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
+        FacesContext context = event.getFacesContext();
 
         if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -115,43 +116,33 @@ public class AccordionPanel extends AccordionPanelBase {
             boolean repeating = isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
+            String tabClientId = params.get(clientId + "_currentTab");
+            int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
+
+            if (repeating) {
+                setIndex(tabindex);
+            }
+
+            Object data = repeating ? getIndexData() : null;
+            Tab tab = repeating ? getDynamicTab() : findTab(tabClientId);
+
+            TabEvent<?> changeEvent;
             if ("tabChange".equals(eventName)) {
-                String tabClientId = params.get(clientId + "_newTab");
-                TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
-
-                if (repeating) {
-                    int index = Integer.parseInt(params.get(clientId + "_tabindex"));
-                    setIndex(index);
-                    changeEvent.setData(getIndexData());
-                    changeEvent.setTab(getDynamicTab());
-                }
-
-                changeEvent.setPhaseId(behaviorEvent.getPhaseId());
-
-                super.queueEvent(changeEvent);
-
-                if (repeating) {
-                    setIndex(-1);
-                }
+                changeEvent = new TabChangeEvent<>(this, behaviorEvent.getBehavior(), tab, data, eventName, tabindex);
             }
             else if ("tabClose".equals(eventName)) {
-                String tabClientId = params.get(clientId + "_tabId");
-                TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
+                changeEvent  = new TabCloseEvent<>(this, behaviorEvent.getBehavior(), tab, data, eventName, tabindex);
+            }
+            else {
+                throw new FacesException("Unsupported event: " + eventName);
+            }
 
-                if (repeating) {
-                    int index = Integer.parseInt(params.get(clientId + "_tabindex"));
-                    setIndex(index);
-                    closeEvent.setData(getIndexData());
-                    closeEvent.setTab(getDynamicTab());
-                }
+            changeEvent.setPhaseId(behaviorEvent.getPhaseId());
 
-                closeEvent.setPhaseId(behaviorEvent.getPhaseId());
+            super.queueEvent(changeEvent);
 
-                super.queueEvent(closeEvent);
-
-                if (repeating) {
-                    setIndex(-1);
-                }
+            if (repeating) {
+                setIndex(-1);
             }
         }
         else {
@@ -168,15 +159,23 @@ public class AccordionPanel extends AccordionPanelBase {
         super.processUpdates(context);
 
         ELContext elContext = getFacesContext().getELContext();
-        ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
-                getValueExpression(PropertyKeys.activeIndex.toString()), true);
-        if (expr != null && !expr.isReadOnly(elContext)) {
-            expr.setValue(elContext, getActiveIndex());
-            resetActiveIndex();
+        ValueExpression activeExpr = ValueExpressionAnalyzer.getExpression(elContext,
+                getValueExpression(PropertyKeys.active.toString()), true);
+
+        // Fallback to deprecated activeIndex
+        if (activeExpr == null) {
+            activeExpr = ValueExpressionAnalyzer.getExpression(elContext,
+                    getValueExpression(PropertyKeys.activeIndex.toString()), true);
+        }
+
+        if (activeExpr != null && !activeExpr.isReadOnly(elContext)) {
+            activeExpr.setValue(elContext, getActive());
+            resetActive();
         }
     }
 
-    protected void resetActiveIndex() {
+    protected void resetActive() {
+        getStateHelper().remove(PropertyKeys.active);
         getStateHelper().remove(PropertyKeys.activeIndex);
     }
 
@@ -197,7 +196,7 @@ public class AccordionPanel extends AccordionPanelBase {
     public void restoreMultiViewState() {
         AccordionState as = getMultiViewState(false);
         if (as != null) {
-            setActiveIndex(as.getActiveIndex());
+            setActive(as.getActive());
         }
     }
 
@@ -212,6 +211,6 @@ public class AccordionPanel extends AccordionPanelBase {
 
     @Override
     public void resetMultiViewState() {
-        setActiveIndex(null);
+        setActive(null);
     }
 }

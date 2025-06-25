@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,19 @@
  */
 package org.primefaces.component.rating;
 
+import org.primefaces.event.RateEvent;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
-import org.primefaces.event.RateEvent;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -53,7 +53,7 @@ public class Rating extends RatingBase {
     private static final String DEFAULT_EVENT = "rate";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("rate", RateEvent.class)
-            .put("cancel", null)
+            .put("cancel", RateEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
@@ -81,11 +81,8 @@ public class Rating extends RatingBase {
         if (event instanceof AjaxBehaviorEvent) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if ("rate".equals(eventName)) {
+            if ("rate".equals(eventName) || "cancel".equals(eventName)) {
                 customEvents.put(eventName, (AjaxBehaviorEvent) event);
-            }
-            else if ("cancel".equals(eventName)) {
-                super.queueEvent(event);
             }
         }
         else {
@@ -99,8 +96,11 @@ public class Rating extends RatingBase {
 
         if (isValid() && customEvents != null) {
             for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
+                String eventName = event.getKey();
                 AjaxBehaviorEvent behaviorEvent = event.getValue();
-                RateEvent rateEvent = new RateEvent(this, behaviorEvent.getBehavior(), getValue());
+                Object value = "cancel".equals(eventName) ? null : getValue();
+                setValue(value);
+                RateEvent<?> rateEvent = new RateEvent<>(this, behaviorEvent.getBehavior(), value);
 
                 rateEvent.setPhaseId(behaviorEvent.getPhaseId());
 

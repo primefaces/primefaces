@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,6 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
@@ -44,18 +35,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class DataTable039Test extends AbstractDataTableTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class DataTable039Test extends AbstractDataTableTest {
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(1)
     @DisplayName("DataTable: Lazy: filter - selectCheckboxMenu - filterBean instead of intended API-usage - " +
             "https://github.com/primefaces/primefaces/issues/9349")
-    public void testLazyFilterSelectCheckboxMenu(String xhtml) {
+    void lazyFilterSelectCheckboxMenu(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         List<ProgrammingLanguage> langsFiltered = model.getLangs().stream()
                 .filter(l -> l.getType() == ProgrammingLanguage.ProgrammingLanguageType.COMPILED)
                 .sorted(Comparator.comparingInt(ProgrammingLanguage::getFirstAppeared))
@@ -65,16 +67,16 @@ public class DataTable039Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
         dataTable.sort("First Appeared");
         SelectCheckboxMenu filterType = getFilterType();
-        filterType.togglPanel();
+        filterType.togglePanel();
         List<WebElement> filterTypeCheckboxes = filterType.getPanel().findElements(By.cssSelector(".ui-chkbox-box"));
         PrimeSelenium.guardAjax(filterTypeCheckboxes.get(1)).click();
 
         // Assert
         List<Row> rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(10, rows.size()); //one page
+        assertNotNull(rows);
+        assertEquals(10, rows.size()); //one page
         for (int row = 0; row < 10; row++) {
-            Assertions.assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
+            assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
         }
 
         // Act
@@ -82,10 +84,10 @@ public class DataTable039Test extends AbstractDataTableTest {
 
         // Assert - filter must not be lost after update
         rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(10, rows.size()); //one page
+        assertNotNull(rows);
+        assertEquals(10, rows.size()); //one page
         for (int row = 0; row < 10; row++) {
-            Assertions.assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
+            assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
         }
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -93,7 +95,7 @@ public class DataTable039Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("paginator"));
+        assertTrue(cfg.has("paginator"));
     }
 
     private static Stream<Arguments> provideXhtmls() {

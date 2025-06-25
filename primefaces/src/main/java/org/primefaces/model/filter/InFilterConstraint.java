@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,16 @@
  */
 package org.primefaces.model.filter;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Locale;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
-import org.primefaces.util.LangUtils;
+public class InFilterConstraint extends EqualsFilterConstraint {
 
-public class InFilterConstraint implements FilterConstraint {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
@@ -48,13 +51,9 @@ public class InFilterConstraint implements FilterConstraint {
             collection = Collections.singletonList(filter);
         }
 
-        for (Object o : collection) {
-            if (Objects.equals(value, o)) {
-                return true;
-            }
-
-            // GitHub #8106 check for "" comparison
-            if (o instanceof String && LangUtils.isEmpty((String) o) && value == null) {
+        for (Object filterValue : collection) {
+            // Return true on the first matching value
+            if (super.isMatching(ctxt, value, filterValue, locale)) {
                 return true;
             }
         }

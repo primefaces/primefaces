@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,6 @@
  */
 package org.primefaces.component.panelmenu;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.model.menu.MenuElement;
@@ -38,29 +31,33 @@ import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-public class PanelMenuRenderer extends BaseMenuRenderer {
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
 
     @Override
-    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        PanelMenu menu = (PanelMenu) abstractMenu;
+    protected void encodeScript(FacesContext context, PanelMenu component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PanelMenu", menu)
-                .attr("stateful", menu.isStateful())
-                .attr("statefulGlobal", menu.isStatefulGlobal(), false)
-                .attr("multiple", menu.isMultiple());
+        wb.init("PanelMenu", component)
+                .attr("stateful", component.isStateful())
+                .attr("statefulGlobal", component.isStatefulGlobal(), false)
+                .attr("multiple", component.isMultiple());
         wb.finish();
     }
 
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+    protected void encodeMarkup(FacesContext context, PanelMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        PanelMenu menu = (PanelMenu) abstractMenu;
-        String clientId = menu.getClientId(context);
-        String style = menu.getStyle();
-        String styleClass = menu.getStyleClass();
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? PanelMenu.CONTAINER_CLASS : PanelMenu.CONTAINER_CLASS + " " + styleClass;
 
-        writer.startElement("div", menu);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
@@ -68,12 +65,12 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         }
         writer.writeAttribute(HTML.ARIA_ROLE, "tablist", null);
 
-        if (menu.getElementsCount() > 0) {
-            List<MenuElement> elements = menu.getElements();
+        if (component.getElementsCount() > 0) {
+            List<MenuElement> elements = component.getElements();
 
             for (MenuElement element : elements) {
                 if (element.isRendered() && element instanceof Submenu) {
-                    encodeRootSubmenu(context, menu, (Submenu) element);
+                    encodeRootSubmenu(context, component, (Submenu) element);
                 }
             }
         }
@@ -81,7 +78,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeRootSubmenu(FacesContext context, PanelMenu menu, Submenu submenu) throws IOException {
+    protected void encodeRootSubmenu(FacesContext context, PanelMenu component, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
@@ -121,7 +118,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", contentClass, null);
         writer.writeAttribute(HTML.ARIA_ROLE, "tabpanel", null);
-        writer.writeAttribute("id", menu.getClientId(context) + "_" + submenu.getId(), null);
+        writer.writeAttribute("id", component.getClientId(context) + "_" + submenu.getId(), null);
         writer.writeAttribute("tabindex", "0", null);
 
         if (submenu.getElementsCount() > 0) {
@@ -145,11 +142,11 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                         if (containerStyle != null) {
                             writer.writeAttribute("style", containerStyle, null);
                         }
-                        encodeMenuItem(context, menu, menuItem, "-1");
+                        encodeMenuItem(context, component, menuItem, "-1");
                         writer.endElement("li");
                     }
                     else if (element instanceof Submenu) {
-                        encodeDescendantSubmenu(context, menu, (Submenu) element);
+                        encodeDescendantSubmenu(context, component, (Submenu) element);
                     }
                 }
             }
@@ -162,7 +159,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");   //wrapper
     }
 
-    protected void encodeDescendantSubmenu(FacesContext context, PanelMenu menu, Submenu submenu) throws IOException {
+    protected void encodeDescendantSubmenu(FacesContext context, PanelMenu component, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getIcon();
         String style = submenu.getStyle();
@@ -220,11 +217,11 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                         writer.startElement("li", null);
                         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                        encodeMenuItem(context, menu, (MenuItem) element, "-1");
+                        encodeMenuItem(context, component, (MenuItem) element, "-1");
                         writer.endElement("li");
                     }
                     else if (element instanceof Submenu) {
-                        encodeDescendantSubmenu(context, menu, (Submenu) element);
+                        encodeDescendantSubmenu(context, component, (Submenu) element);
                     }
                 }
             }

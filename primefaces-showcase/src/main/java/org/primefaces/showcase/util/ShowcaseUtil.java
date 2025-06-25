@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,9 @@
  */
 package org.primefaces.showcase.util;
 
+import org.primefaces.cache.CacheProvider;
+import org.primefaces.component.tabview.Tab;
+
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.InputStream;
@@ -30,14 +33,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.enterprise.inject.spi.CDI;
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.cache.CacheProvider;
-import org.primefaces.component.tabview.Tab;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIPanel;
+import jakarta.faces.context.FacesContext;
 
 public class ShowcaseUtil {
 
@@ -112,7 +112,7 @@ public class ShowcaseUtil {
     }
 
     private static void flatFileContent(FileContent source, List<FileContent> dest) {
-        dest.add(new FileContent(source.getTitle(), source.getValue(), source.getType(), Collections.<FileContent>emptyList()));
+        dest.add(new FileContent(source.getTitle(), source.getValue(), source.getType(), Collections.<FileContent>emptySet()));
 
         for (FileContent file : source.getAttached()) {
             flatFileContent(file, dest);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.orderlist;
 
-import javax.faces.component.UIInput;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, FlexAware {
 
@@ -177,11 +177,11 @@ public abstract class OrderListBase extends UIInput implements Widget, ClientBeh
     }
 
     @Override
-    public boolean isFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    public Boolean getFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
     }
 
-    public void setFlex(boolean flex) {
+    public void setFlex(Boolean flex) {
         getStateHelper().put(PropertyKeys.flex, flex);
     }
 }

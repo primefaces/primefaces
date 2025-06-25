@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,17 @@
  */
 package org.primefaces.component.importenum;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
-import javax.faces.FacesException;
+import jakarta.faces.FacesException;
 
 /**
- * Custom {@link HashMap} which throws an {@link FacesException} if the key/constant does not exist.
+ * Custom {@link LinkedHashMap} which throws an {@link FacesException} if the key/constant does not exist.
  *
  * @param <K> The key type.
  * @param <V> The value type.
  */
-public class EnumHashMap<K, V> extends HashMap<K, V> {
+public class EnumHashMap<K, V> extends LinkedHashMap<K, V> {
 
     private static final long serialVersionUID = 1L;
 

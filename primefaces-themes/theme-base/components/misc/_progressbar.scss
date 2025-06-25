@@ -1,0 +1,45 @@
+body {
+  .ui-progressbar {
+    border: $progressBarBorder;
+    height: $progressBarHeight;
+    background: $progressBarBg;
+    border-radius: $borderRadius;
+
+    .ui-progressbar-value {
+      border: 0 none;
+      margin: 0;
+      background: $progressBarValueBg;
+      border-radius: $borderRadius;
+    }
+
+    .ui-progressbar-label {
+      margin-top: 0;
+      color: $primaryTextColor;
+      line-height: $progressBarHeight;
+    }
+
+    &.ui-progressbar-success {
+      .ui-progressbar-value {
+        background: $successButtonBg;
+      }
+    }
+
+    &.ui-progressbar-info {
+      .ui-progressbar-value {
+        background: $infoButtonBg;
+      }
+    }
+
+    &.ui-progressbar-warning {
+      .ui-progressbar-value {
+        background: $warningButtonBg;
+      }
+    }
+
+    &.ui-progressbar-danger {
+      .ui-progressbar-value {
+        background: $dangerButtonBg;
+      }
+    }
+  }
+}

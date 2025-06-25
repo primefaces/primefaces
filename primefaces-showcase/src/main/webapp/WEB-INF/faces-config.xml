@@ -1,8 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<faces-config version="2.2"
-              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+<faces-config
+        xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_4_0.xsd"
+        version="4.0">
 
     <application>
         <action-listener>org.primefaces.application.DialogActionListener</action-listener>
@@ -16,6 +17,11 @@
             <base-name>build</base-name>
             <var>build</var>
         </resource-bundle>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.showcase.util.ShowcaseSystemEventListener</system-event-listener-class>
+            <system-event-class>jakarta.faces.event.PostConstructApplicationEvent</system-event-class>
+            <source-class>jakarta.faces.application.Application</source-class>
+        </system-event-listener>
     </application>
 
     <lifecycle>
@@ -23,9 +29,8 @@
     </lifecycle>
 
     <factory>
-        <faces-context-factory>org.primefaces.application.factory.Html5FacesContextFactory</faces-context-factory>
         <exception-handler-factory>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory</exception-handler-factory>
-        <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
+        <client-window-factory>org.primefaces.clientwindow.PrimeClientWindowFactory</client-window-factory>
     </factory>
 
 </faces-config>

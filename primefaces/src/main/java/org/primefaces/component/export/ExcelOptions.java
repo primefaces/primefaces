@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,8 @@ import java.text.DecimalFormat;
 
 public class ExcelOptions implements ExporterOptions {
 
+    private static final long serialVersionUID = 1L;
+
     private String facetFontStyle;
 
     private String facetFontColor;
@@ -49,6 +51,10 @@ public class ExcelOptions implements ExporterOptions {
 
     private DecimalFormat numberFormat;
     private DecimalFormat currencyFormat;
+
+    private String excelDateFormat;
+    private String excelTimeFormat;
+    private String excelDateTimeFormat;
 
     public ExcelOptions() {
     }
@@ -177,5 +183,29 @@ public class ExcelOptions implements ExporterOptions {
 
     public void setCurrencyFormat(DecimalFormat currencyFormat) {
         this.currencyFormat = currencyFormat;
+    }
+
+    public String getExcelDateFormat() {
+        return excelDateFormat;
+    }
+
+    public void setExcelDateFormat(String excelDateFormat) {
+        this.excelDateFormat = excelDateFormat;
+    }
+
+    public String getExcelTimeFormat() {
+        return excelTimeFormat;
+    }
+
+    public void setExcelTimeFormat(String excelTimeFormat) {
+        this.excelTimeFormat = excelTimeFormat;
+    }
+
+    public String getExcelDateTimeFormat() {
+        return excelDateTimeFormat;
+    }
+
+    public void setExcelDateTimeFormat(String excelDateTimeFormat) {
+        this.excelDateTimeFormat = excelDateTimeFormat;
     }
 }

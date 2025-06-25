@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+<faces-config version="4.0" xmlns="https://jakarta.ee/xml/ns/jakartaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+              xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_4_0.xsd">
 
     <name>primefaces</name>
 
@@ -11,7 +11,6 @@
     </factory>
 
     <lifecycle>
-        <phase-listener>org.primefaces.application.resource.DynamicResourcesPhaseListener</phase-listener>
         <phase-listener>org.primefaces.component.autoupdate.AutoUpdatePhaseListener</phase-listener>
         <phase-listener>org.primefaces.csp.CspPhaseListener</phase-listener>
         <phase-listener>org.primefaces.application.DialogKeepFlashPhaseListener</phase-listener>
@@ -21,21 +20,21 @@
         <resource-handler>org.primefaces.application.resource.PrimeResourceHandler</resource-handler>
         <system-event-listener>
             <system-event-listener-class>org.primefaces.metadata.transformer.MetadataTransformerExecutor</system-event-listener-class>
-            <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
+            <system-event-class>jakarta.faces.event.PreRenderComponentEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
             <system-event-listener-class>org.primefaces.webapp.PostConstructApplicationEventListener</system-event-listener-class>
-            <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
-            <source-class>javax.faces.application.Application</source-class>
+            <system-event-class>jakarta.faces.event.PostConstructApplicationEvent</system-event-class>
+            <source-class>jakarta.faces.application.Application</source-class>
         </system-event-listener>
         <system-event-listener>
             <system-event-listener-class>org.primefaces.webapp.PreDestroyApplicationEventListener</system-event-listener-class>
-            <system-event-class>javax.faces.event.PreDestroyApplicationEvent</system-event-class>
-            <source-class>javax.faces.application.Application</source-class>
+            <system-event-class>jakarta.faces.event.PreDestroyApplicationEvent</system-event-class>
+            <source-class>jakarta.faces.application.Application</source-class>
         </system-event-listener>
         <system-event-listener>
             <system-event-listener-class>org.primefaces.component.timeline.TimelineListener</system-event-listener-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <system-event-class>jakarta.faces.event.PostAddToViewEvent</system-event-class>
             <source-class>org.primefaces.component.timeline.Timeline</source-class>
         </system-event-listener>
     </application>
@@ -56,32 +55,37 @@
     </behavior>
 
     <behavior>
-        <behavior-id>org.primefaces.behavior.ClientValidator</behavior-id>
-        <behavior-class>org.primefaces.behavior.validate.ClientValidator</behavior-class>
+        <behavior-id>org.primefaces.behavior.ClientValidatorBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.validate.ClientValidatorBehavior</behavior-class>
     </behavior>
 
     <validator>
-        <validator-id>javax.faces.Length</validator-id>
+        <validator-id>jakarta.faces.Length</validator-id>
         <validator-class>org.primefaces.validate.LengthValidator</validator-class>
     </validator>
 
     <validator>
-        <validator-id>javax.faces.LongRange</validator-id>
+        <validator-id>jakarta.faces.LongRange</validator-id>
         <validator-class>org.primefaces.validate.LongRangeValidator</validator-class>
     </validator>
 
     <validator>
-        <validator-id>javax.faces.DoubleRange</validator-id>
+        <validator-id>jakarta.faces.DoubleRange</validator-id>
         <validator-class>org.primefaces.validate.DoubleRangeValidator</validator-class>
     </validator>
 
     <validator>
-        <validator-id>javax.faces.RegularExpression</validator-id>
+        <validator-id>jakarta.faces.RegularExpression</validator-id>
         <validator-class>org.primefaces.validate.RegexValidator</validator-class>
     </validator>
 
+    <validator>
+        <validator-id>primefaces.File</validator-id>
+        <validator-class>org.primefaces.validate.FileValidator</validator-class>
+    </validator>
+
     <converter>
-        <converter-id>javax.faces.Integer</converter-id>
+        <converter-id>jakarta.faces.Integer</converter-id>
         <converter-class>org.primefaces.convert.IntegerConverter</converter-class>
     </converter>
 
@@ -91,7 +95,7 @@
     </converter>
 
     <converter>
-        <converter-id>javax.faces.Long</converter-id>
+        <converter-id>jakarta.faces.Long</converter-id>
         <converter-class>org.primefaces.convert.LongConverter</converter-class>
     </converter>
 
@@ -101,7 +105,7 @@
     </converter>
 
     <converter>
-        <converter-id>javax.faces.Double</converter-id>
+        <converter-id>jakarta.faces.Double</converter-id>
         <converter-class>org.primefaces.convert.DoubleConverter</converter-class>
     </converter>
 
@@ -111,7 +115,7 @@
     </converter>
 
     <converter>
-        <converter-id>javax.faces.Float</converter-id>
+        <converter-id>jakarta.faces.Float</converter-id>
         <converter-class>org.primefaces.convert.FloatConverter</converter-class>
     </converter>
 
@@ -121,7 +125,7 @@
     </converter>
 
     <converter>
-        <converter-id>javax.faces.Short</converter-id>
+        <converter-id>jakarta.faces.Short</converter-id>
         <converter-class>org.primefaces.convert.ShortConverter</converter-class>
     </converter>
 
@@ -141,7 +145,7 @@
     </converter>
 
     <converter>
-        <converter-id>javax.faces.Byte</converter-id>
+        <converter-id>jakarta.faces.Byte</converter-id>
         <converter-class>org.primefaces.convert.ByteConverter</converter-class>
     </converter>
 
@@ -151,7 +155,7 @@
     </converter>
 
     <converter>
-        <converter-id>javax.faces.Character</converter-id>
+        <converter-id>jakarta.faces.Character</converter-id>
         <converter-class>org.primefaces.convert.CharacterConverter</converter-class>
     </converter>
 
@@ -161,7 +165,7 @@
     </converter>
 
     <converter>
-        <converter-id>javax.faces.Boolean</converter-id>
+        <converter-id>jakarta.faces.Boolean</converter-id>
         <converter-class>org.primefaces.convert.BooleanConverter</converter-class>
     </converter>
 
@@ -171,12 +175,12 @@
     </converter>
 
     <converter>
-        <converter-id>javax.faces.DateTime</converter-id>
+        <converter-id>jakarta.faces.DateTime</converter-id>
         <converter-class>org.primefaces.convert.DateTimeConverter</converter-class>
     </converter>
 
     <converter>
-        <converter-id>javax.faces.Number</converter-id>
+        <converter-id>jakarta.faces.Number</converter-id>
         <converter-class>org.primefaces.convert.NumberConverter</converter-class>
     </converter>
 
@@ -526,11 +530,6 @@
     </component>
 
     <component>
-        <component-type>org.primefaces.InputSwitch</component-type>
-        <component-class>org.primefaces.component.inputswitch.InputSwitch</component-class>
-    </component>
-
-    <component>
         <component-type>org.primefaces.component.InputText</component-type>
         <component-class>org.primefaces.component.inputtext.InputText</component-class>
     </component>
@@ -806,11 +805,6 @@
     </component>
 
     <component>
-        <component-type>org.primefaces.component.Separator</component-type>
-        <component-class>org.primefaces.component.separator.UISeparator</component-class>
-    </component>
-
-    <component>
         <component-type>org.primefaces.component.Sidebar</component-type>
         <component-class>org.primefaces.component.sidebar.Sidebar</component-class>
     </component>
@@ -996,53 +990,13 @@
     </component>
 
     <component>
-        <component-type>org.primefaces.component.Watermark</component-type>
-        <component-class>org.primefaces.component.watermark.Watermark</component-class>
-    </component>
-
-    <component>
         <component-type>org.primefaces.component.Wizard</component-type>
         <component-class>org.primefaces.component.wizard.Wizard</component-class>
     </component>
 
     <component>
-        <component-type>org.primefaces.component.BarChart</component-type>
-        <component-class>org.primefaces.component.barchart.BarChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.BubbleChart</component-type>
-        <component-class>org.primefaces.component.bubblechart.BubbleChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.DonutChart</component-type>
-        <component-class>org.primefaces.component.donutchart.DonutChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.LineChart</component-type>
-        <component-class>org.primefaces.component.linechart.LineChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.ScatterChart</component-type>
-        <component-class>org.primefaces.component.scatterchart.ScatterChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.PieChart</component-type>
-        <component-class>org.primefaces.component.piechart.PieChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.PolarAreaChart</component-type>
-        <component-class>org.primefaces.component.polarareachart.PolarAreaChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.RadarChart</component-type>
-        <component-class>org.primefaces.component.radarchart.RadarChart</component-class>
+        <component-type>org.primefaces.component.Chart</component-type>
+        <component-class>org.primefaces.component.chart.Chart</component-class>
     </component>
 
     <component>
@@ -1055,6 +1009,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.AccordionPanelRenderer</renderer-type>
             <renderer-class>org.primefaces.component.accordionpanel.AccordionPanelRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AjaxExceptionHandlerRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1368,11 +1327,6 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.InputSwitchRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.inputswitch.InputSwitchRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.InputTextRenderer</renderer-type>
             <renderer-class>org.primefaces.component.inputtext.InputTextRenderer</renderer-class>
         </renderer>
@@ -1633,11 +1587,6 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.SeparatorRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.separator.SeparatorRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.SidebarRenderer</renderer-type>
             <renderer-class>org.primefaces.component.sidebar.SidebarRenderer</renderer-class>
         </renderer>
@@ -1793,11 +1742,6 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.WatermarkRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.watermark.WatermarkRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.VideoRenderer</renderer-type>
             <renderer-class>org.primefaces.component.video.VideoRenderer</renderer-class>
         </renderer>
@@ -1808,43 +1752,8 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.BarChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.barchart.BarChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.BubbleChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.bubblechart.BubbleChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.DonutChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.donutchart.DonutChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.LineChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.linechart.LineChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.ScatterChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.scatterchart.ScatterChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.PieChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.piechart.PieChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.PolarAreaChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.polarareachart.PolarAreaChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.RadarChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.radarchart.RadarChartRenderer</renderer-class>
+            <renderer-type>org.primefaces.component.ChartRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.chart.ChartRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1852,14 +1761,14 @@
             <renderer-class>org.primefaces.component.datepicker.DatePickerRenderer</renderer-class>
         </renderer>
         <renderer>
-            <component-family>javax.faces.Output</component-family>
-            <renderer-type>javax.faces.Head</renderer-type>
+            <component-family>jakarta.faces.Output</component-family>
+            <renderer-type>jakarta.faces.Head</renderer-type>
             <renderer-class>org.primefaces.renderkit.HeadRenderer</renderer-class>
         </renderer>
 
         <renderer>
-            <component-family>javax.faces.Output</component-family>
-            <renderer-type>javax.faces.Body</renderer-type>
+            <component-family>jakarta.faces.Output</component-family>
+            <renderer-type>jakarta.faces.Body</renderer-type>
             <renderer-class>org.primefaces.renderkit.BodyRenderer</renderer-class>
         </renderer>
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,28 @@
  */
 package org.primefaces.integrationtests.feedreader;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
 
-public class FeedReader001Test extends AbstractPrimePageTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class FeedReader001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("FeedReader: valid RSS just check at least a few articles are returned")
-    public void testFeedReaderValid(Page page) {
+    void feedReaderValid(Page page) {
         // Arrange
         WebElement form = page.form;
 
@@ -49,14 +52,14 @@ public class FeedReader001Test extends AbstractPrimePageTest {
         List<WebElement> rssArticles = form.findElements(By.className("ui-rss-feed"));
 
         // Assert
-        Assertions.assertTrue(rssArticles.size() > 3);
+        assertTrue(rssArticles.size() > 3);
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(2)
     @DisplayName("FeedReader: invalid RSS URL so ensure error is displayed")
-    public void testFeedReaderInvalid(Page page) {
+    void feedReaderInvalid(Page page) {
         // Arrange
         WebElement form = page.form;
 
@@ -65,7 +68,7 @@ public class FeedReader001Test extends AbstractPrimePageTest {
 
         // Assert
         WebElement error = form.findElement(By.className("ui-feed-error"));
-        Assertions.assertEquals("Error reading RSS Feed!!!", error.getText());
+        assertEquals("Error reading RSS Feed!!!", error.getText());
         assertNoJavascriptErrors();
     }
 

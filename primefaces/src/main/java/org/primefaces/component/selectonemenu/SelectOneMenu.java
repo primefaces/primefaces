@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,6 @@
  */
 package org.primefaces.component.selectonemenu;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.render.Renderer;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
@@ -46,6 +31,21 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.render.Renderer;
+import jakarta.faces.validator.Validator;
+import jakarta.faces.validator.ValidatorException;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -56,24 +56,24 @@ public class SelectOneMenu extends SelectOneMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneMenu";
 
-    public static final String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default ui-corner-all";
+    public static final String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default";
     public static final String RTL_CLASS = "ui-selectonemenu-rtl";
-    public static final String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield ui-corner-all";
-    public static final String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default ui-corner-right";
-    public static final String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow ui-input-overlay";
+    public static final String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield";
+    public static final String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default";
+    public static final String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-helper-hidden ui-shadow ui-input-overlay";
     public static final String FOOTER_CLASS = "ui-selectonemenu-footer";
     public static final String RTL_PANEL_CLASS = "ui-selectonemenu-panel-rtl";
     public static final String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";
-    public static final String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
-    public static final String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";
-    public static final String ITEM_GROUP_CLASS = "ui-selectonemenu-item-group ui-corner-all";
-    public static final String ITEM_CLASS = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
+    public static final String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-helper-reset";
+    public static final String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-helper-reset";
+    public static final String ITEM_GROUP_CLASS = "ui-selectonemenu-item-group";
+    public static final String ITEM_CLASS = "ui-selectonemenu-item ui-selectonemenu-list-item";
     public static final String ROW_CLASS = "ui-selectonemenu-item ui-selectonemenu-row ui-widget-content";
     public static final String FILTER_CONTAINER_CLASS = "ui-selectonemenu-filter-container";
-    public static final String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
 
-    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "blur", "change", "valueChange", "click",
+    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "clear", "blur", "change", "valueChange", "click",
             "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select");
 
     @Override
@@ -114,13 +114,17 @@ public class SelectOneMenu extends SelectOneMenuBase {
             if ("itemSelect".equals(eventName)) {
                 Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                         context,
-                        "javax.faces.SelectOne",
-                        "javax.faces.Menu");
+                        "jakarta.faces.SelectOne",
+                        "jakarta.faces.Menu");
 
                 Object item = renderer.getConvertedValue(context, this, getSubmittedValue());
-                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), item);
                 selectEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(selectEvent);
+            }
+            else if ("clear".equals(eventName)) {
+                behaviorEvent.setPhaseId(event.getPhaseId());
+                super.queueEvent(behaviorEvent);
             }
             else {
                 super.queueEvent(event);
@@ -145,7 +149,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
                             requiredMessageStr);
                 }
                 else {
-                    message = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID,
+                    message = MessageFactory.getFacesMessage(context, REQUIRED_MESSAGE_ID,
                             FacesMessage.SEVERITY_ERROR,
                             ComponentUtils.getLabel(context, this));
                 }

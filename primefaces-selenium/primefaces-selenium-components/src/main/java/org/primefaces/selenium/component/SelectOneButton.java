@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,15 @@
  */
 package org.primefaces.selenium.component;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.openqa.selenium.By;
-
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:selectOneButton}.
@@ -63,7 +64,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
         if (PrimeSelenium.isElementDisplayed(label)) {
             return label.getText();
         }
-        return label.getAttribute("textContent");
+        return label.getDomProperty("textContent");
     }
 
     public boolean isSelected(String label) {

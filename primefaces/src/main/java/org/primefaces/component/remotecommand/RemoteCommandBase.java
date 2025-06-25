@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.remotecommand;
 
-import javax.faces.component.UICommand;
-
 import org.primefaces.component.api.AjaxSource;
+
+import jakarta.faces.component.UICommand;
 
 
 public abstract class RemoteCommandBase extends UICommand implements AjaxSource {

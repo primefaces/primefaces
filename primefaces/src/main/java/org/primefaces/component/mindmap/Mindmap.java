@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,20 @@
  */
 package org.primefaces.component.mindmap;
 
-import java.util.Collection;
-import java.util.Map;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.mindmap.MindmapNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Map;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -48,7 +48,7 @@ public class Mindmap extends MindmapBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Mindmap";
 
-    public static final String STYLE_CLASS = "ui-mindmap ui-widget ui-widget-content ui-corner-all";
+    public static final String STYLE_CLASS = "ui-mindmap ui-widget ui-widget-content";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("select", SelectEvent.class)
@@ -89,7 +89,7 @@ public class Mindmap extends MindmapBase {
             MindmapNode node = "root".equals(nodeKey) ? getValue() : findNode(getValue(), nodeKey);
             selectedNode = node;
 
-            super.queueEvent(new SelectEvent(this, behaviorEvent.getBehavior(), node));
+            super.queueEvent(new SelectEvent<>(this, behaviorEvent.getBehavior(), node));
         }
     }
 

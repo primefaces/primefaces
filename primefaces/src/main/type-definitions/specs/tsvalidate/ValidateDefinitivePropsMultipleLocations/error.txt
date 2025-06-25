@@ -1,8 +1,0 @@
-Error: Program failed to validate:
-[propDocMissing] at BarClass (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/ValidateDefinitivePropsMultipleLocations/input.d.ts:1:61)
-Code for type 'BarClass' accesses property, but no doc comment exists. Add a doc comment. Missing properties:
-  Property <bar>
-    declared at BarClass (BarSource.js:1:4)
-    declared at BarClass (BarSource.js:5:8)
-    declared at BazClass (BarSource.js:10:31)
-    declared at BazClass (BarSource.js:50:71)

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,34 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import java.io.File;
-import org.json.JSONObject;
-import org.junit.jupiter.api.*;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
 
+import java.io.File;
+
+import org.json.JSONObject;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * Tests advanced auto multiple file upload.
- * p:fileUpload mode=advanced auto=true multiple=true dragDropSupport=false (sequential=false)
+ * p:fileUpload mode=advanced auto=true multiple=true dragDrop=false (sequential=false)
  */
-@Tag("SafariExclude") // Selenium SafariDriver does not support file uploads
-public class FileUpload008Test extends AbstractFileUploadTest {
+// Selenium SafariDriver does not support file uploads
+@Tag("SafariExclude")
+class FileUpload008Test extends AbstractFileUploadTest {
 
     @Test
     @Order(1)
-    public void testAdvancedAutoMultipleUploadSingleFile(Page page) {
+    void advancedAutoMultipleUploadSingleFile(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file1.csv");
@@ -57,10 +64,10 @@ public class FileUpload008Test extends AbstractFileUploadTest {
 
     @Test
     @Order(2)
-    public void testAdvancedAutoMultipleUploadMultipleFiles(Page page) throws Exception {
+    void advancedAutoMultipleUploadMultipleFiles(Page page) throws Exception {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file1 = locateClientSideFile("file1.csv");
@@ -75,10 +82,10 @@ public class FileUpload008Test extends AbstractFileUploadTest {
 
     @Test
     @Order(3)
-    public void testAdvancedAutoMultipleUploadMultipleFilesTwice(Page page) throws Exception {
+    void advancedAutoMultipleUploadMultipleFilesTwice(Page page) throws Exception {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file1 = locateClientSideFile("file1.csv");
@@ -102,13 +109,10 @@ public class FileUpload008Test extends AbstractFileUploadTest {
 
     @Test
     @Order(4)
-    public void testAdvancedAutoMultipleUploadFileLimit(Page page) {
+    void advancedAutoMultipleUploadFileLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
-        String fileLimitMsg = fileUpload.getWidgetConfiguration().getString("fileLimitMessage");
-        Assertions.assertNotNull(fileLimitMsg);
-        Assertions.assertFalse(fileLimitMsg.isEmpty());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file1 = locateClientSideFile("file1.csv");
@@ -131,9 +135,9 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         // Act
         File file5 = locateClientSideFile("file1.csv");
         fileUpload.setValue(file5);
-        Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(fileLimitMsg), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Maximum number of files exceeded"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -143,20 +147,17 @@ public class FileUpload008Test extends AbstractFileUploadTest {
 
     @Test
     @Order(5)
-    public void testAdvancedAutoMultipleUploadSizeLimit(Page page) {
+    void advancedAutoMultipleUploadSizeLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
-        String invalidSizeMsg = fileUpload.getWidgetConfiguration().getString("invalidSizeMessage");
-        Assertions.assertNotNull(invalidSizeMsg);
-        Assertions.assertFalse(invalidSizeMsg.isEmpty());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file3.csv");
         fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidSizeMsg), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file size"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -166,20 +167,17 @@ public class FileUpload008Test extends AbstractFileUploadTest {
 
     @Test
     @Order(6)
-    public void testAdvancedAutoMultipleUploadAllowTypes(Page page) {
+    void advancedAutoMultipleUploadAllowTypes(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
-        String invalidTypeMsg = fileUpload.getWidgetConfiguration().getString("invalidFileMessage");
-        Assertions.assertNotNull(invalidTypeMsg);
-        Assertions.assertFalse(invalidTypeMsg.isEmpty());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file1.png");
         fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
+        assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        Assertions.assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidTypeMsg), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file type"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -190,13 +188,13 @@ public class FileUpload008Test extends AbstractFileUploadTest {
     private void assertConfiguration(FileUpload fileUpload) {
         JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
-        Assertions.assertFalse(cfg.has("skinSimple"));
-        Assertions.assertTrue(cfg.getBoolean("auto"));
-        Assertions.assertFalse(cfg.getBoolean("dnd"));
-        Assertions.assertEquals(4, cfg.getInt("fileLimit"));
-        Assertions.assertEquals(100, cfg.getInt("maxFileSize"));
-        Assertions.assertEquals("/(\\.|\\/)(csv)$/", cfg.getString("allowTypes"));
-        Assertions.assertNotNull(fileUpload.getInput().getAttribute("multiple"));
+        assertFalse(cfg.has("skinSimple"));
+        assertTrue(cfg.getBoolean("auto"));
+        assertFalse(cfg.getBoolean("dnd"));
+        assertEquals(4, Integer.parseInt(fileUpload.getInput().getAttribute("data-p-filelimit")));
+        assertEquals(100, Long.parseLong(fileUpload.getInput().getAttribute("data-p-sizelimit")));
+        assertEquals("/(\\.|\\/)(csv)$/", fileUpload.getInput().getAttribute("data-p-allowtypes"));
+        assertNotNull(fileUpload.getInput().getAttribute("multiple"));
     }
 
     public static class Page extends AbstractPrimePage {

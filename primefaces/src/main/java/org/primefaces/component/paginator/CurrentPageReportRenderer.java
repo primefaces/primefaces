@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.paginator;
 
+import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.UIPageableData;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIPageableData;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class CurrentPageReportRenderer implements PaginatorElementRenderer {
 

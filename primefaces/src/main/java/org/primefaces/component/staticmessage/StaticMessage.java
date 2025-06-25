@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,63 @@
  */
 package org.primefaces.component.staticmessage;
 
-import javax.faces.application.ResourceDependency;
+import org.primefaces.util.Constants;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class StaticMessage extends StaticMessageBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.StaticMessage";
+
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return EVENT_NAMES.iterator().next();
+    }
+
+    @Override
+    public Collection<String> getUnobstrusiveEventNames() {
+        return getEventNames();
+    }
+
+    @Override
+    public void queueEvent(FacesEvent event) {
+        FacesContext context = getFacesContext();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+
+        if (eventName != null && event instanceof AjaxBehaviorEvent) {
+            AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
+
+            if ("close".equals(eventName)) {
+                customEvents.put(eventName, ajaxBehaviorEvent);
+                super.queueEvent(ajaxBehaviorEvent);
+            }
+        }
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        if (customEvents != null) {
+            customEvents.clear();
+        }
+
+        return super.saveState(context);
+    }
 
 }

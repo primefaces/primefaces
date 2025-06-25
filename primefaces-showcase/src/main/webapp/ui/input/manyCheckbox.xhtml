@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -44,9 +44,14 @@
                                       columns="3">
                     <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectManyCheckbox>
+
+                <h5>Line Direction</h5>
+                <p:selectManyCheckbox id="lineDirection" value="#{checkboxView.selectedCities}" layout="lineDirection">
+                    <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                </p:selectManyCheckbox>
                 
-                <h5>Grid Layout (deprecated)</h5>
-                <p:selectManyCheckbox id="grid" value="#{checkboxView.selectedCities}" layout="grid" columns="3" styleClass="grid-checkbox">
+                <h5>Page Direction</h5>
+                <p:selectManyCheckbox id="pageDirection" value="#{checkboxView.selectedCities}" layout="pageDirection">
                     <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectManyCheckbox>
 
@@ -85,6 +90,10 @@
                 </p:selectManyCheckbox>
             </h:form>
         </div>
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/org/primefaces/showcase/convert/CountryConverter.java"/>
     </ui:define>
 
 </ui:composition>

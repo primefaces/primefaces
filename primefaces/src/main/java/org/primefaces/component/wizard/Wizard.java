@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,25 @@
  */
 package org.primefaces.component.wizard;
 
-import java.util.Collection;
-import java.util.Map;
-import javax.el.ELContext;
-
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Map;
+
+import jakarta.el.ELContext;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -52,8 +52,8 @@ public class Wizard extends WizardBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Wizard";
 
     public static final String STEP_STATUS_CLASS = "ui-wizard-step-titles ui-helper-reset ui-helper-clearfix";
-    public static final String STEP_CLASS = "ui-wizard-step-title ui-state-default ui-corner-all";
-    public static final String ACTIVE_STEP_CLASS = "ui-wizard-step-title ui-state-default ui-state-highlight ui-corner-all";
+    public static final String STEP_CLASS = "ui-wizard-step-title ui-state-default";
+    public static final String ACTIVE_STEP_CLASS = "ui-wizard-step-title ui-state-default ui-state-highlight";
     public static final String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
     public static final String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
 

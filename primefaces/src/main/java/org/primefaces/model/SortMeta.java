@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,20 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
-import java.util.Objects;
-
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.headerrow.HeaderRowBase;
 import org.primefaces.util.LangUtils;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
 
 public class SortMeta implements Serializable, Comparable<SortMeta> {
 
@@ -54,13 +54,14 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     private int nullSortOrder;
     private boolean caseSensitiveSort;
     private boolean headerRow;
+    private boolean dynamic;
 
     public SortMeta() {
         // NOOP
     }
 
     SortMeta(String columnKey, String sortField, SortOrder sortOrder, MethodExpression sortFunction,
-             ValueExpression sortBy, int priority, int nullSortOrder, boolean caseSensitiveSort, boolean headerRow) {
+             ValueExpression sortBy, int priority, int nullSortOrder, boolean caseSensitiveSort, boolean headerRow, boolean dynamic) {
         this.columnKey = columnKey;
         this.field = sortField;
         this.order = sortOrder;
@@ -70,10 +71,12 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         this.nullSortOrder = nullSortOrder;
         this.caseSensitiveSort = caseSensitiveSort;
         this.headerRow = headerRow;
+        this.dynamic = dynamic;
     }
 
     public static SortMeta of(FacesContext context, String var, UIColumn column) {
-        if (column instanceof DynamicColumn) {
+        boolean dynamic = column instanceof DynamicColumn;
+        if (dynamic) {
             ((DynamicColumn) column).applyStatelessModel();
         }
 
@@ -107,7 +110,8 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                             column.getSortPriority(),
                             column.getNullSortOrder(),
                             column.isCaseSensitiveSort(),
-                            false);
+                            false,
+                            dynamic);
     }
 
     public static SortMeta of(FacesContext context, String var, HeaderRow headerRow) {
@@ -128,7 +132,8 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
                             MAX_PRIORITY,
                             SortOrder.ASCENDING.intValue(),
                             false,
-                            true);
+                            true,
+                            false);
     }
 
     @Override
@@ -194,6 +199,10 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
 
     public boolean isCaseSensitiveSort() {
         return caseSensitiveSort;
+    }
+
+    public boolean isDynamic() {
+        return dynamic;
     }
 
     @Override

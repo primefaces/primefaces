@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.signature;
 
-import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "signature/signature.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -37,8 +37,8 @@ public class Signature extends SignatureBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Signature";
 
-    public static final String STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
-    public static final String READONLY_STYLE_CLASS = "ui-widget ui-widget-content ui-corner-all";
+    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default";
+    public static final String READONLY_STYLE_CLASS = "ui-widget ui-widget-content";
 
     @Override
     public void processUpdates(FacesContext context) {
@@ -52,15 +52,34 @@ public class Signature extends SignatureBase {
                 getStateHelper().put(PropertyKeys.base64Value, null);
             }
         }
+
+        String textValue = this.getTextValue();
+        if (textValue != null) {
+            ValueExpression ve = this.getValueExpression(PropertyKeys.textValue.toString());
+            if (ve != null) {
+                ve.setValue(context.getELContext(), textValue);
+                getStateHelper().put(PropertyKeys.textValue, null);
+            }
+        }
     }
 
-    public String resolveStyleClass() {
-        String styleClass = STYLE_CLASS;
+    @Override
+    public String getInputClientId() {
+        return getClientId(getFacesContext()) + "_canvas";
+    }
 
-        if (isReadonly()) {
-            styleClass = READONLY_STYLE_CLASS;
-        }
+    @Override
+    public String getValidatableInputClientId() {
+        return getClientId(getFacesContext()) + "_value";
+    }
 
-        return styleClass;
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
     }
 }

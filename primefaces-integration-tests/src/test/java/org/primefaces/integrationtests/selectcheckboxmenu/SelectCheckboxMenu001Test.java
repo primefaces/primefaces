@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,31 @@
  */
 package org.primefaces.integrationtests.selectcheckboxmenu;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectCheckboxMenu;
 
-public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectCheckboxMenu: select value and submit")
-    public void testSubmit(Page page) {
+    void submit(Page page) {
         // Arrange
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         String value = "London";
         assertSelected(menu, 0);
+        assertLabel(menu, "Cities");
 
         // Act
         menu.selectValue(value);
@@ -52,6 +55,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertSelected(menu, 1);
+        assertLabel(menu, "Item(s) Selected");
         WebElement checkbox = menu.getSelectedCheckboxes().get(0);
         assertValue(checkbox, value);
         assertConfiguration(menu.getWidgetConfiguration());
@@ -60,7 +64,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("SelectCheckboxMenu: disable the input")
-    public void testDisabled(Page page) {
+    void disabled(Page page) {
         // Arrange
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         String value = "Rome";
@@ -79,7 +83,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("SelectCheckboxMenu: enable the input")
-    public void testEnabled(Page page) {
+    void enabled(Page page) {
         // Arrange
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         String value = "Paris";
@@ -101,10 +105,11 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("SelectCheckboxMenu: check all the values")
-    public void testCheckAll(Page page) {
+    void checkAll(Page page) {
         // Arrange
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         assertSelected(menu, 0);
+        assertLabel(menu, "Cities");
 
         // Act
         menu.checkAll();
@@ -112,6 +117,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertSelected(menu, 9);
+        assertLabel(menu, "Item(s) Selected");
         assertValue(menu.getSelectedCheckboxes().get(0), "Miami");
         assertValue(menu.getSelectedCheckboxes().get(1), "London");
         assertValue(menu.getSelectedCheckboxes().get(2), "Paris");
@@ -127,11 +133,12 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("SelectCheckboxMenu: uncheck all the values")
-    public void testUncheckAll(Page page) {
+    void uncheckAll(Page page) {
         // Arrange
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         menu.checkAll();
         assertSelected(menu, 9);
+        assertLabel(menu, "Item(s) Selected");
 
         // Act
         menu.uncheckAll();
@@ -139,23 +146,27 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertSelected(menu, 0);
+        assertLabel(menu, "Cities");
         assertConfiguration(menu.getWidgetConfiguration());
     }
 
     private void assertSelected(SelectCheckboxMenu menu, int count) {
-        Assertions.assertEquals(count, menu.getSelectedCheckboxes().size());
+        assertEquals(count, menu.getSelectedCheckboxes().size());
+    }
+
+    private void assertLabel(SelectCheckboxMenu menu, String label) {
+        assertEquals(label, menu.getLabel().getText());
     }
 
     private void assertValue(WebElement checkbox, String value) {
-        Assertions.assertEquals(value, checkbox.getAttribute("value"));
-        Assertions.assertEquals("aria-checked", checkbox.getDomAttribute("aria-checked"));
+        assertEquals(value, checkbox.getAttribute("value"));
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        Assertions.assertFalse(cfg.getBoolean("dynamic"));
-        Assertions.assertTrue(cfg.getBoolean("showHeader"));
-        Assertions.assertEquals("@(body)", cfg.get("appendTo"));
+        assertFalse(cfg.getBoolean("dynamic"));
+        assertTrue(cfg.getBoolean("showHeader"));
+        assertEquals("@(body)", cfg.get("appendTo"));
         System.out.println("SelectCheckboxMenu Config = " + cfg);
     }
 

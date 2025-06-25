@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
  */
 package org.primefaces.selenium.component;
 
-import org.openqa.selenium.By;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractTable;
 import org.primefaces.selenium.component.model.datatable.Cell;
@@ -32,6 +31,9 @@ import org.primefaces.selenium.component.model.datatable.Row;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
 /**
  * Component wrapper for the PrimeFaces {@code p:dataTable}.
  */
@@ -39,11 +41,22 @@ public abstract class DataTable extends AbstractTable<Row> {
 
     public List<Row> getRows() {
         return getRowsWebElement().stream()
-                .filter(rowElt -> !PrimeSelenium.hasCssClass(rowElt, "ui-datatable-empty-message"))
+                .filter(rowElt -> !PrimeSelenium.hasCssClass(rowElt, "ui-datatable-empty-message")
+                        && !PrimeSelenium.hasCssClass(rowElt, "ui-expanded-row-content"))
                 .map(rowElt -> {
                     List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
                     return new Row(rowElt, cells);
                 }).collect(Collectors.toList());
+    }
+
+    public WebElement getExpandedRow(int index) {
+        return getExpandedRows().get(index);
+    }
+
+    public List<WebElement> getExpandedRows() {
+        return getRowsWebElement().stream()
+                .filter(rowElt -> PrimeSelenium.hasCssClass(rowElt, "ui-expanded-row-content"))
+                .collect(Collectors.toList());
     }
 
     @Override

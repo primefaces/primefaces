@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,6 @@
  */
 package org.primefaces.integrationtests.selectbooleanbutton;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
@@ -36,15 +30,23 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectBooleanButton;
 import org.primefaces.selenium.component.model.Msg;
 
-public class SelectBooleanButton001Test extends AbstractPrimePageTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SelectBooleanButton001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectBooleanButton: Basic test clicking on switch and using Submit button")
-    public void testSubmit(Page page) {
+    void submit(Page page) {
         // Arrange
         SelectBooleanButton selectBooleanButton = page.selectBooleanButton;
-        Assertions.assertFalse(selectBooleanButton.isSelected());
+        assertFalse(selectBooleanButton.isSelected());
 
         // Act
         selectBooleanButton.click();
@@ -57,10 +59,10 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("SelectBooleanButton: Use toggle() widget API to select switch")
-    public void testToggleTrue(Page page) {
+    void toggleTrue(Page page) {
         // Arrange
         SelectBooleanButton selectBooleanButton = page.selectBooleanButton;
-        Assertions.assertFalse(selectBooleanButton.isSelected());
+        assertFalse(selectBooleanButton.isSelected());
 
         // Act
         selectBooleanButton.toggle();
@@ -72,11 +74,11 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("SelectBooleanButton: Use toggle() widget API to de-select switch")
-    public void testToggleFalse(Page page) {
+    void toggleFalse(Page page) {
         // Arrange
         SelectBooleanButton selectBooleanButton = page.selectBooleanButton;
         selectBooleanButton.setValue(true);
-        Assertions.assertTrue(selectBooleanButton.isSelected());
+        assertTrue(selectBooleanButton.isSelected());
 
         // Act
         selectBooleanButton.toggle();
@@ -88,11 +90,11 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("SelectBooleanButton: Use uncheck() widget API to de-select switch")
-    public void testUncheck(Page page) {
+    void uncheck(Page page) {
         // Arrange
         SelectBooleanButton selectBooleanButton = page.selectBooleanButton;
         selectBooleanButton.setValue(true);
-        Assertions.assertTrue(selectBooleanButton.isSelected());
+        assertTrue(selectBooleanButton.isSelected());
 
         // Act
         selectBooleanButton.uncheck();
@@ -104,11 +106,11 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("SelectBooleanButton: Use check() widget API to select switch")
-    public void testCheck(Page page) {
+    void check(Page page) {
         // Arrange
         SelectBooleanButton selectBooleanButton = page.selectBooleanButton;
         selectBooleanButton.setValue(false);
-        Assertions.assertFalse(selectBooleanButton.isSelected());
+        assertFalse(selectBooleanButton.isSelected());
 
         // Act
         selectBooleanButton.check();
@@ -120,54 +122,54 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("SelectBooleanButton: GitHub #7963 icon only should have no default labels")
-    public void testIconOnly(Page page) {
+    void iconOnly(Page page) {
         // Arrange
         SelectBooleanButton selectBooleanButton = page.iconOnly;
         selectBooleanButton.setValue(false);
-        Assertions.assertFalse(selectBooleanButton.isSelected());
-        Assertions.assertEquals("ui-button", selectBooleanButton.getLabel());
+        assertFalse(selectBooleanButton.isSelected());
+        assertEquals("Off", selectBooleanButton.getLabel());
 
         // Act
         selectBooleanButton.check();
 
         // Assert
-        Assertions.assertEquals("ui-button", selectBooleanButton.getLabel());
-        Assertions.assertTrue(selectBooleanButton.isSelected());
+        assertEquals("On", selectBooleanButton.getLabel());
+        assertTrue(selectBooleanButton.isSelected());
     }
 
     @Test
     @Order(5)
     @DisplayName("SelectBooleanButton: GitHub #722 should have default labels")
-    public void testDefaultLabels(Page page) {
+    void defaultLabels(Page page) {
         // Arrange
         SelectBooleanButton selectBooleanButton = page.defaultLabels;
         selectBooleanButton.setValue(false);
-        Assertions.assertFalse(selectBooleanButton.isSelected());
-        Assertions.assertEquals("Off", selectBooleanButton.getLabel());
+        assertFalse(selectBooleanButton.isSelected());
+        assertEquals("Off", selectBooleanButton.getLabel());
 
         // Act
         selectBooleanButton.check();
 
         // Assert
-        Assertions.assertEquals("On", selectBooleanButton.getLabel());
-        Assertions.assertTrue(selectBooleanButton.isSelected());
+        assertEquals("On", selectBooleanButton.getLabel());
+        assertTrue(selectBooleanButton.isSelected());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectBooleanButton Config = " + cfg);
-        Assertions.assertEquals("Yes", cfg.getString("onLabel"));
-        Assertions.assertEquals("No", cfg.getString("offLabel"));
-        Assertions.assertEquals("pi pi-check", cfg.getString("onIcon"));
-        Assertions.assertEquals("pi pi-times", cfg.getString("offIcon"));
+        assertEquals("Yes", cfg.getString("onLabel"));
+        assertEquals("No", cfg.getString("offLabel"));
+        assertEquals("pi pi-check", cfg.getString("onIcon"));
+        assertEquals("pi pi-times", cfg.getString("offIcon"));
     }
 
     private void assertChecked(Page page, boolean checked) {
         SelectBooleanButton selectBooleanButton = page.selectBooleanButton;
-        Assertions.assertEquals(checked, selectBooleanButton.isSelected());
+        assertEquals(checked, selectBooleanButton.isSelected());
         Msg message = page.messages.getMessage(0);
-        Assertions.assertEquals(checked ? "Checked" : "Unchecked", message.getDetail());
-        Assertions.assertEquals(checked ? "Yes" : "No", selectBooleanButton.getLabel());
+        assertEquals(checked ? "Checked" : "Unchecked", message.getDetail());
+        assertEquals(checked ? "Yes" : "No", selectBooleanButton.getLabel());
         assertConfiguration(selectBooleanButton.getWidgetConfiguration());
     }
 

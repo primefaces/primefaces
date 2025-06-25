@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,47 +23,47 @@
  */
 package org.primefaces.component.captcha;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
-public class CaptchaRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Logger;
 
-    private static final String RESPONSE_FIELD = "g-recaptcha-response";
+import jakarta.el.ELException;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class CaptchaRenderer extends CoreRenderer<Captcha> {
+
+    private static final Logger LOGGER = Logger.getLogger(CaptchaRenderer.class.getName());
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Captcha captcha = (Captcha) component;
+    public void decode(FacesContext context, Captcha component) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        String answer = params.get(RESPONSE_FIELD);
+        String answer = params.get(String.format("%s-response", component.getType()));
 
         if (answer != null) {
-            captcha.setSubmittedValue(answer);
+            component.setSubmittedValue(answer);
         }
         else {
-            captcha.setSubmittedValue("");
+            component.setSubmittedValue(Constants.EMPTY_STRING);
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Captcha captcha = (Captcha) component;
-        String publicKey = getPublicKey(context, captcha);
+    public void encodeEnd(FacesContext context, Captcha component) throws IOException {
+        String publicKey = getPublicKey(context, component);
 
         if (publicKey == null) {
-            throw new FacesException("Cannot find public key for catpcha, use primefaces.PUBLIC_CAPTCHA_KEY context-param to define one");
+            throw new FacesException("Cannot find public key for catpcha, use " + Captcha.PUBLIC_KEY + " context-param to define one");
         }
 
-        encodeMarkup(context, captcha, publicKey);
-        encodeScript(context, captcha, publicKey);
+        encodeMarkup(context, component, publicKey);
+        encodeScript(context, component, publicKey);
     }
 
     protected void encodeMarkup(FacesContext context, Captcha captcha, String publicKey) throws IOException {
@@ -74,7 +74,7 @@ public class CaptchaRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, "id");
 
         if (captcha.getSize() != null && "invisible".equals(captcha.getSize())) {
-            writer.writeAttribute("class", "g-recaptcha", null);
+            writer.writeAttribute("class", captcha.getType(), null);
             writer.writeAttribute("data-sitekey", publicKey, null);
             writer.writeAttribute("data-size", "invisible", null);
         }
@@ -95,12 +95,22 @@ public class CaptchaRenderer extends CoreRenderer {
                 .attr("callback", captcha.getCallback(), null)
                 .attr("expired", captcha.getExpired(), null)
                 .attr("size", captcha.getSize(), null)
+                .attr("executor", captcha.getExecutor(), null)
                 .attr("sourceUrl", captcha.getSourceUrl(), null);
 
         wb.finish();
     }
 
     protected String getPublicKey(FacesContext context, Captcha captcha) {
-        return context.getApplication().evaluateExpressionGet(context, context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY), String.class);
+        String publicKey = context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY);
+        try {
+            if (publicKey != null) {
+                publicKey = context.getApplication().evaluateExpressionGet(context, publicKey, String.class);
+            }
+        }
+        catch (ELException e) {
+            LOGGER.fine(() -> "Error processing context parameter " + Captcha.PUBLIC_KEY + " as EL-expression: " + e.getMessage());
+        }
+        return publicKey;
     }
 }

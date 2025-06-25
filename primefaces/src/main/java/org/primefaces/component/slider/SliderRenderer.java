@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,61 +23,65 @@
  */
 package org.primefaces.component.slider;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class SliderRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class SliderRenderer extends CoreRenderer<Slider> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Slider component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Slider slider = (Slider) component;
-
-        encodeMarkup(context, slider);
-        encodeScript(context, slider);
+    public void encodeEnd(FacesContext context, Slider component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Slider slider) throws IOException {
+    protected void encodeMarkup(FacesContext context, Slider component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = slider.getClientId(context);
+        String clientId = component.getClientId(context);
 
-        writer.startElement("div", slider);
+        String styleClass = getStyleClassBuilder(context)
+                .add(component.getStyleClass())
+                .add(component.isReadonly(), "ui-state-readonly")
+                .build();
+
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
-        if (slider.getStyle() != null) {
-            writer.writeAttribute("style", slider.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
-        if (slider.getStyleClass() != null) {
-            writer.writeAttribute("class", slider.getStyleClass(), null);
+        if (LangUtils.isNotEmpty(styleClass)) {
+            writer.writeAttribute("class", styleClass, null);
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, Slider slider) throws IOException {
-        String range = slider.getRange();
-        UIComponent output = getTarget(context, slider, slider.getDisplay());
+    protected void encodeScript(FacesContext context, Slider component) throws IOException {
+        String range = component.getRange();
+        UIComponent output = getTarget(context, component, component.getDisplay());
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Slider", slider);
+        wb.init("Slider", component);
 
         if ("true".equals(range)) {
-            String[] inputIds = slider.getFor().split(",");
-            UIComponent inputMin = getTarget(context, slider, inputIds[0]);
-            UIComponent inputMax = getTarget(context, slider, inputIds[1]);
+            String[] inputIds = component.getFor().split(",");
+            UIComponent inputMin = getTarget(context, component, inputIds[0]);
+            UIComponent inputMax = getTarget(context, component, inputIds[1]);
 
             String inputMinValue = ComponentUtils.getValueToRender(context, inputMin);
             if (inputMinValue == null) {
@@ -93,24 +97,24 @@ public class SliderRenderer extends CoreRenderer {
                     .append(",values:[").append(inputMinValue).append(",").append(inputMaxValue).append("]");
         }
         else {
-            UIComponent input = getTarget(context, slider, slider.getFor());
+            UIComponent input = getTarget(context, component, component.getFor());
             String inputClientId = input instanceof InputHolder ? ((InputHolder) input).getInputClientId() : input.getClientId(context);
 
             wb.attr("value", ComponentUtils.getValueToRender(context, input))
                     .attr("input", inputClientId);
         }
 
-        wb.attr("min", slider.getMinValue())
-                .attr("max", slider.getMaxValue())
-                .attr("animate", slider.isAnimate())
-                .attr("step", slider.getStep())
-                .attr("orientation", slider.getType())
-                .attr("disabled", slider.isDisabled(), false)
-                .attr("displayTemplate", slider.getDisplayTemplate(), null)
-                .attr("touchable", ComponentUtils.isTouchable(context, slider),  true)
-                .callback("onSlideStart", "function(event,ui)", slider.getOnSlideStart())
-                .callback("onSlide", "function(event,ui)", slider.getOnSlide())
-                .callback("onSlideEnd", "function(event,ui)", slider.getOnSlideEnd());
+        wb.attr("min", component.getMinValue())
+                .attr("max", component.getMaxValue())
+                .attr("animate", component.isAnimate())
+                .attr("step", component.getStep())
+                .attr("orientation", component.getType())
+                .attr("disabled", component.isDisabled(), false)
+                .attr("displayTemplate", component.getDisplayTemplate(), null)
+                .attr("touchable", ComponentUtils.isTouchable(context, component),  true)
+                .callback("onSlideStart", "function(event,ui)", component.getOnSlideStart())
+                .callback("onSlide", "function(event,ui)", component.getOnSlide())
+                .callback("onSlideEnd", "function(event,ui)", component.getOnSlideEnd());
 
         switch (range) {
             case "true":
@@ -126,17 +130,17 @@ public class SliderRenderer extends CoreRenderer {
             wb.attr("display", output.getClientId(context));
         }
 
-        encodeClientBehaviors(context, slider);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected UIComponent getTarget(FacesContext context, Slider slider, String target) {
+    protected UIComponent getTarget(FacesContext context, Slider component, String target) {
         if (target == null) {
             return null;
         }
 
-        UIComponent targetComponent = SearchExpressionFacade.resolveComponent(context, slider, target);
+        UIComponent targetComponent = SearchExpressionUtils.contextlessResolveComponent(context, component, target);
         return targetComponent;
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,59 +23,55 @@
  */
 package org.primefaces.component.toggleswitch;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class ToggleSwitchRenderer extends InputRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        ToggleSwitch toggleSwitch = (ToggleSwitch) component;
-
-        if (!shouldDecode(toggleSwitch)) {
+    public void decode(FacesContext context, ToggleSwitch component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        decodeBehaviors(context, toggleSwitch);
+        decodeBehaviors(context, component);
 
-        String clientId = toggleSwitch.getClientId(context);
+        String clientId = component.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
         boolean checked = isChecked(submittedValue);
-        toggleSwitch.setSubmittedValue(checked);
+        component.setSubmittedValue(checked);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ToggleSwitch toggleSwitch = (ToggleSwitch) component;
-
-        encodeMarkup(context, toggleSwitch);
-        encodeScript(context, toggleSwitch);
+    public void encodeEnd(FacesContext context, ToggleSwitch component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, ToggleSwitch toggleSwitch) throws IOException {
+    protected void encodeMarkup(FacesContext context, ToggleSwitch component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = toggleSwitch.getClientId(context);
-        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, toggleSwitch));
-        boolean disabled = toggleSwitch.isDisabled();
-        String style = toggleSwitch.getStyle();
+        String clientId = component.getClientId(context);
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, component));
+        boolean disabled = component.isDisabled();
+        String style = component.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(ToggleSwitch.CONTAINER_CLASS)
-                .add(toggleSwitch.getStyleClass())
+                .add(component.getStyleClass())
                 .add(checked, ToggleSwitch.CHECKED_CLASS)
                 .add(disabled, "ui-state-disabled")
-                .add(toggleSwitch.getOffIcon() != null, "ui-toggleswitch-dual-icon")
+                .add(component.isReadonly(), "ui-state-readonly")
+                .add(component.getOffIcon() != null, "ui-toggleswitch-dual-icon")
                 .build();
 
-        writer.startElement("div", toggleSwitch);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
 
@@ -83,18 +79,18 @@ public class ToggleSwitchRenderer extends InputRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeInput(context, toggleSwitch, clientId, checked);
-        encodeSlider(context, toggleSwitch, checked);
+        encodeInput(context, component, clientId, checked);
+        encodeSlider(context, component, checked);
 
         writer.endElement("div");
     }
 
-    protected void encodeSlider(FacesContext context, ToggleSwitch toggleSwitch, boolean checked) throws IOException {
+    protected void encodeSlider(FacesContext context, ToggleSwitch component, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         String styleClass = getStyleClassBuilder(context)
                     .add(ToggleSwitch.SLIDER_CLASS)
-                    .add(!toggleSwitch.isValid(), "ui-state-error")
+                    .add(!component.isValid(), "ui-state-error")
                     .build();
 
         writer.startElement("div", null);
@@ -104,16 +100,16 @@ public class ToggleSwitchRenderer extends InputRenderer {
         writer.writeAttribute("class", ToggleSwitch.HANDLER_CLASS, null);
 
         // on icon
-        if (LangUtils.isNotEmpty(toggleSwitch.getOnIcon())) {
+        if (LangUtils.isNotEmpty(component.getOnIcon())) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", toggleSwitch.getOnIcon(), null);
+            writer.writeAttribute("class", component.getOnIcon(), null);
             writer.endElement("span");
         }
 
         // off icon
-        if (LangUtils.isNotEmpty(toggleSwitch.getOffIcon())) {
+        if (LangUtils.isNotEmpty(component.getOffIcon())) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", toggleSwitch.getOffIcon(), null);
+            writer.writeAttribute("class", component.getOffIcon(), null);
             writer.endElement("span");
         }
 
@@ -122,12 +118,12 @@ public class ToggleSwitchRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, ToggleSwitch toggleSwitch, String clientId, boolean checked) throws IOException {
+    protected void encodeInput(FacesContext context, ToggleSwitch component, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
-        String ariaLabel = toggleSwitch.getAriaLabel() != null ? toggleSwitch.getAriaLabel() : toggleSwitch.getLabel();
+        String ariaLabel = component.getAriaLabel() != null ? component.getAriaLabel() : component.getLabel();
 
-        writer.startElement("div", toggleSwitch);
+        writer.startElement("div", component);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         writer.startElement("input", null);
@@ -142,25 +138,27 @@ public class ToggleSwitchRenderer extends InputRenderer {
             writer.writeAttribute("checked", "checked", null);
         }
 
-        renderValidationMetadata(context, toggleSwitch);
-        renderAccessibilityAttributes(context, toggleSwitch);
-        renderPassThruAttributes(context, toggleSwitch, HTML.TAB_INDEX);
-        renderOnchange(context, toggleSwitch);
-        renderDomEvents(context, toggleSwitch, HTML.BLUR_FOCUS_EVENTS);
+        renderValidationMetadata(context, component);
+        renderAccessibilityAttributes(context, component);
+        renderPassThruAttributes(context, component, HTML.TAB_INDEX);
+        renderOnchange(context, component);
+        renderDomEvents(context, component, HTML.BLUR_FOCUS_EVENTS);
 
         writer.endElement("input");
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, ToggleSwitch toggleSwitch) throws IOException {
+    protected void encodeScript(FacesContext context, ToggleSwitch component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ToggleSwitch", toggleSwitch).finish();
+        wb.init("ToggleSwitch", component).finish();
     }
 
     protected boolean isChecked(String value) {
-        return value != null
-                && ("on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value));
+        if (value == null) {
+            return false;
+        }
+        return "on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value);
     }
 
     @Override

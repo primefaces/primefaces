@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,23 @@
  */
 package org.primefaces.showcase.view.input;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
-import javax.inject.Inject;
-import javax.inject.Named;
-
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.showcase.domain.Country;
 import org.primefaces.showcase.service.CountryService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @RequestScoped
@@ -189,6 +191,22 @@ public class CheckboxView {
 
     public void setSelectedCountries3(List<Country> selectedCountries3) {
         this.selectedCountries3 = selectedCountries3;
+    }
+
+    public void onToggleSelect(ToggleSelectEvent event) {
+        FacesMessage msg = new FacesMessage();
+        msg.setSummary("Toggled: " + event.isSelected());
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onItemSelect(SelectEvent event) {
+        FacesMessage msg = new FacesMessage();
+        msg.setSummary("Item selected: " + event.getObject().toString());
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void onItemUnselect(UnselectEvent event) {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,29 @@
  */
 package org.primefaces.component.paginator;
 
+import org.primefaces.component.api.Pageable;
+
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.api.Pageable;
-import org.primefaces.util.HTML;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class PageLinkRenderer {
 
-    public void render(FacesContext context, Pageable pageable, String linkClass, String iconClass, boolean disabled, String ariaLabel) throws IOException {
+    public void render(FacesContext context, Pageable pageable, String linkClass, String iconClass, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = disabled ? linkClass + " ui-state-disabled" : linkClass;
-        int textIndex = iconClass.indexOf("seek-");
-        String text = String.valueOf(iconClass.charAt(textIndex + 5)).toUpperCase();
         String tabindex = (disabled) ? "-1" : "0";
 
-        writer.startElement("a", null);
-        writer.writeAttribute("href", "#", null);
+        writer.startElement("button", null);
+        writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         writer.writeAttribute("tabindex", tabindex, null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
-        writer.writeText(text, null);
         writer.endElement("span");
 
-        writer.endElement("a");
+        writer.endElement("button");
     }
 }

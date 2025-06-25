@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,15 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.AbstractInputComponent;
+import org.primefaces.selenium.component.base.ComponentUtils;
+import org.primefaces.selenium.findby.FindByParentPartialId;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -30,13 +39,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.AbstractInputComponent;
-import org.primefaces.selenium.findby.FindByParentPartialId;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:selectOneMenu}.
@@ -52,8 +54,26 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
     @FindByParentPartialId(value = "_filter", searchFromRoot = true)
     private WebElement filterInput;
 
+    /**
+     * Is the input using AJAX "itemSelect" event?
+     *
+     * @return true if using AJAX for itemSelect
+     */
+    public boolean isItemSelectAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "itemSelect");
+    }
+
+    /**
+     * Is the input using AJAX "itemUnselect" event?
+     *
+     * @return true if using AJAX for itemUnselect
+     */
+    public boolean isItemUnselectAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "itemUnselect");
+    }
+
     public void deselect(String label) {
-        deselect(label, false);
+        deselect(label, isItemUnselectAjaxified());
     }
 
     public void deselect(String label, boolean withGuardAjax) {
@@ -65,7 +85,7 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
     }
 
     public void select(String label, boolean withMetaKey) {
-        select(label, withMetaKey, false);
+        select(label, withMetaKey, isItemSelectAjaxified());
     }
 
     public void select(String label, boolean withMetaKey, boolean withGuardAjax) {
@@ -132,12 +152,12 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
         if (widgetConfiguration.has("filter") && widgetConfiguration.getBoolean("filter")) {
             return getSelectlistbox().findElements(By.cssSelector("li.ui-selectlistbox-item")).stream()
                     .filter(listElt -> listElt.isDisplayed())
-                    .map(e -> e.getAttribute("innerHTML"))
+                    .map(e -> e.getDomProperty("innerHTML"))
                     .collect(Collectors.toList());
         }
         else {
             return getInput().findElements(By.tagName("option")).stream()
-                    .map(e -> e.getAttribute("innerHTML"))
+                    .map(e -> e.getDomProperty("innerHTML"))
                     .collect(Collectors.toList());
         }
     }

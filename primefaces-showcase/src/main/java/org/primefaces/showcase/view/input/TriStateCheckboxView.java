@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,59 +23,50 @@
  */
 package org.primefaces.showcase.view.input;
 
-import javax.faces.view.ViewScoped;
-
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import java.io.Serializable;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named("triStateCheckboxView")
 @ViewScoped
 public class TriStateCheckboxView implements Serializable {
 
-    private String value1;
-    private String value2;
-    private String value3;
-    private String value4;
+    private Boolean value1;
+    private Boolean value2;
+    private Boolean value3;
 
     @PostConstruct
     public void init() {
-        value1 = "2";
-        value4 = "1";
+        value1 = Boolean.FALSE;
+        value2 = Boolean.TRUE;
     }
 
-    public String getValue1() {
+    public Boolean getValue1() {
         return value1;
     }
 
-    public void setValue1(String value1) {
+    public void setValue1(Boolean value1) {
         this.value1 = value1;
     }
 
-    public String getValue2() {
+    public Boolean getValue2() {
         return value2;
     }
 
-    public void setValue2(String value2) {
+    public void setValue2(Boolean value2) {
         this.value2 = value2;
     }
 
-    public String getValue3() {
+    public Boolean getValue3() {
         return value3;
     }
 
-    public void setValue3(String value3) {
+    public void setValue3(Boolean value3) {
         this.value3 = value3;
-    }
-
-    public String getValue4() {
-        return value4;
-    }
-
-    public void setValue4(String value4) {
-        this.value4 = value4;
     }
 
     public void addMessage() {

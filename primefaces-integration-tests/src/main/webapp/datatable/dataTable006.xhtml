@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
 
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
     <h:head>
@@ -27,7 +27,7 @@
                          rows="3"
                          selectionPageOnly="#{dataTable006.selectionPageOnly}"
             >
-                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                <p:column selectionBox="true" style="width:16px;text-align:center"/>
 
                 <p:column headerText="ID" field="id"/>
 
@@ -39,7 +39,10 @@
             </p:dataTable>
 
             <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable006.submit}"/>
-            <p:commandButton id="toggleSelectPageOnly" value="Selection Page Only" update="@form" action="#{dataTable006.toggleSelectPageOnly}"/>
+            <p:selectBooleanButton id="toggleSelectPageOnly" value="#{dataTable006.selectionPageOnly}"
+                                   onLabel="Page only" offLabel="All pages">
+                <p:ajax update="@form"/>
+            </p:selectBooleanButton>
             <p:commandButton id="toggleLazyMode" value="Lazy Mode" update="@form" action="#{dataTable006.toggleLazyMode}"/>
             <p:commandButton id="togglePaginator" value="Paginator" update="@form" action="#{dataTable006.togglePaginator}"/>
 

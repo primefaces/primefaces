@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         version="3.0"
-         xmlns="http://java.sun.com/xml/ns/javaee"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" >
+<web-app
+        xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+        version="6.0">
 
     <session-config>
         <cookie-config>
@@ -11,9 +12,9 @@
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
-   <!-- Load custom tag into JSF web application -->
+   <!-- Load custom tag into Faces web application -->
     <context-param>
-        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+        <param-name>jakarta.faces.FACELETS_LIBRARIES</param-name>
         <param-value>/WEB-INF/showcase.taglib.xml</param-value>
     </context-param>
 
@@ -22,19 +23,19 @@
     </welcome-file-list>
 
     <context-param>
-        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-name>jakarta.faces.STATE_SAVING_METHOD</param-name>
         <param-value>server</param-value>
     </context-param>
     <context-param>
-        <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>${jsf.project.stage}</param-value>
+        <param-name>jakarta.faces.PROJECT_STAGE</param-name>
+        <param-value>${faces.project.stage}</param-value>
     </context-param>
     <context-param>
-        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-name>jakarta.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
         <param-value>true</param-value>
     </context-param>
     <context-param>
-        <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+        <param-name>jakarta.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
         <param-value>true</param-value>
     </context-param>
 
@@ -48,10 +49,6 @@
     </context-param>
     <context-param>
         <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
-        <param-value>true</param-value>
-    </context-param>
-    <context-param>
-        <param-name>primefaces.FONT_AWESOME</param-name>
         <param-value>true</param-value>
     </context-param>
     <context-param>
@@ -101,11 +98,11 @@
         <param-value>client-window</param-value>
     </context-param>
 
+<!--    <listener>-->
+<!--        <listener-class>${cdiListener}</listener-class>-->
+<!--    </listener>-->
     <listener>
-        <listener-class>${cdiListener}</listener-class>
-    </listener>
-    <listener>
-        <listener-class>${jsfListener}</listener-class>
+        <listener-class>${facesListener}</listener-class>
     </listener>
 
     <filter>
@@ -131,7 +128,7 @@
         <location>/error.xhtml</location>
     </error-page>
     <error-page>
-        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <exception-type>jakarta.faces.application.ViewExpiredException</exception-type>
         <location>/viewExpired.xhtml</location>
     </error-page>
     <error-page>
@@ -141,12 +138,8 @@
 
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
-        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.jsf</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>

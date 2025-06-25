@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,27 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.DatePicker;
+
 import java.time.LocalDate;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.DatePicker;
 
-public class DatePicker010Test extends AbstractDatePickerTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class DatePicker010Test extends AbstractDatePickerTest {
 
     @Test
     @DisplayName("DatePicker: minDate and maxDate; See GitHub #7576")
     @Order(1)
-    public void testMinMax(Page page) {
+    void minMax(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
 
@@ -50,16 +52,16 @@ public class DatePicker010Test extends AbstractDatePickerTest {
 
         // Assert (some days of june active)
         WebElement panel = datePicker.getPanel();
-        Assertions.assertNotNull(panel);
-        Assertions.assertEquals(10, panel.findElements(By.cssSelector("a.ui-state-default")).size());
-        Assertions.assertEquals(20 + 5, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
+        assertNotNull(panel);
+        assertEquals(10, panel.findElements(By.cssSelector("a.ui-state-default")).size());
+        assertEquals(20 + 5, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
 
         // Act - previous month
         panel.findElement(By.className("ui-datepicker-prev")).click();
 
         // Assert (some days of May active)
-        Assertions.assertEquals(26 + 11, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
-        Assertions.assertEquals(5, panel.findElements(By.cssSelector("td > a.ui-state-default")).size());
+        assertEquals(26 + 11, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
+        assertEquals(5, panel.findElements(By.cssSelector("td > a.ui-state-default")).size());
 
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
@@ -67,7 +69,7 @@ public class DatePicker010Test extends AbstractDatePickerTest {
     @Test
     @DisplayName("DatePicker: minDate and maxDate; See GitHub #7576")
     @Order(1)
-    public void testMinMaxValueInside(Page page) {
+    void minMaxValueInside(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
 
@@ -76,14 +78,14 @@ public class DatePicker010Test extends AbstractDatePickerTest {
 
         // Assert
         WebElement panel = datePicker.getPanel();
-        Assertions.assertNotNull(panel);
-        Assertions.assertEquals(LocalDate.of(2021, 6, 02), datePicker.getValue().toLocalDate());
+        assertNotNull(panel);
+        assertEquals(LocalDate.of(2021, 6, 02), datePicker.getValue().toLocalDate());
 
         // Act
         datePicker.setValue(LocalDate.of(2021, 05, 29));
 
         // Assert
-        Assertions.assertEquals(LocalDate.of(2021, 5, 29), datePicker.getValue().toLocalDate());
+        assertEquals(LocalDate.of(2021, 5, 29), datePicker.getValue().toLocalDate());
 
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
@@ -91,7 +93,7 @@ public class DatePicker010Test extends AbstractDatePickerTest {
     @Test
     @DisplayName("DatePicker: minDate and maxDate; See GitHub #7576")
     @Order(1)
-    public void testMinMaxValueOutside(Page page) {
+    void minMaxValueOutside(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
 
@@ -100,14 +102,14 @@ public class DatePicker010Test extends AbstractDatePickerTest {
 
         // Assert
         WebElement panel = datePicker.getPanel();
-        Assertions.assertNotNull(panel);
-        Assertions.assertEquals(LocalDate.of(2021, 6, 10), datePicker.getValue().toLocalDate());
+        assertNotNull(panel);
+        assertEquals(LocalDate.of(2021, 6, 10), datePicker.getValue().toLocalDate());
 
         // Act
         datePicker.setValue(LocalDate.of(2021, 04, 30));
 
         // Assert
-        Assertions.assertEquals(LocalDate.of(2021, 5, 27), datePicker.getValue().toLocalDate());
+        assertEquals(LocalDate.of(2021, 5, 27), datePicker.getValue().toLocalDate());
 
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
@@ -115,7 +117,7 @@ public class DatePicker010Test extends AbstractDatePickerTest {
     @Test
     @DisplayName("DatePicker: maxDate after now default view to max date; See GitHub #8912")
     @Order(2)
-    public void testViewDateisMaxDate(Page page) {
+    void viewDateisMaxDate(Page page) {
         // Arrange
         DatePicker datePicker = page.datePickerMaxDate;
 
@@ -130,7 +132,7 @@ public class DatePicker010Test extends AbstractDatePickerTest {
     @Test
     @DisplayName("DatePicker: minDate after now default view to min date; See GitHub #8912")
     @Order(3)
-    public void testViewDateisMinDate(Page page) {
+    void viewDateisMinDate(Page page) {
         // Arrange
         DatePicker datePicker = page.datePickerMinDate;
 
@@ -145,11 +147,11 @@ public class DatePicker010Test extends AbstractDatePickerTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
-        Assertions.assertEquals("dd.mm.yy", cfg.getString("dateFormat"));
-        Assertions.assertEquals("27.05.2021", cfg.getString("minDate"));
-        Assertions.assertEquals("10.06.2021", cfg.getString("maxDate"));
-        Assertions.assertEquals("single", cfg.getString("selectionMode"));
-        Assertions.assertFalse(cfg.getBoolean("inline"));
+        assertEquals("dd.mm.yy", cfg.getString("dateFormat"));
+        assertEquals("27.05.2021", cfg.getString("minDate"));
+        assertEquals("10.06.2021", cfg.getString("maxDate"));
+        assertEquals("single", cfg.getString("selectionMode"));
+        assertFalse(cfg.getBoolean("inline"));
     }
 
     public static class Page extends AbstractPrimePage {

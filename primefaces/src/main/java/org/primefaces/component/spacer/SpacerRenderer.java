@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,34 @@
  */
 package org.primefaces.component.spacer;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
 
-public class SpacerRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class SpacerRenderer extends CoreRenderer<Spacer> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Spacer spacer = (Spacer) component;
+    public void encodeEnd(FacesContext context, Spacer component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         // <svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>
-        writer.startElement("svg", spacer);
+        writer.startElement("svg", component);
         writer.writeAttribute("xmlns", "http://www.w3.org/2000/svg", null);
-        writer.writeAttribute("id", spacer.getClientId(context), "id");
-        writer.writeAttribute("width", spacer.getWidth(), "width");
-        writer.writeAttribute("height", spacer.getHeight(), "height");
+        writer.writeAttribute("id", component.getClientId(context), "id");
+        writer.writeAttribute("width", component.getWidth(), "width");
+        writer.writeAttribute("height", component.getHeight(), "height");
 
-        if (spacer.getStyle() != null) {
-            writer.writeAttribute("style", spacer.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
-        if (spacer.getStyleClass() != null) {
-            writer.writeAttribute("class", spacer.getStyleClass(), "styleClass");
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), "styleClass");
         }
-        if (spacer.getTitle() != null) {
-            writer.writeAttribute("title", spacer.getTitle(), "title");
+        if (component.getTitle() != null) {
+            writer.writeAttribute("title", component.getTitle(), "title");
         }
 
         writer.endElement("svg");

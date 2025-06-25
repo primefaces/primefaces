@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,8 @@
  */
 package org.primefaces.component.steps;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -36,10 +36,12 @@ public class Steps extends StepsBase {
 
     public static final String CONTAINER_CLASS = "ui-steps ui-widget ui-helper-clearfix";
     public static final String READONLY_CONTAINER_CLASS = "ui-steps ui-steps-readonly ui-widget ui-helper-clearfix";
-    public static final String INACTIVE_ITEM_CLASS = "ui-steps-item ui-state-default ui-state-disabled ui-corner-all";
-    public static final String ACTIVE_ITEM_CLASS = "ui-steps-item ui-state-highlight ui-corner-all";
-    public static final String VISITED_ITEM_CLASS = "ui-steps-item ui-state-default ui-corner-all";
+    public static final String INACTIVE_ITEM_CLASS = "ui-steps-item ui-state-default ui-state-disabled";
+    public static final String ACTIVE_ITEM_CLASS = "ui-steps-item ui-state-highlight";
+    public static final String VISITED_ITEM_CLASS = "ui-steps-item ui-state-default";
+    public static final String EXECUTABLE_ITEM_CLASS = "ui-steps-item-executable";
     public static final String STEP_NUMBER_CLASS = "ui-steps-number";
+    public static final String STEP_NUMBER_ICON_CLASS = "ui-steps-number-icon";
     public static final String STEP_TITLE_CLASS = "ui-steps-title";
 
     @Override

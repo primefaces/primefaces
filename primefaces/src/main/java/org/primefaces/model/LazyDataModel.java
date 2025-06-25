@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,33 @@
  */
 package org.primefaces.model;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.model.ListDataModel;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.faces.convert.Converter;
-import javax.faces.model.DataModelEvent;
-import javax.faces.model.DataModelListener;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.model.DataModel;
+import jakarta.faces.model.DataModelEvent;
+import jakarta.faces.model.DataModelListener;
 
 /**
  * DataModel to deal with huge datasets with by lazy loading, page by page.
  *
+ * As long {@link DataModel} is not serializable,
+ * see <a href="https://github.com/jakartaee/faces/issues/1585">...</a>,
+ * do no extend from {@link jakarta.faces.model.ListDataModel}
+ * see #7699
+ *
  * @param <T> The model class.
  */
-public abstract class LazyDataModel<T> extends ListDataModel<T> implements SelectableDataModel<T>, Serializable {
+public abstract class LazyDataModel<T> extends DataModel<T> implements SelectableDataModel<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Converter converter;
+    protected Converter<T> rowKeyConverter;
     private int rowCount;
     private int pageSize;
 
@@ -62,11 +68,11 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
      * This constructor allows to skip the implementation of {@link #getRowData(java.lang.String)} and
      * {@link #getRowKey(java.lang.Object)}, when selection is used.
      *
-     * @param converter The converter used to convert rowKey to rowData and vice versa.
+     * @param rowKeyConverter The rowKeyConverter used to convert rowKey to rowData and vice versa.
      */
-    public LazyDataModel(Converter converter) {
+    public LazyDataModel(Converter<T> rowKeyConverter) {
         super();
-        this.converter = converter;
+        this.rowKeyConverter = rowKeyConverter;
     }
 
     /**
@@ -97,9 +103,9 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     @Override
     public T getRowData(String rowKey) {
-        if (converter != null) {
+        if (rowKeyConverter != null) {
             FacesContext context = FacesContext.getCurrentInstance();
-            return (T) converter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
+            return rowKeyConverter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
         }
 
         throw new UnsupportedOperationException(
@@ -107,8 +113,16 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
-    public T getRowData(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        List<T> loaded = load(rowIndex, rowIndex + 1, sortBy, filterBy);
+    /**
+     * Loads a single row for the rowIndex provided.
+     *
+     * @param rowIndex the row index to load
+     * @param sortBy a map with all sort information
+     * @param filterBy a map with all filter information
+     * @return the data
+     */
+    public T loadOne(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        List<T> loaded = load(rowIndex, 1, sortBy, filterBy);
         if (loaded == null || loaded.isEmpty()) {
             return null;
         }
@@ -134,14 +148,18 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     @Override
     public String getRowKey(T object) {
-        if (converter != null) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            return converter.getAsString(context, UIComponent.getCurrentComponent(context), object);
+        if (rowKeyConverter != null) {
+            return getRowKeyFromConverter(object);
         }
 
         throw new UnsupportedOperationException(
                 getMessage("Provide a Converter via constructor or implement getRowKey(T object) in %s"
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
+    }
+
+    protected String getRowKeyFromConverter(T object) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        return rowKeyConverter.getAsString(context, UIComponent.getCurrentComponent(context), object);
     }
 
     protected String getMessage(String msg) {
@@ -151,7 +169,6 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
         return String.format(msg, getClass().getName(), clientId, viewId);
     }
-
 
     @Override
     public boolean isRowAvailable() {
@@ -228,23 +245,15 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         return rowCount;
     }
 
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
+    }
+
     public int getPageSize() {
         return pageSize;
     }
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
-    }
-
-    public void setRowCount(int rowCount) {
-        this.rowCount = rowCount;
-    }
-
-    public Converter getConverter() {
-        return converter;
-    }
-
-    public void setConverter(Converter converter) {
-        this.converter = converter;
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.component.datatable.feature;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -32,6 +33,7 @@ import java.util.stream.Stream;
 
 public class DataTableFeatures {
 
+    // order matters: filter should be decoded before selection
     private static final Map<Class<? extends DataTableFeature>, DataTableFeature> ALL_FEATURES = Stream.of(
                     new DraggableColumnsFeature(),
                     new FilterFeature(),
@@ -45,7 +47,7 @@ public class DataTableFeatures {
                     new ScrollFeature(),
                     new DraggableRowsFeature(),
                     new AddRowFeature())
-            .collect(Collectors.toMap(DataTableFeature::getClass, Function.identity()));
+            .collect(Collectors.toMap(DataTableFeature::getClass, Function.identity(), (u, v) -> u, LinkedHashMap::new));
 
     private DataTableFeatures() {
         // NOOP

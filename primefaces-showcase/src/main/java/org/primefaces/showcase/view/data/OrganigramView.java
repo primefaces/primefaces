@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
  */
 package org.primefaces.showcase.view.data;
 
-import javax.faces.view.ViewScoped;
 import org.primefaces.component.organigram.OrganigramHelper;
 import org.primefaces.event.organigram.OrganigramNodeCollapseEvent;
 import org.primefaces.event.organigram.OrganigramNodeDragDropEvent;
@@ -32,11 +31,13 @@ import org.primefaces.event.organigram.OrganigramNodeSelectEvent;
 import org.primefaces.model.DefaultOrganigramNode;
 import org.primefaces.model.OrganigramNode;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import java.io.Serializable;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped
@@ -64,7 +65,7 @@ public class OrganigramView implements Serializable {
         OrganigramNode softwareDevelopment = addDivision(rootNode, "Software Development", "Ridvan Agar");
 
         OrganigramNode teamJavaEE = addDivision(softwareDevelopment, "Team JavaEE");
-        addDivision(teamJavaEE, "JSF", "Thomas Andraschko");
+        addDivision(teamJavaEE, "Faces", "Thomas Andraschko");
         addDivision(teamJavaEE, "Backend", "Marie Louise");
 
         OrganigramNode teamMobile = addDivision(softwareDevelopment, "Team Mobile");

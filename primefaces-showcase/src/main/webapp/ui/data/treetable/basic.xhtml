@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -32,7 +32,7 @@
                     <p:column headerText="Type">
                         <h:outputText value="#{document.type}"/>
                     </p:column>
-                    <p:column style="width:3rem">
+                    <p:column style="width:3rem" ariaHeaderText="Actions">
                         <p:commandButton update=":form:documentPanel" oncomplete="PF('documentDialog').show()"
                                        title="View Detail" icon="pi pi-search">
                             <f:setPropertyActionListener value="#{document}" target="#{ttBasicView.selectedDocument}"/>

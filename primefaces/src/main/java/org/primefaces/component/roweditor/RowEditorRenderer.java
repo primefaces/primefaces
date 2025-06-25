@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,21 @@
  */
 package org.primefaces.component.roweditor;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
 
-public class RowEditorRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class RowEditorRenderer extends CoreRenderer<RowEditor> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, RowEditor component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        RowEditor rowEditor = (RowEditor) component;
-        String style = rowEditor.getStyle();
-        String styleClass = rowEditor.getStyleClass();
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? DataTable.ROW_EDITOR_CLASS : DataTable.ROW_EDITOR_CLASS + " " + styleClass;
 
         writer.startElement("div", null);
@@ -49,9 +47,9 @@ public class RowEditorRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeIcon(writer, "pencil", rowEditor.getEditTitle());
-        encodeIcon(writer, "check", rowEditor.getSaveTitle());
-        encodeIcon(writer, "close", rowEditor.getCancelTitle());
+        encodeIcon(writer, "pencil", component.getEditTitle());
+        encodeIcon(writer, "check", component.getSaveTitle());
+        encodeIcon(writer, "close", component.getCancelTitle());
 
         writer.endElement("div");
     }

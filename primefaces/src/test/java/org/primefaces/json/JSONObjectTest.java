@@ -23,34 +23,32 @@
  */
 package org.primefaces.json;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class JSONObjectTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class JSONObjectTest {
 
     @Test
-    public void testBooleanToJSON() {
-        try {
+    void booleanToJSON() {
+        Assertions.assertDoesNotThrow(() -> {
             String json = new JSONObject().put("valid", true).toString();
             assertEquals("{\"valid\":true}", json);
-        }
-        catch (JSONException e) {
-            fail();
-        }
+        });
     }
 
     @Test
-    public void testPojoToJSON() throws JSONException {
+    void pojoToJSON() throws JSONException {
         JSONObject json = new JSONObject(new Person("Cagatay", "Civici"));
         assertNotNull(json.get("firstname"));
         assertEquals("Cagatay", json.get("firstname"));
@@ -60,7 +58,7 @@ public class JSONObjectTest {
     }
 
     @Test
-    public void testListToJSONArray() throws JSONException {
+    void listToJSONArray() throws JSONException {
         List<String> myList = new ArrayList<String>();
         for (int i = 0; i < 5; i++) {
             myList.add("item" + i);
@@ -70,7 +68,7 @@ public class JSONObjectTest {
     }
 
     @Test
-    public void testMapToJSONObject() throws JSONException {
+    void mapToJSONObject() throws JSONException {
         Map<String, String> myMap = new HashMap<String, String>();
         for (int j = 0; j < 5; j++) {
             myMap.put("key" + j, "value" + j);

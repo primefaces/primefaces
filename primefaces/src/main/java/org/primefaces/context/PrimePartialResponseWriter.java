@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,29 @@
  */
 package org.primefaces.context;
 
-import org.primefaces.application.resource.DynamicResourcesPhaseListener;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.primefaces.util.BeanUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.ResourceUtils;
 
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialResponseWriter;
-import javax.faces.event.AbortProcessingException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
+import jakarta.faces.component.NamingContainer;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.PartialResponseWriter;
+import jakarta.faces.event.AbortProcessingException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
 
@@ -253,45 +252,12 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
                         if (LangUtils.isNotEmpty(parameterNamespace)) {
 
                             String parameterPrefix = parameterNamespace;
-
-                            if (applicationContext.getEnvironment().isAtLeastJsf23()) {
-
-                                // https://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790
-                                parameterPrefix += UINamingContainer.getSeparatorChar(context);
-                            }
+                            // since JSF 2.3 -> https://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790
+                            parameterPrefix += UINamingContainer.getSeparatorChar(context);
 
                             Map<String, Object> params = new HashMap<>();
                             params.put("parameterPrefix", parameterPrefix);
                             encodeCallbackParams(params);
-                        }
-                    }
-
-                    // dynamic resource loading
-                    // we just do it for postbacks, otherwise ajax requests without a form would reload all resources
-                    // we also skip update=@all, as the head with all resources, will already be rendered
-                    if (context.isPostback()
-                            && !context.getPartialViewContext().isRenderAll()
-                            && !applicationContext.getEnvironment().isAtLeastJsf23()) {
-                        List<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
-                        List<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
-                        if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
-
-                            List<ResourceUtils.ResourceInfo> newResources = new ArrayList<>(currentResources);
-                            newResources.removeAll(initialResources);
-
-                            boolean updateStarted = false;
-                            for (int i = 0; i < newResources.size(); i++) {
-                                ResourceUtils.ResourceInfo resourceInfo = newResources.get(i);
-                                if (!updateStarted) {
-                                    ((PartialResponseWriter) getWrapped()).startUpdate("javax.faces.Resource");
-                                    updateStarted = true;
-                                }
-                                resourceInfo.getResource().encodeAll(context);
-                            }
-
-                            if (updateStarted) {
-                                ((PartialResponseWriter) getWrapped()).endUpdate();
-                            }
                         }
                     }
                 }

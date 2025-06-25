@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,16 +27,6 @@ public class PDFPlayer implements MediaPlayer {
 
     public static final String MIME_TYPE = "application/pdf";
     private static final String[] SUPPORTED_TYPES = new String[]{"pdf"};
-
-    @Override
-    public String getClassId() {
-        return null;
-    }
-
-    @Override
-    public String getCodebase() {
-        return null;
-    }
 
     @Override
     public String getSourceParam() {

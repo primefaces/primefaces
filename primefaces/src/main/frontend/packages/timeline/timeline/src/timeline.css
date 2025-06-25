@@ -1,0 +1,28 @@
+/********************************/
+/** Custom CSS for vis-timeline */
+/********************************/
+
+div.timeline-menu {
+    position: absolute;
+    right: 0;
+    margin: 10px;
+    z-index: 5;
+    /*it must be equals to vis-tooltip*/
+}
+
+div.timeline-menu-axis-both {
+    top: 50px;
+}
+
+div.timeline-menu-axis-top {
+    bottom: 0px;
+}
+
+div.timeline-menu-rtl {
+    left: 0px;
+    right: inherit;
+}
+
+div.vis-tooltip {
+    font-family: verdana, sans-serif;
+}

@@ -1,0 +1,139 @@
+/// Size of the font
+/// @group general
+$fontSize: 1rem;
+
+/// Font of the theme
+/// @group general
+$fontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+/// Primary text color
+/// @group general
+$textColor: #495057;
+
+/// Secondary text color
+/// @group general
+$textSecondaryColor: #6c757d;
+
+/// Background of a highlighted item
+/// @group general
+$highlightBg: $primaryColor;
+
+/// Text color of a highlighted item
+/// @group general
+$highlightTextColor: $primaryTextColor;
+
+/// Duration of the property transitions
+/// @group general
+$transitionDuration: .2s;
+
+/// Properties of a transition
+/// @group general
+$transition: background-color $transitionDuration, color $transitionDuration, border-color $transitionDuration, box-shadow $transitionDuration, opacity $transitionDuration;
+
+/// Properties of a action icon transition
+/// @group general
+$actionIconTransition: background-color $transitionDuration, color $transitionDuration, box-shadow $transitionDuration, opacity $transitionDuration ease-in-out;
+
+/// Properties of a list item transition
+/// @group general
+$listItemTransition: background-color $transitionDuration, border-color $transitionDuration, box-shadow $transitionDuration;
+
+/// Duration of the animations
+/// @group general
+$animationDuration: .4s;
+
+/// Timing function of the animations
+/// @group general
+$animationTimingFunction: cubic-bezier(.05, .74, .2, .99);
+
+/// Spacing of the letters
+/// @group general
+$letterSpacing: normal;
+
+/// Border radius of the some primefaces components
+/// @group general
+$borderRadius: 3px;
+
+/// Breakpoint of the tablets
+/// @group general
+$tabletBreakpoint: 991px;
+
+/// Breakpoint of the phones
+/// @group general
+$phoneBreakpoint: 576px;
+
+/// Separator border
+/// @group general
+$divider: 1px solid #dee2e6;
+
+/// Opacity of the disabled elements
+/// @group general
+$disabledOpacity: .8;
+
+/// Background of the modal layer
+/// @group general
+$maskBg: rgba(0, 0, 0, 0.4);
+
+/// Space between two inline items
+/// @group general
+$inlineSpacing: .5rem;
+
+/// Size of the Icons
+/// @group general
+$iconSize: 1rem;
+
+/// Color to use on an invalid element e.g. invalid input
+/// @group general
+$errorColor: #e4677e;
+
+/// Outline color of a focused element
+/// @group general
+$focusOutlineColor: #bfd1f6;
+
+/// Outline of a focused element
+/// @group general
+$focusOutline: 0 none;
+
+/// Outline offset of a focused element
+/// @group general
+$focusOutlineOffset: 0;
+
+/// Box shadow of a focused element
+/// @group general
+$focusShadow: 0 0 0 0.2rem $focusOutlineColor;
+
+/// Width of an action icon
+/// @group general
+$actionIconWidth: 2rem;
+
+/// Height of an action icon
+/// @group general
+$actionIconHeight: 2rem;
+
+/// Background of an action icon
+/// @group general
+$actionIconBg: transparent;
+
+/// Border of an action icon
+/// @group general
+$actionIconBorder: 0 none;
+
+/// Color of an action icon
+/// @group general
+$actionIconColor: $textSecondaryColor;
+
+/// Background of an action icon in hover state
+/// @group general
+$actionIconHoverBg: #e9ecef;
+
+/// Border of an action icon in hover state
+/// @group general
+$actionIconHoverBorderColor: transparent;
+
+/// Color of an action icon in hover state
+/// @group general
+$actionIconHoverColor: $textColor;
+
+/// Border radius of an action icon
+/// @group general
+$actionIconBorderRadius: 50%;

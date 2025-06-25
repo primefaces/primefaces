@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,54 +23,81 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
-public class DataTable037Test extends AbstractDataTableTest {
+
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class DataTable037Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: lazy paging with summary row grouping")
-    public void testSelectionMultipleWithPaging(Page page) throws InterruptedException {
+    void selectionMultipleWithPaging(Page page) throws InterruptedException {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Page1 - 10 Rows
-        Assertions.assertTrue(dataTable.getText().contains("Amy Elsner"));
-        Assertions.assertFalse(dataTable.getText().contains("Anna Fali"));
-        Assertions.assertTrue(dataTable.getText().contains("Total Customers: 10"));
+        assertTrue(dataTable.getText().contains("Amy Elsner"));
+        assertFalse(dataTable.getText().contains("Anna Fali"));
+        assertTrue(dataTable.getText().contains("Total Customers: 10"));
 
         dataTable.selectPage(2);
 
         // Page2 - 10 Rows
-        Assertions.assertFalse(dataTable.getText().contains("Amy Elsner"));
-        Assertions.assertTrue(dataTable.getText().contains("Anna Fali"));
-        Assertions.assertTrue(dataTable.getText().contains("Total Customers: 10"));
+        assertFalse(dataTable.getText().contains("Amy Elsner"));
+        assertTrue(dataTable.getText().contains("Anna Fali"));
+        assertTrue(dataTable.getText().contains("Total Customers: 10"));
 
         dataTable.selectRowsPerPage(15);
 
         // Page1 - 15 Rows
-        Assertions.assertTrue(dataTable.getText().contains("Amy Elsner"));
-        Assertions.assertTrue(dataTable.getText().contains("Anna Fali"));
-        Assertions.assertTrue(dataTable.getText().contains("Total Customers: 10"));
+        assertTrue(dataTable.getText().contains("Amy Elsner"));
+        assertTrue(dataTable.getText().contains("Anna Fali"));
+        assertTrue(dataTable.getText().contains("Total Customers: 10"));
 
         dataTable.selectPage(2);
 
         // Page2 - 15 Rows
-        Assertions.assertTrue(dataTable.getText().contains("Anna Fali"));
-        Assertions.assertTrue(dataTable.getText().contains("Asiya Javayant"));
-        Assertions.assertSame(2, StringUtils.countMatches(dataTable.getText(), "Total Customers: 10"));
+        assertTrue(dataTable.getText().contains("Anna Fali"));
+        assertTrue(dataTable.getText().contains("Asiya Javayant"));
+        assertSame(2, StringUtils.countMatches(dataTable.getText(), "Total Customers: 10"));
     }
 
+    @Test
+    @Order(2)
+    @DisplayName("DataTable: GitHub #13453 - Paginator is not updating do to geRowCount()")
+    void paginatorUpdating(Page page) throws InterruptedException {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        assertNotNull(dataTable);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
+
+        // Page1 - 10 Rows
+        assertTrue(dataTable.getText().contains("Amy Elsner"));
+        assertFalse(dataTable.getText().contains("Anna Fali"));
+        assertTrue(dataTable.getText().contains("Total Customers: 10"));
+        assertTrue(dataTable.getText().contains("Filtered Pages: 10 page(s)"));
+
+        // Act: Filter to limit rows
+        dataTable.filter("Name", "David");
+
+        // Assert: check paginator is updated
+        assertTrue(dataTable.getText().contains("Filtered Pages: 1 page(s)"));
+    }
     public static class Page extends AbstractPrimePage {
 
         @FindBy(id = "form:datatable")

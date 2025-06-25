@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
 
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
     <h:head>
@@ -15,7 +15,7 @@
             <p:messages id="msgs" showDetail="true"/>
 
             <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable007.progLanguages}" var="lang" editable="true"
-                         filteredValue="#{dataTable007.filteredProgLanguages}">
+                         editMode="row" filteredValue="#{dataTable007.filteredProgLanguages}">
                 <p:ajax event="rowEdit" listener="#{dataTable007.onRowEdit}" update="form:msgs"/>
                 <p:ajax event="rowEditCancel" listener="#{dataTable007.onRowCancel}" update="form:msgs"/>
 
@@ -34,7 +34,7 @@
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{lang.firstAppeared}"/></f:facet>
                         <f:facet name="input"><p:inputText value="#{lang.firstAppeared}" style="width:100%" label="First appeared"
-                                                           converter="javax.faces.Integer"/></f:facet>
+                                                           converter="jakarta.faces.Integer"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 

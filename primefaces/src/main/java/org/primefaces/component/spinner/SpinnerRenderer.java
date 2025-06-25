@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,33 @@
  */
 package org.primefaces.component.spinner;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class SpinnerRenderer extends InputRenderer {
+import java.io.IOException;
+import java.math.BigInteger;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class SpinnerRenderer extends InputRenderer<Spinner> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Spinner spinner = (Spinner) component;
-
-        if (!shouldDecode(spinner)) {
+    public void decode(FacesContext context, Spinner component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        decodeBehaviors(context, spinner);
+        decodeBehaviors(context, component);
 
-        String submittedValue = context.getExternalContext().getRequestParameterMap().get(spinner.getClientId(context) + "_input");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(component.getClientId(context) + "_input");
 
-        if (submittedValue != null) {
-            String prefix = spinner.getPrefix();
-            String suffix = spinner.getSuffix();
+        if (LangUtils.isNotEmpty(submittedValue)) {
+            String prefix = component.getPrefix();
+            String suffix = component.getSuffix();
 
             if (prefix != null && submittedValue.startsWith(prefix)) {
                 submittedValue = submittedValue.substring(prefix.length());
@@ -58,91 +57,103 @@ public class SpinnerRenderer extends InputRenderer {
             if (suffix != null && submittedValue.endsWith(suffix)) {
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
             }
-            if (LangUtils.isNotEmpty(spinner.getThousandSeparator())) {
-                submittedValue = submittedValue.replace(spinner.getThousandSeparator(), "");
+            if (LangUtils.isNotEmpty(component.getThousandSeparator())) {
+                submittedValue = submittedValue.replace(component.getThousandSeparator(), "");
             }
-            if (LangUtils.isNotEmpty(spinner.getDecimalSeparator())) {
-                submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
+            if (LangUtils.isNotEmpty(component.getDecimalSeparator())) {
+                submittedValue = submittedValue.replace(component.getDecimalSeparator(), ".");
+            }
+
+            try {
+                // GitHub #11830 prevent value outside of minimum or maximum range
+                double submittedNumber = Double.parseDouble(submittedValue);
+                if (submittedNumber < component.getMin() || submittedNumber > component.getMax()) {
+                    logDevelopmentWarning(context, this, String.format("Value is outside min/max range: %s", submittedValue));
+                    return;
+                }
+            }
+            catch (NumberFormatException e) {
+                // GitHub #12365 prevent any invalid number like just the thousands separator
+                logDevelopmentWarning(context, this, String.format("Invalid number format: %s", submittedValue));
+                return;
             }
         }
 
-        spinner.setSubmittedValue(submittedValue);
+        component.setSubmittedValue(submittedValue);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Spinner spinner = (Spinner) component;
-
-        encodeMarkup(context, spinner);
-        encodeScript(context, spinner);
+    public void encodeEnd(FacesContext context, Spinner component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
+    protected void encodeScript(FacesContext context, Spinner component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        Object value = spinner.getValue();
+        Object value = component.getValue();
         String defaultDecimalPlaces = null;
         if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
             defaultDecimalPlaces = "0";
         }
-        String decimalPlaces = isValueBlank(spinner.getDecimalPlaces())
+        String decimalPlaces = isValueBlank(component.getDecimalPlaces())
                 ? defaultDecimalPlaces
-                : spinner.getDecimalPlaces();
+                : component.getDecimalPlaces();
 
-        wb.init("Spinner", spinner)
-                .attr("step", spinner.getStepFactor(), 1.0)
-                .attr("round", spinner.isRound(), false)
-                .attr("min", spinner.getMin(), Double.MIN_VALUE)
-                .attr("max", spinner.getMax(), Double.MAX_VALUE)
-                .attr("prefix", spinner.getPrefix(), null)
-                .attr("suffix", spinner.getSuffix(), null)
-                .attr("required", spinner.isRequired(), false)
-                .attr("rotate", spinner.isRotate(), false)
+        wb.init("Spinner", component)
+                .attr("step", component.getStepFactor(), 1.0)
+                .attr("round", component.isRound(), false)
+                .attr("min", component.getMin(), Spinner.MIN_VALUE)
+                .attr("max", component.getMax(), Spinner.MAX_VALUE)
+                .attr("prefix", component.getPrefix(), null)
+                .attr("suffix", component.getSuffix(), null)
+                .attr("rotate", component.isRotate(), false)
                 .attr("decimalPlaces", decimalPlaces, null)
-                .attr("modifyValueOnWheel", spinner.isModifyValueOnWheel(), true)
-                .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), spinner.getThousandSeparator())
-                .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), spinner.getDecimalSeparator());
+                .attr("modifyValueOnWheel", component.isModifyValueOnWheel(), true)
+                .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), component.getThousandSeparator())
+                .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), component.getDecimalSeparator());
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, Spinner spinner) throws IOException {
+    protected void encodeMarkup(FacesContext context, Spinner component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = spinner.getClientId(context);
+        String clientId = component.getClientId(context);
         String styleClass = getStyleClassBuilder(context)
-                .add(createStyleClass(spinner, Spinner.CONTAINER_CLASS))
-                .add(Spinner.BUTTONS_CLASS_PREFIX + getButtonsClassSuffix(spinner))
+                .add(createStyleClass(component, Spinner.CONTAINER_CLASS))
+                .add(Spinner.BUTTONS_CLASS_PREFIX + getButtonsClassSuffix(component))
+                .add(ComponentUtils.isRTL(context, component), "ui-spinner-rtl")
                 .build();
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if (spinner.getStyle() != null) {
-            writer.writeAttribute("style", spinner.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
 
-        encodeInput(context, spinner);
+        encodeInput(context, component);
 
-        boolean valid = spinner.isValid();
-        String upButtonClass = getButtonClass(context, Spinner.UP_BUTTON_CLASS, spinner.getUpButtonStyleClass(), valid);
-        String downButtonClass = getButtonClass(context, Spinner.DOWN_BUTTON_CLASS, spinner.getDownButtonStyleClass(), valid);
+        boolean valid = component.isValid();
+        String upButtonClass = getButtonClass(context, Spinner.UP_BUTTON_CLASS, component.getUpButtonStyleClass(), valid);
+        String downButtonClass = getButtonClass(context, Spinner.DOWN_BUTTON_CLASS, component.getDownButtonStyleClass(), valid);
 
-        boolean stacked = SpinnerBase.BUTTONS_STACKED.equals(spinner.getButtons());
+        boolean stacked = SpinnerBase.BUTTONS_STACKED.equals(component.getButtons());
         String upIconClass = getIconClass(context,
-                spinner.getUpIcon(),
+                component.getUpIcon(),
                 stacked ? Spinner.STACKED_UP_ICON_CLASS : Spinner.HORIZONTAL_UP_ICON_CLASS);
         String downIconClass = getIconClass(context,
-                spinner.getDownIcon(),
+                component.getDownIcon(),
                 stacked ? Spinner.STACKED_DOWN_ICON_CLASS : Spinner.HORIZONTAL_DOWN_ICON_CLASS);
 
-        encodeButton(context, upButtonClass, upIconClass);
-        encodeButton(context, downButtonClass, downIconClass);
+        encodeButton(context, component, "increase", upButtonClass, upIconClass);
+        encodeButton(context, component, "decrease", downButtonClass, downIconClass);
 
         writer.endElement("span");
     }
 
-    protected String getButtonsClassSuffix(Spinner spinner) {
-        switch (spinner.getButtons()) {
+    protected String getButtonsClassSuffix(Spinner component) {
+        switch (component.getButtons()) {
             case SpinnerBase.BUTTONS_HORIZONTAL:
                 return SpinnerBase.BUTTONS_HORIZONTAL;
             case SpinnerBase.BUTTONS_HORIZONTAL_AFTER:
@@ -169,10 +180,10 @@ public class SpinnerRenderer extends InputRenderer {
                 .build();
     }
 
-    protected void encodeInput(FacesContext context, Spinner spinner) throws IOException {
+    protected void encodeInput(FacesContext context, Spinner component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String inputId = spinner.getClientId(context) + "_input";
-        String inputClass = createStyleClass(spinner, null, Spinner.INPUT_CLASS);
+        String inputId = component.getClientId(context) + "_input";
+        String inputClass = createStyleClass(component, null, Spinner.INPUT_CLASS);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
@@ -181,26 +192,33 @@ public class SpinnerRenderer extends InputRenderer {
         writer.writeAttribute("class", inputClass, null);
         writer.writeAttribute("autocomplete", "off", null);
 
-        String valueToRender = ComponentUtils.getValueToRender(context, spinner);
+        String valueToRender = ComponentUtils.getValueToRender(context, component);
         if (valueToRender != null) {
-            valueToRender = spinner.getPrefix() != null ? spinner.getPrefix() + valueToRender : valueToRender;
-            valueToRender = spinner.getSuffix() != null ? valueToRender + spinner.getSuffix() : valueToRender;
+            valueToRender = component.getPrefix() != null ? component.getPrefix() + valueToRender : valueToRender;
+            valueToRender = component.getSuffix() != null ? valueToRender + component.getSuffix() : valueToRender;
             writer.writeAttribute("value", valueToRender, null);
         }
 
-        renderAccessibilityAttributes(context, spinner);
-        renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, spinner, HTML.INPUT_TEXT_EVENTS);
-        renderValidationMetadata(context, spinner);
+        renderAccessibilityAttributes(context, component);
+        renderRTLDirection(context, component);
+        renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, component);
 
         writer.endElement("input");
     }
 
-    protected void encodeButton(FacesContext context, String styleClass, String iconClass) throws IOException {
+    protected void encodeButton(FacesContext context, Spinner component, String direction, String styleClass, String iconClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("a", null);
+        writer.startElement("button", null);
+        writer.writeAttribute("id", component.getClientId(context) + "-" + direction, "id");
+        writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", styleClass, null);
+
+        if (component.getTabindex() != null) {
+            writer.writeAttribute("tabindex", component.getTabindex(), null);
+        }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-button-text", null);
@@ -211,7 +229,7 @@ public class SpinnerRenderer extends InputRenderer {
 
         writer.endElement("span");
 
-        writer.endElement("a");
+        writer.endElement("button");
     }
 
     @Override

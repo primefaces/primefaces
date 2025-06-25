@@ -1,0 +1,1 @@
+import "./src/clock.widget.js";

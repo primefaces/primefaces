@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,15 @@
  */
 package org.primefaces.component.tabview;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
-import org.primefaces.component.api.*;
+import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.TouchAware;
+import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.Widget;
 import org.primefaces.component.datalist.DataListBase;
+
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, TouchAware, ClientBehaviorHolder, PrimeClientBehaviorHolder,
         MultiViewStateAware<TabViewState> {
@@ -188,7 +193,7 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
     }
 
     public boolean isFocusOnLastActiveTab() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnLastActiveTab, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnLastActiveTab, false);
     }
 
     public void setFocusOnLastActiveTab(boolean focusOnLastActiveTab) {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,26 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.model.MatchMode;
+import org.primefaces.util.CompositeUtils;
+import org.primefaces.util.EditableValueHolderState;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.model.MatchMode;
-import org.primefaces.util.LangUtils;
+import jakarta.el.ELContext;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIData;
+import jakarta.faces.context.FacesContext;
 
 public interface UIColumn {
 
@@ -46,12 +50,12 @@ public interface UIColumn {
 
     /**
      * Used to extract bean's property from a value expression in dynamic columns
-     * (e.g #{car[column.property]} = name)
+     * (e.g. #{car[column.property]} = name)
      */
     Pattern DYNAMIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+\\[([\\w.]+)]}$");
 
     /**
-     * Used to extract bean's property from a value expression in static columns (e.g "#{car.year}" = year)
+     * Used to extract bean's property from a value expression in static columns (e.g. "#{car.year}" = year)
      */
     Pattern STATIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+\\.([\\w.]+)}$");
 
@@ -76,7 +80,7 @@ public interface UIColumn {
                 exprStr = matcher.group(1);
                 expression = context.getApplication().getExpressionFactory()
                         .createValueExpression(elContext, "#{" + exprStr  + "}", String.class);
-                return (String) expression.getValue(elContext);
+                return expression.getValue(elContext);
             }
         }
         else {
@@ -141,7 +145,7 @@ public interface UIColumn {
 
     String getClientId(FacesContext context);
 
-    String getSelectionMode();
+    boolean isSelectionBox();
 
     boolean isResizable();
 
@@ -156,6 +160,8 @@ public interface UIColumn {
     int getColspan();
 
     String getFilterPosition();
+
+    String getFilterPlaceholder();
 
     UIComponent getFacet(String facet);
 
@@ -217,7 +223,7 @@ public interface UIColumn {
 
     MethodExpression getExportFunction();
 
-    String getExportValue();
+    Object getExportValue();
 
     int getExportRowspan();
 
@@ -225,9 +231,9 @@ public interface UIColumn {
 
     boolean isGroupRow();
 
-    String getExportHeaderValue();
+    Object getExportHeaderValue();
 
-    String getExportFooterValue();
+    Object getExportFooterValue();
 
     String getExportTag();
 
@@ -240,4 +246,36 @@ public interface UIColumn {
     boolean isCaseSensitiveSort();
 
     int getDisplayPriority();
+
+    Object getConverter();
+
+    default EditableValueHolderState getFilterValueHolder(FacesContext context) {
+        UIComponent filterFacet = getFacet("filter");
+        if (filterFacet != null) {
+            AtomicReference<EditableValueHolderState> stateRef = new AtomicReference<>(null);
+            CompositeUtils.invokeOnDeepestEditableValueHolder(context, filterFacet, (fc, target) -> {
+                EditableValueHolderState state = new EditableValueHolderState();
+                state.setValue(((EditableValueHolder) target).getValue());
+                stateRef.set(state);
+            });
+            return stateRef.get();
+        }
+
+        return null;
+    }
+
+    default void setFilterValueToValueHolder(FacesContext context, Object value) {
+        UIComponent filterFacet = getFacet("filter");
+
+        CompositeUtils.invokeOnDeepestEditableValueHolder(context, filterFacet, (ctx, component) -> {
+            ((EditableValueHolder) component).setValue(value);
+        });
+    }
+
+    default UIComponent asUIComponent() {
+        if (this instanceof UIComponent) {
+            return (UIComponent) this;
+        }
+        throw new UnsupportedOperationException(getClass().getName() + "#asUIComponent is not implemented");
+    }
 }

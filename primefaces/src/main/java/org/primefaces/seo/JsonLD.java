@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,18 @@
  */
 package org.primefaces.seo;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.json.JSONObject;
 import org.primefaces.model.seo.JsonLDItem;
 import org.primefaces.model.seo.JsonLDModel;
 import org.primefaces.util.FastStringWriter;
 import org.primefaces.util.LangUtils;
+
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+import org.json.JSONObject;
 
 /**
  * Create a script of type `ld+json` for Advanced SEO using JSON for Linking Data.

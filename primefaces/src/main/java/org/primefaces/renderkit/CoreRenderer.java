@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,35 +23,58 @@
  */
 package org.primefaces.renderkit;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import javax.el.PropertyNotFoundException;
-import javax.faces.application.ProjectStage;
-import javax.faces.component.*;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.render.Renderer;
-import javax.faces.validator.Validator;
-
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
-import org.primefaces.util.*;
+import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.ResourceUtils;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.StyleBuilder;
+import org.primefaces.util.StyleClassBuilder;
+import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationMetadataMapper;
 
-public abstract class CoreRenderer extends Renderer {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import jakarta.el.PropertyNotFoundException;
+import jakarta.el.ValueExpression;
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.component.UIParameter;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.component.behavior.ClientBehavior;
+import jakarta.faces.component.behavior.ClientBehaviorContext;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.render.Renderer;
+import jakarta.faces.validator.Validator;
+
+public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
 
     private static final Logger LOGGER = Logger.getLogger(CoreRenderer.class.getName());
 
@@ -69,9 +92,9 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    protected void renderChild(FacesContext context, UIComponent child) throws IOException {
+    protected UIComponent renderChild(FacesContext context, UIComponent child) throws IOException {
         if (!child.isRendered()) {
-            return;
+            return child;
         }
 
         child.encodeBegin(context);
@@ -83,6 +106,7 @@ public abstract class CoreRenderer extends Renderer {
             renderChildren(context, child);
         }
         child.encodeEnd(context);
+        return child;
     }
 
     protected String getResourceURL(FacesContext context, String value) {
@@ -123,9 +147,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
-            Jsf22Helper.renderPassThroughAttributes(context, component);
-        }
+        renderPassThroughAttributes(context, component);
     }
 
     protected void renderDomEvents(FacesContext context, UIComponent component, List<String> eventAttrs) throws IOException {
@@ -234,9 +256,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //dynamic attributes
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
-            Jsf22Helper.renderPassThroughAttributes(context, component);
-        }
+        renderPassThroughAttributes(context, component);
     }
 
     protected void renderAttribute(FacesContext context, UIComponent component, String attribute, Object value)
@@ -273,8 +293,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     /**
-     * Renders a hidden input field commonly use for holding state for a component. Properly handles all attributes
-     * and renders as autocomplete="off" so browsers don't hold onto state between page refreshes.
+     * Renders a hidden input field commonly use for holding state for a component.
      *
      * @param context the FacesContext
      * @param id the id of the hidden field
@@ -288,7 +307,6 @@ public abstract class CoreRenderer extends Renderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("autocomplete", "off", null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -296,6 +314,12 @@ public abstract class CoreRenderer extends Renderer {
             writer.writeAttribute("value", value, null);
         }
         writer.endElement("input");
+    }
+
+    public <T extends UIComponent & RTLAware> void renderRTLDirection(FacesContext context, T component) throws IOException {
+        if (ComponentUtils.isRTL(context, component)) {
+            context.getResponseWriter().writeAttribute("dir", "rtl", null);
+        }
     }
 
     protected String buildDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent,
@@ -352,7 +376,7 @@ public abstract class CoreRenderer extends Renderer {
                         ClientBehavior behavior = behaviors.get(i);
                         if (cbc == null) {
                             cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, behaviorEventName,
-                                    component.getClientId(context), Collections.<ClientBehaviorContext.Parameter>emptyList());
+                                    component.getClientId(context), Collections.emptyList());
                         }
                         String script = behavior.getScript(cbc);
 
@@ -381,7 +405,7 @@ public abstract class CoreRenderer extends Renderer {
             else {
                 if (hasBehaviors) {
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                            context, component, behaviorEventName, component.getClientId(context), Collections.<ClientBehaviorContext.Parameter>emptyList());
+                            context, component, behaviorEventName, component.getClientId(context), Collections.emptyList());
                     ClientBehavior behavior = behaviors.get(0);
                     String script = behavior.getScript(cbc);
                     if (script != null) {
@@ -689,7 +713,8 @@ public abstract class CoreRenderer extends Renderer {
         return PrimeRequestContext.getCurrentInstance(context).getStyleBuilder();
     }
 
-    protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
+    protected void renderValidationMetadata(FacesContext context, EditableValueHolder component,
+                                            ClientValidator... clientValidators) throws IOException {
         if (!PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             return; //GitHub #4049: short circuit method
         }
@@ -697,7 +722,7 @@ public abstract class CoreRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent comp = (UIComponent) component;
 
-        Converter converter;
+        Converter<?> converter;
 
         try {
             converter = ComponentUtils.getConverter(context, comp);
@@ -747,7 +772,7 @@ public abstract class CoreRenderer extends Renderer {
                 }
                 if (beanValidationMetadata.getValidatorIds() != null) {
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<>();
+                        validatorIds = new ArrayList<>(5);
                     }
                     validatorIds.addAll(beanValidationMetadata.getValidatorIds());
                 }
@@ -760,20 +785,33 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //validators
-        Validator[] validators = component.getValidators();
+        Validator<?>[] validators = component.getValidators();
         if (validators != null) {
-            for (Validator validator : validators) {
+            for (Validator<?> validator : validators) {
                 if (validator instanceof ClientValidator) {
                     ClientValidator clientValidator = (ClientValidator) validator;
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<>();
+                        validatorIds = new ArrayList<>(5);
                     }
                     validatorIds.add(clientValidator.getValidatorId());
-                    Map<String, Object> metadata = clientValidator.getMetadata();
 
+                    Map<String, Object> metadata = clientValidator.getMetadata();
                     if (metadata != null && !metadata.isEmpty()) {
                         renderValidationMetadataMap(context, metadata);
                     }
+                }
+            }
+        }
+        if (clientValidators != null) {
+            for (ClientValidator clientValidator : clientValidators) {
+                if (validatorIds == null) {
+                    validatorIds = new ArrayList<>(5);
+                }
+                validatorIds.add(clientValidator.getValidatorId());
+
+                Map<String, Object> metadata = clientValidator.getMetadata();
+                if (metadata != null && !metadata.isEmpty()) {
+                    renderValidationMetadataMap(context, metadata);
                 }
             }
         }
@@ -840,7 +878,7 @@ public abstract class CoreRenderer extends Renderer {
      * @param context the {@link FacesContext}.
      * @param component the widget without actual HTML markup.
      * @param clientId the component clientId.
-     * @throws IOException
+     * @throws IOException if an input/ output error occurs.
      */
     protected void renderDummyMarkup(FacesContext context, UIComponent component, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -852,6 +890,19 @@ public abstract class CoreRenderer extends Renderer {
         renderPassThruAttributes(context, component);
 
         writer.endElement("div");
+    }
+
+    /**
+     * GitHub #7763 Renders an in memory UIComponent and updates its ID with an index.
+     * For example id="form:test" becomes id="form:test:0".
+     *
+     * @param context the {@link FacesContext}.
+     * @param component the {@link UIComponent} to render.
+     * @param index the index number to append to the ID
+     * @throws IOException if an input/ output error occurs.
+     */
+    protected void encodeIndexedId(FacesContext context, UIComponent component, int index) throws IOException {
+        ComponentUtils.encodeIndexedId(context, component, index);
     }
 
     protected boolean endsWithLenghtUnit(String val) {
@@ -875,13 +926,74 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     /**
+     * Renders a button value or label for screen readers if no value is present or icon only button.
+     *
+     * @param writer The response writer
+     * @param escaped is the button escaped?
+     * @param value the value for the button
+     * @param title the title for the button
+     * @param arialLabel the aria label for the button
+     * @throws IOException if any error occurs
+     */
+    protected void renderButtonValue(ResponseWriter writer, boolean escaped, Object value, String title, String arialLabel) throws IOException {
+        if (value == null) {
+            //For ScreenReader
+            String label = getIconOnlyButtonText(title, arialLabel);
+            if (escaped) {
+                writer.writeText(label, null);
+            }
+            else {
+                writer.write(label);
+            }
+        }
+        else {
+            if (escaped) {
+                writer.writeText(value, "value");
+            }
+            else {
+                writer.write(value.toString());
+            }
+        }
+    }
+
+    /**
      * Logs a WARN log message in ProjectStage == DEVELOPMENT.
      * @param context the FacesContext
+     * @param clazz the class or object for which the log is generated
      * @param message the message to log
      */
-    protected void logDevelopmentWarning(FacesContext context, String message) {
+    protected void logDevelopmentWarning(FacesContext context, Object clazz, String message) {
         if (LOGGER.isLoggable(Level.WARNING) && context.isProjectStage(ProjectStage.Development)) {
-            LOGGER.log(Level.WARNING, message);
+            LOGGER.logp(Level.WARNING, clazz.getClass().getName(), message, message);
+        }
+    }
+
+    private void renderPassThroughAttributes(FacesContext context, UIComponent component) throws IOException {
+        Map<String, Object> passthroughAttributes = component.getPassThroughAttributes(false);
+
+        if (passthroughAttributes != null && !passthroughAttributes.isEmpty()) {
+            ResponseWriter writer = context.getResponseWriter();
+
+            for (Map.Entry<String, Object> attribute : passthroughAttributes.entrySet()) {
+                Object attributeValue = attribute.getValue();
+                if (attributeValue != null) {
+                    String value = null;
+
+                    if (attributeValue instanceof ValueExpression) {
+                        Object expressionValue = ((ValueExpression) attributeValue).getValue(context.getELContext());
+                        if (expressionValue != null) {
+                            value = expressionValue.toString();
+                        }
+                    }
+                    else {
+                        value = attributeValue.toString();
+                    }
+
+                    if (value != null) {
+                        writer.writeAttribute(attribute.getKey(), value, null);
+                    }
+                }
+            }
         }
     }
 }

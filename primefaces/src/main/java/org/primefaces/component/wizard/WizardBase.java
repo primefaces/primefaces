@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.wizard;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class WizardBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -37,20 +37,22 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
 
     public enum PropertyKeys {
 
-        widgetVar,
+        backLabel,
+        disableOnAjax,
+        effect,
+        effectDuration,
+        flowListener,
+        highlightCompletedSteps,
+        nextLabel,
+        onback,
+        onnext,
+        showNavBar,
+        showStepStatus,
         step,
         style,
         styleClass,
-        flowListener,
-        showNavBar,
-        showStepStatus,
-        onback,
-        onnext,
-        nextLabel,
-        backLabel,
         updateModelOnPrev,
-        effect,
-        effectDuration,
+        widgetVar
     }
 
     public WizardBase() {
@@ -94,11 +96,11 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public javax.el.MethodExpression getFlowListener() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.flowListener, null);
+    public jakarta.el.MethodExpression getFlowListener() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.flowListener, null);
     }
 
-    public void setFlowListener(javax.el.MethodExpression flowListener) {
+    public void setFlowListener(jakarta.el.MethodExpression flowListener) {
         getStateHelper().put(PropertyKeys.flowListener, flowListener);
     }
 
@@ -172,5 +174,21 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
 
     public void setEffectDuration(int effectDuration) {
         getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
+    }
+
+    public boolean isDisableOnAjax() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, true);
+    }
+
+    public void setDisableOnAjax(boolean disableOnAjax) {
+        getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
+    }
+
+    public boolean isHighlightCompletedSteps() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.highlightCompletedSteps, false);
+    }
+
+    public void setHighlightCompletedSteps(boolean highlightCompletedSteps) {
+        getStateHelper().put(PropertyKeys.highlightCompletedSteps, highlightCompletedSteps);
     }
 }

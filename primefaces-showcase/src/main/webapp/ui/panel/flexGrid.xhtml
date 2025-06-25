@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -70,8 +70,7 @@
     <ui:define name="description">
         Flex Grid CSS is a lightweight flex based responsive layout utility optimized for mobile phones, tablets and desktops. Flex
         Grid CSS is not included in PrimeFaces as it is provided by
-        <a href="https://github.com/primefaces/primeflex"
-           target="_blank">PrimeFlex</a>, a shared grid library between PrimeFaces, PrimeNG and PrimeReact projects.
+        <a href="https://primeflex.org/" target="_blank" rel="noopener noreferrer">PrimeFlex</a>, a shared grid library between PrimeFaces, PrimeNG and PrimeReact projects.
     </ui:define>
 
     <ui:param name="documentationLink" value=""/>
@@ -87,10 +86,10 @@
         &lt;dependency&gt;
            &lt;groupId>org.webjars.npm&lt;/groupId&gt;
            &lt;artifactId>primeflex&lt;/artifactId&gt;
-           &lt;version>2.0.0&lt;/version&gt;
+           &lt;version>4.0.0&lt;/version&gt;
         &lt;/dependency&gt;
         
-        &lt;h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css" /&gt;
+        &lt;h:outputStylesheet library="webjars" name="primeflex/4.0.0/primeflex.min.css" /&gt;
         </code></pre>
 
         <div class="card">

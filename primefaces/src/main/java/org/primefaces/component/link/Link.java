@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.link;
 
+import org.primefaces.util.ComponentUtils;
+
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependency;
-
-import org.primefaces.util.ComponentUtils;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,57 +23,55 @@
  */
 package org.primefaces.component.breadcrumb;
 
-import java.io.IOException;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.seo.JsonLDItem;
 import org.primefaces.model.seo.JsonLDModel;
 import org.primefaces.seo.JsonLD;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-public class BreadCrumbRenderer extends BaseMenuRenderer {
+import java.io.IOException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class BreadCrumbRenderer extends BaseMenuRenderer<BreadCrumb> {
 
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException {
+    protected void encodeMarkup(FacesContext context, BreadCrumb component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        BreadCrumb breadCrumb = (BreadCrumb) menu;
-        String clientId = breadCrumb.getClientId(context);
+        String clientId = component.getClientId(context);
         String styleClass = getStyleClassBuilder(context)
                     .add(BreadCrumb.CONTAINER_CLASS)
-                    .add(breadCrumb.getStyleClass())
+                    .add(component.getStyleClass())
                     .build();
-        int elementCount = menu.getElementsCount();
-        List<MenuElement> menuElements = menu.getElements();
-        boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
+        int elementCount = component.getElementsCount();
+        List<MenuElement> menuElements = component.getElements();
+        boolean isIconHome = component.getHomeDisplay().equals("icon");
         boolean isOnlyHomeIcon = isIconHome && elementCount == 1;
         String wrapper = "nav";
         String listType = "ol";
 
         // SEO
-        boolean isSEO = breadCrumb.isSeo();
+        boolean isSEO = component.isSeo();
         List<JsonLDItem> ldItems = new ArrayList<>();
 
         //home icon for first item
         if (isIconHome && elementCount > 0) {
-            String icon = breadCrumb.getHomeIcon();
+            String icon = component.getHomeIcon();
             String iconStyleClass = getStyleClassBuilder(context)
                         .add("ui-breadcrumb-home-icon")
                         .add(icon)
-                        .add(isOnlyHomeIcon && breadCrumb.isLastItemDisabled(), "ui-state-disabled")
+                        .add(isOnlyHomeIcon && component.isLastItemDisabled(), "ui-state-disabled")
                         .build();
             MenuItem home = ((MenuItem) menuElements.get(0));
             home.setStyleClass(iconStyleClass);
@@ -83,8 +81,8 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute(HTML.ARIA_LABEL, HTML.ARIA_LABEL_BREADCRUMB, null);
-        if (breadCrumb.getStyle() != null) {
-            writer.writeAttribute("style", breadCrumb.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
 
         if (elementCount > 0) {
@@ -104,9 +102,9 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
 
                     boolean last = i + 1 == elementCount;
-                    if (item.isDisabled() || (breadCrumb.isLastItemDisabled() && last)) {
+                    if (item.isDisabled() || (component.isLastItemDisabled() && last)) {
                         if (isOnlyHomeIcon) {
-                            encodeMenuItem(context, menu, item, menu.getTabindex(), null);
+                            encodeMenuItem(context, component, item, component.getTabindex(), null);
                         }
                         else {
                             encodeDisabledMenuItem(context, item);
@@ -117,15 +115,15 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                         if (last) {
                             attr = new SimpleEntry<>(HTML.ARIA_CURRENT, HTML.ARIA_CURRENT_PAGE);
                         }
-                        encodeMenuItem(context, menu, item, menu.getTabindex(), attr);
+                        encodeMenuItem(context, component, item, component.getTabindex(), attr);
                     }
 
                     writer.endElement("li");
                 }
             }
 
-            UIComponent optionsFacet = menu.getFacet("options");
-            if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
+            UIComponent optionsFacet = component.getFacet("options");
+            if (FacetUtils.shouldRenderFacet(optionsFacet)) {
                 writer.startElement("li", null);
                 writer.writeAttribute("class", BreadCrumb.OPTIONS_CLASS, null);
                 optionsFacet.encodeAll(context);
@@ -144,7 +142,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, BreadCrumb component) throws IOException {
         // Do nothing
     }
 
@@ -154,12 +152,10 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        BreadCrumb breadcrumb = (BreadCrumb) abstractMenu;
-
+    protected void encodeScript(FacesContext context, BreadCrumb component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("BreadCrumb", breadcrumb)
-                .attr("seo", breadcrumb.isSeo());
+        wb.init("BreadCrumb", component)
+                .attr("seo", component.isSeo());
 
         wb.finish();
     }

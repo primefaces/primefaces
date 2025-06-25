@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,20 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
-import java.util.Map;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
+
+import java.io.IOException;
+import java.util.Map;
+
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.FacesContext;
 
 public class RowEditFeature implements DataTableFeature {
 
@@ -77,7 +78,7 @@ public class RowEditFeature implements DataTableFeature {
         }
 
         if (table.isRowAvailable()) {
-            renderer.encodeRow(context, table, clientId, editedRowId);
+            renderer.encodeRow(context, table, editedRowId);
         }
     }
 

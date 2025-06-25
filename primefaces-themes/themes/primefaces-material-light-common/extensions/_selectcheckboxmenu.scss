@@ -1,0 +1,56 @@
+@use 'sass:list';
+@use 'sass:math';
+
+body {
+  .ui-selectcheckboxmenu {
+    &.ui-state-error {
+      &:not(.ui-state-disabled).ui-state-focus {
+        box-shadow: inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor;
+      }
+    }
+
+    .ui-selectcheckboxmenu-multiple-container {
+      .ui-selectcheckboxmenu-token {
+        padding: math.div(list.nth($inputPadding, 1), 2) list.nth($inputPadding, 2);
+        margin-bottom: .1rem;
+
+        .ui-selectcheckboxmenu-token-label {
+          padding: 0;
+          padding-right: 1.5rem;
+        }
+
+        .ui-selectcheckboxmenu-token-icon {
+          padding-right: .5rem;
+        }
+      }
+    }
+  }
+
+  &.ui-input-filled, .ui-input-filled {
+    .ui-selectcheckboxmenu {
+      border: 0 none;
+
+      &:not(.ui-state-disabled).ui-state-hover {
+        border-color: transparent;
+        border-bottom-color: $inputHoverBorderColor;
+      }
+    }
+
+    .ui-selectcheckboxmenu {
+      @include filled-input();
+
+      .ui-inputfield {
+        background-image: none;
+        background: transparent;
+      }
+    }
+
+    .ui-selectcheckboxmenu.ui-state-error {
+      @include invalid-filled-input-wrapper();
+
+      &:not(.ui-state-disabled).ui-state-hover {
+        @include invalid-filled-input-wrapper();
+      }
+    }
+  }
+}

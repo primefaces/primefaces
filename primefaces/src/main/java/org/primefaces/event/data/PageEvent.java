@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,36 @@
  */
 package org.primefaces.event.data;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
 
 public class PageEvent extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The current page number.
+     */
     private int page;
 
-    public PageEvent(UIComponent component, Behavior behavior, int page) {
+    /**
+     * The number of rows per page.
+     */
+    private Integer rowsPerPage;
+
+    public PageEvent(UIComponent component, Behavior behavior, int page, Integer rowsPerPage) {
         super(component, behavior);
         this.page = page;
+        this.rowsPerPage = rowsPerPage;
     }
 
     public int getPage() {
         return page;
+    }
+
+    public Integer getRowsPerPage() {
+        return rowsPerPage;
     }
 }

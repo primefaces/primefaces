@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,15 @@ package org.primefaces.webapp.filter;
 
 import java.io.IOException;
 
-import javax.faces.application.ResourceHandler;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.faces.application.ResourceHandler;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class NoCacheFilter implements Filter {
 
@@ -36,7 +41,7 @@ public class NoCacheFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        if (!httpRequest.getRequestURI().contains(ResourceHandler.RESOURCE_IDENTIFIER)) { // Skip JSF resources (CSS/JS/Images/etc)
+        if (!httpRequest.getRequestURI().contains(ResourceHandler.RESOURCE_IDENTIFIER)) { // Skip Faces resources (CSS/JS/Images/etc)
             httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
             httpResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
             httpResponse.setDateHeader("Expires", 0); // Proxies.

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.commandbutton;
 
-import javax.faces.component.html.HtmlCommandButton;
-
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.html.HtmlCommandButton;
 
 public abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource, Widget, Confirmable, PrimeClientBehaviorHolder {
 
@@ -58,6 +58,7 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
         inline,
         escape,
         validateClient,
+        enabledByValidateClient,
         partialSubmitFilter,
         form,
         renderDisabledClick,
@@ -246,6 +247,14 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
 
     public void setValidateClient(boolean validateClient) {
         getStateHelper().put(PropertyKeys.validateClient, validateClient);
+    }
+
+    public boolean isEnabledByValidateClient() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.enabledByValidateClient, false);
+    }
+
+    public void setEnabledByValidateClient(boolean enabledByValidateClient) {
+        getStateHelper().put(PropertyKeys.enabledByValidateClient, enabledByValidateClient);
     }
 
     @Override

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,10 @@
  */
 package org.primefaces.cli.migration.primeflex;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GridCssMigrationTest {
 
@@ -40,7 +41,7 @@ class GridCssMigrationTest {
     void migrateGridCSS2V2Grid() {
         String source = "<div class=\"ui-g\"><div class=\"ui-g-2 ui-md-6\"></div><div class=\"ui-g-10 ui-md-6\"></div></div>";
         String result = MIGRATION.migrateSource(source);
-        Assertions.assertEquals("<div class=\"p-grid\"><div class=\"p-col-2 p-md-6\"></div><div class=\"p-col-10 p-md-6\"></div></div>", result);
+        assertEquals("<div class=\"p-grid\"><div class=\"p-col-2 p-md-6\"></div><div class=\"p-col-10 p-md-6\"></div></div>", result);
     }
 
 }

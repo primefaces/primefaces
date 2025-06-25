@@ -28,7 +28,7 @@ ContextMenu provides an overlay menu displayed on mouse right-click event.
 | nodeType | null | String | Specific type of tree nodes to attach to.
 | event | null | String | Event to bind contextMenu display, default is contextmenu aka right click.
 | beforeShow | null | String | Client side callback to execute before showing.
-| selectionMode | multiple | String | Defines the selection behavior, e.g "single" or "multiple".
+| selectionMode | multiple | String | Defines the selection behavior, e.g., "single" or "multiple".
 | targetFilter | null | String | Selector to filter the elements to attach the menu.
 
 ## Getting started with ContextMenu

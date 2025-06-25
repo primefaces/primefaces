@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,15 @@
  */
 package org.primefaces.application.exceptionhandler;
 
-import java.beans.FeatureDescriptor;
-import java.util.Iterator;
-import javax.el.ELContext;
-import javax.el.ELResolver;
-import javax.faces.context.FacesContext;
+import org.primefaces.util.LangUtils;
+
+import java.util.Map;
+
+import jakarta.el.ELContext;
+import jakarta.el.ELResolver;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.lifecycle.ClientWindow;
 
 public class PrimeExceptionHandlerELResolver extends ELResolver {
 
@@ -40,10 +44,22 @@ public class PrimeExceptionHandlerELResolver extends ELResolver {
             elContext.setPropertyResolved(true);
 
             FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+
             ExceptionInfo info = (ExceptionInfo) context.getAttributes().get(ExceptionInfo.ATTRIBUTE_NAME);
 
-            if (info == null) {
-                info = (ExceptionInfo) context.getExternalContext().getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME);
+            if (info == null && externalContext.getSession(false) != null) {
+                ClientWindow clientWindow = externalContext.getClientWindow();
+                if (clientWindow != null && LangUtils.isNotBlank(clientWindow.getId())) {
+                    Map<String, ExceptionInfo> windowsMap = (Map<String, ExceptionInfo>)
+                            externalContext.getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME + "_map");
+                    if (windowsMap != null) {
+                        info = windowsMap.get(clientWindow.getId());
+                    }
+                }
+                if (info == null) {
+                    info = (ExceptionInfo) externalContext.getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME);
+                }
             }
 
             return info;
@@ -65,11 +81,6 @@ public class PrimeExceptionHandlerELResolver extends ELResolver {
     @Override
     public boolean isReadOnly(ELContext context, Object base, Object property) {
         return true;
-    }
-
-    @Override
-    public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context, Object base) {
-        return null;
     }
 
     @Override

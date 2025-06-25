@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,16 @@
  */
 package org.primefaces.config;
 
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
 import java.util.Map;
 import java.util.Objects;
 
-import javax.faces.component.UIInput;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * Container for all config parameters.
@@ -48,13 +48,11 @@ public class PrimeConfiguration {
     private final boolean primeIconsEnabled;
     private final boolean clientSideLocalizationEnabled;
     private final boolean clientSideValidationEnabled;
-    private final String uploader;
     private final boolean transformMetadataEnabled;
-    private final boolean legacyWidgetNamespace;
     private final boolean interpolateClientSideValidationMessages;
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
-    private final boolean html5Compliance;
+    private final boolean moveScriptsToBottomDeferred;
     private boolean csp;
     private boolean policyProvided;
     private String cspPolicy;
@@ -62,6 +60,7 @@ public class PrimeConfiguration {
     private String[] exceptionTypesToIgnoreInLogging;
     private final String multiViewStateStore;
     private final boolean markInputAsInvalidOnErrorMsg;
+    private int dynamicContentLimit;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -97,9 +96,6 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.CSV);
         clientSideValidationEnabled = Boolean.parseBoolean(value);
 
-        value = externalContext.getInitParameter(Constants.ContextParams.UPLOADER);
-        uploader = (value == null) ? "auto" : value;
-
         theme = externalContext.getInitParameter(Constants.ContextParams.THEME);
 
         value = externalContext.getInitParameter(Constants.ContextParams.PRIME_ICONS);
@@ -107,9 +103,6 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.TRANSFORM_METADATA);
         transformMetadataEnabled = Boolean.parseBoolean(value);
-
-        value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
-        legacyWidgetNamespace = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
         beanValidationEnabled = environment.isBeanValidationAvailable() && !Boolean.parseBoolean(value);
@@ -121,13 +114,26 @@ public class PrimeConfiguration {
         earlyPostParamEvaluation = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.CLIENT_SIDE_LOCALISATION);
-        clientSideLocalizationEnabled = Boolean.parseBoolean(value);
+        clientSideLocalizationEnabled = Boolean.parseBoolean(Objects.toString(value, "true"));
 
-        value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
-        moveScriptsToBottom = Boolean.parseBoolean(value);
+        value = externalContext.getInitParameter(Constants.ContextParams.DYNAMIC_CONTENT_LIMIT);
+        dynamicContentLimit = Integer.parseInt(Objects.toString(value, "200"));
 
-        value = externalContext.getInitParameter(Constants.ContextParams.HTML5_COMPLIANCE);
-        html5Compliance = Boolean.parseBoolean(value);
+        value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM));
+        switch (value) {
+            case "true":
+                moveScriptsToBottom = Boolean.TRUE;
+                moveScriptsToBottomDeferred = Boolean.FALSE;
+                break;
+            case "defer":
+                moveScriptsToBottom = Boolean.TRUE;
+                moveScriptsToBottomDeferred = Boolean.TRUE;
+                break;
+            default:
+                moveScriptsToBottom = Boolean.FALSE;
+                moveScriptsToBottomDeferred = Boolean.FALSE;
+                break;
+        }
 
         value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.CSP));
         switch (value) {
@@ -161,13 +167,11 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.MARK_INPUT_AS_INVALID_ON_ERROR_MSG);
         markInputAsInvalidOnErrorMsg = Boolean.parseBoolean(value);
 
-        if (environment.isAtLeastJsf40()) {
-            value = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
-            cookiesSameSite = (value == null) ? "Strict" : value;
-        }
+        value = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
+        cookiesSameSite = (value == null) ? "Strict" : value;
 
         cookiesSecure = true;
-        if (environment.isAtLeastServlet30() && externalContext.getContext() instanceof ServletContext) {
+        if (externalContext.getContext() instanceof ServletContext) {
             ServletContext se = (ServletContext) externalContext.getContext();
             if (se.getSessionCookieConfig() != null) {
                 cookiesSecure = se.getSessionCookieConfig().isSecure();
@@ -234,16 +238,8 @@ public class PrimeConfiguration {
         return clientSideValidationEnabled;
     }
 
-    public String getUploader() {
-        return uploader;
-    }
-
     public boolean isTransformMetadataEnabled() {
         return transformMetadataEnabled;
-    }
-
-    public boolean isLegacyWidgetNamespace() {
-        return legacyWidgetNamespace;
     }
 
     public boolean isInterpolateClientSideValidationMessages() {
@@ -258,8 +254,8 @@ public class PrimeConfiguration {
         return moveScriptsToBottom;
     }
 
-    public boolean isHtml5Compliant() {
-        return html5Compliance;
+    public boolean isMoveScriptsToBottomDeferred() {
+        return moveScriptsToBottomDeferred;
     }
 
     public boolean isStringConverterAvailable() {
@@ -308,5 +304,9 @@ public class PrimeConfiguration {
 
     public String getCookiesSameSite() {
         return cookiesSameSite;
+    }
+
+    public int getDynamicContentLimit() {
+        return dynamicContentLimit;
     }
 }

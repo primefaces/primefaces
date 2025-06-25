@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,101 +23,36 @@
  */
 package org.primefaces.behavior.base;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.primefaces.el.ValueExpressionStateHelper;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorBase;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.StateHelper;
+import jakarta.faces.component.behavior.ClientBehaviorBase;
+import jakarta.faces.context.FacesContext;
 
 public abstract class AbstractBehavior extends ClientBehaviorBase {
 
-    protected Map<String, Object> literals;
-    protected Map<String, ValueExpression> bindings;
+    private StateHelper stateHelper;
 
     public AbstractBehavior() {
         super();
-
-        int attrsCount = getAllAttributes().length;
-        literals = new HashMap<>(attrsCount);
-        bindings = new HashMap<>(attrsCount);
     }
 
-    public void setLiteral(String attr, Object val) {
-        if (val == null && literals.containsKey(attr)) {
-            literals.remove(attr);
-        }
-        else {
-            literals.put(attr, val);
-        }
+    public StateHelper getStateHelper() {
+        return getStateHelper(true);
     }
 
-    public void setLiteral(Enum<?> property, Object val) {
-        String attr = property.name();
-        setLiteral(attr, val);
-    }
-
-    public void setValueExpression(String attr, ValueExpression ve) {
-        if (ve == null && bindings.containsKey(attr)) {
-            bindings.remove(attr);
-        }
-        else {
-            bindings.put(attr, ve);
-        }
-    }
-
-    public void setValueExpression(Enum<?> property, ValueExpression ve) {
-        String attr = property.name();
-        setValueExpression(attr, ve);
-    }
-
-    public <T> T eval(String attr, T unspecifiedValue) {
-        if (literals.containsKey(attr)) {
-            Object val = literals.get(attr);
-            if (val == null) {
-                return unspecifiedValue;
-            }
-            else {
-                return (T) val;
-            }
+    public StateHelper getStateHelper(boolean create) {
+        if (stateHelper == null && create) {
+            stateHelper = new ValueExpressionStateHelper();
         }
 
-        ValueExpression ve = bindings.get(attr);
-        if (ve != null) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            ELContext elContext = facesContext.getELContext();
-            return (T) ve.getValue(elContext);
-        }
-        return unspecifiedValue;
-    }
-
-    protected <T> T eval(Enum<?> property, T unspecifiedValue) {
-        return eval(property.name(), unspecifiedValue);
-    }
-
-    public void put(String name, Object value) {
-        setLiteral(name, value);
-    }
-
-    public void put(Enum<?> property, Object value) {
-        setLiteral(property.name(), value);
-    }
-
-    protected boolean isAttributeSet(String attr) {
-        return literals.containsKey(attr) || bindings.containsKey(attr);
-    }
-
-    protected boolean isAttributeSet(Enum<?> property) {
-        String attr = property.name();
-        return isAttributeSet(attr);
+        return stateHelper;
     }
 
     @Override
     public Object saveState(FacesContext context) {
         if (context == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException("context");
         }
 
         Object[] values;
@@ -133,11 +68,15 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             }
         }
         else {
-            values = new Object[3];
-
-            values[0] = superState;
-            values[1] = savePropertyMap(context, literals, false);
-            values[2] = savePropertyMap(context, bindings, true);
+            if (stateHelper == null) {
+                values = new Object[1];
+                values[0] = superState;
+            }
+            else {
+                values = new Object[2];
+                values[0] = superState;
+                values[1] = stateHelper.saveState(context);
+            }
         }
 
         return values;
@@ -146,7 +85,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
     @Override
     public void restoreState(FacesContext context, Object state) {
         if (context == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException("context");
         }
 
         if (state != null) {
@@ -154,8 +93,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             super.restoreState(context, values[0]);
 
             if (values.length != 1) {
-                literals = restorePropertyMap(context, (Object[]) values[1], false);
-                bindings = restorePropertyMap(context, (Object[]) values[2], true);
+                getStateHelper().restoreState(context, values[1]);
 
                 // If we saved state last time, save state again next time.
                 clearInitialState();
@@ -163,52 +101,6 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         }
     }
 
-    protected Object[] savePropertyMap(FacesContext context, Map<String, ?> map, boolean saveValuesAsAttachedState) {
-        if (map == null) {
-            return null;
-        }
-
-        BehaviorAttribute[] attributes = getAllAttributes();
-
-        Object[] values = new Object[attributes.length];
-        for (int i = 0; i < attributes.length; i++) {
-            Object val = map.get(attributes[i].getName());
-
-            if (saveValuesAsAttachedState) {
-                val = UIComponentBase.saveAttachedState(context, val);
-            }
-
-            if (val != null) {
-                values[i] = val;
-            }
-        }
-
-        return values;
-    }
-
-    protected Map restorePropertyMap(FacesContext context, Object[] values, boolean restoreValuesFromAttachedState) {
-        if (values == null) {
-            return null;
-        }
-
-        BehaviorAttribute[] attributes = getAllAttributes();
-
-        Map<String, Object> map = new HashMap<>(attributes.length);
-        for (int i = 0; i < attributes.length; i++) {
-            Object val = values[i];
-
-            if (restoreValuesFromAttachedState) {
-                val = UIComponentBase.restoreAttachedState(context, val);
-            }
-
-            if (val != null) {
-                map.put(attributes[i].getName(), val);
-            }
-        }
-
-        return map;
-    }
 
     protected abstract BehaviorAttribute[] getAllAttributes();
-
 }

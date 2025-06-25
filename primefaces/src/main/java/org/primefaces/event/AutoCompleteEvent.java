@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,9 @@
  */
 package org.primefaces.event;
 
-import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.FacesListener;
 
 public class AutoCompleteEvent extends FacesEvent {
 

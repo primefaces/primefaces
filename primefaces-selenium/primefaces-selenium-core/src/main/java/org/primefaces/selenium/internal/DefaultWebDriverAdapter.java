@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,15 @@
  */
 package org.primefaces.selenium.internal;
 
+import org.primefaces.selenium.spi.WebDriverAdapter;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverLogLevel;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
@@ -39,9 +40,6 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.primefaces.selenium.spi.WebDriverAdapter;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DefaultWebDriverAdapter implements WebDriverAdapter {
 
@@ -56,6 +54,10 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
         else if ("chrome".equals(configProvider.getWebdriverBrowser())) {
             if (!System.getProperties().contains("webdriver.chrome.driver")) {
                 webDriverManager = WebDriverManager.chromedriver();
+
+                // uncomment if you need to clear cache getting Chrome mismatch errors
+                //webDriverManager.clearDriverCache();
+                //webDriverManager.clearResolutionCache();
             }
         }
         else if ("safari".equals(configProvider.getWebdriverBrowser())) {
@@ -81,11 +83,11 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
         }
 
         LoggingPreferences logPrefs = new LoggingPreferences();
-        logPrefs.enable(LogType.BROWSER, Level.ALL);
+        logPrefs.enable(LogType.BROWSER, config.getWebdriverLogLevel());
 
         switch (config.getWebdriverBrowser()) {
             case "firefox":
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                FirefoxOptions firefoxOptions = new FirefoxOptions().configureFromEnv();
                 firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 if (config.isWebdriverHeadless()) {
                     firefoxOptions.addArguments("-headless");
@@ -98,9 +100,11 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
                 chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 if (config.isWebdriverHeadless()) {
                     chromeOptions.addArguments("--headless=new");
+                    // Chrome 128 /129 - see https://stackoverflow.com/questions/78996364/chrome-129-headless-shows-blank-window,
+                    // https://issues.chromium.org/issues/359921643
+                    // Should be fixed for Chrome 130
                 }
                 chromeOptions.setCapability(ChromeOptions.LOGGING_PREFS, logPrefs);
-                chromeOptions.setLogLevel(ChromeDriverLogLevel.fromLevel(config.getWebdriverLogLevel()));
 
                 // Chrome 111 workaround: https://github.com/SeleniumHQ/selenium/issues/11750
                 chromeOptions.addArguments("--remote-allow-origins=*");

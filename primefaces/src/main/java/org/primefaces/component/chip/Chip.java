@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,11 @@ package org.primefaces.component.chip;
 
 import org.primefaces.util.MapBuilder;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.event.BehaviorEvent;
 import java.util.Collection;
 import java.util.Map;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.event.BehaviorEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

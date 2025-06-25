@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.api;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectItem;
-import javax.faces.model.SelectItem;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UISelectItem;
+import jakarta.faces.model.SelectItem;
 
 /**
  * Wraps a SelectItem so its {@code <f:selectitem>} passthrough attributes can be used.

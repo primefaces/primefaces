@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.treetable.export;
 
+import org.primefaces.component.export.ExcelOptions;
+
 import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.primefaces.component.export.ExcelOptions;
-import org.primefaces.component.export.ExportConfiguration;
-
-import javax.faces.context.FacesContext;
 
 /**
  * Different implementation of ExcelXExporter using the POI streaming API:
@@ -44,29 +44,29 @@ import javax.faces.context.FacesContext;
 public class TreeTableExcelXStreamExporter extends TreeTableExcelXExporter {
 
     @Override
-    protected Workbook createWorkBook() {
+    protected Workbook createDocument(FacesContext context) throws IOException {
         SXSSFWorkbook sxssfWorkbook = new SXSSFWorkbook(100);
         sxssfWorkbook.setCompressTempFiles(true);
         return sxssfWorkbook;
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
-        SXSSFWorkbook sxssfWorkbook =  ((SXSSFWorkbook) wb);
-        super.postExport(context, exportConfiguration);
-        sxssfWorkbook.dispose();
+    protected void postExport(FacesContext context) throws IOException {
+        super.postExport(context);
+        SXSSFWorkbook sxssfWorkbook = ((SXSSFWorkbook) document);
+        sxssfWorkbook.close();
     }
 
     @Override
-    protected Sheet createSheet(Workbook wb, String sheetName, ExcelOptions options) {
-        SXSSFWorkbook workbook = (SXSSFWorkbook) wb;
-        SXSSFSheet sheet =  workbook.createSheet(sheetName);
+    protected void applyOptions(Sheet sheet) {
+        super.applyOptions(sheet);
+        SXSSFSheet sxssfSheet = (SXSSFSheet) sheet;
+        ExcelOptions options = (ExcelOptions) exportConfiguration.getOptions();
         if (options == null || options.isAutoSizeColumn()) {
-            sheet.trackAllColumnsForAutoSizing();
+            sxssfSheet.trackAllColumnsForAutoSizing();
         }
         else {
-            sheet.untrackAllColumnsForAutoSizing();
+            sxssfSheet.untrackAllColumnsForAutoSizing();
         }
-        return sheet;
     }
 }

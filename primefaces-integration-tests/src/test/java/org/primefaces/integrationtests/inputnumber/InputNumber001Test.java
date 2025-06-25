@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,72 +23,76 @@
  */
 package org.primefaces.integrationtests.inputnumber;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputNumber;
 
-public class InputNumber001Test extends AbstractPrimePageTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class InputNumber001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("InputNumber: Default AJAX event fires on blur")
-    public void testAjaxChangeEvent(final Page page) {
+    void ajaxChangeEvent(final Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
-        Assertions.assertEquals("50", inputNumber.getValue());
+        assertEquals("50", inputNumber.getValue());
 
         // Act
         inputNumber.setValue("33");
 
         // Assert
-        Assertions.assertEquals("33", inputNumber.getValue());
+        assertEquals("33", inputNumber.getWidgetValue());
+        assertEquals("33", inputNumber.getValue());
         assertConfiguration(inputNumber.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("InputNumber: Test integer input without decimal places default to 0")
-    public void testInteger(Page page) {
+    void integer(Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
-        Assertions.assertEquals("50", inputNumber.getValue());
+        assertEquals("50", inputNumber.getValue());
 
         // Act
         inputNumber.setValue("98.54");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("99", inputNumber.getValue());
+        assertEquals("99", inputNumber.getValue());
         assertConfiguration(inputNumber.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("InputNumber: Test widget getValue() function returns Integer values with the correct format")
-    public void testIntegerWidgetValue(Page page) {
+    void integerWidgetValue(Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
-        Assertions.assertEquals("50", inputNumber.getValue());
+        assertEquals("50", inputNumber.getValue());
 
         // Act
         inputNumber.setValue("42");
 
         // Assert
-        Assertions.assertEquals("42", inputNumber.getWidgetValue());
+        assertEquals("42", inputNumber.getWidgetValue());
         assertConfiguration(inputNumber.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        Assertions.assertEquals("0", cfg.get("decimalPlaces"));
+        assertEquals(0, cfg.get("decimalPlaces"));
+        assertEquals(0, cfg.get("decimalPlacesRawValue"));
     }
 
     public static class Page extends AbstractPrimePage {

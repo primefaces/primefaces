@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,31 +23,35 @@
  */
 package org.primefaces.component.commandlink;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
-
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.CSVBuilder;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
 
-public class CommandLinkRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.component.behavior.ClientBehaviorContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.event.ActionEvent;
+
+public class CommandLinkRenderer extends CoreRenderer<CommandLink> {
 
     private static final String SB_BUILD_ONCLICK = CommandLinkRenderer.class.getName() + "#buildOnclick";
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        CommandLink link = (CommandLink) component;
-        if (link.isDisabled()) {
+    public void decode(FacesContext context, CommandLink component) {
+        if (component.isDisabled()) {
             return;
         }
 
@@ -61,82 +65,91 @@ public class CommandLinkRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        CommandLink link = (CommandLink) component;
-
-        encodeMarkup(context, link);
-        encodeScript(context, link);
+    public void encodeEnd(FacesContext context, CommandLink component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, CommandLink link) throws IOException {
+    protected void encodeMarkup(FacesContext context, CommandLink component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = link.getClientId(context);
-        Object label = link.getValue();
+        String clientId = component.getClientId(context);
+        Object label = component.getValue();
+        String form = component.getForm();
 
         String request;
-        boolean ajax = link.isAjax();
+        boolean ajax = component.isAjax();
         String styleClass = getStyleClassBuilder(context)
-                .add(link.isDisabled(), CommandLink.DISABLED_STYLE_CLASS, CommandLink.STYLE_CLASS)
-                .add(link.getStyleClass())
+                .add(component.isDisabled(), CommandLink.DISABLED_STYLE_CLASS, CommandLink.STYLE_CLASS)
+                .add(component.getStyleClass())
                 .build();
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
-        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && link.isValidateClient();
+        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && component.isValidateClient();
 
         StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
-        if (link.getOnclick() != null) {
-            onclick.append(link.getOnclick()).append(";");
+        if (component.getOnclick() != null) {
+            onclick.append(component.getOnclick()).append(";");
         }
 
-        String onclickBehaviors = getEventBehaviors(context, link, "click", null);
+        String onclickBehaviors = getEventBehaviors(context, component, "click", null);
         if (onclickBehaviors != null) {
             onclick.append(onclickBehaviors);
         }
 
-        writer.startElement("a", link);
+        writer.startElement("a", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, link.getAriaLabel(), null);
-        if (link.isDisabled()) {
-            writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, component.getAriaLabel(), null);
+
+        if (!isValueBlank(form)) {
+            writer.writeAttribute("data-pf-form", form, null);
         }
 
         if (ajax) {
-            request = buildAjaxRequest(context, link);
+            request = buildAjaxRequest(context, component);
         }
         else {
-            UIForm form = ComponentTraversalUtils.closestForm(link);
-            if (form == null) {
+            UIForm uiForm = ComponentTraversalUtils.closestForm(component);
+            if (uiForm == null) {
                 throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
             }
 
-            request = buildNonAjaxRequest(context, link, form, clientId, true);
+            request = buildNonAjaxRequest(context, component, uiForm, clientId, true);
         }
 
         if (csvEnabled) {
             CSVBuilder csvb = requestContext.getCSVBuilder();
-            request = csvb.init().source("this").ajax(ajax).process(link, link.getProcess()).update(link, link.getUpdate()).command(request).build();
+            request = csvb.init()
+                    .source("this")
+                    .ajax(ajax)
+                    .process(component, component.getProcess())
+                    .update(component, component.getUpdate())
+                    .command(request).build();
         }
 
         onclick.append(request);
 
         if (onclick.length() > 0) {
-            if (link.requiresConfirmation()) {
+            if (component.requiresConfirmation()) {
                 writer.writeAttribute("data-pfconfirmcommand", onclick.toString(), null);
-                writer.writeAttribute("onclick", link.getConfirmationScript(), "onclick");
+                writer.writeAttribute("onclick", component.getConfirmationScript(), "onclick");
             }
             else {
                 writer.writeAttribute("onclick", onclick.toString(), "onclick");
             }
-            renderPassThruAttributes(context, link, HTML.LINK_WITHOUT_CLICK_ATTRS);
+            renderPassThruAttributes(context, component, HTML.LINK_WITHOUT_CLICK_ATTRS);
         }
         else {
-            renderPassThruAttributes(context, link, HTML.LINK_ATTRS);
+            renderPassThruAttributes(context, component, HTML.LINK_ATTRS);
+        }
+
+        if (component.isDisabled()) {
+            writer.writeAttribute("tabindex", "-1", null);
         }
 
         List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>(1);
         behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
-        String dialogReturnBehavior = getEventBehaviors(context, link, DialogReturnAware.EVENT_DIALOG_RETURN, behaviorParams);
+        String dialogReturnBehavior = getEventBehaviors(context, component, DialogReturnAware.EVENT_DIALOG_RETURN, behaviorParams);
         if (dialogReturnBehavior != null) {
             writer.writeAttribute(DialogReturnAware.ATTRIBUTE_DIALOG_RETURN_SCRIPT, dialogReturnBehavior, null);
         }
@@ -145,24 +158,24 @@ public class CommandLinkRenderer extends CoreRenderer {
             writer.writeText(label, "value");
         }
 
-        renderChildren(context, link);
+        renderChildren(context, component);
 
         writer.endElement("a");
     }
 
-    protected void encodeScript(FacesContext context, CommandLink link) throws IOException {
+    protected void encodeScript(FacesContext context, CommandLink component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("CommandLink", link)
-                .attr("disableOnAjax", link.isDisableOnAjax(), true)
-                .attr("disabledAttr", link.isDisabled(), false);
+        wb.init("CommandLink", component)
+                .attr("disableOnAjax", component.isDisableOnAjax(), true)
+                .attr("disabledAttr", component.isDisabled(), false);
 
-        encodeClientBehaviors(context, link);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, CommandLink component) throws IOException {
         //Do Nothing
     }
 

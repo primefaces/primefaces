@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,31 +23,34 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.primefaces.component.datepicker.DatePicker;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.Temporal;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
-import javax.el.ELContext;
-import javax.faces.FacesException;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
+import jakarta.el.ELContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.primefaces.component.datepicker.DatePicker;
 
-public class CalendarUtilsTest {
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+class CalendarUtilsTest {
 
     private DatePicker datePicker;
     private FacesContext context;
@@ -55,7 +58,7 @@ public class CalendarUtilsTest {
     private ELContext elContext;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         datePicker = mock(DatePicker.class);
         when(datePicker.getSelectionMode()).thenReturn("single");
 
@@ -67,7 +70,7 @@ public class CalendarUtilsTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         datePicker = null;
         context = null;
         externalContext = null;
@@ -84,7 +87,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void getValueAsString_LocalDate() {
+    void getValueAsString_LocalDate() {
         LocalDate localDate = LocalDate.of(2019, 7, 23);
         setupValues(localDate, Locale.ENGLISH);
 
@@ -93,7 +96,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void getValueAsString_LocalDate_German() {
+    void getValueAsString_LocalDate_German() {
         LocalDate localDate = LocalDate.of(2019, 7, 23);
         setupValues(localDate, Locale.GERMAN);
 
@@ -102,7 +105,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void getValueAsString_Date() {
+    void getValueAsString_Date() {
         Calendar cal = new GregorianCalendar();
         cal.set(2019, 6, 23);
         Date date = cal.getTime();
@@ -113,7 +116,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void getValueAsString_Date_German() {
+    void getValueAsString_Date_German() {
         Calendar cal = new GregorianCalendar();
         cal.set(2019, 6, 23);
         Date date = cal.getTime();
@@ -124,28 +127,28 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void calculateZoneId_String() {
+    void calculateZoneId_String() {
         String timeZone = "GMT+2";
         ZoneId calculateZoneId = CalendarUtils.calculateZoneId(timeZone);
         assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
     }
 
     @Test
-    public void calculateZoneId_ZoneId() {
+    void calculateZoneId_ZoneId() {
         ZoneId zoneId = ZoneId.of("GMT+2");
         ZoneId calculateZoneId = CalendarUtils.calculateZoneId(zoneId);
         assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
     }
 
     @Test
-    public void calculateZoneId_TimeZone() {
+    void calculateZoneId_TimeZone() {
         TimeZone timeZone = TimeZone.getTimeZone("GMT+2");
         ZoneId calculateZoneId = CalendarUtils.calculateZoneId(timeZone);
         assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
     }
 
     @Test
-    public void removeTime() {
+    void removeTime() {
         String pattern = "dd/MM/yy";
         String cleanedPattern = CalendarUtils.removeTime(pattern);
         assertEquals(pattern, cleanedPattern);
@@ -164,7 +167,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void now_LocalDate() {
+    void now_LocalDate() {
         when(datePicker.hasTime()).thenReturn(false);
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
         Temporal now = CalendarUtils.now(datePicker);
@@ -172,7 +175,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void now_LocalDateTime() {
+    void now_LocalDateTime() {
         when(datePicker.hasTime()).thenReturn(true);
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
         LocalDateTime now = (LocalDateTime) CalendarUtils.now(datePicker);
@@ -180,7 +183,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void now_DateTime() {
+    void now_DateTime() {
         when(datePicker.hasTime()).thenReturn(true);
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
         Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
@@ -188,7 +191,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void now_Date() {
+    void now_Date() {
         when(datePicker.hasTime()).thenReturn(false);
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
         Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
@@ -196,7 +199,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void now_Time() {
+    void now_Time() {
         when(datePicker.hasTime()).thenReturn(true);
         when(datePicker.isTimeOnly()).thenReturn(true);
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
@@ -205,7 +208,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void convertPattern() {
+    void convertPattern() {
         assertNull(CalendarUtils.convertPattern(null));
         assertEquals("", CalendarUtils.convertPattern(""));
         assertEquals("mm/dd/yy HH:mm:ss", CalendarUtils.convertPattern("MM/dd/yyyy HH:mm:ss"));
@@ -213,18 +216,48 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void splitRange() {
-        List<String> splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31", "yyyy-MM-dd", "-");
+    void splitRange() {
+        List<String> splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31", "yyyy-MM-dd", "-", false);
         assertEquals(2, splitRange.size());
         assertEquals("2021-03-01", splitRange.get(0));
         assertEquals("2021-03-31", splitRange.get(1));
-        splitRange = CalendarUtils.splitRange("2021-03-01", "yyyy-MM-dd", "-");
-        assertTrue(splitRange.isEmpty());
-        splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd", "-");
+
+        splitRange = CalendarUtils.splitRange("2021-03-01", "yyyy-MM-dd", "-", false);
         assertTrue(splitRange.isEmpty());
 
-        Assertions.assertThrows(FacesException.class, () -> {
-            CalendarUtils.splitRange("2021 - 03 - 01 - 2021 - 03 - 31", "yyyy - MM - dd", "-");
+        splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd", "-", false);
+        assertTrue(splitRange.isEmpty());
+
+        assertThrows(FacesException.class, () -> {
+            CalendarUtils.splitRange("2021 - 03 - 01 - 2021 - 03 - 31", "yyyy - MM - dd", "-", false);
+        });
+    }
+
+    @Test
+    void splitRangeWeek() {
+        List<String> splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31 (Wk 21)", "yyyy-MM-dd", "-", true);
+        assertEquals(2, splitRange.size());
+        assertEquals("2021-03-01", splitRange.get(0));
+        assertEquals("2021-03-31", splitRange.get(1));
+
+        splitRange = CalendarUtils.splitRange("2021-03-01 (Wk 21)", "yyyy-MM-dd", "-", true);
+        assertTrue(splitRange.isEmpty());
+
+        splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd (Wk 21)", "-", true);
+        assertTrue(splitRange.isEmpty());
+
+        splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31 (Wk NaN)", "yyyy-MM-dd", "-", true);
+        assertEquals(2, splitRange.size());
+        assertEquals("2021-03-01", splitRange.get(0));
+        assertEquals("2021-03-31", splitRange.get(1));
+
+        splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31", "yyyy-MM-dd", "-", true);
+        assertEquals(2, splitRange.size());
+        assertEquals("2021-03-01", splitRange.get(0));
+        assertEquals("2021-03-31", splitRange.get(1));
+
+        assertThrows(FacesException.class, () -> {
+            CalendarUtils.splitRange("2021 - 03 - 01 - 2021 - 03 - 31 (Wk 21)", "yyyy - MM - dd", "-", true);
         });
     }
 

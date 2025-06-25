@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,20 @@
  */
 package org.primefaces.component.cascadeselect;
 
-import java.util.Collection;
-import java.util.Map;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.render.Renderer;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Map;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.render.Renderer;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -46,9 +47,9 @@ public class CascadeSelect extends CascadeSelectBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CascadeSelect";
 
-    public static final String STYLE_CLASS = "ui-cascadeselect ui-widget ui-state-default ui-corner-all";
-    public static final String LABEL_CLASS = "ui-cascadeselect-label ui-inputfield ui-corner-all";
-    public static final String PANEL_CLASS = "ui-cascadeselect-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow ui-input-overlay";
+    public static final String STYLE_CLASS = "ui-cascadeselect ui-widget ui-state-default";
+    public static final String LABEL_CLASS = "ui-cascadeselect-label ui-inputfield";
+    public static final String PANEL_CLASS = "ui-cascadeselect-panel ui-widget ui-widget-content ui-helper-hidden ui-shadow ui-input-overlay";
     public static final String ITEMS_WRAPPER_CLASS = "ui-cascadeselect-items-wrapper";
     public static final String PANEL_ITEMS_CLASS = "ui-cascadeselect-panel ui-cascadeselect-items";
     public static final String TRIGGER_CLASS = "ui-cascadeselect-trigger";
@@ -95,10 +96,10 @@ public class CascadeSelect extends CascadeSelectBase {
             if ("itemSelect".equals(eventName)) {
                 Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                         context,
-                        "javax.faces.SelectOne",
-                        "javax.faces.Listbox");
+                        "jakarta.faces.SelectOne",
+                        "jakarta.faces.Listbox");
                 Object item = renderer.getConvertedValue(context, this, getSubmittedValue());
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
+                wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), item);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             super.queueEvent(wrapperEvent);

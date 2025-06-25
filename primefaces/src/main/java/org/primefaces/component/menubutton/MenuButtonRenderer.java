@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,23 @@
  */
 package org.primefaces.component.menubutton;
 
-import java.io.IOException;
-import java.util.List;
-import javax.faces.FacesException;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class MenuButtonRenderer extends TieredMenuRenderer {
 
@@ -62,13 +62,14 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         if (button.getTitle() != null) {
             writer.writeAttribute("title", button.getTitle(), "title");
         }
-        encodeButton(context, button, clientId + "_button", disabled);
-        encodeMenu(context, button, clientId + "_menu");
+        String menuId = clientId + "_menu";
+        encodeButton(context, button, clientId + "_button", menuId, disabled);
+        encodeMenu(context, button, menuId);
 
         writer.endElement("span");
     }
 
-    protected void encodeButton(FacesContext context, MenuButton button, String buttonId, boolean disabled) throws IOException {
+    protected void encodeButton(FacesContext context, MenuButton button, String buttonId, String menuId, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean isIconLeft = button.getIconPos().equals("left");
         String value = button.getValue();
@@ -84,10 +85,14 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         writer.writeAttribute("name", buttonId, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, button.getAriaLabel(), "ariaLabel");
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
+
         if (LangUtils.isNotEmpty(button.getButtonStyle())) {
             writer.writeAttribute("style", button.getButtonStyle(), null);
         }
-        writer.writeAttribute(HTML.ARIA_LABEL, button.getAriaLabel(), "ariaLabel");
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -107,13 +112,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (isValueBlank(value)) {
-            //For ScreenReader
-            writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
-        }
-        else {
-            writer.writeText(value, "value");
-        }
+        renderButtonValue(writer, true, button.getValue(), button.getTitle(), button.getAriaLabel());
 
         writer.endElement("span");
 
@@ -135,9 +134,10 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         }
         writer.writeAttribute("id", menuId, null);
         writer.writeAttribute("class", menuStyleClass, "styleClass");
-        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         writer.startElement("ul", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
+        writer.writeAttribute(HTML.ARIA_ORIENTATION, HTML.ARIA_ORIENTATION_VERTICAL, null);
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
         if (button.getElementsCount() > 0) {
@@ -162,8 +162,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("MenuButton", button)
-            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
-                  SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, button, button.getAppendTo()))
             .attr("collision", button.getCollision())
             .attr("autoDisplay", button.isAutoDisplay())
             .attr("toggleEvent", button.getToggleEvent(), null)

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,56 +23,57 @@
  */
 package org.primefaces.component.selectonemenu;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.el.ValueExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectOne;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
-import javax.faces.render.Renderer;
+import jakarta.el.ValueExpression;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
+import jakarta.faces.render.Renderer;
 
-import org.primefaces.component.column.Column;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.renderkit.SelectOneRenderer;
-import org.primefaces.util.*;
-
-public class SelectOneMenuRenderer extends SelectOneRenderer {
+public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        SelectOneMenu menu = (SelectOneMenu) component;
-        if (!shouldDecode(menu)) {
+    public void decode(FacesContext context, SelectOneMenu component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        if (menu.isEditable()) {
+        if (component.isEditable()) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
             // default to user entered input
-            String editorInput = params.get(menu.getClientId(context) + "_editableInput");
-            menu.setSubmittedValue(editorInput);
+            String editorInput = params.get(component.getClientId(context) + "_editableInput");
+            component.setSubmittedValue(editorInput);
 
             // #2862 check if it matches a label and if so use the value
             if (LangUtils.isNotBlank(editorInput)) {
-                List<SelectItem> selectItems = getSelectItems(context, menu);
-                Converter converter = menu.getConverter();
-                SelectItem foundItem = findSelectItemByLabel(context, menu, converter, selectItems, editorInput);
+                List<SelectItem> selectItems = getSelectItems(context, component);
+                Converter<?> converter = component.getConverter();
+                SelectItem foundItem = findSelectItemByLabel(context, component, converter, selectItems, editorInput);
                 if (foundItem != null) {
-                    menu.setSubmittedValue(getOptionAsString(context, menu, converter, foundItem.getValue()));
+                    component.setSubmittedValue(getOptionAsString(context, component, converter, foundItem.getValue()));
                 }
             }
 
-            decodeBehaviors(context, menu);
+            decodeBehaviors(context, component);
         }
         else {
             super.decode(context, component);
@@ -83,49 +84,48 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
-                "javax.faces.SelectOne",
-                "javax.faces.Menu");
+                "jakarta.faces.SelectOne",
+                "jakarta.faces.Menu");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SelectOneMenu menu = (SelectOneMenu) component;
+    public void encodeEnd(FacesContext context, SelectOneMenu component) throws IOException {
+        if (component.isDynamicLoadRequest(context)) {
+            List<SelectItem> selectItems = getSelectItems(context, component);
+            String clientId = component.getClientId(context);
+            Converter converter = component.getConverter();
+            Object values = getValues(component);
+            Object submittedValues = getSubmittedValues(component);
 
-        if (menu.isDynamicLoadRequest(context)) {
-            List<SelectItem> selectItems = getSelectItems(context, menu);
-            String clientId = menu.getClientId(context);
-            Converter converter = menu.getConverter();
-            Object values = getValues(menu);
-            Object submittedValues = getSubmittedValues(menu);
-
-            encodeHiddenSelect(context, menu, clientId, selectItems, values, submittedValues, converter);
-            encodePanelContent(context, menu, selectItems);
+            encodeHiddenSelect(context, component, clientId, selectItems, values, submittedValues, converter);
+            encodePanelContent(context, component, selectItems);
         }
         else {
-            encodeMarkup(context, menu);
-            encodeScript(context, menu);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
     }
 
-    protected void encodeMarkup(FacesContext context, SelectOneMenu menu) throws IOException {
+    protected void encodeMarkup(FacesContext context, SelectOneMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<SelectItem> selectItems = getSelectItems(context, menu);
-        String clientId = menu.getClientId(context);
-        Converter converter = menu.getConverter();
-        Object values = getValues(menu);
-        Object submittedValues = getSubmittedValues(menu);
-        boolean valid = menu.isValid();
-        String title = menu.getTitle();
+        List<SelectItem> selectItems = getSelectItems(context, component);
+        String clientId = component.getClientId(context);
+        Converter converter = component.getConverter();
+        Object values = getValues(component);
+        Object submittedValues = getSubmittedValues(component);
+        boolean valid = component.isValid();
+        String title = component.getTitle();
 
-        String style = menu.getStyle();
-        String styleClass = createStyleClass(menu, SelectOneMenu.STYLE_CLASS);
+        String style = component.getStyle();
+        String styleClass = createStyleClass(component, SelectOneMenu.STYLE_CLASS);
+        styleClass = getStyleClassBuilder(context)
+                .add(styleClass)
+                .add(ComponentUtils.isRTL(context, component),  SelectOneMenu.RTL_CLASS)
+                .add(component.isReadonly(), "ui-state-readonly")
+                .build();
 
-        if (ComponentUtils.isRTL(context, menu)) {
-            styleClass = styleClass + " " + SelectOneMenu.RTL_CLASS;
-        }
-
-        writer.startElement("div", menu);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleclass");
         if (style != null) {
@@ -135,20 +135,20 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("title", title, "title");
         }
 
-        encodeInput(context, menu, clientId, selectItems, values, submittedValues, converter);
-        encodeLabel(context, menu, selectItems);
-        encodeMenuIcon(context, menu, valid);
-        encodePanel(context, menu, selectItems);
+        encodeInput(context, component, clientId, selectItems, values, submittedValues, converter);
+        encodeLabel(context, component, selectItems);
+        encodeMenuIcon(context, component, valid);
+        encodePanel(context, component, selectItems);
 
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, SelectOneMenu menu, String clientId, List<SelectItem> selectItems, Object values,
+    protected void encodeInput(FacesContext context, SelectOneMenu component, String clientId, List<SelectItem> selectItems, Object values,
                                Object submittedValues, Converter converter) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
 
-        if (menu.isEditable()) {
+        if (component.isEditable()) {
             String focusId = clientId + "_focus";
 
             //input for accessibility
@@ -160,12 +160,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("name", focusId, null);
             writer.writeAttribute("type", "text", null);
             writer.writeAttribute("autocomplete", "off", null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
 
             //for keyboard accessibility and ScreenReader
-            renderAccessibilityAttributes(context, menu);
-            renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
-            renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
+            writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
+            renderARIACombobox(context, component);
+            renderAccessibilityAttributes(context, component);
+            renderPassThruAttributes(context, component, HTML.TAB_INDEX);
+            renderDomEvents(context, component, HTML.BLUR_FOCUS_EVENTS);
 
             writer.endElement("input");
 
@@ -176,13 +177,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
-        encodeHiddenSelect(context, menu, clientId, selectItems, values, submittedValues, converter);
+        encodeHiddenSelect(context, component, clientId, selectItems, values, submittedValues, converter);
 
         writer.endElement("div");
 
     }
 
-    protected void encodeHiddenSelect(FacesContext context, SelectOneMenu menu, String clientId, List<SelectItem> selectItems,
+    protected void encodeHiddenSelect(FacesContext context, SelectOneMenu component, String clientId, List<SelectItem> selectItems,
                                       Object values, Object submittedValues, Converter converter) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -194,108 +195,110 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("tabindex", "-1", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
-        encodeAriaLabel(writer, menu);
+        encodeAriaLabel(writer, component);
 
-        if (menu.isDisabled()) {
+        if (component.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
-        if (menu.getOnkeydown() != null) {
-            writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
+        if (component.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", null);
         }
-        if (menu.getOnkeyup() != null) {
-            writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
+        if (component.getOnkeydown() != null) {
+            writer.writeAttribute("onkeydown", component.getOnkeydown(), null);
+        }
+        if (component.getOnkeyup() != null) {
+            writer.writeAttribute("onkeyup", component.getOnkeyup(), null);
         }
 
-        renderOnchange(context, menu);
+        renderOnchange(context, component);
 
-        renderValidationMetadata(context, menu);
+        renderValidationMetadata(context, component);
 
-        encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
+        encodeSelectItems(context, component, selectItems, values, submittedValues, converter);
 
         writer.endElement("select");
     }
 
-    protected void encodeAriaLabel(ResponseWriter writer, SelectOneMenu menu) throws IOException {
-        String ariaLabel =  Objects.toString(menu.getAttributes().get(HTML.ARIA_LABEL), null);
+    protected void encodeAriaLabel(ResponseWriter writer, SelectOneMenu component) throws IOException {
+        String ariaLabel =  Objects.toString(component.getAttributes().get(HTML.ARIA_LABEL), null);
         if (LangUtils.isBlank(ariaLabel)) {
-            String label = menu.getLabel();
-            ariaLabel = LangUtils.isBlank(label) ? menu.getPlaceholder() : label;
+            String label = component.getLabel();
+            ariaLabel = LangUtils.isBlank(label) ? component.getPlaceholder() : label;
         }
         if (LangUtils.isNotBlank(ariaLabel)) {
             writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         }
     }
 
-    protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodeLabel(FacesContext context, SelectOneMenu component, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String tabIndex = LangUtils.isNotBlank(component.getTabindex()) ? component.getTabindex() : "0";
 
-        if (menu.isEditable()) {
+        if (component.isEditable()) {
             writer.startElement("input", null);
-            writer.writeAttribute("id", menu.getClientId(context) + "_editableInput", null);
+            writer.writeAttribute("id", component.getClientId(context) + "_editableInput", null);
             writer.writeAttribute("type", "text", null);
-            writer.writeAttribute("name", menu.getClientId(context) + "_editableInput", null);
+            writer.writeAttribute("name", component.getClientId(context) + "_editableInput", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
-            encodeAriaLabel(writer, menu);
+            writer.writeAttribute("tabindex", tabIndex, null);
+            writer.writeAttribute("autocomplete", component.getAutocomplete(), null);
+            encodeAriaLabel(writer, component);
 
-            if (menu.getTabindex() != null) {
-                writer.writeAttribute("tabindex", menu.getTabindex(), null);
-            }
-
-            if (menu.isDisabled()) {
+            if (component.isDisabled()) {
                 writer.writeAttribute("disabled", "disabled", null);
             }
-            renderAccessibilityAttributes(context, menu);
+            renderAccessibilityAttributes(context, component);
 
-            String valueToRender = ComponentUtils.getValueToRender(context, menu);
+            String valueToRender = ComponentUtils.getValueToRender(context, component);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
-                if (isSelected(context, menu, valueToRender, selectItem.getValue(), null)) {
+                if (isSelected(context, component, valueToRender, selectItem.getValue(), null)) {
                     valueToRender = selectItem.getLabel();
                     break;
                 }
             }
             writer.writeAttribute("value", valueToRender, null);
 
-            if (menu.getMaxlength() != Integer.MAX_VALUE) {
-                writer.writeAttribute("maxlength", menu.getMaxlength(), null);
+            if (component.getMaxlength() != Integer.MAX_VALUE) {
+                writer.writeAttribute("maxlength", component.getMaxlength(), null);
             }
 
-            if (menu.getPlaceholder() != null) {
-                writer.writeAttribute("placeholder", menu.getPlaceholder(), null);
+            if (component.getPlaceholder() != null) {
+                writer.writeAttribute("placeholder", component.getPlaceholder(), null);
             }
 
-            if (menu.getOnkeydown() != null) {
-                writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
-                renderDomEvent(context, menu, "onkeydown", "keydown", "keydown", null);
+            if (component.getOnkeydown() != null) {
+                writer.writeAttribute("onkeydown", component.getOnkeydown(), null);
+                renderDomEvent(context, component, "onkeydown", "keydown", "keydown", null);
             }
-            if (menu.getOnkeyup() != null) {
-                writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
-                renderDomEvent(context, menu, "onkeyup", "keyup", "keyup", null);
+            if (component.getOnkeyup() != null) {
+                writer.writeAttribute("onkeyup", component.getOnkeyup(), null);
+                renderDomEvent(context, component, "onkeyup", "keyup", "keyup", null);
             }
 
             writer.endElement("input");
         }
         else {
-            String clientId = menu.getClientId(context);
+            String clientId = component.getClientId(context);
 
             writer.startElement("span", null);
-            writer.writeAttribute("id", menu.getClientId(context) + "_label", null);
+            writer.writeAttribute("id", component.getClientId(context) + "_label", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
-            writer.writeAttribute("tabindex", 0, null);
-            if (menu.getPlaceholder() != null) {
-                writer.writeAttribute("data-placeholder", menu.getPlaceholder(), null);
+            writer.writeAttribute("tabindex", tabIndex, null);
+            if (component.getPlaceholder() != null) {
+                writer.writeAttribute("data-placeholder", component.getPlaceholder(), null);
             }
 
             //for keyboard accessibility and ScreenReader
             writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
 
-            renderARIACombobox(context, menu);
+            encodeAriaLabel(writer, component);
+            renderARIACombobox(context, component);
+            renderAccessibilityAttributes(context, component);
+            renderPassThruAttributes(context, component, HTML.TAB_INDEX);
+            renderDomEvents(context, component, HTML.BLUR_FOCUS_EVENTS);
 
-            renderAccessibilityAttributes(context, menu);
-            renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
-            renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
-
-            String label = menu.getLabel();
+            String label = component.getLabel();
             if (label != null) {
                 writer.writeText(label, null);
             }
@@ -304,7 +307,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
     }
 
-    protected void encodeMenuIcon(FacesContext context, SelectOneMenu menu, boolean valid) throws IOException {
+    protected void encodeMenuIcon(FacesContext context, SelectOneMenu component, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String iconClass = valid ? SelectOneMenu.TRIGGER_CLASS : SelectOneMenu.TRIGGER_CLASS + " ui-state-error";
 
@@ -318,75 +321,79 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodePanel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodePanel(FacesContext context, SelectOneMenu component, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String panelStyle = menu.getPanelStyle();
-        String panelStyleClass = menu.getPanelStyleClass();
+        String panelStyle = component.getPanelStyle();
+        String panelStyleClass = component.getPanelStyleClass();
         panelStyleClass = panelStyleClass == null ? SelectOneMenu.PANEL_CLASS : SelectOneMenu.PANEL_CLASS + " " + panelStyleClass;
 
-        if (ComponentUtils.isRTL(context, menu)) {
+        if (ComponentUtils.isRTL(context, component)) {
             panelStyleClass = panelStyleClass + " " + SelectOneMenu.RTL_PANEL_CLASS;
         }
 
         String height = null;
         try {
-            height = Integer.parseInt(menu.getHeight()) + "px";
+            height = Integer.parseInt(component.getHeight()) + "px";
         }
         catch (NumberFormatException e) {
-            height = menu.getHeight();
+            height = component.getHeight();
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", menu.getClientId(context) + "_panel", null);
+        writer.writeAttribute("id", component.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", panelStyleClass, null);
         writer.writeAttribute("tabindex", "-1", null);
         if (panelStyle != null) {
             writer.writeAttribute("style", panelStyle, null);
         }
 
-        if (menu.isFilter()) {
-            encodeFilter(context, menu);
+        if (component.isFilter()) {
+            encodeFilter(context, component);
         }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneMenu.ITEMS_WRAPPER_CLASS, null);
         writer.writeAttribute("style", "max-height:" + height, null);
 
-        if (!menu.isDynamic()) {
-            encodePanelContent(context, menu, selectItems);
+        if (!component.isDynamic()) {
+            encodePanelContent(context, component, selectItems);
         }
 
         writer.endElement("div");
 
-        encodePanelFooter(context, menu);
+        encodePanelFooter(context, component);
         writer.endElement("div");
     }
 
-    protected void encodePanelContent(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodePanelContent(FacesContext context, SelectOneMenu component, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean customContent = menu.getVar() != null;
+        boolean customContent = component.getVar() != null;
 
         if (customContent) {
-            List<Column> columns = menu.getColumns();
+            ComponentUtils.runWithoutFacesContextVar(context, Constants.HELPER_RENDERER, () -> {
+                List<Column> columns = component.getColumns();
 
-            writer.startElement("table", null);
-            writer.writeAttribute("id", menu.getClientId(context) + "_table", null);
-            writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
-            writer.writeAttribute("role", "listbox", null);
-            encodeColumnsHeader(context, menu, columns);
-            writer.startElement("tbody", null);
-            encodeOptionsAsTable(context, menu, selectItems, columns);
-            writer.endElement("tbody");
-            writer.endElement("table");
+                writer.startElement("table", null);
+                writer.writeAttribute("id", component.getClientId(context) + "_table", null);
+                writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
+                writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
+                encodeColumnsHeader(context, component, columns);
+                writer.startElement("tbody", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
+                encodeOptionsAsTable(context, component, selectItems, columns);
+                writer.endElement("tbody");
+                writer.endElement("table");
+            });
         }
         else {
             // Rendering was moved to the client - see renderPanelContentFromHiddenSelect as part of forms.selectonemenu.js
         }
     }
 
-    protected void encodePanelFooter(FacesContext context, SelectOneMenu menu) throws IOException {
-        UIComponent facet = menu.getFacet("footer");
-        if (!ComponentUtils.shouldRenderFacet(facet)) {
+    protected void encodePanelFooter(FacesContext context, SelectOneMenu component) throws IOException {
+        UIComponent facet = component.getFacet("footer");
+        if (!FacetUtils.shouldRenderFacet(facet)) {
             return;
         }
 
@@ -397,7 +404,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeColumnsHeader(FacesContext context, SelectOneMenu menu, List<Column> columns)
+    protected void encodeColumnsHeader(FacesContext context, SelectOneMenu component, List<Column> columns)
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -420,7 +427,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 }
 
                 String headerText = column.getHeaderText();
-                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
+                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default" + column.getStyleClass();
 
                 writer.startElement("th", null);
                 writer.writeAttribute("class", styleClass, null);
@@ -430,7 +437,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 }
 
                 UIComponent headerFacet = column.getFacet("header");
-                if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+                if (FacetUtils.shouldRenderFacet(headerFacet)) {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {
@@ -443,12 +450,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
     }
 
-    protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, List<Column> columns)
+    protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu component, List<SelectItem> selectItems, List<Column> columns)
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        String var = menu.getVar();
-        ValueExpression value = menu.getValueExpression("value");
+        String var = component.getVar();
+        ValueExpression value = component.getValueExpression("value");
         Class<?> valueType = value == null ? null : value.getType(context.getELContext());
 
         for (int i = 0; i < selectItems.size(); i++) {
@@ -497,7 +504,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                         writer.writeAttribute("class", styleClass, null);
                     }
 
-                    renderChildren(context, column);
+                    encodeIndexedId(context, column, i);
                     writer.endElement("td");
                 }
             }
@@ -508,30 +515,29 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         context.getExternalContext().getRequestMap().put(var, null);
     }
 
-    protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
+    protected void encodeScript(FacesContext context, SelectOneMenu component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneMenu", menu)
-                .attr("editable", menu.isEditable(), false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
-                .attr("syncTooltip", menu.isSyncTooltip(), false)
-                .attr("alwaysDisplayLabel", menu.isAlwaysDisplayLabel(), false)
-                .attr("label", menu.getLabel(), null)
-                .attr("labelTemplate", menu.getLabelTemplate(), null)
-                .attr("autoWidth", menu.getAutoWidth(), "auto")
-                .attr("dynamic", menu.isDynamic(), false)
-                .attr("touchable", ComponentUtils.isTouchable(context, menu),  true)
-                .attr("renderPanelContentOnClient", menu.getVar() == null,  false);
+        wb.init("SelectOneMenu", component)
+                .attr("editable", component.isEditable(), false)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()))
+                .attr("syncTooltip", component.isSyncTooltip(), false)
+                .attr("alwaysDisplayLabel", component.isAlwaysDisplayLabel(), false)
+                .attr("label", component.getLabel(), null)
+                .attr("labelTemplate", component.getLabelTemplate(), null)
+                .attr("autoWidth", component.getAutoWidth(), "auto")
+                .attr("dynamic", component.isDynamic(), false)
+                .attr("touchable", ComponentUtils.isTouchable(context, component),  true)
+                .attr("renderPanelContentOnClient", component.getVar() == null,  false);
 
-        if (menu.isFilter()) {
+        if (component.isFilter()) {
             wb.attr("filter", true)
-                    .attr("filterMatchMode", menu.getFilterMatchMode(), null)
-                    .nativeAttr("filterFunction", menu.getFilterFunction(), null)
-                    .attr("caseSensitive", menu.isCaseSensitive(), false)
-                    .attr("filterNormalize", menu.isFilterNormalize(), false);
+                    .attr("filterMatchMode", component.getFilterMatchMode(), null)
+                    .nativeAttr("filterFunction", component.getFilterFunction(), null)
+                    .attr("caseSensitive", component.isCaseSensitive(), false)
+                    .attr("filterNormalize", component.isFilterNormalize(), false);
         }
 
-        encodeClientBehaviors(context, menu);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
@@ -555,7 +561,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
      * @return true if SelectItem is selected.
      * @throws IOException
      */
-    protected boolean encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, Object values, Object submittedValues,
+    protected boolean encodeOption(FacesContext context, SelectOneMenu component, SelectItem option, Object values, Object submittedValues,
                                    Converter converter, int itemIndex) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -573,14 +579,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute("data-title", option.getDescription(), null);
             }
             for (SelectItem groupItem : group.getSelectItems()) {
-                encodeOption(context, menu, groupItem, values, submittedValues, converter, itemIndex);
+                encodeOption(context, component, groupItem, values, submittedValues, converter, itemIndex);
             }
             writer.endElement("optgroup");
 
             return false;
         }
         else {
-            String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
+            String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
             boolean disabled = option.isDisabled();
             boolean isEscape = option.isEscape();
             boolean isNoSelectionOption = option.isNoSelectionOption();
@@ -596,9 +602,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 itemValue = option.getValue();
             }
 
-            boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
+            boolean selected = isSelected(context, component, itemValue, valuesArray, converter);
 
-            if (!menu.isDynamic() || (menu.isDynamic() && (selected || menu.isDynamicLoadRequest(context) || itemIndex == 0))) {
+            if (!component.isDynamic() || (component.isDynamic() && (selected || component.isDynamicLoadRequest(context) || itemIndex == 0))) {
                 writer.startElement("option", getSelectItemComponent(option));
                 writer.writeAttribute("value", itemValueAsString, null);
                 if (disabled) {
@@ -631,7 +637,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
 
     @Override
-    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext facesContext, SelectOneMenu component) throws IOException {
         //Rendering happens on encodeEnd
     }
 
@@ -641,28 +647,27 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
-        return selectOne.getClientId(context) + "_input";
+    protected String getSubmitParam(FacesContext context, SelectOneMenu component) {
+        return component.getClientId(context) + "_input";
     }
 
-    protected void encodeFilter(FacesContext context, SelectOneMenu menu) throws IOException {
+    protected void encodeFilter(FacesContext context, SelectOneMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String id = menu.getClientId(context) + "_filter";
+        String id = component.getClientId(context) + "_filter";
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-selectonemenu-filter-container", null);
 
         writer.startElement("input", null);
-        writer.writeAttribute("class", "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all", null);
+        writer.writeAttribute("class", "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, component.getClientId(context) + "_table", null);
 
-        if (menu.getFilterPlaceholder() != null) {
-            writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);
+        if (component.getFilterPlaceholder() != null) {
+            writer.writeAttribute("placeholder", component.getFilterPlaceholder(), null);
         }
 
         writer.endElement("input");

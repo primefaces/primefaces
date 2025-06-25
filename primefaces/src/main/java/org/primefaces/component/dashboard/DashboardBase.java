@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.dashboard;
 
-import javax.faces.component.UIPanel;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIPanel;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DashboardBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -36,14 +36,15 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DashboardRenderer";
 
     public enum PropertyKeys {
-
-        widgetVar,
-        model,
         disabled,
+        model,
         reordering,
+        responsive,
+        scope,
         style,
         styleClass,
-        responsive
+        var,
+        widgetVar
     }
 
     public DashboardBase() {
@@ -109,5 +110,21 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
 
     public void setResponsive(boolean responsive) {
         getStateHelper().put(PropertyKeys.responsive, responsive);
+    }
+
+    public String getVar() {
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
+    }
+
+    public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
+    }
+
+    public String getScope() {
+        return (String) getStateHelper().eval(PropertyKeys.scope, null);
+    }
+
+    public void setScope(String scope) {
+        getStateHelper().put(PropertyKeys.scope, scope);
     }
 }

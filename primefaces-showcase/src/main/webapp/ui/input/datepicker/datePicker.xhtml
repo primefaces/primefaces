@@ -1,70 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	xmlns:ui="jakarta.faces.facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:p="primefaces" template="/WEB-INF/template.xhtml">
 
 	<ui:define name="head">
-		<script>
-            PrimeFaces.locales['es'] = {
-                closeText: 'Cerrar',
-                prevText: 'Anterior',
-                nextText: 'Siguiente',
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
-                weekHeader: 'Semana',
-                firstDay: 1,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: '',
-                timeOnlyTitle: 'Sólo hora',
-                timeText: 'Tiempo',
-                hourText: 'Hora',
-                minuteText: 'Minuto',
-                secondText: 'Segundo',
-                millisecondText: 'Milisegundo',
-                currentText: 'Fecha actual',
-                ampm: false,
-                month: 'Mes',
-                week: 'Semana',
-                day: 'Día',
-                allDayText: 'Todo el día',
-                today: 'Hoy',
-                clear: 'Claro'
-            };
-            PrimeFaces.locales ['de'] = {
-                closeText: 'Schließen',
-                prevText: 'Zurück',
-                nextText: 'Weiter',
-                monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-                monthNamesShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-                dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
-                dayNamesShort: ['Son', 'Mon', 'Die', 'Mit', 'Don', 'Fre', 'Sam'],
-                dayNamesMin: ['S', 'M', 'D', 'M ', 'D', 'F ', 'S'],
-                weekHeader: 'Woche',
-                firstDay: 1,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: '',
-                timeOnlyTitle: 'Nur Zeit',
-                timeText: 'Zeit',
-                hourText: 'Stunde',
-                minuteText: 'Minute',
-                secondText: 'Sekunde',
-                millisecondText: 'Millisekunde',
-                currentText: 'Aktuelles Datum',
-                ampm: false,
-                month: 'Monat',
-                week: 'Woche',
-                day: 'Tag',
-                allDayText: 'Ganzer Tag',
-                today: 'Heute',
-                clear: 'Löschen'
-            };
-        </script>
+        <h:outputScript name="locales/locale-de.js" library="primefaces" />
+        <h:outputScript name="locales/locale-es.js" library="primefaces" />
 
 		<script>
             //<![CDATA[
@@ -129,12 +71,12 @@
 
 					<div class="field col-12 md:col-4">
 						<p:outputLabel for="touch" value="Touch UI" />
-						<p:datePicker id="touch" value="#{calendarView.date4}"	touchUI="true" showOtherMonths="true" />
+						<p:datePicker id="touch" value="#{calendarView.date4}"	touchUI="true" showOtherMonths="true" autoDetectDisplay="false" />
 					</div>
 
 					<div class="field col-12 md:col-4">
 						<p:outputLabel for="dateTemplate" value="Date Template" />
-						<p:datePicker id="dateTemplate" value="#{calendarView.date5}"	dateTemplate="dateTemplateFunc" />
+						<p:datePicker id="dateTemplate" value="#{calendarView.date5}" dateTemplate="dateTemplateFunc" />
 					</div>
 
 					<div class="field col-12 md:col-4">
@@ -145,7 +87,7 @@
 
 					<div class="field col-12 md:col-4">
 						<p:outputLabel for="button" value="Button" />
-						<p:datePicker id="button" value="#{calendarView.date7}"	showIcon="true" />
+						<p:datePicker id="button" value="#{calendarView.date7}"	showIcon="true" showOnFocus="false"  />
 					</div>
 
 					<div class="field col-12 md:col-4">
@@ -213,6 +155,11 @@
 							value="Time Only (Full Precision)" />
 						<p:datePicker id="timeonlyMillis" value="#{calendarView.date15}"
 							timeOnly="true" pattern="HH:mm:ss.SSS a" showSeconds="true"	showMilliseconds="true" hourFormat="12" />
+					</div>
+
+					<div class="field col-12 md:col-4">
+						<p:outputLabel for="enabledDates" value="Enabled Dates" />
+						<p:datePicker id="enabledDates" value="#{calendarView.date17}" enabledDates="#{calendarView.validDates}" readonlyInput="true"/>
 					</div>
 				</div>
 

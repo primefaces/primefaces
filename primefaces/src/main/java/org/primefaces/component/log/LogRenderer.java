@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,31 +23,28 @@
  */
 package org.primefaces.component.log;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class LogRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class LogRenderer extends CoreRenderer<Log> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Log log = (Log) component;
-
-        encodeMarkup(context, log);
-        encodeScript(context, log);
+    public void encodeEnd(FacesContext context, Log component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Log log) throws IOException {
+    protected void encodeMarkup(FacesContext context, Log component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         //container
-        writer.startElement("div", log);
-        writer.writeAttribute("id", log.getClientId(context), "id");
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", Log.CONTAINER_CLASS, null);
 
         //header
@@ -62,7 +59,7 @@ public class LogRenderer extends CoreRenderer {
         writer.endElement("div");
 
         //content
-        writer.startElement("div", log);
+        writer.startElement("div", component);
         writer.writeAttribute("class", Log.CONTENT_CLASS, null);
         writer.startElement("ul", null);
         writer.writeAttribute("class", Log.ITEMS_CLASS, null);
@@ -87,9 +84,9 @@ public class LogRenderer extends CoreRenderer {
         writer.endElement("a");
     }
 
-    protected void encodeScript(FacesContext context, Log log) throws IOException {
+    protected void encodeScript(FacesContext context, Log component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Log", log);
+        wb.init("Log", component);
         wb.finish();
     }
 }

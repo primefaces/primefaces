@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,16 @@
  */
 package org.primefaces.selenium.component;
 
-import java.util.List;
-
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.findby.FindByParentPartialId;
+
+import java.util.List;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 /**
  * Component wrapper for the PrimeFaces {@code selectCheckboxMenu }.
@@ -47,6 +48,9 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
     @FindByParentPartialId(value = "_filter", searchFromRoot = true)
     private WebElement filterInput;
 
+    @FindBy(css = ".ui-selectcheckboxmenu-label")
+    private WebElement label;
+
     @FindBy(css = "input[type='checkbox']")
     private List<WebElement> checkboxes;
 
@@ -59,6 +63,10 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
 
     public WebElement getPanel() {
         return panel;
+    }
+
+    public WebElement getLabel() {
+        return label;
     }
 
     public List<WebElement> getCheckboxes() {
@@ -88,9 +96,9 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
     }
 
     /**
-     * Bring up the overlay panel if its not showing or hide it if it is showing.
+     * Bring up the overlay panel if it's not showing or hide it if it is showing.
      */
-    public void togglPanel() {
+    public void togglePanel() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".togglePanel();");
     }
 

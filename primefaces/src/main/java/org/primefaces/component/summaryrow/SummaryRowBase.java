@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.summaryrow;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 
 public abstract class SummaryRowBase extends UIComponentBase {
@@ -46,11 +46,11 @@ public abstract class SummaryRowBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public javax.el.MethodExpression getListener() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
+    public jakarta.el.MethodExpression getListener() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
     }
 
-    public void setListener(javax.el.MethodExpression listener) {
+    public void setListener(jakarta.el.MethodExpression listener) {
         getStateHelper().put(PropertyKeys.listener, listener);
     }
 

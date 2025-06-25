@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,110 +23,128 @@
  */
 package org.primefaces.component.splitbutton;
 
+import org.primefaces.component.api.MenuItemAware;
+import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.menu.Menu;
+import org.primefaces.component.menubutton.MenuButton;
+import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.MenuModel;
+import org.primefaces.model.menu.Separator;
+import org.primefaces.model.menu.Submenu;
+import org.primefaces.renderkit.MenuItemAwareRenderer;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
 
-import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.Menu;
-import org.primefaces.component.menubutton.MenuButton;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.menu.*;
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.renderkit.MenuItemAwareRenderer;
-import org.primefaces.util.*;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.event.ActionEvent;
 
-public class SplitButtonRenderer extends MenuItemAwareRenderer {
+public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
 
     private static final String SB_BUILD_ONCLICK = SplitButtonRenderer.class.getName() + "#buildOnclick";
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        SplitButton button = (SplitButton) component;
-        if (button.isDisabled()) {
+    public void decode(FacesContext context, SplitButton component) {
+        if (component.isDisabled()) {
             return;
         }
 
         boolean menuItemDecoded = decodeDynamicMenuItem(context, component);
         if (!menuItemDecoded) {
-            String clientId = button.getClientId(context);
+            String clientId = component.getClientId(context);
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String param = button.isAjax() ? clientId : clientId + "_button";
+            String param = component.isAjax() ? clientId : clientId + "_button";
             if (params.containsKey(param)) {
                 component.queueEvent(new ActionEvent(component));
             }
         }
+
+        OverlayPanel customOverlay = component.getCustomOverlay();
+        if (customOverlay != null) {
+            customOverlay.getRenderer().decode(context, customOverlay);
+        }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SplitButton button = (SplitButton) component;
-        MenuModel model = button.getModel();
-        if (model != null && button.getElementsCount() > 0) {
+    public void encodeEnd(FacesContext context, SplitButton component) throws IOException {
+        MenuModel model = component.getModel();
+        if (model != null && component.getElementsCount() > 0) {
             model.generateUniqueIds();
         }
 
-        encodeMarkup(context, button);
-        encodeScript(context, button);
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, SplitButton button) throws IOException {
+    protected void encodeMarkup(FacesContext context, SplitButton component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = button.getClientId(context);
+        String clientId = component.getClientId(context);
         String menuId = clientId + "_menu";
         String menuButtonId = clientId + "_menuButton";
         String buttonId = clientId + "_button";
-        String styleClass = button.getStyleClass();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? SplitButton.STYLE_CLASS : SplitButton.STYLE_CLASS + " " + styleClass;
 
-        writer.startElement("div", button);
+        boolean hasOverlay = shouldBeRendered(context, component);
+
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
-        writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
-        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
-        if (button.getStyle() != null) {
-            writer.writeAttribute("style", button.getStyle(), "id");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "id");
         }
 
-        encodeDefaultButton(context, button, buttonId);
-        if (button.getElementsCount() > 0) {
-            encodeMenuIcon(context, button, menuButtonId);
-            encodeMenu(context, button, menuId);
+        encodeDefaultButton(context, component, buttonId);
+        OverlayPanel customOverlay = component.getCustomOverlay();
+        if (customOverlay != null || component.getElementsCount() > 0) {
+            encodeMenuIcon(context, component, menuButtonId, menuId, hasOverlay);
+            if (hasOverlay) {
+                encodeMenu(context, component, menuId);
+            }
         }
 
         writer.endElement("div");
+
+        if (customOverlay != null) {
+            customOverlay.setFor(clientId);
+            customOverlay.getRenderer().encodeEnd(context, customOverlay);
+        }
     }
 
-    protected void encodeDefaultButton(FacesContext context, SplitButton button, String id) throws IOException {
+    protected void encodeDefaultButton(FacesContext context, SplitButton component, String id) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String value = (String) button.getValue();
-        String icon = button.getIcon();
-        String onclick = buildOnclick(context, button);
+        String icon = component.getIcon();
+        String onclick = buildOnclick(context, component);
 
         // confirm dialog expects data-pfconfirmcommand attribute on div instead of button
         if (LangUtils.isNotEmpty(onclick)) {
-            if (button.requiresConfirmation()) {
+            if (component.requiresConfirmation()) {
                 writer.writeAttribute("data-pfconfirmcommand", onclick, null);
             }
         }
 
-        writer.startElement("button", button);
+        writer.startElement("button", component);
         writer.writeAttribute("id", id, "id");
         writer.writeAttribute("name", id, "name");
-        writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
+        writer.writeAttribute("class", component.resolveStyleClass(), "styleClass");
 
-        if (onclick.length() > 0) {
-            if (button.requiresConfirmation()) {
-                writer.writeAttribute("onclick", button.getConfirmationScript(), "onclick");
+        if (!onclick.isEmpty()) {
+            if (component.requiresConfirmation()) {
+                writer.writeAttribute("onclick", component.getConfirmationScript(), "onclick");
                 // data-pfconfirmcommand is added to the div
             }
             else {
@@ -137,15 +155,15 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         // GitHub #9381 ignore style as its applied to parent div
         List<String> attrs = new ArrayList<>(HTML.BUTTON_WITHOUT_CLICK_ATTRS);
         attrs.remove("style");
-        renderPassThruAttributes(context, button, attrs);
+        renderPassThruAttributes(context, component, attrs);
 
-        if (button.isDisabled()) {
+        if (component.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
         //icon
         if (!isValueBlank(icon)) {
-            String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
+            String defaultIconClass = component.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
             String iconClass = defaultIconClass + " " + icon;
 
             writer.startElement("span", null);
@@ -157,87 +175,84 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (value == null) {
-            //For ScreenReader
-            writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
-        }
-        else {
-            writer.writeText(value, "value");
-        }
+        renderButtonValue(writer, true, component.getValue(), component.getTitle(), component.getAriaLabel());
 
         writer.endElement("span");
 
         writer.endElement("button");
     }
 
-    protected void encodeMenuIcon(FacesContext context, SplitButton button, String id) throws IOException {
+    protected void encodeMenuIcon(FacesContext context, SplitButton component, String id, String menuId, boolean hasOverlay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String buttonClass = SplitButton.MENU_ICON_BUTTON_CLASS;
-        if (button.isDisabled()) {
+        if (component.isDisabled()) {
             buttonClass += " ui-state-disabled";
         }
 
-        writer.startElement("button", button);
+        writer.startElement("button", component);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, hasOverlay ? "menu" : "false", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
 
-        if (button.isDisabled()) {
+        if (component.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-button-icon-left ui-icon ui-icon-triangle-1-s", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-triangle-1-s", null);
         writer.endElement("span");
 
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
+        writer.writeText(getIconOnlyButtonText(component.getTitle(), component.getAriaLabel()), null);
         writer.endElement("span");
 
         writer.endElement("button");
     }
 
-    protected void encodeScript(FacesContext context, SplitButton button) throws IOException {
+    protected void encodeScript(FacesContext context, SplitButton component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SplitButton", button);
-        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
+        wb.init("SplitButton", component)
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()));
 
-        if (button.isFilter()) {
+        if (component.isFilter()) {
             wb.attr("filter", true)
-                    .attr("filterMatchMode", button.getFilterMatchMode(), null)
-                    .nativeAttr("filterFunction", button.getFilterFunction(), null)
-                    .attr("filterNormalize", button.isFilterNormalize(), false);
+                    .attr("filterMatchMode", component.getFilterMatchMode(), null)
+                    .nativeAttr("filterFunction", component.getFilterFunction(), null)
+                    .attr("filterNormalize", component.isFilterNormalize(), false)
+                    .attr("filterInputAutoFocus", component.isFilterInputAutoFocus(), true);
         }
 
-        wb.attr("disableOnAjax", button.isDisableOnAjax(), true)
-            .attr("disabledAttr", button.isDisabled(), false)
+        wb.attr("disableOnAjax", component.isDisableOnAjax(), true)
+            .attr("disabledAttr", component.isDisabled(), false)
             .finish();
     }
 
-    protected String buildOnclick(FacesContext context, SplitButton button) throws IOException {
+    protected String buildOnclick(FacesContext context, SplitButton component) throws IOException {
         StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
-        if (button.getOnclick() != null) {
-            onclick.append(button.getOnclick()).append(";");
+        if (component.getOnclick() != null) {
+            onclick.append(component.getOnclick()).append(";");
         }
 
-        if (button.isAjax()) {
-            onclick.append(buildAjaxRequest(context, button));
+        if (component.isAjax()) {
+            onclick.append(buildAjaxRequest(context, component));
         }
         else {
-            UIForm form = ComponentTraversalUtils.closestForm(button);
+            UIForm form = ComponentTraversalUtils.closestForm(component);
             if (form == null) {
-                throw new FacesException("SplitButton : \"" + button.getClientId(context) + "\" must be inside a form element");
+                throw new FacesException("SplitButton : \"" + component.getClientId(context) + "\" must be inside a form element");
             }
 
-            onclick.append(buildNonAjaxRequest(context, button, form, null, false));
+            onclick.append(buildNonAjaxRequest(context, component, form, null, false));
         }
 
-        String onclickBehaviors = getEventBehaviors(context, button, "click", null);
+        String onclickBehaviors = getEventBehaviors(context, component, "click", null);
         if (onclickBehaviors != null) {
             onclick.append(onclickBehaviors).append(";");
         }
@@ -245,19 +260,19 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         return onclick.toString();
     }
 
-    protected void encodeMenu(FacesContext context, SplitButton button, String menuId) throws IOException {
+    protected void encodeMenu(FacesContext context, SplitButton component, String menuId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String menuStyleClass = button.getMenuStyleClass();
+        String menuStyleClass = component.getMenuStyleClass();
         menuStyleClass = (menuStyleClass == null) ? SplitButton.SPLITBUTTON_CONTAINER_CLASS : SplitButton.SPLITBUTTON_CONTAINER_CLASS + " " + menuStyleClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("id", menuId, null);
         writer.writeAttribute("class", menuStyleClass, "styleClass");
-        writer.writeAttribute(HTML.ARIA_LABELLEDBY, button.getClientId(context), null);
+        writer.writeAttribute(HTML.ARIA_LABELLEDBY, component.getClientId(context), null);
         writer.writeAttribute("tabindex", "-1", null);
 
-        if (button.isFilter()) {
-            encodeFilter(context, button);
+        if (component.isFilter()) {
+            encodeFilter(context, component);
         }
 
         writer.startElement("div", null);
@@ -267,7 +282,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
-        encodeElements(context, button, button.getElements(), false);
+        encodeElements(context, component, component.getElements(), false);
 
         writer.endElement("ul");
         writer.endElement("div");
@@ -275,7 +290,9 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeElements(FacesContext context, SplitButton button, List<MenuElement> elements, boolean isSubmenu) throws IOException {
+    protected void encodeElements(FacesContext context, SplitButton component, List<MenuElement> elements, boolean isSubmenu)
+            throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
 
         for (MenuElement element : elements) {
@@ -296,12 +313,12 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
-                    encodeMenuItem(context, button, menuItem);
+                    encodeMenuItem(context, component, menuItem);
                     writer.endElement("li");
                 }
             }
             else if (element instanceof Submenu) {
-                encodeSubmenu(context, button, (Submenu) element);
+                encodeSubmenu(context, component, (Submenu) element);
             }
             else if (element instanceof Separator) {
                 encodeSeparator(context, (Separator) element);
@@ -309,7 +326,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         }
     }
 
-    protected void encodeMenuItem(FacesContext context, SplitButton button, MenuItem menuitem) throws IOException {
+    protected void encodeMenuItem(FacesContext context, SplitButton component, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = menuitem.getIcon();
         String title = menuitem.getTitle();
@@ -343,7 +360,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
                 writer.writeAttribute("onclick", "return false;", null);
             }
             else {
-                encodeOnClick(context, button, menuitem);
+                encodeOnClick(context, component, menuitem);
             }
 
             if (icon != null) {
@@ -364,7 +381,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         }
     }
 
-    protected void encodeSubmenu(FacesContext context, SplitButton button, Submenu submenu) throws IOException {
+    protected void encodeSubmenu(FacesContext context, SplitButton component, Submenu submenu) throws IOException {
         if (!submenu.isRendered()) {
             return;
         }
@@ -391,26 +408,25 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
         writer.endElement("li");
 
-        encodeElements(context, button, submenu.getElements(), true);
+        encodeElements(context, component, submenu.getElements(), true);
     }
 
-    protected void encodeFilter(FacesContext context, SplitButton button) throws IOException {
+    protected void encodeFilter(FacesContext context, SplitButton component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String id = button.getClientId(context) + "_filter";
+        String id = component.getClientId(context) + "_filter";
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-splitbuttonmenu-filter-container", null);
 
         writer.startElement("input", null);
-        writer.writeAttribute("class", "ui-splitbuttonmenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all", null);
+        writer.writeAttribute("class", "ui-splitbuttonmenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
 
-        if (button.getFilterPlaceholder() != null) {
-            writer.writeAttribute("placeholder", button.getFilterPlaceholder(), null);
+        if (component.getFilterPlaceholder() != null) {
+            writer.writeAttribute("placeholder", component.getFilterPlaceholder(), null);
         }
 
         writer.startElement("span", null);
@@ -423,12 +439,20 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext facesContext, SplitButton component) throws IOException {
         //Do nothing
     }
 
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    @Override
+    protected boolean shouldBeRendered(FacesContext context, MenuItemAware container) {
+        SplitButton button = (SplitButton) container;
+        boolean  rendered = button.getCustomOverlay() != null;
+        rendered = rendered || super.shouldBeRendered(context, button);
+        return rendered;
     }
 }

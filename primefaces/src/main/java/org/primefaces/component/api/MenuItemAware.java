@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,22 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.event.MenuActionEvent;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.MethodExpression;
-import javax.el.MethodNotFoundException;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-
-import org.primefaces.event.MenuActionEvent;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
+import jakarta.el.ELContext;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.MethodExpression;
+import jakarta.el.MethodNotFoundException;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.ActionEvent;
+import jakarta.faces.event.FacesEvent;
 
 public interface MenuItemAware {
 

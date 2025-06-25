@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,50 @@
  */
 package org.primefaces.component.treetable;
 
-import java.util.*;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PostRestoreStateEvent;
-
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.column.Column;
 import org.primefaces.component.treetable.feature.FilterFeature;
-import org.primefaces.component.treetable.feature.SortFeature;
-import org.primefaces.event.*;
+import org.primefaces.component.treetable.feature.TreeTableFeatures;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.ColumnResizeEvent;
+import org.primefaces.event.NodeCollapseEvent;
+import org.primefaces.event.NodeExpandEvent;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.NodeUnselectEvent;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
-import org.primefaces.model.*;
-import org.primefaces.model.filter.*;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.TreeNode;
+import org.primefaces.model.TreeNodeChildren;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.ComponentSystemEvent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.PhaseId;
+import jakarta.faces.event.PostRestoreStateEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -66,9 +80,9 @@ public class TreeTable extends TreeTableBase {
 
     public static final String CONTAINER_CLASS = "ui-treetable ui-widget";
     public static final String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
-    public static final String HEADER_CLASS = "ui-treetable-header ui-widget-header ui-corner-top";
+    public static final String HEADER_CLASS = "ui-treetable-header ui-widget-header";
     public static final String DATA_CLASS = "ui-treetable-data ui-widget-content";
-    public static final String FOOTER_CLASS = "ui-treetable-footer ui-widget-header ui-corner-bottom";
+    public static final String FOOTER_CLASS = "ui-treetable-footer ui-widget-header";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
     public static final String SORTABLE_COLUMN_HEADER_CLASS = "ui-state-default ui-sortable-column";
     public static final String ROW_CLASS = "ui-widget-content";
@@ -93,7 +107,7 @@ public class TreeTable extends TreeTableBase {
     public static final String SORTABLE_PRIORITY_CLASS = "ui-sortable-column-badge ui-helper-hidden";
     public static final String REFLOW_CLASS = "ui-treetable-reflow";
     public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
-    public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
     public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
     public static final String STATIC_COLUMN_CLASS = "ui-static-column";
@@ -102,28 +116,6 @@ public class TreeTable extends TreeTableBase {
     public static final String GRIDLINES_CLASS = "ui-treetable-gridlines";
     public static final String SMALL_SIZE_CLASS = "ui-treetable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-treetable-lg";
-
-    static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
-            .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
-            .put(MatchMode.NOT_STARTS_WITH, new NegationFilterConstraintWrapper(new StartsWithFilterConstraint()))
-            .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
-            .put(MatchMode.NOT_ENDS_WITH, new NegationFilterConstraintWrapper(new EndsWithFilterConstraint()))
-            .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
-            .put(MatchMode.NOT_CONTAINS, new NegationFilterConstraintWrapper(new ContainsFilterConstraint()))
-            .put(MatchMode.EXACT, new ExactFilterConstraint())
-            .put(MatchMode.NOT_EXACT, new NegationFilterConstraintWrapper(new ExactFilterConstraint()))
-            .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
-            .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
-            .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
-            .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
-            .put(MatchMode.EQUALS, new EqualsFilterConstraint())
-            .put(MatchMode.NOT_EQUALS, new NegationFilterConstraintWrapper(new EqualsFilterConstraint()))
-            .put(MatchMode.IN, new InFilterConstraint())
-            .put(MatchMode.NOT_IN, new NegationFilterConstraintWrapper(new InFilterConstraint()))
-            .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
-            .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
-            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new BetweenFilterConstraint()))
-            .build();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("contextMenu", NodeSelectEvent.class)
@@ -142,6 +134,7 @@ public class TreeTable extends TreeTableBase {
             .put("cellEditCancel", CellEditEvent.class)
             .put("page", PageEvent.class)
             .build();
+
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private List<UIColumn> columns;
@@ -158,38 +151,6 @@ public class TreeTable extends TreeTableBase {
         return EVENT_NAMES;
     }
 
-    public boolean isExpandRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_expand");
-    }
-
-    public boolean isCollapseRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_collapse");
-    }
-
-    public boolean isSelectionRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_instantSelection");
-    }
-
-    public boolean isPaginationRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_pagination");
-    }
-
-    public boolean isRowEditRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_rowEditAction");
-    }
-
-    public boolean isCellEditRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_cellInfo");
-    }
-
-    public boolean isCellEditCancelRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_cellEditCancel");
-    }
-
-    public boolean isCellEditInitRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_cellEditInit");
-    }
-
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
@@ -199,14 +160,14 @@ public class TreeTable extends TreeTableBase {
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
             FacesEvent wrapperEvent = null;
-            TreeNode root = getValue();
+            TreeNode<?> root = getValue();
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if ("expand".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_expand");
                 setRowKey(root, nodeKey);
-                TreeNode node = getRowNode();
+                TreeNode<?> node = getRowNode();
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
@@ -214,24 +175,33 @@ public class TreeTable extends TreeTableBase {
             else if ("collapse".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_collapse");
                 setRowKey(root, nodeKey);
-                TreeNode node = getRowNode();
+                TreeNode<?> node = getRowNode();
                 node.setExpanded(false);
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if ("select".equals(eventName) || "contextMenu".equals(eventName)) {
+            else if ("select".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
-                TreeNode node = getRowNode();
+                TreeNode<?> node = getRowNode();
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
+            else if ("contextMenu".equals(eventName)) {
+                String nodeKey = params.get(clientId + "_instantSelection");
+                setRowKey(root, nodeKey);
+                TreeNode<?> node = getRowNode();
+
+                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), node, true);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            }
+
             else if ("unselect".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_instantUnselection");
                 setRowKey(root, nodeKey);
-                TreeNode node = getRowNode();
+                TreeNode<?> node = getRowNode();
 
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -253,7 +223,7 @@ public class TreeTable extends TreeTableBase {
             else if ("rowEdit".equals(eventName) || "rowEditCancel".equals(eventName) || "rowEditInit".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_rowEditIndex");
                 setRowKey(root, nodeKey);
-                wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), getRowNode());
+                wrapperEvent = new RowEditEvent<>(this, behaviorEvent.getBehavior(), getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if ("cellEdit".equals(eventName) || "cellEditCancel".equals(eventName) || "cellEditInit".equals(eventName)) {
@@ -274,15 +244,17 @@ public class TreeTable extends TreeTableBase {
                     }
                 }
 
-                wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), column, rowKey);
+                wrapperEvent = new CellEditEvent<>(this, behaviorEvent.getBehavior(), column, rowKey);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if ("page".equals(eventName)) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
+                String rowsPerPageParam = params.get(clientId + "_rows");
+                Integer rowsPerPage = LangUtils.isNotBlank(rowsPerPageParam) ? Integer.parseInt(rowsPerPageParam) : null;
 
-                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
+                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page, rowsPerPage);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
 
@@ -324,7 +296,7 @@ public class TreeTable extends TreeTableBase {
 
         //filters need to be decoded during PROCESS_VALIDATIONS phase,
         //so that local values of each filters are properly converted and validated
-        FilterFeature feature = FilterFeature.getInstance();
+        FilterFeature feature = TreeTableFeatures.filterFeature();
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
 
@@ -335,21 +307,6 @@ public class TreeTable extends TreeTableBase {
                 super.queueEvent(wrappedEvent);
             }
         }
-    }
-
-    public boolean hasFooterColumn() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof Column && child.isRendered()) {
-                Column column = (Column) child;
-
-                if (column.getFacet("footer") != null || column.getFooterText() != null) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     private boolean isToggleRequest(FacesContext context) {
@@ -375,8 +332,7 @@ public class TreeTable extends TreeTableBase {
     }
 
     public Locale resolveDataLocale() {
-        FacesContext context = getFacesContext();
-        return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
+        return resolveDataLocale(getFacesContext());
     }
 
     @Override
@@ -385,15 +341,12 @@ public class TreeTable extends TreeTableBase {
             return this.columns;
         }
 
-        List<UIColumn> columns = collectColumns();
-
-        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
-        // see https://github.com/primefaces/primefaces/issues/2110
-        if (getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            this.columns = columns;
+        List<UIColumn> columnsTmp = collectColumns();
+        if (isCacheableColumns(columnsTmp)) {
+            this.columns = columnsTmp;
         }
 
-        return columns;
+        return columnsTmp;
     }
 
     @Override
@@ -403,8 +356,6 @@ public class TreeTable extends TreeTableBase {
 
     @Override
     public Object saveState(FacesContext context) {
-        resetDynamicColumns();
-
         // reset value when filtering is enabled
         // filtering stores the filtered values the value property, so it needs to be reset; see #7336
         if (isFilteringEnabled()) {
@@ -420,12 +371,12 @@ public class TreeTable extends TreeTableBase {
 
     @Override
     public int getRowCount() {
-        TreeNode root = getValue();
+        TreeNode<?> root = getValue();
         if (root == null) {
             return (-1);
         }
         else {
-            List<TreeNode> children = root.getChildren();
+            TreeNodeChildren<?> children = root.getChildren();
             return children == null ? -1 : children.size();
         }
     }
@@ -494,9 +445,10 @@ public class TreeTable extends TreeTableBase {
 
         String firstParam = params.get(componentClientId + "_first");
         String rowsParam = params.get(componentClientId + "_rows");
+        int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.parseInt(rowsParam);
 
-        setFirst(Integer.valueOf(firstParam));
-        setRows(Integer.valueOf(rowsParam));
+        setFirst(Integer.parseInt(firstParam));
+        setRows(newRowsValue);
 
         ValueExpression firstVe = getValueExpression("first");
         ValueExpression rowsVe = getValueExpression("rows");
@@ -509,7 +461,7 @@ public class TreeTable extends TreeTableBase {
         }
     }
 
-    public void updateFilteredValue(FacesContext context, TreeNode node) {
+    public void updateFilteredValue(FacesContext context, TreeNode<?> node) {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
 
         if (ve != null) {
@@ -526,30 +478,6 @@ public class TreeTable extends TreeTableBase {
 
     public void setFilteredRowKeys(List<String> filteredRowKeys) {
         this.filteredRowKeys = filteredRowKeys;
-    }
-
-    @Override
-    protected void preDecode(FacesContext context) {
-        resetDynamicColumns();
-        super.preDecode(context);
-    }
-
-    @Override
-    protected void preValidate(FacesContext context) {
-        resetDynamicColumns();
-        super.preValidate(context);
-    }
-
-    @Override
-    protected void preUpdate(FacesContext context) {
-        resetDynamicColumns();
-        super.preUpdate(context);
-    }
-
-    @Override
-    protected void preEncode(FacesContext context) {
-        resetDynamicColumns();
-        super.preEncode(context);
     }
 
     @Override
@@ -575,8 +503,6 @@ public class TreeTable extends TreeTableBase {
                 updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
             }
 
-            // TODO selection
-
             setColumnMeta(ts.getColumnMeta());
         }
     }
@@ -598,10 +524,7 @@ public class TreeTable extends TreeTableBase {
     public void reset() {
         setValue(null);
         setFilteredValue(null);
-
         setFirst(0);
-        setDefaultSort(false);
-        setDefaultFilter(false);
         setSortByAsMap(null);
         setFilterByAsMap(null);
     }
@@ -618,32 +541,12 @@ public class TreeTable extends TreeTableBase {
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), () -> initFilterBy(getFacesContext()));
+        return (Map<String, FilterMeta>) getStateHelper().eval(InternalPropertyKeys.filterByAsMap.name(), () -> initFilterBy(getFacesContext()));
     }
 
     @Override
     public void setFilterByAsMap(Map<String, FilterMeta> filterBy) {
         getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), filterBy);
-    }
-
-    @Override
-    public boolean isDefaultSort() {
-        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultSort.name()));
-    }
-
-    @Override
-    public void setDefaultSort(boolean defaultSort) {
-        getStateHelper().put(InternalPropertyKeys.defaultSort.name(), defaultSort);
-    }
-
-    @Override
-    public boolean isDefaultFilter() {
-        return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultFilter.name()));
-    }
-
-    @Override
-    public void setDefaultFilter(boolean defaultFilter) {
-        getStateHelper().put(InternalPropertyKeys.defaultFilter.name(), defaultFilter);
     }
 
     @Override
@@ -687,7 +590,49 @@ public class TreeTable extends TreeTableBase {
     @Override
     public void filterAndSort() {
         setValue(null);
-        FilterFeature.getInstance().filter(FacesContext.getCurrentInstance(), this, getValue());
-        SortFeature.getInstance().sort(FacesContext.getCurrentInstance(), this);
+        TreeTableFeatures.filterFeature().filter(FacesContext.getCurrentInstance(), this, getValue());
+        TreeTableFeatures.sortFeature().sort(FacesContext.getCurrentInstance(), this);
     }
+
+    public boolean shouldEncodeFeature(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_encodeFeature");
+    }
+
+    protected boolean isCacheableColumns(List<UIColumn> columns) {
+        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
+        // see https://github.com/primefaces/primefaces/issues/2110
+        // do not cache if nested in iterator component and contains dynamic columns since number of columns may vary per iteration
+        // see https://github.com/primefaces/primefaces/issues/2154
+        return getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE
+                && (!ComponentUtils.isNestedWithinIterator(this) || columns.stream().noneMatch(DynamicColumn.class::isInstance));
+    }
+
+    @Override
+    protected void processNode(FacesContext context, PhaseId phaseId, TreeNode<?> root, TreeNode<?> treeNode, String rowKey) {
+        if (!isPaginator() || root != treeNode) {
+            super.processNode(context, phaseId, root, treeNode, rowKey);
+        }
+        else {
+            if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
+                int first = getFirst();
+                int rows = getRows() == 0 ? getRowCount() : getRows();
+
+                processColumnChildren(context, phaseId, root, rowKey);
+
+                TreeNodeChildren<?> children = root.getChildren();
+                int childCount = root.getChildCount();
+                int last = (first + rows);
+                if (last > childCount) {
+                    last = childCount;
+                }
+
+                for (int i = first; i < last; i++) {
+                    TreeNode<?> child = children.get(i);
+                    String childRowKey = childRowKey(rowKey, i);
+                    processNode(context, phaseId, root, child, childRowKey);
+                }
+            }
+        }
+    }
+
 }

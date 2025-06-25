@@ -1,0 +1,71 @@
+@use 'sass:list';
+@use 'sass:math';
+
+body {
+  .ui-splitbutton {
+    padding: 0;
+
+    .ui-button:first-child {
+      position: relative;
+      margin: 0;
+      border-radius: 0;
+      border-top-left-radius: $borderRadius;
+      border-bottom-left-radius: $borderRadius;
+
+      &.ui-state-focus {
+        z-index: 1;
+      }
+    }
+
+    .ui-button:last-child {
+      border-top-right-radius: $borderRadius;
+      border-bottom-right-radius: $borderRadius;
+    }
+
+    .ui-splitbuttonmenu {
+      min-width: 100%;
+    }
+
+    .ui-button.ui-splitbutton-menubutton {
+      cursor: pointer;
+      height: auto;
+      padding: 0;
+      position: relative;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-top-right-radius: $borderRadius;
+      border-bottom-right-radius: $borderRadius;
+
+      .ui-icon.ui-icon-triangle-1-s {
+        @include icon-override("\e902");
+      }
+    }
+  }
+
+  .ui-splitbuttonmenu {
+    .ui-splitbuttonmenu-filter-container {
+      padding: $inputListHeaderPadding;
+      margin: 0;
+      border-bottom: $inputListHeaderBorder;
+      background: $inputListHeaderBg;
+      color: $inputListHeaderTextColor;
+
+      .ui-splitbuttonmenu-filter.ui-inputfield {
+        padding: $inputPadding;
+        width: 100%;
+        padding-left: 2 * list.nth($inputPadding, 2) + $iconSize;
+      }
+
+      .ui-icon {
+        @include icon-override("\e908");
+        position: absolute;
+        left: list.nth($inputListHeaderPadding, 2) + list.nth($inputPadding, 2);
+        top: 50%;
+        right: auto;
+        bottom: auto;
+        margin-top: math.div(-1 * $iconSize, 2);
+        color: $inputIconColor;
+      }
+    }
+  }
+}

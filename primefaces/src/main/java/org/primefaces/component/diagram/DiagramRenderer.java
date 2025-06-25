@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,6 @@
  */
 package org.primefaces.component.diagram;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DiagramModel;
 import org.primefaces.model.diagram.Element;
@@ -38,64 +30,70 @@ import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
-public class DiagramRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class DiagramRenderer extends CoreRenderer<Diagram> {
 
     private static final String SB_DIAGRAM = CoreRenderer.class.getName() + "#diagram";
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Diagram diagram = (Diagram) component;
-
-        if (diagram.isConnectRequest(context)) {
-            decodeNewConnection(context, diagram);
+    public void decode(FacesContext context, Diagram component) {
+        if (component.isConnectRequest(context)) {
+            decodeNewConnection(context, component);
         }
-        else if (diagram.isDisconnectRequest(context)) {
-            decodeDisconnection(context, diagram);
+        else if (component.isDisconnectRequest(context)) {
+            decodeDisconnection(context, component);
         }
-        else if (diagram.isConnectionChangeRequest(context)) {
-            decodeConnectionChange(context, diagram);
+        else if (component.isConnectionChangeRequest(context)) {
+            decodeConnectionChange(context, component);
         }
-        else if (diagram.isPositionChangeRequest(context)) {
-            decodePositionChange(context, diagram);
+        else if (component.isPositionChangeRequest(context)) {
+            decodePositionChange(context, component);
         }
 
         decodeBehaviors(context, component);
     }
 
-    private void decodeNewConnection(FacesContext context, Diagram diagram) {
+    private void decodeNewConnection(FacesContext context, Diagram component) {
         //no need to decode since state is synced in previous connection move request
-        if (context.getExternalContext().getRequestParameterMap().containsKey(diagram.getClientId(context) + "_connectionChanged")) {
+        if (context.getExternalContext().getRequestParameterMap().containsKey(component.getClientId(context) + "_connectionChanged")) {
             return;
         }
 
-        DiagramModel model = (DiagramModel) diagram.getValue();
+        DiagramModel model = (DiagramModel) component.getValue();
         if (model != null) {
-            Connection connection = decodeConnection(context, diagram, true);
+            Connection connection = decodeConnection(context, component, true);
             if (connection != null) {
                 model.connect(connection);
             }
         }
     }
 
-    private void decodeDisconnection(FacesContext context, Diagram diagram) {
-        DiagramModel model = (DiagramModel) diagram.getValue();
+    private void decodeDisconnection(FacesContext context, Diagram component) {
+        DiagramModel model = (DiagramModel) component.getValue();
         if (model != null) {
-            Connection connection = decodeConnection(context, diagram, false);
+            Connection connection = decodeConnection(context, component, false);
             if (connection != null) {
                 model.disconnect(connection);
             }
         }
     }
 
-    private void decodeConnectionChange(FacesContext context, Diagram diagram) {
-        DiagramModel model = (DiagramModel) diagram.getValue();
+    private void decodeConnectionChange(FacesContext context, Diagram component) {
+        DiagramModel model = (DiagramModel) component.getValue();
         if (model != null) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String clientId = diagram.getClientId(context);
+            String clientId = component.getClientId(context);
 
             Element originalSourceElement = model.findElement(params.get(clientId + "_originalSourceId"));
             Element newSourceElement = model.findElement(params.get(clientId + "_newSourceId"));
@@ -111,11 +109,11 @@ public class DiagramRenderer extends CoreRenderer {
         }
     }
 
-    private void decodePositionChange(FacesContext context, Diagram diagram) {
-        DiagramModel model = (DiagramModel) diagram.getValue();
+    private void decodePositionChange(FacesContext context, Diagram component) {
+        DiagramModel model = (DiagramModel) component.getValue();
         if (model != null) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String clientId = diagram.getClientId(context);
+            String clientId = component.getClientId(context);
 
             Element element = model.findElement(params.get(clientId + "_elementId"));
             String[] position = params.get(clientId + "_position").split(",");
@@ -127,13 +125,13 @@ public class DiagramRenderer extends CoreRenderer {
         }
     }
 
-    private Connection decodeConnection(FacesContext context, Diagram diagram, boolean createNew) {
-        DiagramModel model = (DiagramModel) diagram.getValue();
+    private Connection decodeConnection(FacesContext context, Diagram component, boolean createNew) {
+        DiagramModel model = (DiagramModel) component.getValue();
         Connection connection = null;
 
         if (model != null) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String clientId = diagram.getClientId(context);
+            String clientId = component.getClientId(context);
 
             Element sourceElement = model.findElement(params.get(clientId + "_sourceId"));
             Element targetElement = model.findElement(params.get(clientId + "_targetId"));
@@ -173,19 +171,17 @@ public class DiagramRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Diagram diagram = (Diagram) component;
-
-        encodeMarkup(context, diagram);
-        encodeScript(context, diagram);
+    public void encodeEnd(FacesContext context, Diagram component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, Diagram diagram) throws IOException {
-        String clientId = diagram.getClientId(context);
+    protected void encodeScript(FacesContext context, Diagram component) throws IOException {
+        String clientId = component.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Diagram", diagram);
+        wb.init("Diagram", component);
 
-        DiagramModel model = (DiagramModel) diagram.getValue();
+        DiagramModel model = (DiagramModel) component.getValue();
         if (model != null) {
             encodeDefaults(wb, model);
 
@@ -193,7 +189,7 @@ public class DiagramRenderer extends CoreRenderer {
             encodeConnections(wb, model);
         }
 
-        encodeClientBehaviors(context, diagram);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
@@ -378,63 +374,55 @@ public class DiagramRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeMarkup(FacesContext context, Diagram diagram) throws IOException {
+    protected void encodeMarkup(FacesContext context, Diagram component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        DiagramModel model = (DiagramModel) diagram.getValue();
-        String clientId = diagram.getClientId(context);
-        String style = diagram.getStyle();
-        String styleClass = diagram.getStyleClass();
+        DiagramModel model = (DiagramModel) component.getValue();
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? Diagram.CONTAINER_CLASS : Diagram.CONTAINER_CLASS + " " + styleClass;
-        UIComponent elementFacet = diagram.getFacet("element");
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        String var = diagram.getVar();
+        UIComponent elementFacet = component.getFacet("element");
 
-        writer.startElement("div", diagram);
-        writer.writeAttribute("id", diagram.getClientId(context), null);
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
         if (model != null) {
-            List<Element> elements = model.getElements();
-            if (elements != null && !elements.isEmpty()) {
-                for (int i = 0; i < elements.size(); i++) {
-                    Element element = elements.get(i);
-                    String elementClass = element.getStyleClass();
-                    elementClass = (elementClass == null) ? Diagram.ELEMENT_CLASS : Diagram.ELEMENT_CLASS + " " + elementClass;
-                    if (element.isDraggable()) {
-                        elementClass = elementClass + " " + Diagram.DRAGGABLE_ELEMENT_CLASS;
-                    }
-                    Object data = element.getData();
-                    String x = element.getX();
-                    String y = element.getY();
-                    String coords = "left:" + x + ";top:" + y;
-                    String title = element.getTitle();
+            int rowCount = component.getRowCount();
+            for (int i = 0; i < rowCount; i++) {
+                component.setRowIndex(i);
 
-                    writer.startElement("div", null);
-                    writer.writeAttribute("id", clientId + "-" + element.getId(), null);
-                    writer.writeAttribute("class", elementClass, null);
-                    writer.writeAttribute("style", coords, null);
-                    writer.writeAttribute("data-tooltip", title, null);
-
-                    if (var != null) {
-                        requestMap.put(var, data);
-                    }
-
-                    if (ComponentUtils.shouldRenderFacet(elementFacet)) {
-                        elementFacet.encodeAll(context);
-                    }
-                    else if (data != null) {
-                        writer.writeText(data, null);
-                    }
-                    writer.endElement("div");
+                Element element = (Element) component.getRowData();
+                String elementClass = element.getStyleClass();
+                elementClass = (elementClass == null) ? Diagram.ELEMENT_CLASS : Diagram.ELEMENT_CLASS + " " + elementClass;
+                if (element.isDraggable()) {
+                    elementClass = elementClass + " " + Diagram.DRAGGABLE_ELEMENT_CLASS;
                 }
+                Object data = element.getData();
+                String x = element.getX();
+                String y = element.getY();
+                String coords = "left:" + x + ";top:" + y;
+                String title = element.getTitle();
+
+                writer.startElement("div", null);
+                writer.writeAttribute("id", clientId + "-" + element.getId(), null);
+                writer.writeAttribute("class", elementClass, null);
+                writer.writeAttribute("style", coords, null);
+                writer.writeAttribute("data-tooltip", title, null);
+
+                if (FacetUtils.shouldRenderFacet(elementFacet)) {
+                    elementFacet.encodeAll(context);
+                }
+                else if (data != null) {
+                    writer.writeText(data, null);
+                }
+                writer.endElement("div");
             }
 
-            if (var != null) {
-                requestMap.remove(var);
-            }
+            component.setRowIndex(-1);
         }
 
         writer.endElement("div");

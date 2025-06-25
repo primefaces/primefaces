@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,6 @@
  */
 package org.primefaces.integrationtests.tabview;
 
-import java.util.List;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
@@ -36,34 +30,43 @@ import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.TabView;
 import org.primefaces.selenium.component.model.Tab;
 
-public class TabView002Test extends AbstractPrimePageTest {
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class TabView002Test extends AbstractPrimePageTest {
 
     @Test
     @DisplayName("TabView: Test dynamic tabview loading AJAX tabs")
-    public void testDynamic(Page page) {
+    void dynamic(Page page) {
         // Arrange
         TabView tabView = page.tabView;
 
         // Assert - part 1
         List<Tab> tabs = tabView.getTabs();
-        Assertions.assertNotNull(tabs);
-        Assertions.assertEquals("Lewis", page.inputtext1.getValue());
+        assertNotNull(tabs);
+        assertEquals("Lewis", page.inputtext1.getValue());
 
         // Act
         tabView.toggleTab(1);
 
         // Assert - part 2
         assertNoJavascriptErrors();
-        Assertions.assertEquals(1, tabView.getSelectedTab().getIndex());
-        Assertions.assertEquals("Max", page.inputtext2.getValue());
+        assertEquals(1, tabView.getSelectedTab().getIndex());
+        assertEquals("Max", page.inputtext2.getValue());
 
         // Act
         tabView.toggleTab(2);
 
         // Assert - part 3
         assertNoJavascriptErrors();
-        Assertions.assertEquals(2, tabView.getSelectedTab().getIndex());
-        Assertions.assertEquals("Charles", page.inputtext3.getValue());
+        assertEquals(2, tabView.getSelectedTab().getIndex());
+        assertEquals("Charles", page.inputtext3.getValue());
     }
 
     public static class Page extends AbstractPrimePage {

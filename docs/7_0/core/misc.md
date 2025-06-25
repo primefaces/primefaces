@@ -163,7 +163,7 @@ Authorization function use HttpServletRequest API for the backend information.
 ifGranted(String role) | Returns true if user has the given role, else false.
 ifAllGranted(String roles) | Returns true if user has all of the given roles, else false.
 ifAnyGranted(String roles) | Returns true if user has any of the given roles, else false.
-ifNoneGranted(String roles) | Returns true if user has none of the given roles, else false. e.g `p:ifNoneGranted('ROLE_ADMIN,ROLE_OPERATOR')`
+ifNoneGranted(String roles) | Returns true if user has none of the given roles, else false. e.g. `p:ifNoneGranted('ROLE_ADMIN,ROLE_OPERATOR')`
 remoteUser() | Returns the name of the logged in user.
 userPrincipal() | Returns the principal instance of the logged in user.
 
@@ -356,7 +356,7 @@ screen size change to optimize their content.
 ```
 For a detailed example of a responsive page that uses all of the parts above, visit;
 
-http://www.primefaces.org/showcase/ui/misc/responsive.xhtml
+https://www.primefaces.org/showcase-v8/ui/misc/responsive.xhtml
 
 Source code is available at GitHub.
 
@@ -396,7 +396,7 @@ necessary to run a JSF application as a portlet and we suggest LiferayFaces brid
 implementation. Both teams work together time to time to make sure PrimeFaces runs well on
 liferay. A kickstart example with necessary configuration is available at LiferayFaces Demos;
 
-http://www.liferay.com/community/liferay-projects/liferay-faces/demos
+https://web.liferay.com/community/liferay-projects/liferay-faces/demos
 
 Demo contains a single "Job Application" portlet within the WAR that demonstrates several of the
 key features of JSF 2 and PrimeFaces;

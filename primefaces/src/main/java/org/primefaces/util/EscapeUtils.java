@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import org.apache.xmlbeans.impl.common.XMLChar;
 import org.owasp.encoder.Encode;
 
 /**
- * <p>Utility methods contained herein must be used strictly for the appropriate context, e.g. HTML, HTML attribute, JS string.</p>
+ * <p>Utility methods contained herein must be used strictly for the appropriate context, e.g., HTML, HTML attribute, JS string.</p>
  * <p>Method calls are delegated to safe and well-tried allowlist encoders from owasp-java-encoding.</p>
  */
 public class EscapeUtils {

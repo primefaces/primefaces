@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.inputmask;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InputMaskRendererTest {
 
@@ -43,6 +43,20 @@ class InputMaskRendererTest {
 
         // Assert
         assertEquals("[0-9][0-9]?[0-9]?[0-9]?", result.pattern());
+    }
+
+    @Test
+    void translateMaskIntoRegex_EscapeCharacter_GitHub11590() {
+        // Arrange
+        InputMaskRenderer comp = new InputMaskRenderer();
+        StringBuilder sb = new StringBuilder();
+        String mask = "\\G.9";
+
+        // Act
+        Pattern result = comp.translateMaskIntoRegex(sb, mask);
+
+        // Assert
+        assertEquals("G\\.[0-9]", result.pattern());
     }
 
 }

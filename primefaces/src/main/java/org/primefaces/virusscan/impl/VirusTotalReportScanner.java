@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,31 @@
  */
 package org.primefaces.virusscan.impl;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.IOUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.virusscan.VirusException;
 import org.primefaces.virusscan.VirusScanner;
-import org.primefaces.util.IOUtils;
 
-import javax.faces.FacesException;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * This is the default {@link VirusScanner} provider bundled with PrimeFaces.
@@ -105,7 +109,7 @@ public class VirusTotalReportScanner implements VirusScanner {
     }
 
     protected String createErrorMessage(UploadedFile file, JSONObject json) {
-        return MessageFactory.getMessage("primefaces.fileupload.VIRUS_TOTAL_FILE", file.getFileName());
+        return MessageFactory.getMessage(FacesContext.getCurrentInstance(), "primefaces.fileupload.VIRUS_TOTAL_FILE", file.getFileName());
     }
 
     protected URLConnection openConnection(UploadedFile file) throws IOException {
@@ -116,12 +120,12 @@ public class VirusTotalReportScanner implements VirusScanner {
             String key = ctx.getInitParameter(CONTEXT_PARAM_KEY);
 
             String hash = LangUtils.md5Hex(file.getContent());
-            URL url = new URL(String.format(API_ENDPOINT, EscapeUtils.forUriComponent(key), EscapeUtils.forUriComponent(hash)));
+            URL url = new URI(String.format(API_ENDPOINT, EscapeUtils.forUriComponent(key), EscapeUtils.forUriComponent(hash))).toURL();
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
         }
-        catch (IOException e) {
+        catch (IOException | URISyntaxException e) {
             throw new FacesException(e);
         }
 

@@ -1,8 +1,10 @@
+@use "core";
+
 /* Home Component*/
 .home {
     a {
         text-decoration: none;
-        color: $linkColor;
+        color: core.$linkColor;
         font-weight: 600;
 
         &:hover {

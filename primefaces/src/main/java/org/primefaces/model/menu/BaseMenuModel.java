@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,13 @@
  */
 package org.primefaces.model.menu;
 
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 
 /**
  * Base implementation for model of a programmatic menu

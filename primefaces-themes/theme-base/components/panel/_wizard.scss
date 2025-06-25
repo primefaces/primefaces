@@ -1,0 +1,38 @@
+body {
+  .ui-wizard {
+    .ui-wizard-step-titles {
+      .ui-wizard-step-title {
+        border: $panelHeaderBorder;
+        background: $panelHeaderBg;
+        color: $panelHeaderTextColor;
+        padding: $panelHeaderPadding;
+        margin: 0;
+        border-right: 0 none;
+        border-radius: 0;
+
+        &:first-child {
+          @include border-radius-left($borderRadius);
+        }
+
+        &:last-child {
+          @include border-radius-right($borderRadius);
+          border-right: $panelHeaderBorder;
+        }
+
+        &.ui-state-highlight {
+          background: $highlightBg;
+          color: $highlightTextColor;
+        }
+      }
+    }
+
+    .ui-icon-arrowthick-1-w {
+      @include icon-override("\e91a");
+    }
+
+    .ui-icon-arrowthick-1-e {
+      @include icon-override('\e91b');
+    }
+
+  }
+}

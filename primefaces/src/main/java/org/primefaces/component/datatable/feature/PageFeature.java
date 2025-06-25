@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,14 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostPageEvent;
+
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
 
 public class PageFeature implements DataTableFeature {
 
@@ -39,8 +40,8 @@ public class PageFeature implements DataTableFeature {
 
         boolean isPageState = table.isPageStateRequest(context);
 
-        if (table.isLazy() && !isPageState) {
-            table.loadLazyData();
+        if (!isPageState) {
+            table.loadLazyDataIfEnabled();
         }
 
         if (!isPageState && !table.isFullUpdateRequest(context)) {

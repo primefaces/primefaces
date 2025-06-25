@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,22 @@
  */
 package org.primefaces.application.resource;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import javax.faces.context.ExternalContext;
-
 import org.primefaces.util.ResourceUtils;
+
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
+import jakarta.faces.context.ExternalContext;
 
 public abstract class BaseDynamicContentHandler implements DynamicContentHandler {
 
     public void handleCache(ExternalContext externalContext, boolean cache) {
         if (cache) {
-            DateFormat httpDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
-            httpDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.YEAR, 1);
+            DateTimeFormatter httpDateFormat = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z");
+            ZonedDateTime dateTime = ZonedDateTime.now();
+            dateTime = dateTime.plusYears(1);
             externalContext.setResponseHeader("Cache-Control", "max-age=29030400");
-            externalContext.setResponseHeader("Expires", httpDateFormat.format(calendar.getTime()));
+            externalContext.setResponseHeader("Expires", httpDateFormat.format(dateTime));
         }
         else {
             ResourceUtils.addNoCacheControl(externalContext);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.graphicimage;
 
-import javax.faces.component.html.HtmlGraphicImage;
+import jakarta.faces.component.html.HtmlGraphicImage;
 
 
 public abstract class GraphicImageBase extends HtmlGraphicImage {
@@ -52,7 +52,7 @@ public abstract class GraphicImageBase extends HtmlGraphicImage {
     }
 
     public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, false);
     }
 
     public void setCache(boolean cache) {

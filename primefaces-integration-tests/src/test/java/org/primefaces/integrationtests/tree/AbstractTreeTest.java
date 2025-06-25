@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,13 @@
  */
 package org.primefaces.integrationtests.tree;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
+
+import org.json.JSONObject;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class AbstractTreeTest extends AbstractPrimePageTest {
 
@@ -38,13 +40,13 @@ public abstract class AbstractTreeTest extends AbstractPrimePageTest {
     protected void assertConfiguration(JSONObject cfg, String widgetVar) {
         assertNoJavascriptErrors();
         System.out.println("Tree Config = " + cfg);
-        Assertions.assertEquals(widgetVar, cfg.getString("widgetVar"));
+        assertEquals(widgetVar, cfg.getString("widgetVar"));
     }
 
     protected void assertMessage(Messages messages, int index, String summary, String detail) {
         Msg message = messages.getMessage(index);
-        Assertions.assertEquals(summary, message.getSummary());
-        Assertions.assertEquals(detail, message.getDetail());
+        assertEquals(summary, message.getSummary());
+        assertEquals(detail, message.getDetail());
     }
 
 }

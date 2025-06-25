@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,14 @@
  */
 package org.primefaces.integrationtests.rating;
 
+import org.primefaces.event.RateEvent;
+
 import java.io.Serializable;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-
-import org.primefaces.event.RateEvent;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 import lombok.Data;
 
@@ -44,6 +44,7 @@ public class Rating001 implements Serializable {
     private Integer rating1;
     private Integer rating2 = 3;
     private Integer rating3 = 2;
+    private Integer rating4 = 4;
 
     public void onrate(RateEvent<Integer> rateEvent) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Rate Event", "You rated:" + rateEvent.getRating());
@@ -51,7 +52,7 @@ public class Rating001 implements Serializable {
     }
 
     public void oncancel() {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cancel Event", "Rate Reset");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cancel Event", "Rate Reset:" + rating1);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }

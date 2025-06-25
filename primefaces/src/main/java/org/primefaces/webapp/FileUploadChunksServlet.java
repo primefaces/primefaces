@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,20 @@
  */
 package org.primefaces.webapp;
 
+import org.primefaces.util.FileUploadUtils;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.config.StartupPrimeEnvironment;
-import org.primefaces.util.Constants;
-import org.primefaces.util.FileUploadUtils;
 
 public class FileUploadChunksServlet extends HttpServlet {
 
@@ -47,15 +45,6 @@ public class FileUploadChunksServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        String uploader = getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
-        boolean usesCommonsUpload = "commons".equals(uploader);
-        if (uploader == null || "auto".equals(uploader)) {
-            PrimeEnvironment environment = new StartupPrimeEnvironment();
-            usesCommonsUpload = !environment.isAtLeastJsf22();
-        }
-        if (usesCommonsUpload) {
-            throw new ServletException("Resuming chunked file uploads is not supported with commons uploader.");
-        }
     }
 
     @Override
@@ -84,7 +73,7 @@ public class FileUploadChunksServlet extends HttpServlet {
             resp.setContentType("application/json");
             JSONObject json = new JSONObject();
             json.put("uploadedBytes", uploadedBytes);
-            w.print(json.toString());
+            w.print(json);
         }
         catch (IOException | JSONException ex) {
             sendError(resp, ex);

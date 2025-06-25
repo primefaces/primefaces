@@ -1,0 +1,308 @@
+body {
+  .ui-tabs {
+    padding: 0;
+    position: static;
+
+    .ui-tabs-nav {
+      margin: 0;
+      padding: 0;
+      background: $tabsNavBg;
+      @include flex();
+
+      li {
+        &.ui-tabs-header {
+          list-style: none;
+          white-space: nowrap;
+          display: inline-block;
+          vertical-align: top;
+          float: none;
+          padding: $tabsHeaderPadding;
+          background: $tabsHeaderBg;
+          color: $tabsHeaderTextColor;
+          margin: 0;
+          cursor: pointer;
+          @include flex();
+          @include flex-align-center();
+          transition: $transition;
+
+          a {
+            color: $tabsHeaderTextColor;
+            padding: 0;
+            font-weight: $tabsHeaderFontWeight;
+            display: block;
+            line-height: 1;
+            transition: $transition;
+          }
+
+          .ui-icon {
+            position: static;
+
+            &.ui-icon-close {
+              margin: 0;
+              float: none;
+              @include icon-override("\e90b");
+              margin-left: $inlineSpacing;
+            }
+          }
+
+          &.ui-state-hover {
+            background: $tabsHeaderHoverBg;
+
+            a {
+              color: $tabsHeaderTextHoverColor;
+            }
+
+            .ui-icon {
+              color: $tabsHeaderTextHoverColor;
+            }
+          }
+
+          &.ui-state-active {
+            background: $tabsHeaderActiveBg;
+
+            a {
+              color: $tabsHeaderTextActiveColor;
+            }
+
+            .ui-icon {
+              color: $tabsHeaderTextActiveColor;
+            }
+          }
+
+          &.ui-state-error {
+            a {
+              color: $errorColor;
+            }
+
+            .ui-icon {
+              color: $errorColor;
+            }
+          }
+
+          &.ui-tabs-outline {
+            @include focused-inset();
+          }
+        }
+
+        &.ui-tabs-actions {
+          order: 1;
+          margin-left: auto;
+        }
+      }
+    }
+
+    .ui-tabs-panels {
+      border: $tabsContentBorder;
+      background: $tabsContentBg;
+      color: $tabsContentTextColor;
+      padding: 0;
+      margin: 0;
+      position: static;
+      @include border-radius-bottom($borderRadius);
+
+      .ui-tabs-panel {
+        padding: $tabsContentPadding;
+      }
+    }
+
+    &.ui-tabs-top {
+      > .ui-tabs-nav {
+        margin: 0;
+        padding: 0;
+        position: relative;
+        @include flex();
+        @include flex-wrap(wrap);
+
+        &:before {
+          content: "";
+          position: absolute;
+          display: block;
+          border-bottom: $tabsNavBorder;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+        }
+
+        li.ui-tabs-header {
+          top: 0;
+          border-bottom: $tabsNavBorder;
+
+          &.ui-state-hover {
+            border-color: $tabsHeaderHoverBorderColor;
+          }
+
+          &.ui-state-active {
+            border-color: $tabsHeaderActiveBorderColor;
+          }
+
+          &.ui-state-error {
+            border-color: $errorColor;
+          }
+        }
+      }
+
+      > .ui-tabs-panels {
+        border-width: 1px 0 0 0;
+      }
+    }
+
+    &.ui-tabs-bottom {
+      > .ui-tabs-nav {
+        margin: 0;
+        padding: 0;
+        position: relative;
+        @include flex();
+        @include flex-wrap(wrap);
+
+        &:before {
+          content: "";
+          position: absolute;
+          display: block;
+          border-top: $tabsNavBorder;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+
+        li.ui-tabs-header {
+          top: 0;
+          border-top: $tabsNavBorder;
+
+          &.ui-state-hover {
+            border-color: $tabsHeaderHoverBorderColor;
+          }
+
+          &.ui-state-active {
+            border-color: $tabsHeaderActiveBorderColor;
+          }
+
+          &.ui-state-error {
+            border-color: $errorColor;
+          }
+        }
+      }
+
+      > .ui-tabs-panels {
+        border-width: 1px 0 0 0;
+      }
+    }
+
+    &.ui-tabs-left, &.ui-tabs-right {
+      > .ui-tabs-nav {
+        width: 25%;
+        margin: 0;
+        padding: 0;
+        height: auto;
+        @include flex-direction-column();
+
+        li.ui-tabs-header {
+          width: 100%;
+        }
+      }
+
+      > .ui-tabs-panels {
+        width: 75%;
+      }
+    }
+
+    &.ui-tabs-right {
+      > .ui-tabs-nav {
+        margin: 0;
+        padding: 0;
+        border-left: $tabsNavBorder;
+
+        li.ui-tabs-header {
+          top: 0;
+          border-left: $tabsNavBorder;
+          left: -1 * $tabsNavBorderWidth;
+
+          &.ui-state-hover {
+            border-color: $tabsHeaderHoverBorderColor;
+          }
+
+          &.ui-state-active {
+            border-color: $tabsHeaderActiveBorderColor;
+          }
+
+          &.ui-state-error {
+            border-color: $errorColor;
+          }
+        }
+      }
+
+      > .ui-tabs-panels {
+        border-width: 1px 0 0 0;
+      }
+    }
+
+    &.ui-tabs-left {
+      > .ui-tabs-nav {
+        margin: 0;
+        padding: 0;
+        right: -1 * $tabsNavBorderWidth;
+
+        li.ui-tabs-header {
+          top: 0;
+          border-right: $tabsNavBorder;
+          margin-right: -1 * $tabsNavBorderWidth;
+
+          &.ui-state-hover {
+            border-color: $tabsHeaderHoverBorderColor;
+          }
+
+          &.ui-state-active {
+            border-color: $tabsHeaderActiveBorderColor;
+          }
+
+          &.ui-state-error {
+            border-color: $errorColor;
+          }
+        }
+      }
+
+      > .ui-tabs-panels {
+        border-width: 1px 0 0 0;
+      }
+    }
+
+    .ui-tabs-navscroller {
+      position: relative;
+
+      .ui-tabs-navscroller-btn {
+        border: 0 none;
+        background: $tabsScrollerButtonBg;
+        color: $tabsScrollerButtonIconColor;
+        outline: 0 none;
+        z-index: 1;
+        @include flex();
+        @include flex-align-center();
+        transition: $transition;
+
+        &.ui-tabs-navscroller-btn-left {
+          left: 0;
+          height: 100%;
+
+          .ui-icon {
+            margin: 0;
+            @include icon-override("\e900");
+          }
+        }
+
+        &.ui-tabs-navscroller-btn-right {
+          right: 0;
+          height: 100%;
+
+          .ui-icon {
+            margin: 0;
+            @include icon-override("\e901");
+          }
+        }
+
+        &.ui-state-hover {
+          background: $tabsScrollerButtonHoverBg;
+          color: $tabsScrollerButtonIconHoverColor;
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,14 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.SelectBooleanButton;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,22 +39,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.SelectBooleanButton;
 
-public class DataTable004Test extends AbstractDataTableTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class DataTable004Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: selection - single; click on row & events")
-    public void testSelectionSingle(Page page) {
+    void selectionSingle(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         PrimeSelenium.guardAjax(dataTable.getCell(2, 0).getWebElement()).click();
@@ -68,7 +70,7 @@ public class DataTable004Test extends AbstractDataTableTest {
         // Assert (select row after update still selected)
         assertMessage(page, "Selected ProgrammingLanguage", languages.get(4).getName());
         PrimeSelenium.hasCssClass(dataTable.getRow(4).getWebElement(), "ui-state-highlight");
-        Assertions.assertEquals("true", dataTable.getRow(4).getWebElement().getAttribute("aria-selected"));
+        assertEquals("true", dataTable.getRow(4).getWebElement().getAttribute("aria-selected"));
 
         // Act - unselect row
         Actions actions = new Actions(page.getWebDriver());
@@ -82,7 +84,7 @@ public class DataTable004Test extends AbstractDataTableTest {
         page.button.click();
 
         // Assert (no row selected)
-        dataTable.getRows().forEach(r -> Assertions.assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
+        dataTable.getRows().forEach(r -> assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
         assertMessage(page, "NO ProgrammingLanguage selected", "");
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -90,10 +92,10 @@ public class DataTable004Test extends AbstractDataTableTest {
     @Test
     @Order(2)
     @DisplayName("DataTable: selection - single - unselect; https://github.com/primefaces/primefaces/issues/7128")
-    public void testSelectionSingleUnselect(Page page) {
+    void selectionSingleUnselect(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         dataTable.getCell(2, 0).getWebElement().click();
@@ -101,7 +103,7 @@ public class DataTable004Test extends AbstractDataTableTest {
 
         // Assert
         WebElement card = page.card;
-        Assertions.assertTrue(card.getText().contains(languages.get(2).getName()));
+        assertTrue(card.getText().contains(languages.get(2).getName()));
 
         // Act - unselect row
         Actions actions = new Actions(page.getWebDriver());
@@ -109,18 +111,18 @@ public class DataTable004Test extends AbstractDataTableTest {
         page.buttonMsgOnly.click();
 
         // Assert (no row selected)
-        dataTable.getRows().forEach(r -> Assertions.assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
-        Assertions.assertTrue(card.getText().contains("NO ProgrammingLanguage selected"));
+        dataTable.getRows().forEach(r -> assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
+        assertTrue(card.getText().contains("NO ProgrammingLanguage selected"));
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("DataTable: selection - single - unselect programmatically; https://github.com/primefaces/primefaces/issues/7391")
-    public void testSelectionSingleUnselectProgrammatically(Page page) {
+    void selectionSingleUnselectProgrammatically(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         dataTable.getCell(2, 0).getWebElement().click();
@@ -128,15 +130,15 @@ public class DataTable004Test extends AbstractDataTableTest {
 
         // Assert
         WebElement card = page.card;
-        Assertions.assertTrue(card.getText().contains(languages.get(2).getName()));
+        assertTrue(card.getText().contains(languages.get(2).getName()));
 
         // Act - unselect row programmatically
         page.buttonUnselect.click();
 
         // Assert (no row selected)
         assertMessage(page, "ProgrammingLanguage unselected via backing bean", "");
-        dataTable.getRows().forEach(r -> Assertions.assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
-        Assertions.assertTrue(card.getText().contains("NO ProgrammingLanguage selected"));
+        dataTable.getRows().forEach(r -> assertEquals("false", r.getWebElement().getAttribute("aria-selected"), "Found a selected row!"));
+        assertTrue(card.getText().contains("NO ProgrammingLanguage selected"));
 
         // Act (submit button)
         page.button.click();
@@ -150,28 +152,28 @@ public class DataTable004Test extends AbstractDataTableTest {
     @Test
     @Order(10)
     @DisplayName("DataTable: DisabledSelection - feature")
-    public void testDisabledSelection(Page page) {
+    void disabledSelection(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         page.selectBooleanButtonDisabledSelection.click();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         for (int row = 0; row < 5; row++) {
             // Act & Assert
             if (row % 2 == 0) {
-                Assertions.assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-datatable-selectable"));
+                assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-datatable-selectable"));
 
                 PrimeSelenium.guardAjax(dataTable.getCell(row, 0).getWebElement()).click();
 
-                Assertions.assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-state-highlight"));
+                assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-state-highlight"));
                 assertMessage(page, "ProgrammingLanguage Selected", languages.get(row).getName());
             }
             else {
-                Assertions.assertFalse(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-datatable-selectable"));
+                assertFalse(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-datatable-selectable"));
 
                 dataTable.getCell(row, 0).getWebElement().click(); // nothing happens
 
-                Assertions.assertFalse(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-state-highlight"));
+                assertFalse(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-state-highlight"));
                 assertMessage(page, "ProgrammingLanguage Selected", languages.get(row - 1).getName()); // still the row we selected before
             }
         }
@@ -180,14 +182,14 @@ public class DataTable004Test extends AbstractDataTableTest {
     }
 
     private void assertMessage(Page page, String summary, String detail) {
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains(summary));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains(detail));
+        assertTrue(page.messages.getMessage(0).getSummary().contains(summary));
+        assertTrue(page.messages.getMessage(0).getDetail().contains(detail));
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("selectionMode"));
+        assertTrue(cfg.has("selectionMode"));
     }
 
     public static class Page extends AbstractPrimePage {

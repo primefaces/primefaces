@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -37,7 +37,7 @@
 
                 <p:contextMenu for="docs">
                     <p:menuitem value="View" update="documentPanel" icon="pi pi-search"
-                                oncomplete="PF('documentDialog').show()"/>
+                                oncomplete="PF('documentDialog').show()" actionListener="#{ttContextMenuView.viewNode}"/>/>
                     <p:menuitem value="Delete" action="#{ttContextMenuView.deleteNode}" update="docs"
                                 icon="pi pi-times"/>
                 </p:contextMenu>

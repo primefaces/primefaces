@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,10 @@
  */
 package org.primefaces.showcase.view.data.datatable;
 
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.showcase.domain.Customer;
 import org.primefaces.showcase.service.CustomerService;
 
-import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.time.temporal.Temporal;
@@ -39,7 +35,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.primefaces.component.datatable.DataTable;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named("dtColumnsView")
 @ViewScoped

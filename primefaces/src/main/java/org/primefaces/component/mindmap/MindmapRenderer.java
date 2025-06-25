@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,33 @@
  */
 package org.primefaces.component.mindmap;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.model.mindmap.MindmapNode;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class MindmapRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class MindmapRenderer extends CoreRenderer<Mindmap> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Mindmap component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Mindmap map = (Mindmap) component;
+    public void encodeEnd(FacesContext context, Mindmap component) throws IOException {
+        if (component.isNodeSelectRequest(context)) {
+            MindmapNode node = component.getSelectedNode();
 
-        if (map.isNodeSelectRequest(context)) {
-            MindmapNode node = map.getSelectedNode();
-
-            encodeNode(context, map, node, map.getSelectedNodeKey(context));
+            encodeNode(context, component, node, component.getSelectedNodeKey(context));
         }
         else {
-            encodeMarkup(context, map);
-            encodeScript(context, map);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
     }
 
@@ -74,14 +71,14 @@ public class MindmapRenderer extends CoreRenderer {
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, Mindmap map) throws IOException {
+    protected void encodeMarkup(FacesContext context, Mindmap component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = map.getClientId(context);
-        String style = map.getStyle();
-        String styleClass = map.getStyleClass();
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? Mindmap.STYLE_CLASS : Mindmap.STYLE_CLASS + " " + styleClass;
 
-        writer.startElement("div", map);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
@@ -91,20 +88,20 @@ public class MindmapRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeNode(FacesContext context, Mindmap map, MindmapNode node, String nodeKey) throws IOException {
+    protected void encodeNode(FacesContext context, Mindmap component, MindmapNode node, String nodeKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<MindmapNode> children = node.getChildren();
         MindmapNode parent = node.getParent();
 
         writer.write("{");
 
-        encodeNodeConfig(context, map, node, nodeKey);
+        encodeNodeConfig(context, component, node, nodeKey);
 
         if (parent != null) {
             String parentNodeKey = (nodeKey.indexOf('_') != -1) ? nodeKey.substring(0, nodeKey.lastIndexOf('_')) : "root";
 
             writer.write(",\"parent\":{");
-            encodeNodeConfig(context, map, parent, parentNodeKey);
+            encodeNodeConfig(context, component, parent, parentNodeKey);
             writer.write("}");
         }
 
@@ -117,7 +114,7 @@ public class MindmapRenderer extends CoreRenderer {
                 String childKey = ("root".equals(nodeKey)) ? String.valueOf(i) : nodeKey + "_" + i;
 
                 MindmapNode child = children.get(i);
-                encodeNode(context, map, child, childKey);
+                encodeNode(context, component, child, childKey);
 
                 if (i != (size - 1)) {
                     writer.write(",");
@@ -130,7 +127,7 @@ public class MindmapRenderer extends CoreRenderer {
         writer.write("}");
     }
 
-    protected void encodeNodeConfig(FacesContext context, Mindmap map, MindmapNode node, String nodeKey) throws IOException {
+    protected void encodeNodeConfig(FacesContext context, Mindmap component, MindmapNode node, String nodeKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.write("\"label\":\"" + node.getLabel() + "\"");

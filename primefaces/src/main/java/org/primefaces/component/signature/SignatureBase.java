@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,31 +23,32 @@
  */
 package org.primefaces.component.signature;
 
-import javax.faces.component.UIInput;
 
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class SignatureBase extends UIInput implements Widget {
+public abstract class SignatureBase extends AbstractPrimeHtmlInputText implements InputHolder, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SignatureRenderer";
 
     public enum PropertyKeys {
-
-        widgetVar,
+        ariaLabel,
         backgroundColor,
+        base64Value,
         color,
-        thickness,
-        style,
-        styleClass,
-        readonly,
+        fontFamily,
+        fontSize,
         guideline,
         guidelineColor,
-        guidelineOffset,
         guidelineIndent,
+        guidelineOffset,
         onchange,
-        base64Value
+        thickness,
+        textValue,
+        widgetVar,
     }
 
     public SignatureBase() {
@@ -91,30 +92,6 @@ public abstract class SignatureBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.thickness, thickness);
     }
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isReadonly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
-    }
-
-    public void setReadonly(boolean readonly) {
-        getStateHelper().put(PropertyKeys.readonly, readonly);
-    }
-
     public boolean isGuideline() {
         return (Boolean) getStateHelper().eval(PropertyKeys.guideline, false);
     }
@@ -147,19 +124,43 @@ public abstract class SignatureBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.guidelineIndent, guidelineIndent);
     }
 
-    public String getOnchange() {
-        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
-    }
-
-    public void setOnchange(String onchange) {
-        getStateHelper().put(PropertyKeys.onchange, onchange);
-    }
-
     public String getBase64Value() {
         return (String) getStateHelper().eval(PropertyKeys.base64Value, null);
     }
 
     public void setBase64Value(String base64Value) {
         getStateHelper().put(PropertyKeys.base64Value, base64Value);
+    }
+
+    public String getFontFamily() {
+        return (String) getStateHelper().eval(PropertyKeys.fontFamily, null);
+    }
+
+    public void setFontFamily(String fontFamily) {
+        getStateHelper().put(PropertyKeys.fontFamily, fontFamily);
+    }
+
+    public int getFontSize() {
+        return (Integer) getStateHelper().eval(PropertyKeys.fontSize, 40);
+    }
+
+    public void setFontSize(int fontSize) {
+        getStateHelper().put(PropertyKeys.fontSize, fontSize);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    public String getTextValue() {
+        return (String) getStateHelper().eval(PropertyKeys.textValue, null);
+    }
+
+    public void setTextValue(String textValue) {
+        getStateHelper().put(PropertyKeys.textValue, textValue);
     }
 }

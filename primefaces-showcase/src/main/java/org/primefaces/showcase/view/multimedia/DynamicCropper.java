@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,10 @@
  */
 package org.primefaces.showcase.view.multimedia;
 
+import org.primefaces.model.CroppedImage;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -34,18 +38,15 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
-import javax.inject.Named;
 
-import org.primefaces.model.CroppedImage;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Named;
 
 @Named
 @SessionScoped

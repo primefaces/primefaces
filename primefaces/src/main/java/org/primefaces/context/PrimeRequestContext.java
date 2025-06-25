@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,24 @@
  */
 package org.primefaces.context;
 
+import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.CSVBuilder;
+import org.primefaces.util.Constants;
+import org.primefaces.util.StyleBuilder;
+import org.primefaces.util.StyleClassBuilder;
+import org.primefaces.util.WidgetBuilder;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 
-import org.primefaces.util.*;
+import jakarta.el.ELContext;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.ValueExpression;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * A {@link PrimeRequestContext} is a contextual store for the current request.
@@ -257,7 +263,7 @@ public class PrimeRequestContext {
     public boolean isIgnoreAutoUpdate() {
         if (ignoreAutoUpdate == null) {
             Object ignoreAutoUpdateObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.IGNORE_AUTO_UPDATE_PARAM);
-            ignoreAutoUpdate = (null != ignoreAutoUpdateObject && "true".equals(ignoreAutoUpdateObject));
+            ignoreAutoUpdate = "true".equals(ignoreAutoUpdateObject);
         }
 
         return ignoreAutoUpdate;
@@ -282,7 +288,7 @@ public class PrimeRequestContext {
                 ELContext elContext = context.getELContext();
                 ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
                 ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
-                String expressionValue = (String) expression.getValue(elContext);
+                String expressionValue = expression.getValue(elContext);
 
                 rtl = "rtl".equalsIgnoreCase(expressionValue);
             }
@@ -324,7 +330,7 @@ public class PrimeRequestContext {
             ELContext elContext = context.getELContext();
             ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
             ValueExpression expression = expressionFactory.createValueExpression(elContext, paramValue, String.class);
-            String expressionValue = (String) expression.getValue(elContext);
+            String expressionValue = expression.getValue(elContext);
             return expressionValue == null || Boolean.parseBoolean(expressionValue);
         }
     }

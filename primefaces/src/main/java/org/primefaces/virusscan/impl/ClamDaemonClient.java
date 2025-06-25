@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,13 @@
  */
 package org.primefaces.virusscan.impl;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -104,7 +110,6 @@ public class ClamDaemonClient {
      */
     public boolean ping() throws IOException {
         try (Socket s = getSocket(); OutputStream os = s.getOutputStream()) {
-            s.setSoTimeout(timeout);
             os.write(asBytes("zPING\0"));
             os.flush();
             try (InputStream is = s.getInputStream()) {
@@ -128,8 +133,6 @@ public class ClamDaemonClient {
      */
     public byte[] scan(final InputStream is) throws IOException {
         try (Socket s = getSocket(); OutputStream outs = new BufferedOutputStream(s.getOutputStream())) {
-            s.setSoTimeout(timeout);
-
             // handshake
             outs.write(asBytes("zINSTREAM\0"));
             outs.flush();
@@ -179,7 +182,10 @@ public class ClamDaemonClient {
      * @throws IOException if an I/O error occurs when creating the socket
      */
     protected Socket getSocket() throws IOException {
-        return new Socket(host, port);
+        Socket socket =  new Socket();
+        socket.setSoTimeout(timeout);
+        socket.connect(new InetSocketAddress(host, port), timeout);
+        return socket;
     }
 
     /**

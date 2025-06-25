@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,59 +23,54 @@
  */
 package org.primefaces.util;
 
-import java.lang.reflect.Field;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Test;
 
-public class LangUtilsTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class LangUtilsTest {
 
     private static final String FOO = "foo";
     private static final String SENTENCE = "foo bar baz";
 
     @Test
-    public void getTypeFromCollectionProperty_Simple() {
+    void getTypeFromCollectionProperty_Simple() {
         Class type = LangUtils.getTypeFromCollectionProperty(new SimpleClass(), "strings");
 
         assertEquals(String.class, type);
     }
 
     @Test
-    public void getTypeFromCollectionProperty_Inheritance() {
+    void getTypeFromCollectionProperty_Inheritance() {
         Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteClass(), "ints");
 
         assertEquals(Integer.class, type);
     }
 
     @Test
-    public void getTypeFromCollectionProperty_GenericInheritance() {
+    void getTypeFromCollectionProperty_GenericInheritance() {
         Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteGenericClass(), "values");
 
         assertEquals(String.class, type);
     }
 
     @Test
-    public void getTypeFromCollectionProperty_GenericInheritance_Multilevel() {
+    void getTypeFromCollectionProperty_GenericInheritance_Multilevel() {
         Class type = LangUtils.getTypeFromCollectionProperty(new DetailedConcreteGenericClass(), "values");
 
         assertEquals(String.class, type);
     }
 
     @Test
-    public void testCountMatches_char() {
+    void countMatches_char() {
         assertEquals(0, LangUtils.countMatches(null, 'D'));
         assertEquals(5, LangUtils.countMatches("one long someone sentence of one", ' '));
         assertEquals(6, LangUtils.countMatches("one long someone sentence of one", 'o'));
     }
 
     @Test
-    public void substring() {
+    void substring() {
         assertNull(LangUtils.substring(null, 0, 0));
         assertNull(LangUtils.substring(null, 1, 2));
         assertEquals("", LangUtils.substring("", 0, 0));
@@ -93,7 +88,7 @@ public class LangUtilsTest {
     }
 
     @Test
-    public void testIsParsable() {
+    void isParsable() {
         assertFalse(LangUtils.isNumeric(null));
         assertFalse(LangUtils.isNumeric(""));
         assertFalse(LangUtils.isNumeric("0xC1AB"));
@@ -116,7 +111,7 @@ public class LangUtilsTest {
     }
 
     @Test
-    public void toCapitalCase() {
+    void toCapitalCase() {
         assertEquals("", LangUtils.toCapitalCase(null));
         assertEquals("", LangUtils.toCapitalCase(""));
         assertEquals("", LangUtils.toCapitalCase(" "));
@@ -126,38 +121,28 @@ public class LangUtilsTest {
     }
 
     @Test
-    public void getField() {
-        Field field = null;
-
-        field = LangUtils.getFieldRecursive(AbstractClass.class, "container.string");
-        Assertions.assertNotNull(field);
-        Assertions.assertEquals(Container.class, field.getDeclaringClass());
-        Assertions.assertEquals("string", field.getName());
-
-        field = LangUtils.getFieldRecursive(AbstractClass.class, "container.container.string");
-        Assertions.assertNotNull(field);
-        Assertions.assertEquals(Container.class, field.getDeclaringClass());
-        Assertions.assertEquals("string", field.getName());
-
-        field = LangUtils.getFieldRecursive(AbstractClass.class, "container.container");
-        Assertions.assertNotNull(field);
-        Assertions.assertEquals(Container.class, field.getDeclaringClass());
-        Assertions.assertEquals("container", field.getName());
-
-        field = LangUtils.getField(SimpleClass.class, "strings");
-        Assertions.assertNotNull(field);
-        Assertions.assertEquals(SimpleClass.class, field.getDeclaringClass());
-        Assertions.assertEquals("strings", field.getName());
-
-        Assertions.assertNotNull(LangUtils.getField(AbstractClass.class, "ints"));
-        Assertions.assertNotNull(LangUtils.getField(ConcreteClass.class, "ints"));
-        Assertions.assertNotNull(LangUtils.getField(AbstractGenericClass.class, "values"));
-        Assertions.assertNotNull(LangUtils.getField(ConcreteGenericClass.class, "values"));
-        Assertions.assertNotNull(LangUtils.getField(DetailedConcreteGenericClass.class, "values"));
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getField(DetailedConcreteGenericClass.class, "rasdasd"));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getFieldRecursive(AbstractClass.class, "container2.stringss"));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getFieldRecursive(AbstractClass.class, "container.stringss"));
+    void normalize() {
+        assertEquals("test", LangUtils.normalize("test", false));
+        assertEquals("test", LangUtils.normalize("test", true));
+        assertEquals("TEST", LangUtils.normalize("TEST", false));
+        assertEquals("TEST", LangUtils.normalize("TEST", true));
+        assertEquals("tést", LangUtils.normalize("tést", false));
+        assertEquals("test", LangUtils.normalize("tést", true));
+        assertEquals("t e s t", LangUtils.normalize("t e s t", false));
+        assertEquals("t e s t", LangUtils.normalize("t e s t", true));
+        assertEquals("", LangUtils.normalize("", false));
+        assertEquals("", LangUtils.normalize("", true));
+        assertEquals(Constants.EMPTY_STRING, LangUtils.normalize("", true));
+        assertEquals("123", LangUtils.normalize("123", false));
+        assertEquals("123", LangUtils.normalize("123", true));
+        assertEquals("123", LangUtils.normalize("123", false));
+        assertEquals("123", LangUtils.normalize("123", true));
+        assertEquals("test123", LangUtils.normalize("test123", false));
+        assertEquals("test123", LangUtils.normalize("test123", true));
+        assertEquals("tést123", LangUtils.normalize("tést123", false));
+        assertEquals("test123", LangUtils.normalize("tést123", true));
+        SimpleClass simpleClass = new SimpleClass();
+        assertEquals(simpleClass, LangUtils.normalize(simpleClass, true));
     }
 
     class SimpleClass {

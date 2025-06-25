@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,20 @@
  */
 package org.primefaces.showcase.view.input;
 
+import org.primefaces.showcase.domain.Country;
+import org.primefaces.showcase.service.CountryService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.primefaces.showcase.domain.Country;
-import org.primefaces.showcase.service.CountryService;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @RequestScoped

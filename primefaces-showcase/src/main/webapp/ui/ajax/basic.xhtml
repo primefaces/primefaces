@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -45,19 +45,19 @@
             <h:form>
                 <h5 class="mt-0">Events</h5>
                 <h:panelGrid columns="3" cellpadding="7">
-                    <h:outputText value="KeyUp"/>
+                    <p:outputLabel for="@next" value="KeyUp"/>
                     <p:inputText id="firstname" value="#{basicView.text2}">
                         <p:ajax event="keyup" update="display2" process="@this"/>
                     </p:inputText>
                     <h:outputText id="display2" value="#{basicView.text2}"/>
 
-                    <h:outputText value="Blur"/>
+                    <p:outputLabel for="@next" value="Blur"/>
                     <p:inputText id="middlename" value="#{basicView.text3}">
                         <p:ajax event="blur" update="display3"/>
                     </p:inputText>
                     <h:outputText id="display3" value="#{basicView.text3}"/>
 
-                    <h:outputText value="Input"/>
+                    <p:outputLabel for="@next" value="Input"/>
                     <p:inputText id="lastname" value="#{basicView.text4}">
                         <p:ajax event="input" update="display4"/>
                     </p:inputText>
@@ -66,7 +66,7 @@
 
                 <h5>Listener</h5>
                 <h:panelGrid columns="3" cellpadding="7">
-                    <h:outputText value="Keyup"/>
+                    <p:outputLabel for="@next" value="Keyup"/>
                     <p:inputText id="counter" value="#{basicView.text5}">
                         <p:ajax event="keyup" update="display5" listener="#{basicView.handleKeyEvent}"/>
                     </p:inputText>

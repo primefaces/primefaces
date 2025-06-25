@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,16 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 
-import javax.faces.application.ConfigurableNavigationHandler;
-import javax.faces.application.NavigationCase;
-import javax.faces.context.FacesContext;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import jakarta.faces.application.ConfigurableNavigationHandler;
+import jakarta.faces.application.NavigationCase;
+import jakarta.faces.context.FacesContext;
 
 public class DialogNavigationHandler extends ConfigurableNavigationHandler {
 

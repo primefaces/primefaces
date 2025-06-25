@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,101 +23,105 @@
  */
 package org.primefaces.component.gmap;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import javax.faces.FacesException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.behavior.ajax.AjaxBehavior;
-import org.primefaces.model.map.*;
+import org.primefaces.model.map.Circle;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
+import org.primefaces.model.map.Polygon;
+import org.primefaces.model.map.Polyline;
+import org.primefaces.model.map.Rectangle;
+import org.primefaces.model.map.Symbol;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class GMapRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.component.behavior.ClientBehavior;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class GMapRenderer extends CoreRenderer<GMap> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, GMap component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        GMap map = (GMap) component;
-
-        encodeMarkup(facesContext, map);
-        encodeScript(facesContext, map);
+    public void encodeEnd(FacesContext facesContext, GMap component) throws IOException {
+        encodeMarkup(facesContext, component);
+        encodeScript(facesContext, component);
     }
 
-    protected void encodeMarkup(FacesContext context, GMap map) throws IOException {
+    protected void encodeMarkup(FacesContext context, GMap component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = map.getClientId(context);
+        String clientId = component.getClientId(context);
 
-        writer.startElement("div", map);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
-        if (map.getStyle() != null) {
-            writer.writeAttribute("style", map.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
-        if (map.getStyleClass() != null) {
-            writer.writeAttribute("class", map.getStyleClass(), null);
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), null);
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, GMap map) throws IOException {
-        String widgetVar = map.resolveWidgetVar(context);
-        GMapInfoWindow infoWindow = map.getInfoWindow();
+    protected void encodeScript(FacesContext context, GMap component) throws IOException {
+        String widgetVar = component.resolveWidgetVar(context);
+        GMapInfoWindow infoWindow = component.getInfoWindow();
 
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("GMap", map)
-                .nativeAttr("mapTypeId", "google.maps.MapTypeId." + map.getType().toUpperCase())
-                .nativeAttr("center", "new google.maps.LatLng(" + map.getCenter() + ")")
-                .attr("zoom", map.getZoom());
+        wb.init("GMap", component)
+                .nativeAttr("mapTypeId", "google.maps.MapTypeId." + component.getType().toUpperCase())
+                .nativeAttr("center", "new google.maps.LatLng(" + component.getCenter() + ")")
+                .attr("zoom", component.getZoom());
 
 
-        if (!map.isFitBounds()) {
+        if (!component.isFitBounds()) {
             wb.attr("fitBounds", false);
         }
 
         //Overlays
-        encodeOverlays(context, map);
+        encodeOverlays(context, component);
 
         //Controls
-        if (map.isDisableDefaultUI()) {
+        if (component.isDisableDefaultUI()) {
             wb.attr("disableDefaultUI", true);
         }
-        if (!map.isNavigationControl()) {
+        if (!component.isNavigationControl()) {
             wb.attr("navigationControl", false);
         }
-        if (!map.isMapTypeControl()) {
+        if (!component.isMapTypeControl()) {
             wb.attr("mapTypeControl", false);
         }
-        if (map.isStreetView()) {
+        if (component.isStreetView()) {
             wb.attr("streetViewControl", true);
         }
 
         //Options
-        if (!map.isDraggable()) {
+        if (!component.isDraggable()) {
             wb.attr("draggable", false);
         }
-        if (map.isDisableDoubleClickZoom()) {
+        if (component.isDisableDoubleClickZoom()) {
             wb.attr("disableDoubleClickZoom", true);
         }
-        if (!map.isScrollWheel()) {
+        if (!component.isScrollWheel()) {
             wb.attr("scrollwheel", false);
         }
 
         //Client events
-        if (map.getOnPointClick() != null) {
-            wb.callback("onPointClick", "function(event)", map.getOnPointClick() + ";");
+        if (component.getOnPointClick() != null) {
+            wb.callback("onPointClick", "function(event)", component.getOnPointClick() + ";");
         }
 
         /*
@@ -126,7 +130,7 @@ public class GMapRenderer extends CoreRenderer {
          * - Encodes behaviors
          */
         if (infoWindow != null) {
-            Map<String, List<ClientBehavior>> behaviorEvents = map.getClientBehaviors();
+            Map<String, List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
             List<ClientBehavior> overlaySelectBehaviors = behaviorEvents.get("overlaySelect");
             if (overlaySelectBehaviors != null) {
                 for (ClientBehavior clientBehavior : overlaySelectBehaviors) {
@@ -142,35 +146,35 @@ public class GMapRenderer extends CoreRenderer {
             }
         }
 
-        encodeClientBehaviors(context, map);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected void encodeOverlays(FacesContext context, GMap map) throws IOException {
-        MapModel model = map.getModel();
+    protected void encodeOverlays(FacesContext context, GMap component) throws IOException {
+        MapModel<?> model = component.getModel();
         ResponseWriter writer = context.getResponseWriter();
 
         //Overlays
         if (model != null) {
             if (!model.getMarkers().isEmpty()) {
-                encodeMarkers(context, map);
+                encodeMarkers(context, component);
             }
             if (!model.getPolylines().isEmpty()) {
-                encodePolylines(context, map);
+                encodePolylines(context, component);
             }
             if (!model.getPolygons().isEmpty()) {
-                encodePolygons(context, map);
+                encodePolygons(context, component);
             }
             if (!model.getCircles().isEmpty()) {
-                encodeCircles(context, map);
+                encodeCircles(context, component);
             }
             if (!model.getRectangles().isEmpty()) {
-                encodeRectangles(context, map);
+                encodeRectangles(context, component);
             }
         }
 
-        GMapInfoWindow infoWindow = map.getInfoWindow();
+        GMapInfoWindow infoWindow = component.getInfoWindow();
 
         if (infoWindow != null) {
             writer.write(",infoWindow: new google.maps.InfoWindow({");
@@ -279,9 +283,9 @@ public class GMapRenderer extends CoreRenderer {
         writer.write("}");
     }
 
-    protected void encodePolylines(FacesContext context, GMap map) throws IOException {
+    protected void encodePolylines(FacesContext context, GMap component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        MapModel model = map.getModel();
+        MapModel model = component.getModel();
 
         writer.write(",polylines:[");
 
@@ -316,9 +320,9 @@ public class GMapRenderer extends CoreRenderer {
         writer.write("]");
     }
 
-    protected void encodePolygons(FacesContext context, GMap map) throws IOException {
+    protected void encodePolygons(FacesContext context, GMap component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        MapModel model = map.getModel();
+        MapModel model = component.getModel();
 
         writer.write(",polygons:[");
 
@@ -354,9 +358,9 @@ public class GMapRenderer extends CoreRenderer {
         writer.write("]");
     }
 
-    protected void encodeCircles(FacesContext context, GMap map) throws IOException {
+    protected void encodeCircles(FacesContext context, GMap component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        MapModel model = map.getModel();
+        MapModel model = component.getModel();
 
         writer.write(",circles:[");
 
@@ -393,9 +397,9 @@ public class GMapRenderer extends CoreRenderer {
         writer.write("]");
     }
 
-    protected void encodeRectangles(FacesContext context, GMap map) throws IOException {
+    protected void encodeRectangles(FacesContext context, GMap component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        MapModel model = map.getModel();
+        MapModel model = component.getModel();
 
         writer.write(",rectangles:[");
 
@@ -453,7 +457,7 @@ public class GMapRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, GMap component) throws IOException {
         //Do Nothing
     }
 

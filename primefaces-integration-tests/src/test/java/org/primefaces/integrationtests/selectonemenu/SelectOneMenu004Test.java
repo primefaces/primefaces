@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,6 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
@@ -40,12 +31,23 @@ import org.primefaces.selenium.component.SelectOneMenu;
 
 import java.util.List;
 
-public class SelectOneMenu004Test extends AbstractPrimePageTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SelectOneMenu004Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: dynamic - load items on demand")
-    public void testDynamic(Page page) {
+    void dynamic(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
 
@@ -58,22 +60,22 @@ public class SelectOneMenu004Test extends AbstractPrimePageTest {
         catch (NoSuchElementException ex) {
 
         }
-        Assertions.assertEquals(false, contentPanelExists);
+        assertFalse(contentPanelExists);
 
         // Act
         selectOneMenu.toggleDropdown();
 
         // Assert
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals(5, options.size());
+        assertEquals(6, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
-    @DisplayName("SelectOneMenu: dynamic - don´t loose selection on submit")
-    public void testDynamic2(Page page) {
+    @DisplayName("SelectOneMenu: dynamic - do NOT lose selection on submit")
+    void dynamicAjaxSunmit(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu2;
 
@@ -81,8 +83,36 @@ public class SelectOneMenu004Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("console2"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("PS4"));
+        assertTrue(page.messages.getMessage(0).getSummary().contains("console2"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("PS4"));
+
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("SelectOneMenu: dynamic with advanced rendering- load items on demand")
+    void dynamicAdvancedRendering(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu3;
+
+        // Assert
+        boolean contentPanelExists = false;
+        try {
+            selectOneMenu.getItems().getText();
+            contentPanelExists = true;
+        }
+        catch (NoSuchElementException ex) {
+
+        }
+        assertFalse(contentPanelExists);
+
+        // Act
+        selectOneMenu.toggleDropdown();
+
+        // Assert
+        List<WebElement> options = selectOneMenu.getTable().findElements(By.className("ui-selectonemenu-item"));
+        assertEquals(5, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -90,7 +120,7 @@ public class SelectOneMenu004Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("dynamic"));
+        assertTrue(cfg.has("dynamic"));
     }
 
     public static class Page extends AbstractPrimePage {
@@ -102,6 +132,9 @@ public class SelectOneMenu004Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:selectonemenu2")
         SelectOneMenu selectOneMenu2;
+
+        @FindBy(id = "form:selectonemenu3")
+        SelectOneMenu selectOneMenu3;
 
         @FindBy(id = "form:button")
         CommandButton button;

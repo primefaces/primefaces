@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -39,12 +39,13 @@
                             itemValue="#{country}" itemLabel="#{country.name}" showSourceControls="true"
                             showTargetControls="true" showCheckbox="true"
                             showSourceFilter="true" showTargetFilter="true" 
-                            sourceFilterPlaceholder="Filter available countries"
-                            targetFilterPlaceholder="Filter starting countries"
+                            sourceFilterPlaceholder="Filter unsubscribed countries"
+                            targetFilterPlaceholder="Filter subscribed countries"
                             filterMatchMode="contains" converter="#{countryConverter}" responsive="true">
 
-                    <f:facet name="sourceCaption">Available</f:facet>
-                    <f:facet name="targetCaption">Starting</f:facet>
+                    <f:attribute name="widgetPreConstruct" value="cfg.labels.aria.moveUp = 'Slide Up'; cfg.labels.aria.moveDown = 'Slide Down'; cfg.labels.aria.moveTop = 'Slide Top'; cfg.labels.aria.moveBottom = 'Slide Bottom'; cfg.labels.aria.moveToSource = 'Unsubscribe'; cfg.labels.aria.moveToTarget = 'Subscribe'; cfg.labels.aria.moveAllToSource = 'Unsubscribe All'; cfg.labels.aria.moveAllToTarget = 'Subscribe All';" />
+                    <f:facet name="sourceCaption">Unsubscribed</f:facet>
+                    <f:facet name="targetCaption">Subscribed</f:facet>
 
                     <p:ajax event="transfer" listener="#{pickListView.onTransfer}" update="msg"/>
                     <p:ajax event="select" listener="#{pickListView.onSelect}" update="msg"/>

@@ -1,0 +1,18 @@
+@use 'sass:color';
+
+$primaryColor: #007ad9 !default;
+$primaryDarkColor: #116fbf !default;
+$primaryDarkerColor: #005b9f !default;
+$primaryTextColor: #ffffff !default;
+
+$highlightBg: #e02365 !default;
+$highlightTextColor: #ffffff !default;
+
+$containerHeaderBorderColor: $primaryColor !default;
+$containerHeaderBorder: 1px solid $containerHeaderBorderColor !default;
+$containerHeaderBg: $primaryColor !default;
+$containerHeaderTextColor: $primaryTextColor !default;
+$containerHeaderIconColor: $primaryTextColor !default;
+$containerHeaderIconHoverColor: color.scale($primaryColor, $lightness: 25%) !default;
+
+@import '../primefaces-nova-common/_variables';

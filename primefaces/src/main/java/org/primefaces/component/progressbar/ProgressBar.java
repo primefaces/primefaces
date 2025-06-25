@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,18 @@
  */
 package org.primefaces.component.progressbar;
 
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MapBuilder;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.PhaseId;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -45,16 +45,22 @@ public class ProgressBar extends ProgressBarBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ProgressBar";
 
-    public static final String CONTAINER_CLASS = "ui-progressbar ui-widget ui-widget-content ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-progressbar ui-widget ui-widget-content";
     public static final String DETERMINATE_CLASS = "ui-progressbar-determinate";
     public static final String INDETERMINATE_CLASS = "ui-progressbar-indeterminate";
-    public static final String VALUE_CLASS = "ui-progressbar-value ui-widget-header ui-corner-all";
+    public static final String SEVERITY_INFO_CLASS = "ui-progressbar-info";
+    public static final String SEVERITY_SUCCESS_CLASS = "ui-progressbar-success";
+    public static final String SEVERITY_WARNING_CLASS = "ui-progressbar-warning";
+    public static final String SEVERITY_DANGER_CLASS = "ui-progressbar-danger";
+    public static final String VALUE_CLASS = "ui-progressbar-value ui-widget-header";
     public static final String LABEL_CLASS = "ui-progressbar-label";
 
     private static final String DEFAULT_EVENT = "complete";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("start", null)
             .put("complete", null)
+            .put("progress", null)
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();

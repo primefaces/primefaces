@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,33 @@
  */
 package org.primefaces.selenium.internal;
 
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.implementation.InvocationHandlerAdapter;
-import net.bytebuddy.matcher.ElementMatcher;
-import net.bytebuddy.matcher.ElementMatchers;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.InvocationHandlerAdapter;
+import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WrapsElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.primefaces.selenium.PrimeExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Guard {
 
@@ -88,10 +98,15 @@ public class Guard {
                 WebDriver driver = WebDriverProvider.get();
 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(ConfigProvider.getInstance().getTimeoutHttp()), Duration.ofMillis(100));
-                wait.until(ExpectedConditions.and(
-                        PrimeExpectedConditions.documentLoaded(),
-                        PrimeExpectedConditions.notNavigating(),
-                        PrimeExpectedConditions.notSubmitting()));
+                wait.until((ExpectedCondition<Boolean>) d -> {
+                    if (PrimeExpectedConditions.validationFailed().apply(driver)) {
+                        return true;
+                    }
+                    return ExpectedConditions.and(
+                            PrimeExpectedConditions.documentLoaded(),
+                            PrimeExpectedConditions.notNavigating(),
+                            PrimeExpectedConditions.notSubmitting()).apply(driver);
+                });
 
                 return result;
             }
@@ -180,10 +195,10 @@ public class Guard {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(ConfigProvider.getInstance().getTimeoutAjax()), Duration.ofMillis(50));
         wait.until(d -> {
             return (Boolean) ((JavascriptExecutor) driver)
-                        .executeScript("return document.readyState === 'complete'"
+                        .executeScript("return (window.pfselenium && pfselenium.validationFailed === true) || (document.readyState === 'complete'"
                                     + " && (!window.jQuery || jQuery.active == 0)"
                                     + " && (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false))"
-                                    + " && (!window.pfselenium || (pfselenium.xhr == null && pfselenium.navigating === false));");
+                                    + " && (!window.pfselenium || (pfselenium.xhr == null && pfselenium.navigating === false)));");
         });
     }
 

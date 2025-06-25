@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.selectonemenu;
 
-import javax.faces.component.html.HtmlSelectOneMenu;
-
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.html.HtmlSelectOneMenu;
 
 public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder, RTLAware, TouchAware {
 
@@ -38,30 +38,31 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
 
     public enum PropertyKeys {
 
-        widgetVar,
-        panelStyle,
-        panelStyleClass,
-        var,
-        height,
+        alwaysDisplayLabel,
+        appendTo,
+        autoWidth,
+        autocomplete,
+        caseSensitive,
+        dir,
+        dynamic,
         editable,
         filter,
-        filterMatchMode,
         filterFunction,
+        filterMatchMode,
+        filterNormalize,
         filterPlaceholder,
-        caseSensitive,
-        maxlength,
-        appendTo,
-        title,
-        syncTooltip,
-        alwaysDisplayLabel,
+        height,
         label,
         labelTemplate,
+        maxlength,
+        panelStyle,
+        panelStyleClass,
         placeholder,
-        autoWidth,
-        dynamic,
-        dir,
+        syncTooltip,
+        title,
         touchable,
-        filterNormalize
+        var,
+        widgetVar
     }
 
     public SelectOneMenuBase() {
@@ -271,5 +272,13 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
 
     public void setFilterNormalize(boolean filterNormalize) {
         getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
+    }
+
+    public String getAutocomplete() {
+        return (String) getStateHelper().eval(PropertyKeys.autocomplete);
+    }
+
+    public void setAutocomplete(String autocomplete) {
+        getStateHelper().put(PropertyKeys.autocomplete, autocomplete);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,9 @@
  */
 package org.primefaces.renderkit;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.paginator.CurrentPageReportRenderer;
 import org.primefaces.component.paginator.FirstPageLinkRenderer;
@@ -45,9 +37,22 @@ import org.primefaces.component.paginator.PageLinksRenderer;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MapBuilder;
+import org.primefaces.util.WidgetBuilder;
 
-public class DataRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer<T> {
 
     private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = MapBuilder.<String, PaginatorElementRenderer>builder()
             .put("{CurrentPageReport}", new CurrentPageReportRenderer())
@@ -61,6 +66,8 @@ public class DataRenderer extends CoreRenderer {
             .put("{JumpToPageInput}", new JumpToPageInputRenderer())
             .build();
 
+    private static final Pattern HTML_TAG_PATTERN = Pattern.compile("\\<.*?\\>");
+
     public static void addPaginatorElement(String element, PaginatorElementRenderer renderer) {
         PAGINATOR_ELEMENTS.put(element, renderer);
     }
@@ -69,7 +76,7 @@ public class DataRenderer extends CoreRenderer {
         return PAGINATOR_ELEMENTS.remove(element);
     }
 
-    protected void encodePaginatorMarkup(FacesContext context, Pageable pageable, String position) throws IOException {
+    protected void encodePaginatorMarkup(FacesContext context, T pageable, String position) throws IOException {
         if (!pageable.isPaginatorAlwaysVisible() && pageable.getPageCount() <= 1) {
             return;
         }
@@ -84,36 +91,28 @@ public class DataRenderer extends CoreRenderer {
         String styleClass = isTop ? UIPageableData.PAGINATOR_TOP_CONTAINER_CLASS : UIPageableData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
         String id = pageable.getClientId(context) + "_paginator_" + position;
 
-        //add corners
-        if (!isTop && pageable.getFooter() == null) {
-            styleClass = styleClass + " ui-corner-bottom";
-        }
-        else if (isTop && pageable.getHeader() == null) {
-            styleClass = styleClass + " ui-corner-top";
-        }
-
-        String ariaMessage = MessageFactory.getMessage(UIPageableData.ARIA_HEADER_LABEL);
-
+        // start main container
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "navigation", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaMessage, null);
 
-        if (isTop && ComponentUtils.shouldRenderFacet(leftTopContent)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", UIPageableData.PAGINATOR_TOP_LEFT_CONTENT_CLASS, null);
+        // start left facet
+        writer.startElement("div", null);
+        String leftClass = isTop ? UIPageableData.PAGINATOR_TOP_LEFT_CONTENT_CLASS : UIPageableData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS;
+        writer.writeAttribute("class", leftClass, null);
+        if (isTop && FacetUtils.shouldRenderFacet(leftTopContent)) {
             renderChild(context, leftTopContent);
-            writer.endElement("div");
         }
-
-        if (isTop && ComponentUtils.shouldRenderFacet(rightTopContent)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", UIPageableData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
-            renderChild(context, rightTopContent);
-            writer.endElement("div");
+        if (!isTop && FacetUtils.shouldRenderFacet(leftBottomContent)) {
+            renderChild(context, leftBottomContent);
         }
+        // end left facet
+        writer.endElement("div");
 
+        // start center facet
+        writer.startElement("div", null);
+        writer.writeAttribute("class", UIPageableData.PAGINATOR_CENTER_CONTENT_CLASS, null);
         String[] elements = pageable.getPaginatorTemplate().split(" ");
         for (String element : elements) {
             PaginatorElementRenderer renderer = PAGINATOR_ELEMENTS.get(element);
@@ -132,23 +131,30 @@ public class DataRenderer extends CoreRenderer {
                 }
             }
         }
-        if (!isTop && ComponentUtils.shouldRenderFacet(leftBottomContent)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", UIPageableData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS, null);
-            renderChild(context, leftBottomContent);
-            writer.endElement("div");
-        }
-        if (!isTop && ComponentUtils.shouldRenderFacet(rightBottomContent)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", UIPageableData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
-            renderChild(context, rightBottomContent);
-            writer.endElement("div");
+        // end center facet
+        writer.endElement("div");
+
+        // start right facet
+        writer.startElement("div", null);
+        String rightClass = isTop ? UIPageableData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS : UIPageableData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS;
+        writer.writeAttribute("class", rightClass, null);
+        if (isTop && FacetUtils.shouldRenderFacet(rightTopContent)) {
+            writer.writeAttribute("class", UIPageableData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
+            renderChild(context, rightTopContent);
         }
 
+        if (!isTop && FacetUtils.shouldRenderFacet(rightBottomContent)) {
+            writer.writeAttribute("class", UIPageableData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
+            renderChild(context, rightBottomContent);
+        }
+        // end right facet
+        writer.endElement("div");
+
+        // end main container
         writer.endElement("div");
     }
 
-    protected void encodePaginatorConfig(FacesContext context, Pageable pageable, WidgetBuilder wb) throws IOException {
+    protected void encodePaginatorConfig(FacesContext context, T pageable, WidgetBuilder wb) throws IOException {
         String clientId = pageable.getClientId(context);
         String paginatorPosition = pageable.getPaginatorPosition();
         String paginatorContainers = null;
@@ -158,7 +164,7 @@ public class DataRenderer extends CoreRenderer {
             paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
         }
         else {
-            paginatorContainers = "'" + clientId + "_paginator_" + paginatorPosition + "'";
+            paginatorContainers = "'" + clientId + "_paginator_" + paginatorPosition.toLowerCase() + "'";
         }
 
         wb.append(",paginator:{")
@@ -183,11 +189,11 @@ public class DataRenderer extends CoreRenderer {
         wb.append("}");
     }
 
-    public void encodeFacet(FacesContext context, UIData data, String facet, String styleClass) throws IOException {
+    public void encodeFacet(FacesContext context, PrimeUIData data, String facet, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent component = data.getFacet(facet);
 
-        if (ComponentUtils.shouldRenderFacet(component)) {
+        if (FacetUtils.shouldRenderFacet(component)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", styleClass, null);
             component.encodeAll(context);
@@ -195,38 +201,64 @@ public class DataRenderer extends CoreRenderer {
         }
     }
 
-
-    protected String getHeaderLabel(FacesContext context, UIColumn column) {
-        String ariaHeaderText = column.getAriaHeaderText();
-
-        // for headerText of column
-        if (ariaHeaderText == null) {
-            ariaHeaderText = column.getHeaderText();
-        }
-
-        // for header facet
-        if (ariaHeaderText == null) {
-            UIComponent header = column.getFacet("header");
-            if (ComponentUtils.shouldRenderFacet(header)) {
-                if (header instanceof UIPanel) {
-                    for (UIComponent child : header.getChildren()) {
-                        if (child.isRendered()) {
-                            String value = ComponentUtils.getValueToRender(context, child);
-
-                            if (value != null) {
-                                ariaHeaderText = value;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else {
-                    ariaHeaderText = ComponentUtils.getValueToRender(context, header);
-                }
-            }
-        }
-
-        return ariaHeaderText;
+    protected boolean isColumnAriaHeaderTextDefined(FacesContext context, UIColumn column) {
+        return LangUtils.isNotBlank(column.getAriaHeaderText());
     }
 
+    protected String resolveColumnAriaHeaderText(FacesContext context, UIColumn column) {
+        if (column instanceof UIComponent) {
+            UIComponent component = (UIComponent) column;
+            component.pushComponentToEL(context, component);
+        }
+
+        try {
+            String ariaHeaderText = column.getAriaHeaderText();
+
+            // for headerText of column
+            if (ariaHeaderText == null) {
+                ariaHeaderText = column.getHeaderText();
+            }
+
+            // for header facet
+            if (ariaHeaderText == null) {
+                UIComponent headerFacet = column.getFacet("header");
+                if (FacetUtils.shouldRenderFacet(headerFacet)) {
+                    // encode and strip all HTML tags
+                    ariaHeaderText = HTML_TAG_PATTERN.matcher(ComponentUtils.encodeComponent(headerFacet, context)).replaceAll(Constants.EMPTY_STRING);
+                }
+            }
+
+            return ariaHeaderText;
+        }
+        finally {
+            if (column instanceof UIComponent) {
+                UIComponent component = (UIComponent) column;
+                component.popComponentFromEL(context);
+            }
+        }
+    }
+
+    protected String resolveColumnHeaderText(FacesContext context, UIColumn column) {
+        if (column instanceof UIComponent) {
+            UIComponent component = (UIComponent) column;
+            component.pushComponentToEL(context, component);
+        }
+
+        try {
+            String headerText = column.getHeaderText();
+
+            // for ariaHeaderText of column
+            if (headerText == null) {
+                headerText = column.getAriaHeaderText();
+            }
+
+            return headerText;
+        }
+        finally {
+            if (column instanceof UIComponent) {
+                UIComponent component = (UIComponent) column;
+                component.popComponentFromEL(context);
+            }
+        }
+    }
 }

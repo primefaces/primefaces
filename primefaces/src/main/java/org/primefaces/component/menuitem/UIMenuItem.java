@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,22 @@
  */
 package org.primefaces.component.menuitem;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import javax.el.MethodExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
 import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.el.MethodExpression;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIParameter;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ActionEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 
 public class UIMenuItem extends UIMenuItemBase implements DialogReturnAware {

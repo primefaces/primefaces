@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,13 @@
  */
 package org.primefaces.validate;
 
+import org.primefaces.util.HTML;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import org.primefaces.util.HTML;
-
-public class LongRangeValidator extends javax.faces.validator.LongRangeValidator implements ClientValidator {
+public class LongRangeValidator extends jakarta.faces.validator.LongRangeValidator implements ClientValidator {
 
     private boolean minimumSet;
     private boolean maximumSet;

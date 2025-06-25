@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,7 @@ public class FastStringWriter extends Writer {
 
     @Override
     public void write(String str, int off, int len) {
-        builder.append(str.substring(off, off + len));
+        builder.append(str, off, off + len);
     }
 
     public StringBuilder getBuffer() {

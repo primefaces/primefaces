@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,66 +23,65 @@
  */
 package org.primefaces.component.audio;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.apache.commons.io.FilenameUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+import org.apache.commons.io.FilenameUtils;
+
 /**
  * The HTML <audio> element is used to embed sound content in documents.
  */
-public class AudioRenderer extends CoreRenderer {
+public class AudioRenderer extends CoreRenderer<Audio> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Audio media = (Audio) component;
-        String clientId = media.getClientId(context);
+    public void encodeEnd(FacesContext context, Audio component) throws IOException {
+        String clientId = component.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("div", media);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         renderPassThruAttributes(context, component, HTML.LABEL_ATTRS_WITHOUT_EVENTS);
 
-        String styleClass = media.getStyleClass();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? Audio.CONTAINER_CLASS : Audio.CONTAINER_CLASS + " " + styleClass;
         writer.writeAttribute("class", styleClass, null);
 
-        if (LangUtils.isNotBlank(media.getStyle())) {
-            writer.writeAttribute("style", media.getStyle(), null);
+        if (LangUtils.isNotBlank(component.getStyle())) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
-        encodeAudio(context, media);
+        encodeAudio(context, component);
         writer.endElement("div");
     }
 
-    public void encodeAudio(FacesContext context, Audio media) throws IOException {
+    public void encodeAudio(FacesContext context, Audio component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = media.getClientId(context) + "_audio";
+        String clientId = component.getClientId(context) + "_audio";
         writer.startElement("audio", null);
         writer.writeAttribute("id", clientId, "id");
-        renderPassThruAttributes(context, media, HTML.MEDIA_ATTRS_WITH_EVENTS);
+        renderPassThruAttributes(context, component, HTML.MEDIA_ATTRS_WITH_EVENTS);
 
-        AudioType player = resolvePlayer(context, media);
+        AudioType player = resolvePlayer(context, component);
         writer.startElement("source", null);
-        writer.writeAttribute("src", media.resolveSource(context, media), null);
+        writer.writeAttribute("src", component.resolveSource(context, component), null);
         writer.writeAttribute("type", player.getMediaType(), null);
         writer.endElement("source");
 
-        renderChildren(context, media);
+        renderChildren(context, component);
         writer.endElement("audio");
     }
 
-    protected AudioType resolvePlayer(FacesContext context, Audio media) {
-        if (LangUtils.isNotBlank(media.getPlayer())) {
-            return AudioType.valueOf(media.getPlayer().toUpperCase());
+    protected AudioType resolvePlayer(FacesContext context, Audio component) {
+        if (LangUtils.isNotBlank(component.getPlayer())) {
+            return AudioType.valueOf(component.getPlayer().toUpperCase());
         }
-        else if (media.getValue() instanceof String) {
-            String extension = FilenameUtils.getExtension((String) media.getValue());
+        else if (component.getValue() instanceof String) {
+            String extension = FilenameUtils.getExtension((String) component.getValue());
 
             for (AudioType mediaType : AudioType.values()) {
                 if (mediaType.getFileExtension().equalsIgnoreCase(extension)) {
@@ -92,11 +91,11 @@ public class AudioRenderer extends CoreRenderer {
         }
 
         throw new IllegalArgumentException("Cannot resolve mediaplayer for audio component '"
-                + media.getClientId(context) + "', cannot play source:" + media.getValue());
+                + component.getClientId(context) + "', cannot play source:" + component.getValue());
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Audio component) throws IOException {
         //Do nothing
     }
 

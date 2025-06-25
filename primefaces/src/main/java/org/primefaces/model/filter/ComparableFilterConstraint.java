@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,14 @@
  */
 package org.primefaces.model.filter;
 
-import javax.faces.context.FacesContext;
 import java.util.Locale;
 import java.util.function.BiPredicate;
 
+import jakarta.faces.context.FacesContext;
+
 public abstract class ComparableFilterConstraint implements FilterConstraint {
+
+    private static final long serialVersionUID = 1L;
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
@@ -49,7 +52,9 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
 
     static void assertAssignable(Object filter, Object value) {
         if (!filter.getClass().isAssignableFrom(value.getClass())) {
-            throw new IllegalArgumentException("Filter cannot be casted to value type. Forgot to add a converter?");
+            String msg = String.format("Filter '%s' of type '%s' cannot be casted to value type '%s'. Forgot to add a converter?",
+                    filter, filter.getClass().getName(), value);
+            throw new IllegalArgumentException(msg);
         }
     }
 

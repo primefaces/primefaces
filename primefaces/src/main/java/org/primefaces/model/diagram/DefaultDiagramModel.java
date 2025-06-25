@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,25 @@
  */
 package org.primefaces.model.diagram;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 
-public class DefaultDiagramModel implements DiagramModel, Serializable {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.faces.model.ListDataModel;
+
+public class DefaultDiagramModel extends ListDataModel<Element> implements DiagramModel, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<Element> elements;
-
-    private List<Connection> connections;
+    private final List<Connection> connections;
 
     private Connector defaultConnector;
 
-    private List<Overlay> defaultConnectionOverlays;
+    private final List<Overlay> defaultConnectionOverlays;
 
     private boolean connectionsDetachable = true;
 
@@ -49,33 +50,33 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
     private boolean containment = true;
 
     public DefaultDiagramModel() {
-        elements = new ElementList();
+        super(new ElementList());
         connections = new ArrayList<>();
         defaultConnectionOverlays = new ArrayList<>();
     }
 
     @Override
     public List<Element> getElements() {
-        return elements;
+        return (List<Element>) getWrappedData();
     }
 
     @Override
     public void addElement(Element element) {
-        elements.add(element);
+        getElements().add(element);
     }
 
     @Override
     public void removeElement(Element element) {
-        elements.remove(element);
+        getElements().remove(element);
     }
 
     public void clear() {
-        elements.clear();
+        getElements().clear();
     }
 
     @Override
     public void clearElements() {
-        elements.clear();
+        getElements().clear();
     }
 
     @Override
@@ -128,6 +129,7 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
     @Override
     public Element findElement(String id) {
         Element element = null;
+        List<Element> elements = getElements();
         if (elements != null && !elements.isEmpty()) {
             for (int i = 0; i < elements.size(); i++) {
                 Element el = elements.get(i);

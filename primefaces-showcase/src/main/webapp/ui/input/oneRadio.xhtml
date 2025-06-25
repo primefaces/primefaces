@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -35,14 +35,14 @@
         <div class="card">
             <h:form>
                 <h5 class="mt-0">Line Direction</h5>
-                <p:selectOneRadio id="console" value="#{radioView.console}" layout="lineDirection">
+                <p:selectOneRadio id="line" value="#{radioView.line}" layout="lineDirection">
                     <f:selectItem itemLabel="Option1" itemValue="Option1"/>
                     <f:selectItem itemLabel="Option2" itemValue="Option2"/>
                     <f:selectItem itemLabel="Option3" itemValue="Option3"/>
                 </p:selectOneRadio>
 
                 <h5>Page Direction</h5>
-                <p:selectOneRadio id="page" value="#{radioView.console}" layout="pageDirection">
+                <p:selectOneRadio id="page" value="#{radioView.page}" layout="pageDirection">
                     <f:selectItem itemLabel="Option1" itemValue="Option1"/>
                     <f:selectItem itemLabel="Option2" itemValue="Option2"/>
                     <f:selectItem itemLabel="Option3" itemValue="Option3"/>
@@ -53,13 +53,6 @@
                     <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectOneRadio>
                 
-                
-                <h5>Grid (deprecated)</h5>
-                <p:selectOneRadio id="city" value="#{radioView.city}" layout="grid" columns="3" styleClass="grid-radio">
-                    <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
-                </p:selectOneRadio>
-                
-
                 <h5>Custom Layout (Facet)</h5>
                 <p:selectOneRadio id="customRadio" value="#{radioView.color}">
                     <f:selectItem itemLabel="Red" itemValue="Red"/>

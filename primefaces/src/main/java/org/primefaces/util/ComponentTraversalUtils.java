@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,13 @@ package org.primefaces.util;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.faces.component.*;
-import javax.faces.context.FacesContext;
+
+import jakarta.faces.component.ContextCallback;
+import jakarta.faces.component.NamingContainer;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.component.UniqueIdVendor;
+import jakarta.faces.context.FacesContext;
 
 public class ComponentTraversalUtils {
 
@@ -170,11 +175,6 @@ public class ComponentTraversalUtils {
         }
     }
 
-    @Deprecated
-    public static UIForm closestForm(FacesContext context, UIComponent component) {
-        return closest(UIForm.class, component);
-    }
-
     public static UIForm closestForm(UIComponent component) {
         return closest(UIForm.class, component);
     }
@@ -185,5 +185,35 @@ public class ComponentTraversalUtils {
 
     public static UIComponent closestNamingContainer(UIComponent component) {
         return (UIComponent) closest(NamingContainer.class, component);
+    }
+
+    public static <T> T firstChildRendered(Class<T> childType, UIComponent base) {
+        if (base == null || !base.isRendered()) {
+            return null;
+        }
+
+        for (int i = 0; i < base.getChildCount(); i++) {
+            UIComponent child = base.getChildren().get(i);
+            if (childType.isInstance(child) && child.isRendered() ) {
+                return (T) child;
+            }
+        }
+
+        return null;
+    }
+
+    public static <T> T firstChild(Class<T> childType, UIComponent base) {
+        if (base == null || !base.isRendered()) {
+            return null;
+        }
+
+        for (int i = 0; i < base.getChildCount(); i++) {
+            UIComponent child = base.getChildren().get(i);
+            if (childType.isInstance(child)) {
+                return (T) child;
+            }
+        }
+
+        return null;
     }
 }

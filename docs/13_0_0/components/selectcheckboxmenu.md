@@ -37,7 +37,7 @@ label | null | String | User presentable name.
 onchange | null | String | Callback to execute on value change.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
-scrollHeight | null | String | Maximum height of the overlay, e.g. "200vh" or "200%". Default is "200px".
+scrollHeight | null | String | Maximum height of the overlay, e.g., "200vh" or "200%". Default is "200px".
 onShow | null | String | Client side callback to execute when overlay is displayed.
 onHide | null | String | Client side callback to execute when overlay is hidden.
 filter | false | Boolean | Renders an input field as a filter.
@@ -59,6 +59,7 @@ emptyLabel | null | String | Label to be shown in updateLabel mode when no item 
 filterPlaceholder | null | String  | Placeholder text to show when filter input is empty.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 var | null | String | Name of iterator to be used in custom content display.
+collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.
 
 ## Getting started with SelectCheckboxMenu
 SelectCheckboxMenu usage is same as the standard selectManyCheckbox or PrimeFaces

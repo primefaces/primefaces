@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,49 +23,48 @@
  */
 package org.primefaces.component.carousel;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.model.ResponsiveOption;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class CarouselRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class CarouselRenderer extends CoreRenderer<Carousel> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Carousel component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Carousel carousel = (Carousel) component;
-
-        encodeMarkup(context, carousel);
-        encodeScript(context, carousel);
+    public void encodeEnd(FacesContext context, Carousel component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    private void encodeScript(FacesContext context, Carousel carousel) throws IOException {
+    private void encodeScript(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         WidgetBuilder wb = getWidgetBuilder(context);
-        List<ResponsiveOption> responsiveOptions = carousel.getResponsiveOptions();
+        List<ResponsiveOption> responsiveOptions = component.getResponsiveOptions();
 
-        wb.init("Carousel", carousel);
+        wb.init("Carousel", component);
 
-        wb.attr("page", carousel.getPage(), 0)
-                .attr("circular", carousel.isCircular(), false)
-                .attr("autoplayInterval", carousel.getAutoplayInterval(), 0)
-                .attr("numVisible", carousel.getNumVisible(), 1)
-                .attr("numScroll", carousel.getNumScroll(), 1)
-                .attr("orientation", carousel.getOrientation(), "horizontal")
-                .attr("touchable", ComponentUtils.isTouchable(context, carousel), true)
-                .attr("paginator", carousel.isPaginator(), true)
-                .callback("onPageChange", "function(pageValue)", carousel.getOnPageChange());
+        wb.attr("page", component.getPage(), 0)
+                .attr("circular", component.isCircular(), false)
+                .attr("autoplayInterval", component.getAutoplayInterval(), 0)
+                .attr("numVisible", component.getNumVisible(), 1)
+                .attr("numScroll", component.getNumScroll(), 1)
+                .attr("orientation", component.getOrientation(), "horizontal")
+                .attr("touchable", ComponentUtils.isTouchable(context, component), true)
+                .attr("paginator", component.isPaginator(), true)
+                .callback("onPageChange", "function(pageValue)", component.getOnPageChange());
 
         if (responsiveOptions != null) {
             writer.write(",responsiveOptions:[");
@@ -78,20 +77,20 @@ public class CarouselRenderer extends CoreRenderer {
             writer.write("]");
         }
 
-        encodeClientBehaviors(context, carousel);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, Carousel carousel) throws IOException {
+    protected void encodeMarkup(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = carousel.getClientId(context);
-        String style = carousel.getStyle();
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(Carousel.STYLE_CLASS)
-                .add(carousel.getStyleClass())
-                .add("horizontal".equals(carousel.getOrientation()), Carousel.HORIZONTAL_CLASS)
-                .add("vertical".equals(carousel.getOrientation()), Carousel.VERTICAL_CLASS)
+                .add(component.getStyleClass())
+                .add("horizontal".equals(component.getOrientation()), Carousel.HORIZONTAL_CLASS)
+                .add("vertical".equals(component.getOrientation()), Carousel.VERTICAL_CLASS)
                 .build();
 
         //container
@@ -102,26 +101,26 @@ public class CarouselRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeHeader(context, carousel);
-        encodeContent(context, carousel);
-        encodeFooter(context, carousel);
+        encodeHeader(context, component);
+        encodeContent(context, component);
+        encodeFooter(context, component);
 
         writer.endElement("div");
     }
 
-    protected void encodeContent(FacesContext context, Carousel carousel) throws IOException {
+    protected void encodeContent(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean isVertical = "vertical".equals(carousel.getOrientation());
+        boolean isVertical = "vertical".equals(component.getOrientation());
 
         String contentStyleClass = getStyleClassBuilder(context)
                 .add(Carousel.CONTENT_CLASS)
-                .add(carousel.getContentStyleClass())
+                .add(component.getContentStyleClass())
                 .build();
         String containerStyleClass = getStyleClassBuilder(context)
                 .add(Carousel.CONTAINER_CLASS)
-                .add(carousel.getContainerStyleClass())
+                .add(component.getContainerStyleClass())
                 .build();
-        String itemContentHeight = isVertical ? carousel.getVerticalViewPortHeight() : "auto";
+        String itemContentHeight = isVertical ? component.getVerticalViewPortHeight() : "auto";
 
         writer.startElement("div", null);
         writer.writeAttribute("class", contentStyleClass, null);
@@ -129,7 +128,7 @@ public class CarouselRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", containerStyleClass, null);
 
-        encodePrevButton(context, carousel, isVertical);
+        encodePrevButton(context, component, isVertical);
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.ITEMS_CONTENT_CLASS, null);
@@ -138,41 +137,41 @@ public class CarouselRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", Carousel.ITEMS_CONTAINER_CLASS, null);
 
-        encodeItem(context, carousel);
+        encodeItem(context, component);
 
         writer.endElement("div");
 
         writer.endElement("div");
 
-        encodeNextButton(context, carousel, isVertical);
+        encodeNextButton(context, component, isVertical);
 
         writer.endElement("div");
 
-        encodeIndicators(context, carousel);
+        encodeIndicators(context, component);
 
         writer.endElement("div");
     }
 
-    protected void encodeItem(FacesContext context, Carousel carousel) throws IOException {
+    protected void encodeItem(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (carousel.isRepeating()) {
-            int rowCount = carousel.getRowCount();
+        if (component.isRepeating()) {
+            int rowCount = component.getRowCount();
             for (int i = 0; i < rowCount; i++) {
-                carousel.setIndex(i);
+                component.setIndex(i);
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", Carousel.ITEM_CLASS, "itemStyleClass");
 
-                renderChildren(context, carousel);
+                renderChildren(context, component);
 
                 writer.endElement("div");
             }
 
-            carousel.setIndex(-1);
+            component.setIndex(-1);
         }
         else {
-            for (UIComponent kid : carousel.getChildren()) {
+            for (UIComponent kid : component.getChildren()) {
                 if (kid.isRendered()) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", Carousel.ITEM_CLASS, "itemStyleClass");
@@ -185,7 +184,7 @@ public class CarouselRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodePrevButton(FacesContext context, Carousel carousel, boolean isVertical) throws IOException {
+    protected void encodePrevButton(FacesContext context, Carousel component, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String prevButtonIconStyleClass = getStyleClassBuilder(context)
                 .add(Carousel.PREV_BUTTON_ICON_CLASS)
@@ -204,7 +203,7 @@ public class CarouselRenderer extends CoreRenderer {
         writer.endElement("button");
     }
 
-    protected void encodeNextButton(FacesContext context, Carousel carousel, boolean isVertical) throws IOException {
+    protected void encodeNextButton(FacesContext context, Carousel component, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String nextButtonIconStyleClass = getStyleClassBuilder(context)
                 .add(Carousel.NEXT_BUTTON_ICON_CLASS)
@@ -223,11 +222,11 @@ public class CarouselRenderer extends CoreRenderer {
         writer.endElement("button");
     }
 
-    protected void encodeIndicators(FacesContext context, Carousel carousel) throws IOException {
+    protected void encodeIndicators(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String indicatorsContentStyleClass = getStyleClassBuilder(context)
                 .add(Carousel.INDICATORS_CONTENT_CLASS)
-                .add(carousel.getIndicatorsContentStyleClass())
+                .add(component.getIndicatorsContentStyleClass())
                 .build();
 
         writer.startElement("ul", null);
@@ -236,11 +235,11 @@ public class CarouselRenderer extends CoreRenderer {
         writer.endElement("ul");
     }
 
-    protected void encodeHeader(FacesContext context, Carousel carousel) throws IOException {
+    protected void encodeHeader(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String headerText = carousel.getHeaderText();
-        UIComponent facet = carousel.getFacet("header");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        String headerText = component.getHeaderText();
+        UIComponent facet = component.getFacet("header");
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (headerText == null && !shouldRenderFacet) {
             return;
@@ -259,11 +258,11 @@ public class CarouselRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeFooter(FacesContext context, Carousel carousel) throws IOException {
+    protected void encodeFooter(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String footerText = carousel.getFooterText();
-        UIComponent facet = carousel.getFacet("footer");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        String footerText = component.getFooterText();
+        UIComponent facet = component.getFacet("footer");
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (footerText == null && !shouldRenderFacet) {
             return;
@@ -288,7 +287,7 @@ public class CarouselRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Carousel component) throws IOException {
         //Rendering happens on encodeEnd
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,10 @@
  */
 package org.primefaces.component.submenu;
 
+import org.primefaces.model.menu.MenuElement;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import org.primefaces.model.menu.MenuElement;
 
 
 public class UISubmenu extends UISubmenuBase {

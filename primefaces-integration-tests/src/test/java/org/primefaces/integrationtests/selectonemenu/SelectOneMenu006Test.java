@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,6 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import java.util.List;
-
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
@@ -40,19 +30,31 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectOneMenu;
 import org.primefaces.selenium.component.model.Msg;
 
-public class SelectOneMenu006Test extends AbstractPrimePageTest {
+import java.util.List;
+
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SelectOneMenu006Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: editable=true choose selectItem value")
-    public void testChooseSelectValue(Page page) {
+    void chooseSelectValue(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
         selectOneMenu.toggleDropdown();
 
         // Assert
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals(7, options.size());
+        assertEquals(7, options.size());
 
         // Act
         selectOneMenu.select("Playstation 5");
@@ -66,7 +68,7 @@ public class SelectOneMenu006Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("SelectOneMenu: editable=true enter user supplied value")
-    public void testEnterUserSuppliedValue(Page page) {
+    void enterUserSuppliedValue(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
         WebElement editableInput = selectOneMenu.getEditableInput();
@@ -81,16 +83,28 @@ public class SelectOneMenu006Test extends AbstractPrimePageTest {
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(3)
+    @DisplayName("SelectOneMenu: getAssignedLabelText editable=true")
+    void assignedLabelText(SelectOneMenu001Test.Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+
+        // Test
+        assertNotNull(selectOneMenu.getAssignedLabel());
+        assertEquals("SelectOneMenu", selectOneMenu.getAssignedLabelText());
+    }
+
     private void assertMessage(Page page, int index, String summary, String detail) {
         Msg message = page.messages.getMessage(index);
-        Assertions.assertEquals(summary, message.getSummary());
-        Assertions.assertEquals(detail, message.getDetail());
+        assertEquals(summary, message.getSummary());
+        assertEquals(detail, message.getDetail());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
+        assertTrue(cfg.has("appendTo"));
     }
 
     public static class Page extends AbstractPrimePage {

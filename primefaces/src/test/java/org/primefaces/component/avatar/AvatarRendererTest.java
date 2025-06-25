@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,17 @@
  */
 package org.primefaces.component.avatar;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.stream.Stream;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 class AvatarRendererTest {
 
@@ -68,7 +66,7 @@ class AvatarRendererTest {
     }
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         // system under test
         sut = new AvatarRenderer();
 
@@ -79,7 +77,7 @@ class AvatarRendererTest {
 
     @ParameterizedTest
     @MethodSource("data")
-    public void testCalculateLabel(String input, String expected) {
+    void calculateLabel(String input, String expected) {
         // Arrange
         when(avatar.getLabel()).thenReturn(input);
 

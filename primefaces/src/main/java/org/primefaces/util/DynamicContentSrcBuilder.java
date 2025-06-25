@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,25 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.application.resource.DynamicContentType;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.model.StreamedContent;
+
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.Resource;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.FacesContext;
-import org.primefaces.application.resource.DynamicContentType;
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.model.StreamedContent;
+
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.Resource;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIParameter;
+import jakarta.faces.context.FacesContext;
 
 public class DynamicContentSrcBuilder {
 
@@ -97,16 +100,17 @@ public class DynamicContentSrcBuilder {
     public static String buildStreaming(FacesContext context, UIComponent component, ValueExpression valueExpression, boolean cache) {
 
         // just a dummy file for streaming
-        // JSF will also append the suffix (e.g. -> dynamiccontent.properties.xhtml)
+        // Faces will also append the suffix (e.g. -> dynamiccontent.properties.xhtml)
         // the real content type will be written to the response by the StreamedContentHandler
         Resource resource = context.getApplication().getResourceHandler().createResource(
                 "dynamiccontent.properties", "primefaces", "text/plain");
         String resourcePath = resource.getRequestPath();
 
         Map<String, Object> session = context.getExternalContext().getSessionMap();
-        Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+        Map<String, String> dynamicResourcesMapping = (Map<String, String>) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
         if (dynamicResourcesMapping == null) {
-            dynamicResourcesMapping = new LimitedSizeHashMap<>(200);
+            int limit = PrimeApplicationContext.getCurrentInstance(context).getConfig().getDynamicContentLimit();
+            dynamicResourcesMapping = new LimitedSizeHashMap<>(limit);
             session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
         }
 
@@ -115,35 +119,30 @@ public class DynamicContentSrcBuilder {
 
         dynamicResourcesMapping.put(resourceKey, expressionString);
 
-        try {
-            StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD_STREAMING);
-            builder.append(resourcePath)
-                    .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, "UTF-8"))
-                    .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(DynamicContentType.STREAMED_CONTENT.toString());
+        StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD_STREAMING);
+        builder.append(resourcePath)
+                .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, StandardCharsets.UTF_8))
+                .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(DynamicContentType.STREAMED_CONTENT);
 
-            if (component != null) {
-                for (int i = 0; i < component.getChildCount(); i++) {
-                    UIComponent child = component.getChildren().get(i);
-                    if (child instanceof UIParameter) {
-                        UIParameter param = (UIParameter) child;
-                        if (!param.isDisable()) {
-                            Object paramValue = param.getValue();
+        if (component != null) {
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent child = component.getChildren().get(i);
+                if (child instanceof UIParameter) {
+                    UIParameter param = (UIParameter) child;
+                    if (!param.isDisable()) {
+                        Object paramValue = param.getValue();
 
-                            builder.append("&").append(param.getName()).append("=");
+                        builder.append("&").append(param.getName()).append("=");
 
-                            if (paramValue != null) {
-                                builder.append(URLEncoder.encode(paramValue.toString(), "UTF-8"));
-                            }
+                        if (paramValue != null) {
+                            builder.append(URLEncoder.encode(paramValue.toString(), StandardCharsets.UTF_8));
                         }
                     }
                 }
             }
+        }
 
-            return ResourceUtils.encodeResourceURL(context, builder.toString(), cache);
-        }
-        catch (UnsupportedEncodingException ex) {
-            throw new FacesException(ex);
-        }
+        return ResourceUtils.encodeResourceURL(context, builder.toString(), cache);
     }
 
     protected static String md5(String input) {

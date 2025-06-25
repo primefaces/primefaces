@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.util.LangUtils;
+
 import java.util.Collection;
 import java.util.List;
 
-import javax.faces.component.html.HtmlInputTextarea;
-
-import org.primefaces.util.LangUtils;
+import jakarta.faces.component.html.HtmlInputTextarea;
 
 /**
  * Extended {@link HtmlInputTextarea} to allow for new events such as "input" and "paste".
- * Remove if JSF4.0 ever implements these events.
+ * Remove if Faces 5.0+ ever implements these events.
  */
 public abstract class AbstractPrimeHtmlInputTextArea extends HtmlInputTextarea {
 

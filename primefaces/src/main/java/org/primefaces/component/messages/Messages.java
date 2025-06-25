@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,14 @@
  */
 package org.primefaces.component.messages;
 
-import javax.faces.application.ResourceDependency;
 import org.primefaces.component.api.Widget;
 
+import jakarta.faces.application.ResourceDependency;
+
 @ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class Messages extends MessagesBase implements Widget {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Messages";
@@ -36,11 +40,5 @@ public class Messages extends MessagesBase implements Widget {
     public static final String CLOSE_LINK_CLASS = "ui-messages-close";
     public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-close";
     public static final String SEVERITY_PREFIX_CLASS = "ui-messages-";
-
-    public static final String ARIA_CLOSE = "primefaces.messages.aria.CLOSE";
-    public static final String ARIA_INFO = "primefaces.messages.aria.INFO";
-    public static final String ARIA_ERROR = "primefaces.messages.aria.ERROR";
-    public static final String ARIA_WARN = "primefaces.messages.aria.WARN";
-    public static final String ARIA_FATAL = "primefaces.messages.aria.FATAL";
 
 }

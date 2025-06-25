@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,16 @@
  */
 package org.primefaces.component.export;
 
-import javax.el.ELException;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.component.ActionSource;
-import javax.faces.component.UIComponent;
-import javax.faces.view.facelets.*;
+import jakarta.el.ELException;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
+import jakarta.faces.component.ActionSource;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.view.facelets.ComponentHandler;
+import jakarta.faces.view.facelets.FaceletContext;
+import jakarta.faces.view.facelets.TagAttribute;
+import jakarta.faces.view.facelets.TagConfig;
+import jakarta.faces.view.facelets.TagHandler;
 
 public class DataExporterTagHandler extends TagHandler {
 
@@ -45,7 +49,8 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute encoding;
     private final TagAttribute options;
     private final TagAttribute onTableRender;
-    private final TagAttribute exporter;
+    private final TagAttribute onRowExport;
+    private final TagAttribute bufferSize;
 
     public DataExporterTagHandler(TagConfig tagConfig) {
         super(tagConfig);
@@ -62,7 +67,8 @@ public class DataExporterTagHandler extends TagHandler {
         postProcessor = getAttribute("postProcessor");
         options = getAttribute("options");
         onTableRender = getAttribute("onTableRender");
-        exporter = getAttribute("exporter");
+        onRowExport = getAttribute("onRowExport");
+        bufferSize = getAttribute("bufferSize");
     }
 
     @Override
@@ -85,6 +91,8 @@ public class DataExporterTagHandler extends TagHandler {
         ValueExpression optionsVE = null;
         MethodExpression onTableRenderME = null;
         ValueExpression exporterVE = null;
+        MethodExpression onRowExportME = null;
+        ValueExpression bufferSizeVE = null;
 
         if (encoding != null) {
             encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -116,8 +124,11 @@ public class DataExporterTagHandler extends TagHandler {
         if (onTableRender != null) {
             onTableRenderME = onTableRender.getMethodExpression(faceletContext, null, new Class[]{Object.class, Object.class});
         }
-        if (exporter != null) {
-            exporterVE = exporter.getValueExpression(faceletContext, Object.class);
+        if (onRowExport != null) {
+            onRowExportME = onRowExport.getMethodExpression(faceletContext, null, new Class[]{Object.class});
+        }
+        if (bufferSize != null) {
+            bufferSizeVE = bufferSize.getValueExpression(faceletContext, Integer.class);
         }
         ActionSource actionSource = (ActionSource) parent;
         DataExporter dataExporter = DataExporter.builder()
@@ -125,7 +136,6 @@ public class DataExporterTagHandler extends TagHandler {
                     .type(typeVE)
                     .fileName(fileNameVE)
                     .encoding(encodingVE)
-                    .exporter(exporterVE)
                     .exportFooter(exportFooterVE)
                     .exportHeader(exportHeaderVE)
                     .onTableRender(onTableRenderME)
@@ -135,6 +145,8 @@ public class DataExporterTagHandler extends TagHandler {
                     .preProcessor(preProcessorME)
                     .selectionOnly(selectionOnlyVE)
                     .visibleOnly(visibleOnlyVE)
+                    .onRowExport(onRowExportME)
+                    .bufferSize(bufferSizeVE)
                     .build();
         actionSource.addActionListener(dataExporter);
     }

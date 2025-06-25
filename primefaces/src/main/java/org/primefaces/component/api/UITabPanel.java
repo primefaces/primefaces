@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,32 +23,52 @@
  */
 package org.primefaces.component.api;
 
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.util.*;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.*;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
-import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-import javax.faces.model.*;
-import javax.faces.render.Renderer;
-
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.model.CollectionDataModel;
-import org.primefaces.model.IterableDataModel;
-import org.primefaces.util.ConsumerTwo;
+
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.ContextCallback;
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.NamingContainer;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.component.UIPanel;
+import jakarta.faces.component.visit.VisitCallback;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.component.visit.VisitHint;
+import jakarta.faces.component.visit.VisitResult;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.FacesListener;
+import jakarta.faces.event.PhaseId;
+import jakarta.faces.event.PostValidateEvent;
+import jakarta.faces.event.PreValidateEvent;
+import jakarta.faces.model.ArrayDataModel;
+import jakarta.faces.model.CollectionDataModel;
+import jakarta.faces.model.DataModel;
+import jakarta.faces.model.IterableDataModel;
+import jakarta.faces.model.ListDataModel;
+import jakarta.faces.model.ResultSetDataModel;
+import jakarta.faces.model.ScalarDataModel;
+import jakarta.faces.render.Renderer;
 
 /**
  * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
@@ -162,42 +182,42 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         return _dataModelMap.computeIfAbsent(clientID, k -> createDataModel());
     }
 
-    private DataModel createDataModel() {
+    private DataModel<?> createDataModel() {
         Object value = getValue();
 
         if (value == null) {
             return EMPTY_MODEL;
         }
         else if (value instanceof DataModel) {
-            return (DataModel) value;
+            return (DataModel<?>) value;
         }
         else if (value instanceof List) {
-            return new ListDataModel((List<?>) value);
+            return new ListDataModel<>((List<?>) value);
         }
         else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass())) {
-            return new ArrayDataModel((Object[]) value);
+            return new ArrayDataModel<>((Object[]) value);
         }
         else if (value instanceof Collection) {
-            return new CollectionDataModel((Collection) value);
+            return new CollectionDataModel<>((Collection<?>) value);
         }
         else if (value instanceof Iterable) {
-            return new IterableDataModel((Iterable<?>) value);
+            return new IterableDataModel<>((Iterable<?>) value);
         }
         else if (value instanceof ResultSet) {
             return new ResultSetDataModel((ResultSet) value);
         }
         else if (value instanceof Map) {
-            return new IterableDataModel(((Map<?, ?>) value).entrySet());
+            return new IterableDataModel<>(((Map<?, ?>) value).entrySet());
         }
         else {
-            return new ScalarDataModel(value);
+            return new ScalarDataModel<>(value);
         }
     }
 
     @Override
     public void setValueExpression(String name, ValueExpression binding) {
         if (name == null) {
-            throw new NullPointerException("name");
+            throw new IllegalArgumentException("name");
         }
         else if ("value".equals(name)) {
             _dataModelMap.clear();
@@ -816,7 +836,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
         else {
             if (context == null || clientId == null || callback == null) {
-                throw new NullPointerException();
+                throw new IllegalArgumentException();
             }
 
             final String baseClientId = getClientId(context);
@@ -919,8 +939,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 try {
                     pushComponentToEL(context.getFacesContext(), this);
 
-                    if (context.invokeVisitCallback(this, callback) == VisitResult.COMPLETE) {
+                    VisitResult res = context.invokeVisitCallback(this, callback);
+
+                    if (res == VisitResult.COMPLETE) {
                         return true;
+                    }
+                    else if (res == VisitResult.REJECT) {
+                        return false;
                     }
 
                     for (int i = 0; i < getChildCount(); i++) {
@@ -1335,11 +1360,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         return Boolean.parseBoolean(paramValue);
     }
 
-    public void forEachTab(ConsumerTwo<Tab, Integer> callback) {
+    public void forEachTab(BiConsumer<Tab, Integer> callback) {
         forEachTab(callback, true);
     }
 
-    public void forEachTab(ConsumerTwo<Tab, Integer> callback, boolean skipUnrendered) {
+    public void forEachTab(BiConsumer<Tab, Integer> callback, boolean skipUnrendered) {
         if (isRepeating()) {
             Tab tab = getDynamicTab();
 

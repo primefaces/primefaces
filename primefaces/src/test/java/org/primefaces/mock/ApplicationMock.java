@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,33 +23,31 @@
  */
 package org.primefaces.mock;
 
-import de.odysseus.el.ExpressionFactoryImpl;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
-import javax.el.ExpressionFactory;
-import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.application.NavigationHandler;
-import javax.faces.application.StateManager;
-import javax.faces.application.ViewHandler;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.el.MethodBinding;
-import javax.faces.el.PropertyResolver;
-import javax.faces.el.ReferenceSyntaxException;
-import javax.faces.el.ValueBinding;
-import javax.faces.el.VariableResolver;
-import javax.faces.event.ActionListener;
-import javax.faces.event.SystemEvent;
-import javax.faces.validator.Validator;
+
+import jakarta.el.ExpressionFactory;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.NavigationHandler;
+import jakarta.faces.application.StateManager;
+import jakarta.faces.application.ViewHandler;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.search.SearchExpressionHandler;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.event.ActionListener;
+import jakarta.faces.event.SystemEvent;
+import jakarta.faces.validator.Validator;
+
+import org.apache.el.ExpressionFactoryImpl;
 
 @SuppressWarnings("deprecation")
 public class ApplicationMock extends Application {
 
-    private ExpressionFactory expressionFactory = new de.odysseus.el.ExpressionFactoryImpl(ExpressionFactoryImpl.Profile.JEE6);
+    private ExpressionFactory expressionFactory = new ExpressionFactoryImpl();
+    private SearchExpressionHandler searchExpressionHandler = new SearchExpressionHandlerMock();
 
     @Override
     public ActionListener getActionListener() {
@@ -102,26 +100,6 @@ public class ApplicationMock extends Application {
     }
 
     @Override
-    public PropertyResolver getPropertyResolver() {
-        return null;
-    }
-
-    @Override
-    public void setPropertyResolver(PropertyResolver resolver) {
-
-    }
-
-    @Override
-    public VariableResolver getVariableResolver() {
-        return null;
-    }
-
-    @Override
-    public void setVariableResolver(VariableResolver resolver) {
-
-    }
-
-    @Override
     public ViewHandler getViewHandler() {
         return null;
     }
@@ -148,11 +126,6 @@ public class ApplicationMock extends Application {
 
     @Override
     public UIComponent createComponent(String componentType) throws FacesException {
-        return null;
-    }
-
-    @Override
-    public UIComponent createComponent(ValueBinding componentBinding, FacesContext context, String componentType) throws FacesException {
         return null;
     }
 
@@ -192,11 +165,6 @@ public class ApplicationMock extends Application {
     }
 
     @Override
-    public MethodBinding createMethodBinding(String ref, Class<?>[] params) throws ReferenceSyntaxException {
-        return null;
-    }
-
-    @Override
     public Iterator<Locale> getSupportedLocales() {
         return null;
     }
@@ -222,11 +190,6 @@ public class ApplicationMock extends Application {
     }
 
     @Override
-    public ValueBinding createValueBinding(String ref) throws ReferenceSyntaxException {
-        return null;
-    }
-
-    @Override
     public void publishEvent(FacesContext context,
             Class<? extends SystemEvent> systemEventClass,
             Object source) {
@@ -236,5 +199,10 @@ public class ApplicationMock extends Application {
     @Override
     public ExpressionFactory getExpressionFactory() {
         return expressionFactory;
+    }
+
+    @Override
+    public SearchExpressionHandler getSearchExpressionHandler() {
+        return searchExpressionHandler;
     }
 }

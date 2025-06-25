@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,13 @@
  */
 package org.primefaces.showcase.view.input;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.inject.Named;
 
 @Named
 @RequestScoped
@@ -60,8 +63,13 @@ public class SelectBooleanView {
         this.value3 = value3;
     }
 
-    public void addMessage() {
-        String summary = value2 ? "Checked" : "Unchecked";
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
+    public void addMessage(AjaxBehaviorEvent event) {
+        UIComponent component = event.getComponent();
+        if (component instanceof UIInput) {
+            UIInput inputComponent = (UIInput) component;
+            Boolean value = (Boolean) inputComponent.getValue();
+            String summary = value ? "Checked" : "Unchecked";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
+        }
     }
 }

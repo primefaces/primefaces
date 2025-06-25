@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,56 @@
  */
 package org.primefaces.selenium.component.model.datatable;
 
+import org.primefaces.selenium.PrimeSelenium;
+
 import java.util.List;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 public class Row {
-
     private WebElement webElement;
     private List<Cell> cells;
 
     public Row(WebElement webElement, List<Cell> cells) {
         this.webElement = webElement;
         this.cells = cells;
+    }
+
+    public boolean isToggleable() {
+        return getToggler() != null;
+    }
+
+    public WebElement getToggler() {
+        try {
+            return webElement.findElement(By.className("ui-row-toggler"));
+        }
+        catch (NoSuchElementException e) {
+            return null; // Ignore, its optional
+        }
+    }
+
+    public void toggle() {
+        if (isToggleable()) {
+            PrimeSelenium.guardAjax(getToggler()).click();
+        }
+    }
+
+    public boolean isExpanded() {
+        return Boolean.parseBoolean(getToggler().getDomAttribute("aria-expanded"));
+    }
+
+    public void expand() {
+        if (!isExpanded()) {
+            toggle();
+        }
+    }
+
+    public void collapse() {
+        if (isExpanded()) {
+            toggle();
+        }
     }
 
     public WebElement getWebElement() {

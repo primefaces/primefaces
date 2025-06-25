@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,31 +92,31 @@ public class DefaultMapModel<T> implements MapModel<T>, Serializable {
             LOGGER.log(Level.WARNING, "Overlays should not have a set ID. It will be overwritten.");
         }
         if (overlay instanceof Marker) {
-            overlay.setId(MARKER_ID_PREFIX + UUID.randomUUID().toString());
-            markers.add((Marker) overlay);
+            overlay.setId(MARKER_ID_PREFIX + UUID.randomUUID());
+            markers.add((Marker<T>) overlay);
         }
         else if (overlay instanceof Polyline) {
-            overlay.setId(POLYLINE_ID_PREFIX + UUID.randomUUID().toString());
-            polylines.add((Polyline) overlay);
+            overlay.setId(POLYLINE_ID_PREFIX + UUID.randomUUID());
+            polylines.add((Polyline<T>) overlay);
         }
         else if (overlay instanceof Polygon) {
-            overlay.setId(POLYGON_ID_PREFIX + UUID.randomUUID().toString());
-            polygons.add((Polygon) overlay);
+            overlay.setId(POLYGON_ID_PREFIX + UUID.randomUUID());
+            polygons.add((Polygon<T>) overlay);
         }
         else if (overlay instanceof Circle) {
-            overlay.setId(CIRCLE_ID_PREFIX + UUID.randomUUID().toString());
-            circles.add((Circle) overlay);
+            overlay.setId(CIRCLE_ID_PREFIX + UUID.randomUUID());
+            circles.add((Circle<T>) overlay);
         }
         else if (overlay instanceof Rectangle) {
-            overlay.setId(RECTANGLE_ID_PREFIX + UUID.randomUUID().toString());
-            rectangles.add((Rectangle) overlay);
+            overlay.setId(RECTANGLE_ID_PREFIX + UUID.randomUUID());
+            rectangles.add((Rectangle<T>) overlay);
         }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Overlay<T> findOverlay(String id) {
-        List<? extends Overlay> overlays = Collections.emptyList();
+        List<? extends Overlay<?>> overlays = Collections.emptyList();
 
         if (id.startsWith(MARKER_ID_PREFIX)) {
             overlays = markers;
@@ -134,9 +134,9 @@ public class DefaultMapModel<T> implements MapModel<T>, Serializable {
             overlays = rectangles;
         }
 
-        for (Overlay overlay : overlays) {
+        for (Overlay<?> overlay : overlays) {
             if (overlay.getId().equals(id)) {
-                return overlay;
+                return (Overlay<T>) overlay;
             }
         }
 

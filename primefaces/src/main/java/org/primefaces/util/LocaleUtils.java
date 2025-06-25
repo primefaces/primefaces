@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,8 @@ package org.primefaces.util;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.FacesContext;
 
 public class LocaleUtils {
 
@@ -135,7 +135,7 @@ public class LocaleUtils {
                 locale = context.getExternalContext().getRequestLocale();
             }
 
-            // Then the JSF default locale.
+            // Then the Jakarta Faces default locale.
             if (locale == null) {
                 locale = context.getApplication().getDefaultLocale();
             }

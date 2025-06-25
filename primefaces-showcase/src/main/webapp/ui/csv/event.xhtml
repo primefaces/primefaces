@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -19,7 +19,7 @@
         <div class="card">
             <h:form>
                 <h:panelGrid columns="4" cellpadding="7">
-                    <h:outputLabel for="text" value="Text: (Change)"/>
+                    <p:outputLabel for="text" value="Text: (Change)"/>
                     <p:inputText id="text" value="#{validationView.text}" required="true">
                         <f:validateLength minimum="2" maximum="5"/>
                         <p:clientValidator/>
@@ -27,7 +27,7 @@
                     <p:message for="text" display="icon"/>
                     <h:outputText value="#{validationView.text}"/>
 
-                    <h:outputLabel for="integer" value="Integer: (Keyup)"/>
+                    <p:outputLabel for="integer" value="Integer: (Keyup)"/>
                     <p:inputText id="integer" value="#{validationView.integer}">
                         <p:clientValidator event="keyup"/>
                     </p:inputText>

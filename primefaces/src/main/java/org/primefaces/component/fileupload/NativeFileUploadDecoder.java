@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,18 +25,20 @@ package org.primefaces.component.fileupload;
 
 import org.primefaces.model.file.NativeUploadedFile;
 import org.primefaces.model.file.UploadedFile;
+import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.LangUtils;
 
-import javax.faces.context.FacesContext;
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import org.primefaces.util.LangUtils;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 
 public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServletRequest> {
 
@@ -53,7 +55,7 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
         return StreamSupport.stream(parts.spliterator(), false)
                 .filter(p -> p != null && p.getName().equals(inputToDecodeId))
                 .filter(p -> LangUtils.isNotBlank(p.getSubmittedFileName()))
-                .map(p -> new NativeUploadedFile(p, sizeLimit))
+                .map(p -> new NativeUploadedFile(p, sizeLimit, null))
                 .collect(Collectors.toList());
     }
 
@@ -65,7 +67,7 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
             return null;
         }
 
-        return new NativeUploadedFile(part, fileUpload.getSizeLimit());
+        return new NativeUploadedFile(part, fileUpload.getSizeLimit(), FileUploadUtils.getWebkitRelativePath(request));
     }
 
     @Override
@@ -75,9 +77,8 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
 
     @Override
     public String getUploadDirectory(HttpServletRequest request) {
-        // Java 8 does not provide streams support for Enumeration out of the box
         return Collections.list(request.getAttributeNames()).stream()
-                .map(a -> request.getAttribute(a))
+                .map(request::getAttribute)
                 .filter(MultipartConfigElement.class::isInstance)
                 .map(MultipartConfigElement.class::cast)
                 .findFirst()

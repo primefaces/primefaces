@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,24 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.DataTable;
+
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.DataTable;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
  * Test for multiple filtered columns added via
- * {@link javax.faces.view.facelets.FaceletContext#includeFacelet} and filtered
+ * {@link jakarta.faces.view.facelets.FaceletContext#includeFacelet} and filtered
  * via method
  */
-public class DataTable023Test extends AbstractDataTableTest {
+class DataTable023Test extends AbstractDataTableTest {
 
     private static final int ID = 0;
     private static final int NAME = 1;
@@ -45,47 +48,51 @@ public class DataTable023Test extends AbstractDataTableTest {
     @Test
     @Order(1)
     @DisplayName("DataTable: filter by name")
-    public void testFilterByName(Page page) {
-        // Arrange
-        DataTable dataTable = page.dataTable;
+    void filterByName(Page page) {
+        assertDoesNotThrow(() -> {
+            // Arrange
+            DataTable dataTable = page.dataTable;
 
-        // Act
-        dataTable.filter(NAME, "C#");
+            // Act
+            dataTable.filter(NAME, "C#");
 
-        // Assert
-        List<ProgrammingLanguage> langsFiltered = filterByName("C#");
-        assertRows(dataTable, langsFiltered);
+            // Assert
+            List<ProgrammingLanguage> langsFiltered = filterByName("C#");
+            assertRows(dataTable, langsFiltered);
 
-        // Act
-        dataTable.removeFilter(NAME);
+            // Act
+            dataTable.removeFilter(NAME);
 
-        // Assert
-        assertRows(dataTable, languages);
+            // Assert
+            assertRows(dataTable, languages);
 
-        assertNoJavascriptErrors();
+            assertNoJavascriptErrors();
+        });
     }
 
     @Test
     @Order(0)
     @DisplayName("DataTable: filter by id")
-    public void testFilterById(Page page) {
-        // Arrange
-        DataTable dataTable = page.dataTable;
+    void filterById(Page page) {
+        assertDoesNotThrow(() -> {
+            // Arrange
+            DataTable dataTable = page.dataTable;
 
-        // Act
-        dataTable.filter(ID, "1");
+            // Act
+            dataTable.filter(ID, "1");
 
-        // Assert
-        List<ProgrammingLanguage> langsFiltered = filterById(1);
-        assertRows(dataTable, langsFiltered);
+            // Assert
+            List<ProgrammingLanguage> langsFiltered = filterById(1);
+            assertRows(dataTable, langsFiltered);
 
-        // Act
-        dataTable.removeFilter(ID);
+            // Act
+            dataTable.removeFilter(ID);
 
-        // Assert
-        assertRows(dataTable, languages);
+            // Assert
+            assertRows(dataTable, languages);
 
-        assertNoJavascriptErrors();
+            assertNoJavascriptErrors();
+        });
     }
 
     public static class Page extends AbstractPrimePage {

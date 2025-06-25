@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,11 @@
  */
 package org.primefaces.selenium.component;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractToggleComponent;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:selectBooleanButton}.
@@ -43,7 +44,7 @@ public abstract class SelectBooleanButton extends AbstractToggleComponent {
         if (PrimeSelenium.isElementDisplayed(label)) {
             return label.getText();
         }
-        return label.getAttribute("textContent");
+        return label.getDomProperty("textContent");
     }
 
 }

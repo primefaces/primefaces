@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,85 +23,82 @@
  */
 package org.primefaces.component.selectmanymenu;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectMany;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.model.SelectItem;
-import javax.faces.render.Renderer;
-
 import org.primefaces.component.column.Column;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
-public class SelectManyMenuRenderer extends SelectManyRenderer {
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.render.Renderer;
+
+public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
-                "javax.faces.SelectMany",
-                "javax.faces.Menu");
+                "jakarta.faces.SelectMany",
+                "jakarta.faces.Menu");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SelectManyMenu menu = (SelectManyMenu) component;
-
-        encodeMarkup(context, menu);
-        encodeScript(context, menu);
+    public void encodeEnd(FacesContext context, SelectManyMenu component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, SelectManyMenu menu) throws IOException {
+    protected void encodeMarkup(FacesContext context, SelectManyMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = menu.getClientId(context);
-        List<SelectItem> selectItems = getSelectItems(context, menu);
+        String clientId = component.getClientId(context);
+        List<SelectItem> selectItems = getSelectItems(context, component);
 
-        String style = menu.getStyle();
-        String styleClass = createStyleClass(menu, SelectManyMenu.CONTAINER_CLASS);
+        String style = component.getStyle();
+        String styleClass = createStyleClass(component, SelectManyMenu.CONTAINER_CLASS);
 
-        writer.startElement("div", menu);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
-        if (menu.isFilter()) {
-            encodeFilter(context, menu);
+        if (component.isFilter()) {
+            encodeFilter(context, component);
         }
 
-        encodeInput(context, menu, clientId, selectItems);
-        encodeList(context, menu, selectItems);
+        encodeInput(context, component, clientId, selectItems);
+        encodeList(context, component, selectItems);
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, SelectManyMenu menu) throws IOException {
+    protected void encodeScript(FacesContext context, SelectManyMenu component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectManyMenu", menu)
-                .attr("disabled", menu.isDisabled(), false)
-                .attr("showCheckbox", menu.isShowCheckbox(), false)
-                .attr("metaKeySelection", menu.isMetaKeySelection(), true);
+        wb.init("SelectManyMenu", component)
+                .attr("disabled", component.isDisabled(), false)
+                .attr("showCheckbox", component.isShowCheckbox(), false)
+                .attr("metaKeySelection", component.isMetaKeySelection(), true);
 
-        if (menu.isFilter()) {
+        if (component.isFilter()) {
             wb.attr("filter", true)
-                    .attr("filterMatchMode", menu.getFilterMatchMode(), null)
-                    .nativeAttr("filterFunction", menu.getFilterFunction(), null)
-                    .attr("caseSensitive", menu.isCaseSensitive(), false)
-                    .attr("filterNormalize", menu.isFilterNormalize(), false);
+                    .attr("filterMatchMode", component.getFilterMatchMode(), null)
+                    .nativeAttr("filterFunction", component.getFilterFunction(), null)
+                    .attr("caseSensitive", component.isCaseSensitive(), false)
+                    .attr("filterNormalize", component.isFilterNormalize(), false);
         }
+
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
@@ -133,25 +130,28 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeList(FacesContext context, SelectManyMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodeList(FacesContext context, SelectManyMenu component, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Converter converter = menu.getConverter();
-        Object values = getValues(menu);
-        Object submittedValues = getSubmittedValues(menu);
-        boolean customContent = menu.getVar() != null;
-        boolean showCheckbox = menu.isShowCheckbox();
+        Converter<?> converter = component.getConverter();
+        Object values = getValues(component);
+        Object submittedValues = getSubmittedValues(component);
+        boolean customContent = component.getVar() != null;
+        boolean showCheckbox = component.isShowCheckbox();
 
-        writer.startElement("div", menu);
+        writer.startElement("div", component);
         writer.writeAttribute("class", SelectManyMenu.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(component, countSelectItems(selectItems)), null);
 
         if (customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
+            writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "" + component.isMetaKeySelection(), null);
             writer.startElement("tbody", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
-                encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
+                encodeItem(context, component, selectItem, values, submittedValues, converter, customContent, showCheckbox);
             }
             writer.endElement("tbody");
             writer.endElement("table");
@@ -159,9 +159,11 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
+            writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "" + component.isMetaKeySelection(), null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
-                encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
+                encodeItem(context, component, selectItem, values, submittedValues, converter, customContent, showCheckbox);
             }
             writer.endElement("ul");
         }
@@ -169,11 +171,11 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItem(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues,
-                              Converter converter, boolean customContent, boolean showCheckbox) throws IOException {
+    protected void encodeItem(FacesContext context, SelectManyMenu component, SelectItem option, Object values, Object submittedValues,
+                              Converter<?> converter, boolean customContent, boolean showCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
-        boolean disabled = option.isDisabled() || menu.isDisabled();
+        String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
+        boolean disabled = option.isDisabled() || component.isDisabled();
         String itemClass = disabled ? SelectManyMenu.ITEM_CLASS + " ui-state-disabled" : SelectManyMenu.ITEM_CLASS;
 
         Object valuesArray;
@@ -187,7 +189,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             itemValue = option.getValue();
         }
 
-        boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
+        boolean selected = isSelected(context, component, itemValue, valuesArray, converter);
         if (option.isNoSelectionOption() && values != null && !selected) {
             return;
         }
@@ -197,11 +199,17 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         }
 
         if (customContent) {
-            String var = menu.getVar();
+            String var = component.getVar();
             context.getExternalContext().getRequestMap().put(var, option.getValue());
 
             writer.startElement("tr", getSelectItemComponent(option));
             writer.writeAttribute("class", itemClass, null);
+            writer.writeAttribute("tabindex", "0", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "option", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
+            writer.writeAttribute(HTML.ARIA_DISABLED, "" + option.isDisabled(), null);
+            writer.writeAttribute(HTML.ARIA_SELECTED, "" + selected, null);
+
             if (option.getDescription() != null) {
                 writer.writeAttribute("title", option.getDescription(), null);
             }
@@ -213,7 +221,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
                 writer.endElement("td");
             }
 
-            for (UIComponent child : menu.getChildren()) {
+            for (UIComponent child : component.getChildren()) {
                 if (child instanceof Column && child.isRendered()) {
                     String style = ((Column) child).getStyle();
                     String styleClass = ((Column) child).getStyleClass();
@@ -236,6 +244,11 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         else {
             writer.startElement("li", getSelectItemComponent(option));
             writer.writeAttribute("class", itemClass, null);
+            writer.writeAttribute("tabindex", "0", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "option", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
+            writer.writeAttribute(HTML.ARIA_DISABLED, "" + option.isDisabled(), null);
+            writer.writeAttribute(HTML.ARIA_SELECTED, "" + selected, null);
 
             if (showCheckbox) {
                 RendererUtils.encodeCheckbox(context, selected);
@@ -253,23 +266,23 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
     }
 
-    protected void encodeSelectItems(FacesContext context, SelectManyMenu menu, List<SelectItem> selectItems) throws IOException {
-        Converter converter = menu.getConverter();
-        Object values = getValues(menu);
-        Object submittedValues = getSubmittedValues(menu);
+    protected void encodeSelectItems(FacesContext context, SelectManyMenu component, List<SelectItem> selectItems) throws IOException {
+        Converter<?> converter = component.getConverter();
+        Object values = getValues(component);
+        Object submittedValues = getSubmittedValues(component);
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            encodeOption(context, menu, selectItem, values, submittedValues, converter);
+            encodeOption(context, component, selectItem, values, submittedValues, converter);
         }
     }
 
-    protected void encodeOption(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues,
-                                Converter converter) throws IOException {
+    protected void encodeOption(FacesContext context, SelectManyMenu component, SelectItem option, Object values, Object submittedValues,
+                                Converter<?> converter) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
-        boolean disabled = option.isDisabled() || menu.isDisabled();
+        String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
+        boolean disabled = option.isDisabled() || component.isDisabled();
 
         Object valuesArray;
         Object itemValue;
@@ -282,7 +295,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             itemValue = option.getValue();
         }
 
-        boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
+        boolean selected = isSelected(context, component, itemValue, valuesArray, converter);
         if (option.isNoSelectionOption() && values != null && !selected) {
             return;
         }
@@ -306,10 +319,10 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.endElement("option");
     }
 
-    protected void encodeFilter(FacesContext context, SelectManyMenu menu) throws IOException {
+    protected void encodeFilter(FacesContext context, SelectManyMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String id = menu.getClientId(context) + "_filter";
-        boolean disabled = menu.isDisabled();
+        String id = component.getClientId(context) + "_filter";
+        boolean disabled = component.isDisabled();
         String filterClass = disabled ? SelectManyMenu.FILTER_CLASS + " ui-state-disabled" : SelectManyMenu.FILTER_CLASS;
 
         writer.startElement("div", null);
@@ -325,7 +338,6 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
 
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
@@ -336,8 +348,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected String calculateWrapperHeight(SelectManyMenu menu, int itemSize) {
-        int height = menu.getScrollHeight();
+    protected String calculateWrapperHeight(SelectManyMenu component, int itemSize) {
+        int height = component.getScrollHeight();
 
         if (height != Integer.MAX_VALUE) {
             return height + "px";
@@ -350,12 +362,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
+    protected String getSubmitParam(FacesContext context, SelectManyMenu selectMany) {
         return selectMany.getClientId(context) + "_input";
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, SelectManyMenu component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

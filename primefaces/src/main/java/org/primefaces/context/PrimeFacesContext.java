@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,25 @@
  */
 package org.primefaces.context;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIInput;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextWrapper;
-import javax.faces.context.ResponseWriter;
-import javax.faces.context.ResponseWriterWrapper;
 import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
 import org.primefaces.application.resource.MoveScriptsToBottomState;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.csp.CspResponseWriter;
 import org.primefaces.csp.CspState;
 
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.FacesContextWrapper;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.context.ResponseWriterWrapper;
+
 /**
  * Custom {@link FacesContextWrapper} to init and release our {@link PrimeRequestContext}.
  */
 public class PrimeFacesContext extends FacesContextWrapper {
 
-    private final FacesContext wrapped;
     private final boolean moveScriptsToBottom;
     private final boolean csp;
     private final boolean markInputAsInvalidOnErrorMsg;
@@ -50,9 +50,8 @@ public class PrimeFacesContext extends FacesContextWrapper {
     private CspState cspState;
     private PrimeExternalContext externalContext;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeFacesContext(FacesContext wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
 
         PrimeRequestContext requestContext = new PrimeRequestContext(wrapped);
         PrimeRequestContext.setCurrentInstance(requestContext, wrapped);
@@ -61,7 +60,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
         moveScriptsToBottom = config.isMoveScriptsToBottom();
         if (moveScriptsToBottom) {
-            moveScriptsToBottomState = new MoveScriptsToBottomState();
+            moveScriptsToBottomState = new MoveScriptsToBottomState(config.isMoveScriptsToBottomDeferred());
         }
 
         csp = config.isCsp();
@@ -77,7 +76,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
     @Override
     public ExternalContext getExternalContext() {
         if (externalContext == null) {
-            externalContext = new PrimeExternalContext(wrapped.getExternalContext());
+            externalContext = new PrimeExternalContext(getWrapped().getExternalContext());
         }
         return externalContext;
     }
@@ -116,13 +115,8 @@ public class PrimeFacesContext extends FacesContextWrapper {
     }
 
     @Override
-    public FacesContext getWrapped() {
-        return wrapped;
-    }
-
-    @Override
     public void release() {
-        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(wrapped);
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(getWrapped());
         if (requestContext != null) {
             requestContext.release();
         }

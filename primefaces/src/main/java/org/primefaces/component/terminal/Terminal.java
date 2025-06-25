@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,19 @@
  */
 package org.primefaces.component.terminal;
 
+import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
+import org.primefaces.model.terminal.TerminalAutoCompleteModel;
+import org.primefaces.model.terminal.TerminalCommand;
+import org.primefaces.util.MapBuilder;
+
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.BehaviorEvent;
-
-import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
-import org.primefaces.model.terminal.TerminalAutoCompleteModel;
-import org.primefaces.model.terminal.TerminalCommand;
-import org.primefaces.util.MapBuilder;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.BehaviorEvent;
 
 @ResourceDependency(library = "primefaces", name = "terminal/terminal.css")
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -48,7 +48,7 @@ public class Terminal extends TerminalBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Terminal";
 
-    public static final String CONTAINER_CLASS = "ui-terminal ui-widget ui-widget-content ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-terminal ui-widget ui-widget-content";
     public static final String WELCOME_MESSAGE_CLASS = "ui-terminal-welcome";
     public static final String CONTENT_CLASS = "ui-terminal-content";
     public static final String PROMPT_CLASS = "ui-terminal-prompt";
@@ -87,7 +87,7 @@ public class Terminal extends TerminalBase {
     }
 
     TerminalAutoCompleteMatches traverseAutoCompleteModel(TerminalAutoCompleteModel commandModel, String input, String[] args) {
-        ArrayDeque<String> argumentQueue = new ArrayDeque(Arrays.asList(args));
+        ArrayDeque<String> argumentQueue = new ArrayDeque<>(Arrays.asList(args));
         return traverseAutoCompleteModel(commandModel, input, argumentQueue);
     }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,31 @@
  */
 package org.primefaces.selenium.spi;
 
-import java.lang.reflect.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageFragment;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.findby.FindByParentPartialId;
+import org.primefaces.selenium.findby.FindByParentPartialIdElementLocator;
+import org.primefaces.selenium.internal.OnloadScripts;
+import org.primefaces.selenium.internal.proxy.ElementLocatorInterceptor;
+import org.primefaces.selenium.internal.proxy.ElementsLocatorInterceptor;
+import org.primefaces.selenium.internal.proxy.LazyElementLocator;
+import org.primefaces.selenium.internal.proxy.ProxyUtils;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 import java.util.List;
 
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.Implementation;
+import net.bytebuddy.implementation.InvocationHandlerAdapter;
+import net.bytebuddy.implementation.MethodDelegation;
+import net.bytebuddy.matcher.ElementMatchers;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -36,22 +58,6 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageFragment;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.findby.FindByParentPartialId;
-import org.primefaces.selenium.findby.FindByParentPartialIdElementLocator;
-import org.primefaces.selenium.internal.proxy.ElementLocatorInterceptor;
-import org.primefaces.selenium.internal.proxy.ElementsLocatorInterceptor;
-import org.primefaces.selenium.internal.proxy.LazyElementLocator;
-import org.primefaces.selenium.internal.proxy.ProxyUtils;
-
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.implementation.Implementation;
-import net.bytebuddy.implementation.InvocationHandlerAdapter;
-import net.bytebuddy.implementation.MethodDelegation;
-import net.bytebuddy.matcher.ElementMatchers;
-import org.primefaces.selenium.internal.OnloadScripts;
 
 public class PrimePageFragmentFactory {
 
