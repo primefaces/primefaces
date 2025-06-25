@@ -1,14 +1,13 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces">
 
     <!-- EXAMPLE-SOURCE-START -->
 
-    <p:tabView var="entry" value="#{value}">
+    <p:tabView var="entry" value="#{value}" touchable="false">
         <p:tab title="#{entry.title}" >
-            <p:cache region="sources" key="#{entry}"
-                     disabled="#{facesContext.application.projectStage eq 'Development'}">
+            <p:cache region="sources" key="#{entry}">
 <pre class="line-numbers"><code class="language-#{entry.type}">
 #{entry.value}
 

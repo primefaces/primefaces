@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,21 +26,18 @@ package org.primefaces.application;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.Flash;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.Flash;
+import jakarta.faces.event.PhaseEvent;
+import jakarta.faces.event.PhaseId;
+import jakarta.faces.event.PhaseListener;
 
 /**
  * Keeps objects within Flash during opening a Dialog Framework - dialog and so allows passing objects via Flash to a Dialog Framework - dialog.
  */
 public class DialogKeepFlashPhaseListener implements PhaseListener {
 
-    @Override
-    public void afterPhase(PhaseEvent event) {
-
-    }
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void beforePhase(PhaseEvent event) {

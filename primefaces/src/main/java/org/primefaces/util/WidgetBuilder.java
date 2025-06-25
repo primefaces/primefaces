@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,16 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.renderkit.RendererUtils;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Map;
-import javax.faces.component.UIComponent;
-import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 /**
  * Helper to generate scripts for widgets.
@@ -52,7 +54,7 @@ public class WidgetBuilder {
      * @param widgetVar     Name of the client side widget
      * @param id            Client id of the component
      * @param endFunction   If the init script is wrapped by a method and if the endFunction parentheses should be rendered.
-     * @throws IOException
+     * @throws IOException if any IO exception occurs
      * @return              The current instance.
      */
     protected WidgetBuilder init(String widgetClass, String widgetVar, String id, boolean endFunction) throws IOException {
@@ -77,11 +79,7 @@ public class WidgetBuilder {
                 .renderLifecycleCallbacks(widget);
     }
 
-    /**
-     * Use {@link WidgetBuilder#init(String, UIComponent)} instead
-     */
-    @Deprecated
-    public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
+    private WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
 
         // AJAX case: since jQuery 3 document ready ($(function() {})) are executed async
@@ -137,11 +135,16 @@ public class WidgetBuilder {
         ResponseWriter rw = context.getResponseWriter();
         rw.startElement("script", null);
         rw.writeAttribute("id", id + "_s", null);
-        rw.writeAttribute("type", "text/javascript", null);
+        RendererUtils.encodeScriptTypeIfNecessary(context);
     }
 
     protected WidgetBuilder renderLifecycleCallbacks(UIComponent component) throws IOException {
         Map<String, Object> attributes = component.getAttributes();
+
+        Object preConstruct = attributes.get(Widget.CALLBACK_PRE_CONSTRUCT);
+        if (preConstruct != null) {
+            callback("preConstruct", "function(cfg)", preConstruct.toString());
+        }
 
         Object postConstruct = attributes.get(Widget.CALLBACK_POST_CONSTRUCT);
         if (postConstruct != null) {
@@ -166,10 +169,10 @@ public class WidgetBuilder {
      * If PFS is used and specified by the user, {@link #attr(java.lang.String, java.lang.String)} should be used
      * as the users have to escape colons like @(myForm\:myId).
      *
-     * @param name
-     * @param value
-     * @return
-     * @throws IOException
+     * @param name of the attribute
+     * @param value of the selector
+     * @return the WidgetBuilder
+     * @throws IOException if any error occurs
      */
     public WidgetBuilder selectorAttr(String name, String value) throws IOException {
         if (value != null) {

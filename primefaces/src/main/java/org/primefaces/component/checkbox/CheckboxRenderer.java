@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,28 @@
  */
 package org.primefaces.component.checkbox;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.radiobutton.RadioButtonRenderer;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 
-public class CheckboxRenderer extends InputRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class CheckboxRenderer extends InputRenderer<Checkbox> {
 
     private static final String SB_BUILD_EVENT = RadioButtonRenderer.class.getName() + "#buildEvent";
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Checkbox checkbox = (Checkbox) component;
-        SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) SearchExpressionFacade.resolveComponent(
-                context, checkbox, checkbox.getFor());
+    public void encodeEnd(FacesContext context, Checkbox component) throws IOException {
+        SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) SearchExpressionUtils.contextlessResolveComponent(
+                context, component, component.getFor());
 
-        encodeMarkup(context, checkbox, selectManyCheckbox);
+        encodeMarkup(context, component, selectManyCheckbox);
     }
 
     protected void encodeMarkup(FacesContext context, Checkbox checkbox, SelectManyCheckbox selectManyCheckbox) throws IOException {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,175 +23,26 @@
  */
 package org.primefaces.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
-public class CheckboxTreeNodeChildren<T> extends TreeNodeList<T> {
+public class CheckboxTreeNodeChildren<T> extends DefaultTreeNodeChildren<T> {
 
     private static final long serialVersionUID = 1L;
 
-    private TreeNode parent;
-
     public CheckboxTreeNodeChildren(TreeNode<T> parent) {
-        this.parent = parent;
-    }
-
-    private void eraseParent(TreeNode<T> node) {
-        TreeNode parentNode = node.getParent();
-        if (parentNode != null) {
-            parentNode.getChildren().remove(node);
-            node.setParent(null);
-        }
+        super(parent);
     }
 
     @Override
-    public boolean add(TreeNode<T> node) {
-        if (node == null) {
-            throw new NullPointerException();
-        }
-        else {
-            eraseParent(node);
-            boolean result = super.add(node);
-            node.setParent(parent);
-            updateRowKeys(parent);
-            updateSelectionState(parent);
-            return result;
-        }
-    }
+    protected void updateRowKeys(TreeNode<?> node) {
+        super.updateRowKeys(node);
 
-    @Override
-    public void add(int index, TreeNode<T> node) {
-        if (node == null) {
-            throw new NullPointerException();
-        }
-        else if ((index < 0) || (index > size())) {
-            throw new IndexOutOfBoundsException();
-        }
-        else {
-            eraseParent(node);
-            super.add(index, node);
-            node.setParent(parent);
-            updateRowKeys(parent);
-            updateSelectionState(parent);
-        }
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends TreeNode<T>> collection) {
-        Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
-        boolean changed = false;
-        while (elements.hasNext()) {
-            TreeNode node = elements.next();
-            if (node == null) {
-                throw new NullPointerException();
-            }
-            else {
-                eraseParent(node);
-                super.add(node);
-                node.setParent(parent);
-                changed = true;
-            }
-        }
-
-        if (changed) {
-            updateRowKeys(parent);
-            updateSelectionState(parent);
-        }
-
-        return (changed);
-    }
-
-    @Override
-    public boolean addAll(int index, Collection<? extends TreeNode<T>> collection) {
-        Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
-        boolean changed = false;
-        while (elements.hasNext()) {
-            TreeNode node = elements.next();
-            if (node == null) {
-                throw new NullPointerException();
-            }
-            else {
-                eraseParent(node);
-                super.add(index++, node);
-                node.setParent(parent);
-                changed = true;
-            }
-        }
-
-        if (changed) {
-            updateRowKeys(parent);
-            updateSelectionState(parent);
-        }
-
-        return (changed);
-    }
-
-    @Override
-    public TreeNode set(int index, TreeNode node) {
-        if (node == null) {
-            throw new NullPointerException();
-        }
-        else if ((index < 0) || (index >= size())) {
-            throw new IndexOutOfBoundsException();
-        }
-        else {
-            if (!parent.equals(node.getParent())) {
-                eraseParent(node);
-            }
-
-            TreeNode previous = get(index);
-            super.set(index, node);
-            previous.setParent(null);
-            node.setParent(parent);
-            updateRowKeys(parent);
-            updateSelectionState(parent);
-            return previous;
-        }
-    }
-
-    @Override
-    public TreeNode remove(int index) {
-        TreeNode node = get(index);
-        node.setParent(null);
-        super.remove(index);
-        updateRowKeys(parent);
         updateSelectionState(parent);
-        return node;
     }
 
     @Override
-    public boolean remove(Object object) {
-        TreeNode node = (TreeNode) object;
-        if (node == null) {
-            throw new NullPointerException();
-        }
+    protected void updateRowKeys(int index, TreeNode<?> node) {
+        super.updateRowKeys(index, node);
 
-        if (super.indexOf(node) != -1) {
-            node.clearParent();
-        }
-
-        if (super.remove(node)) {
-            updateRowKeys(parent);
-            updateSelectionState(parent);
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    private void updateRowKeys(TreeNode<?> node) {
-        int childCount = node.getChildCount();
-        if (childCount > 0) {
-            for (int i = 0; i < childCount; i++) {
-                TreeNode childNode = node.getChildren().get(i);
-
-                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
-                childNode.setRowKey(childRowKey);
-                updateRowKeys(childNode);
-            }
-        }
+        updateSelectionState(parent);
     }
 
     private void updateSelectionState(TreeNode<?> node) {

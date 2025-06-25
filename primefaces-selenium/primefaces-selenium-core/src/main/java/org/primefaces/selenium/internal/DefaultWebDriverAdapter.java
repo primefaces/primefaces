@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,23 @@
  */
 package org.primefaces.selenium.internal;
 
+import org.primefaces.selenium.spi.WebDriverAdapter;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
-import java.util.logging.Level;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.primefaces.selenium.spi.WebDriverAdapter;
 
 public class DefaultWebDriverAdapter implements WebDriverAdapter {
 
@@ -51,6 +54,10 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
         else if ("chrome".equals(configProvider.getWebdriverBrowser())) {
             if (!System.getProperties().contains("webdriver.chrome.driver")) {
                 webDriverManager = WebDriverManager.chromedriver();
+
+                // uncomment if you need to clear cache getting Chrome mismatch errors
+                //webDriverManager.clearDriverCache();
+                //webDriverManager.clearResolutionCache();
             }
         }
         else if ("safari".equals(configProvider.getWebdriverBrowser())) {
@@ -76,22 +83,39 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
         }
 
         LoggingPreferences logPrefs = new LoggingPreferences();
-        logPrefs.enable(LogType.BROWSER, Level.ALL);
+        logPrefs.enable(LogType.BROWSER, config.getWebdriverLogLevel());
 
         switch (config.getWebdriverBrowser()) {
             case "firefox":
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                FirefoxOptions firefoxOptions = new FirefoxOptions().configureFromEnv();
                 firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-                firefoxOptions.setHeadless(config.isWebdriverHeadless());
-                if (!config.isWebdriverHeadless()) {
-                    firefoxOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+                if (config.isWebdriverHeadless()) {
+                    firefoxOptions.addArguments("-headless");
                 }
+                firefoxOptions.setLogLevel(FirefoxDriverLogLevel.fromLevel(config.getWebdriverLogLevel()));
+                firefoxOptions.addPreference("browser.helperApps.neverAsk.openFile", "application/octet-stream");
                 return new FirefoxDriver(firefoxOptions);
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-                chromeOptions.setHeadless(config.isWebdriverHeadless());
-                chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+                if (config.isWebdriverHeadless()) {
+                    chromeOptions.addArguments("--headless=new");
+                    // Chrome 128 /129 - see https://stackoverflow.com/questions/78996364/chrome-129-headless-shows-blank-window,
+                    // https://issues.chromium.org/issues/359921643
+                    // Should be fixed for Chrome 130
+                }
+                chromeOptions.setCapability(ChromeOptions.LOGGING_PREFS, logPrefs);
+
+                // Chrome 111 workaround: https://github.com/SeleniumHQ/selenium/issues/11750
+                chromeOptions.addArguments("--remote-allow-origins=*");
+
+                Map<String, Object> chromePrefs = new HashMap<>();
+                chromePrefs.put("download.prompt_for_download", false);
+                chromePrefs.put("download.directory_upgrade", true);
+                chromePrefs.put("safebrowsing.enabled", true);
+                chromePrefs.put("profile.default_content_settings.popups", 0);
+                chromePrefs.put("download.default_directory", System.getProperty("java.io.tmpdir"));
+                chromeOptions.setExperimentalOption("prefs", chromePrefs);
                 return new ChromeDriver(chromeOptions);
             case "safari":
                 SafariOptions safariOptions = new SafariOptions();

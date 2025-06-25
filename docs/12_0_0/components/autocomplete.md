@@ -35,6 +35,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables input field
 | dropdown | false | Boolean | Enables dropdown mode when set true.
+| dropdownMode | blank | String | Specifies the behavior dropdown button. Default "blank" mode sends an empty string and "current" mode sends the input value.
 | dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
 | dropdownAriaLabel | null | String | ARIA Label for the dropdown button.
 | dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
@@ -90,6 +91,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | onwheel | null | String | Client side callback to execute when the mouse wheel rolls up or down over an element.
 | panelStyle | null | String | Inline style of the items container element.
 | panelStyleClass | null | String | Style class of the items container element.
+| placeholder | null | String | The placeholder attribute specifies a short hint that describes the expected value of an input field.
 | queryDelay | 300 | Integer | Delay to wait in milliseconds before sending each query to the server.
 | queryMode | server | String | Specifies query mode, valid values are "server" (default), "client" and "hybrid". [more](https://github.com/primefaces/primefaces/issues/5298)
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
@@ -97,6 +99,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | requiredMessage | null | String | Message to be displayed when required field validation fails.
 | scrollHeight | null | Integer | Defines the height of the items viewport.
 | selectLimit | null | Integer | Limits the multiple selection. Default is unlimited.
+| size | null | Integer | Number of characters used to determine the width of the input element.
 | tabindex | null | String | Position of the input field in the tabbing order.
 | type | text | String | Input field type.
 | unique | false | Boolean | Ensures uniqueness of selected items.
@@ -164,8 +167,8 @@ public class Player {
 ```
 ## Limiting the Results
 Number of results shown can be limited, by default there is no limit. When the suggestions exceed
-the number of results, a text defined by _moreText_ is displayed to indicate this case. There is no
-default action when the moreText is clicked, you need to use _moreText_ ajax behavior event to handle
+the number of results, a text defined by `moreText` is displayed to indicate this case. There is no
+default action when the moreText is clicked, you need to use `moreTextSelect` ajax behavior event to handle
 more results.
 
 ``` xhtml
@@ -315,7 +318,7 @@ Sample-useage within AutoComplete. Note `completeEndpoint`-attribute.
 ```
 
 ## LazyDataModel
-You might have a `LazyDataModels` in your project which is almost suitable to serve as an `AutoComplete` suggestions
+You might have a `LazyDataModel` in your project which is almost suitable to serve as an `AutoComplete` suggestions
 provider. It can be used with `AutoComplete` by using the `lazyModel` in combination with the `lazyField` attribute.
 The query string will be applied on the provided `lazyField` property using `MatchMode.CONTAINS`.
 
@@ -412,6 +415,7 @@ Following is the list of structural style classes;
 | .ui-autocomplete-items | List of items |
 | .ui-autocomplete-item | Each item in the list. |
 | .ui-autocomplete-query | Highlighted part in suggestions. |
+| .ui-state-loading | Container element; while search queries are executed. |
 
 As skinning style classes are global, see the main theming section for more information.
 

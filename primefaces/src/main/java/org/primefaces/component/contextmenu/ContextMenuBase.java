@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget, To
         style,
         styleClass,
         model,
+        disabled,
         nodeType,
         event,
         beforeShow,
@@ -112,6 +113,14 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget, To
         getStateHelper().put(PropertyKeys.model, model);
     }
 
+    public Boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+    public void setDisabled(Boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
+    }
+
     public String getNodeType() {
         return (String) getStateHelper().eval(PropertyKeys.nodeType, null);
     }
@@ -153,12 +162,12 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget, To
     }
 
     @Override
-    public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
+    public Boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
     }
 
     @Override
-    public void setTouchable(boolean touchable) {
+    public void setTouchable(Boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 }

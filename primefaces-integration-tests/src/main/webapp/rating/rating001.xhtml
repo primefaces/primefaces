@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
 
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
     <h:head>
@@ -25,11 +25,14 @@
                 <h:outputText value="Readonly:"/>
                 <p:rating id="readonly" value="#{rating001.rating2}" readonly="true"/>
 
-                <h:outputText value="Disabled"/>
+                <h:outputText value="Disabled:"/>
                 <p:rating id="disabled" value="#{rating001.rating2}" disabled="true"/>
 
-                <h:outputText value="Min/Max"/>
+                <h:outputText value="Min/Max:"/>
                 <p:rating id="minmax" value="#{rating001.rating3}" stars="8"/>
+
+                <h:outputText value="Required:"/>
+                <p:rating id="required" value="#{rating001.rating4}" required="true" requiredMessage="Please rate us!" />
             </h:panelGrid>
 
             <p:commandButton id="button" value="Submit" update="@form"/>

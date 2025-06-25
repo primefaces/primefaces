@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,8 @@ public class CSVOptions implements ExporterOptions {
     public static final CSVOptions EXCEL_NORTHERN_EUROPE = new CSVOptions('"', ';', "\n");
 
     public static final CSVOptions TABS = new CSVOptions('"', '\t', "\n");
+
+    private static final long serialVersionUID = 1L;
 
     private static final String STYLING_NOT_SUPPORTED = "CSV does not support styling.";
 

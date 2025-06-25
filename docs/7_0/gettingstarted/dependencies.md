@@ -13,7 +13,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | apache tika | 1.22 | Optional | FileUpload |
 | commons-fileupload | 1.3.3 | Optional | FileUpload |
 | commons-io | 2.4 | Optional | FileUpload |
-| barcode4j-light | 2.1 | Optional | Barcode |
+| barcode4j-light | 2.3.0 | Optional | Barcode |
 | qrgen |  1.4 | Optional | QR Code support for Barcode |
 | owasp-java-html-sanitizer |  20181114.1 | Optional | TextEditor |
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,11 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import java.lang.reflect.Field;
-import java.util.Comparator;
-
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
+
+import java.lang.reflect.Field;
+import java.util.Comparator;
 
 public class ProgrammingLanguageLazySorter implements Comparator<ProgrammingLanguage> {
 

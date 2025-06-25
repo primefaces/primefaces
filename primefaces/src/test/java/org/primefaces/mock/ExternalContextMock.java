@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import javax.faces.context.ExternalContext;
+
+import jakarta.faces.context.ExternalContext;
 
 public class ExternalContextMock extends ExternalContext {
 
@@ -206,6 +207,11 @@ public class ExternalContextMock extends ExternalContext {
 
     @Override
     public void redirect(String url) throws IOException {
+
+    }
+
+    @Override
+    public void release() {
 
     }
 

@@ -1,0 +1,164 @@
+body {
+  .ui-tabmenu {
+    padding: 0;
+    position: static;
+
+    .ui-tabmenu-nav {
+      margin: -.5rem 0 0 0;
+      padding: .5rem 0 0 0; /* allow space for menu item badge */
+      background: $tabsNavBg;
+      @include flex();
+      @include flex-wrap(nowrap);
+      position: relative;
+      overflow-x: auto;
+
+      &:before {
+        position: absolute;
+        border-bottom: $tabsNavBorder;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .ui-tabmenuitem {
+        list-style: none;
+        padding: 0;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: top;
+        float: none;
+        background: $tabsHeaderBg;
+        color: $tabsHeaderTextColor;
+        top: 0;
+        margin: 0;
+        border-bottom: $tabsNavBorder;
+        cursor: pointer;
+        @include flex();
+        @include flex-align-center();
+        transition: $transition;
+        flex-shrink: 0;
+
+        a {
+          color: $tabsHeaderTextColor;
+          padding: $tabsHeaderPadding;
+          font-weight: $tabsHeaderFontWeight;
+          display: block;
+          line-height: 1;
+          outline: 0 none;
+
+          .ui-icon {
+            margin-right: $inlineSpacing;
+          }
+        }
+
+        &.ui-state-hover {
+          background: $tabsHeaderHoverBg;
+          border-color: $tabsHeaderHoverBorderColor;
+
+          a {
+            color: $tabsHeaderTextHoverColor;
+
+            .ui-icon {
+              color: $tabsHeaderTextHoverColor;
+            }
+          }
+        }
+
+        &.ui-state-active {
+          background: $tabsHeaderActiveBg;
+          border-color: $tabsHeaderActiveBorderColor;
+
+          a {
+            color: $tabsHeaderTextActiveColor;
+
+            .ui-icon {
+              color: $tabsHeaderTextActiveColor;
+            }
+          }
+        }
+
+        &.ui-menuitem-outline {
+          @include focused();
+        }
+      }
+    }
+
+    &.ui-tabs-bottom {
+      .ui-tabmenu-nav {
+        &:before {
+          border-bottom: 0 none;
+          border-top: $tabsNavBorder;
+          bottom: auto;
+          top: 0;
+        }
+  
+        .ui-tabmenuitem {
+          border-bottom: 0 none;
+          border-top: $tabsNavBorder;
+
+          &.ui-state-hover {
+            border-color: $tabsHeaderHoverBorderColor;
+          }
+  
+          &.ui-state-active {
+            border-color: $tabsHeaderActiveBorderColor;
+          }
+        }
+      }
+    }
+
+    &.ui-tabs-left {
+      .ui-tabmenu-nav {
+        flex-direction: column;
+
+        &:before {
+          border-bottom: 0 none;
+          border-right: $tabsNavBorder;
+          left: auto;
+          right: 0;
+          width: auto;
+          height: 100%;
+        }
+  
+        .ui-tabmenuitem {
+          border-bottom: 0 none;
+          border-right: $tabsNavBorder;
+
+          &.ui-state-hover {
+            border-color: $tabsHeaderHoverBorderColor;
+          }
+  
+          &.ui-state-active {
+            border-color: $tabsHeaderActiveBorderColor;
+          }
+        }
+      }
+    }
+
+    &.ui-tabs-right {
+      .ui-tabmenu-nav {
+        flex-direction: column;
+
+        &:before {
+          border-bottom: 0 none;
+          border-left: $tabsNavBorder;
+          width: auto;
+          height: 100%;
+        }
+  
+        .ui-tabmenuitem {
+          border-bottom: 0 none;
+          border-left: $tabsNavBorder;
+
+          &.ui-state-hover {
+            border-color: $tabsHeaderHoverBorderColor;
+          }
+  
+          &.ui-state-active {
+            border-color: $tabsHeaderActiveBorderColor;
+          }
+        }
+      }
+    }
+  }
+}

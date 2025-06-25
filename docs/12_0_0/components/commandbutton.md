@@ -31,7 +31,7 @@ CommandButton is an extended version of standard commandButton with ajax and the
 | async | false | Boolean | When set to true, ajax requests are not queued.
 | process | @all | String | Component(s) to process partially instead of whole view.
 | update | @none | String | Component(s) to be updated with ajax.
-| onstart | null | String | Client side callback to execute before ajax request is begins.
+| onstart | null | String | Client side callback to execute before ajax request begins.
 | oncomplete | null | String | Client side callback to execute when ajax request is completed.
 | onsuccess | null | String | Client side callback to execute when ajax request succeeds.
 | onerror | null | String | Client side callback to execute when ajax request fails.
@@ -63,7 +63,7 @@ CommandButton is an extended version of standard commandButton with ajax and the
 | alt | null | String | Alternate textual description of the button.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables the button.
-| disableOnAjax | false | Boolean | If true, the button will be disabled during Ajax requests triggered by the button.
+| disableOnAjax | true | Boolean | If true, the button will be disabled during Ajax requests triggered by the button.
 | label | null | String | A localized user presentable name.
 | lang | null | String | Code describing the language used in the generated markup for this component.
 | tabindex | null | Integer | Position of the button element in the tabbing order.
@@ -144,6 +144,24 @@ button which can be “left” or “right”.
 ```
 You can also use the pre-defined icons from ThemeRoller like _ui-icon-search_.
 
+## Ajax loading indicator icon
+A loading indicator will be shown by default when the button triggers an Ajax request. This is done based on the
+`ui-state-loading` class which is toggled on the button.
+
+If you don't want this default styling, you can suppress it using the following custom CSS rules:
+
+```css
+html .ui-state-loading.ui-button-text-only .ui-icon-loading + .ui-button-text {
+    opacity: inherit;
+}
+html .ui-state-loading .ui-icon-loading {
+    display: none;
+}
+html .ui-state-loading .ui-icon:not(.ui-icon-loading) {
+    display: inherit;
+}
+```
+
 ## Client Side API
 Widget: _PrimeFaces.widget.CommandButton_
 
@@ -161,5 +179,6 @@ structural style classes;
 | .ui-button | Button element
 | .ui-button-text-only | Button element when icon is not used
 | .ui-button-text | Label of button
+| .ui-state-loading | Button element; when `disableOnAjax` is set and an Ajax request triggered by the button is in progress.
 
 As skinning style classes are global, see the main theming section for more information.

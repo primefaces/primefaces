@@ -1,0 +1,8 @@
+body {
+  .ui-multiselectlistbox {
+    .ui-multiselectlistbox-listcontainer {
+      border: $inputListBorder;
+      border-radius: $borderRadius;
+    }
+  }
+}

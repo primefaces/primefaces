@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,16 +26,17 @@ package org.primefaces.showcase.view.input;
 import org.primefaces.showcase.domain.Country;
 import org.primefaces.showcase.service.CountryService;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @RequestScoped
@@ -60,6 +61,8 @@ public class SelectOneMenuView {
     private String longItemLabel;
     private String labeled;
 
+    private String icon = "flag";
+
     @Inject
     private CountryService service;
 
@@ -71,7 +74,10 @@ public class SelectOneMenuView {
         SelectItemGroup europeCountries = new SelectItemGroup("Europe Countries");
         europeCountries.setSelectItems(new SelectItem[]{
             new SelectItem("Germany", "Germany"),
+            new SelectItem("Greece", "Greece"),
             new SelectItem("Turkey", "Turkey"),
+            new SelectItem("Slovakia", "Slovakia"),
+            new SelectItem("Slovenia", "Slovenia"),
             new SelectItem("Spain", "Spain")
         });
 
@@ -202,6 +208,14 @@ public class SelectOneMenuView {
 
     public void setLabeled(String labeled) {
         this.labeled = labeled;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public void setService(CountryService service) {

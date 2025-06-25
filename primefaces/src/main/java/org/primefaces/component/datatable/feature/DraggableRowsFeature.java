@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,19 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
+import org.primefaces.component.datatable.DataTable;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.DataTableRenderer;
+import jakarta.el.MethodExpression;
+import jakarta.faces.context.FacesContext;
 
 public class DraggableRowsFeature implements DataTableFeature {
 
     private static final Logger LOGGER = Logger.getLogger(DraggableRowsFeature.class.getName());
-    private static final DraggableRowsFeature INSTANCE = new DraggableRowsFeature();
-
-    private DraggableRowsFeature() {
-    }
-
-    public static DraggableRowsFeature getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
@@ -88,10 +77,4 @@ public class DraggableRowsFeature implements DataTableFeature {
             }
         }
     }
-
-    @Override
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        throw new FacesException("DraggableRows Feature should not encode.");
-    }
-
 }

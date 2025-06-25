@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,58 +23,55 @@
  */
 package org.primefaces.component.galleria;
 
+import org.primefaces.component.api.IterationStatus;
+import org.primefaces.model.ResponsiveOption;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.IterationStatus;
-import org.primefaces.model.ResponsiveOption;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIPanel;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.WidgetBuilder;
-
-public class GalleriaRenderer extends CoreRenderer {
+public class GalleriaRenderer extends CoreRenderer<Galleria> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Galleria galleria = (Galleria) component;
-
-        encodeMarkup(context, galleria);
-        encodeScript(context, galleria);
+    public void encodeEnd(FacesContext context, Galleria component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    public void encodeMarkup(FacesContext context, UIComponent component) throws IOException {
+    public void encodeMarkup(FacesContext context, Galleria component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Galleria galleria = (Galleria) component;
-        String style = galleria.getStyle();
-        String styleClass = galleria.getStyleClass();
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? Galleria.CONTAINER_CLASS : Galleria.CONTAINER_CLASS + " " + styleClass;
 
         writer.startElement("div", component);
-        writer.writeAttribute("id", galleria.getClientId(context), "id");
-        writer.writeAttribute("tabindex", galleria.getTabindex(), null);
+        writer.writeAttribute("id", component.getClientId(context), "id");
+        writer.writeAttribute("tabindex", component.getTabindex(), null);
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeHeader(context, galleria);
-        encodeContent(context, galleria);
-        encodeFooter(context, galleria);
+        encodeHeader(context, component);
+        encodeContent(context, component);
+        encodeFooter(context, component);
 
         writer.endElement("div");
     }
 
-    protected void encodeHeader(FacesContext context, Galleria galleria) throws IOException {
+    protected void encodeHeader(FacesContext context, Galleria component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent facet = galleria.getFacet("header");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        UIComponent facet = component.getFacet("header");
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (shouldRenderFacet) {
             writer.startElement("div", null);
@@ -84,24 +81,24 @@ public class GalleriaRenderer extends CoreRenderer {
         }
     }
 
-    public void encodeContent(FacesContext context, Galleria galleria) throws IOException {
+    public void encodeContent(FacesContext context, Galleria component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Galleria.CONTENT_CLASS, null);
 
-        encodeItems(context, galleria);
-        encodeCaptions(context, galleria);
-        encodeIndicators(context, galleria);
-        encodeThumbnails(context, galleria);
+        encodeItems(context, component);
+        encodeCaptions(context, component);
+        encodeIndicators(context, component);
+        encodeThumbnails(context, component);
 
         writer.endElement("div");
     }
 
-    protected void encodeFooter(FacesContext context, Galleria galleria) throws IOException {
+    protected void encodeFooter(FacesContext context, Galleria component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent facet = galleria.getFacet("footer");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        UIComponent facet = component.getFacet("footer");
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (shouldRenderFacet) {
             writer.startElement("div", null);
@@ -111,20 +108,20 @@ public class GalleriaRenderer extends CoreRenderer {
         }
     }
 
-    public void encodeItems(FacesContext context, Galleria galleria) throws IOException {
+    public void encodeItems(FacesContext context, Galleria component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", Galleria.ITEMS_CLASS, null);
 
-        if (galleria.isRepeating()) {
+        if (component.isRepeating()) {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-            int rowCount = galleria.getRowCount();
-            String varStatus = galleria.getVarStatus();
+            int rowCount = component.getRowCount();
+            String varStatus = component.getVarStatus();
             Object varStatusBackup = varStatus == null ? null : requestMap.get(varStatus);
 
             for (int i = 0; i < rowCount; i++) {
-                galleria.setIndex(i);
+                component.setIndex(i);
 
                 IterationStatus status = new IterationStatus((i == 0), (i == (rowCount - 1)), i, i, 0, rowCount - 1, 1);
                 if (varStatus != null) {
@@ -133,11 +130,11 @@ public class GalleriaRenderer extends CoreRenderer {
 
                 writer.startElement("li", null);
                 writer.writeAttribute("class", Galleria.ITEM_CLASS, null);
-                renderChildren(context, galleria);
+                renderChildren(context, component);
                 writer.endElement("li");
             }
 
-            galleria.setIndex(-1);
+            component.setIndex(-1);
 
             if (varStatus != null) {
                 if (varStatusBackup == null) {
@@ -149,7 +146,7 @@ public class GalleriaRenderer extends CoreRenderer {
             }
         }
         else {
-            for (UIComponent kid : galleria.getChildren()) {
+            for (UIComponent kid : component.getChildren()) {
                 if (kid.isRendered()) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Galleria.ITEM_CLASS, null);
@@ -162,35 +159,36 @@ public class GalleriaRenderer extends CoreRenderer {
         writer.endElement("ul");
     }
 
-    public void encodeCaptions(FacesContext context, Galleria galleria) throws IOException {
-        UIComponent facet = galleria.getFacet("caption");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+    public void encodeCaptions(FacesContext context, Galleria component) throws IOException {
+        UIComponent facet = component.getFacet("caption");
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
-        if (galleria.isShowCaption() && shouldRenderFacet) {
+        if (component.isShowCaption() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("ul", null);
             writer.writeAttribute("class", Galleria.CAPTION_ITEMS_CLASS, null);
+            writer.writeAttribute("style", "display: none", null); // default to hidden
 
-            if (galleria.isRepeating()) {
-                for (int i = 0; i < galleria.getRowCount(); i++) {
-                    galleria.setIndex(i);
+            if (component.isRepeating()) {
+                for (int i = 0; i < component.getRowCount(); i++) {
+                    component.setIndex(i);
 
-                    encodeCaption(context, galleria, galleria.getFacet("caption"), true);
+                    encodeCaption(context, component, component.getFacet("caption"), true);
                 }
 
-                galleria.setIndex(-1);
+                component.setIndex(-1);
             }
             else {
                 if (facet instanceof UIPanel) {
                     for (UIComponent kid : facet.getChildren()) {
                         if (kid.isRendered()) {
-                            encodeCaption(context, galleria, kid, false);
+                            encodeCaption(context, component, kid, false);
                         }
                     }
                 }
                 else {
-                    encodeCaption(context, galleria, facet, false);
+                    encodeCaption(context, component, facet, false);
                 }
             }
 
@@ -198,7 +196,7 @@ public class GalleriaRenderer extends CoreRenderer {
         }
     }
 
-    public void encodeCaption(FacesContext context, Galleria galleria, UIComponent child, boolean hasVar) throws IOException {
+    public void encodeCaption(FacesContext context, Galleria component, UIComponent child, boolean hasVar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("li", null);
@@ -214,34 +212,34 @@ public class GalleriaRenderer extends CoreRenderer {
         writer.endElement("li");
     }
 
-    public void encodeIndicators(FacesContext context, Galleria galleria) throws IOException {
-        UIComponent facet = galleria.getFacet("indicator");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+    public void encodeIndicators(FacesContext context, Galleria component) throws IOException {
+        UIComponent facet = component.getFacet("indicator");
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
-        if (galleria.isShowIndicators() && shouldRenderFacet) {
+        if (component.isShowIndicators() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("ul", null);
             writer.writeAttribute("class", Galleria.INDICATORS_CLASS, null);
 
-            if (galleria.isRepeating()) {
+            if (component.isRepeating()) {
                 Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-                int rowCount = galleria.getRowCount();
-                String varStatus = galleria.getVarStatus();
+                int rowCount = component.getRowCount();
+                String varStatus = component.getVarStatus();
                 Object varStatusBackup = varStatus == null ? null : requestMap.get(varStatus);
 
                 for (int i = 0; i < rowCount; i++) {
-                    galleria.setIndex(i);
+                    component.setIndex(i);
 
                     IterationStatus status = new IterationStatus((i == 0), (i == (rowCount - 1)), i, i, 0, rowCount - 1, 1);
                     if (varStatus != null) {
                         requestMap.put(varStatus, status);
                     }
 
-                    encodeIndicator(context, galleria, galleria.getFacet("indicator"), true);
+                    encodeIndicator(context, component, component.getFacet("indicator"), true);
                 }
 
-                galleria.setIndex(-1);
+                component.setIndex(-1);
 
                 if (varStatus != null) {
                     if (varStatusBackup == null) {
@@ -256,12 +254,12 @@ public class GalleriaRenderer extends CoreRenderer {
                 if (facet instanceof UIPanel) {
                     for (UIComponent kid : facet.getChildren()) {
                         if (kid.isRendered()) {
-                            encodeIndicator(context, galleria, kid, false);
+                            encodeIndicator(context, component, kid, false);
                         }
                     }
                 }
                 else {
-                    encodeIndicator(context, galleria, facet, false);
+                    encodeIndicator(context, component, facet, false);
                 }
             }
 
@@ -269,7 +267,7 @@ public class GalleriaRenderer extends CoreRenderer {
         }
     }
 
-    public void encodeIndicator(FacesContext context, Galleria galleria, UIComponent child, boolean hasVar) throws IOException {
+    public void encodeIndicator(FacesContext context, Galleria component, UIComponent child, boolean hasVar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("li", null);
@@ -285,35 +283,35 @@ public class GalleriaRenderer extends CoreRenderer {
         writer.endElement("li");
     }
 
-    public void encodeThumbnails(FacesContext context, Galleria galleria) throws IOException {
-        UIComponent facet = galleria.getFacet("thumbnail");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+    public void encodeThumbnails(FacesContext context, Galleria component) throws IOException {
+        UIComponent facet = component.getFacet("thumbnail");
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
-        if (galleria.isShowThumbnails() && shouldRenderFacet) {
+        if (component.isShowThumbnails() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("div", null);
             writer.writeAttribute("class", Galleria.THUMBNAIL_ITEMS_CLASS, null);
 
-            if (galleria.isRepeating()) {
-                for (int i = 0; i < galleria.getRowCount(); i++) {
-                    galleria.setIndex(i);
+            if (component.isRepeating()) {
+                for (int i = 0; i < component.getRowCount(); i++) {
+                    component.setIndex(i);
 
-                    encodeThumbnail(context, galleria, galleria.getFacet("thumbnail"), true);
+                    encodeThumbnail(context, component, component.getFacet("thumbnail"), true);
                 }
 
-                galleria.setIndex(-1);
+                component.setIndex(-1);
             }
             else {
                 if (facet instanceof UIPanel) {
                     for (UIComponent kid : facet.getChildren()) {
                         if (kid.isRendered()) {
-                            encodeThumbnail(context, galleria, kid, false);
+                            encodeThumbnail(context, component, kid, false);
                         }
                     }
                 }
                 else {
-                    encodeThumbnail(context, galleria, facet, false);
+                    encodeThumbnail(context, component, facet, false);
                 }
             }
 
@@ -321,7 +319,7 @@ public class GalleriaRenderer extends CoreRenderer {
         }
     }
 
-    public void encodeThumbnail(FacesContext context, Galleria galleria, UIComponent child, boolean hasVar) throws IOException {
+    public void encodeThumbnail(FacesContext context, Galleria component, UIComponent child, boolean hasVar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
@@ -342,32 +340,31 @@ public class GalleriaRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    public void encodeScript(FacesContext context, UIComponent component) throws IOException {
+    public void encodeScript(FacesContext context, Galleria component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Galleria galleria = (Galleria) component;
         WidgetBuilder wb = getWidgetBuilder(context);
-        List<ResponsiveOption> responsiveOptions = galleria.getResponsiveOptions();
+        List<ResponsiveOption> responsiveOptions = component.getResponsiveOptions();
 
-        wb.init("Galleria", galleria);
+        wb.init("Galleria", component);
 
-        wb.attr("activeIndex", galleria.getActiveIndex(), 0)
-                .attr("fullScreen", galleria.isFullScreen(), false)
-                .attr("closeIcon", galleria.getCloseIcon(), null)
-                .attr("numVisible", galleria.getNumVisible(), 3)
-                .attr("showThumbnails", galleria.isShowThumbnails(), true)
-                .attr("showIndicators", galleria.isShowIndicators(), false)
-                .attr("showIndicatorsOnItem", galleria.isShowIndicatorsOnItem(), false)
-                .attr("showCaption", galleria.isShowCaption(), false)
-                .attr("showItemNavigators", galleria.isShowItemNavigators(), false)
-                .attr("showThumbnailNavigators", galleria.isShowThumbnailNavigators(), true)
-                .attr("showItemNavigatorsOnHover", galleria.isShowItemNavigatorsOnHover(), false)
-                .attr("changeItemOnIndicatorHover", galleria.isChangeItemOnIndicatorHover(), false)
-                .attr("circular", galleria.isCircular(), false)
-                .attr("autoPlay", galleria.isAutoPlay(), false)
-                .attr("transitionInterval", galleria.getTransitionInterval(), 4000)
-                .attr("thumbnailsPosition", galleria.getThumbnailsPosition(), "bottom")
-                .attr("verticalViewPortHeight", galleria.getVerticalViewPortHeight(), "450px")
-                .attr("indicatorsPosition", galleria.getIndicatorsPosition(), "bottom");
+        wb.attr("activeIndex", component.getActiveIndex(), 0)
+                .attr("fullScreen", component.isFullScreen(), false)
+                .attr("closeIcon", component.getCloseIcon(), null)
+                .attr("numVisible", component.getNumVisible(), 3)
+                .attr("showThumbnails", component.isShowThumbnails(), true)
+                .attr("showIndicators", component.isShowIndicators(), false)
+                .attr("showIndicatorsOnItem", component.isShowIndicatorsOnItem(), false)
+                .attr("showCaption", component.isShowCaption(), false)
+                .attr("showItemNavigators", component.isShowItemNavigators(), false)
+                .attr("showThumbnailNavigators", component.isShowThumbnailNavigators(), true)
+                .attr("showItemNavigatorsOnHover", component.isShowItemNavigatorsOnHover(), false)
+                .attr("changeItemOnIndicatorHover", component.isChangeItemOnIndicatorHover(), false)
+                .attr("circular", component.isCircular(), false)
+                .attr("autoPlay", component.isAutoPlay(), false)
+                .attr("transitionInterval", component.getTransitionInterval(), 4000)
+                .attr("thumbnailsPosition", component.getThumbnailsPosition(), "bottom")
+                .attr("verticalViewPortHeight", component.getVerticalViewPortHeight(), "450px")
+                .attr("indicatorsPosition", component.getIndicatorsPosition(), "bottom");
 
         if (responsiveOptions != null) {
             writer.write(",responsiveOptions:[");
@@ -387,7 +384,7 @@ public class GalleriaRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Galleria component) throws IOException {
         //Do nothing
     }
 

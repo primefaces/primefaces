@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,65 +24,87 @@
 package org.primefaces.component.splitter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import java.io.IOException;
+import java.util.Objects;
 
-public class SplitterRenderer extends CoreRenderer {
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class SplitterRenderer extends CoreRenderer<Splitter> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Splitter component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Splitter splitter = (Splitter) component;
-
-        encodeMarkup(context, splitter);
-        encodeScript(context, splitter);
+    public void encodeEnd(FacesContext context, Splitter component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Splitter splitter) throws IOException {
+    protected void encodeMarkup(FacesContext context, Splitter component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String layout = splitter.getLayout();
+        String layout = component.getLayout();
+        boolean isVertical = "vertical".equals(layout);
         String styleClass = getStyleClassBuilder(context)
                     .add(Splitter.STYLE_CLASS)
-                    .add(splitter.getStyleClass())
-                    .add("vertical".equals(layout), Splitter.LAYOUT_VERTICAL_CLASS)
+                    .add(component.getStyleClass())
+                    .add(isVertical, Splitter.LAYOUT_VERTICAL_CLASS)
                     .add("horizontal".equals(layout), Splitter.LAYOUT_HORIZONTAL_CLASS)
                     .build();
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", splitter.getClientId(context), "id");
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (splitter.getStyle() != null) {
-            writer.writeAttribute("style", splitter.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        int childCount = splitter.getChildCount();
+        int childCount = component.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            UIComponent component = splitter.getChildren().get(i);
+            UIComponent child = component.getChildren().get(i);
 
-            if (component instanceof SplitterPanel) {
-                encodePanel(context, (SplitterPanel) component);
+            if (child instanceof SplitterPanel) {
+                SplitterPanel panel = (SplitterPanel) child;
+                String panelId = encodePanel(context, panel, i);
+                String valueNow = panel.getSize() == null ? "0" : panel.getSize().toString();
+                String minSize = panel.getMinSize() == null ? "0" : panel.getMinSize().toString();
 
                 if (i != childCount - 1) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", Splitter.GUTTER_CLASS, null);
                     if ("horizontal".equals(layout)) {
-                        writer.writeAttribute("style", "width: " + splitter.getGutterSize() + "px", null);
+                        writer.writeAttribute("style", "width: " + component.getGutterSize() + "px", null);
                     }
                     else if ("vertical".equals(layout)) {
-                        writer.writeAttribute("style", "height: " + splitter.getGutterSize() + "px", null);
+                        writer.writeAttribute("style", "height: " + component.getGutterSize() + "px", null);
                     }
 
-                    writer.startElement("div", splitter);
+                    writer.startElement("div", component);
                     writer.writeAttribute("class", Splitter.GUTTER_HANDLE_CLASS, null);
+                    writer.writeAttribute("tabindex", Objects.toString(panel.getTabindex(), "0"), null);
+                    writer.writeAttribute(HTML.ARIA_ROLE, "separator", null);
+                    writer.writeAttribute(HTML.ARIA_CONTROLS, panelId, null);
+                    writer.writeAttribute(HTML.ARIA_ORIENTATION, isVertical ? "horizontal" : "vertical", null);
+                    writer.writeAttribute(HTML.ARIA_CONTROLS, panelId, null);
+                    writer.writeAttribute(HTML.ARIA_VALUE_MIN, minSize, null);
+                    writer.writeAttribute(HTML.ARIA_VALUE_MAX, "100", null);
+                    writer.writeAttribute(HTML.ARIA_VALUE_NOW, valueNow, null);
+                    writer.writeAttribute(HTML.ARIA_VALUE_TEXT, valueNow + "%", null);
+
+                    if (LangUtils.isNotBlank(panel.getAriaLabel())) {
+                        writer.writeAttribute(HTML.ARIA_LABEL, panel.getAriaLabel(), null);
+                    }
+                    if (LangUtils.isNotBlank(panel.getAriaLabelledBy())) {
+                        writer.writeAttribute(HTML.ARIA_LABELLEDBY, panel.getAriaLabelledBy(), null);
+                    }
+
                     writer.endElement("div");
 
                     writer.endElement("div");
@@ -93,37 +115,43 @@ public class SplitterRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodePanel(FacesContext context, SplitterPanel splitterPanel) throws IOException {
+    protected String encodePanel(FacesContext context, SplitterPanel component, int index) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String id = component.getClientId(context) + "_" + index;
         String styleClass = getStyleClassBuilder(context)
                     .add(SplitterPanel.STYLE_CLASS)
-                    .add(splitterPanel.getStyleClass())
-                    .add(splitterPanel.isNested(), SplitterPanel.NESTED_CLASS)
+                    .add(component.getStyleClass())
+                    .add(component.isNested(), SplitterPanel.NESTED_CLASS)
                     .build();
 
         writer.startElement("div", null);
+        writer.writeAttribute("id", id, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        writer.writeAttribute("data-size", splitterPanel.getSize(), null);
-        writer.writeAttribute("data-minsize", splitterPanel.getMinSize(), null);
-        if (splitterPanel.getStyle() != null) {
-            writer.writeAttribute("style", splitterPanel.getStyle(), "style");
+        writer.writeAttribute(HTML.ARIA_ROLE, "presentation", null);
+        writer.writeAttribute("data-size", component.getSize(), null);
+        writer.writeAttribute("data-minsize", component.getMinSize(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        splitterPanel.encodeAll(context);
+        component.encodeAll(context);
 
         writer.endElement("div");
+
+        return id;
     }
 
-    protected void encodeScript(FacesContext context, Splitter splitter) throws IOException {
+    protected void encodeScript(FacesContext context, Splitter component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Splitter", splitter)
-                .attr("layout", splitter.getLayout())
-                .attr("gutterSize", splitter.getGutterSize())
-                .attr("stateKey", splitter.getStateKey())
-                .attr("stateStorage", splitter.getStateStorage());
+        wb.init("Splitter", component)
+                .attr("layout", component.getLayout())
+                .attr("gutterSize", component.getGutterSize())
+                .attr("step", component.getStep())
+                .attr("stateKey", component.getStateKey())
+                .attr("stateStorage", component.getStateStorage());
 
-        wb.callback("onResizeEnd", "function(panelSizes)", splitter.getOnResizeEnd());
-        encodeClientBehaviors(context, splitter);
+        wb.callback("onResizeEnd", "function(panelSizes)", component.getOnResizeEnd());
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
@@ -134,7 +162,7 @@ public class SplitterRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(final FacesContext fc, final UIComponent component) {
+    public void encodeChildren(FacesContext fc, Splitter component) {
         // nothing to do
     }
 }

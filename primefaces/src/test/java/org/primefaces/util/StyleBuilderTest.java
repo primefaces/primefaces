@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,14 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
 import org.primefaces.mock.CollectingResponseWriter;
 import org.primefaces.mock.FacesContextMock;
-import javax.faces.context.FacesContext;
+
+import jakarta.faces.context.FacesContext;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StyleBuilderTest {
 
@@ -39,7 +41,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testAdd() {
+    void add() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -51,7 +53,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testAddTrue() {
+    void addTrue() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -63,7 +65,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testAddFalse() {
+    void addFalse() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -75,19 +77,31 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testDefaultStyle() {
+    void attribute() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
         // Act
-        builder.add("default:none", "width:10px");
+        builder.add("width", "10px");
 
         // Assert
-        assertEquals("default:none;width:10px", builder.build());
+        assertEquals("width:10px", builder.build());
     }
 
     @Test
-    void testAddTrueStyle() {
+    void nullAttribute() {
+        // Arrange
+        StyleBuilder builder = getStyleBuilder();
+
+        // Act
+        builder.add("width", null);
+
+        // Assert
+        assertEquals("", builder.build());
+    }
+
+    @Test
+    void addTrueStyle() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -99,7 +113,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testAddFalseStyle() {
+    void addFalseStyle() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -111,15 +125,16 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testComplex() {
+    void complex() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
         // Act
-        builder.add("default:none", "user:some")
-                    .add("height:33px")
-                    .add(false, "width", "8px", "100vh")
-                    .add(true, "visibility", "visible", "hidden");
+        builder.add("default", "none")
+                .add("user", "some")
+                .add("height:33px")
+                .add(false, "width", "8px", "100vh")
+                .add(true, "visibility", "visible", "hidden");
 
         // Assert
         assertEquals("default:none;user:some;height:33px;width:100vh;visibility:visible", builder.build());

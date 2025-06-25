@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,30 @@
  */
 package org.primefaces.component.columns;
 
-import java.util.Locale;
-
-import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.MetaRuleset;
-
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.facelets.MethodRule;
+import org.primefaces.model.SortMeta;
+
+import java.util.Locale;
+
+import jakarta.faces.view.facelets.ComponentConfig;
+import jakarta.faces.view.facelets.ComponentHandler;
+import jakarta.faces.view.facelets.MetaRule;
+import jakarta.faces.view.facelets.MetaRuleset;
 
 public class ColumnsHandler extends ComponentHandler {
 
-    private static final MetaRule SORT_FUNCTION
-            = new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
+    private static final MetaRule SORT_FUNCTION = new MethodRule(Columns.PropertyKeys.sortFunction.name(),
+            Integer.class,
+            new Class[]{Object.class, Object.class, SortMeta.class});
 
-    private static final MetaRule FILTER_FUNCTION
-            = new MethodRule("filterFunction", Integer.class, new Class[]{Object.class, Object.class, Locale.class});
+    private static final MetaRule FILTER_FUNCTION = new MethodRule(Columns.PropertyKeys.filterFunction.name(),
+            Integer.class,
+            new Class[]{Object.class, Object.class, Locale.class});
 
-    private static final MetaRule EXPORT_FUNCTION
-            = new MethodRule("exportFunction", Integer.class, new Class[]{UIColumn.class});
+    private static final MetaRule EXPORT_FUNCTION = new MethodRule(Columns.PropertyKeys.exportFunction.name(),
+            Integer.class,
+            new Class[]{UIColumn.class});
 
     public ColumnsHandler(ComponentConfig config) {
         super(config);

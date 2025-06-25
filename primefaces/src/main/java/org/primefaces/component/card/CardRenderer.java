@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,106 +24,53 @@
 package org.primefaces.component.card;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-public class CardRenderer extends CoreRenderer {
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class CardRenderer extends CoreRenderer<Card> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Card card = (Card) component;
+    public void encodeEnd(FacesContext context, Card component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
                 .add(Card.STYLE_CLASS)
-                .add(card.getStyleClass())
+                .add(component.getStyleClass())
                 .build();
 
-        UIComponent headerFacet = card.getFacet("header");
-        UIComponent titleFacet = card.getFacet("title");
-        UIComponent subtitleFacet = card.getFacet("subtitle");
-        UIComponent footerFacet = card.getFacet("footer");
-
-        writer.startElement("div", card);
-        writer.writeAttribute("id", card.getClientId(context), "id");
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (card.getStyle() != null) {
-            writer.writeAttribute("style", card.getStyle(), "style");
+        if (LangUtils.isNotBlank(component.getStyle())) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
         //header
-        String header = card.getHeader();
-        if (LangUtils.isNotBlank(header)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.HEADER_CLASS, null);
-            writer.writeText(header, null);
-            writer.endElement("div");
-        }
-        else if (ComponentUtils.shouldRenderFacet(headerFacet)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.HEADER_CLASS, null);
-            headerFacet.encodeAll(context);
-            writer.endElement("div");
-        }
+        encodeCardTextOrFacet(context, component, component.getHeader(), "header", Card.HEADER_CLASS);
 
         //BODY START
-        writer.startElement("div", card);
+        writer.startElement("div", null);
         writer.writeAttribute("class", Card.BODY_CLASS, null);
 
         //title
-        String title = card.getTitle();
-        if (LangUtils.isNotBlank(title)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.TITLE_CLASS, null);
-            writer.writeText(title, null);
-            writer.endElement("div");
-        }
-        else if (ComponentUtils.shouldRenderFacet(titleFacet)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.TITLE_CLASS, null);
-            titleFacet.encodeAll(context);
-            writer.endElement("div");
-        }
+        encodeCardTextOrFacet(context, component, component.getTitle(), "title", Card.TITLE_CLASS);
 
         //subtitle
-        String subtitle = card.getSubtitle();
-        if (LangUtils.isNotBlank(title)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.SUBTITLE_CLASS, null);
-            writer.writeText(subtitle, null);
-            writer.endElement("div");
-        }
-        else if (ComponentUtils.shouldRenderFacet(subtitleFacet)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.SUBTITLE_CLASS, null);
-            subtitleFacet.encodeAll(context);
-            writer.endElement("div");
-        }
+        encodeCardTextOrFacet(context, component, component.getSubtitle(), "subtitle", Card.SUBTITLE_CLASS);
 
         //content
-        writer.startElement("div", card);
+        writer.startElement("div", null);
         writer.writeAttribute("class", Card.CONTENT_CLASS, null);
-        renderChildren(context, card);
+        renderChildren(context, component);
         writer.endElement("div");
 
         //footer
-        String footer = card.getFooter();
-        if (LangUtils.isNotBlank(footer)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.FOOTER_CLASS, null);
-            writer.writeText(footer, null);
-            writer.endElement("div");
-        }
-        else if (ComponentUtils.shouldRenderFacet(footerFacet)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.FOOTER_CLASS, null);
-            footerFacet.encodeAll(context);
-            writer.endElement("div");
-        }
+        encodeCardTextOrFacet(context, component, component.getFooter(), "footer", Card.FOOTER_CLASS);
 
         writer.endElement("div");
         //BODY END
@@ -137,8 +84,28 @@ public class CardRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(final FacesContext fc, final UIComponent component) {
+    public void encodeChildren(FacesContext fc, Card component) {
         // nothing to do
+    }
+
+    protected void encodeCardTextOrFacet(FacesContext context, Card component, String value, String facetName, String cssClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (LangUtils.isNotBlank(value)) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", cssClass, null);
+            writer.writeText(value, null);
+            writer.endElement("div");
+        }
+        else {
+            UIComponent facet = component.getFacet(facetName);
+            if (FacetUtils.shouldRenderFacet(facet)) {
+                writer.startElement("div", null);
+                writer.writeAttribute("class", cssClass, null);
+                facet.encodeAll(context);
+                writer.endElement("div");
+            }
+        }
     }
 
 }

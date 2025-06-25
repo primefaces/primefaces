@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,25 @@
  */
 package org.primefaces.component.tree;
 
-import java.util.Locale;
-import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.MetaRuleset;
-
 import org.primefaces.facelets.MethodRule;
 import org.primefaces.model.TreeNode;
 
+import java.util.Locale;
+
+import jakarta.faces.view.facelets.ComponentConfig;
+import jakarta.faces.view.facelets.ComponentHandler;
+import jakarta.faces.view.facelets.MetaRule;
+import jakarta.faces.view.facelets.MetaRuleset;
+
 public class TreeComponentHandler extends ComponentHandler {
 
-    private static final MetaRule DROP_LISTENER
-            = new MethodRule("onDrop", Boolean.class, new Class[]{TreeDragDropInfo.class});
+    private static final MetaRule DROP_LISTENER = new MethodRule(Tree.PropertyKeys.onDrop.name(),
+            Boolean.class,
+            new Class[]{TreeDragDropInfo.class});
 
-    private static final MetaRule FILTER_FUNCTION
-            = new MethodRule("filterFunction", Boolean.class, new Class[]{TreeNode.class, Object.class, Locale.class});
+    private static final MetaRule FILTER_FUNCTION = new MethodRule(Tree.PropertyKeys.filterFunction.name(),
+            Boolean.class,
+            new Class[]{TreeNode.class, Object.class, Locale.class});
 
     public TreeComponentHandler(ComponentConfig config) {
         super(config);

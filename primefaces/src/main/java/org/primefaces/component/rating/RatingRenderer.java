@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,51 +23,48 @@
  */
 package org.primefaces.component.rating;
 
-import java.io.IOException;
-import java.util.Objects;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class RatingRenderer extends InputRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class RatingRenderer extends InputRenderer<Rating> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Rating rating = (Rating) component;
-        if (!shouldDecode(rating)) {
+    public void decode(FacesContext context, Rating component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        String clientId = rating.getClientId(context);
+        String clientId = component.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (LangUtils.isNotEmpty(submittedValue)) {
             int submittedStars = Integer.parseInt(submittedValue);
             if (submittedStars == 0) {
-                submittedValue = null;
+                submittedValue = Constants.EMPTY_STRING;
             }
-            else if (submittedStars < 1 || submittedStars > rating.getStars()) {
+            else if (submittedStars < 1 || submittedStars > component.getStars()) {
+                // prevent form post of invalid value
                 return;
             }
         }
 
-        rating.setSubmittedValue(submittedValue);
+        component.setSubmittedValue(submittedValue);
 
-        decodeBehaviors(context, rating);
+        decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Rating rating = (Rating) component;
-
-        encodeMarkup(context, rating);
-        encodeScript(context, rating);
+    public void encodeEnd(FacesContext context, Rating component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
     private void encodeScript(FacesContext context, Rating rating) throws IOException {
@@ -91,17 +88,12 @@ public class RatingRenderer extends InputRenderer {
         boolean disabled = rating.isDisabled();
         boolean readonly = rating.isReadonly();
         String style = rating.getStyle();
-        String styleClass = rating.getStyleClass();
-        styleClass = styleClass == null ? Rating.CONTAINER_CLASS : Rating.CONTAINER_CLASS + " " + styleClass;
-
-        if (disabled) {
-            styleClass = styleClass + " ui-state-disabled";
-        }
+        String styleClass = createStyleClass(rating, Rating.CONTAINER_CLASS);
 
         writer.startElement("div", rating);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
-        if (style != null) {
+        if (LangUtils.isNotEmpty(style)) {
             writer.writeAttribute("style", style, null);
         }
 
@@ -131,7 +123,7 @@ public class RatingRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, Rating rating, String id, String value) throws IOException {
+    protected void encodeInput(FacesContext context, Rating component, String id, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         //input for accessibility
@@ -143,13 +135,13 @@ public class RatingRenderer extends InputRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "range", null);
         writer.writeAttribute("min", "0", null);
-        writer.writeAttribute("max", rating.getStars(), null);
+        writer.writeAttribute("max", component.getStars(), null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute("value", Objects.toString(value, "0"), null);
+        writer.writeAttribute("value", LangUtils.defaultIfBlank(value, "0"), null);
         //for keyboard accessibility and ScreenReader
-        writer.writeAttribute("tabindex", rating.getTabindex(), null);
+        writer.writeAttribute("tabindex", component.getTabindex(), null);
 
-        if (rating.isDisabled()) {
+        if (component.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
 

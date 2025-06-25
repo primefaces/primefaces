@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -20,7 +20,7 @@
             <h:form>
                 <p:growl id="msg"/>
 
-                <h5 class="p-mt-0">Basic</h5>
+                <h5 class="mt-0">Basic</h5>
                 <p:selectBooleanCheckbox value="#{selectBooleanView.value1}" itemLabel="Basic"/>
 
                 <h5>Remote</h5>

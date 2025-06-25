@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,34 +25,33 @@ package org.primefaces.component.avatargroup;
 
 import org.primefaces.renderkit.CoreRenderer;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-public class AvatarGroupRenderer extends CoreRenderer {
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class AvatarGroupRenderer extends CoreRenderer<AvatarGroup> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        AvatarGroup avatarGroup = (AvatarGroup) component;
+    public void encodeEnd(FacesContext context, AvatarGroup component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
                 .add(AvatarGroup.STYLE_CLASS)
-                .add(avatarGroup.getStyleClass())
+                .add(component.getStyleClass())
                 .build();
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", avatarGroup.getClientId(context), "id");
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (avatarGroup.getStyle() != null) {
-            writer.writeAttribute("style", avatarGroup.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
-        renderChildren(context, avatarGroup);
+        renderChildren(context, component);
         writer.endElement("div");
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, AvatarGroup component) throws IOException {
         //Do nothing
     }
 

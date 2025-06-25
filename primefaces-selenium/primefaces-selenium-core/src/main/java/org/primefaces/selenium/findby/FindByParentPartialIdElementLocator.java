@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,11 @@ package org.primefaces.selenium.findby;
 
 import java.util.List;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 
 public class FindByParentPartialIdElementLocator implements ElementLocator {
@@ -53,7 +57,7 @@ public class FindByParentPartialIdElementLocator implements ElementLocator {
     public List<WebElement> findElements() {
         WebElement parent = parentLocator.findElement();
 
-        String parentId = parent.getAttribute("id");
+        String parentId = parent.getDomAttribute("id");
         if (parentId == null || parentId.trim().isEmpty()) {
             throw new WebDriverException("Id of parent element is null or empty!");
         }

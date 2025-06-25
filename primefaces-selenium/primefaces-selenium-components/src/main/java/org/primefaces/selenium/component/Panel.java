@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,12 @@
  */
 package org.primefaces.selenium.component;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.findby.FindByParentPartialId;
+
+import org.openqa.selenium.WebElement;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:panel}.
@@ -39,19 +38,11 @@ public abstract class Panel extends AbstractComponent {
     @FindByParentPartialId("_toggler")
     private WebElement toggler;
 
-    @FindBy(className = "ui-panel-content")
+    @FindByParentPartialId("_header")
+    private WebElement header;
+
+    @FindByParentPartialId("_content")
     private WebElement content;
-
-    public void toggle() {
-        if (ComponentUtils.hasAjaxBehavior(getRoot(), "toggle")) {
-            PrimeSelenium.guardAjax(toggler).click();
-        }
-        else {
-            toggler.click();
-        }
-
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(content));
-    }
 
     public WebElement getToggler() {
         return toggler;
@@ -61,4 +52,41 @@ public abstract class Panel extends AbstractComponent {
         return content;
     }
 
+    public WebElement getHeader() {
+        return header;
+    }
+
+    /**
+     * Is this component AJAX enabled with "toggle"?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isToggleAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "toggle");
+    }
+
+    /**
+     * Is this component AJAX enabled with "close"?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isCloseAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "close");
+    }
+
+    public void close() {
+        PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".close();");
+    }
+
+    public void expand() {
+        PrimeSelenium.executeScript(isToggleAjaxified(), getWidgetByIdScript() + ".expand();");
+    }
+
+    public void collapse() {
+        PrimeSelenium.executeScript(isToggleAjaxified(), getWidgetByIdScript() + ".collapse();");
+    }
+
+    public void toggle() {
+        PrimeSelenium.executeScript(isToggleAjaxified(), getWidgetByIdScript() + ".toggle();");
+    }
 }

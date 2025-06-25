@@ -1,0 +1,21 @@
+body {
+  .ui-splitter {
+    border: $panelContentBorder;
+    background: $panelContentBg;
+    border-radius: $borderRadius;
+    color: $panelContentTextColor;
+
+    .ui-splitter-gutter {
+      transition: $transition;
+      background: $splitterGutterBg;
+
+      .ui-splitter-gutter-handle {
+        background: $splitterGutterHandleBg;
+      }
+    }
+
+    .ui-splitter-gutter-resizing {
+      background: $splitterGutterHandleBg;
+    }
+  }
+}

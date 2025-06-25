@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package org.primefaces.config;
 
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -32,18 +34,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.context.FacesContext;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.primefaces.util.LangUtils;
+
+import jakarta.faces.context.FacesContext;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class WebXmlParser {
 
@@ -95,7 +102,7 @@ public class WebXmlParser {
                 return parseErrorPages(webXml.getDocumentElement());
             }
         }
-        catch (Throwable e) {
+        catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Could not load or parse web.xml", e);
         }
 
@@ -126,7 +133,7 @@ public class WebXmlParser {
                         }
                     }
                 }
-                catch (Throwable e) {
+                catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "Could not load or parse web-fragment.xml", e);
                 }
             }
@@ -138,7 +145,7 @@ public class WebXmlParser {
         return webFragmentXmlsErrorPages;
     }
 
-    private static Document toDocument(URL url) throws Exception {
+    private static Document toDocument(URL url) throws IOException, SAXException, ParserConfigurationException {
         // web.xml is optional
         if (url == null) {
             return null;
@@ -184,7 +191,7 @@ public class WebXmlParser {
         }
     }
 
-    private static Map<String, String> parseErrorPages(Element webXml) throws Exception {
+    private static Map<String, String> parseErrorPages(Element webXml) throws XPathExpressionException {
 
         Map<String, String> errorPages = new HashMap<>();
 
@@ -199,10 +206,7 @@ public class WebXmlParser {
             String key = Throwable.class.getName().equals(exceptionType) ? null : exceptionType;
 
             String location = xpath.compile(LOCATION_EXPRESSION).evaluate(node.getParentNode()).trim();
-
-            if (!errorPages.containsKey(key)) {
-                errorPages.put(key, location);
-            }
+            errorPages.putIfAbsent(key, location);
         }
 
         if (!errorPages.containsKey(null)) {

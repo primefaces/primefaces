@@ -1,0 +1,17 @@
+body {
+  .ui-datascroller {
+    .ui-datascroller-header {
+      border: 0 none;
+      border-bottom: $panelHeaderBorder;
+    }
+
+    .ui-datascroller-footer {
+      border: 0 none;
+      border-top: $panelHeaderBorder;
+    }
+
+    .ui-datascroller-content {
+      border: 0 none;
+    }
+  }
+}

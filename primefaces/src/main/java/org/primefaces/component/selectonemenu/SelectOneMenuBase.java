@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.selectonemenu;
 
-import javax.faces.component.html.HtmlSelectOneMenu;
-
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.html.HtmlSelectOneMenu;
 
 public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder, RTLAware, TouchAware {
 
@@ -38,29 +38,31 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
 
     public enum PropertyKeys {
 
-        widgetVar,
-        panelStyle,
-        panelStyleClass,
-        var,
-        height,
+        alwaysDisplayLabel,
+        appendTo,
+        autoWidth,
+        autocomplete,
+        caseSensitive,
+        dir,
+        dynamic,
         editable,
         filter,
-        filterMatchMode,
         filterFunction,
+        filterMatchMode,
+        filterNormalize,
         filterPlaceholder,
-        caseSensitive,
-        maxlength,
-        appendTo,
-        title,
-        syncTooltip,
-        alwaysDisplayLabel,
+        height,
         label,
         labelTemplate,
+        maxlength,
+        panelStyle,
+        panelStyleClass,
         placeholder,
-        autoWidth,
-        dynamic,
-        dir,
-        touchable
+        syncTooltip,
+        title,
+        touchable,
+        var,
+        widgetVar
     }
 
     public SelectOneMenuBase() {
@@ -228,11 +230,11 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
-    public boolean isAutoWidth() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoWidth, true);
+    public String getAutoWidth() {
+        return (String) getStateHelper().eval(PropertyKeys.autoWidth, "auto");
     }
 
-    public void setAutoWidth(boolean autoWidth) {
+    public void setAutoWidth(String autoWidth) {
         getStateHelper().put(PropertyKeys.autoWidth, autoWidth);
     }
 
@@ -255,12 +257,28 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
     }
 
     @Override
-    public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
+    public Boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
     }
 
     @Override
-    public void setTouchable(boolean touchable) {
+    public void setTouchable(Boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
+    }
+
+    public String getAutocomplete() {
+        return (String) getStateHelper().eval(PropertyKeys.autocomplete);
+    }
+
+    public void setAutocomplete(String autocomplete) {
+        getStateHelper().put(PropertyKeys.autocomplete, autocomplete);
     }
 }

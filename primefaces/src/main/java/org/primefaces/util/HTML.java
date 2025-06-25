@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -82,6 +82,8 @@ public class HTML {
         "lang",
         "ismap",
         "usemap",
+        "srcset",
+        "sizes",
         "style"
     );
 
@@ -91,7 +93,6 @@ public class HTML {
         "charset",
         "coords",
         "dir",
-        "disabled",
         "hreflang",
         "rel",
         "rev",
@@ -108,7 +109,6 @@ public class HTML {
         "charset",
         "coords",
         "dir",
-        "disabled",
         "hreflang",
         "rel",
         "rev",
@@ -196,13 +196,17 @@ public class HTML {
     public static final List<String> MEDIA_ATTRS = LangUtils.unmodifiableList(
         "autoplay",
         "controls",
-        "crossOrigin",
+        "controlslist",
+        "crossorigin",
         "currentTime",
         "defaultMuted",
         "defaultPlaybackRate",
+        "disableremoteplayback",
+        "disablepictureinpicture",
         "loop",
         "muted",
         "playbackRate",
+        "playsinline",
         "preload",
         "volume"
     );
@@ -287,17 +291,30 @@ public class HTML {
     public static final String ARIA_READONLY = "aria-readonly";
     public static final String ARIA_REQUIRED = "aria-required";
     public static final String ARIA_SELECTED = "aria-selected";
+    public static final String ARIA_SET_SIZE = "aria-setsize";
+    public static final String ARIA_SET_POSITION = "aria-posinset";
+    public static final String ARIA_ORIENTATION = "aria-orientation";
+    public static final String ARIA_ORIENTATION_HORIZONTAL = "horizontal";
+    public static final String ARIA_ORIENTATION_VERTICAL = "vertical";
+    public static final String ARIA_VALUE_NOW = "aria-valuenow";
+    public static final String ARIA_VALUE_TEXT = "aria-valuetext";
+    public static final String ARIA_VALUE_MIN = "aria-valuemin";
+    public static final String ARIA_VALUE_MAX = "aria-valuemax";
     public static final String ARIA_ROLE = "role";
-    public static final String ARIA_ROLE_NONE = "none";
+    public static final String ARIA_ROLE_COMBOBOX = "combobox";
+    public static final String ARIA_ROLE_GROUP = "group";
+    public static final String ARIA_ROLE_LISTBOX = "listbox";
     public static final String ARIA_ROLE_MENU = "menu";
-    public static final String ARIA_ROLE_MENUITEM = "menuitem";
     public static final String ARIA_ROLE_MENUBAR = "menubar";
+    public static final String ARIA_ROLE_MENUITEM = "menuitem";
+    public static final String ARIA_ROLE_NONE = "none";
+    public static final String ARIA_ROLE_OPTION = "option";
     public static final String ARIA_ROLE_SEPARATOR = "separator";
 
-    public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only";
-    public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only";
-    public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left";
-    public static final String BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-right";
+    public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
+    public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-icon-only";
+    public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-icon-left";
+    public static final String BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-icon-right";
     public static final String BUTTON_LEFT_ICON_CLASS = "ui-button-icon-left ui-icon ui-c";
     public static final String BUTTON_RIGHT_ICON_CLASS = "ui-button-icon-right ui-icon ui-c";
     public static final String BUTTON_TEXT_CLASS = "ui-button-text ui-c";
@@ -305,7 +322,7 @@ public class HTML {
 
     public static final String CHECKBOX_ALL_CLASS = "ui-chkbox ui-chkbox-all ui-widget";
     public static final String CHECKBOX_CLASS = "ui-chkbox ui-widget";
-    public static final String CHECKBOX_BOX_CLASS = "ui-chkbox-box ui-widget ui-corner-all ui-state-default";
+    public static final String CHECKBOX_BOX_CLASS = "ui-chkbox-box ui-widget ui-state-default";
     public static final String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden-accessible";
     public static final String CHECKBOX_UNCHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-blank ui-c";
     public static final String CHECKBOX_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-check ui-c";
@@ -313,8 +330,7 @@ public class HTML {
     public static final String CHECKBOX_LABEL_CLASS = "ui-chkbox-label";
 
     public static final String RADIOBUTTON_CLASS = "ui-radiobutton ui-widget";
-    public static final String RADIOBUTTON_NATIVE_CLASS = "ui-radiobutton ui-radiobutton-native ui-widget";
-    public static final String RADIOBUTTON_BOX_CLASS = "ui-radiobutton-box ui-widget ui-corner-all ui-state-default";
+    public static final String RADIOBUTTON_BOX_CLASS = "ui-radiobutton-box ui-widget ui-state-default";
     public static final String RADIOBUTTON_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
     public static final String RADIOBUTTON_UNCHECKED_ICON_CLASS = "ui-radiobutton-icon ui-icon ui-icon-blank ui-c";
     public static final String RADIOBUTTON_CHECKED_ICON_CLASS = "ui-radiobutton-icon ui-icon ui-icon-bullet ui-c";

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,32 @@
  */
 package org.primefaces.component.selectbooleancheckbox;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
-
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-public class SelectBooleanCheckboxRenderer extends InputRenderer {
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.ConverterException;
+
+public class SelectBooleanCheckboxRenderer extends InputRenderer<SelectBooleanCheckbox> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) component;
-
-        if (!shouldDecode(checkbox)) {
+    public void decode(FacesContext context, SelectBooleanCheckbox component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        decodeBehaviors(context, checkbox);
+        decodeBehaviors(context, component);
 
-        String clientId = checkbox.getClientId(context);
+        String clientId = component.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
         boolean checked = isChecked(submittedValue);
-        checkbox.setSubmittedValue(checked);
+        component.setSubmittedValue(checked);
     }
 
     protected boolean isChecked(String value) {
@@ -59,26 +57,27 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) component;
-
-        encodeMarkup(context, checkbox);
-        encodeScript(context, checkbox);
+    public void encodeEnd(FacesContext context, SelectBooleanCheckbox component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
+    protected void encodeMarkup(FacesContext context, SelectBooleanCheckbox component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = checkbox.getClientId(context);
-        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, checkbox));
-        boolean disabled = checkbox.isDisabled();
-        String title = checkbox.getTitle();
+        String clientId = component.getClientId(context);
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, component));
+        boolean disabled = component.isDisabled();
+        String title = component.getTitle();
 
-        String style = checkbox.getStyle();
-        String styleClass = checkbox.getStyleClass();
-        styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
-        styleClass = "ui-selectbooleancheckbox " + styleClass;
+        String style = component.getStyle();
+        String styleClass = getStyleClassBuilder(context)
+                .add("ui-selectbooleancheckbox")
+                .add(HTML.CHECKBOX_CLASS)
+                .add(component.getStyleClass())
+                .add(component.isReadonly(), "ui-state-readonly")
+                .build();
 
-        writer.startElement("div", checkbox);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
@@ -88,19 +87,19 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             writer.writeAttribute("title", title, "title");
         }
 
-        encodeInput(context, checkbox, clientId, checked);
-        encodeOutput(context, checkbox, checked, disabled);
-        encodeItemLabel(context, checkbox, clientId, disabled);
+        encodeInput(context, component, clientId, checked);
+        encodeOutput(context, component, checked, disabled);
+        encodeItemLabel(context, component, clientId, disabled);
 
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean checked) throws IOException {
+    protected void encodeInput(FacesContext context, SelectBooleanCheckbox component, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
-        String ariaLabel = checkbox.getAriaLabel() != null ? checkbox.getAriaLabel() : checkbox.getItemLabel();
+        String ariaLabel = component.getAriaLabel() != null ? component.getAriaLabel() : component.getItemLabel();
 
-        writer.startElement("div", checkbox);
+        writer.startElement("div", component);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         writer.startElement("input", null);
@@ -113,22 +112,24 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             writer.writeAttribute("checked", "checked", null);
         }
 
-        renderValidationMetadata(context, checkbox);
-        renderAccessibilityAttributes(context, checkbox);
-        renderPassThruAttributes(context, checkbox, HTML.TAB_INDEX);
-        renderOnchange(context, checkbox);
-        renderDomEvents(context, checkbox, HTML.BLUR_FOCUS_EVENTS);
+        renderValidationMetadata(context, component);
+        renderAccessibilityAttributes(context, component);
+        renderPassThruAttributes(context, component, HTML.TAB_INDEX);
+        renderOnchange(context, component);
+        renderDomEvents(context, component, HTML.BLUR_FOCUS_EVENTS);
 
         writer.endElement("input");
 
         writer.endElement("div");
     }
 
-    protected void encodeOutput(FacesContext context, SelectBooleanCheckbox checkbox, boolean checked, boolean disabled) throws IOException {
+    protected void encodeOutput(FacesContext context, SelectBooleanCheckbox component, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = createStyleClass(checkbox, null, HTML.CHECKBOX_BOX_CLASS);
-        styleClass = checked ? styleClass + " ui-state-active" : styleClass;
-        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+        String styleClass = createStyleClass(component, null, HTML.CHECKBOX_BOX_CLASS);
+        styleClass = getStyleClassBuilder(context)
+                .add(styleClass)
+                .add(checked, "ui-state-active")
+                .build();
 
         String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 
@@ -142,8 +143,8 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean disabled) throws IOException {
-        String label = checkbox.getItemLabel();
+    protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox component, String clientId, boolean disabled) throws IOException {
+        String label = component.getItemLabel();
 
         if (label != null) {
             ResponseWriter writer = context.getResponseWriter();
@@ -153,7 +154,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
             writer.writeAttribute("class", styleClass, null);
 
-            if (checkbox.isEscape()) {
+            if (component.isEscape()) {
                 writer.writeText(label, "itemLabel");
             }
             else {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,52 @@
  */
 package org.primefaces.model.filter;
 
-import java.util.function.BiPredicate;
+import org.primefaces.util.LangUtils;
 
-public class EqualsFilterConstraint extends StringFilterConstraint {
+import java.util.Locale;
+import java.util.Objects;
+
+import jakarta.faces.context.FacesContext;
+
+public class EqualsFilterConstraint implements FilterConstraint {
+
+    private static final long serialVersionUID = 1L;
 
     @Override
-    protected BiPredicate<String, String> getPredicate() {
-        return String::equals;
+    public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
+        if (Objects.equals(value, filter)) {
+            return true;
+        }
+        // #8106
+        // Ported from InFilterConstraint: check for "" comparison
+        if (filter instanceof String && LangUtils.isEmpty((String) filter) && value == null) {
+            return true;
+        }
+
+        // If either are null and we get this far, they don't equal
+        if (value == null || filter == null) {
+            return false;
+        }
+
+        // #10730
+        // Handle enum values by comparing their string representations
+        // NOTE: This needs to happen _before_ `Comparable` check, even though both Enum and String
+        // are Comparable, because they are different types
+        if (value.getClass().isEnum() || filter.getClass().isEnum()) {
+            return value.toString().equals(filter.toString());
+        }
+
+        // #12666
+        // If Comparable, prefer compareTo to handle BigDecimal, etc.
+        if (value instanceof Comparable) {
+            ComparableFilterConstraint.assertAssignable(filter, value);
+            return compareToEquals((Comparable) value, (Comparable) filter);
+        }
+        return value.equals(filter);
     }
+
+    protected boolean compareToEquals(Comparable value, Comparable filter) {
+        return value.compareTo(filter) == 0;
+    }
+
 }

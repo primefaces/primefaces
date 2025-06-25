@@ -1,10 +1,10 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+>
 
     <ui:define name="head">
         <style>
@@ -45,8 +45,8 @@
                 <p:diagram value="#{diagramEditableView.model}" style="height:600px" styleClass="ui-widget-content"
                            var="el">
                     <f:facet name="element">
-                        <h:outputText value="#{el.name}" style="display:block;margin-top:1em;"/>
-                        <p:graphicImage name="demo/images/#{el.image}"/>
+                        <h:outputText value="#{el.data.name}" style="display:block;margin-top:1em;"/>
+                        <p:graphicImage name="demo/images/#{el.data.image}"/>
                     </f:facet>
                     <p:ajax event="connect" listener="#{diagramEditableView.onConnect}"/>
                     <p:ajax event="disconnect" listener="#{diagramEditableView.onDisconnect}"/>

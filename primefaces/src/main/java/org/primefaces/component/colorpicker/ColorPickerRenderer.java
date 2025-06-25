@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,146 +23,166 @@
  */
 package org.primefaces.component.colorpicker;
 
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+public class ColorPickerRenderer extends InputRenderer<ColorPicker> {
 
-public class ColorPickerRenderer extends InputRenderer {
-
-    private static final Pattern COLOR_HEX_PATTERN = Pattern.compile("([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})");
+    private static final Pattern COLOR_PATTERN = Pattern.compile(
+            "^#(?:[\\da-f]{3}){1,2}$|^#(?:[\\da-f]{4}){1,2}$|(rgb|hsl)a?\\((\\s*-?\\d+%?\\s*,){2}(\\s*-?\\d+%?\\s*)\\)"
+            + "|(rgb|hsl)a?\\((\\s*-?\\d+%?\\s*,){3}\\s*(0|(0?\\.\\d+)|1)\\)", Pattern.CASE_INSENSITIVE);
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        ColorPicker colorPicker = (ColorPicker) component;
-        if (!shouldDecode(colorPicker)) {
+    public void decode(FacesContext context, ColorPicker component) {
+        if (!shouldDecode(component)) {
             return;
         }
-        String paramName = colorPicker.getClientId(context) + "_input";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String paramName = component.getClientId(context);
+        boolean inline = !"popup".equalsIgnoreCase(component.getMode());
+        if (inline) {
+            paramName = paramName + "_color";
+            if (!params.containsKey(paramName)) {
+                paramName = "clr-color-value";
+            }
+        }
 
         if (params.containsKey(paramName)) {
             String submittedValue = params.get(paramName);
-            if (!COLOR_HEX_PATTERN.matcher(submittedValue).matches()) {
+            if (!COLOR_PATTERN.matcher(submittedValue).matches()) {
                 submittedValue = Constants.EMPTY_STRING;
             }
-            colorPicker.setSubmittedValue(ComponentUtils.getConvertedValue(context, component, submittedValue));
+            component.setSubmittedValue(submittedValue);
         }
 
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ColorPicker colorPicker = (ColorPicker) component;
-        Converter<Object> converter = ComponentUtils.getConverter(context, component);
-        String value;
-        if (converter != null) {
-            value = converter.getAsString(context, component, colorPicker.getValue());
-        }
-        else {
-            value = (String) colorPicker.getValue();
-        }
+    public void encodeEnd(FacesContext context, ColorPicker component) throws IOException {
+        String value = ComponentUtils.getValueToRender(context, component);
 
-        encodeMarkup(context, colorPicker, value);
-        encodeScript(context, colorPicker, value);
+        String clientId = component.getClientId(context);
+        String uuid = clientId.replaceAll(Character.toString(UINamingContainer.getSeparatorChar(context)), "-");
+        encodeMarkup(context, component, value, uuid);
+        encodeScript(context, component, value, uuid);
     }
 
-    protected void encodeMarkup(FacesContext context, ColorPicker colorPicker, String value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String clientId = colorPicker.getClientId(context);
-        String inputId = clientId + "_input";
-        boolean isPopup = colorPicker.getMode().equals("popup");
-
-        writer.startElement("span", null);
-        writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", createStyleClass(colorPicker, ColorPicker.STYLE_CLASS), "styleClass");
-
-        if (colorPicker.getStyle() != null) {
-            writer.writeAttribute("style", colorPicker.getStyle(), "style");
-        }
-
-        if (isPopup) {
-            encodeButton(context, colorPicker, clientId, value);
+    protected void encodeMarkup(FacesContext context, ColorPicker component, String value, String uuid) throws IOException {
+        if ("popup".equalsIgnoreCase(component.getMode())) {
+            encodePopup(context, component, value, uuid);
         }
         else {
-            encodeInline(context, colorPicker, clientId);
+            encodeInline(context, component, value, uuid);
         }
+    }
+
+    protected void encodePopup(FacesContext context, ColorPicker component, String value, String uuid) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = component.getClientId(context);
+        String styleClass = getStyleClassBuilder(context)
+                .add(createStyleClass(component, ColorPicker.POPUP_STYLE_CLASS))
+                .add(ComponentUtils.isRTL(context, component), "clr-rtl")
+                .add(uuid)
+                .build();
 
         //Input
-        writer.startElement("input", null);
-        writer.writeAttribute("id", inputId, null);
-        writer.writeAttribute("name", inputId, null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("autocomplete", "off", null);
+        writer.startElement("input", component);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("class", styleClass, null);
 
-        String onchange = colorPicker.getOnchange();
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
+        }
+
+        String onchange = component.getOnchange();
         if (!isValueBlank(onchange)) {
             writer.writeAttribute("onchange", onchange, null);
         }
 
-        renderPassThruAttributes(context, colorPicker);
-        renderValidationMetadata(context, colorPicker);
-        renderAccessibilityAttributesHidden(context, colorPicker);
+        renderAccessibilityAttributes(context, component);
+        renderRTLDirection(context, component);
+        renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, component);
 
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
         writer.endElement("input");
-
-        writer.endElement("span");
     }
 
-    protected void encodeButton(FacesContext context, ColorPicker colorPicker, String clientId, String value) throws IOException {
+    protected void encodeInline(FacesContext context, ColorPicker component, String value, String uuid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("button", null);
-        writer.writeAttribute("id", clientId + "_button", null);
-        writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS, null);
-        renderAccessibilityAttributes(context, colorPicker);
+        String clientId = component.getClientId(context);
 
-        //text
-        writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        //Input
+        writer.startElement("div", component);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("class", createStyleClass(component, ColorPicker.INLINE_STYLE_CLASS) + " " + uuid, null);
 
-        writer.write("<span id=\"" + clientId + "_livePreview\" "
-                + "style=\"overflow:hidden;width:1em;height:1em;display:block;border:solid 1px #000;text-indent:1em;white-space:nowrap;");
-        if (value != null) {
-            writer.write("background-color:#" + value);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
-        writer.write("\">Live Preview</span>");
 
-        writer.endElement("span");
-
-        writer.endElement("button");
-    }
-
-    protected void encodeInline(FacesContext context, ColorPicker colorPicker, String clientId) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("div", null);
-        writer.writeAttribute("id", clientId + "_inline", "id");
+        String onchange = component.getOnchange();
+        if (!isValueBlank(onchange)) {
+            writer.writeAttribute("onchange", onchange, null);
+        }
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, ColorPicker colorPicker, String value) throws IOException {
+    protected void encodeScript(FacesContext context, ColorPicker component, String value, String uuid) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("ColorPicker", colorPicker)
-                .attr("mode", colorPicker.getMode())
-                .attr("color", value, null);
+        wb.init("ColorPicker", component)
+                .attr("instance", uuid)
+                .attr("locale", component.calculateLocale(context).toString())
+                .attr("mode", component.getMode())
+                .attr("defaultColor", value, null)
+                .attr("theme", component.getTheme(), "default")
+                .attr("themeMode", component.getThemeMode(), "auto")
+                .attr("format", component.getFormat(), "hex")
+                .attr("formatToggle", component.isFormatToggle(), false)
+                .attr("clearButton", component.isClearButton(), false)
+                .attr("closeButton", component.isCloseButton(), false)
+                .attr("alpha", component.isAlpha(), true)
+                .attr("forceAlpha", component.isForceAlpha(), false)
+                .attr("swatchesOnly", component.isSwatchesOnly(), false)
+                .attr("focusInput", component.isFocusInput(), true)
+                .attr("selectInput", component.isSelectInput(), false);
 
-        encodeClientBehaviors(context, colorPicker);
+        String swatchProp = component.getSwatches();
+        if (LangUtils.isNotBlank(swatchProp)) {
+            String[] swatches = swatchProp.split(",");
+            wb.append(",swatches:[");
+            for (int i = 0; i < swatches.length; i++) {
+                String swatch = swatches[i];
+                if (i != 0) {
+                    wb.append(",");
+                }
+
+                wb.append("\"" + EscapeUtils.forJavaScript(swatch) + "\"");
+            }
+            wb.append("]");
+        }
+
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }

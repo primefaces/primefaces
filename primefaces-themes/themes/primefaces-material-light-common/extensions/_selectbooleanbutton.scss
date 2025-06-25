@@ -1,0 +1,15 @@
+body {
+  .ui-button {
+    &.ui-selectbooleanbutton {
+      &.ui-state-focus {
+        background: $toggleButtonActiveBg;
+        border-color: $toggleButtonActiveBorderColor;
+      }
+
+      &.ui-state-active {
+        background: $toggleButtonActiveBg;
+        border-color: $toggleButtonActiveBorderColor;
+      }
+    }
+  }
+}

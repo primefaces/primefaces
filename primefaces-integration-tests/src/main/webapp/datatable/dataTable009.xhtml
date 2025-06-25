@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
 
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
     <h:head>
@@ -42,7 +42,7 @@
             </p:dataTable>
 
             <p:commandButton id="buttonReportFilteredProgLanguages" value="report filtered ProgLanguages" update="@form" action="#{dataTable009.reportFilteredProgLanguages}"/>
-            <p:commandButton id="buttonJsfImpl" value="show jsf impl" action="#{dataTable009.addJsfImplMessage}"/>
+            <p:commandButton id="buttonFacesImpl" value="show faces impl" action="#{dataTable009.addFacesImplMessage}"/>
         </h:form>
 
     </h:body>

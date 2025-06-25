@@ -1,0 +1,349 @@
+@use 'sass:color';
+
+/// Background of a paginator
+/// @group data
+$paginatorBg: #ffffff;
+
+/// Border of a paginator
+/// @group data
+$paginatorBorder: solid #e9ecef;
+
+/// Border width of a paginator
+/// @group data
+$paginatorBorderWidth: 0;
+
+/// Icon color of a paginator
+/// @group data
+$paginatorIconColor: $textSecondaryColor;
+
+/// Padding of a paginator
+/// @group data
+$paginatorPadding: .5rem 1rem;
+
+/// Width of a paginator element
+/// @group data
+$paginatorElementWidth: $buttonIconOnlyWidth;
+
+/// Height of a paginator element
+/// @group data
+$paginatorElementHeight: $buttonIconOnlyWidth;
+
+/// Background of a paginator element in hover state
+/// @group data
+$paginatorElementHoverBg: #e9ecef;
+
+/// Icon color of a paginator element in hover state
+/// @group data
+$paginatorElementHoverIconColor: $textSecondaryColor;
+
+/// Margin of a paginator element
+/// @group data
+$paginatorElementMargin: .143rem;
+
+/// Border of a paginator element
+/// @group data
+$paginatorElementBorder: 0 none;
+
+/// Border color of a paginator element in hover state
+/// @group data
+$paginatorElementHoverBorderColor: transparent;
+
+/// Border radius of a paginator element
+/// @group data
+$paginatorElementBorderRadius: 50%;
+
+/// Border of a datatable header
+/// @group data
+$datatableHeaderBorder: 1px solid #e9ecef;
+
+/// Border width of a datatable header
+/// @group data
+$datatableHeaderBorderWidth: 0 0 1px 0;
+
+/// Background of a datatable header
+/// @group data
+$datatableHeaderBg: #f8f9fa;
+
+/// Text color of a datatable header
+/// @group data
+$datatableHeaderTextColor: $textColor;
+
+/// Font weight of a datatable header
+/// @group data
+$datatableHeaderFontWeight: 600;
+
+/// Padding of a datatable header, must be defined with a shorthand for vertical and horizontal values e.g. ".5rem .5rem"
+/// @group data
+$datatableHeaderPadding: 1rem 1rem;
+
+/// Border width of a datatable header cell
+/// @group data
+$datatableHeaderBorderWidth: 0 0 1px 0;
+
+/// Padding of a datatable header cell, must be defined with a shorthand for vertical and horizontal values e.g. ".5rem .5rem"
+/// @group data
+$datatableHeaderCellPadding: 1rem 1rem;
+
+/// Background of a datatable header cell
+/// @group data
+$datatableHeaderCellBg: #f8f9fa;
+
+/// Text color of a datatable header cell
+/// @group data
+$datatableHeaderCellTextColor: $textColor;
+
+/// Font weight of a datatable header cell
+/// @group data
+$datatableHeaderCellFontWeight: 600;
+
+/// Border of a datatable header cell
+/// @group data
+$datatableHeaderCellBorder: 1px solid #e9ecef;
+
+/// Border width of a datatable header cell
+/// @group data
+$datatableHeaderCellBorderWidth: 0 0 1px 0;
+
+/// Background of a datatable header cell in hover state
+/// @group data
+$datatableHeaderCellHoverBg: #e9ecef;
+
+/// Text color of a datatable header cell in hover state
+/// @group data
+$datatableHeaderCellTextHoverColor: $textColor;
+
+/// Background of a datatable header cell in sorted state
+/// @group data
+$datatableHeaderCellHighlightBg: #f8f9fa;
+
+/// Text color of a datatable header cell in sorted state
+/// @group data
+$datatableHeaderCellHighlightTextColor: $primaryColor;
+
+/// Hover background of a datatable header cell in sorted state
+/// @group data
+$datatableHeaderCellHighlightHoverBg: #e9ecef;
+
+/// Hover text color of a datatable header cell in sorted state
+/// @group data
+$datatableHeaderCellHighlightTextHoverColor: $primaryColor;
+
+/// Size of a multiple column sorting order indicator
+/// @group data
+$datatableSortableColumnBadgeSize: 1.143rem;
+
+/// Background of a datatable body row
+/// @group data
+$datatableBodyRowBg: #ffffff;
+
+/// Text color of a datatable body row
+/// @group data
+$datatableBodyRowTextColor: $textColor;
+
+/// Border for a cell of a datatable body row
+/// @group data
+$datatableBodyRowBorder: 1px solid rgba(0, 0, 0, 0.08);
+
+/// Background of an odd datatable body row
+/// @group data
+$datatableBodyRowOddBg: #ffffff;
+
+/// Background of a datatable body row in hover state
+/// @group data
+$datatableBodyRowHoverBg: #e9ecef;
+
+/// Text color of a datatable body row in hover state
+/// @group data
+$datatableBodyRowTextHoverColor: $textColor;
+
+/// Padding for a cell of a datatable body row, must be defined with a shorthand for vertical and horizontal values e.g. ".5rem .5rem"
+/// @group data
+$datatableBodyCellPadding: 1rem 1rem;
+
+/// Border width for a cell of a datatable body
+/// @group data
+$datatableBodyCellBorderWidth: 0 0 1px 0;
+
+/// Border width for a cell of a datatable footer
+/// @group data
+$datatableFooterBorderWidth: 0 0 1px 0;
+
+/// Padding of a datatable footer cell, must be defined with a shorthand for vertical and horizontal values e.g. ".5rem .5rem"
+/// @group data
+$datatableFooterCellPadding: 1rem 1rem;
+
+/// Background of a datatable footer cell
+/// @group data
+$datatableFooterCellBg: #f8f9fa;
+
+/// Text color of a datatable footer cell
+/// @group data
+$datatableFooterCellTextColor: $textColor;
+
+/// Font weight of a datatable footer cell
+/// @group data
+$datatableFooterCellFontWeight: 600;
+
+/// Border of a datatable footer cell
+/// @group data
+$datatableFooterCellBorder: 1px solid #e9ecef;
+
+/// Border width of a datatable footer cell
+/// @group data
+$datatableFooterCellBorderWidth: 0 0 1px 0;
+
+/// Backgground of a datatable column resize indicator bar
+/// @group data
+$datatableResizerHelperBg: $primaryColor;
+
+/// Border of a datatable footer
+/// @group data
+$datatableFooterBorder: 1px solid #e9ecef;
+
+/// Border width of a datatable footer
+/// @group data
+$datatableFooterBorderWidth: 0 0 1px 0;
+
+/// Background of a datatable footer
+/// @group data
+$datatableFooterBg: #f8f9fa;
+
+/// Text color of a datatable footer
+/// @group data
+$datatableFooterTextColor: $textColor;
+
+/// Font weight of a datatable footer
+/// @group data
+$datatableFooterFontWeight: 600;
+
+/// Padding of a datatable footer, must be defined with a shorthand for vertical and horizontal values e.g. ".5rem .5rem"
+/// @group data
+$datatableFooterPadding: 1rem 1rem;
+
+/// Border width of a datatable paginator positioned at top
+/// @group data
+$datatableTopPaginatorBorderWidth: 1px 0 1px 0;
+
+/// Border width of a datatable paginator positioned at bottom
+/// @group data
+$datatableBottomPaginatorBorderWidth: 0 0 1px 0;
+
+/// Scale factor of a small datatable
+/// @group data
+$datatableScaleSm: 0.5;
+
+/// Scale factor of a large datatable
+/// @group data
+$datatableScaleLg: 1.25;
+
+/// Padding for content section of a dataview
+/// @group data
+$dataViewContentPadding: 0;
+
+/// Border for content section of a dataview
+/// @group data
+$dataViewContentBorder: 0 none;
+
+/// Border for an item of a dataview in list orientation
+/// @group data
+$dataViewListItemBorder: solid #e9ecef;
+
+/// Border width for an item of a dataview in list orientation
+/// @group data
+$dataViewListItemBorderWidth: 0 0 1px 0;
+
+/// Background used to determine the drop area of ​​a item on orderList
+/// @group data
+$orderListDropPlaceholderBg: color.scale($highlightBg, $lightness: -20%);
+
+/// Background used to determine the drop area of ​​a item on pickList
+/// @group data
+$pickListDropPlaceholderBg: color.scale($highlightBg, $lightness: -20%);
+
+/// Border color of a schedule cell
+/// @group data
+$scheduleCellBorderColor: #dee2e6;
+
+/// Background of the schedule cell indicating today
+/// @group data
+$scheduleTodayBg:$highlightBg;
+
+/// Background of a schedule event
+/// @group data
+$scheduleEventBg: $primaryDarkColor;
+
+/// Border of a schedule event
+/// @group data
+$scheduleEventBorder: 1px solid $primaryDarkColor;
+
+/// Text color of a schedule event
+/// @group data
+$scheduleEventTextColor: $primaryTextColor;
+
+/// Padding of a tree node
+/// @group data
+$treeNodePadding: .143rem;
+
+/// Padding of a tree node label
+/// @group data
+$treeNodeLabelPadding: .286rem;
+
+/// Padding of a vertical chronoline content element
+/// @group data
+$chronolineVerticalEventContentPadding: 0 1rem;
+
+/// Padding of a horizontal chronoline content element
+/// @group data
+$chronolineHorizontalEventContentPadding: 1rem 0;
+
+/// Width of a chronoline marker
+/// @group data
+$chronolineEventMarkerWidth: 1rem;
+
+/// Height of a chronoline marker
+/// @group data
+$chronolineEventMarkerHeight: 1rem;
+
+/// Border radius of a chronoline marker
+/// @group data
+$chronolineEventMarkerBorderRadius: 50%;
+
+/// Border of a chronoline marker
+/// @group data
+$chronolineEventMarkerBorder: 2px solid $highlightBg;
+
+/// Background of a chronoline marker
+/// @group data
+$chronolineEventMarkerBackground: $highlightTextColor;
+
+/// Size of a chronoline connector
+/// @group data
+$chronolineEventConnectorSize: 2px;
+
+/// Color of a chronoline event
+/// @group data
+$chronolineEventColor: #dee2e6;
+
+/// Padding of a carousel indicators container
+/// @group data
+$carouselIndicatorsPadding: 1rem;
+
+/// Padding of a carousel indicator
+/// @group data
+$carouselIndicatorBg: #e9ecef;
+
+/// Padding of a carousel indicator in hover state
+/// @group data
+$carouselIndicatorHoverBg: #dee2e6;
+
+/// Border radius of a carousel indicator
+/// @group data
+$carouselIndicatorBorderRadius: 0;
+
+/// Width of a carousel indicator
+/// @group data
+$carouselIndicatorWidth: 2rem;
+
+/// Height of a carousel indicator
+/// @group data
+$carouselIndicatorHeight: .5rem;

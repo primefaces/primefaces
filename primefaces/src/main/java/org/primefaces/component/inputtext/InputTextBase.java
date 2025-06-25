@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,6 @@ public abstract class InputTextBase extends AbstractPrimeHtmlInputText implement
 
         placeholder,
         widgetVar,
-        type,
         counter,
         counterTemplate,
         countBytesAsChars,
@@ -67,14 +66,6 @@ public abstract class InputTextBase extends AbstractPrimeHtmlInputText implement
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public String getCounter() {

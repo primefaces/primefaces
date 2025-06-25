@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,18 +28,22 @@ import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+
 @Named
-@RequestScoped
-public class MenuView {
+@ViewScoped
+public class MenuView implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private MenuModel model;
 
@@ -50,6 +54,7 @@ public class MenuView {
         //First submenu
         DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()
                 .label("Options")
+                .expanded(true)
                 .build();
 
         DefaultMenuItem item = DefaultMenuItem.builder()
@@ -73,6 +78,7 @@ public class MenuView {
                 .value("Delete")
                 .icon("pi pi-times")
                 .command("#{menuView.delete}")
+                .update("messages")
                 .build();
         firstSubmenu.getElements().add(item);
 
@@ -81,6 +87,7 @@ public class MenuView {
         //Second submenu
         DefaultSubMenu secondSubmenu = DefaultSubMenu.builder()
                 .label("Navigations")
+                .expanded(false)
                 .build();
 
         item = DefaultMenuItem.builder()

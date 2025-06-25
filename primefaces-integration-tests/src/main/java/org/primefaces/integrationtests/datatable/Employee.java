@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,15 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -43,6 +45,8 @@ public class Employee implements Serializable {
     private LocalDate birthDate;
     private Integer salary;
     private Role role;
+    private LocalDateTime lastLoginDateTime;
+    private Date lastLoginDate;
 
     public enum Role { MANAGER, HR, DEVELOPER, QS, SALES, FINANCE };
 }

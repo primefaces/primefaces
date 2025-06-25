@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,18 @@
  */
 package org.primefaces.component.poll;
 
-import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.MetaRuleset;
-
 import org.primefaces.facelets.MethodRule;
+
+import jakarta.faces.view.facelets.ComponentConfig;
+import jakarta.faces.view.facelets.ComponentHandler;
+import jakarta.faces.view.facelets.MetaRule;
+import jakarta.faces.view.facelets.MetaRuleset;
 
 public class PollHandler extends ComponentHandler {
 
-    private static final MetaRule LISTENER
-            = new MethodRule("listener", null, new Class[0]);
+    private static final MetaRule LISTENER = new MethodRule(Poll.PropertyKeys.listener.name(),
+            null,
+            new Class[0]);
 
     public PollHandler(ComponentConfig config) {
         super(config);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,10 @@
  */
 package org.primefaces.validate.bean;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.metadata.BeanValidationMetadataExtractor;
+import org.primefaces.util.MapBuilder;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -33,15 +37,12 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.el.PropertyNotFoundException;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.validation.MessageInterpolator;
-import javax.validation.metadata.ConstraintDescriptor;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.metadata.BeanValidationMetadataExtractor;
-import org.primefaces.util.MapBuilder;
+import jakarta.el.PropertyNotFoundException;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.validation.MessageInterpolator;
+import jakarta.validation.metadata.ConstraintDescriptor;
 
 public class BeanValidationMetadataMapper {
 
@@ -102,26 +103,20 @@ public class BeanValidationMetadataMapper {
                     Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
 
                     // lookup ClientValidationConstraint by constraint annotation (e.g. @NotNull)
-                    ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType.getName());
+                    ClientValidationConstraint clientValidationConstraint =
+                            applicationContext.getBeanValidationClientConstraintMapping().get(annotationType.getName());
+
+                    // defaults fallback
+                    if (clientValidationConstraint == null) {
+                        clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType.getName());
+                    }
 
                     // mapping available? Otherwise try to lookup custom constraint
                     if (clientValidationConstraint == null) {
                         // custom constraint must use @ClientConstraint to map the ClientValidationConstraint
                         ClientConstraint clientConstraint = annotationType.getAnnotation(ClientConstraint.class);
-
                         if (clientConstraint != null) {
-                            Class<?> resolvedBy = clientConstraint.resolvedBy();
-
-                            if (resolvedBy != null) {
-                                try {
-                                    // TODO AppScoped instances? CDI?
-                                    // instantiate ClientValidationConstraint
-                                    clientValidationConstraint = (ClientValidationConstraint) resolvedBy.getConstructor().newInstance();
-                                }
-                                catch (Exception e) {
-                                    throw new FacesException("Could not instantiate ClientValidationConstraint!", e);
-                                }
-                            }
+                            clientValidationConstraint = getClientValidationConstraintInstance(clientConstraint.resolvedBy());
                         }
                     }
 
@@ -171,11 +166,26 @@ public class BeanValidationMetadataMapper {
         return new BeanValidationMetadata(metadata, validatorIds);
     }
 
+    protected static ClientValidationConstraint getClientValidationConstraintInstance(Class<? extends ClientValidationConstraint> clazz) {
+        if (clazz == null) {
+            return null;
+        }
+
+        try {
+            return clazz.getConstructor().newInstance();
+        }
+        catch (Exception e) {
+            throw new FacesException("Could not instantiate ClientValidationConstraint!", e);
+        }
+    }
+
     public static void registerConstraintMapping(Class<? extends Annotation> constraint, ClientValidationConstraint clientValidationConstraint) {
-        CONSTRAINT_MAPPING.put(constraint.getName(), clientValidationConstraint);
+        PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance())
+                .getBeanValidationClientConstraintMapping().put(constraint.getName(), clientValidationConstraint);
     }
 
     public static ClientValidationConstraint removeConstraintMapping(Class<? extends Annotation> constraint) {
-        return CONSTRAINT_MAPPING.remove(constraint.getName());
+        return PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance())
+                .getBeanValidationClientConstraintMapping().remove(constraint.getName());
     }
 }

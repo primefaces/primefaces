@@ -1,0 +1,17 @@
+body {
+  .ui-panel {
+    border-radius: $borderRadius;
+    box-shadow: $cardShadow;
+
+    .ui-panel-titlebar,
+    .ui-panel-content,
+    .ui-panel-footer {
+      border: 0 none;
+      border-radius: $borderRadius;
+    }
+
+    .ui-panel-title {
+      font-size: 1.25rem;
+    }
+  }
+}

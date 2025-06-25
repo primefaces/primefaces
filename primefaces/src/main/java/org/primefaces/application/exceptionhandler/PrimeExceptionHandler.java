@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,59 +23,60 @@
  */
 package org.primefaces.application.exceptionhandler;
 
+import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
+import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.csp.CspPhaseListener;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
+import org.primefaces.util.LimitedSizeHashMap;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.el.ELException;
-import javax.faces.FacesException;
-import javax.faces.application.ProjectStage;
-import javax.faces.application.ViewExpiredException;
-import javax.faces.application.ViewHandler;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.ExceptionHandler;
-import javax.faces.context.ExceptionHandlerWrapper;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialResponseWriter;
-import javax.faces.event.ExceptionQueuedEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.view.ViewDeclarationLanguage;
-import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
-import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.Lazy;
+import java.util.regex.Pattern;
+
+import jakarta.el.ELException;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.application.ViewExpiredException;
+import jakarta.faces.application.ViewHandler;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.ExceptionHandler;
+import jakarta.faces.context.ExceptionHandlerWrapper;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.PartialResponseWriter;
+import jakarta.faces.event.ExceptionQueuedEvent;
+import jakarta.faces.event.PhaseId;
+import jakarta.faces.lifecycle.ClientWindow;
+import jakarta.faces.view.ViewDeclarationLanguage;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeExceptionHandler.class.getName());
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    private static final Pattern NEWLINE_PATTERN = Pattern.compile("(\r\n|\n)");
 
-    private final ExceptionHandler wrapped;
     private final Lazy<PrimeConfiguration> config;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExceptionHandler(ExceptionHandler wrapped) {
-        this.wrapped = wrapped;
-        this.config = new Lazy(() -> PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig());
-    }
-
-    @Override
-    public ExceptionHandler getWrapped() {
-        return wrapped;
+        super(wrapped);
+        this.config = new Lazy<>(() -> PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig());
     }
 
     @Override
@@ -169,7 +170,10 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             return;
         }
 
-        boolean responseResetted = false;
+        CspPhaseListener.initCsp(context, config.get().isCsp(), config.get().isPolicyProvided(),
+                config.get().getCspReportOnlyPolicy(), config.get().getCspPolicy());
+
+        boolean isResponseReset = false;
 
         //mojarra workaround to avoid invalid partial output due to open tags
         if (context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
@@ -193,7 +197,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 externalContext.responseReset();
                 externalContext.setResponseCharacterEncoding(characterEncoding);
 
-                responseResetted = true;
+                isResponseReset = true;
             }
         }
 
@@ -211,7 +215,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         // redirect if no AjaxExceptionHandler available
         if (handlerComponent == null) {
-            handleRedirect(context, rootCause, info, responseResetted);
+            handleRedirect(context, rootCause, info, isResponseReset);
         }
         // handle custom update / onexception callback
         else {
@@ -220,10 +224,24 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             externalContext.setResponseContentType("text/xml");
 
             writer.startDocument();
-            writer.startElement("changes", null);
+
+            if (LangUtils.isNotBlank(handlerComponent.getOnexception())) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("var hf=function(type,message,timestampp){");
+                sb.append(handlerComponent.getOnexception());
+                sb.append("};hf.call(this,\"");
+                sb.append(info.getType());
+                sb.append("\",\"");
+                sb.append(EscapeUtils.forJavaScript(info.getMessage()));
+                sb.append("\",\"");
+                sb.append(info.getFormattedTimestamp());
+                sb.append("\");");
+
+                PrimeRequestContext.getCurrentInstance(context).getScriptsToExecute().add(sb.toString());
+            }
 
             if (LangUtils.isNotBlank(handlerComponent.getUpdate())) {
-                List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
+                List<UIComponent> updates = SearchExpressionUtils.contextlessResolveComponents(context, handlerComponent, handlerComponent.getUpdate());
 
                 if (updates != null && !updates.isEmpty()) {
                     context.setResponseWriter(writer);
@@ -231,36 +249,13 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                     for (int i = 0; i < updates.size(); i++) {
                         UIComponent component = updates.get(i);
 
-                        writer.startElement("update", null);
-                        writer.writeAttribute("id", component.getClientId(context), null);
-                        writer.startCDATA();
-
+                        writer.startUpdate(component.getClientId(context));
                         component.encodeAll(context);
-
-                        writer.endCDATA();
-                        writer.endElement("update");
+                        writer.endUpdate();
                     }
                 }
             }
 
-            if (LangUtils.isNotBlank(handlerComponent.getOnexception())) {
-                writer.startElement("eval", null);
-                writer.startCDATA();
-
-                writer.write("var hf=function(type,message,timestampp){");
-                writer.write(handlerComponent.getOnexception());
-                writer.write("};hf.call(this,\""
-                        + info.getType() + "\",\""
-                        + EscapeUtils.forJavaScript(info.getMessage())
-                        + "\",\""
-                        + info.getFormattedTimestamp()
-                        + "\");");
-
-                writer.endCDATA();
-                writer.endElement("eval");
-            }
-
-            writer.endElement("changes");
             writer.endDocument();
 
             context.responseComplete();
@@ -272,18 +267,16 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         info.setException(rootCause);
         info.setMessage(rootCause.getMessage());
         info.setStackTrace(rootCause.getStackTrace());
-        info.setTimestamp(new Date());
+        info.setTimestamp(LocalDateTime.now());
         info.setType(rootCause.getClass().getName());
 
-        try (StringWriter sw = new StringWriter()) {
-            PrintWriter pw = new PrintWriter(sw);
+        try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
             rootCause.printStackTrace(pw);
-            info.setFormattedStackTrace(EscapeUtils.forXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
-            pw.close();
+            info.setFormattedStackTrace(NEWLINE_PATTERN.matcher(EscapeUtils.forXml(sw.toString())).replaceAll("<br/>"));
         }
 
-        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
-        info.setFormattedTimestamp(format.format(info.getTimestamp()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
+        info.setFormattedTimestamp(info.getTimestamp().format(formatter));
 
         return info;
     }
@@ -298,7 +291,8 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     protected AjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable rootCause) {
         AjaxExceptionHandlerVisitCallback visitCallback = new AjaxExceptionHandlerVisitCallback(rootCause);
 
-        context.getViewRoot().visitTree(VisitContext.createVisitContext(context), visitCallback);
+        context.getViewRoot().visitTree(
+                VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_ITERATION.get()), visitCallback);
 
         Map<String, AjaxExceptionHandler> handlers = visitCallback.getHandlers();
 
@@ -307,7 +301,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         // lookup by inheritance hierarchy
         if (handler == null) {
-            Class throwableClass = rootCause.getClass();
+            Class<?> throwableClass = rootCause.getClass();
             while (handler == null && throwableClass.getSuperclass() != Object.class) {
                 throwableClass = throwableClass.getSuperclass();
                 handler = handlers.get(throwableClass.getName());
@@ -343,18 +337,28 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             vdl.buildView(context, viewRoot);
 
             // Workaround for Mojarra
-            // if UIViewRoot == null -> 'IllegalArgumentException' is throwed instead of 'ViewExpiredException'
+            // if UIViewRoot == null -> 'IllegalArgumentException' is thrown instead of 'ViewExpiredException'
             if (rootCause == null && throwable instanceof IllegalArgumentException) {
-                rootCause = new javax.faces.application.ViewExpiredException(viewId);
+                rootCause = new jakarta.faces.application.ViewExpiredException(viewId);
             }
         }
 
         return rootCause;
     }
 
-    protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info, boolean responseResetted) throws IOException {
+    protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info, boolean isResponseReset) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
-        externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
+        if (externalContext.getSession(false) != null) {
+            ClientWindow clientWindow = externalContext.getClientWindow();
+            if (clientWindow != null && LangUtils.isNotBlank(clientWindow.getId())) {
+                Map<String, ExceptionInfo> windowsMap = (Map<String, ExceptionInfo>)
+                        externalContext.getSessionMap().computeIfAbsent(ExceptionInfo.ATTRIBUTE_NAME + "_map", k -> new LimitedSizeHashMap<>(5));
+                windowsMap.put(clientWindow.getId(), info);
+            }
+            else {
+                externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
+            }
+        }
 
         Map<String, String> errorPages = PrimeApplicationContext.getCurrentInstance(context).getConfig().getErrorPages();
 
@@ -362,7 +366,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         String url = constructRedirectUrl(context, errorPage);
 
         // workaround for mojarra -> mojarra doesn't reset PartialResponseWriter#inChanges if we call externalContext#resetResponse
-        if (responseResetted && context.getPartialViewContext().isAjaxRequest()) {
+        if (isResponseReset && context.getPartialViewContext().isAjaxRequest()) {
             PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
             externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getResponseCharacterEncoding());
             externalContext.addResponseHeader("Cache-Control", "no-cache");
@@ -408,7 +412,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         // lookup by inheritance hierarchy
         if (errorPage == null) {
-            Class throwableClass = rootCause.getClass();
+            Class<?> throwableClass = rootCause.getClass();
             while (errorPage == null && throwableClass.getSuperclass() != Object.class) {
                 throwableClass = throwableClass.getSuperclass();
                 errorPage = errorPages.get(throwableClass.getName());

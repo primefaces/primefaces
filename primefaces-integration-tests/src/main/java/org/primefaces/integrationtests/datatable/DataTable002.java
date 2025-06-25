@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,19 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
+import org.primefaces.model.DefaultLazyDataModel;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+
+import lombok.Data;
 
 @Named
 @ViewScoped
@@ -39,13 +44,23 @@ public class DataTable002 implements Serializable {
 
     private static final long serialVersionUID = -7518459955779385834L;
 
+    protected List<ProgrammingLanguage> programmingLanguages;
     protected ProgrammingLanguageLazyDataModel lazyDataModel;
-
+    protected DefaultLazyDataModel<ProgrammingLanguage> reflectionLazyDataModel;
     protected ProgrammingLanguage selectedProgrammingLanguage;
 
     @PostConstruct
     public void init() {
+        programmingLanguages = new ArrayList<>();
+        for (int i = 1; i <= 75; i++) {
+            programmingLanguages.add(new ProgrammingLanguage(i, "Language " + i, 1990 + (i % 10),
+                    ((i % 2) == 0) ? ProgrammingLanguage.ProgrammingLanguageType.COMPILED : ProgrammingLanguage.ProgrammingLanguageType.INTERPRETED));
+        }
         lazyDataModel = new ProgrammingLanguageLazyDataModel();
+        reflectionLazyDataModel = DefaultLazyDataModel.<ProgrammingLanguage>builder()
+                .valueSupplier((filterBy) -> programmingLanguages)
+                .rowKeyProvider(ProgrammingLanguage::getId)
+                .build();
     }
 
     public void onRowSelect(SelectEvent<ProgrammingLanguage> event) {
@@ -54,6 +69,9 @@ public class DataTable002 implements Serializable {
 
     public void delete(ProgrammingLanguage language) {
         lazyDataModel.delete(language);
+        if (programmingLanguages != null) {
+            programmingLanguages.remove(language);
+        }
         TestUtils.addMessage("ProgrammingLanguage Deleted", language.getId() + " - " + language.getName());
     }
 
@@ -61,5 +79,9 @@ public class DataTable002 implements Serializable {
         if (selectedProgrammingLanguage != null) {
             TestUtils.addMessage("Selected ProgrammingLanguage", selectedProgrammingLanguage.getId().toString());
         }
+    }
+
+    public ProgrammingLanguage.ProgrammingLanguageType[] getTypes() {
+        return ProgrammingLanguage.ProgrammingLanguageType.values();
     }
 }

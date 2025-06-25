@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:sc="http://primefaces.org/ui/showcase"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces"
+      xmlns:sc="primefaces.showcase"
       lang="#{p:language()}" xml:lang="#{p:language()}">
 
     <h:head>
@@ -19,16 +18,14 @@
                     gtag('config', 'UA-93461466-1');
                 </script>
             </ui:fragment>
-            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
             <meta name="apple-mobile-web-app-capable" content="yes"/>
-            <link href="#{resource['showcase/images/favicon-32x32.png']}" rel="icon" type="image/png" sizes="32x32"/>
-            <link href="#{resource['showcase/images/favicon-16x16.png']}" rel="icon" type="image/png" sizes="16x16"/>
+            <link href="#{resource['showcase:images/favicon-32x32.png']}" rel="icon" type="image/png" sizes="32x32"/>
+            <link href="#{resource['showcase:images/favicon-16x16.png']}" rel="icon" type="image/png" sizes="16x16"/>
         </f:facet>
         <title>PrimeFaces Showcase</title>
 
-        <h:outputStylesheet name="css/primeflex.css" library="showcase"/>
+        <h:outputStylesheet name="primeflex/4.0.0/primeflex.min.css" library="webjars" />
         <h:outputStylesheet name="css/flags/flags.css" library="showcase"/>
 
         <h:outputScript name="jquery/jquery.js" library="primefaces"/>
@@ -45,9 +42,9 @@
             <ui:fragment rendered="false">
                 <div class="layout-news">
                     <div class="layout-news-container">
-                        <h:graphicImage name="showcase/images/news/topbar-newyear-logo.svg" alt="News" styleClass="layout-news-logo p-ml-2" />
-                        <h3 class="layout-news-header p-px-2"><span>UP TO 50% DISCOUNT AT PRIMESTORE</span></h3>
-                        <a href="https://www.primefaces.org/store" target="_blank" class="layout-news-button">
+                        <h:graphicImage name="showcase/images/news/topbar-newyear-logo.svg" alt="News" styleClass="layout-news-logo ml-2" />
+                        <h3 class="layout-news-header px-2"><span>UP TO 50% DISCOUNT AT PRIMESTORE</span></h3>
+                        <a href="https://www.primefaces.org/store" target="_blank" rel="noopener noreferrer" class="layout-news-button">
                             VISIT STORE
                         </a>
                         <a tabindex="0" class="layout-news-close">
@@ -71,21 +68,29 @@
                         </div>
                         <div class="feature-documentation">
                             <ui:fragment rendered="#{not empty documentationLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/11_0_0/##{documentationLink}" target="_blank">
+                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/16_0_0/##{documentationLink}" target="_blank" rel="noopener noreferrer">
                                     <i class="pi pi-external-link"></i> 
                                     <span>SERVER API</span>
                                 </a>
                             </ui:fragment>
                             <ui:fragment rendered="#{not empty widgetLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.#{widgetLink}.html#{not empty widgetLinkHash ? '#'.concat(widgetLinkHash) : ''}" target="_blank">
+                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.#{widgetLink}.html#{not empty widgetLinkHash ? '#'.concat(widgetLinkHash) : ''}" target="_blank" rel="noopener noreferrer">
                                     <i class="pi pi-external-link"></i> 
                                     <span>CLIENT API</span>
                                 </a>
                             </ui:fragment>
                             <ui:fragment rendered="#{not empty primefacesClientApiLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/#{primefacesClientApiLink}" target="_blank">
+                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/#{primefacesClientApiLink}" target="_blank" rel="noopener noreferrer">
                                     <i class="pi pi-external-link"></i> 
                                     <span>CLIENT API</span>
+                                </a>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{tagLibrary.isTagVdlAvailable(documentationLink)}">
+                                <a class="documentation-link"
+                                   href="https://primefaces.github.io/primefaces/vdldoc/p/#{tagLibrary.getTagVdlComponent(documentationLink)}.html"
+                                   target="_blank" rel="noopener noreferrer">
+                                    <i class="pi pi-external-link"></i>
+                                    <span>TAG VDL</span>
                                 </a>
                             </ui:fragment>
                         </div>
@@ -104,7 +109,7 @@
                     </div>
                 </ui:insert>
                 <ui:include src="./footer.xhtml"></ui:include>
-                <p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException" update="viewExpiredDialog" onexception="PF('viewExpiredDialog').show();" />
+                <p:ajaxExceptionHandler type="jakarta.faces.application.ViewExpiredException" update="viewExpiredDialog" onexception="PF('viewExpiredDialog').show();" />
                 <p:dialog id="viewExpiredDialog" header="Session expired" widgetVar="viewExpiredDialog" height="500px" onShow="document.location.href = document.location.href;">
                     <h3>Reloading page</h3>
                     Message: #{pfExceptionHandler.message} <br/>
@@ -129,7 +134,8 @@
 
         <h:outputStylesheet name="css/layout/layout.css" library="showcase"/>
         <h:outputScript name="script/layout.js" library="showcase" />
-        <h:outputScript name="showcase/script/prism.js" />
+        <h:outputScript name="prismjs/1.30.0/prism.js" library="webjars" />
+        <h:outputScript name="prismjs/1.30.0/components/prism-java.min.js" library="webjars" />
         </f:view>
     </h:body>
 

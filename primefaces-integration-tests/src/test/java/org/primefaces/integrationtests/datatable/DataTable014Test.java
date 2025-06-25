@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,12 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.DataTable;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -32,27 +36,25 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.DataTable;
 
-public class DataTable014Test extends AbstractDataTableTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class DataTable014Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: stickyHeader")
-    public void testStickyHeader(Page page) {
+    void stickyHeader(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         int dataTableWidth = dataTable.getSize().getWidth();
         int dataTableLocationX = dataTable.getLocation().getX();
 
         WebElement dataTableSticky = dataTable.findElement(By.className("ui-datatable-sticky"));
         WebElement dataTableWrapper = dataTable.findElement(By.className("ui-datatable-tablewrapper"));
-        Assertions.assertNotNull(dataTableSticky);
-        Assertions.assertNotNull(dataTableWrapper);
+        assertNotNull(dataTableSticky);
+        assertNotNull(dataTableWrapper);
 
         // Act
         JavascriptExecutor js = (JavascriptExecutor) getWebDriver();
@@ -61,13 +63,13 @@ public class DataTable014Test extends AbstractDataTableTest {
         TestUtils.wait(1000); //compensate weird Firefox (81) timing issue with assigning ui-sticky
 
         // Assert
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(dataTableSticky, "ui-sticky"));
-        Assertions.assertEquals(dataTableWidth, dataTableSticky.getSize().getWidth());
-        Assertions.assertEquals(dataTableWidth, dataTableWrapper.getSize().getWidth());
-        Assertions.assertEquals(dataTableLocationX, dataTableWrapper.getLocation().getX());
-        Assertions.assertEquals(dataTable.getLocation().getY(), dataTableWrapper.getLocation().getY());
+        assertTrue(PrimeSelenium.hasCssClass(dataTableSticky, "ui-sticky"));
+        assertEquals(dataTableWidth, dataTableSticky.getSize().getWidth());
+        assertEquals(dataTableWidth, dataTableWrapper.getSize().getWidth());
+        assertEquals(dataTableLocationX, dataTableWrapper.getLocation().getX());
+        assertEquals(dataTable.getLocation().getY(), dataTableWrapper.getLocation().getY());
         if (!PrimeSelenium.isSafari()) {
-            Assertions.assertEquals(scrollDown, dataTableSticky.getLocation().getY());
+            assertEquals(scrollDown, dataTableSticky.getLocation().getY());
         }
 
         // Act
@@ -75,7 +77,7 @@ public class DataTable014Test extends AbstractDataTableTest {
         TestUtils.wait(1000); //compensate weird Firefox (81) timing issue with removing ui-sticky
 
         // Assert
-        Assertions.assertFalse(PrimeSelenium.hasCssClass(dataTableSticky, "ui-sticky"));
+        assertFalse(PrimeSelenium.hasCssClass(dataTableSticky, "ui-sticky"));
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -83,7 +85,7 @@ public class DataTable014Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("stickyHeader"));
+        assertTrue(cfg.has("stickyHeader"));
     }
 
     public static class Page extends AbstractPrimePage {

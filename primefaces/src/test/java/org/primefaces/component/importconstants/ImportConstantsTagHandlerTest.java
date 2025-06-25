@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,20 +24,22 @@
 package org.primefaces.component.importconstants;
 
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 
-public class ImportConstantsTagHandlerTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class ImportConstantsTagHandlerTest {
 
     @Test
-    public void test() {
+    void test() {
         System.err.println(MyConstants.H2);
         Map<String, Object> constants = ImportConstantsTagHandler.collectConstants(MyConstants.class);
-        Assertions.assertEquals(4, constants.size());
-        Assertions.assertEquals("h1", constants.get("H1"));
-        Assertions.assertEquals("h3", constants.get("H3"));
-        Assertions.assertEquals("i", constants.get("I"));
-        Assertions.assertEquals("h2override", constants.get("H2"));
+        assertEquals(4, constants.size());
+        assertEquals("h1", constants.get("H1"));
+        assertEquals("h3", constants.get("H3"));
+        assertEquals("i", constants.get("I"));
+        assertEquals("h2override", constants.get("H2"));
     }
 
     class MyConstants extends MyConstants2 {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,20 @@
  */
 package org.primefaces.application.resource;
 
+import org.primefaces.component.barcode.BarcodeHandler;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
-import javax.faces.application.ResourceHandlerWrapper;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.application.resource.barcode.BarcodeHandler;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
+import jakarta.faces.application.Resource;
+import jakarta.faces.application.ResourceHandler;
+import jakarta.faces.application.ResourceHandlerWrapper;
+import jakarta.faces.context.FacesContext;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
@@ -44,26 +44,15 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
     private final Map<String, DynamicContentHandler> handlers;
 
-    private final ResourceHandler wrapped;
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeResourceHandler(ResourceHandler wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
         handlers = new HashMap<>();
         handlers.put(DynamicContentType.STREAMED_CONTENT.toString(), new StreamedContentHandler());
 
-        if (LangUtils.tryToLoadClassForName("org.krysalis.barcode4j.output.AbstractCanvasProvider") != null) {
+        if (LangUtils.isClassAvailable("uk.org.okapibarcode.output.SvgRenderer")) {
             handlers.put(DynamicContentType.BARCODE.toString(), new BarcodeHandler());
+            handlers.put(DynamicContentType.QR_CODE.toString(), new BarcodeHandler());
         }
-
-        if (LangUtils.tryToLoadClassForName("io.nayuki.qrcodegen.QrCode") != null) {
-            handlers.put(DynamicContentType.QR_CODE.toString(), new QRCodeHandler());
-        }
-    }
-
-    @Override
-    public ResourceHandler getWrapped() {
-        return this.wrapped;
     }
 
     @Override
@@ -90,7 +79,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             DynamicContentHandler handler = handlers.get(handlerType);
             if (handler == null) {
                 LOGGER.log(Level.WARNING,
-                        "No dynamic resource handler registered for: {0}. Do you miss a dependency?",
+                        "No dynamic resource handler registered for: [{0}]. Are you missing a dependency?",
                         new Object[]{handlerType});
                 super.handleResourceRequest(context);
             }

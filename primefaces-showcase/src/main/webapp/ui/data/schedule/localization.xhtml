@@ -1,16 +1,13 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
         <script>
             PrimeFaces.locales ['de'] = {
-                closeText: 'Schließen',
-                prevText: 'Zurück',
-                nextText: 'Weiter',
                 monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
                 monthNamesShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
                 dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
@@ -23,7 +20,7 @@
                 hourText: 'Stunde',
                 minuteText: 'Minute',
                 secondText: 'Sekunde',
-                currentText: 'Aktuelles Datum',
+                today: 'Aktuelles Datum',
                 ampm: false,
                 year: 'Jahr',
                 month: 'Monat',
@@ -32,7 +29,12 @@
                 allDayText: 'Ganzer Tag',
                 moreLinkText: 'weitere',
                 noEventsText: 'Keine Ereignisse anzuzeigen',
-                list: 'Terminübersicht'
+                list: 'Terminübersicht',
+                aria: {
+                   close: 'Schließen',
+                   previous: 'Zurück',
+                   next: 'Weiter',
+               }
             };
         </script>
     </ui:define>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,32 +23,30 @@
  */
 package org.primefaces.component.organigram;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.organigramnode.UIOrganigramNode;
 import org.primefaces.model.OrganigramNode;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
 /**
  * Renderer for the {@link Organigram} component.
  */
-public class OrganigramRenderer extends CoreRenderer {
+public class OrganigramRenderer extends CoreRenderer<Organigram> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Organigram organigram = (Organigram) component;
-
-        decodeSelection(context, organigram);
+    public void decode(FacesContext context, Organigram component) {
+        decodeSelection(context, component);
         decodeBehaviors(context, component);
     }
 
@@ -57,58 +55,56 @@ public class OrganigramRenderer extends CoreRenderer {
      * assigns the found {@link OrganigramNode} to the <code>selection</code> value expression.
      *
      * @param context    The current {@link FacesContext}.
-     * @param organigram The {@link Organigram} component.
+     * @param component The {@link Organigram} component.
      */
-    protected void decodeSelection(FacesContext context, Organigram organigram) {
+    protected void decodeSelection(FacesContext context, Organigram component) {
 
-        if (ComponentUtils.isRequestSource(organigram, context)) {
-            boolean selectionEnabled = organigram.getValueExpression("selection") != null;
+        if (ComponentUtils.isRequestSource(component, context)) {
+            boolean selectionEnabled = component.getValueExpression("selection") != null;
 
             if (selectionEnabled) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-                String rowKey = params.get(organigram.getClientId(context) + "_selectNode");
+                String rowKey = params.get(component.getClientId(context) + "_selectNode");
 
                 if (!isValueBlank(rowKey)) {
-                    OrganigramNode node = organigram.findTreeNode(organigram.getValue(), rowKey);
-                    assignSelection(context, organigram, node);
+                    OrganigramNode node = component.findTreeNode(component.getValue(), rowKey);
+                    assignSelection(context, component, node);
                 }
             }
         }
     }
 
-    protected void assignSelection(FacesContext context, Organigram organigram, OrganigramNode node) {
-        ValueExpression ve = organigram.getValueExpression("selection");
+    protected void assignSelection(FacesContext context, Organigram component, OrganigramNode node) {
+        ValueExpression ve = component.getValueExpression("selection");
         ve.setValue(context.getELContext(), node);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Organigram organigram = (Organigram) component;
-
-        encodeMarkup(context, organigram);
-        encodeScript(context, organigram);
+    public void encodeEnd(FacesContext context, Organigram component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Organigram organigram) throws IOException {
+    protected void encodeMarkup(FacesContext context, Organigram component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = organigram.getClientId(context);
-        OrganigramNode root = organigram.getValue();
-        Map<String, UIOrganigramNode> nodeMapping = lookupNodeMapping(organigram);
+        String clientId = component.getClientId(context);
+        OrganigramNode root = component.getValue();
+        Map<String, UIOrganigramNode> nodeMapping = lookupNodeMapping(component);
 
         // checks if a node is currently selected to render the node as selected later
-        boolean selectionEnabled = organigram.getValueExpression("selection") != null;
+        boolean selectionEnabled = component.getValueExpression("selection") != null;
         OrganigramNode selection = null;
 
         if (selectionEnabled) {
-            selection = organigram.getSelection();
+            selection = component.getSelection();
             if (selection != null) {
                 // check if selected node still exists
-                OrganigramNode node = OrganigramHelper.findTreeNode(organigram.getValue(), selection);
+                OrganigramNode node = OrganigramHelper.findTreeNode(component.getValue(), selection);
                 if (node == null) {
                     // reset selection
                     selection = null;
-                    assignSelection(context, organigram, null);
+                    assignSelection(context, component, null);
                 }
             }
         }
@@ -123,15 +119,15 @@ public class OrganigramRenderer extends CoreRenderer {
 
         // render container
         String styleClass = "ui-widget ui-organigram";
-        if (organigram.getStyleClass() != null) {
-            styleClass += " " + organigram.getStyleClass();
+        if (component.getStyleClass() != null) {
+            styleClass += " " + component.getStyleClass();
         }
 
-        writer.startElement("div", organigram);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if (organigram.getStyle() != null) {
-            writer.writeAttribute("style", organigram.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
 
         // render target container
@@ -144,14 +140,14 @@ public class OrganigramRenderer extends CoreRenderer {
         writer.startElement("ul", null);
         writer.writeAttribute("id", clientId + "_source", null);
 
-        renderNode(context, writer, nodeMapping, organigram, root, selection, selectionEnabled);
+        renderNode(context, writer, nodeMapping, component, root, selection, selectionEnabled);
 
         writer.endElement("ul");
         writer.endElement("div");
     }
 
     protected void renderNode(FacesContext context, ResponseWriter writer, Map<String, UIOrganigramNode> nodeMapping,
-                              Organigram organigram, OrganigramNode node, OrganigramNode selection, boolean selectionEnabled) throws IOException {
+                              Organigram component, OrganigramNode node, OrganigramNode selection, boolean selectionEnabled) throws IOException {
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
@@ -165,7 +161,7 @@ public class OrganigramRenderer extends CoreRenderer {
         }
 
         // push var with node to EL
-        requestMap.put(organigram.getVar(), node);
+        requestMap.put(component.getVar(), node);
 
         writer.startElement("li", null);
         writer.writeAttribute("data-rowkey", node.getRowKey(), null);
@@ -208,13 +204,13 @@ public class OrganigramRenderer extends CoreRenderer {
         writer.endElement("div");
 
         // remove var
-        requestMap.remove(organigram.getVar());
+        requestMap.remove(component.getVar());
 
         // render child nodes
         if (node.getChildren() != null && node.getChildCount() > 0) {
             writer.startElement("ul", null);
             for (OrganigramNode childNode : node.getChildren()) {
-                renderNode(context, writer, nodeMapping, organigram, childNode, selection, selectionEnabled);
+                renderNode(context, writer, nodeMapping, component, childNode, selection, selectionEnabled);
             }
             writer.endElement("ul");
         }
@@ -222,14 +218,14 @@ public class OrganigramRenderer extends CoreRenderer {
         writer.endElement("li");
     }
 
-    protected void encodeScript(FacesContext context, Organigram organigram) throws IOException {
+    protected void encodeScript(FacesContext context, Organigram component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Organigram", organigram)
-                .attr("zoom", organigram.isZoom())
-                .attr("leafNodeConnectorHeight", organigram.getLeafNodeConnectorHeight())
-                .attr("autoScrollToSelection", organigram.isAutoScrollToSelection());
+        wb.init("Organigram", component)
+                .attr("zoom", component.isZoom())
+                .attr("leafNodeConnectorHeight", component.getLeafNodeConnectorHeight())
+                .attr("autoScrollToSelection", component.isAutoScrollToSelection());
 
-        encodeClientBehaviors(context, organigram);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
@@ -290,7 +286,7 @@ public class OrganigramRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Organigram component) throws IOException {
         //Do nothing
     }
 

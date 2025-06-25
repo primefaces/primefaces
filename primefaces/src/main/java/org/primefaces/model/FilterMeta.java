@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,17 +26,22 @@ package org.primefaces.model;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.ColumnBase;
-import org.primefaces.component.datatable.feature.FilterFeature;
 import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.model.filter.GlobalFilterConstraint;
+import org.primefaces.util.EditableValueHolderState;
+import org.primefaces.util.LangUtils;
 
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.Objects;
+
+import jakarta.el.ELContext;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
+import jakarta.faces.context.FacesContext;
 
 public class FilterMeta implements Serializable {
 
@@ -47,38 +52,30 @@ public class FilterMeta implements Serializable {
     private String field;
     private String columnKey;
     private ValueExpression filterBy;
-    private Object filterValue;
+    private Object filterValue; // should be null if empty string/collection/array/object
     private MatchMode matchMode = MatchMode.CONTAINS;
     private FilterConstraint constraint;
+    private boolean normalize = false;
+    private boolean filterByGenerated;
 
     public FilterMeta() {
         // NOOP
     }
 
     FilterMeta(String columnKey, String field, FilterConstraint constraint,
-               ValueExpression filterBy, Object filterValue, MatchMode matchMode) {
+               ValueExpression filterBy, Object filterValue, MatchMode matchMode, boolean normalize,
+               boolean filterByGenerated) {
         this.field = field;
         this.columnKey = columnKey;
         this.filterBy = filterBy;
         this.constraint = constraint;
-        this.filterValue = filterValue;
         this.matchMode = matchMode;
+        this.normalize = normalize;
+        this.filterByGenerated = filterByGenerated;
+        setFilterValue(filterValue);
     }
 
-    /**
-     * @deprecated Use FilterMeta#builder() instead
-     */
-    @Deprecated
-    public FilterMeta(String field, String columnKey, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
-        this.field = field;
-        this.columnKey = columnKey;
-        this.filterBy = filterByVE;
-        this.constraint = FilterFeature.FILTER_CONSTRAINTS.get(filterMatchMode);
-        this.filterValue = filterValue;
-        this.matchMode = filterMatchMode;
-    }
-
-    public static FilterMeta of(FacesContext context, String var, UIColumn column) {
+    public static FilterMeta of(FacesContext context, String var, UIColumn column, boolean normalize) {
         if (column instanceof DynamicColumn) {
             ((DynamicColumn) column).applyStatelessModel();
         }
@@ -93,29 +90,42 @@ public class FilterMeta implements Serializable {
             return null;
         }
 
+        boolean filterByGenerated = false;
         if (field == null) {
             field = column.resolveField(context, filterByVE);
         }
         else if (filterByVE == null) {
             filterByVE = UIColumn.createValueExpressionFromField(context, var, field);
+            filterByGenerated = true;
         }
 
         MatchMode matchMode = MatchMode.of(column.getFilterMatchMode());
-        FilterConstraint constraint = FilterFeature.FILTER_CONSTRAINTS.get(matchMode);
+        FilterConstraint constraint = FilterConstraints.of(matchMode);
 
         if (column.getFilterFunction() != null) {
             constraint = new FunctionFilterConstraint(column.getFilterFunction());
         }
 
+        Object filterValue = column.getFilterValue();
+        if (filterValue == null) {
+            EditableValueHolderState state = column.getFilterValueHolder(context);
+            if (state != null) {
+                filterValue = state.getValue();
+            }
+        }
+        filterValue = LangUtils.normalize(filterValue, normalize);
+
         return new FilterMeta(column.getColumnKey(),
                               field,
                               constraint,
                               filterByVE,
-                              column.getFilterValue(),
-                              matchMode);
+                              filterValue,
+                              matchMode,
+                              normalize,
+                              filterByGenerated);
     }
 
-    public static FilterMeta of(Object globalFilterValue, MethodExpression globalFilterFunction) {
+    public static FilterMeta of(Object globalFilterValue, MethodExpression globalFilterFunction, boolean normalize) {
         FilterConstraint constraint = globalFilterFunction == null
                 ? new GlobalFilterConstraint()
                 : new FunctionFilterConstraint(globalFilterFunction);
@@ -124,8 +134,21 @@ public class FilterMeta implements Serializable {
                               GLOBAL_FILTER_KEY,
                               constraint,
                               null,
-                              globalFilterValue,
-                              MatchMode.GLOBAL);
+                              LangUtils.normalize(globalFilterValue, normalize),
+                              MatchMode.GLOBAL,
+                              normalize,
+                              false);
+    }
+
+    public static <T> T resetToNullIfEmpty(T filterValue) {
+        if (filterValue != null
+                && ((filterValue instanceof String && LangUtils.isBlank((String) filterValue))
+                || (filterValue instanceof Collection && ((Collection) filterValue).isEmpty())
+                || (filterValue instanceof Iterable && !((Iterable) filterValue).iterator().hasNext())
+                || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0))) {
+            filterValue = null;
+        }
+        return filterValue;
     }
 
     public String getField() {
@@ -142,6 +165,7 @@ public class FilterMeta implements Serializable {
 
     public void setFilterBy(ValueExpression filterBy) {
         this.filterBy = filterBy;
+        this.filterByGenerated = false;
     }
 
     public Object getFilterValue() {
@@ -149,7 +173,7 @@ public class FilterMeta implements Serializable {
     }
 
     public void setFilterValue(Object filterValue) {
-        this.filterValue = filterValue;
+        this.filterValue = resetToNullIfEmpty(LangUtils.normalize(filterValue, isNormalize()));
     }
 
     public FilterConstraint getConstraint() {
@@ -180,7 +204,23 @@ public class FilterMeta implements Serializable {
         if (column instanceof DynamicColumn) {
             ((DynamicColumn) column).applyStatelessModel();
         }
-        return filterBy.getValue(elContext);
+        return LangUtils.normalize(filterBy.getValue(elContext), isNormalize());
+    }
+
+    public boolean isNormalize() {
+        return normalize;
+    }
+
+    public void setNormalize(boolean normalize) {
+        this.normalize = normalize;
+    }
+
+    public boolean isFilterByGenerated() {
+        return filterByGenerated;
+    }
+
+    public void setFilterByGenerated(boolean filterByGenerated) {
+        this.filterByGenerated = filterByGenerated;
     }
 
     public static Builder builder() {
@@ -220,10 +260,16 @@ public class FilterMeta implements Serializable {
             return this;
         }
 
+        public Builder normalize(boolean normalize) {
+            filterBy.normalize = normalize;
+            return this;
+        }
+
         public FilterMeta build() {
             if (filterBy.matchMode != null) {
-                filterBy.constraint = FilterFeature.FILTER_CONSTRAINTS.get(filterBy.matchMode);
+                filterBy.constraint = FilterConstraints.of(filterBy.matchMode);
             }
+            filterBy.filterValue = resetToNullIfEmpty(filterBy.filterValue);
             Objects.requireNonNull(filterBy.constraint, "Filter constraint is required");
             Objects.requireNonNull(filterBy.field, "Field is required");
             return filterBy;
@@ -239,6 +285,7 @@ public class FilterMeta implements Serializable {
                 ", filterValue=" + filterValue +
                 ", matchMode=" + matchMode +
                 ", constraint=" + constraint +
+                ", normalize=" + normalize +
                 '}';
     }
 

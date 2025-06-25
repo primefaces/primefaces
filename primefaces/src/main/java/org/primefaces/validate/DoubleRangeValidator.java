@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,12 @@
  */
 package org.primefaces.validate;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.primefaces.util.HTML;
 
-public class DoubleRangeValidator extends javax.faces.validator.DoubleRangeValidator implements ClientValidator {
+import java.util.HashMap;
+import java.util.Map;
+
+public class DoubleRangeValidator extends jakarta.faces.validator.DoubleRangeValidator implements ClientValidator {
 
     private boolean minimumSet;
     private boolean maximumSet;

@@ -31,7 +31,7 @@ SplitButton displays a command by default and additional ones in an overlay.
 | async | false | Boolean | When set to true, ajax requests are not queued.
 | process | @all | String | Component(s) to process partially instead of whole view.
 | update | @none | String | Component(s) to be updated with ajax.
-| onstart | null | String | Client side callback to execute before ajax request is begins.
+| onstart | null | String | Client side callback to execute before ajax request begins.
 | oncomplete | null | String | Client side callback to execute when ajax request is completed.
 | onsuccess | null | String | Client side callback to execute when ajax request succeeds.
 | onerror | null | String | Client side callback to execute when ajax request fails.
@@ -63,7 +63,7 @@ SplitButton displays a command by default and additional ones in an overlay.
 | alt | null | String | Alternate textual description of the button.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables the button.
-| disableOnAjax | false | Boolean | If true, the button will be disabled during Ajax requests triggered by the button or its menu items.
+| disableOnAjax | true | Boolean | If true, the button will be disabled during Ajax requests triggered by the button or its menu items.
 | label | null | String | A localized user presentable name.
 | lang | null | String | Code describing the language used in the generated markup for this component.
 | tabindex | null | Integer | Position of the button element in the tabbing order.

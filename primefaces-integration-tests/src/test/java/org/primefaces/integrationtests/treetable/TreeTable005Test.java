@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,32 @@
  */
 package org.primefaces.integrationtests.treetable;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
 
-public class TreeTable005Test extends AbstractTreeTableTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class TreeTable005Test extends AbstractTreeTableTest {
 
     @Test
     @Order(6)
-    @DisplayName("TreeTable: inital empty")
-    public void testShowSelectedNodes(Page page) {
+    @DisplayName("TreeTable: initial empty")
+    void showSelectedNodes(Page page) {
         TreeTable treeTable = page.treeTable;
 
-        Assertions.assertTrue(treeTable.isEmpty());
+        assertTrue(treeTable.isEmpty());
 
         page.populate.click();
 
-        Assertions.assertFalse(treeTable.isEmpty());
+        assertFalse(treeTable.isEmpty());
     }
 
     public static class Page extends AbstractPrimePage {

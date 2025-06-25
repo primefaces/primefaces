@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,73 +23,74 @@
  */
 package org.primefaces.component.resizable;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIGraphic;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class ResizableRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIGraphic;
+import jakarta.faces.context.FacesContext;
+
+public class ResizableRenderer extends CoreRenderer<Resizable> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Resizable component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Resizable resizable = (Resizable) component;
-        String clientId = resizable.getClientId(context);
+    public void encodeEnd(FacesContext context, Resizable component) throws IOException {
+        String clientId = component.getClientId(context);
 
-        UIComponent target = SearchExpressionFacade.resolveComponent(
-                context, resizable, resizable.getFor(), SearchExpressionUtils.SET_PARENT_FALLBACK);
+        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, component, component.getFor());
+        if (target == null) {
+            target = component.getParent();
+        }
+
         String targetId = target.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (target instanceof UIGraphic) {
-            wb.initWithComponentLoad("Resizable", resizable.resolveWidgetVar(context), clientId, targetId);
+            wb.initWithComponentLoad("Resizable", component.resolveWidgetVar(context), clientId, targetId);
         }
         else {
-            wb.init("Resizable", resizable);
+            wb.init("Resizable", component);
         }
 
         wb.attr("target", targetId)
-                .attr("minWidth", resizable.getMinWidth(), Integer.MIN_VALUE)
-                .attr("maxWidth", resizable.getMaxWidth(), Integer.MAX_VALUE)
-                .attr("minHeight", resizable.getMinHeight(), Integer.MIN_VALUE)
-                .attr("maxHeight", resizable.getMaxHeight(), Integer.MAX_VALUE);
+                .attr("minWidth", component.getMinWidth(), Integer.MIN_VALUE)
+                .attr("maxWidth", component.getMaxWidth(), Integer.MAX_VALUE)
+                .attr("minHeight", component.getMinHeight(), Integer.MIN_VALUE)
+                .attr("maxHeight", component.getMaxHeight(), Integer.MAX_VALUE);
 
-        if (resizable.isAnimate()) {
+        if (component.isAnimate()) {
             wb.attr("animate", true)
-                    .attr("animateEasing", resizable.getEffect())
-                    .attr("animateDuration", resizable.getEffectDuration());
+                    .attr("animateEasing", component.getEffect())
+                    .attr("animateDuration", component.getEffectDuration());
         }
 
-        if (resizable.isProxy()) {
+        if (component.isProxy()) {
             wb.attr("helper", "ui-resizable-proxy");
         }
 
-        wb.attr("handles", resizable.getHandles(), null)
-                .attr("grid", resizable.getGrid(), 1)
-                .attr("aspectRatio", resizable.isAspectRatio(), false)
-                .attr("ghost", resizable.isGhost(), false);
+        wb.attr("handles", component.getHandles(), null)
+                .attr("grid", component.getGrid(), 1)
+                .attr("aspectRatio", component.isAspectRatio(), false)
+                .attr("ghost", component.isGhost(), false);
 
-        if (resizable.isContainment()) {
+        if (component.isContainment()) {
             wb.attr("isContainment", true);
-            wb.attr("parentComponentId", resizable.getParent().getClientId(context));
+            wb.attr("parentComponentId", component.getParent().getClientId(context));
         }
 
-        wb.callback("onStart", "function(event,ui)", resizable.getOnStart())
-                .callback("onResize", "function(event,ui)", resizable.getOnResize())
-                .callback("onStop", "function(event,ui)", resizable.getOnStop());
+        wb.callback("onStart", "function(event,ui)", component.getOnStart())
+                .callback("onResize", "function(event,ui)", component.getOnResize())
+                .callback("onStop", "function(event,ui)", component.getOnStop());
 
-        encodeClientBehaviors(context, resizable);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }

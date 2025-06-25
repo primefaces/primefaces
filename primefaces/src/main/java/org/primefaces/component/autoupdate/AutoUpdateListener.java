@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,29 @@
  */
 package org.primefaces.component.autoupdate;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.el.ValueExpression;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ComponentSystemEventListener;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.PreRenderComponentEvent;
 import org.primefaces.util.LangUtils;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.el.ValueExpression;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.ComponentSystemEvent;
+import jakarta.faces.event.ComponentSystemEventListener;
+import jakarta.faces.event.PostAddToViewEvent;
+import jakarta.faces.event.PreRenderComponentEvent;
 
 /**
  * Registers components to auto update
  */
-public class AutoUpdateListener implements ComponentSystemEventListener {
+public class AutoUpdateListener implements ComponentSystemEventListener, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final String COMPONENT_CLIENT_IDS = AutoUpdateListener.class.getName() + ".COMPONENT_CLIENT_IDS";
 
@@ -72,10 +78,16 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         FacesContext context = FacesContext.getCurrentInstance();
         String clientId = ((UIComponent) cse.getSource()).getClientId(context);
 
-        Map<String, String> infos = getOrCreateAutoUpdateComponentInfos(context);
+        Map<String, List<String>> infos = getOrCreateAutoUpdateComponentInfos(context);
         if (disabled == null || !((boolean) disabled.getValue(context.getELContext()))) {
             if (!infos.containsKey(clientId)) {
-                infos.put(clientId, on);
+                if (on == null) {
+                    infos.put(clientId, null);
+                }
+                else {
+                    String[] onList = context.getApplication().getSearchExpressionHandler().splitExpressions(context, on);
+                    infos.put(clientId, Arrays.asList(onList));
+                }
             }
         }
         else {
@@ -83,8 +95,8 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         }
     }
 
-    public static Map<String, String> getOrCreateAutoUpdateComponentInfos(FacesContext context) {
-        Map<String, String> infos = getAutoUpdateComponentInfos(context);
+    public static Map<String, List<String>> getOrCreateAutoUpdateComponentInfos(FacesContext context) {
+        Map<String, List<String>> infos = getAutoUpdateComponentInfos(context);
         if (infos == null) {
             infos = new HashMap<>();
             context.getViewRoot().getAttributes().put(COMPONENT_CLIENT_IDS, infos);
@@ -92,8 +104,8 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         return infos;
     }
 
-    public static Map<String, String> getAutoUpdateComponentInfos(FacesContext context) {
-        return (Map<String, String>) context.getViewRoot().getAttributes().get(COMPONENT_CLIENT_IDS);
+    public static Map<String, List<String>> getAutoUpdateComponentInfos(FacesContext context) {
+        return (Map<String, List<String>>) context.getViewRoot().getAttributes().get(COMPONENT_CLIENT_IDS);
     }
 
     public static void subscribe(UIComponent component) {
@@ -121,13 +133,15 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
 
     protected static void subscribe(UIComponent component, ComponentSystemEventListener listener) {
 
-        // PostAddToViewEvent should work for stateless views
-        //                  but fails for MyFaces ViewPooling
-        //                  and sometimes on postbacks as PostAddToViewEvent should actually ony be called once
-        component.subscribeToEvent(PostAddToViewEvent.class, listener);
-
-        // PreRenderComponentEvent should work for normal cases and MyFaces ViewPooling
-        //                      but likely fails for stateless view as we save the clientIds in the viewRoot
+        // PreRenderComponentEvent works for normal views (stateful) and even MyFaces ViewPooling
+        //                      but fails for stateless view as we can't save the clientIds in the viewRoot
         component.subscribeToEvent(PreRenderComponentEvent.class, listener);
+
+        // In case of stateless views, we cant access previous rendered auto-updatable components
+        // so we need to listen to PostAddToViewEvent - independent if the component is rendered or not
+        // see #11408
+        if (FacesContext.getCurrentInstance().getViewRoot().isTransient()) {
+            component.subscribeToEvent(PostAddToViewEvent.class, listener);
+        }
     }
 }

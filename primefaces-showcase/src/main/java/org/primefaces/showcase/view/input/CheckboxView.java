@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,23 @@
  */
 package org.primefaces.showcase.view.input;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
-import javax.inject.Named;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleSelectEvent;
+import org.primefaces.event.UnselectEvent;
+import org.primefaces.showcase.domain.Country;
+import org.primefaces.showcase.service.CountryService;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import org.primefaces.event.UnselectEvent;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @RequestScoped
@@ -45,6 +52,13 @@ public class CheckboxView {
     private List<String> cities;
     private List<SelectItem> countries;
     private String[] selectedCountries;
+    private List<Country> countries2;
+    private List<Country> selectedCountries2;
+    private List<SelectItem> countries3;
+    private List<Country> selectedCountries3;
+
+    @Inject
+    private CountryService service;
 
     @PostConstruct
     public void init() {
@@ -76,6 +90,19 @@ public class CheckboxView {
 
         countries.add(europeCountries);
         countries.add(americaCountries);
+
+        countries2 = service.getCountries();
+
+        countries3 = new ArrayList<>();
+
+        SelectItemGroup europeCountries3 = new SelectItemGroup("European Countries");
+        europeCountries3.setSelectItems(isoCodesToSelectItemArray("DE", "TR", "ES"));
+
+        SelectItemGroup americaCountries3 = new SelectItemGroup("American Countries");
+        americaCountries3.setSelectItems(isoCodesToSelectItemArray("US", "BR", "MX"));
+
+        countries3.add(europeCountries3);
+        countries3.add(americaCountries3);
     }
 
     public String[] getSelectedOptions() {
@@ -134,6 +161,54 @@ public class CheckboxView {
         this.selectedCountries = selectedCountries;
     }
 
+    public List<Country> getCountries2() {
+        return countries2;
+    }
+
+    public void setCountries2(List<Country> countries2) {
+        this.countries2 = countries2;
+    }
+
+    public List<Country> getSelectedCountries2() {
+        return selectedCountries2;
+    }
+
+    public void setSelectedCountries2(List<Country> selectedCountries2) {
+        this.selectedCountries2 = selectedCountries2;
+    }
+
+    public List<SelectItem> getCountries3() {
+        return countries3;
+    }
+
+    public void setCountries3(List<SelectItem> countries3) {
+        this.countries3 = countries3;
+    }
+
+    public List<Country> getSelectedCountries3() {
+        return selectedCountries3;
+    }
+
+    public void setSelectedCountries3(List<Country> selectedCountries3) {
+        this.selectedCountries3 = selectedCountries3;
+    }
+
+    public void onToggleSelect(ToggleSelectEvent event) {
+        FacesMessage msg = new FacesMessage();
+        msg.setSummary("Toggled: " + event.isSelected());
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onItemSelect(SelectEvent event) {
+        FacesMessage msg = new FacesMessage();
+        msg.setSummary("Item selected: " + event.getObject().toString());
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
     public void onItemUnselect(UnselectEvent event) {
         FacesMessage msg = new FacesMessage();
         msg.setSummary("Item unselected: " + event.getObject().toString());
@@ -170,5 +245,11 @@ public class CheckboxView {
 
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
+    }
+
+    private SelectItem[] isoCodesToSelectItemArray(String... isoCodes) {
+        return CountryService.toCountryStream(isoCodes)
+                .map(country -> new SelectItem(country, country.getName()))
+                .toArray(SelectItem[]::new);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,46 +24,27 @@
 package org.primefaces.component.treetable.feature;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.event.data.PostSortEvent;
-import org.primefaces.model.*;
-
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.text.Collator;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.component.treetable.TreeTableState;
+import org.primefaces.event.data.PostSortEvent;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.SortOrder;
+import org.primefaces.model.TreeNode;
+import org.primefaces.model.TreeNodeChildren;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.SortTableComparator;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
 
 public class SortFeature implements TreeTableFeature {
-
-    private static final SortFeature INSTANCE = new SortFeature();
-
-    private SortFeature() {
-    }
-
-    public static SortFeature getInstance() {
-        return INSTANCE;
-    }
-
-    private boolean isSortRequest(FacesContext context, TreeTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
-    }
-
-    @Override
-    public boolean shouldDecode(FacesContext context, TreeTable table) {
-        return isSortRequest(context, table);
-    }
-
-    @Override
-    public boolean shouldEncode(FacesContext context, TreeTable table) {
-        return isSortRequest(context, table);
-    }
 
     @Override
     public void decode(FacesContext context, TreeTable table) {
@@ -140,15 +121,10 @@ public class SortFeature implements TreeTableFeature {
             return;
         }
 
-        AtomicInteger comparisonResult = new AtomicInteger();
-
         String var = table.getVar();
-        Locale locale = table.resolveDataLocale();
-        Collator collator = Collator.getInstance(locale);
-
         Object varBackup = context.getExternalContext().getRequestMap().get(var);
 
-        sortNode(table, sortBy, comparisonResult, root, context, var, locale, collator);
+        sortNode(context, table, root);
 
         if (varBackup == null) {
             context.getExternalContext().getRequestMap().remove(var);
@@ -158,39 +134,33 @@ public class SortFeature implements TreeTableFeature {
         }
     }
 
-    protected void sortNode(TreeTable table, Map<String, SortMeta> sortBy, AtomicInteger comparisonResult,
-            TreeNode<?> node, FacesContext context, String var, Locale locale, Collator collator) {
-        TreeNodeList<?> children = (TreeNodeList) node.getChildren();
+    protected void sortNode(FacesContext context, TreeTable table, TreeNode<?> node) {
+        TreeNodeChildren<?> children = node.getChildren();
 
         if (children != null && !children.isEmpty()) {
             Object[] childrenArray = children.toArray();
-
-            Arrays.sort(childrenArray, (o1, o2) -> {
-                for (SortMeta sortMeta : sortBy.values()) {
-                    comparisonResult.set(0);
-
-                    table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
-                        int result = table.compare(context, var, sortMeta,
-                                ((TreeNode) o1).getData(),
-                                ((TreeNode) o2).getData(),
-                                collator, locale);
-                        comparisonResult.set(result);
-                    });
-
-                    if (comparisonResult.get() != 0) {
-                        return comparisonResult.get();
-                    }
-                }
-
-                return 0;
-            });
-
+            Arrays.sort(childrenArray, SortTableComparator.comparingTreeNodeSortByVE(context, table));
             for (int i = 0; i < childrenArray.length; i++) {
                 children.set(i, (TreeNode) childrenArray[i]);
             }
             for (int i = 0; i < children.size(); i++) {
-                sortNode(table, sortBy, comparisonResult, children.get(i), context, var, locale, collator);
+                sortNode(context, table, children.get(i));
             }
         }
     }
+
+    @Override
+    public boolean shouldDecode(FacesContext context, TreeTable table) {
+        return isSortRequest(context, table);
+    }
+
+    @Override
+    public boolean shouldEncode(FacesContext context, TreeTable table) {
+        return isSortRequest(context, table);
+    }
+
+    private boolean isSortRequest(FacesContext context, TreeTable table) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
+    }
+
 }

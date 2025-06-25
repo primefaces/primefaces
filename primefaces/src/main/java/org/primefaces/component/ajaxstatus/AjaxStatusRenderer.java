@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,64 +23,62 @@
  */
 package org.primefaces.component.ajaxstatus;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class AjaxStatusRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class AjaxStatusRenderer extends CoreRenderer<AjaxStatus> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        AjaxStatus status = (AjaxStatus) component;
-
-        encodeMarkup(context, status);
-        encodeScript(context, status);
+    public void encodeEnd(FacesContext context, AjaxStatus component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, AjaxStatus status) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("AjaxStatus", status);
-        wb.attr("delay", status.getDelay());
+    protected void encodeScript(FacesContext context, AjaxStatus component) throws IOException {
+        WidgetBuilder wb = getWidgetBuilder(context)
+                .init("AjaxStatus", component)
+                .attr("delay", component.getDelay());
 
-        wb.callback(AjaxStatus.START, AjaxStatus.CALLBACK_SIGNATURE, status.getOnstart())
-                .callback(AjaxStatus.ERROR, AjaxStatus.CALLBACK_SIGNATURE, status.getOnerror())
-                .callback(AjaxStatus.SUCCESS, AjaxStatus.CALLBACK_SIGNATURE, status.getOnsuccess())
-                .callback(AjaxStatus.COMPLETE, AjaxStatus.CALLBACK_SIGNATURE, status.getOncomplete());
+        wb.callback(AjaxStatus.START, "function()", component.getOnstart())
+                .callback(AjaxStatus.ERROR, "function(xhr,settings,error)", component.getOnerror())
+                .callback(AjaxStatus.SUCCESS, "function(xhr,settings)", component.getOnsuccess())
+                .callback(AjaxStatus.COMPLETE, "function(xhr,settings,args)", component.getOncomplete());
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, AjaxStatus status) throws IOException {
+    protected void encodeMarkup(FacesContext context, AjaxStatus component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = status.getClientId(context);
+        String clientId = component.getClientId(context);
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
 
-        if (status.getStyle() != null) {
-            writer.writeAttribute("style", status.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
-        if (status.getStyleClass() != null) {
-            writer.writeAttribute("class", status.getStyleClass(), "styleClass");
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), "styleClass");
         }
 
         for (int i = 0; i < AjaxStatus.EVENTS.size(); i++) {
             String event = AjaxStatus.EVENTS.get(i);
-            UIComponent facet = status.getFacet(event);
+            UIComponent facet = component.getFacet(event);
 
-            if (ComponentUtils.shouldRenderFacet(facet)) {
+            if (FacetUtils.shouldRenderFacet(facet)) {
                 encodeFacet(context, clientId, facet, event, true);
             }
         }
 
-        UIComponent defaultFacet = status.getFacet(AjaxStatus.DEFAULT);
-        if (ComponentUtils.shouldRenderFacet(defaultFacet)) {
+        UIComponent defaultFacet = component.getFacet(AjaxStatus.DEFAULT);
+        if (FacetUtils.shouldRenderFacet(defaultFacet)) {
             encodeFacet(context, clientId, defaultFacet, AjaxStatus.DEFAULT, false);
         }
 

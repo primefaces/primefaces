@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,33 +26,31 @@ package org.primefaces.renderkit;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectMany;
-import javax.faces.context.FacesContext;
 
-public abstract class SelectManyRenderer extends SelectRenderer {
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UISelectMany;
+import jakarta.faces.context.FacesContext;
+
+public abstract class SelectManyRenderer<T extends UISelectMany> extends SelectRenderer<T> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        UISelectMany selectMany = (UISelectMany) component;
-        if (!shouldDecode(selectMany)) {
+    public void decode(FacesContext context, T component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        String submitParam = getSubmitParam(context, selectMany);
+        String submitParam = getSubmitParam(context, component);
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
 
         String[] submittedValues = params.containsKey(submitParam) ? params.get(submitParam) : new String[0];
-        List<String> validSubmittedValues = validateSubmittedValues(context, selectMany, (Object[]) getValues(selectMany), submittedValues);
-        selectMany.setSubmittedValue(validSubmittedValues.toArray(new String[validSubmittedValues.size()]));
+        List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component), submittedValues);
+        component.setSubmittedValue(validSubmittedValues.toArray(new String[validSubmittedValues.size()]));
 
-        decodeBehaviors(context, selectMany);
+        decodeBehaviors(context, component);
     }
 
-    protected Object getValues(UIComponent component) {
-        UISelectMany selectMany = (UISelectMany) component;
-        Object value = selectMany.getValue();
+    protected Object getValues(T component) {
+        Object value = component.getValue();
 
         if (value != null) {
             if (value instanceof Collection) {
@@ -69,10 +67,9 @@ public abstract class SelectManyRenderer extends SelectRenderer {
         return null;
     }
 
-    protected Object getSubmittedValues(UIComponent component) {
-        UISelectMany select = (UISelectMany) component;
-        return select.getSubmittedValue();
+    protected Object getSubmittedValues(T component) {
+        return component.getSubmittedValue();
     }
 
-    protected abstract String getSubmitParam(FacesContext context, UISelectMany selectMany);
+    protected abstract String getSubmitParam(FacesContext context, T component);
 }

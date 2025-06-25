@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,17 @@
  */
 package org.primefaces.application.exceptionhandler;
 
-import javax.faces.context.ExceptionHandler;
-import javax.faces.context.ExceptionHandlerFactory;
+import jakarta.faces.context.ExceptionHandler;
+import jakarta.faces.context.ExceptionHandlerFactory;
 
 public class PrimeExceptionHandlerFactory extends ExceptionHandlerFactory {
 
-    private final ExceptionHandlerFactory wrapped;
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
-    public PrimeExceptionHandlerFactory(final ExceptionHandlerFactory wrapped) {
-        this.wrapped = wrapped;
+    public PrimeExceptionHandlerFactory(ExceptionHandlerFactory wrapped) {
+        super(wrapped);
     }
 
     @Override
     public ExceptionHandler getExceptionHandler() {
-        return new PrimeExceptionHandler(wrapped.getExceptionHandler());
-    }
-
-    @Override
-    public ExceptionHandlerFactory getWrapped() {
-        return wrapped;
+        return new PrimeExceptionHandler(getWrapped().getExceptionHandler());
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,19 @@
  */
 package org.primefaces.showcase.view.input;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.model.datepicker.DefaultDateMetadata;
 import org.primefaces.model.datepicker.DefaultDateMetadataModel;
 import org.primefaces.model.datepicker.LazyDateMetadataModel;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped
@@ -43,14 +45,18 @@ public class DatePickerMetadataView implements Serializable {
     private LocalDate date2;
     private LocalDate date3;
     private LocalDate date4;
+    private LocalDate date5;
+    private LocalDate date6;
     private final DateMetadataModel model;
     private final DateMetadataModel modelLazy;
+    private final DateMetadataModel modelEnabledDaysLazy;
 
     public DatePickerMetadataView() {
         LocalDate start = LocalDate.now().withDayOfMonth(1);
         DefaultDateMetadata metadataDisabled = DefaultDateMetadata.builder().disabled(true).build();
         DefaultDateMetadata metadataStart = DefaultDateMetadata.builder().styleClass("start").build();
         DefaultDateMetadata metadataDeadline = DefaultDateMetadata.builder().styleClass("deadline").build();
+
         model = new DefaultDateMetadataModel();
         model.add(start.minusMonths(1), metadataDisabled);
         model.add(start.plusDays(start.getMonthValue() + 3), metadataStart);
@@ -64,6 +70,23 @@ public class DatePickerMetadataView implements Serializable {
                 add(start.plusDays(start.getMonthValue() + 2), metadataStart);
                 add(start.plusDays(start.getMonthValue() + 5), metadataDisabled);
                 add(start.plusDays(start.getMonthValue() + 8), metadataDeadline);
+            }
+        };
+
+        // start and deadline have to be also enabled
+        DefaultDateMetadata metadataStartEnabled = DefaultDateMetadata.builder().styleClass("start").enabled(true).build();
+        DefaultDateMetadata metadataEnabled = DefaultDateMetadata.builder().enabled(true).build();
+        DefaultDateMetadata metadataDeadlineEnabled = DefaultDateMetadata.builder().styleClass("deadline").enabled(true).build();
+        modelEnabledDaysLazy = new LazyDateMetadataModel() {
+            @Override
+            public void loadDateMetadata(LocalDate start, LocalDate end) {
+                add(start.plusDays(start.getMonthValue() + 2), metadataStartEnabled);
+                // enable just five days since start
+                for (int i = 1; i < 5; i++) {
+                    add(start.plusDays(start.getMonthValue() + 2 + i), metadataEnabled);
+                }
+
+                add(start.plusDays(start.getMonthValue() + 6), metadataDeadlineEnabled);
             }
         };
     }
@@ -106,11 +129,31 @@ public class DatePickerMetadataView implements Serializable {
         this.date4 = date4;
     }
 
+    public LocalDate getDate5() {
+        return date5;
+    }
+
+    public void setDate5(LocalDate date5) {
+        this.date5 = date5;
+    }
+
+    public LocalDate getDate6() {
+        return date6;
+    }
+
+    public void setDate6(LocalDate date6) {
+        this.date6 = date6;
+    }
+
     public DateMetadataModel getModel() {
         return model;
     }
 
     public DateMetadataModel getModelLazy() {
         return modelLazy;
+    }
+
+    public DateMetadataModel getModelEnabledDaysLazy() {
+        return modelEnabledDaysLazy;
     }
 }

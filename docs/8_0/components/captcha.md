@@ -80,7 +80,7 @@ message bundle mechanism. Corresponding keys are;
 | Detail | primefaces.captcha.INVALID_detail |
 
 ## Content Security Policy
-If you use the PrimeFaces Content Security Policy protection you must whitelist Google to allow Captcha to work properly:
+If you use the PrimeFaces Content Security Policy protection you must add Google to the allow list Captcha to work properly:
 
 ```xml
 <context-param>

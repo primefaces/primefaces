@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,26 @@
  */
 package org.primefaces.component.celleditor;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.renderkit.CoreRenderer;
 
-public class CellEditorRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class CellEditorRenderer extends CoreRenderer<CellEditor> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, CellEditor component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        CellEditor editor = (CellEditor) component;
-        UIComponent parentTable = editor.getParentTable(context);
+        UIComponent parentTable = component.getParentTable(context);
         boolean isLazyEdit = false;
 
-        if (editor.isDisabled()) {
-            editor.getFacet("output").encodeAll(context);
+        if (component.isDisabled()) {
+            component.getFacet("output").encodeAll(context);
             return;
         }
 
@@ -76,14 +75,14 @@ public class CellEditorRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_OUTPUT_CLASS, null);
-        editor.getFacet("output").encodeAll(context);
+        component.getFacet("output").encodeAll(context);
         writer.endElement("div");
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);
 
         if (!isLazyEdit) {
-            editor.getFacet("input").encodeAll(context);
+            component.getFacet("input").encodeAll(context);
         }
         writer.endElement("div");
 
@@ -91,7 +90,7 @@ public class CellEditorRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, CellEditor component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

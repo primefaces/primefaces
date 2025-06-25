@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,35 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import java.io.File;
-import org.json.JSONObject;
-import org.junit.jupiter.api.*;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
+import org.primefaces.selenium.component.Messages;
+
+import java.io.File;
+
+import org.json.JSONObject;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests basic auto multiple file upload.
  * p:fileUpload mode=simple auto=true multiple=true (skinSimple=true)
  */
-@Tag("SafariExclude") // Selenium SafariDriver does not support file uploads
-public class FileUpload004Test extends AbstractFileUploadTest {
+// Selenium SafariDriver does not support file uploads
+@Tag("SafariExclude")
+class FileUpload004Test extends AbstractFileUploadTest {
 
     @Test
     @Order(1)
-    public void testBasicAutoMultipleUploadSingleFile(Page page) {
+    void basicAutoMultipleUploadSingleFile(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file1.csv");
@@ -57,10 +65,10 @@ public class FileUpload004Test extends AbstractFileUploadTest {
 
     @Test
     @Order(2)
-    public void testBasicAutoMultipleUploadMultipleFiles(Page page) throws Exception {
+    void basicAutoMultipleUploadMultipleFiles(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file1 = locateClientSideFile("file1.csv");
@@ -75,10 +83,10 @@ public class FileUpload004Test extends AbstractFileUploadTest {
 
     @Test
     @Order(3)
-    public void testBasicAutoMultipleUploadMultipleFilesTwice(Page page) throws Exception {
+    void basicAutoMultipleUploadMultipleFilesTwice(Page page) throws Exception {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file1 = locateClientSideFile("file1.csv");
@@ -102,73 +110,64 @@ public class FileUpload004Test extends AbstractFileUploadTest {
 
     @Test
     @Order(4)
-    public void testBasicAutoMultipleUploadFileLimit(Page page) {
+    void basicAutoMultipleUploadFileLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
-        String fileLimitMsg = fileUpload.getWidgetConfiguration().getString("fileLimitMessage");
-        Assertions.assertNotNull(fileLimitMsg);
-        Assertions.assertFalse(fileLimitMsg.isEmpty());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file1 = locateClientSideFile("file1.csv");
         File file2 = locateClientSideFile("file2.csv");
         File file3 = locateClientSideFile("file3.csv");
-        fileUpload.setValue(file1, file2, file3);
-
-        // for a very short time the widget value shows a message, assume the message disapeared already
-        Assertions.assertEquals("", fileUpload.getWidgetValue());
+        File file = locateClientSideFile("file3.csv");
+        fileUpload.setValue(false, file1, file2, file3);
 
         // Assert
+        assertFalse(page.messages.getAllMessages().isEmpty());
+        assertEquals("Maximum number of files exceeded.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
-        // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }
 
+    //@Disabled("NPE, enable if #7617 is fixed")
     @Test
     @Order(5)
-    //@Disabled("NPE, enable if #7617 is fixed")
-    public void testBasicAutoMultipleUploadSizeLimit(Page page) {
+    void basicAutoMultipleUploadSizeLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
-        String invalidSizeMsg = fileUpload.getWidgetConfiguration().getString("invalidSizeMessage");
-        Assertions.assertNotNull(invalidSizeMsg);
-        Assertions.assertFalse(invalidSizeMsg.isEmpty());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file3.csv");
-        fileUpload.setValue(file);
-        // for a very short time the widget value shows a message, assume the message disapeared already
-        Assertions.assertEquals("", fileUpload.getWidgetValue());
+        fileUpload.setValue(file, false);
 
         // Assert
+        assertFalse(page.messages.getAllMessages().isEmpty());
+        assertEquals("Invalid file size.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
-        // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }
 
     @Test
     @Order(6)
-    public void testBasicAutoMultipleUploadAllowTypes(Page page) {
+    void basicAutoMultipleUploadAllowTypes(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
-        String invalidTypeMsg = fileUpload.getWidgetConfiguration().getString("invalidFileMessage");
-        Assertions.assertNotNull(invalidTypeMsg);
-        Assertions.assertFalse(invalidTypeMsg.isEmpty());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file1.png");
-        fileUpload.setValue(file);
-        // for a very short time the widget value shows a message, assume the message disapeared already
-        Assertions.assertEquals("", fileUpload.getWidgetValue());
+        fileUpload.setValue(file, false);
 
         // Assert
+        assertFalse(page.messages.getAllMessages().isEmpty());
+        assertEquals("Invalid file type.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
-        // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }
@@ -176,15 +175,18 @@ public class FileUpload004Test extends AbstractFileUploadTest {
     private void assertConfiguration(FileUpload fileUpload) {
         JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("skinSimple"));
-        Assertions.assertTrue(cfg.getBoolean("auto"));
-        Assertions.assertEquals(2, cfg.getInt("fileLimit"));
-        Assertions.assertEquals(100, cfg.getInt("maxFileSize"));
-        Assertions.assertEquals("/(\\.|\\/)(csv)$/", cfg.getString("allowTypes"));
-        Assertions.assertNotNull(fileUpload.getInput().getAttribute("multiple"));
+        assertTrue(cfg.getBoolean("skinSimple"));
+        assertTrue(cfg.getBoolean("auto"));
+        assertEquals(2, Integer.parseInt(fileUpload.getInput().getAttribute("data-p-filelimit")));
+        assertEquals(100, Long.parseLong(fileUpload.getInput().getAttribute("data-p-sizelimit")));
+        assertEquals("/(\\.|\\/)(csv)$/", fileUpload.getInput().getAttribute("data-p-allowtypes"));
+        assertNotNull(fileUpload.getInput().getAttribute("multiple"));
     }
 
     public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:msgs")
+        Messages messages;
+
         @FindBy(id = "form:fileupload")
         FileUpload fileupload;
 

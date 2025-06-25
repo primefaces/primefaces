@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.inputmask;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -34,5 +34,5 @@ public class InputMask extends InputMaskBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputMask";
 
-    public static final String STYLE_CLASS = "ui-inputfield ui-inputmask ui-widget ui-state-default ui-corner-all";
+    public static final String STYLE_CLASS = "ui-inputfield ui-inputmask ui-widget ui-state-default";
 }

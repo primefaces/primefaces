@@ -46,7 +46,7 @@ lazy | false | Boolean | Defines if lazy loading is enabled for the data compone
 emptyMessage | No records found. | String | Text to display when there is no data to display.
 layout | tabular | String | Layout approach to use, valid values are "tabular" and "grid" for responsive grid.
 multiViewState | false | Boolean | Whether to keep DataGrid state across views, defaults to false.
-touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 flex | false | Boolean | Use modern PrimeFlex-Grid instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
 
 ## Getting started with the DataGrid
@@ -135,7 +135,7 @@ Here are more examples based on different templates;
 - _{PreviousPageLink} {CurrentPageReport} {NextPageLink}_
 
 ## Paginator Position
-Paginator can be positoned using _paginatorPosition_ attribute in three different locations, "top",
+Paginator can be positioned using _paginatorPosition_ attribute in three different locations, "top",
 "bottom" or "both" (default).
 
 

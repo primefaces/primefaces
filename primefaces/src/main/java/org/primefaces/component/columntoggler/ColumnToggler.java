@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,26 @@
  */
 package org.primefaces.component.columntoggler;
 
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITable;
+import org.primefaces.event.ColumnToggleEvent;
+import org.primefaces.event.ToggleCloseEvent;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.Visibility;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
-import org.primefaces.event.ToggleCloseEvent;
-import org.primefaces.event.ToggleEvent;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.Visibility;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -87,7 +90,8 @@ public class ColumnToggler extends ColumnTogglerBase {
             Visibility visibility = Visibility.valueOf(params.get(clientId + "_visibility"));
             int index = Integer.parseInt(params.get(clientId + "_index"));
 
-            super.queueEvent(new ToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), visibility, index));
+            UIColumn column = ((UITable) getDataSourceComponent()).getColumns().get(index);
+            super.queueEvent(new ColumnToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), column, visibility, index));
         }
         else if (event instanceof AjaxBehaviorEvent && "close".equals(eventName)) {
             String clientId = this.getClientId(context);
@@ -106,7 +110,7 @@ public class ColumnToggler extends ColumnTogglerBase {
 
     public UIComponent getDataSourceComponent() {
         if (dataSourceComponent == null) {
-            dataSourceComponent = SearchExpressionFacade.resolveComponent(getFacesContext(), this, getDatasource());
+            dataSourceComponent = SearchExpressionUtils.contextlessResolveComponent(getFacesContext(), this, getDatasource());
         }
 
         return dataSourceComponent;

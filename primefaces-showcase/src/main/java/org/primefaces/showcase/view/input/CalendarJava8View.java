@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,17 +26,22 @@ package org.primefaces.showcase.view.input;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import javax.validation.constraints.Future;
 import java.io.Serializable;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.Future;
 
 @Named
 @ViewScoped
@@ -59,6 +64,7 @@ public class CalendarJava8View implements Serializable {
     private LocalDate date12;
     private LocalDate date13;
     private LocalDate date14;
+    private LocalDate date15;
     private LocalTime time1;
     private LocalTime time2;
     private LocalTime time3;
@@ -78,8 +84,10 @@ public class CalendarJava8View implements Serializable {
     private LocalDateTime dateTime7;
     private LocalDateTime dateTimeDe;
     private List<LocalDate> multi;
+    private List<LocalDate> week;
     private List<LocalDate> range;
     private List<LocalDate> invalidDates;
+    private List<LocalDate> validDates;
     private List<Integer> invalidDays;
     private LocalDate minDate;
     private LocalDate maxDate;
@@ -96,6 +104,12 @@ public class CalendarJava8View implements Serializable {
         invalidDates.add(LocalDate.now());
         for (int i = 0; i < 5; i++) {
             invalidDates.add(invalidDates.get(i).plusDays(1));
+        }
+
+        validDates = new ArrayList<>();
+        validDates.add(LocalDate.now());
+        for (int i = 0; i < 5; i++) {
+            validDates.add(validDates.get(i).plusDays(1));
         }
 
         invalidDays = new ArrayList<>();
@@ -123,6 +137,15 @@ public class CalendarJava8View implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", event.getObject().format(formatter)));
+    }
+
+    public void onDateRangeSelect(SelectEvent<List<LocalDate>> event) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String range = event.getObject().get(0).format(formatter)
+                + " - "
+                + event.getObject().get(event.getObject().size() - 1).format(formatter);
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Range Selected", range));
     }
 
     public void onDateTimeSelect(SelectEvent<LocalDateTime> event) {
@@ -272,6 +295,14 @@ public class CalendarJava8View implements Serializable {
         this.multi = multi;
     }
 
+    public List<LocalDate> getWeek() {
+        return week;
+    }
+
+    public void setWeek(List<LocalDate> week) {
+        this.week = week;
+    }
+
     public List<LocalDate> getRange() {
         return range;
     }
@@ -286,6 +317,14 @@ public class CalendarJava8View implements Serializable {
 
     public void setInvalidDates(List<LocalDate> invalidDates) {
         this.invalidDates = invalidDates;
+    }
+
+    public List<LocalDate> getValidDates() {
+        return validDates;
+    }
+
+    public void setValidDates(List<LocalDate> validDates) {
+        this.validDates = validDates;
     }
 
     public List<Integer> getInvalidDays() {
@@ -350,6 +389,14 @@ public class CalendarJava8View implements Serializable {
 
     public void setDate14(LocalDate date14) {
         this.date14 = date14;
+    }
+
+    public LocalDate getDate15() {
+        return date15;
+    }
+
+    public void setDate15(LocalDate date15) {
+        this.date15 = date15;
     }
 
     public ZonedDateTime getZonedDateTime1() {

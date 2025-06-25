@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,32 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
 
-public class DataTable034Test extends AbstractDataTableTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class DataTable034Test extends AbstractDataTableTest {
 
     @Test
     @DisplayName("DataTable: RequestScoped LazyDataModel with input change")
-    public void test(Page page) throws InterruptedException {
+    void test(Page page) throws InterruptedException {
 
         InputText it = PrimeSelenium.createFragment(InputText.class, By.id("form:datatable:0:name"));
 
-        Assertions.assertEquals("Language 1", it.getValue());
+        assertEquals("Language 1", it.getValue());
 
         it.clear();
         it.setValue("Language 666");
 
-        Assertions.assertEquals("Language 666", it.getValue());
+        assertEquals("Language 666", it.getValue());
     }
 
     public static class Page extends AbstractPrimePage {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,20 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.data.FilterEvent;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.event.data.FilterEvent;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import lombok.Data;
 
@@ -96,7 +96,7 @@ public class DataTable009 implements Serializable {
         return progLanguages.stream().map(p -> p.getFirstAppeared()).distinct().sorted().collect(Collectors.toList());
     }
 
-    public void addJsfImplMessage()  {
-        TestUtils.addJsfImplMessage();
+    public void addFacesImplMessage()  {
+        TestUtils.addFacesImplMessage();
     }
 }

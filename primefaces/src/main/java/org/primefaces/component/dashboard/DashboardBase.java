@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.dashboard;
 
-import javax.faces.component.UIPanel;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIPanel;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DashboardBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -36,13 +36,15 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DashboardRenderer";
 
     public enum PropertyKeys {
-
-        widgetVar,
-        model,
         disabled,
+        model,
         reordering,
+        responsive,
+        scope,
         style,
-        styleClass
+        styleClass,
+        var,
+        widgetVar
     }
 
     public DashboardBase() {
@@ -62,11 +64,11 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public org.primefaces.model.DashboardModel getModel() {
-        return (org.primefaces.model.DashboardModel) getStateHelper().eval(PropertyKeys.model, null);
+    public org.primefaces.model.dashboard.DashboardModel getModel() {
+        return (org.primefaces.model.dashboard.DashboardModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.DashboardModel model) {
+    public void setModel(org.primefaces.model.dashboard.DashboardModel model) {
         getStateHelper().put(PropertyKeys.model, model);
     }
 
@@ -100,5 +102,29 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public boolean isResponsive() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+    }
+
+    public void setResponsive(boolean responsive) {
+        getStateHelper().put(PropertyKeys.responsive, responsive);
+    }
+
+    public String getVar() {
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
+    }
+
+    public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
+    }
+
+    public String getScope() {
+        return (String) getStateHelper().eval(PropertyKeys.scope, null);
+    }
+
+    public void setScope(String scope) {
+        getStateHelper().put(PropertyKeys.scope, scope);
     }
 }

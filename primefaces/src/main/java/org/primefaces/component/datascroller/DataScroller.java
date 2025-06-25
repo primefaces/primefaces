@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,15 @@
  */
 package org.primefaces.component.datascroller;
 
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.PhaseId;
-
-import org.primefaces.util.MapBuilder;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.PhaseId;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -43,7 +43,7 @@ public class DataScroller extends DataScrollerBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataScroller";
     public static final String CONTAINER_CLASS = "ui-datascroller ui-widget";
     public static final String INLINE_CONTAINER_CLASS = "ui-datascroller ui-datascroller-inline ui-widget";
-    public static final String HEADER_CLASS = "ui-datascroller-header ui-widget-header ui-corner-top";
+    public static final String HEADER_CLASS = "ui-datascroller-header ui-widget-header";
     public static final String CONTENT_CLASS = "ui-datascroller-content ui-widget-content";
     public static final String LIST_CLASS = "ui-datascroller-list";
     public static final String ITEM_CLASS = "ui-datascroller-item";

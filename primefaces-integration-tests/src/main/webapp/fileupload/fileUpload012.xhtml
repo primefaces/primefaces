@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form" enctype="multipart/form-data">
+            <p:fileUpload id="fileupload" listener="#{fileUploadHandler.handleFileUpload}" update="uploadedfiles"
+                          accept="text/csv">
+                <p:validateFile contentType="true" />
+            </p:fileUpload>
+
+            <p:dataTable id="uploadedfiles" var="file" value="#{fileUploadView.uploadedFiles}">
+                <p:column headerText="Name">
+                    <h:outputText value="#{file.fileName}" />
+                </p:column>
+
+                <p:column headerText="Size">
+                    <h:outputText value="#{file.size}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

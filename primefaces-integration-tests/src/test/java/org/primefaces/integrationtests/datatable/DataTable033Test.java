@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,37 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
+import org.primefaces.selenium.component.model.datatable.Header;
 
-public class DataTable033Test extends AbstractDataTableTest {
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class DataTable033Test extends AbstractDataTableTest {
 
     @Test
     @DisplayName("DataTable: test filtering after column order change")
-    public void testColumnOrderChangeAndFiltering(Page page) {
+    void columnOrderChangeAndFiltering(Page page) {
 
         int allRowsCount = page.dataTable.getRows().size();
 
         // test filter
         page.dataTable.filter("ID", "1002");
-        Assertions.assertNotSame(allRowsCount, 1);
+        assertNotSame(1, allRowsCount);
 
         // reset filter
         page.dataTable.filter("ID", "");
-        Assertions.assertSame(allRowsCount, page.dataTable.getRows().size());
+        assertSame(allRowsCount, page.dataTable.getRows().size());
 
         // switch column order now
         page.template.setValue("name country date status activity id");
@@ -54,11 +61,47 @@ public class DataTable033Test extends AbstractDataTableTest {
 
         // test filter
         page.dataTable.filter("ID", "1002");
-        Assertions.assertNotSame(allRowsCount, 1);
+        assertNotSame(1, allRowsCount);
 
         // reset filter
         page.dataTable.filter("ID", "");
-        Assertions.assertSame(allRowsCount, page.dataTable.getRows().size());
+        assertSame(allRowsCount, page.dataTable.getRows().size());
+    }
+
+    @Test
+    @DisplayName("DataTable: multiple p:columns")
+    void hybridColumns(Page page) {
+        // switch column order now
+        page.template.setValue("id");
+        page.updateColumns.click();
+
+        Header header = page.dataTable.getHeader();
+        assertEquals(4, header.getCells().size());
+        assertEquals("ID", header.getCell(0).getColumnTitle().getText());
+        assertEquals("NAME", header.getCell(1).getColumnTitle().getText());
+        assertEquals("COUNTRY", header.getCell(2).getColumnTitle().getText());
+        assertEquals("Activity", header.getCell(3).getColumnTitle().getText());
+
+        // test filter
+        long countryCount = page.dataTable.getRows().stream().filter(r -> r.getCell(1).getText().equals("Aruna Figeroa")).count();
+        page.dataTable.filter(1, "Aruna Figeroa");
+        assertEquals(countryCount, page.dataTable.getRows().size());
+
+        // reset filter
+        page.dataTable.filter("NAME", "");
+
+        // test sort
+        List<String> sortedList = page.dataTable.getRows().stream()
+                .sorted(Comparator.comparing(r -> r.getCell(1).getText()))
+                .map(r -> r.getCell(1).getText())
+                .collect(Collectors.toList());
+        page.dataTable.sort("NAME");
+
+        List<String> sortedListPostFilter = page.dataTable.getRows().stream()
+                .map(r -> r.getCell(1).getText())
+                .collect(Collectors.toList());
+        assertEquals(sortedList.size(), sortedListPostFilter.size());
+        assertLinesMatch(sortedList, sortedListPostFilter);
     }
 
     public static class Page extends AbstractPrimePage {

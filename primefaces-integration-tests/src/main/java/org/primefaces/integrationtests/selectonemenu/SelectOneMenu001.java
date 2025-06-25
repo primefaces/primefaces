@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,17 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
+
+import java.io.Serializable;
+import java.util.List;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import lombok.Data;
 
@@ -50,15 +50,27 @@ public class SelectOneMenu001 implements Serializable {
 
     private int value;
 
+    private int value2;
+
+    private boolean alwaysDisplayLabel;
+
     @PostConstruct
     public void init() {
         drivers = driverService.getDrivers();
         value = 1;
+        value2 = 1;
+        alwaysDisplayLabel = false;
     }
 
-    public void onAjax() {
+    public void onAjaxItemSelect() {
         // pause for 1 second to verify AJAX guards are working properly
         TestUtils.wait(1000);
+
+        TestUtils.addMessage("Driver-ID (itemSelect)", Integer.valueOf(value).toString());
+    }
+
+    public void onAjaxChange() {
+        TestUtils.addMessage("Driver-ID (change)", Integer.valueOf(value2).toString());
     }
 
 }

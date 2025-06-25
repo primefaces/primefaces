@@ -1,12 +1,13 @@
+<!-- EXAMPLE-SOURCE-START -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
 
 <h:head>
     <title>Level 1</title>
-    <h:outputStylesheet name="css/primeflex.css" library="showcase"/>
+    <h:outputStylesheet library="webjars" name="primeflex/4.0.0/primeflex.min.css" />
     <style>
         html {
             font-size: 14px;
@@ -20,7 +21,7 @@
 
             <p class="ui-widget" style="margin-top: 0">You are at Level 1.</p>
 
-            <p:panel header="Value from flash" rendered="#{dfLevel1View.valueFromFlash != null}" styleClass="p-mb-3">
+            <p:panel header="Value from flash" rendered="#{dfLevel1View.valueFromFlash != null}" styleClass="mb-3">
                 <p:outputLabel value="#{dfLevel1View.valueFromFlash}" />
             </p:panel>
 

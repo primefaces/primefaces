@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,28 @@
  */
 package org.primefaces.component.effect;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
 
-public class EffectBuilderTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class EffectBuilderTest {
 
     @Test
-    public void buildHighlightEffectWithNoOptions() {
+    void buildHighlightEffectWithNoOptions() {
         String effect = new EffectBuilder("highlight", "id", true).atSpeed(1000).build();
 
         assertEquals("$(PrimeFaces.escapeClientId('id')).effect('highlight',{},1000);", effect);
     }
 
     @Test
-    public void buildHighlightEffectWithAnOption() {
+    void buildHighlightEffectWithAnOption() {
         String effect = new EffectBuilder("highlight", "id", false).withOption("startcolor", "'#FFFFFF'").atSpeed(5000).build();
 
         assertEquals("$(PrimeFaces.escapeClientId('id')).stop(true,true).effect('highlight',{startcolor:'#FFFFFF'},5000);", effect);
     }
 
     @Test
-    public void buildHighlightEffectWitManyOptions() {
+    void buildHighlightEffectWitManyOptions() {
         String effect = new EffectBuilder("highlight", "id", false)
                 .withOption("startcolor", "'#FFFFFF'")
                 .withOption("endcolor", "'#CCCCCC'")

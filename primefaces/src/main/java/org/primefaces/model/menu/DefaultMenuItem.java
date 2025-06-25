@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,16 @@ package org.primefaces.model.menu;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.util.SerializableFunction;
+import org.primefaces.util.Callbacks;
 
-import javax.faces.component.UIComponent;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.faces.component.UIComponent;
 
 public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, Serializable {
 
@@ -52,7 +57,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String fragment;
     private Map<String, List<String>> params;
     private String command;
-    private SerializableFunction<MenuItem, String> function;
+    private Callbacks.SerializableFunction<MenuItem, String> function;
     private boolean rendered = true;
     private String onstart;
     private String onerror;
@@ -79,6 +84,8 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean escape = true;
     private String rel;
     private boolean ignoreComponentNotFound;
+    private String ariaLabel;
+    private Object badge;
 
     /**
      * Creates a new menu item without value.
@@ -281,11 +288,11 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     }
 
     @Override
-    public SerializableFunction<MenuItem, String> getFunction() {
+    public Callbacks.SerializableFunction<MenuItem, String> getFunction() {
         return function;
     }
 
-    public void setFunction(SerializableFunction<MenuItem, String> function) {
+    public void setFunction(Callbacks.SerializableFunction<MenuItem, String> function) {
         this.function = function;
     }
 
@@ -525,12 +532,30 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     }
 
     @Override
+    public String getAriaLabel() {
+        return ariaLabel;
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        this.ariaLabel = ariaLabel;
+    }
+
+    @Override
     public boolean isIgnoreComponentNotFound() {
         return ignoreComponentNotFound;
     }
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
         this.ignoreComponentNotFound = ignoreComponentNotFound;
+    }
+
+    @Override
+    public Object getBadge() {
+        return badge;
+    }
+
+    public void setBadge(Object badge) {
+        this.badge = badge;
     }
 
     public static Builder builder() {
@@ -630,7 +655,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
             return this;
         }
 
-        public Builder function(SerializableFunction<MenuItem, String> function) {
+        public Builder function(Callbacks.SerializableFunction<MenuItem, String> function) {
             menuItem.setFunction(function);
             return this;
         }
@@ -752,6 +777,16 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
         public Builder ignoreComponentNotFound(boolean ignoreComponentNotFound) {
             menuItem.setIgnoreComponentNotFound(ignoreComponentNotFound);
+            return this;
+        }
+
+        public Builder ariaLabel(String ariaLabel) {
+            menuItem.setAriaLabel(ariaLabel);
+            return this;
+        }
+
+        public Builder badge(Object badge) {
+            menuItem.setBadge(badge);
             return this;
         }
 

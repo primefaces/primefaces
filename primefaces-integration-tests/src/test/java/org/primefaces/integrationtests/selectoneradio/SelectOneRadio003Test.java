@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,40 +23,42 @@
  */
 package org.primefaces.integrationtests.selectoneradio;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.OutputLabel;
 import org.primefaces.selenium.component.RadioButton;
 import org.primefaces.selenium.component.SelectOneRadio;
 
-public class SelectOneRadio003Test extends AbstractPrimePageTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class SelectOneRadio003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneRadio: Custom: Referenced")
-    public void testCustomReferenced(Page page) {
+    void customReferenced(Page page) {
         // Arrange
-        Assertions.assertTrue(page.opt2.isSelected());
+        assertTrue(page.opt2.isSelected());
 
         // Act
         page.opt3.select();
         page.submit.click();
 
         // Assert
-        Assertions.assertTrue(page.opt3.isSelected());
+        assertTrue(page.opt3.isSelected());
 
         // Act
-        getWebDriver().findElement(By.cssSelector("label[for='" + page.opt4.getId() + "']")).click();
+        page.label4.click();
         page.submit.click();
 
         // Assert
-        Assertions.assertTrue(page.opt4.isSelected());
+        assertTrue(page.opt4.isSelected());
     }
 
     public static class Page extends AbstractPrimePage {
@@ -71,6 +73,15 @@ public class SelectOneRadio003Test extends AbstractPrimePageTest {
         RadioButton opt3;
         @FindBy(id = "form:opt4")
         RadioButton opt4;
+
+        @FindBy(id = "form:label1")
+        OutputLabel label1;
+        @FindBy(id = "form:label2")
+        OutputLabel label2;
+        @FindBy(id = "form:label3")
+        OutputLabel label3;
+        @FindBy(id = "form:label4")
+        OutputLabel label4;
 
         @FindBy(id = "form:submit")
         CommandButton submit;

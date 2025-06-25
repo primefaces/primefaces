@@ -41,6 +41,7 @@ style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
 tabindex | null | String | Position of the component in the tabbing order.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
+collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.
 
 ## Getting started with SelectManyCheckbox
 SelectManyCheckbox usage is same as the standard one.
@@ -92,6 +93,18 @@ Widget: _PrimeFaces.widget.SelectManyCheckbox_
 | --- | --- | --- | --- |
 | disable() | - | void | Disables the input field |
 | enable() | - | void | Enables the input field |
+
+## Ajax Behavior Events
+
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `valueChange`  
+**Available Events:** `blur, change, click, dblclick, focus, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange`  
+
+```xhtml
+<p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
+```
+
 ## Skinning
 SelectManyCheckbox resides in a main container which _style_ and _styleClass_ attributes apply. As
 skinning style classes are global, see the main theming section for more information. Following is

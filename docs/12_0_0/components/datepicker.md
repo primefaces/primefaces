@@ -106,12 +106,15 @@ ajax selection and more.
 | required | false | Boolean | Marks component as required
 | requiredMessage | null | String | Message to be displayed when required field validation fails.
 | resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
+| responsiveBreakpoint | 576 | int | This is the breakpoint in pixels when to automatically switch to optimized interface if autoDetectDisplay=true.
 | selectOtherMonths | false | Boolean | Enables selection of days belonging to other months.
 | selectionMode | single | String | Defines the selection mode, valid values are "single", "multiple" and "range"
 | shortYearCutoff | +10 | String | The cutoff year for determining the century for a date. Any dates entered with a year value less than or equal to the cutoff year are considered to be in the current century, while those greater than it are deemed to be in the previous century.
 | showButtonBar | false | Boolean | Whether to display buttons at the footer.
 | showIcon | false | String | Whether to show an icon to display the picker in an overlay
 | showOnFocus | true | Boolean | Whether to show the popup when input receives focus.
+| showMinMaxRange | true | Boolean | Only display valid dates within the min/max range.
+| autoMonthFormat | true | Boolean | Whether to format the month. Default is true.
 | showOtherMonths | false | Boolean | Displays days belonging to other months.
 | showSeconds | false | Boolean | Whether to show the seconds in time picker. Default is false.
 | showTime | false * | Boolean | Specifies if the timepicker should be displayed.  (* Defaults to true, when value is bound to java.time.LocalDateTime)
@@ -128,7 +131,7 @@ ajax selection and more.
 | timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault(). (This attribute is only relevant for java.util.Date in combination with the built-in converter.)
 | title | null | String | Advisory tooltip information.
 | touchUI | false | Boolean | Activates touch friendly mode
-| touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+| touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 | triggerButtonIcon | null | String | Icon of the datepicker element that toggles the visibility in popup mode.
 | type | text | String | Type of the input field
 | validator | null | Method Expr | A method expression that refers to a method validating the input

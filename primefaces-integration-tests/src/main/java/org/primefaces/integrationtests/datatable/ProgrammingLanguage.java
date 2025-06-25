@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.datatable;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,6 +40,7 @@ public class ProgrammingLanguage implements Serializable {
     private Integer firstAppeared;
     private ProgrammingLanguageType type;
     private boolean selectable;
+    private BigDecimal popularity;
 
     public ProgrammingLanguage(Integer id, String name, Integer firstAppeared, ProgrammingLanguageType type) {
         this.id = id;

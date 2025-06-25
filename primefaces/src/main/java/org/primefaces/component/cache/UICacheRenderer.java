@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,31 +23,42 @@
  */
 package org.primefaces.component.cache;
 
-import java.io.IOException;
-import java.io.StringWriter;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.cache.CacheProvider;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 
-public class UICacheRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class UICacheRenderer extends CoreRenderer<UICache> {
+
+    private static final Logger LOGGER = Logger.getLogger(UICacheRenderer.class.getName());
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        UICache uiCache = (UICache) component;
+    public void encodeChildren(FacesContext context, UICache component) throws IOException {
+        if (!component.isDisabled()) {
+            // print exception in development stage
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
+                if (moveScriptsToBottom) {
+                    logDevelopmentWarning(context, this,
+                            "Using p:cache in combination with PrimeFaces.MOVE_SCRIPTS_TO_BOTTOM may cause Javascript code to stop working.");
+                }
+            }
 
-        if (!uiCache.isDisabled()) {
             ResponseWriter writer = context.getResponseWriter();
             CacheProvider cacheProvider = PrimeApplicationContext.getCurrentInstance(context).getCacheProvider();
-            String key = uiCache.getKey();
-            String region = uiCache.getRegion();
+            String key = component.getKey();
+            String region = component.getRegion();
 
             if (key == null) {
-                key = uiCache.getClientId(context);
+                key = component.getClientId(context);
             }
 
             if (region == null) {
@@ -59,19 +70,19 @@ public class UICacheRenderer extends CoreRenderer {
                 StringWriter stringWriter = new StringWriter();
                 ResponseWriter clonedWriter = writer.cloneWithWriter(stringWriter);
                 context.setResponseWriter(clonedWriter);
-                renderChildren(context, uiCache);
+                renderChildren(context, component);
 
                 output = stringWriter.getBuffer().toString();
                 cacheProvider.put(region, key, output);
                 context.setResponseWriter(writer);
 
-                uiCache.setCacheSetInCurrentRequest(true);
+                component.setCacheSetInCurrentRequest(true);
             }
 
             writer.write(output);
         }
         else {
-            renderChildren(context, uiCache);
+            renderChildren(context, component);
         }
     }
 

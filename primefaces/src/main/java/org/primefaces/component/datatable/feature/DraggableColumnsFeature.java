@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,33 +23,15 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
-import javax.faces.FacesException;
-
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.DataTableRenderer;
+
+import jakarta.faces.context.FacesContext;
 
 public class DraggableColumnsFeature implements DataTableFeature {
-
-    private static final DraggableColumnsFeature INSTANCE = new DraggableColumnsFeature();
-
-    private DraggableColumnsFeature() {
-    }
-
-    public static DraggableColumnsFeature getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public void decode(FacesContext context, DataTable table) {
         table.decodeColumnDisplayOrderState(context);
-    }
-
-    @Override
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        throw new FacesException("DraggableColumns Feature should not encode.");
     }
 
     @Override

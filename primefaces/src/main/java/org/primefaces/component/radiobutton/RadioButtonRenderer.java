@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,42 +23,41 @@
  */
 package org.primefaces.component.radiobutton;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.selectoneradio.SelectOneRadio;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 
-public class RadioButtonRenderer extends InputRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class RadioButtonRenderer extends InputRenderer<RadioButton> {
 
     private static final String SB_BUILD_EVENT = RadioButtonRenderer.class.getName() + "#buildEvent";
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        RadioButton radioButton = (RadioButton) component;
-        SelectOneRadio selectOneRadio = (SelectOneRadio) SearchExpressionFacade.resolveComponent(
-                context, radioButton, radioButton.getFor());
+    public void encodeEnd(FacesContext context, RadioButton component) throws IOException {
+        SelectOneRadio selectOneRadio = (SelectOneRadio) SearchExpressionUtils.contextlessResolveComponent(
+                context, component, component.getFor());
 
-        encodeMarkup(context, radioButton, selectOneRadio);
+        encodeMarkup(context, component, selectOneRadio);
     }
 
     protected void encodeMarkup(FacesContext context, RadioButton radio, SelectOneRadio selectOneRadio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String masterClientId = selectOneRadio.getClientId(context);
-        String inputId = selectOneRadio.getRadioButtonId(context);
+        String inputId = selectOneRadio.getRadioButtonId(context, radio.getItemIndex());
         String clientId = radio.getClientId(context);
         boolean disabled = radio.isDisabled() || selectOneRadio.isDisabled();
 
         String style = radio.getStyle();
-        String defaultStyleClass = selectOneRadio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
-        String styleClass = radio.getStyleClass();
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(HTML.RADIOBUTTON_CLASS)
+                .add(radio.getStyleClass())
+                .build();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);

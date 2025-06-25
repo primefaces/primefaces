@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,16 +26,6 @@ package org.primefaces.component.media.player;
 public class RealPlayer implements MediaPlayer {
 
     private static final String[] SUPPORTED_TYPES = new String[]{"ra", "ram", "rm", "rpm", "rv", "smi", "smil"};
-
-    @Override
-    public String getClassId() {
-        return "clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA";
-    }
-
-    @Override
-    public String getCodebase() {
-        return null;
-    }
 
     @Override
     public String getSourceParam() {

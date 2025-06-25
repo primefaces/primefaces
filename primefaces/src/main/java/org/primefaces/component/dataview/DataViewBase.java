@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,13 @@
  */
 package org.primefaces.component.dataview;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.UIPageableData;
+import org.primefaces.component.api.Widget;
 
-import org.primefaces.component.api.*;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DataViewBase extends UIPageableData
         implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataViewState>, FlexAware {
@@ -45,6 +49,7 @@ public abstract class DataViewBase extends UIPageableData
         multiViewState,
         gridRowStyle,
         gridRowStyleClass,
+        gridRowTitle,
         flex
     }
 
@@ -130,12 +135,20 @@ public abstract class DataViewBase extends UIPageableData
         getStateHelper().put(PropertyKeys.gridRowStyleClass, gridRowStyleClass);
     }
 
-    @Override
-    public boolean isFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    public String getRowTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.gridRowTitle, null);
     }
 
-    public void setFlex(boolean flex) {
+    public void setRowTitle(String rowTitle) {
+        getStateHelper().put(PropertyKeys.gridRowTitle, rowTitle);
+    }
+
+    @Override
+    public Boolean getFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
+    }
+
+    public void setFlex(Boolean flex) {
         getStateHelper().put(PropertyKeys.flex, flex);
     }
 }

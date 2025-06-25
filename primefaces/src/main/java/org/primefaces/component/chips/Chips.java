@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,6 @@
  */
 package org.primefaces.component.chips;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -39,16 +30,26 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.FacesEvent;
+
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class Chips extends ChipsBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chips";
     public static final String STYLE_CLASS = "ui-chips ui-widget";
-    public static final String CONTAINER_CLASS = "ui-chips-container ui-inputfield ui-state-default ui-corner-all";
-    public static final String TOKEN_DISPLAY_CLASS = "ui-chips-token ui-state-active ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-chips-container ui-inputfield ui-state-default";
+    public static final String TOKEN_DISPLAY_CLASS = "ui-chips-token ui-state-active";
     public static final String TOKEN_LABEL_CLASS = "ui-chips-token-label";
     public static final String TOKEN_CLOSE_ICON_CLASS = "ui-chips-token-icon ui-icon ui-icon-close";
     public static final String TOKEN_INPUT_CLASS = "ui-chips-input-token";
@@ -98,13 +99,13 @@ public class Chips extends ChipsBase {
 
             if ("itemSelect".equals(eventName)) {
                 Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
-                SelectEvent selectEvent = new SelectEvent(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
             else if ("itemUnselect".equals(eventName)) {
                 Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
-                UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
+                UnselectEvent<?> unselectEvent = new UnselectEvent<>(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
             }

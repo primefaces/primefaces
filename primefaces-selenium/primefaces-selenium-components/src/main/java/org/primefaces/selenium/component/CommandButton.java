@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,12 @@
  */
 package org.primefaces.selenium.component;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:commandButton}.
@@ -40,16 +41,25 @@ public abstract class CommandButton extends AbstractComponent {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(button));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
 
-        if (button.getAttribute("data-pfconfirmcommand") != null) {
+        if (button.getDomAttribute("data-pfconfirmcommand") != null) {
             // Confirm Dialog/Popup we don't want to guard for AJAX
         }
         else if (isAjaxified("onclick")) {
             button = PrimeSelenium.guardAjax(button);
         }
-        else if ("submit".equals(button.getAttribute("type"))) {
+        else if ("submit".equals(button.getDomAttribute("type"))) {
             button = PrimeSelenium.guardHttp(button);
         }
 
+        button.click();
+    }
+
+    /**
+     * #8840 Some scenario's with ajax="false" like in a download you may not want to guard the click.
+     */
+    public void clickUnguarded() {
+        WebElement button = getRoot();
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
         button.click();
     }
 }

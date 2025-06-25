@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,37 @@
  */
 package org.primefaces.integrationtests.sidebar;
 
-import org.junit.jupiter.api.Assertions;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.Button;
+import org.primefaces.selenium.component.Sidebar;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.*;
 
-public class Sidebar001Test extends AbstractPrimePageTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class Sidebar001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Sidebar: show")
-    public void testShow(Page page) throws InterruptedException {
+    void show(Page page) throws InterruptedException {
 
-        Assertions.assertTrue(getWebDriver().getPageSource().contains("sidebar1 content"));
-        Assertions.assertFalse(page.sidebar1.isVisible());
+        assertTrue(getWebDriver().getPageSource().contains("sidebar1 content"));
+        assertFalse(page.sidebar1.isVisible());
 
         // Act
         page.sidebar1.show();
 
         // Assert
-        Assertions.assertTrue(getWebDriver().getPageSource().contains("sidebar1 content"));
-        Assertions.assertTrue(page.sidebar1.isVisible());
+        assertTrue(getWebDriver().getPageSource().contains("sidebar1 content"));
+        assertTrue(page.sidebar1.isVisible());
 
-        Assertions.assertDoesNotThrow(() -> {
+        assertDoesNotThrow(() -> {
             page.sidebar2.findElement(By.className("ui-sidebar-close")).isDisplayed();
         });
     }
@@ -58,19 +61,19 @@ public class Sidebar001Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("Sidebar: show dynamic")
-    public void testDynamicShow(Page page) {
+    void dynamicShow(Page page) {
 
-        Assertions.assertFalse(getWebDriver().getPageSource().contains("sidebar2 content"));
-        Assertions.assertFalse(page.sidebar2.isVisible());
+        assertFalse(getWebDriver().getPageSource().contains("sidebar2 content"));
+        assertFalse(page.sidebar2.isVisible());
 
         // Act
         page.sidebar2.show();
 
         // Assert
-        Assertions.assertTrue(getWebDriver().getPageSource().contains("sidebar2 content"));
-        Assertions.assertTrue(page.sidebar2.isVisible());
+        assertTrue(getWebDriver().getPageSource().contains("sidebar2 content"));
+        assertTrue(page.sidebar2.isVisible());
 
-        Assertions.assertDoesNotThrow(() -> {
+        assertDoesNotThrow(() -> {
             page.sidebar2.findElement(By.className("ui-sidebar-close")).isDisplayed();
         });
     }

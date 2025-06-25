@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.convert;
 
+import org.primefaces.util.HTML;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.primefaces.util.HTML;
-
-public class NumberConverter extends javax.faces.convert.NumberConverter implements ClientConverter {
+public class NumberConverter extends jakarta.faces.convert.NumberConverter implements ClientConverter {
 
     @Override
     public Map<String, Object> getMetadata() {

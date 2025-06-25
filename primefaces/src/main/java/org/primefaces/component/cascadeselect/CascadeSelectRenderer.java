@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,55 +23,54 @@
  */
 package org.primefaces.component.cascadeselect;
 
-import java.io.IOException;
-import java.util.List;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectOne;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
-import javax.faces.render.Renderer;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
-
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class CascadeSelectRenderer extends SelectOneRenderer {
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
+import jakarta.faces.render.Renderer;
+
+public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
-                "javax.faces.SelectOne",
-                "javax.faces.Listbox");
+                "jakarta.faces.SelectOne",
+                "jakarta.faces.Listbox");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        CascadeSelect cascadeSelect = (CascadeSelect) component;
-
-        encodeMarkup(context, cascadeSelect);
-        encodeScript(context, cascadeSelect);
+    public void encodeEnd(FacesContext context, CascadeSelect component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, CascadeSelect cascadeSelect) throws IOException {
+    protected void encodeMarkup(FacesContext context, CascadeSelect component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = cascadeSelect.getClientId(context);
-        List<SelectItem> selectItems = getSelectItems(context, cascadeSelect);
+        String clientId = component.getClientId(context);
+        List<SelectItem> selectItems = getSelectItems(context, component);
 
-        String style = cascadeSelect.getStyle();
+        String style = component.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(CascadeSelect.STYLE_CLASS)
-                .add(cascadeSelect.isDisabled(), "ui-state-disabled")
-                .add(cascadeSelect.getStyleClass())
+                .add(component.isDisabled(), "ui-state-disabled")
+                .add(component.isReadonly(), "ui-state-readonly")
+                .add(component.getStyleClass())
                 .build();
 
         writer.startElement("div", null);
@@ -81,20 +80,20 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        renderARIACombobox(context, cascadeSelect);
+        renderARIACombobox(context, component);
 
-        String valueToRender = ComponentUtils.getValueToRender(context, cascadeSelect);
-        encodeInput(context, cascadeSelect, valueToRender);
-        encodeLabel(context, cascadeSelect, selectItems, valueToRender);
+        String valueToRender = ComponentUtils.getValueToRender(context, component);
+        encodeInput(context, component, valueToRender);
+        encodeLabel(context, component, selectItems, valueToRender);
         encodeTrigger(context);
-        encodePanel(context, cascadeSelect, selectItems);
+        encodePanel(context, component, selectItems);
 
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, CascadeSelect cascadeSelect, String valueToRender) throws IOException {
+    protected void encodeInput(FacesContext context, CascadeSelect component, String valueToRender) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String inputId = cascadeSelect.getInputClientId();
+        String inputId = component.getInputClientId();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -102,30 +101,30 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
-        writer.writeAttribute("tabindex", cascadeSelect.getTabindex(), null);
+        writer.writeAttribute("tabindex", component.getTabindex(), null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
-        renderAccessibilityAttributes(context, cascadeSelect);
-        renderDomEvents(context, cascadeSelect, HTML.BLUR_FOCUS_EVENTS);
+        renderAccessibilityAttributes(context, component);
+        renderDomEvents(context, component, HTML.BLUR_FOCUS_EVENTS);
 
         writer.endElement("input");
         writer.endElement("div");
     }
 
-    protected void encodeLabel(FacesContext context, CascadeSelect cascadeSelect, List<SelectItem> itemList, String valueToRender) throws IOException {
+    protected void encodeLabel(FacesContext context, CascadeSelect component, List<SelectItem> itemList, String valueToRender) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        Converter converter = ComponentUtils.getConverter(context, cascadeSelect);
+        Converter<?> converter = ComponentUtils.getConverter(context, component);
         String itemLabel = valueToRender;
-        SelectItem foundItem = findSelectItemByValue(context, cascadeSelect, converter, itemList, valueToRender);
+        SelectItem foundItem = findSelectItemByValue(context, component, converter, itemList, valueToRender);
         if (foundItem != null) {
             itemLabel = foundItem.getLabel();
         }
 
-        String placeholder = LangUtils.isNotBlank(itemLabel) ? itemLabel : cascadeSelect.getPlaceholder();
+        String placeholder = LangUtils.isNotBlank(itemLabel) ? itemLabel : component.getPlaceholder();
         String styleClass = getStyleClassBuilder(context)
                 .add(placeholder != null, CascadeSelect.LABEL_CLASS)
                 .add(placeholder == null, CascadeSelect.LABEL_EMPTY_CLASS)
@@ -144,7 +143,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", CascadeSelect.TRIGGER_CLASS, null);
         writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, HTML.ARIA_ROLE_LISTBOX, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
 
         writer.startElement("span", null);
@@ -154,9 +153,9 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodePanel(FacesContext context, CascadeSelect cascadeSelect, List<SelectItem> itemList) throws IOException {
+    protected void encodePanel(FacesContext context, CascadeSelect component, List<SelectItem> itemList) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String panelId = cascadeSelect.getPanelClientId();
+        String panelId = component.getPanelClientId();
         SelectItem[] items = (itemList == null) ? null : itemList.toArray(new SelectItem[itemList.size()]);
 
         writer.startElement("div", null);
@@ -165,39 +164,39 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", CascadeSelect.ITEMS_WRAPPER_CLASS, null);
 
-        encodeList(context, cascadeSelect, items, false);
+        encodeList(context, component, items, false);
 
         writer.endElement("div");
         writer.endElement("div");
     }
 
-    protected void encodeList(FacesContext context, CascadeSelect cascadeSelect, SelectItem[] items, boolean isSublist) throws IOException {
+    protected void encodeList(FacesContext context, CascadeSelect component, SelectItem[] items, boolean isSublist) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = isSublist ? CascadeSelect.PANEL_ITEMS_CLASS + " " + CascadeSelect.SUBLIST_CLASS : CascadeSelect.PANEL_ITEMS_CLASS;
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "listbox", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
         writer.writeAttribute("aria-orientation", "horizontal", null);
-        renderARIARequired(context, cascadeSelect);
+        renderARIARequired(context, component);
 
-        encodeListItems(context, cascadeSelect, items);
+        encodeListItems(context, component, items);
 
         writer.endElement("ul");
     }
 
-    protected void encodeListItems(FacesContext context, CascadeSelect cascadeSelect, SelectItem[] selectItems) throws IOException {
+    protected void encodeListItems(FacesContext context, CascadeSelect component, SelectItem[] selectItems) throws IOException {
         if (selectItems != null && selectItems.length > 0) {
             ResponseWriter writer = context.getResponseWriter();
-            UIComponent contentFacet = cascadeSelect.getFacet("content");
-            Converter converter = ComponentUtils.getConverter(context, cascadeSelect);
-            String var = cascadeSelect.getVar();
+            UIComponent contentFacet = component.getFacet("content");
+            Converter converter = ComponentUtils.getConverter(context, component);
+            String var = component.getVar();
 
             for (SelectItem selectItem : selectItems) {
                 boolean isGroup = selectItem instanceof SelectItemGroup;
                 Object itemValue = selectItem.getValue();
                 String itemLabel = selectItem.getLabel();
-                String itemValueAsString = getOptionAsString(context, cascadeSelect, converter, selectItem.getValue());
+                String itemValueAsString = getOptionAsString(context, component, converter, selectItem.getValue());
                 String itemStyleClass = getStyleClassBuilder(context)
                         .add(CascadeSelect.ITEM_CLASS)
                         .add(isGroup, CascadeSelect.ITEM_GROUP_CLASS)
@@ -216,18 +215,18 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
                 writer.writeAttribute("class", CascadeSelect.ITEM_CONTENT_CLASS, null);
                 writer.writeAttribute("tabindex", "0", null);
 
-                if (ComponentUtils.shouldRenderFacet(contentFacet)) {
+                if (FacetUtils.shouldRenderFacet(contentFacet)) {
                     contentFacet.encodeAll(context);
                 }
                 else {
-                    writer.startElement("span", cascadeSelect);
+                    writer.startElement("span", component);
                     writer.writeAttribute("class", CascadeSelect.ITEM_TEXT_CLASS, null);
                     writer.writeText(itemLabel, null);
                     writer.endElement("span");
                 }
 
                 if (isGroup) {
-                    writer.startElement("span", cascadeSelect);
+                    writer.startElement("span", component);
                     writer.writeAttribute("class", CascadeSelect.GROUP_ICON_CLASS, null);
                     writer.endElement("span");
                 }
@@ -239,7 +238,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
                     SelectItem[] groupItems = group.getSelectItems();
 
                     if (groupItems != null && groupItems.length > 0) {
-                        encodeList(context, cascadeSelect, group.getSelectItems(), true);
+                        encodeList(context, component, group.getSelectItems(), true);
                     }
                 }
 
@@ -252,19 +251,18 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
         }
     }
 
-    protected void encodeScript(FacesContext context, CascadeSelect cascadeSelect) throws IOException {
+    protected void encodeScript(FacesContext context, CascadeSelect component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("CascadeSelect", cascadeSelect)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, cascadeSelect, cascadeSelect.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
+        wb.init("CascadeSelect", component)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()), null);
 
-        encodeClientBehaviors(context, cascadeSelect);
+        encodeClientBehaviors(context, component);
         wb.finish();
     }
 
     @Override
-    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext facesContext, CascadeSelect component) throws IOException {
         //Rendering happens on encodeEnd
     }
 
@@ -274,7 +272,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
-        return selectOne.getClientId(context) + "_input";
+    protected String getSubmitParam(FacesContext context, CascadeSelect component) {
+        return component.getClientId(context) + "_input";
     }
 }

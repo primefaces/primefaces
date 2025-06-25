@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.barcode;
 
-import javax.faces.component.html.HtmlGraphicImage;
+import jakarta.faces.component.html.HtmlGraphicImage;
 
 
 public abstract class BarcodeBase extends HtmlGraphicImage {
@@ -39,7 +39,10 @@ public abstract class BarcodeBase extends HtmlGraphicImage {
         format,
         orientation,
         qrErrorCorrection,
-        hrp
+        hrp,
+        magnification,
+        quietZoneHorizontal,
+        quietZoneVertical
     }
 
     public BarcodeBase() {
@@ -97,6 +100,30 @@ public abstract class BarcodeBase extends HtmlGraphicImage {
 
     public void setHrp(String hrp) {
         getStateHelper().put(PropertyKeys.hrp, hrp);
+    }
+
+    public double getMagnification() {
+        return (Double) getStateHelper().eval(PropertyKeys.magnification, 2.0);
+    }
+
+    public void setMagnification(double magnification) {
+        getStateHelper().put(PropertyKeys.magnification, magnification);
+    }
+
+    public int getQuietZoneHorizontal() {
+        return (Integer) getStateHelper().eval(PropertyKeys.quietZoneHorizontal, 10);
+    }
+
+    public void setQuietZoneHorizontal(int quietZoneHorizontal) {
+        getStateHelper().put(PropertyKeys.quietZoneHorizontal, quietZoneHorizontal);
+    }
+
+    public int getQuietZoneVertical() {
+        return (Integer) getStateHelper().eval(PropertyKeys.quietZoneVertical, 1);
+    }
+
+    public void setQuietZoneVertical(int quietZoneVertical) {
+        getStateHelper().put(PropertyKeys.quietZoneVertical, quietZoneVertical);
     }
 
 }

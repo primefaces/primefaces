@@ -7,7 +7,7 @@ PickList is used for transferring data between two different collections.
 | Name | Value |
 | --- | --- |
 | Tag | pickList
-| Component Class | org.primefaces.component.picklist.Panel
+| Component Class | org.primefaces.component.picklist.PickList
 | Component Type | org.primefaces.component.PickList
 | Component Family | org.primefaces.component |
 | Renderer Type | org.primefaces.component.PickListRenderer
@@ -122,7 +122,7 @@ In addition custom content instead of simple strings can be displayed by using c
     <p:column style="width:25%">
         <p:graphicImage value="/images/barca/#{player.photo}"/>
     </p:column>
-    <p:column style="width:75%";>
+    <p:column style="width:75%">
         #{player.name} - #{player.number}
     </p:column>
 </p:pickList>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,6 @@
  */
 package org.primefaces.integrationtests.inputtext;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
@@ -36,12 +31,19 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.Severity;
 
-public class InputText002Test extends AbstractPrimePageTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class InputText002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("InputText: Test floating label empty field does not have class 'ui-state-filled' but has 'ui-state-hover' ")
-    public void testEmptyField(Page page) {
+    void emptyField(Page page) {
         // Arrange
         InputText inputText = page.inputtext;
         Messages messages = page.messages;
@@ -51,17 +53,17 @@ public class InputText002Test extends AbstractPrimePageTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("FillMe*", inputText.getAssignedLabelText());
-        Assertions.assertEquals("", inputText.getValue());
+        assertEquals("FillMe*", inputText.getAssignedLabelText());
+        assertEquals("", inputText.getValue());
         assertCss(inputText, "ui-inputfield", "ui-inputtext", "ui-state-hover", "ui-state-focus");
 
-        Assertions.assertEquals(0, messages.getAllMessages().size());
+        assertEquals(0, messages.getAllMessages().size());
     }
 
     @Test
     @Order(2)
     @DisplayName("InputText: Test input with data has class 'ui-state-filled'")
-    public void testFilledField(Page page) {
+    void filledField(Page page) {
         // Arrange
         InputText inputText = page.inputtext;
         Messages messages = page.messages;
@@ -72,16 +74,16 @@ public class InputText002Test extends AbstractPrimePageTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("FillMe*", inputText.getAssignedLabelText());
-        Assertions.assertEquals("filled", inputText.getValue());
+        assertEquals("FillMe*", inputText.getAssignedLabelText());
+        assertEquals("filled", inputText.getValue());
         assertCss(inputText, "ui-inputfield", "ui-inputtext", "ui-state-filled");
-        Assertions.assertEquals(0, messages.getAllMessages().size());
+        assertEquals(0, messages.getAllMessages().size());
     }
 
     @Test
     @Order(3)
     @DisplayName("InputText: Test empty input submission causes required error message")
-    public void testRequiredFieldError(Page page) {
+    void requiredFieldError(Page page) {
         // Arrange
         InputText inputText = page.inputtext;
         Messages messages = page.messages;
@@ -92,19 +94,19 @@ public class InputText002Test extends AbstractPrimePageTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("", inputText.getValue());
-        Assertions.assertEquals(1, messages.getAllMessages().size());
+        assertEquals("", inputText.getValue());
+        assertEquals(1, messages.getAllMessages().size());
         Msg msg = messages.getAllMessages().get(0);
-        Assertions.assertEquals(Severity.ERROR, msg.getSeverity());
+        assertEquals(Severity.ERROR, msg.getSeverity());
         assertCss(inputText, "ui-state-error", "ui-inputtext");
-        Assertions.assertEquals("InputText is required!", msg.getSummary());
-        Assertions.assertEquals("InputText is required!", msg.getDetail());
+        assertEquals("InputText is required!", msg.getSummary());
+        assertEquals("InputText is required!", msg.getDetail());
     }
 
     @Test
     @Order(3)
     @DisplayName("InputText: Test valid input submission does not cause an error.")
-    public void testRequiredFieldPass(Page page) {
+    void requiredFieldPass(Page page) {
         // Arrange
         InputText inputText = page.inputtext;
         Messages messages = page.messages;
@@ -115,8 +117,8 @@ public class InputText002Test extends AbstractPrimePageTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("test", inputText.getValue());
-        Assertions.assertEquals(0, messages.getAllMessages().size());
+        assertEquals("test", inputText.getValue());
+        assertEquals(0, messages.getAllMessages().size());
     }
 
     public static class Page extends AbstractPrimePage {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,15 @@
  */
 package org.primefaces.model.file;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
 public interface UploadedFile {
 
     String getFileName();
+
+    String getWebkitRelativePath();
 
     InputStream getInputStream() throws IOException;
 
@@ -38,7 +41,7 @@ public interface UploadedFile {
 
     long getSize();
 
-    void write(String filePath) throws Exception;
+    File write(String directoryPath) throws Exception;
 
     void delete() throws IOException;
 }

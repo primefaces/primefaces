@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.multiselectlistbox;
 
-import javax.faces.component.UISelectOne;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UISelectOne;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class MultiSelectListboxBase extends UISelectOne implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -41,6 +41,7 @@ public abstract class MultiSelectListboxBase extends UISelectOne implements Widg
         style,
         styleClass,
         disabled,
+        readonly,
         effect,
         showHeaders,
         header
@@ -109,5 +110,13 @@ public abstract class MultiSelectListboxBase extends UISelectOne implements Widg
 
     public void setHeader(String header) {
         getStateHelper().put(PropertyKeys.header, header);
+    }
+
+    public boolean isReadonly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+    }
+
+    public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
     }
 }

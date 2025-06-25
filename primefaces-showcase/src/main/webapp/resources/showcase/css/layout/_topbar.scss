@@ -1,3 +1,5 @@
+@use "core";
+
 .layout-topbar {
     background-color: var(--surface-a);
     padding: 0;
@@ -42,7 +44,7 @@
         &:focus {
             outline: 0 none;
             transition: box-shadow .2s;
-            box-shadow: 0 0 0 0.2rem $focusBorderColor;
+            box-shadow: 0 0 0 0.2rem core.$focusBorderColor;
         }
     }
 
@@ -97,7 +99,7 @@
                     z-index: 1;
                     outline: 0 none;
                     transition: box-shadow .2s;
-                    box-shadow: inset 0 0 0 0.2em $focusBorderColor;
+                    box-shadow: inset 0 0 0 0.2em core.$focusBorderColor;
                 }
             }
 

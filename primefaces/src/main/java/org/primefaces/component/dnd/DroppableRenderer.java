@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,49 +23,49 @@
  */
 package org.primefaces.component.dnd;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class DroppableRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+
+public class DroppableRenderer extends CoreRenderer<Droppable> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Droppable component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Droppable droppable = (Droppable) component;
-        String clientId = droppable.getClientId(context);
+    public void encodeEnd(FacesContext context, Droppable component) throws IOException {
+        String clientId = component.getClientId(context);
 
         renderDummyMarkup(context, component, clientId);
 
-        UIComponent target = SearchExpressionFacade.resolveComponent(
-                context, droppable, droppable.getFor(), SearchExpressionUtils.SET_PARENT_FALLBACK);
-
-        WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Droppable", droppable)
-                .attr("target", target.getClientId(context))
-                .attr("disabled", droppable.isDisabled(), false)
-                .attr("hoverClass", droppable.getHoverStyleClass(), null)
-                .attr("activeClass", droppable.getActiveStyleClass(), null)
-                .attr("accept", droppable.getAccept(), null)
-                .attr("scope", droppable.getScope(), null)
-                .attr("tolerance", droppable.getTolerance(), null)
-                .attr("greedy", droppable.isGreedy(), false);
-
-        if (droppable.getOnDrop() != null) {
-            wb.append(",onDrop:").append(droppable.getOnDrop());
+        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, component, component.getFor());
+        if (target == null) {
+            target = component.getParent();
         }
 
-        encodeClientBehaviors(context, droppable);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("Droppable", component)
+                .attr("target", target.getClientId(context))
+                .attr("disabled", component.isDisabled(), false)
+                .attr("hoverClass", component.getHoverStyleClass(), null)
+                .attr("activeClass", component.getActiveStyleClass(), null)
+                .attr("accept", component.getAccept(), null)
+                .attr("scope", component.getScope(), null)
+                .attr("tolerance", component.getTolerance(), null)
+                .attr("greedy", component.isGreedy(), false);
+
+        if (component.getOnDrop() != null) {
+            wb.append(",onDrop:").append(component.getOnDrop());
+        }
+
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }

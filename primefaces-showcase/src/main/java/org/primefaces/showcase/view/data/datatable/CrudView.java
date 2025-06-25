@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,19 +27,23 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.showcase.domain.Product;
 import org.primefaces.showcase.service.ProductService;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped
 public class CrudView implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private List<Product> products;
 
@@ -53,6 +57,7 @@ public class CrudView implements Serializable {
     @PostConstruct
     public void init() {
         this.products = this.productService.getClonedProducts(100);
+        this.selectedProducts = new ArrayList<Product>();
     }
 
     public List<Product> getProducts() {
@@ -95,6 +100,7 @@ public class CrudView implements Serializable {
 
     public void deleteProduct() {
         this.products.remove(this.selectedProduct);
+        this.selectedProducts.remove(this.selectedProduct);
         this.selectedProduct = null;
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Removed"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");

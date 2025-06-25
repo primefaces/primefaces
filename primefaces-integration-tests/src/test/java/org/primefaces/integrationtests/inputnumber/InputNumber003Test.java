@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,44 +23,47 @@
  */
 package org.primefaces.integrationtests.inputnumber;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputNumber;
 
-public class InputNumber003Test extends AbstractPrimePageTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class InputNumber003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("InputNumber: GitHub #6387, #6518 test decimal places with padding zeroes")
-    public void testPaddingZeroes(Page page) {
+    void paddingZeroes(Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
-        Assertions.assertEquals("", inputNumber.getValue());
+        assertEquals("", inputNumber.getValue());
 
         // Act
         inputNumber.setValue("1.23");
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertEquals("1.230000", inputNumber.getValue());
-        Assertions.assertEquals("1.230000", inputNumber.getWidgetValue());
+        assertEquals("1.230000", inputNumber.getValue());
+        assertEquals("1.230000", inputNumber.getWidgetValue());
         assertConfiguration(inputNumber.getWidgetConfiguration(), true);
     }
 
     @Test
     @Order(2)
     @DisplayName("InputNumber: GitHub #6387, #6518 test decimal places without padding zeroes")
-    public void testNoPadding(Page page) {
+    void noPadding(Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
-        Assertions.assertEquals("", inputNumber.getValue());
+        assertEquals("", inputNumber.getValue());
 
         // Act
         page.buttonPadControl.click();
@@ -68,20 +71,21 @@ public class InputNumber003Test extends AbstractPrimePageTest {
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertEquals("4.56", inputNumber.getValue());
-        Assertions.assertEquals("4.56", inputNumber.getWidgetValue());
+        assertEquals("4.56", inputNumber.getValue());
+        assertEquals("4.56", inputNumber.getWidgetValue());
         assertConfiguration(inputNumber.getWidgetConfiguration(), false);
     }
 
     private void assertConfiguration(JSONObject cfg, boolean allowDecimalPadding) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        Assertions.assertEquals("6", cfg.get("decimalPlaces"));
+        assertEquals(6, cfg.get("decimalPlaces"));
+        assertEquals(6, cfg.get("decimalPlacesRawValue"));
         if (cfg.has("allowDecimalPadding")) {
-            Assertions.assertEquals(allowDecimalPadding, cfg.getBoolean("allowDecimalPadding"));
+            assertEquals(allowDecimalPadding, cfg.getBoolean("allowDecimalPadding"));
         }
         else {
-            Assertions.assertTrue(allowDecimalPadding);
+            assertTrue(allowDecimalPadding);
         }
     }
 

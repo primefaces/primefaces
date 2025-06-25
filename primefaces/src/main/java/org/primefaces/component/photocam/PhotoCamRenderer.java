@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,53 +23,48 @@
  */
 package org.primefaces.component.photocam;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
-import javax.xml.bind.DatatypeConverter;
-
 import org.primefaces.event.CaptureEvent;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class PhotoCamRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.Map;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.event.PhaseId;
+import jakarta.xml.bind.DatatypeConverter;
+
+public class PhotoCamRenderer extends CoreRenderer<PhotoCam> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        PhotoCam cam = (PhotoCam) component;
-        String dataParam = cam.getClientId(context) + "_data";
+    public void decode(FacesContext context, PhotoCam component) {
+        String dataParam = component.getClientId(context) + "_data";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if (params.containsKey(dataParam)) {
             String image = params.get(dataParam);
             image = image.substring(22);
 
-            CaptureEvent event = new CaptureEvent(cam, DatatypeConverter.parseBase64Binary(image), image);
+            CaptureEvent event = new CaptureEvent(component, DatatypeConverter.parseBase64Binary(image), image);
             event.setPhaseId(PhaseId.INVOKE_APPLICATION);
 
-            cam.queueEvent(event);
+            component.queueEvent(event);
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        PhotoCam cam = (PhotoCam) component;
-
-        encodeMarkup(context, cam);
-        encodeScript(context, cam);
+    public void encodeEnd(FacesContext context, PhotoCam component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, PhotoCam cam) throws IOException {
+    protected void encodeMarkup(FacesContext context, PhotoCam component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = cam.getClientId(context);
-        String style = cam.getStyle();
-        String styleClass = cam.getStyleClass();
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
@@ -83,27 +78,25 @@ public class PhotoCamRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, PhotoCam cam) throws IOException {
+    protected void encodeScript(FacesContext context, PhotoCam component) throws IOException {
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PhotoCam", cam)
-                .attr("width", cam.getWidth(), 320)
-                .attr("height", cam.getHeight(), 240)
-                .attr("photoWidth", cam.getPhotoWidth(), 320)
-                .attr("photoHeight", cam.getPhotoHeight(), 240)
-                .attr("format", cam.getFormat(), null)
-                .attr("jpegQuality", cam.getJpegQuality(), 90)
-                .attr("autoStart", cam.isAutoStart(), true)
-                .attr("device", cam.getDevice(), null)
-                .callback("onCameraError", "function(errorObj)", cam.getOnCameraError());
+        wb.init("PhotoCam", component)
+                .attr("width", component.getWidth(), 320)
+                .attr("height", component.getHeight(), 240)
+                .attr("photoWidth", component.getPhotoWidth(), 320)
+                .attr("photoHeight", component.getPhotoHeight(), 240)
+                .attr("format", component.getFormat(), null)
+                .attr("jpegQuality", component.getJpegQuality(), 90)
+                .attr("autoStart", component.isAutoStart(), true)
+                .attr("device", component.getDevice(), null)
+                .callback("onCameraError", "function(errorObj)", component.getOnCameraError());
 
-        if (cam.getUpdate() != null) {
-            wb.attr("update", SearchExpressionFacade.resolveClientIds(context, cam, cam.getUpdate(),
-                    SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
+        if (component.getUpdate() != null) {
+            wb.attr("update", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getUpdate()));
         }
-        if (cam.getProcess() != null) {
-            wb.attr("process", SearchExpressionFacade.resolveClientIds(context, cam, cam.getProcess(),
-                    SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
+        if (component.getProcess() != null) {
+            wb.attr("process", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getProcess()));
         }
 
         wb.finish();

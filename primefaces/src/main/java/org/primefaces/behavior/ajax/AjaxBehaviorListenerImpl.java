@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.MethodNotFoundException;
-import javax.el.PropertyNotFoundException;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
+import jakarta.el.ELContext;
+import jakarta.el.MethodExpression;
+import jakarta.el.MethodNotFoundException;
+import jakarta.el.PropertyNotFoundException;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.AjaxBehaviorListener;
 
 public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializable {
 
@@ -71,15 +71,10 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         try {
             listener.invoke(elContext, new Object[]{});
         }
-        catch (MethodNotFoundException | IllegalArgumentException e) {
-            processArgListener(context, elContext, event);
-        }
-        // JBoss hack, see #1375
-        catch (ArrayIndexOutOfBoundsException e) {
-            processArgListener(context, elContext, event);
-        }
-        // Mojarra hack for Composite Components, see #7819
-        catch (PropertyNotFoundException e) {
+        // catch MethodNotFoundException and IllegalArgumentException by spec
+        // catch ArrayIndexOutOfBoundsException as JBoss hack, see #1375
+        // catch PropertyNotFoundException as Mojarra hack for Composite Components, see #7819
+        catch (MethodNotFoundException | IllegalArgumentException | ArrayIndexOutOfBoundsException | PropertyNotFoundException e) {
             processArgListener(context, elContext, event);
         }
     }
@@ -92,15 +87,10 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         try {
             listenerWithArg.invoke(elContext, new Object[]{event});
         }
-        catch (MethodNotFoundException | IllegalArgumentException e) {
-            processCustomArgListener(context, elContext, event);
-        }
-        // JBoss hack, see #1375
-        catch (ArrayIndexOutOfBoundsException e) {
-            processCustomArgListener(context, elContext, event);
-        }
-        // Mojarra hack for Composite Components, see #7819
-        catch (PropertyNotFoundException e) {
+        // catch MethodNotFoundException and IllegalArgumentException by spec
+        // catch ArrayIndexOutOfBoundsException as JBoss hack, see #1375
+        // catch PropertyNotFoundException as Mojarra hack for Composite Components, see #7819
+        catch (MethodNotFoundException | IllegalArgumentException | ArrayIndexOutOfBoundsException | PropertyNotFoundException e) {
             processCustomArgListener(context, elContext, event);
         }
     }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,6 @@
  */
 package org.primefaces.component.row;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.row.renderer.ColumnGroupHelperRenderer;
 import org.primefaces.component.row.renderer.HelperRowRenderer;
 import org.primefaces.component.row.renderer.PanelGridBodyRowRenderer;
@@ -37,7 +30,13 @@ import org.primefaces.component.row.renderer.PanelGridFacetRowRenderer;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 
-public class RowRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import jakarta.faces.context.FacesContext;
+
+public class RowRenderer extends CoreRenderer<Row> {
 
     static final Map<String, HelperRowRenderer> RENDERERS;
 
@@ -49,24 +48,23 @@ public class RowRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Row row = (Row) component;
+    public void encodeEnd(FacesContext context, Row component) throws IOException {
         String helperKey = (String) context.getAttributes().get(Constants.HELPER_RENDERER);
 
         if (helperKey != null) {
             HelperRowRenderer renderer = RENDERERS.get(helperKey);
 
             if (renderer != null) {
-                renderer.encode(context, row);
+                renderer.encode(context, component);
             }
         }
         else {
-            renderChildren(context, row);
+            renderChildren(context, component);
         }
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Row component) throws IOException {
         //Do nothing
     }
 

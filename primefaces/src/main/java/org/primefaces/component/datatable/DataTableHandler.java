@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,29 @@
  */
 package org.primefaces.component.datatable;
 
-import java.util.Locale;
-import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.MetaRuleset;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.facelets.MethodRule;
+
+import java.util.Locale;
+
+import jakarta.faces.view.facelets.ComponentConfig;
+import jakarta.faces.view.facelets.ComponentHandler;
+import jakarta.faces.view.facelets.MetaRule;
+import jakarta.faces.view.facelets.MetaRuleset;
 
 public class DataTableHandler extends ComponentHandler {
 
-    private static final MetaRule DRAGGABLE_ROWS_FUNCTION
-            = new MethodRule("draggableRowsFunction", null, new Class[]{UIData.class});
-
-    private static final MetaRule GLOBAL_FILTER_FUNCTION
-            = new MethodRule("globalFilterFunction", Boolean.class, new Class[]{Object.class, Object.class, Locale.class});
+    private static final MetaRule DRAGGABLE_ROWS_FUNCTION = new MethodRule(DataTable.PropertyKeys.draggableRowsFunction.name(),
+            null,
+            new Class[]{PrimeUIData.class});
+    private static final MetaRule GLOBAL_FILTER_FUNCTION = new MethodRule(DataTable.PropertyKeys.globalFilterFunction.name(),
+            Boolean.class,
+            new Class[]{Object.class, Object.class, Locale.class});
 
     public DataTableHandler(ComponentConfig config) {
         super(config);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected MetaRuleset createMetaRuleset(Class type) {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);

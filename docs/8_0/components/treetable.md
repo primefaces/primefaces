@@ -33,7 +33,7 @@ scrollWidth | null | Integer | Width of scrollable data.
 tableStyle | null | String | Inline style of the table element.
 tableStyleClass | null | String | Style class of the table element.
 emptyMessage | No records found | String | Text to display when there is no data to display.
-resizableColumns | false | Boolean | Defines if colums can be resized or not.
+resizableColumns | false | Boolean | Defines if columns can be resized or not.
 rowStyleClass | null | String | Style class for each row.
 liveResize | false | Boolean | Columns are resized live in this mode without using a resize helper.
 required | false | Boolean | Validation constraint for selection.

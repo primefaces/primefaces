@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,24 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.DatePicker;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.DatePicker;
 
-public class DatePicker003Test extends AbstractDatePickerTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class DatePicker003Test extends AbstractDatePickerTest {
 
     @Test
     @DisplayName("DatePicker: minDate and maxDate; days outside range should be disabled")
-    public void testMinMax(Page page) {
+    void minMax(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
 
@@ -47,23 +49,23 @@ public class DatePicker003Test extends AbstractDatePickerTest {
 
         // Assert (all days of august active)
         WebElement panel = datePicker.getPanel();
-        Assertions.assertNotNull(panel);
-        Assertions.assertEquals(31, panel.findElements(By.cssSelector("a.ui-state-default")).size());
+        assertNotNull(panel);
+        assertEquals(31, panel.findElements(By.cssSelector("a.ui-state-default")).size());
 
         // Act - previous month
         panel.findElement(By.className("ui-datepicker-prev")).click();
 
         // Assert
-        Assertions.assertEquals(23, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
-        Assertions.assertEquals(12, panel.findElements(By.cssSelector("td > a.ui-state-default")).size());
+        assertEquals(23, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
+        assertEquals(12, panel.findElements(By.cssSelector("td > a.ui-state-default")).size());
 
         // Act - next month
         panel.findElement(By.className("ui-datepicker-next")).click();
         panel.findElement(By.className("ui-datepicker-next")).click();
 
         // Assert
-        Assertions.assertEquals(15, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
-        Assertions.assertEquals(20, panel.findElements(By.cssSelector("td > a.ui-state-default")).size());
+        assertEquals(15, panel.findElements(By.cssSelector("td > span.ui-state-disabled")).size()); //includes invisible days of other months
+        assertEquals(20, panel.findElements(By.cssSelector("td > a.ui-state-default")).size());
 
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
@@ -71,9 +73,9 @@ public class DatePicker003Test extends AbstractDatePickerTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
-        Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
-        Assertions.assertEquals("single", cfg.getString("selectionMode"));
-        Assertions.assertFalse(cfg.getBoolean("inline"));
+        assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
+        assertEquals("single", cfg.getString("selectionMode"));
+        assertFalse(cfg.getBoolean("inline"));
     }
 
     public static class Page extends AbstractPrimePage {

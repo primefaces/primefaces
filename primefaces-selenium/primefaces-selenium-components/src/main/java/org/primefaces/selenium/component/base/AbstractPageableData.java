@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,16 @@
  */
 package org.primefaces.selenium.component.base;
 
-import java.util.List;
-
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.data.Page;
 import org.primefaces.selenium.component.model.data.Paginator;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 
 public abstract class AbstractPageableData extends AbstractComponent {
 
@@ -64,5 +67,10 @@ public abstract class AbstractPageableData extends AbstractComponent {
                 break;
             }
         }
+    }
+
+    public void selectRowsPerPage(int rows) {
+        WebElement rppDD = getWebDriver().findElement(By.name(this.getId() + "_rppDD"));
+        PrimeSelenium.guardAjax(new Select(rppDD)).selectByValue("" + rows);
     }
 }

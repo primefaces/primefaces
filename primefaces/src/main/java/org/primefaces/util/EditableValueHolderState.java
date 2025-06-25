@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.util;
 
 public class EditableValueHolderState {
 
+    private Object value;
     private String clientId;
     private boolean valid;
     private boolean required;
@@ -51,5 +52,13 @@ public class EditableValueHolderState {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
     }
 }

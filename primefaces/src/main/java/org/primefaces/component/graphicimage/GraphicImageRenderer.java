@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,63 +23,72 @@
  */
 package org.primefaces.component.graphicimage;
 
-import java.io.IOException;
-
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
+import org.primefaces.util.ResourceUtils;
 
-public class GraphicImageRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.application.Resource;
+import jakarta.faces.application.ResourceHandler;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class GraphicImageRenderer extends CoreRenderer<GraphicImage> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        GraphicImage image = (GraphicImage) component;
-        String clientId = image.getClientId(context);
-        String imageSrc = getImageSrc(context, image);
+    public void decode(FacesContext context, GraphicImage component) {
+        decodeBehaviors(context, component);
+    }
 
-        writer.startElement("img", image);
+    @Override
+    public void encodeEnd(FacesContext context, GraphicImage component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = component.getClientId(context);
+        String imageSrc = getImageSrc(context, component);
+
+        writer.startElement("img", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("src", imageSrc, null);
 
-        if (image.getAlt() == null) {
+        if (LangUtils.isBlank(component.getAlt())) {
+            // #13790 decorative images should have an empty alt attribute
             writer.writeAttribute("alt", "", null);
         }
-        if (image.getStyleClass() != null) {
-            writer.writeAttribute("class", image.getStyleClass(), "styleClass");
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), "styleClass");
         }
 
-        renderPassThruAttributes(context, image, HTML.IMG_ATTRS);
+        renderDomEvents(context, component, HTML.IMG_ATTRS);
 
         writer.endElement("img");
     }
 
-    protected String getImageSrc(FacesContext context, GraphicImage image) {
-        String name = image.getName();
+    protected String getImageSrc(FacesContext context, GraphicImage component) {
+        String name = component.getName();
 
         if (name != null) {
-            String libName = image.getLibrary();
+            String library = component.getLibrary();
             ResourceHandler handler = context.getApplication().getResourceHandler();
-            Resource res = handler.createResource(name, libName);
-
-            if (res == null) {
+            Resource resource = handler.createResource(name, library);
+            if (resource == null) {
                 return "RES_NOT_FOUND";
             }
-            else {
-                String requestPath = res.getRequestPath();
+
+            if (component.isStream()) {
+                String requestPath = resource.getRequestPath();
                 return context.getExternalContext().encodeResourceURL(requestPath);
+            }
+            else {
+                return ResourceUtils.toBase64(context, resource);
             }
         }
         else {
-            return DynamicContentSrcBuilder.build(context, image, image.getValueExpression(GraphicImage.PropertyKeys.value.name()),
-                    new Lazy<>(() -> image.getValue()), image.isCache(), image.isStream());
+            return DynamicContentSrcBuilder.build(context, component, component.getValueExpression(GraphicImage.PropertyKeys.value.name()),
+                    new Lazy<>(() -> component.getValue()), component.isCache(), component.isStream());
         }
     }
 }

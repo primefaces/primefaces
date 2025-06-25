@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,46 +23,47 @@
  */
 package org.primefaces.component.feedreader;
 
+import org.primefaces.model.feedreader.FeedItem;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-
-public class FeedReaderRenderer extends CoreRenderer {
+public class FeedReaderRenderer extends CoreRenderer<FeedReader> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        FeedReader reader = (FeedReader) component;
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        String var = reader.getVar();
-        int size = reader.getSize();
-
+    public void encodeEnd(FacesContext context, FeedReader component) throws IOException {
         try {
-            List entries = new FeedInput().parse(reader.getValue(), size);
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            String var = component.getVar();
+            int size = component.getSize();
+            String url = component.getValue();
+            List<FeedItem> entries = RSSUtils.parse(url, size, component.isPodcast());
 
-            for (Object f : entries) {
-                requestMap.put(var, f);
-                renderChildren(context, reader);
+            for (FeedItem item : entries) {
+                requestMap.put(var, item);
+                renderChildren(context, component);
             }
 
             requestMap.remove(var);
 
         }
         catch (Exception e) {
-            UIComponent errorFacet = reader.getFacet("error");
-            if (ComponentUtils.shouldRenderFacet(errorFacet)) {
+            logDevelopmentWarning(context, this, String.format("Unexpected RSS error: %s", e.getMessage()));
+            UIComponent errorFacet = component.getFacet("error");
+            if (FacetUtils.shouldRenderFacet(errorFacet)) {
                 errorFacet.encodeAll(context);
             }
         }
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, FeedReader component) throws IOException {
         //Do nothing
     }
 

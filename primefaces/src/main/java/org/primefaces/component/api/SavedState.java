@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,16 +24,15 @@
 package org.primefaces.component.api;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-import javax.faces.component.EditableValueHolder;
+import jakarta.faces.component.EditableValueHolder;
 
 /**
- * Keeps state of a component implementing {@link javax.faces.component.EditableValueHolder}.
+ * Keeps state of a component implementing {@link jakarta.faces.component.EditableValueHolder}.
  */
 @SuppressWarnings({"SerializableHasSerializationMethods", "NonSerializableFieldInSerializableClass"})
 public class SavedState implements Serializable {
-
-    public static final SavedState NULL_STATE = new SavedState();
 
     private static final long serialVersionUID = 4325654657465654768L;
 
@@ -105,6 +104,10 @@ public class SavedState implements Serializable {
         this.submitted = submitted;
     }
 
+    public boolean hasDeltaState() {
+        return submittedValue != null || value != null || localValueSet || !valid || submitted;
+    }
+
     @Override
     public String toString() {
         return ("submittedValue: " + submittedValue + " value: " + value
@@ -113,12 +116,7 @@ public class SavedState implements Serializable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (localValueSet ? 1231 : 1237);
-        result = prime * result + (submitted ? 1231 : 1237);
-        result = prime * result + ((submittedValue == null) ? 0 : submittedValue.hashCode());
-        return result;
+        return Objects.hash(localValueSet, submitted, submittedValue);
     }
 
     @Override
@@ -133,20 +131,6 @@ public class SavedState implements Serializable {
             return false;
         }
         SavedState other = (SavedState) obj;
-        if (localValueSet != other.localValueSet) {
-            return false;
-        }
-        if (submitted != other.submitted) {
-            return false;
-        }
-        if (submittedValue == null) {
-            if (other.submittedValue != null) {
-                return false;
-            }
-        }
-        else if (!submittedValue.equals(other.submittedValue)) {
-            return false;
-        }
-        return true;
+        return localValueSet == other.localValueSet && submitted == other.submitted && Objects.equals(submittedValue, other.submittedValue);
     }
 }

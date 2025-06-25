@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.tabview;
 
-import javax.faces.component.UIPanel;
+import jakarta.faces.component.UIPanel;
 
 
 public abstract class TabBase extends UIPanel {
@@ -38,7 +38,9 @@ public abstract class TabBase extends UIPanel {
         disabled,
         closable,
         titletip,
-        ariaLabel
+        ariaLabel,
+        menuTitle,
+        key
     }
 
     public TabBase() {
@@ -104,6 +106,22 @@ public abstract class TabBase extends UIPanel {
 
     public void setAriaLabel(String ariaLabel) {
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    public String getMenuTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.menuTitle, null);
+    }
+
+    public void setMenuTitle(String menuTitle) {
+        getStateHelper().put(PropertyKeys.menuTitle, menuTitle);
+    }
+
+    public String getKey() {
+        return (String) getStateHelper().eval(PropertyKeys.key, null);
+    }
+
+    public void setKey(String key) {
+        getStateHelper().put(PropertyKeys.key, key);
     }
 
 }

@@ -1,0 +1,58 @@
+diff --git a/webcam.js b/webcam.js
+index dd945d59d1cd287730acb2f6c24487954dfe8988..06e48f4f3137e8ce1580a2304eb887d6836492dc 100644
+--- a/webcam.js
++++ b/webcam.js
+@@ -60,10 +60,11 @@ var Webcam = {
+ 		swfURL: '',            // URI to webcam.swf movie (defaults to the js location)
+ 		flashNotDetectedText: 'ERROR: No Adobe Flash Player detected.  Webcam.js relies on Flash for browsers that do not support getUserMedia (like yours).',
+ 		noInterfaceFoundText: 'No supported webcam interface found.',
+-		unfreeze_snap: true,    // Whether to unfreeze the camera after snap (defaults to true)
++		unfreeze_snap: true,   // Whether to unfreeze the camera after snap (defaults to true)
+ 		iosPlaceholderText: 'Click here to open camera.',
+-		user_callback: null,    // callback function for snapshot (used if no user_callback parameter given to snap function)
+-		user_canvas: null       // user provided canvas for snapshot (used if no user_canvas parameter given to snap function)
++		user_callback: null,   // callback function for snapshot (used if no user_callback parameter given to snap function)
++		user_canvas: null,     // user provided canvas for snapshot (used if no user_canvas parameter given to snap function)
++		device: null           // selected device to grab images from
+ 	},
+ 
+ 	errors: {
+@@ -294,14 +295,23 @@ var Webcam = {
+ 			
+ 			// ask user for access to their camera
+ 			var self = this;
++			
++			var constraints = this.params.constraints;
++			
++			if (!constraints) {
++				constraints = {
++					width: { min: this.params.dest_width },
++					height: { min: this.params.dest_height }
++				};
++				if (this.params.device === "user" || this.params.device === "environment") {
++					constraints.facingMode = this.params.device;
++				} else if (this.params.device) {
++					constraints.deviceId = this.params.device;
++				}
++			}
+ 			this.mediaDevices.getUserMedia({
+ 				"audio": false,
+-				"video": this.params.constraints || {
+-					mandatory: {
+-						minWidth: this.params.dest_width,
+-						minHeight: this.params.dest_height
+-					}
+-				}
++				"video": constraints
+ 			})
+ 			.then( function(stream) {
+ 				// got access, attach stream to video
+@@ -663,7 +673,7 @@ var Webcam = {
+ 		}
+ 		
+ 		// construct object/embed tag
+-		html += '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" type="application/x-shockwave-flash" codebase="'+this.protocol+'://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="'+this.params.width+'" height="'+this.params.height+'" id="webcam_movie_obj" align="middle"><param name="wmode" value="opaque" /><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="false" /><param name="movie" value="'+swfURL+'" /><param name="loop" value="false" /><param name="menu" value="false" /><param name="quality" value="best" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="'+flashvars+'"/><embed id="webcam_movie_embed" src="'+swfURL+'" wmode="opaque" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="'+this.params.width+'" height="'+this.params.height+'" name="webcam_movie_embed" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="'+flashvars+'"></embed></object>';
++		html += '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" type="application/x-shockwave-flash" codebase="'+this.protocol+'://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="'+this.params.width+'" height="'+this.params.height+'" id="webcam_movie_obj" align="middle"><param name="wmode" value="opaque"></param><param name="allowScriptAccess" value="always" ></param><param name="allowFullScreen" value="false" ></param><param name="movie" value="'+swfURL+'" ></param><param name="loop" value="false" ></param><param name="menu" value="false" ></param><param name="quality" value="best" ></param><param name="bgcolor" value="#ffffff" ></param><param name="flashvars" value="'+flashvars+'"></param><embed id="webcam_movie_embed" src="'+swfURL+'" wmode="opaque" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="'+this.params.width+'" height="'+this.params.height+'" name="webcam_movie_embed" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="'+flashvars+'"></embed></object>';
+ 		
+ 		return html;
+ 	},

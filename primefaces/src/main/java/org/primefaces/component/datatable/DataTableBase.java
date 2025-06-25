@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,17 @@
  */
 package org.primefaces.component.datatable;
 
-import javax.el.MethodExpression;
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.UIPageableData;
+import org.primefaces.component.api.UITable;
+import org.primefaces.component.api.Widget;
+import org.primefaces.util.ELUtils;
 
-import org.primefaces.component.api.*;
+import java.util.Collection;
+
+import jakarta.el.MethodExpression;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, ClientBehaviorHolder,
         PrimeClientBehaviorHolder, UITable<DataTableState> {
@@ -41,13 +48,14 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         ariaRowLabel,
         caseSensitiveSort,
         cellEditMode,
+        cellNavigation,
         cellSeparator,
         clientCache,
         dataLocale,
         dir,
         disableContextMenuIfEmpty,
-        disabledSelection,
-        disabledTextSelection,
+        selectionDisabled,
+        selectionTextDisabled,
         draggableColumns,
         draggableRows,
         draggableRowsFunction,
@@ -57,11 +65,15 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         editingRow,
         escapeText,
         expandedRow,
+        exportTag,
+        exportRowTag,
         filterBy,
         filterDelay,
         filterEvent,
+        filterNormalize,
         filteredValue,
         frozenColumns,
+        frozenColumnsAlignment,
         frozenRows,
         globalFilter,
         globalFilterFunction,
@@ -82,17 +94,19 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         rowExpandMode,
         rowHover,
         rowKey,
-        rowSelectMode,
         rowSelector,
         rowStyleClass,
+        rowTitle,
         saveOnCellBlur,
         scrollHeight,
         scrollRows,
         scrollWidth,
         scrollable,
+        selectAllFilteredOnly,
         selection,
         selectionMode,
         selectionPageOnly,
+        selectionRowMode,
         skipChildren,
         sortBy,
         sortMode,
@@ -109,7 +123,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         showGridlines,
         size,
         widgetVar,
-        partialUpdate
+        partialUpdate,
+        showSelectAll
     }
 
     public DataTableBase() {
@@ -154,7 +169,26 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     }
 
     public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
+        return (String) getStateHelper().eval(PropertyKeys.selectionMode, () -> {
+            // if not set by xhtml, we need to check the type of the value binding
+            Class<?> type = ELUtils.getType(getFacesContext(),
+                    getValueExpression(PropertyKeys.selection.toString()),
+                    this::getSelection);
+            if (type != null) {
+                String selectionMode = "single";
+                if (Collection.class.isAssignableFrom(type) || type.isArray()) {
+                    selectionMode = "multiple";
+                }
+
+                // remember in ViewState, to not do the same check again
+                setSelectionMode(selectionMode);
+
+                return selectionMode;
+            }
+            else {
+                return null;
+            }
+        });
     }
 
     public void setSelectionMode(String selectionMode) {
@@ -199,6 +233,14 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setRowStyleClass(String rowStyleClass) {
         getStateHelper().put(PropertyKeys.rowStyleClass, rowStyleClass);
+    }
+
+    public String getRowTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.rowTitle, null);
+    }
+
+    public void setRowTitle(String rowTitle) {
+        getStateHelper().put(PropertyKeys.rowTitle, rowTitle);
     }
 
     public String getOnExpandStart() {
@@ -380,20 +422,20 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.expandedRow, expandedRow);
     }
 
-    public boolean isDisabledSelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabledSelection, false);
+    public boolean isSelectionDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionDisabled, false);
     }
 
-    public void setDisabledSelection(boolean disabledSelection) {
-        getStateHelper().put(PropertyKeys.disabledSelection, disabledSelection);
+    public void setSelectionDisabled(boolean selectionDisabled) {
+        getStateHelper().put(PropertyKeys.selectionDisabled, selectionDisabled);
     }
 
-    public String getRowSelectMode() {
-        return (String) getStateHelper().eval(PropertyKeys.rowSelectMode, "new");
+    public String getSelectionRowMode() {
+        return (String) getStateHelper().eval(PropertyKeys.selectionRowMode, "new");
     }
 
-    public void setRowSelectMode(String rowSelectMode) {
-        getStateHelper().put(PropertyKeys.rowSelectMode, rowSelectMode);
+    public void setSelectionRowMode(String rowSelectMode) {
+        getStateHelper().put(PropertyKeys.selectionRowMode, rowSelectMode);
     }
 
     public String getRowExpandMode() {
@@ -404,7 +446,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.rowExpandMode, rowExpandMode);
     }
 
-    public Object getDataLocale() {
+    @Override public Object getDataLocale() {
         return getStateHelper().eval(PropertyKeys.dataLocale, null);
     }
 
@@ -428,6 +470,14 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.frozenColumns, frozenColumns);
     }
 
+    public String getFrozenColumnsAlignment() {
+        return (String) getStateHelper().eval(PropertyKeys.frozenColumnsAlignment, "left");
+    }
+
+    public void setFrozenColumnsAlignment(String alignFrozenColumnsRight) {
+        getStateHelper().put(PropertyKeys.frozenColumnsAlignment, alignFrozenColumnsRight);
+    }
+
     public boolean isDraggableRows() {
         return (Boolean) getStateHelper().eval(PropertyKeys.draggableRows, false);
     }
@@ -444,12 +494,12 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.skipChildren, skipChildren);
     }
 
-    public boolean isDisabledTextSelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabledTextSelection, true);
+    public boolean isSelectionTextDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionTextDisabled, true);
     }
 
-    public void setDisabledTextSelection(boolean disabledTextSelection) {
-        getStateHelper().put(PropertyKeys.disabledTextSelection, disabledTextSelection);
+    public void setSelectionTextDisabled(boolean selectionTextDisabled) {
+        getStateHelper().put(PropertyKeys.selectionTextDisabled, selectionTextDisabled);
     }
 
     public String getTabindex() {
@@ -603,11 +653,11 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.rowDragSelector, rowDragSelector);
     }
 
-    public javax.el.MethodExpression getDraggableRowsFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.draggableRowsFunction, null);
+    public jakarta.el.MethodExpression getDraggableRowsFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.draggableRowsFunction, null);
     }
 
-    public void setDraggableRowsFunction(javax.el.MethodExpression draggableRowsFunction) {
+    public void setDraggableRowsFunction(jakarta.el.MethodExpression draggableRowsFunction) {
         getStateHelper().put(PropertyKeys.draggableRowsFunction, draggableRowsFunction);
     }
 
@@ -699,5 +749,54 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setPartialUpdate(boolean partialUpdate) {
         getStateHelper().put(PropertyKeys.partialUpdate, partialUpdate);
+    }
+
+    public boolean isShowSelectAll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSelectAll, true);
+    }
+
+    public void setShowSelectAll(boolean showSelectAll) {
+        getStateHelper().put(PropertyKeys.showSelectAll, showSelectAll);
+    }
+
+    public String getExportRowTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportRowTag, null);
+    }
+
+    public void setExportRowTag(String exportRowTag) {
+        getStateHelper().put(PropertyKeys.exportRowTag, exportRowTag);
+    }
+
+    public String getExportTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
+    }
+
+    public void setExportTag(String exportTag) {
+        getStateHelper().put(PropertyKeys.exportTag, exportTag);
+    }
+
+    public boolean isSelectAllFilteredOnly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectAllFilteredOnly, false);
+    }
+
+    public void setSelectAllFilteredOnly(boolean selectAllFilteredOnly) {
+        getStateHelper().put(PropertyKeys.selectAllFilteredOnly, selectAllFilteredOnly);
+    }
+
+    public Boolean isCellNavigation() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cellNavigation, null);
+    }
+
+    public void setCellNavigation(boolean cellNavigation) {
+        getStateHelper().put(PropertyKeys.cellNavigation, cellNavigation);
+    }
+
+    @Override
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }

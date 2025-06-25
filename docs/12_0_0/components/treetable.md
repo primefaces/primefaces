@@ -53,7 +53,7 @@ propagateSelectionDown | true | Boolean | Defines downwards selection propagatio
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 required | false | Boolean | Validation constraint for selection.
 requiredMessage | null | String | Message for required selection validation.
-resizableColumns | false | Boolean | Defines if colums can be resized or not.
+resizableColumns | false | Boolean | Defines if columns can be resized or not.
 rows | 0 | Integer | Number of rows to display per page. Default value is 0 meaning to display all data available.
 rowsPerPageTemplate | null | String | Template of the rowsPerPage dropdown.
 rowStyleClass | null | String | Style class for each row.
@@ -74,7 +74,7 @@ style | null | String | Inline style of the container element.
 styleClass | null | String | Style class of the container element.
 tableStyle | null | String | Inline style of the table element.
 tableStyleClass | null | String | Style class of the table element.
-touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 value | null | Object | A TreeNode instance as the backing model.
 var | null | String | Name of the request-scoped variable used to refer each treenode.
 widgetVar | null | String | Name of the client side widget.

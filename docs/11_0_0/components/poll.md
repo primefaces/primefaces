@@ -29,7 +29,7 @@ update | @none | String | Component(s) to be updated with ajax.
 listener | null | MethodExpr | A method expression to invoke by polling.
 immediate | false | Boolean | Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase.
 async | false | Boolean | When set to true, ajax requests are not queued.
-onstart | null | String | Javascript handler to execute before ajax request is begins.
+onstart | null | String | Javascript handler to execute before ajax request begins.
 oncomplete | null | String | Javascript handler to execute when ajax request is completed.
 onsuccess | null | String | Javascript handler to execute when ajax request succeeds.
 onerror | null | String | Javascript handler to execute when ajax request fails.
@@ -89,7 +89,7 @@ Poll can be started and stopped using client side api;
 ```xhtml
 <h:form>
     <h:outputText id="txt_count" value="#{counterBean.count}" />
-    <p:poll interval="5" action="#{counterBean.increment}" update="txt_count" widgetVar="myPoll" autoStart="false" />
+    <p:poll interval="5" listener="#{counterBean.increment}" update="txt_count" widgetVar="myPoll" autoStart="false" />
     <a href="#" onclick="PF('myPoll').start();">Start</a>
     <a href="#" onclick="PF('myPoll').stop();">Stop</a>
 </h:form>

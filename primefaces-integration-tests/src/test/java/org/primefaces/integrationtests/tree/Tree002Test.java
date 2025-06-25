@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,6 @@
  */
 package org.primefaces.integrationtests.tree;
 
-import java.util.List;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
@@ -40,23 +30,36 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;
 
-public class Tree002Test extends AbstractTreeTest {
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class Tree002Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
     @DisplayName("Tree: Single selection")
-    public void testSingleSelection(Page page) {
+    void singleSelection(Page page) {
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         TreeNode first = children.get(0);
-        Assertions.assertEquals("Documents", first.getLabelText());
+        assertEquals("Documents", first.getLabelText());
 
         // Act
         first.select();

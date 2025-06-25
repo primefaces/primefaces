@@ -1,8 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -10,19 +8,19 @@
     </ui:define>
 
     <ui:define name="description">
-        LineChart is displayed using a LineChartModel.
+        LineChart is created with raw JSON or using an <a href="https://github.com/xdev-software/chartjs-java-model" target="_blank" rel="noopener noreferrer">XDEV</a> model.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/chart"/>
-    <ui:param name="widgetLink" value="Chart-1"/>
+    <ui:param name="documentationLink" value="/components/chart" />
+    <ui:param name="widgetLink" value="Chart-1" />
 
     <ui:define name="implementation">
         <div class="card">
-            <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
+            <p:chart value="#{chartView.lineModel}" style="width: 100%; height: 500px;"/>
         </div>
-        <br/><br/>
+
         <div class="card">
-            <p:chart type="line" model="#{chartView.lineModel2}" style="height:300px;"/>
+            <p:chart value="#{chartView.cartesianLinerModel}" style="width: 100%; height: 500px;"/>
         </div>
     </ui:define>
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -86,13 +86,5 @@ public interface ScheduleEvent<T> {
     String getUrl();
 
     Map<String, Object> getDynamicProperties();
-
-    /**
-     * @deprecated Use {@link #isResizable()} or {@link #isDraggable()} instead.
-     */
-    @Deprecated
-    default boolean isEditable() {
-        return isDraggable() != null && isResizable() != null && (isDraggable() || isResizable());
-    }
 
 }

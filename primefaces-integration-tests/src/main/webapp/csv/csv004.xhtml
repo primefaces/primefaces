@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:p="primefaces" xmlns:pt="jakarta.faces.passthrough">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <h:outputStylesheet name="css/primeflex3.css" library="it" /><!-- latest primeflex -->
+
+        <style type="text/css">
+            body .ui-panelgrid .ui-panelgrid-cell {
+                padding: 0.5rem;
+            }
+
+            button.ui-state-csv-valid,
+            input.ui-state-csv-valid,
+            .ui-inputfield.ui-state-error.ui-state-csv-valid,
+            .ui-selectonemenu.ui-state-csv-valid {
+                border-left-color: green !important;
+                /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+
+            button.ui-state-csv-invalid,
+            input.ui-state-csv-invalid,
+            span.ui-inputnumber.ui-state-csv-invalid,
+            .ui-selectonemenu.ui-state-csv-invalid {
+                border-left-color: red !important;
+                /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+        </style>
+        <script>
+            //<![CDATA[
+            PrimeFaces.validator['MyComplexValidator'] = {
+
+                validate: function (element) {
+                    let nameRequiredPf = PF('nameRequired');
+                    let namePf = PF('name');
+
+                    if (nameRequiredPf.isChecked() && namePf.getValue().length === 0) {
+                        PrimeFaces.validation.ValidationContext.highlight(namePf);
+                        PrimeFaces.validation.ValidationContext.addMessage(namePf, { summary: 'Validation Error', detail: 'A name is required!' });
+                    } else {
+                        PrimeFaces.validation.ValidationContext.unhighlight(namePf);
+                    }
+                }
+            };
+            //]]>
+        </script>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:outputPanel pt:data-p-val="MyComplexValidator">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
+
+
+                <h:panelGrid id="grid" columns="3" cellpadding="5">
+                    <p:outputLabel for="@next" value="Name required" />
+                    <p:selectBooleanCheckbox id="nameRequired" widgetVar="nameRequired" value="#{csv004.nameRequired}" />
+                    <p:message for="@previous" />
+
+                    <p:outputLabel for="@next" value="Name" />
+                    <p:inputText id="name" widgetVar="name" value="#{csv004.name}" label="Name" />
+                    <p:message id="msgName" for="@previous" />
+                </h:panelGrid>
+
+                <p:defaultCommand target="btnAjax" />
+
+                <p:commandButton id="btnNonAjax" value="Non-Ajax" ajax="false" icon="pi pi-check" validateClient="true" action="#{csv004.doNonAjax()}"
+                    style="margin-right:10px" />
+                <p:commandButton id="btnAjax" value="Ajax" update="@form" icon="pi pi-check" validateClient="true" action="#{csv004.doAjax()}"
+                    style="margin-right:10px" />
+                <p:commandButton id="btnNonAjaxWithoutCsv" value="Disabled (without CSV)" ajax="false" icon="pi pi-check"
+                    action="#{csv004.doNonAjaxWithoutCsv()}" style="margin-right:10px" />
+            </p:outputPanel>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

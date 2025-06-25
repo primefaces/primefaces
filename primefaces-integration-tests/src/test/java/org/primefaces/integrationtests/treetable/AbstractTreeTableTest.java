@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,21 @@
  */
 package org.primefaces.integrationtests.treetable;
 
-import org.junit.jupiter.api.Assertions;
 import org.primefaces.integrationtests.AbstractTableTest;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.model.TreeNodeList;
 import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.TreeTable;
+import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.treetable.Row;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AbstractTreeTableTest extends AbstractTableTest {
 
@@ -50,19 +51,19 @@ public class AbstractTreeTableTest extends AbstractTableTest {
 
     protected void assertRows(List<Row> rows, TreeNode<Document> root) {
         int expectedSize = countRowsRecursive(root);
-        Assertions.assertNotNull(rows);
+        assertNotNull(rows);
         if (expectedSize == 0) {
-            Assertions.assertEquals(1, rows.size()); // No records found.
+            assertEquals(1, rows.size()); // No records found.
             return;
         }
-        Assertions.assertEquals(expectedSize, rows.size());
+        assertEquals(expectedSize, rows.size());
 
         int row = 0;
         List<TreeNode<Document>> treeNodes = flattenTreeNodes(root);
         for (TreeNode<Document> treeNode: treeNodes) {
-            Assertions.assertEquals(treeNode.getData().getName(), rows.get(row).getCell(0).getText());
-            Assertions.assertEquals(treeNode.getData().getSize(), rows.get(row).getCell(1).getText());
-            Assertions.assertEquals(treeNode.getData().getType(), rows.get(row).getCell(2).getText());
+            assertEquals(treeNode.getData().getName(), rows.get(row).getCell(0).getText());
+            assertEquals(treeNode.getData().getSize(), rows.get(row).getCell(1).getText());
+            assertEquals(treeNode.getData().getType(), rows.get(row).getCell(2).getText());
             row++;
         }
     }
@@ -78,7 +79,7 @@ public class AbstractTreeTableTest extends AbstractTableTest {
     }
 
     private List<TreeNode<Document>> flattenTreeNodes(TreeNode<Document> root) {
-        List<TreeNode<Document>> treeNodes = new TreeNodeList<>();
+        List<TreeNode<Document>> treeNodes = new ArrayList<>();
         for (TreeNode<Document> child : root.getChildren()) {
             treeNodes.add(child);
             if (child.isExpanded()) {
@@ -111,7 +112,7 @@ public class AbstractTreeTableTest extends AbstractTableTest {
 
     protected void assertMessage(Messages messages, int index, String summary, String detail) {
         Msg message = messages.getMessage(index);
-        Assertions.assertEquals(summary, message.getSummary());
-        Assertions.assertEquals(detail, message.getDetail());
+        assertEquals(summary, message.getSummary());
+        assertEquals(detail, message.getDetail());
     }
 }

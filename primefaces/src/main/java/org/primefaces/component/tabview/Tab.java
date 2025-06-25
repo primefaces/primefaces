@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,11 @@
  */
 package org.primefaces.component.tabview;
 
-import javax.faces.context.FacesContext;
+import org.primefaces.component.menu.Menu;
+import org.primefaces.util.FacetUtils;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 
 public class Tab extends TabBase {
 
@@ -35,7 +39,7 @@ public class Tab extends TabBase {
     }
 
     public void setLoaded(boolean value) {
-        if (value == false) {
+        if (!value) {
             getStateHelper().remove("loaded");
         }
         else {
@@ -63,7 +67,7 @@ public class Tab extends TabBase {
      * @param value The loaded state.
      */
     public void setLoaded(int index, boolean value) {
-        if (value == false) {
+        if (!value) {
             getStateHelper().remove("loaded_" + index);
         }
         else {
@@ -78,4 +82,18 @@ public class Tab extends TabBase {
         }
         super.processDecodes(context);
     }
+
+    public Menu getOptionsMenu() {
+        UIComponent optionsFacet = getFacet("options");
+        if (FacetUtils.shouldRenderFacet(optionsFacet)) {
+            if (optionsFacet instanceof Menu) {
+                return (Menu) optionsFacet;
+            }
+            else {
+                return (Menu) optionsFacet.getChildren().get(0);
+            }
+        }
+        return null;
+    }
+
 }

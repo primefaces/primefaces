@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,6 @@
  */
 package org.primefaces.integrationtests.timeline;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeExpectedConditions;
@@ -38,12 +32,21 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Timeline;
 import org.primefaces.selenium.component.model.Msg;
 
-public class Timeline001Test extends AbstractPrimePageTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class Timeline001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Timeline: show and check for JS-errors")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         Timeline timeline = page.timeline;
 
@@ -52,14 +55,14 @@ public class Timeline001Test extends AbstractPrimePageTest {
 
         // Assert
         long eventCount = timeline.getNumberOfEvents();
-        Assertions.assertEquals(15, eventCount);
+        assertEquals(15, eventCount);
         assertConfiguration(timeline.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("Timeline: select-event")
-    public void testSelect(Page page) {
+    void select(Page page) {
         // Arrange
         Timeline timeline = page.timeline;
 
@@ -68,14 +71,14 @@ public class Timeline001Test extends AbstractPrimePageTest {
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.messages));
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected event:"));
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Selected event:"));
         assertConfiguration(timeline.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("Timeline: Zoom In GitHub #6902/#5455 range changed event with and without CSP")
-    public void testRangeChangedZoomIn(Page page) {
+    void rangeChangedZoomIn(Page page) {
         // Arrange
         Timeline timeline = page.timeline;
 
@@ -89,7 +92,7 @@ public class Timeline001Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("Timeline: Zoom Out range changed event with and without CSP")
-    public void testRangeChangedZoomOut(Page page) {
+    void rangeChangedZoomOut(Page page) {
         // Arrange
         Timeline timeline = page.timeline;
 
@@ -103,7 +106,7 @@ public class Timeline001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("Timeline: Move Left range changed event with and without CSP")
-    public void testRangeChangedMoveLeft(Page page) {
+    void rangeChangedMoveLeft(Page page) {
         // Arrange
         Timeline timeline = page.timeline;
 
@@ -117,7 +120,7 @@ public class Timeline001Test extends AbstractPrimePageTest {
     @Test
     @Order(6)
     @DisplayName("Timeline: Move Right range changed event with and without CSP")
-    public void testRangeChangedMoveRight(Page page) {
+    void rangeChangedMoveRight(Page page) {
         // Arrange
         Timeline timeline = page.timeline;
 
@@ -131,15 +134,15 @@ public class Timeline001Test extends AbstractPrimePageTest {
     private void assertRangeChanged(Page page, String detail, String summary) {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.messages));
         Msg message = page.messages.getMessage(0);
-        Assertions.assertEquals(detail, message.getSummary());
-        Assertions.assertTrue(message.getDetail().contains(summary));
+        assertEquals(detail, message.getSummary());
+        assertTrue(message.getDetail().contains(summary));
         assertConfiguration(page.timeline.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Timeline Config = " + cfg);
-        Assertions.assertTrue(cfg.has("data"));
+        assertTrue(cfg.has("data"));
     }
 
     public static class Page extends AbstractPrimePage {

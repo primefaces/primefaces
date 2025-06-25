@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,13 +29,14 @@ import org.primefaces.model.TreeNode;
 import org.primefaces.showcase.domain.Document;
 import org.primefaces.showcase.service.DocumentService;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named("ttBasicView")
 @ViewScoped
@@ -48,6 +49,8 @@ public class BasicView implements Serializable {
 
     @Inject
     private DocumentService service;
+
+    private List<Document> multipleSelectedDocuments;
 
     @PostConstruct
     public void init() {
@@ -78,5 +81,13 @@ public class BasicView implements Serializable {
 
     public List<SortMeta> getSortBy() {
         return sortBy;
+    }
+
+    public List<Document> getMultipleSelectedDocuments() {
+        return multipleSelectedDocuments;
+    }
+
+    public void setMultipleSelectedDocuments(List<Document> multipleSelectedDocuments) {
+        this.multipleSelectedDocuments = multipleSelectedDocuments;
     }
 }

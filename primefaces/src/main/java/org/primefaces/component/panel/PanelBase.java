@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,15 @@
  */
 package org.primefaces.component.panel;
 
-import javax.faces.component.UIPanel;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
+import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+import jakarta.faces.component.UIPanel;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
+
+public abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder,
+        MultiViewStateAware<PanelState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -53,7 +55,8 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
         menuTitle,
         renderEmptyFacets,
         toggleOrientation,
-        toggleableHeader
+        toggleableHeader,
+        multiViewState
     }
 
     public PanelBase() {
@@ -199,5 +202,14 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
 
     public void setRenderEmptyFacets(boolean renderEmptyFacets) {
         getStateHelper().put(PropertyKeys.renderEmptyFacets, renderEmptyFacets);
+    }
+
+    @Override
+    public boolean isMultiViewState() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
+    }
+
+    public void setMultiViewState(boolean multiViewState) {
+        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 }

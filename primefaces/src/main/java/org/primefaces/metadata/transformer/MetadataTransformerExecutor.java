@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,21 @@
  */
 package org.primefaces.metadata.transformer;
 
-import org.primefaces.metadata.transformer.impl.BeanValidationInputMetadataTransformer;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PreRenderComponentEvent;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.metadata.transformer.impl.BeanValidationInputMetadataTransformer;
+
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.PreRenderComponentEvent;
+import jakarta.faces.event.SystemEvent;
+import jakarta.faces.event.SystemEventListener;
 
 public class MetadataTransformerExecutor implements SystemEventListener {
-
-    private static final List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<>();
 
     private static final MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
 
@@ -72,28 +70,29 @@ public class MetadataTransformerExecutor implements SystemEventListener {
                 BV_INPUT_METADATA_TRANSFORMER.transform(context, applicationContext, component);
             }
 
-            if (!METADATA_TRANSFORMERS.isEmpty()) {
-                for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
-                    METADATA_TRANSFORMERS.get(i).transform(context, applicationContext, component);
+            if (!applicationContext.getMetadataTransformers().isEmpty()) {
+                for (int i = 0; i < applicationContext.getMetadataTransformers().size(); i++) {
+                    applicationContext.getMetadataTransformers().get(i).transform(context, applicationContext, component);
                 }
             }
         }
     }
 
-    public static void registerMetadataTransformer(final MetadataTransformer metadataTransformer) {
-        METADATA_TRANSFORMERS.add(metadataTransformer);
+    public static void registerMetadataTransformer(MetadataTransformer metadataTransformer) {
+        PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance())
+                .getMetadataTransformers().add(metadataTransformer);
     }
 
     public static MetadataTransformer removeMetadataTransformer(final Class<? extends MetadataTransformer> clazz) {
-        Iterator<MetadataTransformer> iterator = METADATA_TRANSFORMERS.iterator();
-        while (iterator.hasNext()) {
-            MetadataTransformer metadataTransformer = iterator.next();
-            if (metadataTransformer.getClass().equals(clazz)) {
-                iterator.remove();
-                return metadataTransformer;
-            }
+        List<MetadataTransformer> transformers = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance())
+                .getMetadataTransformers();
+        MetadataTransformer transformer = transformers.stream()
+                .filter(t -> t.getClass().equals(clazz))
+                .findFirst()
+                .orElse(null);
+        if (transformer != null) {
+            transformers.remove(transformer);
         }
-
-        return null;
+        return transformer;
     }
 }

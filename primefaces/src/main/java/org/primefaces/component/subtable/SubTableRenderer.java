@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,48 +23,47 @@
  */
 package org.primefaces.component.subtable;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
-public class SubTableRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class SubTableRenderer extends CoreRenderer<SubTable> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SubTable table = (SubTable) component;
-        int rowCount = table.getRowCount();
+    public void encodeEnd(FacesContext context, SubTable component) throws IOException {
+        int rowCount = component.getRowCount();
 
-        encodeHeader(context, table);
+        encodeHeader(context, component);
 
         for (int i = 0; i < rowCount; i++) {
-            encodeRow(context, table, i);
+            encodeRow(context, component, i);
         }
 
-        encodeFooter(context, table);
+        encodeFooter(context, component);
     }
 
-    public void encodeHeader(FacesContext context, SubTable table) throws IOException {
+    public void encodeHeader(FacesContext context, SubTable component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent header = table.getFacet("header");
+        UIComponent header = component.getFacet("header");
 
-        if (ComponentUtils.shouldRenderFacet(header)) {
+        if (FacetUtils.shouldRenderFacet(header)) {
             writer.startElement("tr", null);
             writer.writeAttribute("class", "ui-widget-header", null);
 
             writer.startElement("td", null);
             writer.writeAttribute("class", DataTable.SUBTABLE_HEADER, null);
-            writer.writeAttribute("colspan", table.getColumns().size(), null);
+            writer.writeAttribute("colspan", component.getColumns().size(), null);
 
             header.encodeAll(context);
 
@@ -72,7 +71,7 @@ public class SubTableRenderer extends CoreRenderer {
             writer.endElement("tr");
         }
 
-        ColumnGroup group = table.getColumnGroup("header");
+        ColumnGroup group = component.getColumnGroup("header");
         if (group != null && group.isRendered()) {
             for (UIComponent child : group.getChildren()) {
                 if (child.isRendered() && child instanceof Row) {
@@ -91,7 +90,7 @@ public class SubTableRenderer extends CoreRenderer {
                     for (UIComponent headerRowChild : headerRow.getChildren()) {
                         if (headerRowChild.isRendered() && headerRowChild instanceof Column) {
                             Column footerColumn = (Column) headerRowChild;
-                            encodeFacetColumn(context, table, footerColumn, "header", DataTable.COLUMN_HEADER_CLASS, footerColumn.getHeaderText());
+                            encodeFacetColumn(context, component, footerColumn, "header", DataTable.COLUMN_HEADER_CLASS, footerColumn.getHeaderText());
                         }
                     }
 
@@ -101,20 +100,20 @@ public class SubTableRenderer extends CoreRenderer {
         }
     }
 
-    public void encodeRow(FacesContext context, SubTable table, int rowIndex) throws IOException {
-        table.setRowIndex(rowIndex);
-        if (!table.isRowAvailable()) {
+    public void encodeRow(FacesContext context, SubTable component, int rowIndex) throws IOException {
+        component.setRowIndex(rowIndex);
+        if (!component.isRowAvailable()) {
             return;
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = table.getClientId(context);
+        String clientId = component.getClientId(context);
 
         writer.startElement("tr", null);
         writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
         writer.writeAttribute("class", DataTable.ROW_CLASS, null);
 
-        for (UIColumn column : table.getColumns()) {
+        for (UIColumn column : component.getColumns()) {
             if (column.isRendered() && column instanceof Column) { //Columns are not supported yet
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
@@ -144,17 +143,17 @@ public class SubTableRenderer extends CoreRenderer {
         writer.endElement("tr");
     }
 
-    public void encodeFooter(FacesContext context, SubTable table) throws IOException {
+    public void encodeFooter(FacesContext context, SubTable component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent footer = table.getFacet("footer");
+        UIComponent footer = component.getFacet("footer");
 
-        if (ComponentUtils.shouldRenderFacet(footer)) {
+        if (FacetUtils.shouldRenderFacet(footer)) {
             writer.startElement("tr", null);
             writer.writeAttribute("class", "ui-widget-header", null);
 
             writer.startElement("td", null);
             writer.writeAttribute("class", DataTable.SUBTABLE_FOOTER, null);
-            writer.writeAttribute("colspan", table.getColumns().size(), null);
+            writer.writeAttribute("colspan", component.getColumns().size(), null);
 
             footer.encodeAll(context);
 
@@ -162,7 +161,7 @@ public class SubTableRenderer extends CoreRenderer {
             writer.endElement("tr");
         }
 
-        ColumnGroup group = table.getColumnGroup("footer");
+        ColumnGroup group = component.getColumnGroup("footer");
 
         if (group == null || !group.isRendered()) {
             return;
@@ -185,7 +184,7 @@ public class SubTableRenderer extends CoreRenderer {
                 for (UIComponent footerRowChild : footerRow.getChildren()) {
                     if (footerRowChild.isRendered() && footerRowChild instanceof Column) {
                         Column footerColumn = (Column) footerRowChild;
-                        encodeFacetColumn(context, table, footerColumn, "footer", DataTable.COLUMN_FOOTER_CLASS, footerColumn.getFooterText());
+                        encodeFacetColumn(context, component, footerColumn, "footer", DataTable.COLUMN_FOOTER_CLASS, footerColumn.getFooterText());
                     }
                 }
 
@@ -194,7 +193,9 @@ public class SubTableRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeFacetColumn(FacesContext context, SubTable table, Column column, String facetName, String styleClass, String text) throws IOException {
+    protected void encodeFacetColumn(FacesContext context, SubTable component, Column column, String facetName, String styleClass, String text)
+            throws IOException {
+
         if (!column.isRendered()) {
             return;
         }
@@ -218,7 +219,7 @@ public class SubTableRenderer extends CoreRenderer {
 
         // Footer content
         UIComponent facet = column.getFacet(facetName);
-        if (ComponentUtils.shouldRenderFacet(facet)) {
+        if (FacetUtils.shouldRenderFacet(facet)) {
             facet.encodeAll(context);
         }
         else if (text != null) {
@@ -229,7 +230,7 @@ public class SubTableRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, SubTable component) throws IOException {
         // Rendering happens on encodeEnd
     }
 

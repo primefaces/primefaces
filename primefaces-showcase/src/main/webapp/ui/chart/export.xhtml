@@ -1,10 +1,9 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
-
     <ui:define name="head">
         <script>
             //<![CDATA[
@@ -27,16 +26,17 @@
         Charts are canvas based and can be exported as static images with client side api.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="documentationLink" value="/components/chart?id=export"/>
     <ui:param name="widgetLink" value="Chart-1"/>
+    <ui:param name="widgetLinkHash" value="exportAsImage"/>
 
     <ui:define name="implementation">
         <div class="card">
-            <p:chart type="line" model="#{chartView.lineModel1}" style="width:500px;height:300px" widgetVar="chart"/>
-
+            <p:chart id="barChart" value="#{chartView.barModel}" style="width: 100%; height: 500px;" widgetVar="chart"/>
             <br/>
 
-            <p:commandButton type="button" value="Export" icon="pi pi-home" onclick="exportChart()"/>
+            <p:commandButton type="button" value="Export" icon="pi pi-home" onclick="exportChart()" styleClass="mr-2 mb-2"/>
+            <p:commandButton type="button" value="Print"  icon="pi pi-print" onclick="PF('chart').print()" styleClass="mr-2 mb-2"/>
 
             <p:dialog widgetVar="dlg" showEffect="fade" modal="true" header="Chart as an Image" resizable="false">
                 <p:outputPanel id="output" layout="block" style="width:500px;height:300px"/>

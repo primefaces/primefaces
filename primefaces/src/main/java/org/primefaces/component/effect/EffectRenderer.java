@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,35 @@
  */
 package org.primefaces.component.effect;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class EffectRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIParameter;
+import jakarta.faces.context.FacesContext;
+
+public class EffectRenderer extends CoreRenderer<Effect> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Effect effect = (Effect) component;
+    public void encodeEnd(FacesContext context, Effect component) throws IOException {
         String source = component.getParent().getClientId(context);
-        String event = effect.getEvent();
-        int delay = effect.getDelay();
+        String event = component.getEvent();
+        int delay = component.getDelay();
 
-        UIComponent targetComponent = SearchExpressionFacade.resolveComponent(
-                context, effect, effect.getFor(), SearchExpressionUtils.SET_PARENT_FALLBACK);
-        String target = targetComponent.getClientId(context);
+        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, component, component.getFor());
+        if (target == null) {
+            target = component.getParent();
+        }
 
-        String animation = getEffectBuilder(effect, target).build();
+        String targetId = target.getClientId(context);
+
+        String animation = getEffectBuilder(component, targetId).build();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Effect", effect)
+        wb.init("Effect", component)
                 .attr("source", source)
                 .attr("event", event)
                 .attr("delay", delay)
@@ -59,10 +60,10 @@ public class EffectRenderer extends CoreRenderer {
         wb.finish();
     }
 
-    private EffectBuilder getEffectBuilder(Effect effect, String effectedComponentClientId) {
-        EffectBuilder effectBuilder = new EffectBuilder(effect.getType(), effectedComponentClientId, effect.isQueue());
+    private EffectBuilder getEffectBuilder(Effect component, String effectedComponentClientId) {
+        EffectBuilder effectBuilder = new EffectBuilder(component.getType(), effectedComponentClientId, component.isQueue());
 
-        for (UIComponent child : effect.getChildren()) {
+        for (UIComponent child : component.getChildren()) {
             if (child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
 
@@ -70,7 +71,7 @@ public class EffectRenderer extends CoreRenderer {
             }
         }
 
-        effectBuilder.atSpeed(effect.getSpeed());
+        effectBuilder.atSpeed(component.getSpeed());
 
         return effectBuilder;
     }

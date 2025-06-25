@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,28 +28,29 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import java.io.Serializable;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Named;
 
 @Named
 @RequestScoped
 public class AddMarkersView implements Serializable {
 
-    private MapModel emptyModel;
+    private MapModel<Object> emptyModel;
     private String title;
     private double lat;
     private double lng;
 
     @PostConstruct
     public void init() {
-        emptyModel = new DefaultMapModel();
+        emptyModel = new DefaultMapModel<>();
     }
 
-    public MapModel getEmptyModel() {
+    public MapModel<Object> getEmptyModel() {
         return emptyModel;
     }
 
@@ -78,9 +79,10 @@ public class AddMarkersView implements Serializable {
     }
 
     public void addMarker() {
-        Marker marker = new Marker(new LatLng(lat, lng), title);
+        Marker<Object> marker = new Marker<>(new LatLng(lat, lng), title);
         emptyModel.addOverlay(marker);
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" + lat + ", Lng:" + lng));
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" + lat + ", Lng:" + lng));
     }
 }

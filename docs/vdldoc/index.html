@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:jakartaee="https://jakarta.ee/xml/ns/jakartaee">
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>PrimeFaces VDL Documentation</title>
+        <script type="text/javascript">
+                    targetPage = "" + window.location.search;
+                    if (targetPage != "" && targetPage != "undefined") targetPage = targetPage.substring(1);
+                    if (targetPage.indexOf(":") != -1) targetPage = "undefined";
+                    function loadFrames() {
+                        if (targetPage != "" && targetPage != "undefined") top.tagFrame.location = top.targetPage;
+                    }
+                </script>
+    </head>
+    <frameset cols="20%,80%" title="Documentation frame" onload="top.loadFrames()">
+        <frameset rows="30%,70%" title="Left frames" onload="top.loadFrames()">
+            <frame src="overview-frame.html" name="tldListFrame" title="All Tag Libraries">
+            <frame src="alltags-frame.html" name="tldFrame" title="All Tags / Functions">
+        </frameset>
+        <frame src="overview-summary.html" name="tagFrame" title="Library and tag descriptions" scrolling="yes">
+    </frameset>
+    <noframes>
+        <noscript>
+            <div>JavaScript is disabled on your browser.</div>
+        </noscript>
+        <h2>Frame Alert</h2>
+        <p>
+                                This document is designed to be viewed using the frames feature. If you see this message, you are using
+                    a non-frame-capable web client. Link to <a href="overview-summary.html">Non-frame version</a>.
+                
+        </p>
+    </noframes>
+</html>

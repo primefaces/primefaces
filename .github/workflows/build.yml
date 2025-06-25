@@ -1,36 +1,93 @@
-name: CI
+name: Continuous Integration
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - '**/**.md'
+  workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - '**/**.md'
+
+env:
+    MAVEN_OPTS: >-
+        -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
+    SCREENSHOT_DIRECTORY: '/tmp/pf_it/'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Java ${{ matrix.java }} - ${{ matrix.jsfimpl }}
+    if: github.repository == 'primefaces/primefaces'
+    name: Build
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 11, 17]
-        jsfimpl: [ 'mojarra-2.3', 'myfaces-2.3']
-
+        java: [11, 24]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build
-        run: mvn clean install -Psecurity-checks,jsdoc,minify -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true --batch-mode --show-version
-      - name: SonarCloud
-        if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 11 && matrix.jsfimpl == 'myfaces-2.3'
-        run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{secrets.SONAR_TOKEN}}  -fprimefaces/pom.xml
+        run: mvn clean install -T1C -Pminify --batch-mode --show-version
+      - name: Sonar Cloud
+        if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 24
+        run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Pquick -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{secrets.SONAR_TOKEN}} -fprimefaces/pom.xml
+        # new approach with code-coverage does not work as of 2024/12 because
+        # "Failed to execute goal org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar (default-cli) on project primefaces-parent: Could not find a default branch for project with key 'org.primefaces:primefaces-parent'. Make sure project exists. -> [Help 1]"
+        # setting sonar.skip=true in the parent-pom.xml does not work either because this results in skipping the whole project, setting sonar.skip=false for modules does not compensate for this
+        # run: mvn clean install sonar:sonar -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,mojarra-4.0 -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{secrets.SONAR_TOKEN}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - name: Integration Tests (serial)
-        if: matrix.java == 8
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}
-      - name: Integration Tests (parallel)
-        if: matrix.java != 8
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}
+
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    if: github.repository == 'primefaces/primefaces'
+    name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Java 11 with Faces 4.0
+          - java: 11
+            facesimpl: 'mojarra-4.0'
+          - java: 11
+            facesimpl: 'myfaces-4.0'
+          # Java 17 with Faces 4.1
+          - java: 17
+            facesimpl: 'mojarra-4.1'
+          - java: 17
+            facesimpl: 'myfaces-4.1'
+          # Java 23 with both Faces 4.0 and 4.1
+          - java: 24
+            facesimpl: 'mojarra-4.0'
+          - java: 24
+            facesimpl: 'myfaces-4.0'
+          - java: 24
+            facesimpl: 'mojarra-4.1'
+          - java: 24
+            facesimpl: 'myfaces-4.1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          cache: 'maven'
+      - name: Build
+        run: mvn clean install -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true --batch-mode --show-version
+      - name: Integration Tests
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
+      - name: Upload failure-screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}
+          if-no-files-found: ignore
+          path: /tmp/pf_it/

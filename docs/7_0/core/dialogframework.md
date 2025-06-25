@@ -119,7 +119,7 @@ dynamic | false | Boolean | Enables lazy loading of the content with ajax.
 showEffect | null | String | Effect to use when showing the dialog
 hideEffect | null | String | Effect to use when hiding the dialog
 position | null | String | Defines where the dialog should be displayed
-fitViewport | false | Boolean | Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically adjusts height to fit dialog within the viewport.
+fitViewport | false | Boolean | Dialog size might exceed viewport if content is bigger than viewport in terms of height. fitViewport option automatically adjusts height to fit dialog within the viewport.
 responsive | false | Boolean | In responsive mode, dialog adjusts itself based on screen width.
 onShow | null | String | Client side callback to execute when dialog is displayed.
 onHide | null | String | Client side callback to execute when dialog is hidden.

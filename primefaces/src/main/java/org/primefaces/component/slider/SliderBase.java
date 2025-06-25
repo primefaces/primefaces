@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.slider;
 
-import javax.faces.component.UIInput;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, TouchAware {
 
@@ -49,6 +49,7 @@ public abstract class SliderBase extends UIInput implements Widget, ClientBehavi
         type,
         step,
         disabled,
+        readonly,
         onSlideStart,
         onSlide,
         onSlideEnd,
@@ -208,13 +209,21 @@ public abstract class SliderBase extends UIInput implements Widget, ClientBehavi
         getStateHelper().put(PropertyKeys.displayTemplate, displayTemplate);
     }
 
-    @Override
-    public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
+    public boolean isReadonly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+    }
+
+    public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
     }
 
     @Override
-    public void setTouchable(boolean touchable) {
+    public Boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
+    }
+
+    @Override
+    public void setTouchable(Boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 }

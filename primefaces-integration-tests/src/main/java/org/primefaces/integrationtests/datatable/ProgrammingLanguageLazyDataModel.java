@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,8 @@ import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,12 +40,13 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
 
     private static final long serialVersionUID = -3415081263308946252L;
 
-    private final List<ProgrammingLanguage> langs;
+    protected List<ProgrammingLanguage> langs;
 
     public ProgrammingLanguageLazyDataModel() {
         langs = new ArrayList<>();
         for (int i = 1; i <= 75; i++) {
-            langs.add(new ProgrammingLanguage(i, "Language " + i, 1990 + (i % 10), ProgrammingLanguage.ProgrammingLanguageType.COMPILED));
+            langs.add(new ProgrammingLanguage(i, "Language " + i, 1990 + (i % 10),
+                    ((i % 2) == 0) ? ProgrammingLanguage.ProgrammingLanguageType.COMPILED : ProgrammingLanguage.ProgrammingLanguageType.INTERPRETED));
         }
     }
 
@@ -56,7 +59,6 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
     @Override
     public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(sortBy, filterBy);
-        setRowCount(langsFiltered.size());
 
         return langsFiltered.stream()
                     .skip(first).limit(pageSize)
@@ -76,6 +78,24 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
                         }
                         if (meta.getField().equals("name")) {
                             return lang.getName().contains((String) meta.getFilterValue());
+                        }
+                        if (meta.getField().equals("type")) {
+                            Collection<ProgrammingLanguage.ProgrammingLanguageType> filterValues = null;
+
+                            if (meta.getFilterValue() instanceof String[]) {  // Mojarra
+                                filterValues = Arrays.stream((String[]) meta.getFilterValue())
+                                        .map(ProgrammingLanguage.ProgrammingLanguageType::valueOf)
+                                        .collect(Collectors.toSet());
+                            }
+                            else if (meta.getFilterValue() instanceof Object[]) { //MyFaces
+                                filterValues = Arrays.stream((Object[]) meta.getFilterValue())
+                                        .map(f -> ProgrammingLanguage.ProgrammingLanguageType.valueOf(f.toString()))
+                                        .collect(Collectors.toSet());
+                            }
+                            else {
+                                filterValues = (Collection<ProgrammingLanguage.ProgrammingLanguageType>) meta.getFilterValue();
+                            }
+                            return filterValues.contains(lang.getType());
                         }
                         return true; //TODO: add additional implementation when required
                     });

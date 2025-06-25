@@ -15,7 +15,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | --- | --- | --- |
 | CLIENT_SIDE_VALIDATION | false | Enables/disables global client side validation . |
 | CSP | false | Enable Content Security Policy to prevent cross-site scripting (XSS), clickjacking and other code injection attacks |
-| CSP_POLICY | null | Custom CSP Policy that allows you to whitelist sites that you need JavaScript from such as `script-src 'self' https: *.googleapis.com` |
+| CSP_POLICY | null | Custom CSP Policy that allows you to allowlist sites that you need JavaScript from such as `script-src 'self' https: *.googleapis.com` |
 | DIR | ltr | Defines orientation; 'ltr' or 'rtl'. |
 | EARLY_POST_PARAM_EVALUATION | false | Make p:ajax behave like f:ajax for queued AJAX requests. See: https://github.com/primefaces/primefaces/issues/109 |
 | FONT_AWESOME | false | Auto includes Font-Awesome 4.7 icons. |

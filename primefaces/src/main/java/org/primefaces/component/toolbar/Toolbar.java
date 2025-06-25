@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.toolbar;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Toolbar extends ToolbarBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Toolbar";
 
-    public static final String CONTAINER_CLASS = "ui-toolbar ui-widget ui-widget-header ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-toolbar ui-widget ui-widget-header";
 }

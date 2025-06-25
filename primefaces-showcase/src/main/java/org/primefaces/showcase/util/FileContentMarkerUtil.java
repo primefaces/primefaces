@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,30 @@
  */
 package org.primefaces.showcase.util;
 
-import javax.faces.context.FacesContext;
-import java.io.*;
-import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.primefaces.util.LangUtils;
 
-/**
- * FileContentMarkerUtil
- *
- * @author Sébastien Lepage / last modified by $Author$
- * @version $Revision$
- * @since 6.3
- */
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import jakarta.el.ELException;
+import jakarta.faces.context.FacesContext;
+
 public class FileContentMarkerUtil {
 
     private static final FileContentSettings JAVA_FILE_SETTINGS = new FileContentSettings()
             .setType("java")
             .setStartMarkers(
-                    Marker.of("@Named"),
-                    Marker.of("@RequestScoped"),
-                    Marker.of("@ViewScoped"),
-                    Marker.of("@SessionScoped"),
-                    Marker.of("@FacesConverter"),
-                    Marker.of("@Target"),
-                    Marker.of(" class "),
-                    Marker.of(" enum "),
+                    Marker.of("package "),
                     Marker.of("EXCLUDE-SOURCE-END").excluded())
             .setEndMarkers(Marker.of("EXCLUDE-SOURCE-START").excluded());
 
@@ -66,7 +60,7 @@ public class FileContentMarkerUtil {
                     Marker.of("EXAMPLE-SOURCE-END").excluded(),
                     Marker.of("</ui:define>").excluded());
 
-    private static final Pattern SC_BEAN_PATTERN = Pattern.compile("#\\{\\w*?\\s?(\\w+)[\\.\\[].*\\}");
+    private static final Pattern SC_BEAN_PATTERN = Pattern.compile("#\\{([^.]*)\\.?.*?}");
 
     private static final String SC_PREFIX = "org.primefaces.showcase";
 
@@ -94,7 +88,7 @@ public class FileContentMarkerUtil {
 
     private static FileContent readFileContent(String fileName, InputStream inputStream, FileContentSettings settings, boolean readBeans) throws Exception {
         StringBuilder content = new StringBuilder();
-        List<FileContent> javaFiles = new ArrayList<>();
+        Set<FileContent> javaFiles = new LinkedHashSet<>();
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
         try (InputStreamReader ir = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
@@ -138,8 +132,14 @@ public class FileContentMarkerUtil {
         return new FileContent(fileName, value, settings.getType(), javaFiles);
     }
 
-    private static void addBean(FacesContext facesContext, List<FileContent> javaFiles, String group) throws Exception {
-        Object bean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{" + group + "}", Object.class);
+    private static void addBean(FacesContext facesContext, Set<FileContent> javaFiles, String group) throws Exception {
+        Object bean;
+        try {
+            bean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{" + group + "}", Object.class);
+        }
+        catch (ELException e) {
+            return;
+        }
         if (bean == null) {
             return;
         }
@@ -153,7 +153,7 @@ public class FileContentMarkerUtil {
             }
 
             String javaFileName = packageToPathAccess(className);
-            if (!isFileContainedIn(javaFileName, javaFiles)) {
+            if (isFileNotContainedIn(javaFileName, javaFiles)) {
                 javaFiles.add(createFileContent(className));
             }
 
@@ -163,13 +163,44 @@ public class FileContentMarkerUtil {
         }
     }
 
-    private static void addDeclaredField(List<FileContent> javaFiles, Field field) throws Exception {
-        String typeName = field.getType().getTypeName();
+    private static void addDeclaredField(Set<FileContent> javaFiles, Field field) throws Exception {
+        String typeName = getTypeName(field);
         String javaFileName = packageToPathAccess(typeName);
-        if (isEligibleFile(typeName)
-                && !isFileContainedIn(javaFileName, javaFiles)) {
-            javaFiles.add(createFileContent(typeName));
+        if (isEligibleFile(typeName) && isFileNotContainedIn(javaFileName, javaFiles)) {
+            FileContent content = createFileContent(typeName);
+            javaFiles.add(content);
+
+            try {
+                Class<?> subType = Class.forName(typeName);
+                for (Field subField : subType.getDeclaredFields()) {
+                    addDeclaredField(javaFiles, subField);
+                }
+            }
+            catch (Exception e) {
+                // class could not be instantiated so move on
+            }
         }
+    }
+
+    private static String getTypeName(Field field) {
+        String typeName = field.getType().getTypeName();
+
+        // get Product from `List<Product>` because of type erasure
+        try {
+            Type genericFieldType = field.getGenericType();
+            if (genericFieldType instanceof ParameterizedType) {
+                ParameterizedType parameterizedType = (ParameterizedType) genericFieldType;
+                Type[] fieldArgTypes = parameterizedType.getActualTypeArguments();
+                for (Type fieldArgType : fieldArgTypes) {
+                    Class<?> fieldArgClass = (Class<?>) fieldArgType;
+                    typeName = fieldArgClass.getName();
+                }
+            }
+        }
+        catch (Exception e) {
+            // just use the original type name if any error
+        }
+        return typeName;
     }
 
     private static FileContent createFileContent(String fileName) throws Exception {
@@ -205,16 +236,23 @@ public class FileContentMarkerUtil {
         return pretty;
     }
 
+    /**
+     * Determines if a given file is eligible for processing.
+     *
+     * @param file The file name or path to check
+     * @return true if the file is eligible, false otherwise
+     */
     private static boolean isEligibleFile(String file) {
-        return file != null && file.startsWith(SC_PREFIX);
+        // Check the file is a Showcase file, is not an array "[]", and is not an inner class "$"
+        return file != null && file.startsWith(SC_PREFIX) && !file.endsWith("[]") && !file.contains("$");
     }
 
-    private static String packageToPathAccess(String pckage) {
-        return pckage.substring(pckage.lastIndexOf(".") + 1) + ".java";
+    private static String packageToPathAccess(String pkg) {
+        return pkg.substring(pkg.lastIndexOf(".") + 1) + ".java";
     }
 
-    private static boolean isFileContainedIn(String filename, List<FileContent> javaFiles) {
-        return javaFiles.contains(new FileContent(filename, null, null, null));
+    private static boolean isFileNotContainedIn(String filename, Set<FileContent> javaFiles) {
+        return !javaFiles.contains(new FileContent(filename, null, null, null));
     }
 
     private static String createFullPath(String filename) {

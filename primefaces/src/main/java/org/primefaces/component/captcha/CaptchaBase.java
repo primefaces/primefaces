@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.captcha;
 
-import javax.faces.component.UIInput;
-
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIInput;
 
 public abstract class CaptchaBase extends UIInput implements Widget {
 
@@ -35,13 +35,17 @@ public abstract class CaptchaBase extends UIInput implements Widget {
 
     public enum PropertyKeys {
 
+        type,
         theme,
         language,
         tabindex,
         label,
         callback,
         expired,
-        size
+        size,
+        executor,
+        sourceUrl,
+        verifyUrl
     }
 
     public CaptchaBase() {
@@ -107,5 +111,67 @@ public abstract class CaptchaBase extends UIInput implements Widget {
 
     public void setSize(String size) {
         getStateHelper().put(PropertyKeys.size, size);
+    }
+
+    public String getType() {
+        return (String) getStateHelper().eval(PropertyKeys.type, Captcha.RECAPTCHA);
+    }
+
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
+    }
+
+    public String getExecutor() {
+        return (String) getStateHelper().eval(PropertyKeys.executor, () -> {
+            String type = this.getType();
+            switch (type) {
+                case Captcha.RECAPTCHA:
+                    return "grecaptcha";
+                case Captcha.HCAPTCHA:
+                    return "hcaptcha";
+                default:
+                    return null;
+            }
+        });
+    }
+
+    public void setExecutor(String executor) {
+        getStateHelper().put(PropertyKeys.executor, executor);
+    }
+
+    public String getSourceUrl() {
+        return (String) getStateHelper().eval(PropertyKeys.sourceUrl, () -> {
+            String type = this.getType();
+            switch (type) {
+                case Captcha.RECAPTCHA:
+                    return "https://www.google.com/recaptcha/api.js";
+                case Captcha.HCAPTCHA:
+                    return "https://js.hcaptcha.com/1/api.js";
+                default:
+                    return null;
+            }
+        });
+    }
+
+    public void setSourceUrl(String sourceUrl) {
+        getStateHelper().put(PropertyKeys.sourceUrl, sourceUrl);
+    }
+
+    public String getVerifyUrl() {
+        return (String) getStateHelper().eval(PropertyKeys.verifyUrl, () -> {
+            String type = this.getType();
+            switch (type) {
+                case Captcha.RECAPTCHA:
+                    return "https://www.google.com/recaptcha/api/siteverify";
+                case Captcha.HCAPTCHA:
+                    return "https://api.hcaptcha.com/siteverify";
+                default:
+                    return null;
+            }
+        });
+    }
+
+    public void setVerifyUrl(String verifyUrl) {
+        getStateHelper().put(PropertyKeys.verifyUrl, verifyUrl);
     }
 }

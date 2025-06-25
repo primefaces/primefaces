@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.message;
 
-import javax.faces.component.UIMessage;
-
 import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIMessage;
 
 public abstract class MessageBase extends UIMessage implements UINotification, Widget {
 
@@ -35,12 +35,11 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MessageRenderer";
 
     public enum PropertyKeys {
-
-        display,
         escape,
-        severity,
+        display,
         style,
         styleClass,
+        severity,
         skipDetailIfEqualsSummary
     }
 
@@ -53,14 +52,6 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
         return COMPONENT_FAMILY;
     }
 
-    public String getDisplay() {
-        return (String) getStateHelper().eval(PropertyKeys.display, "both");
-    }
-
-    public void setDisplay(String display) {
-        getStateHelper().put(PropertyKeys.display, display);
-    }
-
     public boolean isEscape() {
         return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
@@ -69,13 +60,12 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
         getStateHelper().put(PropertyKeys.escape, escape);
     }
 
-    @Override
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
+    public String getDisplay() {
+        return (String) getStateHelper().eval(PropertyKeys.display, "both");
     }
 
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
+    public void setDisplay(String display) {
+        getStateHelper().put(PropertyKeys.display, display);
     }
 
     public String getStyle() {
@@ -101,5 +91,14 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
 
     public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
         getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
+    }
+
+    @Override
+    public String getSeverity() {
+        return (String) getStateHelper().eval(PropertyKeys.severity, null);
+    }
+
+    public void setSeverity(String severity) {
+        getStateHelper().put(PropertyKeys.severity, severity);
     }
 }

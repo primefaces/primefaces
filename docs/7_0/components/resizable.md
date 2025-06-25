@@ -160,7 +160,7 @@ function handleStop(event, ui) {
    //ui.helper = helper element as a jQuery object
    //ui.originalPosition = top, left position before resizing
    //ui.originalSize = width, height before resizing
-   //ui.positon = top, left after resizing
+   //ui.position = top, left after resizing
    //ui.size = width height of current size
 }
 ```

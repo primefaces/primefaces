@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.selectbooleancheckbox;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -34,7 +34,7 @@ public class SelectBooleanCheckbox extends SelectBooleanCheckboxBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanCheckbox";
 
     public static final String STYLE_CLASS = "ui-checkbox ui-widget";
-    public static final String CHECKBOX_BOX_CLASS = "ui-checkbox-box ui-widget ui-corner-all ui-state-default";
+    public static final String CHECKBOX_BOX_CLASS = "ui-checkbox-box ui-widget ui-state-default";
     public static final String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
     public static final String CHECKBOX_ICON_CLASS = "ui-checkbox-icon";
     public static final String CHECKBOX_CHECKED_ICON_CLASS = "ui-icon ui-icon-check";

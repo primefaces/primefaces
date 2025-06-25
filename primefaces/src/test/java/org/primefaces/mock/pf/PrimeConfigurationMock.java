@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,12 @@
  */
 package org.primefaces.mock.pf;
 
-import java.util.Map;
-import javax.faces.context.FacesContext;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
+
+import java.util.Map;
+
+import jakarta.faces.context.FacesContext;
 
 public class PrimeConfigurationMock extends PrimeConfiguration {
 
@@ -37,9 +39,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private boolean interpretEmptyStringAsNull = false;
     private String  theme = null;
     private boolean clientSideValidationEnabled = false;
-    private String  uploader = null;
     private boolean transformMetadataEnabled = false;
-    private boolean legacyWidgetNamespace = false;
     private boolean beanValidationDisabled = false;
     private boolean interpolateClientSideValidationMessages = false;
     private boolean earlyPostParamEvaluation = false;
@@ -109,30 +109,12 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     }
 
     @Override
-    public String getUploader() {
-        return uploader;
-    }
-
-    public void setUploader(String uploader) {
-        this.uploader = uploader;
-    }
-
-    @Override
     public boolean isTransformMetadataEnabled() {
         return transformMetadataEnabled;
     }
 
     public void setTransformMetadataEnabled(boolean transformMetadataEnabled) {
         this.transformMetadataEnabled = transformMetadataEnabled;
-    }
-
-    @Override
-    public boolean isLegacyWidgetNamespace() {
-        return legacyWidgetNamespace;
-    }
-
-    public void setLegacyWidgetNamespace(boolean legacyWidgetNamespace) {
-        this.legacyWidgetNamespace = legacyWidgetNamespace;
     }
 
     public boolean isBeanValidationDisabled() {

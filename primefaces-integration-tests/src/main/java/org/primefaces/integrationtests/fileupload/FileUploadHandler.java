@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,18 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import java.io.Serializable;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-
-import javax.inject.Named;
-
-import lombok.Data;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FilesUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
+
+import java.io.Serializable;
+
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
+import lombok.Data;
 
 @Named
 @RequestScoped

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,27 @@
  */
 package org.primefaces.util;
 
-import java.util.Collections;
-import java.util.EnumSet;
+import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.FacesContext;
-import javax.faces.view.facelets.FaceletException;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.faces.component.UIForm;
-import org.primefaces.component.api.AjaxSource;
+
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.component.UIParameter;
+import jakarta.faces.component.search.SearchExpressionHint;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.facelets.FaceletException;
 
 /**
  * Helper to generate javascript code of an ajax call
@@ -52,12 +53,8 @@ public class AjaxRequestBuilder {
     private static final Logger LOG = Logger.getLogger(AjaxRequestBuilder.class.getName());
 
     private static final Set<SearchExpressionHint> HINTS_UPDATE = Collections.unmodifiableSet(EnumSet.of(
-            SearchExpressionHint.VALIDATE_RENDERER,
-            SearchExpressionHint.SKIP_UNRENDERED,
             SearchExpressionHint.RESOLVE_CLIENT_SIDE));
     private static final Set<SearchExpressionHint> HINTS_UPDATE_IGNORE_NO_RESULT = Collections.unmodifiableSet(EnumSet.of(
-            SearchExpressionHint.VALIDATE_RENDERER,
-            SearchExpressionHint.SKIP_UNRENDERED,
             SearchExpressionHint.RESOLVE_CLIENT_SIDE,
             SearchExpressionHint.IGNORE_NO_RESULT));
 
@@ -100,7 +97,7 @@ public class AjaxRequestBuilder {
         String form = source.getForm();
         if (LangUtils.isBlank(form)) {
             if (formComponent == null) {
-                formComponent = ComponentTraversalUtils.closestForm(context, component);
+                formComponent = ComponentTraversalUtils.closestForm(component);
             }
 
             if (formComponent == null) {
@@ -116,7 +113,7 @@ public class AjaxRequestBuilder {
             }
         }
         else {
-            result = SearchExpressionFacade.resolveClientId(context, component, source.getForm());
+            result = SearchExpressionUtils.resolveClientId(context, component, source.getForm());
         }
 
         if (result != null) {
@@ -161,7 +158,8 @@ public class AjaxRequestBuilder {
 
     private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, Set<SearchExpressionHint> hints) {
         if (LangUtils.isNotBlank(expressions)) {
-            String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, hints);
+            String resolvedExpressions = SearchExpressionUtils.resolveClientIdsAsString(context, component, expressions, hints,
+                    null);
             buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }
 
@@ -359,9 +357,17 @@ public class AjaxRequestBuilder {
         return this;
     }
 
+    /**
+     * Passes parameters to the ajax request. If the first argument is a plain object, it will be converted to an array of name-value pairs.
+     * Otherwise, the argument will be passed as-is.
+     *
+     * @return The current instance of AjaxRequestBuilder
+     */
     public AjaxRequestBuilder passParams() {
-        buffer.append(",pa:arguments[0]");
-
+        buffer.append(",pa:");
+        buffer.append("(typeof arguments[0] === 'object' && !Array.isArray(arguments[0]) ");
+        buffer.append("? Object.entries(arguments[0]).map(([key, value]) => ({ name: key, value })) ");
+        buffer.append(": arguments[0])");
         return this;
     }
 

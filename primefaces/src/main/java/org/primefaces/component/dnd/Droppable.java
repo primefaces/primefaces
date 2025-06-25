@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,22 @@
  */
 package org.primefaces.component.dnd;
 
-import java.util.Collection;
-import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.DragDropEvent;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Map;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIData;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -75,7 +73,7 @@ public class Droppable extends DroppableBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
+        FacesContext context = event.getFacesContext();
 
         if (ComponentUtils.isRequestSource(this, context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -87,7 +85,7 @@ public class Droppable extends DroppableBase {
             if ("drop".equals(eventName)) {
                 String dragId = params.get(clientId + "_dragId");
                 String dropId = params.get(clientId + "_dropId");
-                DragDropEvent dndEvent = null;
+                DragDropEvent<?> dndEvent = null;
                 String datasourceId = getDatasource();
 
                 if (datasourceId != null) {
@@ -98,10 +96,10 @@ public class Droppable extends DroppableBase {
                     Object data = datasource.getRowData();
                     datasource.setRowIndex(-1);
 
-                    dndEvent = new DragDropEvent(this, behaviorEvent.getBehavior(), dragId, dropId, data);
+                    dndEvent = new DragDropEvent<>(this, behaviorEvent.getBehavior(), dragId, dropId, data);
                 }
                 else {
-                    dndEvent = new DragDropEvent(this, behaviorEvent.getBehavior(), dragId, dropId);
+                    dndEvent = new DragDropEvent<>(this, behaviorEvent.getBehavior(), dragId, dropId);
                 }
 
                 super.queueEvent(dndEvent);
@@ -114,13 +112,6 @@ public class Droppable extends DroppableBase {
     }
 
     protected UIData findDatasource(FacesContext context, Droppable droppable, String datasourceId) {
-        UIComponent datasource = SearchExpressionFacade.resolveComponent(context, droppable, datasourceId);
-
-        if (datasource == null) {
-            throw new FacesException("Cannot find component \"" + datasourceId + "\" in view.");
-        }
-        else {
-            return (UIData) datasource;
-        }
+        return (UIData) SearchExpressionUtils.contextlessResolveComponent(context, droppable, datasourceId);
     }
 }

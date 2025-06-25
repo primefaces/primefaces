@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,9 @@
  */
 package org.primefaces.renderkit;
 
-import javax.el.ELException;
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UISelectItem;
-import javax.faces.component.UISelectItems;
-import javax.faces.component.ValueHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
+import org.primefaces.component.api.WrapperSelectItem;
+import org.primefaces.util.LangUtils;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,23 +35,39 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.RandomAccess;
 
-import org.primefaces.util.LangUtils;
+import jakarta.el.ELException;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.UISelectItem;
+import jakarta.faces.component.UISelectItems;
+import jakarta.faces.component.ValueHolder;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
 
-public abstract class SelectRenderer extends InputRenderer {
+public abstract class SelectRenderer<T extends UIInput> extends InputRenderer<T> {
 
     protected boolean isHideNoSelection(UIComponent component) {
         Object attribute = component.getAttributes().get("hideNoSelectionOption");
-        return  attribute != null ? (Boolean) attribute : false;
+        if (attribute instanceof String) {
+            attribute = Boolean.parseBoolean((String) attribute);
+        }
+        return Boolean.TRUE.equals(attribute);
     }
 
-    protected void addSelectItem(UIInput component, List<SelectItem> selectItems, SelectItem item, boolean hideNoSelectOption) {
+    protected void addSelectItem(T component, List<SelectItem> selectItems, SelectItem item, boolean hideNoSelectOption) {
         if (hideNoSelectOption && item.isNoSelectionOption()) {
             return;
         }
         selectItems.add(item);
     }
 
-    protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
+    protected List<SelectItem> getSelectItems(FacesContext context, T component) {
         List<SelectItem> selectItems = new ArrayList<>();
         boolean hideNoSelectOption = isHideNoSelection(component);
         SelectItem selectItem;
@@ -74,12 +79,7 @@ public abstract class SelectRenderer extends InputRenderer {
                 Object selectItemValue = uiSelectItem.getValue();
 
                 if (selectItemValue == null) {
-                    selectItem = new SelectItem(uiSelectItem.getItemValue(),
-                            uiSelectItem.getItemLabel(),
-                            uiSelectItem.getItemDescription(),
-                            uiSelectItem.isItemDisabled(),
-                            uiSelectItem.isItemEscaped(),
-                            uiSelectItem.isNoSelectionOption());
+                    selectItem = new WrapperSelectItem(uiSelectItem);
                 }
                 else {
                     selectItem = (SelectItem) selectItemValue;
@@ -99,7 +99,7 @@ public abstract class SelectRenderer extends InputRenderer {
                             Object item = Array.get(value, j);
 
                             if (item instanceof SelectItem) {
-                                selectItem = (SelectItem) item;
+                                selectItem = updateSelectItem(context, uiSelectItems, (SelectItem) item);
                             }
                             else {
                                 selectItem = createSelectItem(context, uiSelectItems, item, null);
@@ -108,7 +108,7 @@ public abstract class SelectRenderer extends InputRenderer {
                         }
                     }
                     else if (value instanceof Map) {
-                        Map<?, ?> map = (Map) value;
+                        Map<?, ?> map = (Map<?, ?>) value;
 
                         for (Map.Entry<?, ?> entry : map.entrySet()) {
                             selectItem = createSelectItem(context, uiSelectItems, entry.getValue(), String.valueOf(entry.getKey()));
@@ -116,12 +116,12 @@ public abstract class SelectRenderer extends InputRenderer {
                         }
                     }
                     else if (value instanceof List && value instanceof RandomAccess) {
-                        List<?> list = (List) value;
+                        List<?> list = (List<?>) value;
 
                         for (int j = 0; j < list.size(); j++) {
                             Object item = list.get(j);
                             if (item instanceof SelectItem) {
-                                selectItem = (SelectItem) item;
+                                selectItem = updateSelectItem(context, uiSelectItems, (SelectItem) item);
                             }
                             else {
                                 selectItem = createSelectItem(context, uiSelectItems, item, null);
@@ -130,17 +130,20 @@ public abstract class SelectRenderer extends InputRenderer {
                         }
                     }
                     else if (value instanceof Collection) {
-                        Collection<?> collection = (Collection) value;
+                        Collection<?> collection = (Collection<?>) value;
 
                         for (Object item : collection) {
                             if (item instanceof SelectItem) {
-                                selectItem = (SelectItem) item;
+                                selectItem = updateSelectItem(context, uiSelectItems, (SelectItem) item);
                             }
                             else {
                                 selectItem = createSelectItem(context, uiSelectItems, item, null);
                             }
                             addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
+                    }
+                    else {
+                        throw new FacesException("SelectItems' value type is not compatible: " + value.getClass());
                     }
                 }
             }
@@ -182,10 +185,49 @@ public abstract class SelectRenderer extends InputRenderer {
             requestMap.remove(var);
         }
 
-        return new SelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
+        WrapperSelectItem wrapper = new WrapperSelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
+        wrapper.setComponent(uiSelectItems);
+        return wrapper;
     }
 
-    protected String getOptionAsString(FacesContext context, UIComponent component, Converter converter, Object value) throws ConverterException {
+    protected SelectItem updateSelectItem(FacesContext context, UISelectItems uiSelectItems, SelectItem value) {
+        if (value instanceof SelectItemGroup) {
+            return value;
+        }
+        String var = (String) uiSelectItems.getAttributes().get("var");
+        Map<String, Object> attrs = uiSelectItems.getAttributes();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        if (var != null) {
+            requestMap.put(var, value);
+        }
+
+        Object itemLabelValue = attrs.get("itemLabel");
+        Object itemDisabled = attrs.get("itemDisabled");
+        Object itemEscaped = attrs.get("itemLabelEscaped");
+        Object noSelection = attrs.get("noSelectionOption");
+
+        if (itemLabelValue != null) {
+            value.setLabel(String.valueOf(itemLabelValue));
+        }
+        if (itemDisabled != null) {
+            value.setDisabled(Boolean.parseBoolean(itemDisabled.toString()));
+        }
+        if (itemEscaped != null) {
+            value.setEscape(Boolean.parseBoolean(itemEscaped.toString()));
+        }
+        if (noSelection != null) {
+            value.setNoSelectionOption(Boolean.parseBoolean(noSelection.toString()));
+        }
+
+        if (var != null) {
+            requestMap.remove(var);
+        }
+
+        return value;
+    }
+
+    protected String getOptionAsString(FacesContext context, T component, Converter converter, Object value) throws ConverterException {
         if (!(component instanceof ValueHolder)) {
             return value == null ? null : value.toString();
         }
@@ -208,7 +250,7 @@ public abstract class SelectRenderer extends InputRenderer {
         }
     }
 
-    protected Converter findImplicitConverter(FacesContext context, UIComponent component) {
+    protected Converter<?> findImplicitConverter(FacesContext context, T component) {
         ValueExpression ve = component.getValueExpression("value");
 
         if (ve != null) {
@@ -338,22 +380,21 @@ public abstract class SelectRenderer extends InputRenderer {
      * @param submittedValues The submitted value(s)
      *
      * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
-     * @throws javax.faces.FacesException if client side manipulation has been detected, in order to reject the submission
+     * @throws jakarta.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
-    protected List<String> validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues)
+    protected List<String> validateSubmittedValues(FacesContext context, T component, Object[] oldValues, String... submittedValues)
             throws FacesException {
-        List<String> validSubmittedValues = doValidateSubmittedValues(
+        return doValidateSubmittedValues(
                 context,
                 component,
                 oldValues,
                 getSelectItems(context, component),
                 submittedValues);
-        return validSubmittedValues;
     }
 
     private List<String> doValidateSubmittedValues(
             FacesContext context,
-            UIInput component,
+            T component,
             Object[] oldValues,
             List<SelectItem> selectItems,
             String... submittedValues) {
@@ -397,5 +438,19 @@ public abstract class SelectRenderer extends InputRenderer {
         }
 
         return validSubmittedValues;
+    }
+
+    /**
+     * Helper method to find the defining component of a SelectItem so passthrough attributes can be rendered.
+     * @param item the SelectItem to check
+     * @return either NULL or a component the SelectItem was defined by
+     */
+    public UIComponent getSelectItemComponent(SelectItem item) {
+        if (item instanceof WrapperSelectItem) {
+            WrapperSelectItem wrapper = (WrapperSelectItem) item;
+            return wrapper.getComponent();
+        }
+
+        return null;
     }
 }

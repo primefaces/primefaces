@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.commandlink;
 
-import javax.faces.component.html.HtmlCommandLink;
-
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.html.HtmlCommandLink;
 
 
 public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSource, Widget, Confirmable, PrimeClientBehaviorHolder {
@@ -248,7 +248,7 @@ public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSou
     }
 
     public boolean isDisableOnAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, true);
     }
 
     public void setDisableOnAjax(boolean disableOnAjax) {

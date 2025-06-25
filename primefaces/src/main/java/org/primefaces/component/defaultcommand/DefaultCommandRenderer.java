@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,28 @@
  */
 package org.primefaces.component.defaultcommand;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class DefaultCommandRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+
+public class DefaultCommandRenderer extends CoreRenderer<DefaultCommand> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        DefaultCommand command = (DefaultCommand) component;
-
-        UIComponent target = SearchExpressionFacade.resolveComponent(context, command, command.getTarget());
+    public void encodeEnd(FacesContext context, DefaultCommand component) throws IOException {
+        UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, component.getTarget());
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DefaultCommand", command)
+        wb.init("DefaultCommand", component)
                 .attr("target", target.getClientId(context));
 
-        String scope = command.getScope();
+        String scope = component.getScope();
         if (scope != null) {
-            UIComponent scopeComponent = SearchExpressionFacade.resolveComponent(context, command, scope);
+            UIComponent scopeComponent = SearchExpressionUtils.contextlessResolveComponent(context, component, scope);
             wb.attr("scope", scopeComponent.getClientId(context));
         }
 

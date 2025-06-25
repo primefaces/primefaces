@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,13 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.findby.FindByParentPartialId;
+
 import java.io.Serializable;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.findby.FindByParentPartialId;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:spinner}.
@@ -74,6 +75,10 @@ public abstract class Spinner extends InputText {
         }
 
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value.toString() + ")");
+    }
+
+    public String getWidgetValue() {
+        return PrimeSelenium.executeScript(getWidgetByIdScript() + ".getValue()");
     }
 
     /**

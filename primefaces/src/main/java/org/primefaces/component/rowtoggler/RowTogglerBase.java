@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.rowtoggler;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 
 public abstract class RowTogglerBase extends UIComponentBase {
@@ -36,6 +36,8 @@ public abstract class RowTogglerBase extends UIComponentBase {
 
         expandLabel,
         collapseLabel,
+        expandIcon,
+        collapseIcon,
         tabindex;
     }
 
@@ -62,6 +64,22 @@ public abstract class RowTogglerBase extends UIComponentBase {
 
     public void setCollapseLabel(String collapseLabel) {
         getStateHelper().put(PropertyKeys.collapseLabel, collapseLabel);
+    }
+
+    public String getExpandIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.expandIcon, "ui-icon-circle-triangle-e");
+    }
+
+    public void setExpandIcon(String expandIcon) {
+        getStateHelper().put(PropertyKeys.expandIcon, expandIcon);
+    }
+
+    public String getCollapseIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.collapseIcon, "ui-icon-circle-triangle-s");
+    }
+
+    public void setCollapseIcon(String collapseIcon) {
+        getStateHelper().put(PropertyKeys.collapseIcon, collapseIcon);
     }
 
     public String getTabindex() {

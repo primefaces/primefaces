@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,5 +28,6 @@ public class OutputLabel extends OutputLabelBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.OutputLabel";
 
     public static final String STYLE_CLASS = "ui-outputlabel ui-widget";
+    public static final String RTL_CLASS = "ui-outputlabel-rtl";
     public static final String REQUIRED_FIELD_INDICATOR_CLASS = "ui-outputlabel-rfi";
 }

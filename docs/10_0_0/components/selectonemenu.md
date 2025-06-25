@@ -48,6 +48,7 @@ editable | false | Boolean | When true, input becomes editable.
 filter | false | Boolean | Renders an input field as a filter.
 filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
 filterFunction | null | String | Client side function to use in custom filtering.
+filterPlaceholder | null | String | Watermark displayed in the filter input field before the user enters a value.
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 maxlength | null | Integer | Number of maximum characters allowed in editable selectOneMenu.
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
@@ -60,6 +61,8 @@ dynamic | false | Boolean | Defines if dynamic loading is enabled for the elemen
 dir | ltr | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 touchable | true | Boolean | Enable touch support if browser detection supports it.
+panelStyle | null | String | Style of the dropdown panel container element.
+panelStyleClass | null | String | Style  class of the dropdown panel container element.
 
 ## Getting started with SelectOneMenu
 Basic SelectOneMenu usage is same as the standard one.

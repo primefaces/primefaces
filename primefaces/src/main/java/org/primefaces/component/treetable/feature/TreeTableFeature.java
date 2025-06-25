@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import java.io.IOException;
-
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
+
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
 
 public interface TreeTableFeature {
 
@@ -36,7 +36,15 @@ public interface TreeTableFeature {
 
     boolean shouldEncode(FacesContext context, TreeTable table);
 
-    void decode(FacesContext context, TreeTable table);
+    default void decode(FacesContext context, TreeTable table) {
+        if (!shouldDecode(context, table)) {
+            throw new UnsupportedOperationException(getClass().getSimpleName() + " should not decode.");
+        }
+    }
 
-    void encode(FacesContext context, TreeTableRenderer renderer, TreeTable table) throws IOException;
+    default void encode(FacesContext context, TreeTableRenderer renderer, TreeTable table) throws IOException {
+        if (!shouldEncode(context, table)) {
+            throw new UnsupportedOperationException(getClass().getSimpleName() + " should not encode.");
+        }
+    }
 }

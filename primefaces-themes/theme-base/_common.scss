@@ -1,0 +1,83 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    .ui-widget {
+        font-family: $fontFamily;
+        font-size: $fontSize;
+        text-decoration: none;
+    }
+
+    .ui-icon {
+        font-size: $iconSize;
+        display: inline-block;
+        vertical-align: baseline;
+        margin: 0;
+        position: static;
+        text-indent: 0;
+        overflow: visible;
+        background-repeat: no-repeat;
+    }
+
+    .pi {
+        font-size: $iconSize;
+    }
+
+    .ui-widget-overlay {
+        -webkit-animation-name: modal-in;
+        animation-name: modal-in;
+        animation-duration: $animationDuration;
+        animation-timing-function: $animationTimingFunction;
+        animation-fill-mode: forwards;
+    }
+
+    .ui-helper-reset {
+        line-height: normal;
+    }
+
+    .ui-state-disabled {
+        opacity: $disabledOpacity;
+
+        .ui-state-disabled {
+            opacity: 1;
+        }
+    }
+
+    .ui-widget-overlay {
+        background: $maskBg;
+    }
+
+    .ui-resizable-handle {
+        position: absolute;
+    }
+
+    select,
+    input:not([role="combobox"], [type="file"], .ui-widget, .ui-inputfield) {
+        color: $inputTextColor;
+        background: $inputBg;
+        padding: $inputPadding;
+        border: $inputBorder;
+        outline: 0 none;
+        font-size: $inputTextFontSize;
+        border-radius: $borderRadius;
+        transition: $transition;
+
+        &:focus {
+            @include focused-input();
+        }
+
+        &:hover {
+            border-color: $inputHoverBorderColor;
+        }
+    }
+}
+
+.ui-resizable {
+    display: flex;
+    flex-direction: column;
+
+    .ui-widget-content {
+        flex-grow: 1;
+    }
+}

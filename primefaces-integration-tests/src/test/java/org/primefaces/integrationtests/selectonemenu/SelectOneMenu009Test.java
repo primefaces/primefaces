@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,6 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.*;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -40,12 +36,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SelectOneMenu009Test extends AbstractPrimePageTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SelectOneMenu009Test extends AbstractPrimePageTest {
 
     private RealDriverService driverService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         driverService = new RealDriverService();
         driverService.init();
     }
@@ -53,17 +59,17 @@ public class SelectOneMenu009Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: filter")
-    public void testFilter(Page page) {
+    void filter(Page page) {
         List<Driver> drivers = driverService.getDrivers();
 
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertNotNull(selectOneMenu.getLabels()); // getLabels() must also work before calling show() the first time
-        Assertions.assertEquals(5, selectOneMenu.getLabels().size());
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertNotNull(selectOneMenu.getLabels()); // getLabels() must also work before calling show() the first time
+        assertEquals(5, selectOneMenu.getLabels().size());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
         selectOneMenu.show();
-        Assertions.assertEquals("some-filter-placeholder", selectOneMenu.getFilterInput().getAttribute("placeholder"));
-        Assertions.assertEquals(drivers.size(), selectOneMenu.getLabels().size() - 1); // -1 because of noSelectionOption
+        assertEquals("some-filter-placeholder", selectOneMenu.getFilterInput().getAttribute("placeholder"));
+        assertEquals(drivers.size(), selectOneMenu.getLabels().size() - 1); // -1 because of noSelectionOption
 
         // Act + Assert - Loop
         List<String> filter = Arrays.asList("L", "asfsd", "Char");
@@ -73,7 +79,7 @@ public class SelectOneMenu009Test extends AbstractPrimePageTest {
             ComponentUtils.sendKeys(selectOneMenu.getFilterInput(), f);
 
             // Assert
-            Assertions.assertEquals(
+            assertEquals(
                     drivers.stream().filter(d -> d.getName().startsWith(f)).collect(Collectors.toList()).size(),
                     selectOneMenu.getLabels().size());
         });
@@ -83,19 +89,19 @@ public class SelectOneMenu009Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("Charles", selectOneMenu.getSelectedLabel());
+        assertEquals("Charles", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
-        Assertions.assertTrue(cfg.getBoolean("autoWidth"));
-        Assertions.assertFalse(cfg.getBoolean("dynamic"));
-        Assertions.assertTrue(cfg.getBoolean("filter"));
-        Assertions.assertEquals("fade", cfg.getString("effect"));
-        Assertions.assertEquals("normal", cfg.getString("effectSpeed"));
+        assertTrue(cfg.has("appendTo"));
+        assertEquals("auto", cfg.getString("autoWidth"));
+        assertFalse(cfg.getBoolean("dynamic"));
+        assertTrue(cfg.getBoolean("filter"));
+        assertEquals("fade", cfg.getString("effect"));
+        assertEquals("normal", cfg.getString("effectSpeed"));
     }
 
     public static class Page extends AbstractPrimePage {

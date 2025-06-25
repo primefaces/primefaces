@@ -1,0 +1,141 @@
+@import "./_vendor_extensions";
+
+body {
+  .ui-accordion {
+    .ui-accordion-content {
+      padding: $accordionContentPadding;
+    }
+  }
+
+  .ui-autocomplete {
+    .ui-autocomplete-dropdown {
+      &.ui-button {
+        padding: .643rem;
+
+        .ui-button-text {
+          padding: .108rem;
+        }
+      }
+    }
+  }
+
+  .ui-chips {
+    .ui-chips-container {
+      .ui-chips-token {
+        .ui-chips-token-icon {
+          padding-right: .5rem;
+        }
+      }
+    }
+  }
+
+  .p-datepicker {
+    .ui-datepicker-trigger {
+      &.ui-button {
+        padding: .643rem;
+
+        .ui-button-text {
+          padding: .108rem;
+        }
+      }
+    }
+  }
+
+  .ui-fluid {
+    .p-datepicker {
+      .ui-datepicker-trigger {
+        &.ui-button {
+          padding: .643rem;
+
+          .ui-button-text {
+            padding: .108rem;
+          }
+        }
+      }
+    }
+  }
+
+  .ui-fluid {
+    .ui-inputgroup {
+      .ui-button-icon-only {
+        width: 2.75rem;
+        min-width: 2.75rem;
+      }
+
+      .ui-inputgroup-addon,
+      .ui-inputgroup-addon-checkbox {
+        min-width: 2.75rem;
+      }
+    }
+  }
+
+  .ui-spinner {
+    .ui-spinner-button.ui-button {
+      min-width: 2.75rem;
+    }
+
+    &.ui-spinner-horizontal-after {
+      .ui-inputfield {
+        padding-right: 6rem;
+      }
+
+      .ui-spinner-down {
+        right: 2.75rem;
+      }
+    }
+
+    &.ui-spinner-vertical {
+      width: 4rem;
+
+      .ui-spinner-input {
+        min-width: 2.75rem;
+      }
+    }
+  }
+
+  .ui-fluid {
+    .ui-spinner {
+      &.ui-spinner-horizontal-after {
+        .ui-inputfield {
+          padding-right: 6rem;
+        }
+
+        .ui-spinner-down {
+          right: 2.75rem;
+        }
+      }
+    }
+  }
+
+  .ui-tree {
+    &.ui-tree-horizontal {
+      .ui-treenode {
+        .ui-treenode-content {
+          padding: .25rem;
+        }
+      }
+    }
+  }
+
+  .ui-scrollpanel {
+    .ui-scrollpanel-track {
+      width: 9px;
+    }
+  }
+
+  .ui-confirm-popup {
+    .ui-confirm-popup-footer {
+      .ui-button {
+        .ui-button-text {
+          padding: .492rem .75rem;
+        }
+      }
+    }
+  }
+
+  .ui-messages {
+    ul {
+      margin-top: .25rem;
+    }
+  }
+}

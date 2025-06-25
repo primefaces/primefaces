@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,41 +23,38 @@
  */
 package org.primefaces.component.inputtextarea;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.el.MethodExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
+import jakarta.el.MethodExpression;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 public class InputTextarea extends InputTextareaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputTextarea";
-    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all";
+    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default";
 
-    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
-            "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect",
-            "query");
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "query");
+    private static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "query");
+    private static final Collection<String> EVENT_NAMES_COMBINED = LangUtils.concat(EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
 
     private List suggestions;
 
     @Override
     public Collection<String> getEventNames() {
-        return EVENT_NAMES;
+        return EVENT_NAMES_COMBINED;
     }
 
     @Override
@@ -90,7 +87,7 @@ public class InputTextarea extends InputTextareaBase {
 
             if ("itemSelect".equals(eventName)) {
                 String selectedItemValue = params.get(getClientId(context) + "_itemSelect");
-                SelectEvent selectEvent = new SelectEvent(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
@@ -106,7 +103,7 @@ public class InputTextarea extends InputTextareaBase {
     }
 
     @Override
-    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+    public void broadcast(jakarta.faces.event.FacesEvent event) throws jakarta.faces.event.AbortProcessingException {
         super.broadcast(event);
 
         FacesContext facesContext = getFacesContext();

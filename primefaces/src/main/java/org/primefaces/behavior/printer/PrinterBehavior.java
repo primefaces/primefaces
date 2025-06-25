@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,26 @@
  */
 package org.primefaces.behavior.printer;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.EscapeUtils;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.behavior.ClientBehaviorContext;
+import jakarta.faces.context.FacesContext;
+
+import org.json.JSONObject;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
-@ResourceDependency(library = "primefaces", name = "printer/printer.css")
 @ResourceDependency(library = "primefaces", name = "printer/printer.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 public class PrinterBehavior extends AbstractBehavior {
 
     public enum PropertyKeys implements BehaviorAttribute {
         target(String.class),
-        title(String.class),
         configuration(String.class);
 
         private final Class<?> expectedType;
@@ -61,23 +61,21 @@ public class PrinterBehavior extends AbstractBehavior {
     public String getScript(ClientBehaviorContext behaviorContext) {
         FacesContext context = behaviorContext.getFacesContext();
 
-        String component = SearchExpressionFacade.resolveClientId(
+        String component = SearchExpressionUtils.resolveClientIdForClientSide(
                     context, behaviorContext.getComponent(), getTarget());
-        String title = getTitle();
-        if (LangUtils.isNotBlank(title)) {
-            title = "'" + EscapeUtils.forJavaScriptAttribute(title) + "'";
-        }
-        else {
-            title = "document.title";
-        }
 
         String config = getConfiguration();
-        if (LangUtils.isBlank(config)) {
-            config = "type: 'html'";
+        if (LangUtils.isNotBlank(config)) {
+            // escape it for safety
+            JSONObject jsonObject = new JSONObject('{' + config + '}');
+            config = jsonObject.toString();
+        }
+        else {
+            config = Constants.EMPTY_STRING;
         }
 
-        return String.format("printJS({ printable: '%s', documentTitle: %s, %s});return false;",
-                    component, title, config);
+        return String.format("PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(document.body,'%s').print(%s);return false;",
+                    component, config);
     }
 
     @Override
@@ -86,26 +84,18 @@ public class PrinterBehavior extends AbstractBehavior {
     }
 
     public String getTarget() {
-        return eval(PropertyKeys.target, null);
+        return (String) getStateHelper().eval(PropertyKeys.target, null);
     }
 
     public void setTarget(String target) {
-        put(PropertyKeys.target, target);
-    }
-
-    public String getTitle() {
-        return eval(PropertyKeys.title, null);
-    }
-
-    public void setTitle(String title) {
-        put(PropertyKeys.title, title);
+        getStateHelper().put(PropertyKeys.target, target);
     }
 
     public String getConfiguration() {
-        return eval(PropertyKeys.configuration, null);
+        return (String) getStateHelper().eval(PropertyKeys.configuration, null);
     }
 
     public void setConfiguration(String configuration) {
-        put(PropertyKeys.configuration, configuration);
+        getStateHelper().put(PropertyKeys.configuration, configuration);
     }
 }

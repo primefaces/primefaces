@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,15 @@
  */
 package org.primefaces.component.tabview;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
-import org.primefaces.component.api.*;
+import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.TouchAware;
+import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.Widget;
 import org.primefaces.component.datalist.DataListBase;
+
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, TouchAware, ClientBehaviorHolder, PrimeClientBehaviorHolder,
         MultiViewStateAware<TabViewState> {
@@ -52,7 +57,9 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
         scrollable,
         tabindex,
         touchable,
-        multiViewState
+        multiViewState,
+        focusOnError,
+        focusOnLastActiveTab
     }
 
     public TabViewBase() {
@@ -177,13 +184,29 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
-    @Override
-    public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
+    public boolean isFocusOnError() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnError, false);
+    }
+
+    public void setFocusOnError(boolean focusOnError) {
+        getStateHelper().put(PropertyKeys.focusOnError, focusOnError);
+    }
+
+    public boolean isFocusOnLastActiveTab() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnLastActiveTab, false);
+    }
+
+    public void setFocusOnLastActiveTab(boolean focusOnLastActiveTab) {
+        getStateHelper().put(PropertyKeys.focusOnLastActiveTab, focusOnLastActiveTab);
     }
 
     @Override
-    public void setTouchable(boolean touchable) {
+    public Boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
+    }
+
+    @Override
+    public void setTouchable(Boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 

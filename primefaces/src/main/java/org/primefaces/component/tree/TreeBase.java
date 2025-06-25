@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.tree;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -37,32 +37,35 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TreeRenderer";
 
     public enum PropertyKeys {
-
-        widgetVar,
-        dynamic,
+        animate,
         cache,
+        datakey,
+        dir,
+        disabled,
+        dragMode,
+        dragdropScope,
+        draggable,
+        dropCopyNode,
+        dropMode,
+        dropRestrict,
+        droppable,
+        dynamic,
+        filterBy,
+        filterDelay,
+        filterEvent,
+        filterFunction,
+        filterMatchMode,
+        filterMode,
+        filterPlaceholder,
+        highlight,
+        multipleDrag,
+        onDrop,
         onNodeClick,
+        orientation,
         style,
         styleClass,
-        highlight,
-        datakey,
-        animate,
-        orientation,
-        dir,
-        draggable,
-        droppable,
-        dragdropScope,
-        dragMode,
-        dropRestrict,
         tabindex,
-        filterBy,
-        filterMatchMode,
-        disabled,
-        multipleDrag,
-        dropCopyNode,
-        onDrop,
-        filterMode,
-        filterFunction
+        widgetVar
     }
 
     public TreeBase() {
@@ -154,6 +157,7 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
         getStateHelper().put(PropertyKeys.orientation, orientation);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
@@ -200,6 +204,14 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
 
     public void setDropRestrict(String dropRestrict) {
         getStateHelper().put(PropertyKeys.dropRestrict, dropRestrict);
+    }
+
+    public String getDropMode() {
+        return (String) getStateHelper().eval(PropertyKeys.dropMode, "move");
+    }
+
+    public void setDropMode(String dropMode) {
+        getStateHelper().put(PropertyKeys.dropMode, dropMode);
     }
 
     public int getTabindex() {
@@ -250,11 +262,11 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
         getStateHelper().put(PropertyKeys.dropCopyNode, dropCopyNode);
     }
 
-    public javax.el.MethodExpression getOnDrop() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.onDrop, null);
+    public jakarta.el.MethodExpression getOnDrop() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.onDrop, null);
     }
 
-    public void setOnDrop(javax.el.MethodExpression onDrop) {
+    public void setOnDrop(jakarta.el.MethodExpression onDrop) {
         getStateHelper().put(PropertyKeys.onDrop, onDrop);
     }
 
@@ -266,11 +278,35 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
         getStateHelper().put(PropertyKeys.filterMode, filterMode);
     }
 
-    public javax.el.MethodExpression getFilterFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
+    public jakarta.el.MethodExpression getFilterFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
-    public void setFilterFunction(javax.el.MethodExpression filterFunction) {
+    public void setFilterFunction(jakarta.el.MethodExpression filterFunction) {
         getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
+    }
+
+    public String getFilterEvent() {
+        return (String) getStateHelper().eval(PropertyKeys.filterEvent, null);
+    }
+
+    public void setFilterEvent(String filterEvent) {
+        getStateHelper().put(PropertyKeys.filterEvent, filterEvent);
+    }
+
+    public int getFilterDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.filterDelay, Integer.MAX_VALUE);
+    }
+
+    public void setFilterDelay(int filterDelay) {
+        getStateHelper().put(PropertyKeys.filterDelay, filterDelay);
+    }
+
+    public java.lang.String getFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+    }
+
+    public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
     }
 }

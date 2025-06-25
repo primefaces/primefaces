@@ -1,3 +1,5 @@
+@use "core";
+
 .layout-sidebar {
     position: fixed;
     left: 0;
@@ -59,7 +61,7 @@
                     z-index: 1;
                     outline: 0 none;
                     transition: box-shadow .2s;
-                    box-shadow: 0 0 0 0.2em $focusBorderColor;
+                    box-shadow: 0 0 0 0.2em core.$focusBorderColor;
                 }
 
                 &.router-link-active {

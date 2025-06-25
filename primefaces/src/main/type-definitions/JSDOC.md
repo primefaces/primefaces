@@ -84,7 +84,7 @@ you must use `Primefaces.csp.eval` instead of `$.globalEval`.
 * [PrimeFaces.expressions](./modules/src_PrimeFaces.PrimeFaces.expressions.html) The search expressions module. It contains some
 methods to resolve search expressions such as `@form` on the client.
 * [PrimeFaces.resources](./modules/src_PrimeFaces.PrimeFaces.resources.html) The resources submodule. It contains some methods to
-generate JSF resource URLs.
+generate Faces resource URLs.
 * [PrimeFaces.settings](./modules/src_PrimeFaces.PrimeFaces.settings.html) The settings module which contains the locale
 (translations) shared by all widgets.
 * [PrimeFaces.utils](./modules/src_PrimeFaces.PrimeFaces.utils.html) The utility module with more advanced utility methods.
@@ -156,9 +156,6 @@ Many third-party libraries are jQuery plugins, see [JQuery](./interfaces/src_Pri
       the height of a textarea to fit the text. 
 * [chart.js](./classes/node_modules__types_chart_js.export_-1.html)
     * The [chart.js](https://www.chartjs.org/) library for drawing diagrams.
-* [ContentFlow](./classes/src_PrimeFaces.ContentFlow.html)
-    * [The ContentFlow library](https://web.archive.org/web/20120108070056/http://www.jacksasylum.eu/ContentFlow/index.php)
-      a flexible ImageFlow like flow written in javascript, which can handle any kind of content.
 * [Cropper.js](./classes/node_modules_cropperjs_types.Cropper-1.html)
     * The [Cropper.js](https://fengyuanchen.github.io/cropperjs/) library, a visual JavaScript image cropper.
 * [FullCalendar](./classes/node_modules__fullcalendar_core_main.Calendar.html)

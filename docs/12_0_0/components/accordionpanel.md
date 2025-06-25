@@ -180,6 +180,38 @@ public class AccordionView {
 }
 ```
 
+## Tab Specific Popup Menu
+AccordionPanel has built-in support to display fully customizable popup menu for a tab, an icon to display the menu
+is placed at top-right corner of the tab header. This feature is enabled by defining a menu component and defining it
+as the options facet of the tab.
+
+```xhtml
+<p:accordionPanel>
+    <p:tab title="Tab With Popup Menu">
+        <f:facet name="options">
+            <p:menu>
+                //Menuitems
+            </p:menu>
+        </f:facet>
+    </p:tab>
+</p:panel>
+```
+## Custom Action
+If you’d like to add custom actions to a tab header, use actions facet with icon markup;
+
+```xhtml
+<p:accordionPanel>
+    <p:tab title="Tab With Custom Action">
+        <f:facet name="actions">
+            <h:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+                <h:outputText styleClass="ui-icon ui-icon-help" />
+            </h:commandLink>
+        </f:facet>
+        //content
+    </p:tab>
+</p:panel>
+```
+
 ## Client Side API
 Widget: _PrimeFaces.widget.AccordionPanel_
 

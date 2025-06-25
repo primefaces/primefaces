@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,25 @@
  */
 package org.primefaces.integrationtests.cascadeselect;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CascadeSelect;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 
-public class CascadeSelect001Test extends BaseCascadeSelectTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class CascadeSelect001Test extends BaseCascadeSelectTest {
 
     @Test
     @Order(1)
     @DisplayName("CascadeSelect: select and submit item (SelectItems only with label)")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         CascadeSelect cascadeSelect = page.cascadeSelect;
         cascadeSelect.toggleDropdown();
@@ -58,45 +61,49 @@ public class CascadeSelect001Test extends BaseCascadeSelectTest {
 
         // Assert
         assertMessage(page.messages, 0, "Selected GPU", "RTX 2080");
-        Assertions.assertEquals("RTX 2080", cascadeSelect.getSelectedLabel());
+        assertEquals("RTX 2080", cascadeSelect.getSelectedLabel());
         assertConfiguration(cascadeSelect.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("CascadeSelect: show panel")
-    public void testShowPanel(Page page) {
-        // Arrange
-        CascadeSelect cascadeSelect = page.cascadeSelect;
+    void showPanel(Page page) {
+        assertDoesNotThrow(() -> {
+            // Arrange
+            CascadeSelect cascadeSelect = page.cascadeSelect;
 
-        // Act
-        cascadeSelect.show();
+            // Act
+            cascadeSelect.show();
 
-        // Assert
-        assertDisplayed(cascadeSelect.getPanel());
-        assertConfiguration(cascadeSelect.getWidgetConfiguration());
+            // Assert
+            assertDisplayed(cascadeSelect.getPanel());
+            assertConfiguration(cascadeSelect.getWidgetConfiguration());
+        });
     }
 
     @Test
     @Order(3)
     @DisplayName("CascadeSelect: hide panel")
-    public void testHidePanel(Page page) {
-        // Arrange
-        CascadeSelect cascadeSelect = page.cascadeSelect;
+    void hidePanel(Page page) {
+        assertDoesNotThrow(() -> {
+            // Arrange
+            CascadeSelect cascadeSelect = page.cascadeSelect;
 
-        // Act
-        cascadeSelect.show();
-        cascadeSelect.hide();
+            // Act
+            cascadeSelect.show();
+            cascadeSelect.hide();
 
-        // Assert
-        assertNotDisplayed(cascadeSelect.getPanel());
-        assertConfiguration(cascadeSelect.getWidgetConfiguration());
+            // Assert
+            assertNotDisplayed(cascadeSelect.getPanel());
+            assertConfiguration(cascadeSelect.getWidgetConfiguration());
+        });
     }
 
     @Test
     @Order(4)
     @DisplayName("CascadeSelect: disable panel")
-    public void testDisablePanel(Page page) {
+    void disablePanel(Page page) {
         // Arrange
         CascadeSelect cascadeSelect = page.cascadeSelect;
 
@@ -106,14 +113,14 @@ public class CascadeSelect001Test extends BaseCascadeSelectTest {
 
         // Assert - value should not be accepted
         assertNotClickable(cascadeSelect);
-        Assertions.assertEquals("Select a GPU", cascadeSelect.getSelectedLabel());
+        assertEquals("Select a GPU", cascadeSelect.getSelectedLabel());
         assertConfiguration(cascadeSelect.getWidgetConfiguration());
     }
 
     @Test
     @Order(5)
     @DisplayName("CascadeSelect: enable panel")
-    public void testEnablePanel(Page page) {
+    void enablePanel(Page page) {
         // Arrange
         CascadeSelect cascadeSelect = page.cascadeSelect;
 
@@ -126,7 +133,7 @@ public class CascadeSelect001Test extends BaseCascadeSelectTest {
 
         // Assert
         assertClickable(cascadeSelect);
-        Assertions.assertEquals("RTX 2080", cascadeSelect.getSelectedLabel());
+        assertEquals("RTX 2080", cascadeSelect.getSelectedLabel());
         assertConfiguration(cascadeSelect.getWidgetConfiguration());
     }
 

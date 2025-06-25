@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,30 +27,35 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Pattern;
 
-import javax.faces.FacesException;
-import javax.xml.bind.DatatypeConverter;
+import jakarta.faces.FacesException;
+import jakarta.xml.bind.DatatypeConverter;
 
 public class LangUtils {
 
     public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
     private static final Pattern CAPITAL_CASE = Pattern.compile("(?<=.)(?=\\p{Lu})");
+    private static final Pattern DIACRITICS_PATTERN = Pattern.compile("\\p{M}");
 
     private LangUtils() {
-    }
-
-    @Deprecated
-    public static boolean isValueEmpty(String value) {
-        return isEmpty(value);
     }
 
     public static boolean isEmpty(String value) {
@@ -59,11 +64,6 @@ public class LangUtils {
 
     public static boolean isNotEmpty(String value) {
         return !isEmpty(value);
-    }
-
-    @Deprecated
-    public static boolean isValueBlank(String str) {
-        return isBlank(str);
     }
 
     public static boolean isBlank(String str) {
@@ -86,6 +86,28 @@ public class LangUtils {
 
     public static boolean isNotBlank(String value) {
         return !isBlank(value);
+    }
+
+    /**
+     * Returns either the passed in String, or if the String is
+     * whitespace, empty ("") or {@code null}, the value of {@code defaultStr}.
+     *
+     * <p>Whitespace is defined by {@link Character#isWhitespace(char)}.</p>
+     *
+     * <pre>
+     * LangUtils.defaultIfBlank(null, "NULL")  = "NULL"
+     * LangUtils.defaultIfBlank("", "NULL")    = "NULL"
+     * LangUtils.defaultIfBlank(" ", "NULL")   = "NULL"
+     * LangUtils.defaultIfBlank("bat", "NULL") = "bat"
+     * LangUtils.defaultIfBlank("", null)      = null
+     * </pre>
+     * @param str the String to check, may be null
+     * @param defaultStr  the default String to return
+     *  if the input is whitespace, empty ("") or {@code null}, may be null
+     * @return the passed in String, or the default
+     */
+    public static String defaultIfBlank(final String str, final String defaultStr) {
+        return isBlank(str) ? defaultStr : str;
     }
 
     /**
@@ -268,7 +290,7 @@ public class LangUtils {
     }
 
     @SafeVarargs
-    public static final <T> List<T> unmodifiableList(T... args) {
+    public static <T> List<T> unmodifiableList(T... args) {
         return Collections.unmodifiableList(Arrays.asList(args));
     }
 
@@ -278,7 +300,11 @@ public class LangUtils {
         return set;
     }
 
-    public static Class tryToLoadClassForName(String name) {
+    public static boolean isClassAvailable(String name) {
+        return tryToLoadClassForName(name) != null;
+    }
+
+    public static <T> Class<T> tryToLoadClassForName(String name) {
         try {
             return loadClassForName(name);
         }
@@ -287,12 +313,21 @@ public class LangUtils {
         }
     }
 
-    public static Class loadClassForName(String name) throws ClassNotFoundException {
+    public static Method tryToLoadMethodForName(Class<?> clazz, String name, Class<?>... args) {
         try {
-            return Class.forName(name, false, LangUtils.class.getClassLoader());
+            return clazz.getDeclaredMethod(name, args);
+        }
+        catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
+
+    public static <T> Class<T> loadClassForName(String name) throws ClassNotFoundException {
+        try {
+            return (Class<T>) Class.forName(name, false, LangUtils.class.getClassLoader());
         }
         catch (ClassNotFoundException e) {
-            return Class.forName(name, false, getContextClassLoader());
+            return (Class<T>) Class.forName(name, false, getContextClassLoader());
         }
     }
 
@@ -336,7 +371,7 @@ public class LangUtils {
      *
      * @return true if the given class is a known proxy class, false otherwise
      */
-    public static boolean isProxiedClass(Class currentClass) {
+    public static boolean isProxiedClass(Class<?> currentClass) {
         if (currentClass == null || currentClass.getSuperclass() == null) {
             return false;
         }
@@ -363,8 +398,8 @@ public class LangUtils {
         try {
             Map<Type, Type> genericTypeArgs2ActualTypeArgs = new HashMap<>();
 
-            Class baseClass = getUnproxiedClass(base.getClass());
-            Class superClass = baseClass.getSuperclass();
+            Class<?> baseClass = getUnproxiedClass(base.getClass());
+            Class<?> superClass = baseClass.getSuperclass();
             Type genericSuperclass = baseClass.getGenericSuperclass();
 
             /*
@@ -380,7 +415,7 @@ public class LangUtils {
                     List<Type> genericTypeArgs;
 
                     if (parameterizedType.getRawType() instanceof Class) {
-                        Class<?> rawSuperClass = (Class) parameterizedType.getRawType();
+                        Class<?> rawSuperClass = (Class<?>) parameterizedType.getRawType();
                         genericTypeArgs = Arrays.asList(rawSuperClass.getTypeParameters());
 
                         for (int i = 0; i < genericTypeArgs.size(); i++) {
@@ -404,7 +439,7 @@ public class LangUtils {
 
                         Type listType = pt.getActualTypeArguments()[0];
                         if (listType  instanceof TypeVariable) {
-                            TypeVariable typeVar = (TypeVariable) listType;
+                            TypeVariable<?> typeVar = (TypeVariable<?>) listType;
                             Type typeVarResolved = genericTypeArgs2ActualTypeArgs.get(typeVar);
                             return loadClassForName(typeVarResolved.getTypeName());
                         }
@@ -458,6 +493,19 @@ public class LangUtils {
         return String.join(" ", values);
     }
 
+    /**
+     * Capitalizes the first character of the given string.
+     *
+     * @param name The string to capitalize.
+     * @return The capitalized string if the input is not blank; otherwise, returns the input string unchanged.
+     */
+    public static String capitalize(String name) {
+        if (isBlank(name)) {
+            return name;
+        }
+        return name.substring(0, 1).toUpperCase(Locale.ENGLISH) + name.substring(1);
+    }
+
 
     /**
      * <p>Checks whether the given String is a parsable number.</p>
@@ -491,6 +539,26 @@ public class LangUtils {
         return withDecimalsParsing(str, 0);
     }
 
+    /**
+     * Normalizes the given value by removing diacritics.
+     *
+     * @param value the value to normalize, expected to be a String.
+     * @param shouldNormalize whether to remove diacritics from the string.
+     * @return the normalized string, or an empty string if the input is not a string or is empty.
+     */
+    public static Object normalize(Object value, boolean shouldNormalize) {
+        if (!shouldNormalize || !(value instanceof String)) {
+            return value;
+        }
+
+        String strValue = (String) value;
+        if (strValue.isEmpty()) {
+            return Constants.EMPTY_STRING;
+        }
+
+        return DIACRITICS_PATTERN.matcher(java.text.Normalizer.normalize(strValue, java.text.Normalizer.Form.NFD)).replaceAll(Constants.EMPTY_STRING);
+    }
+
     private static boolean withDecimalsParsing(final String str, final int beginIdx) {
         int decimalPoints = 0;
         for (int i = beginIdx; i < str.length(); i++) {
@@ -506,53 +574,5 @@ public class LangUtils {
             }
         }
         return true;
-    }
-
-    public static Field getFieldRecursive(Class<?> clazz, String name) {
-        if (clazz == null) {
-            throw new IllegalArgumentException("clazz must not be null!");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("name must not be null!");
-        }
-
-        Class<?> nextClazz = clazz;
-        String nextName = name;
-        while (nextName.contains(".")) {
-            String currentName = nextName.substring(0, nextName.indexOf("."));
-            nextName = nextName.substring(currentName.length() + 1, nextName.length());
-            Field field = getField(nextClazz, currentName);
-            nextClazz = field.getType();
-        }
-
-        return getField(nextClazz, nextName);
-    }
-
-    public static Field getField(Class<?> clazz, String name) {
-        if (clazz == null) {
-            throw new IllegalArgumentException("clazz must not be null!");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("name must not be null!");
-        }
-
-        Class<?> current = clazz;
-        while (current != null && current != Object.class) {
-            try {
-                Field field = current.getDeclaredField(name);
-                field.setAccessible(true);
-                return field;
-            }
-            catch (NoSuchFieldException e) {
-                // Try parent
-            }
-            catch (Exception e) {
-                throw new IllegalArgumentException("Cannot access field " + name + " in " + clazz.getName(), e);
-            }
-
-            current = current.getSuperclass();
-        }
-
-        throw new IllegalArgumentException("Cannot find field " + name + " in " + clazz.getName());
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,52 +23,56 @@
  */
 package org.primefaces.component.toolbar;
 
+import org.primefaces.model.menu.Separator;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
+
 import java.io.IOException;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-
-public class ToolbarRenderer extends CoreRenderer {
+public class ToolbarRenderer extends CoreRenderer<Toolbar> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Toolbar toolbar = (Toolbar) component;
+    public void encodeEnd(FacesContext context, Toolbar component) throws IOException {
+        if (!shouldBeRendered(context, component)) {
+            encodePlaceholder(context, component);
+            return;
+        }
         ResponseWriter writer = context.getResponseWriter();
-        String style = toolbar.getStyle();
-        String styleClass = toolbar.getStyleClass();
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? Toolbar.CONTAINER_CLASS : Toolbar.CONTAINER_CLASS + " " + styleClass;
 
-        writer.startElement("div", toolbar);
-        writer.writeAttribute("id", toolbar.getClientId(context), null);
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "toolbar", null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
-        if (toolbar.getChildCount() > 0) {
-            encodeToolbarGroups(context, toolbar);
+        if (component.getChildCount() > 0) {
+            encodeToolbarGroups(context, component);
         }
         else {
-            encodeFacet(context, toolbar, "left");
-            encodeFacet(context, toolbar, "right");
+            encodeFacet(context, component, "left");
+            encodeFacet(context, component, "right");
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeToolbarGroups(FacesContext context, Toolbar toolbar) throws IOException {
+    protected void encodeToolbarGroups(FacesContext context, Toolbar component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        for (UIComponent child : toolbar.getChildren()) {
+        for (UIComponent child : component.getChildren()) {
             if (child.isRendered() && child instanceof ToolbarGroup) {
                 ToolbarGroup group = (ToolbarGroup) child;
 
-                if (toolbar.getChildCount() == 1 && "right".equals(group.getAlign())) {
+                if (component.getChildCount() == 1 && "right".equals(group.getAlign())) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", "ui-toolbar-group-left", null);
                     writer.endElement("div");
@@ -94,23 +98,78 @@ public class ToolbarRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeFacet(FacesContext context, Toolbar toolbar, String facetName) throws IOException {
+    protected void encodeFacet(FacesContext context, Toolbar component, String facetName) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent facet = toolbar.getFacet(facetName);
+        UIComponent facet = component.getFacet(facetName);
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-toolbar-group-" + facetName, null);
-        if (ComponentUtils.shouldRenderFacet(facet)) facet.encodeAll(context);
+        if (FacetUtils.shouldRenderFacet(facet)) {
+            facet.encodeAll(context);
+        }
         writer.endElement("div");
     }
 
     @Override
-    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext facesContext, Toolbar component) throws IOException {
         //Do nothing
     }
 
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    /**
+     * Determines whether a toolbar should be rendered based on its contents.
+     * <p>
+     * For toolbars with children, checks if any ToolbarGroup child contains renderable components.
+     * For toolbars without children, checks if either the left or right facet should be rendered.
+     *
+     * @param facesContext The current FacesContext
+     * @param component The toolbar component to check
+     * @return true if the toolbar has renderable content, false otherwise
+     */
+    protected boolean shouldBeRendered(FacesContext facesContext, Toolbar component) {
+        if (component.getChildCount() > 0) {
+            for (UIComponent child : component.getChildren()) {
+                if (child.isRendered() && child instanceof ToolbarGroup) {
+                    ToolbarGroup toolbarGroup = (ToolbarGroup) child;
+                    if (toolbarGroup.getChildren().stream().anyMatch(c -> shouldBeRendered(facesContext, c))) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        else {
+            return FacetUtils.shouldRenderFacet(component.getFacet("left")) || FacetUtils.shouldRenderFacet(component.getFacet("right"));
+        }
+    }
+
+    /**
+     * Check whether toolbar has a render relevant component. Separators themselves will be rendered regularly but if they are the
+     * only components there is no need to render the toolbar.
+     */
+    protected boolean shouldBeRendered(FacesContext facesContext, UIComponent component) {
+        if (component instanceof Separator) {
+            return false;
+        }
+        try {
+            component.pushComponentToEL(facesContext, component);
+            return component.isRendered();
+        }
+        finally {
+            component.popComponentFromEL(facesContext);
+        }
+
+    }
+
+    protected void encodePlaceholder(FacesContext context, Toolbar component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-toolbar-placeholder", "styleClass");
+        writer.endElement("div");
     }
 }

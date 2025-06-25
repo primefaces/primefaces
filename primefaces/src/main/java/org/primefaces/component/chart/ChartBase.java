@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,17 @@
  */
 package org.primefaces.component.chart;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class ChartBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ChartRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        type,
-        model,
-        style,
-        styleClass,
-        responsive
-    }
 
     public ChartBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -54,6 +44,17 @@ public abstract class ChartBase extends UIComponentBase implements Widget, Clien
         return COMPONENT_FAMILY;
     }
 
+    public enum PropertyKeys {
+        widgetVar,
+        value,
+        extender,
+        ariaLabel,
+        style,
+        styleClass,
+        canvasStyle,
+        canvasStyleClass
+    }
+
     public String getWidgetVar() {
         return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
@@ -62,20 +63,12 @@ public abstract class ChartBase extends UIComponentBase implements Widget, Clien
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
+    public String getValue() {
+        return (String) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    public org.primefaces.model.chart.ChartModel getModel() {
-        return (org.primefaces.model.chart.ChartModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(org.primefaces.model.chart.ChartModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
+    public void setValue(String value) {
+        getStateHelper().put(PropertyKeys.value, value);
     }
 
     public String getStyle() {
@@ -94,11 +87,35 @@ public abstract class ChartBase extends UIComponentBase implements Widget, Clien
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public boolean isResponsive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
     }
 
-    public void setResponsive(boolean responsive) {
-        getStateHelper().put(PropertyKeys.responsive, responsive);
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    public String getExtender() {
+        return (String) getStateHelper().eval(PropertyKeys.extender, null);
+    }
+
+    public void setExtender(String extender) {
+        getStateHelper().put(PropertyKeys.extender, extender);
+    }
+
+    public String getCanvasStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.canvasStyle, null);
+    }
+
+    public void setCanvasStyle(String canvasStyle) {
+        getStateHelper().put(PropertyKeys.canvasStyle, canvasStyle);
+    }
+
+    public String getCanvasStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.canvasStyleClass, null);
+    }
+
+    public void setCanvasStyleClass(String canvasStyleClass) {
+        getStateHelper().put(PropertyKeys.canvasStyleClass, canvasStyleClass);
     }
 }

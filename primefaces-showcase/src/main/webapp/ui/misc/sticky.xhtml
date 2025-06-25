@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -35,12 +35,12 @@
         <div class="card">
             <p:toolbar id="tb">
                 <f:facet name="left">
-                    <p:commandButton type="button" value="New" icon="pi pi-file" styleClass="p-mr-2" />
+                    <p:commandButton type="button" value="New" icon="pi pi-file" styleClass="mr-2" />
                     <p:commandButton type="button" value="Open" icon="pi pi-folder-open" styleClass="ui-button-success" />
                 </f:facet>
                 <f:facet name="right">
-                    <p:commandButton type="button" title="Save" icon="pi pi-save" styleClass="warn-button p-mr-2" />
-                    <p:commandButton type="button" title="Delete" icon="pi pi-trash" styleClass="ui-button-danger p-mr-2" />
+                    <p:commandButton type="button" title="Save" icon="pi pi-save" styleClass="warn-button mr-2" />
+                    <p:commandButton type="button" title="Delete" icon="pi pi-trash" styleClass="ui-button-danger mr-2" />
                     <p:commandButton type="button" title="Print" icon="pi pi-print" styleClass="ui-button-help" />
                 </f:facet>
             </p:toolbar>

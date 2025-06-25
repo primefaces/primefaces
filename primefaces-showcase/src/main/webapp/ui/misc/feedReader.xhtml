@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -10,7 +10,7 @@
     </ui:define>
 
     <ui:define name="description">
-        FeedReader retrieves and displays content from a feed.
+        FeedReader retrieves and displays content from an RSS, Atom, or Itunes Podcast feed.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/feedreader"/>
@@ -18,9 +18,9 @@
     <ui:define name="implementation">
         <div class="card">
             <p:feedReader value="https://www.nasa.gov/rss/dyn/breaking_news.rss" var="feed">
-                <div class="p-p-3">
-                    <h:outputText value="#{feed.title}" styleClass="p-text-bold p-d-block" />
-                    <h:outputText value="#{feed.description.value}" escape="false"/>
+                <div class="p-3">
+                    <h:outputText value="#{feed.title}" styleClass="font-bold block" />
+                    <h:outputText value="#{feed.description}" escape="false"/>
                     <p:divider/>
                 </div>
                 

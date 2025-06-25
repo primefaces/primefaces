@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import java.util.regex.Pattern;
+
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
@@ -34,8 +35,16 @@ public class HtmlSanitizer {
             .allowUrlProtocols("data", "http", "https")
             .allowElements("img")
             .allowAttributes("src")
-            .matching(Pattern.compile("^(data:image/(gif|png|jpeg)[,;]|http|https|mailto|//).+", Pattern.CASE_INSENSITIVE))
+            .matching(Pattern.compile("^(data:image/(gif|png|jpeg|webp)[,;]|http|https|mailto|//).+", Pattern.CASE_INSENSITIVE))
             .onElements("img")
+            .toFactory();
+
+    private static final PolicyFactory HTML_MEDIA_SANITIZER = new HtmlPolicyBuilder()
+            .allowUrlProtocols("data", "http", "https")
+            .allowElements("video", "audio", "source", "iframe", "figure")
+            .allowAttributes("controls", "width", "height", "origin-size", "src", "allowfullscreen", "class", "style", "data-proportion", "data-align",
+                        "data-percentage", " data-size", "data-file-name", "data-file-size", "data-origin", "data-rotate", "data-index")
+            .onElements("video", "audio", "source", "iframe", "figure")
             .toFactory();
 
     private static final PolicyFactory HTML_LINKS_SANITIZER = Sanitizers.LINKS
@@ -47,9 +56,9 @@ public class HtmlSanitizer {
 
     private static final PolicyFactory HTML_STYLES_SANITIZER = Sanitizers.STYLES
             .and(new HtmlPolicyBuilder()
-            .allowElements("span", "li", "p")
+            .allowElements("span", "li", "p", "u", "strong", "em", "s")
             .allowAttributes("class")
-            .onElements("span", "li", "p")
+            .onElements("span", "li", "p", "u", "strong", "em", "s")
             .toFactory());
 
     private static final PolicyFactory HTML_DENY_ALL_SANITIZER = new HtmlPolicyBuilder().toFactory();
@@ -59,7 +68,7 @@ public class HtmlSanitizer {
     }
 
     public static String sanitizeHtml(String value,
-            boolean allowBlocks, boolean allowFormatting, boolean allowLinks, boolean allowStyles, boolean allowImages) {
+            boolean allowBlocks, boolean allowFormatting, boolean allowLinks, boolean allowStyles, boolean allowMedia) {
 
         if (LangUtils.isBlank(value)) {
             return value;
@@ -78,8 +87,9 @@ public class HtmlSanitizer {
         if (allowStyles) {
             sanitizer = sanitizer.and(HTML_STYLES_SANITIZER);
         }
-        if (allowImages) {
+        if (allowMedia) {
             sanitizer = sanitizer.and(HTML_IMAGES_SANITIZER);
+            sanitizer = sanitizer.and(HTML_MEDIA_SANITIZER);
         }
 
         return sanitizer.sanitize(value);

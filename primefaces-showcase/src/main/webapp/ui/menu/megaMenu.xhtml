@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -21,6 +21,9 @@
             <h:form>
                 <h5>Horizontal</h5>
                 <p:megaMenu orientation="horizontal" autoDisplay="false">
+                    <f:facet name="start">
+                        <p:graphicImage name="images/primefaces-logo.svg" library="showcase" width="150"/>
+                    </f:facet>
                     <p:submenu label="Videos" icon="pi pi-fw pi-video">
                         <p:column>
                             <p:submenu label="Video 1">
@@ -127,10 +130,21 @@
                             </p:submenu>
                         </p:column>
                     </p:submenu>
+                    
+                    <f:facet name="end">
+                        <div class="ui-input-icon-left mr-2">
+                            <i class="pi pi-fw pi-search" />
+                            <p:inputText placeholder="Search"/>
+                        </div>
+                        <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+                    </f:facet>
                 </p:megaMenu>
 
                 <h5>Vertical</h5>
                 <p:megaMenu orientation="vertical" autoDisplay="false">
+                    <f:facet name="start">
+                        <p:graphicImage name="images/primefaces-logo.svg" library="showcase" width="150" />
+                    </f:facet>
                     <p:submenu label="Videos" icon="pi pi-fw pi-video">
                         <p:column>
                             <p:submenu label="Video 1">

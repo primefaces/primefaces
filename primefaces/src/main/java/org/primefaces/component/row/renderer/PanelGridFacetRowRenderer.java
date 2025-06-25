@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.row.renderer;
 
-import java.io.IOException;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
+
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class PanelGridFacetRowRenderer extends CoreRenderer implements HelperRowRenderer {
 
@@ -39,7 +39,6 @@ public class PanelGridFacetRowRenderer extends CoreRenderer implements HelperRow
 
         writer.startElement("tr", row);
         writer.writeAttribute("class", "ui-widget-header", null);
-        writer.writeAttribute("role", "row", null);
         renderDynamicPassThruAttributes(context, row);
         renderChildren(context, row);
         writer.endElement("tr");

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,45 +23,45 @@
  */
 package org.primefaces.component.tabmenu;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-public class TabMenuRenderer extends BaseMenuRenderer {
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class TabMenuRenderer extends BaseMenuRenderer<TabMenu> {
 
     @Override
-    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        TabMenu menu = (TabMenu) abstractMenu;
+    protected void encodeScript(FacesContext context, TabMenu component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TabMenu", menu);
+        wb.init("TabMenu", component);
         wb.finish();
     }
 
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu component) throws IOException {
+    protected void encodeMarkup(FacesContext context, TabMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        TabMenu menu = (TabMenu) component;
-        String clientId = menu.getClientId(context);
-        String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? TabMenu.CONTAINER_CLASS : TabMenu.CONTAINER_CLASS + " " + styleClass;
-        int activeIndex = menu.getActiveIndex();
-        List<?> elements = menu.getElements();
+        String clientId = component.getClientId(context);
+        String styleClass = getStyleClassBuilder(context)
+                .add(TabMenu.CONTAINER_CLASS)
+                .add("ui-tabs-" + component.getOrientation())
+                .add(component.getStyleClass())
+                .build();
+        int activeIndex = component.getActiveIndex();
+        List<?> elements = component.getElements();
 
-        writer.startElement("div", menu);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (menu.getStyle() != null) {
-            writer.writeAttribute("style", menu.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
         writer.startElement("ul", null);
@@ -73,7 +73,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
             for (Object element : elements) {
                 if (element instanceof MenuElement) {
                     if (((MenuElement) element).isRendered() && (element instanceof MenuItem)) {
-                        encodeItem(context, menu, (MenuItem) element, (i == activeIndex));
+                        encodeItem(context, component, (MenuItem) element, (i == activeIndex));
                         i++;
                     }
                 }
@@ -85,22 +85,20 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItem(FacesContext context, TabMenu menu, MenuItem item, boolean active) throws IOException {
+    protected void encodeItem(FacesContext context, TabMenu component, MenuItem item, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String containerStyle = item.getContainerStyle();
-        String containerStyleClass = item.getContainerStyleClass();
-        String containerClass = active ? TabMenu.ACTIVE_TAB_HEADER_CLASS : TabMenu.INACTIVE_TAB_HEADER_CLASS;
-        if (item.getIcon() != null) {
-            containerClass += " ui-tabmenuitem-hasicon";
-        }
-
-        if (containerStyleClass != null) {
-            containerClass = containerClass + " " + containerStyleClass;
-        }
+        String containerStyleClass = getStyleClassBuilder(context)
+                .add(item.getContainerStyleClass())
+                .add(active, TabMenu.ACTIVE_TAB_HEADER_CLASS, TabMenu.INACTIVE_TAB_HEADER_CLASS)
+                .add(item.isDisabled(), "ui-state-disabled", "ui-state-default")
+                .add(item.getIcon() != null, "ui-tabmenuitem-hasicon")
+                .add(item.getBadge() != null, "ui-overlay-badge")
+                .build();
 
         //header container
         writer.startElement("li", null);
-        writer.writeAttribute("class", containerClass, null);
+        writer.writeAttribute("class", containerStyleClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
         writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
@@ -109,13 +107,17 @@ public class TabMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", containerStyle, null);
         }
 
-        encodeMenuItem(context, menu, item, "-1");
+        if (item.getBadge() != null) {
+            BadgeRenderer.encode(context, item.getBadge());
+        }
+
+        encodeMenuItem(context, component, item);
 
         writer.endElement("li");
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, TabMenu component) throws IOException {
         // Do nothing
     }
 

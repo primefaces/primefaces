@@ -1,1 +1,2 @@
 org.primefaces.virusscan.impl.VirusTotalReportScanner
+org.primefaces.virusscan.impl.ClamDaemonScanner

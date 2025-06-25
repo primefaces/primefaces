@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,6 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.HasCapabilities;
 import org.primefaces.integrationtests.AbstractTableTest;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.Row;
@@ -32,6 +30,11 @@ import org.primefaces.selenium.component.model.datatable.Row;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.openqa.selenium.HasCapabilities;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class AbstractDataTableTest extends AbstractTableTest {
 
@@ -82,13 +85,13 @@ public abstract class AbstractDataTableTest extends AbstractTableTest {
 
     protected void assertRows(List<Row> rows, List<ProgrammingLanguage> langs) {
         int expectedSize = langs.size();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(expectedSize, rows.size());
+        assertNotNull(rows);
+        assertEquals(expectedSize, rows.size());
 
         int row = 0;
         for (ProgrammingLanguage programmingLanguage : langs) {
             String rowText = rows.get(row).getCell(0).getText();
-            Assertions.assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText.trim()));
+            assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText.trim()));
             row++;
         }
     }
@@ -97,8 +100,8 @@ public abstract class AbstractDataTableTest extends AbstractTableTest {
         if (page.getWebDriver() instanceof HasCapabilities) {
             HasCapabilities hasCaps = (HasCapabilities) page.getWebDriver();
             System.out.println("BrowserName: " + hasCaps.getCapabilities().getBrowserName());
-            System.out.println("Version: " + hasCaps.getCapabilities().getVersion());
-            System.out.println("Platform: " + hasCaps.getCapabilities().getPlatform());
+            System.out.println("Version: " + hasCaps.getCapabilities().getBrowserVersion());
+            System.out.println("Platform: " + hasCaps.getCapabilities().getPlatformName());
         }
         else {
             System.out.println("WebDriver does not implement HasCapabilities --> can´t show version etc");

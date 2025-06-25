@@ -73,6 +73,8 @@ required | false | Boolean | Mask component as required
 requiredMessage | null | String | Message to be displayed when required field validation fails.
 size | null | Integer | Number of characters used to determine the width of the input element.
 slotChar | '_' | String | PlaceHolder in mask template. Default to underscore '_'.
+showMaskOnFocus | true | boolean | Shows the mask when the input gets focus. (default = true).
+showMaskOnHover | true | boolean | Shows the mask when hovering the mouse. (default = true)
 style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.

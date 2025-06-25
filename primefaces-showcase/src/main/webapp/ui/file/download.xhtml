@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
     <ui:define name="head">
         <script>
@@ -23,7 +23,7 @@
     </ui:define>
 
     <ui:define name="description">
-        FileDownload is used to stream binary contents like files stored in database to the client. FileDownload is used by attaching it to any JSF command component
+        FileDownload is used to stream binary contents like files stored in database to the client. FileDownload is used by attaching it to any Faces command component
         like button or a link. Additionally presentation of download can be configured with the contentDisposition attribute that takes either "attachment" or "inline" as a value.
     </ui:define>
 
@@ -38,7 +38,7 @@
 
             <h:form>
                 <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);"
-                                 icon="pi pi-arrow-down" styleClass="p-mr-2">
+                                 icon="pi pi-arrow-down" styleClass="mr-2">
                     <p:fileDownload value="#{fileDownloadView.file}"/>
                 </p:commandButton>
 

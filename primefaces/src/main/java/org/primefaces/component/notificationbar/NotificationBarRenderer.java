@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,54 +23,51 @@
  */
 package org.primefaces.component.notificationbar;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class NotificationBarRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class NotificationBarRenderer extends CoreRenderer<NotificationBar> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        NotificationBar bar = (NotificationBar) component;
-
-        encodeMarkup(context, bar);
-        encodeScript(context, bar);
+    public void encodeEnd(FacesContext context, NotificationBar component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, NotificationBar bar) throws IOException {
+    protected void encodeMarkup(FacesContext context, NotificationBar component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = bar.getStyleClass();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? NotificationBar.STYLE_CLASS : NotificationBar.STYLE_CLASS + " " + styleClass;
 
-        writer.startElement("div", bar);
-        writer.writeAttribute("id", bar.getClientId(context), null);
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
-        if (bar.getStyle() != null) {
-            writer.writeAttribute("style", bar.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
 
-        renderChildren(context, bar);
+        renderChildren(context, component);
 
         writer.endElement("div");
     }
 
-    private void encodeScript(FacesContext context, NotificationBar bar) throws IOException {
+    private void encodeScript(FacesContext context, NotificationBar component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("NotificationBar", bar)
-                .attr("position", bar.getPosition())
-                .attr("effect", bar.getEffect())
-                .attr("effectSpeed", bar.getEffectSpeed())
-                .attr("autoDisplay", bar.isAutoDisplay(), false);
+        wb.init("NotificationBar", component)
+                .attr("position", component.getPosition())
+                .attr("effect", component.getEffect())
+                .attr("effectSpeed", component.getEffectSpeed())
+                .attr("autoDisplay", component.isAutoDisplay(), false);
         wb.finish();
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, NotificationBar component) throws IOException {
         //Do nothing
     }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,71 +23,84 @@
  */
 package org.primefaces.integrationtests.inputtext;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.*;
-import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
 
-@Tag("SafariBasic") //example-tag used together with profile/properties/groups in pom.xml to run only tests with this tag
-public class InputText001Test extends AbstractPrimePageTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.JavascriptException;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+//example-tag used together with profile/properties/groups in pom.xml to run only tests with this tag
+@Tag("SafariBasic")
+class InputText001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    public void testInputTextWithAjax(Page page) {
+    void inputTextWithAjax(Page page) {
         // Arrange
         InputText inputText = page.inputtext1;
-        Assertions.assertEquals("byebye!", inputText.getValue());
+        assertEquals("byebye!", inputText.getValue());
 
         // Act
         inputText.setValue("hello!");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("hello!", inputText.getValue());
+        assertEquals("hello!", inputText.getValue());
         assertConfiguration(inputText.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
-    public void testInputTextWithoutAjax(Page page) {
+    void inputTextWithoutAjax(Page page) {
         // Arrange
         InputText inputText = page.inputtext2;
-        Assertions.assertEquals("safari", inputText.getValue());
+        assertEquals("safari", inputText.getValue());
 
         // Act
         inputText.setValue("hello safari!");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("hello safari!", inputText.getValue());
+        assertEquals("hello safari!", inputText.getValue());
         assertConfiguration(inputText.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("InputText: disabled")
-    public void testDisable(Page page) {
+    void disable(Page page) {
         // Arrange
         InputText inputText = page.inputtext2;
-        Assertions.assertEquals("safari", inputText.getValue());
+        assertEquals("safari", inputText.getValue());
 
         // Act
         inputText.disable();
         try {
             inputText.setValue("hello safari!");
-            Assertions.fail("Element should be disabled!");
+            fail("Element should be disabled!");
         }
         catch (InvalidElementStateException e) {
             assertNotClickable(inputText);
         }
+        catch (JavascriptException e) {
+            assertNotClickable(inputText);
+            // Chrome 123+
+            assertTrue(e.getMessage().contains("Element is not currently interactable and may not be manipulated"));
+        }
 
         // Assert - value should not be accepted
-        Assertions.assertEquals("safari", inputText.getValue());
-        Assertions.assertFalse(inputText.isEnabled());
+        assertEquals("safari", inputText.getValue());
+        assertFalse(inputText.isEnabled());
         assertCss(inputText, "ui-state-disabled");
         assertConfiguration(inputText.getWidgetConfiguration());
     }
@@ -95,10 +108,10 @@ public class InputText001Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("InputText: enabled")
-    public void testEnable(Page page) {
+    void enable(Page page) {
         // Arrange
         InputText inputText = page.inputtext2;
-        Assertions.assertEquals("safari", inputText.getValue());
+        assertEquals("safari", inputText.getValue());
 
         // Act
         inputText.disable();
@@ -107,15 +120,15 @@ public class InputText001Test extends AbstractPrimePageTest {
 
         // Assert
         assertClickable(inputText);
-        Assertions.assertTrue(inputText.isEnabled());
-        Assertions.assertEquals("testing re-enabled", inputText.getValue());
+        assertTrue(inputText.isEnabled());
+        assertEquals("testing re-enabled", inputText.getValue());
         assertConfiguration(inputText.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputText Config = " + cfg);
-        Assertions.assertFalse(cfg.has("maxlength"));
+        assertFalse(cfg.has("maxlength"));
     }
 
     public static class Page extends AbstractPrimePage {

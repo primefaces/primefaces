@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.util;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public class StyleBuilder {
 
@@ -33,6 +33,16 @@ public class StyleBuilder {
 
     public StyleBuilder(FacesContext context) {
         sb = SharedStringBuilder.get(context, KEY);
+    }
+
+    public StyleBuilder add(String style) {
+        add(LangUtils.isNotBlank(style), style);
+        return this;
+    }
+
+    public StyleBuilder add(String attribute, String value) {
+        add(LangUtils.isNotBlank(value), attribute, value);
+        return this;
     }
 
     public StyleBuilder add(boolean condition, String style) {
@@ -56,17 +66,12 @@ public class StyleBuilder {
     }
 
     public StyleBuilder add(boolean condition, String attribute, String trueValue, String falseValue) {
-        add(condition, attribute, trueValue).add(!condition, attribute, falseValue);
-        return this;
-    }
-
-    public StyleBuilder add(String style) {
-        add(LangUtils.isNotBlank(style), style);
-        return this;
-    }
-
-    public StyleBuilder add(String defaultStyle, String userStyle) {
-        add(defaultStyle).add(userStyle);
+        if (condition) {
+            add(attribute, trueValue);
+        }
+        else {
+            add(attribute, falseValue);
+        }
         return this;
     }
 

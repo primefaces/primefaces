@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,23 +24,17 @@
 package org.primefaces.showcase.util;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
-/**
- * FileContentMarkerUtil
- *
- * @author Sébastien Lepage / last modified by $Author$
- * @version $Revision$
- * @since 6.3
- */
 public class FileContent implements Serializable {
 
     private final String title;
     private final String value;
     private final String type;
-    private final List<FileContent> attached;
+    private final Set<FileContent> attached;
 
-    public FileContent(String title, String value, String type, List<FileContent> attached) {
+    public FileContent(String title, String value, String type, Set<FileContent> attached) {
         this.title = title;
         this.value = value;
         this.type = type;
@@ -59,39 +53,21 @@ public class FileContent implements Serializable {
         return type;
     }
 
-    public List<FileContent> getAttached() {
+    public Set<FileContent> getAttached() {
         return attached;
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((title == null) ? 0 : title.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FileContent that = (FileContent) o;
+        return Objects.equals(getTitle(), that.getTitle());
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        FileContent other = (FileContent) obj;
-        if (title == null) {
-            if (other.title != null) {
-                return false;
-            }
-        }
-        else if (!title.equals(other.title)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hashCode(getTitle());
     }
 
     @Override

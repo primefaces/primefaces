@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,44 +23,41 @@
  */
 package org.primefaces.component.overlaypanel;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class OverlayPanelRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class OverlayPanelRenderer extends CoreRenderer<OverlayPanel> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, OverlayPanel component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        OverlayPanel panel = (OverlayPanel) component;
-
-        if (panel.isContentLoadRequest(context)) {
-            renderChildren(context, panel);
+    public void encodeEnd(FacesContext context, OverlayPanel component) throws IOException {
+        if (component.isContentLoadRequest(context)) {
+            renderChildren(context, component);
         }
         else {
-            encodeMarkup(context, panel);
-            encodeScript(context, panel);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
     }
 
-    protected void encodeMarkup(FacesContext context, OverlayPanel panel) throws IOException {
+    protected void encodeMarkup(FacesContext context, OverlayPanel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = panel.getClientId(context);
-        String style = panel.getStyle();
-        String styleClass = panel.getStyleClass();
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? OverlayPanel.STYLE_CLASS : OverlayPanel.STYLE_CLASS + " " + styleClass;
 
-        writer.startElement("div", panel);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
@@ -69,8 +66,8 @@ public class OverlayPanelRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", OverlayPanel.CONTENT_CLASS, "styleClass");
-        if (!panel.isDynamic()) {
-            renderChildren(context, panel);
+        if (!component.isDynamic()) {
+            renderChildren(context, component);
         }
         writer.endElement("div");
 
@@ -78,7 +75,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, OverlayPanel panel) throws IOException {
-        String target = SearchExpressionFacade.resolveClientId(context, panel, panel.getFor());
+        String target = SearchExpressionUtils.resolveClientId(context, panel, panel.getFor());
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("OverlayPanel", panel)
@@ -90,12 +87,14 @@ public class OverlayPanelRenderer extends CoreRenderer {
                 .attr("my", panel.getMy(), null)
                 .attr("at", panel.getAt(), null)
                 .attr("collision", panel.getCollision(), null)
-                .attr("appendTo", panel.getAppendTo(), null)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, panel, panel.getAppendTo()))
                 .attr("dynamic", panel.isDynamic(), false)
+                .attr("cache", panel.isCache(), true)
                 .attr("dismissable", panel.isDismissable(), true)
                 .attr("showCloseIcon", panel.isShowCloseIcon(), false)
                 .attr("modal", panel.isModal(), false)
                 .attr("blockScroll", panel.isBlockScroll(), false)
+                .attr("autoHide", panel.isAutoHide(), true)
                 .attr("showDelay", panel.getShowDelay(), 0);
 
         encodeClientBehaviors(context, panel);
@@ -104,7 +103,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, OverlayPanel component) throws IOException {
         //Do nothing
     }
 

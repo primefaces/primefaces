@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,12 @@
  */
 package org.primefaces.selenium.component.base;
 
+import org.primefaces.selenium.PrimeSelenium;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
+import org.openqa.selenium.interactions.Actions;
 
 public abstract class AbstractInputComponent extends AbstractComponent {
 
@@ -64,7 +66,7 @@ public abstract class AbstractInputComponent extends AbstractComponent {
      * @return the {@link WebElement} representing the label.
      */
     public WebElement getAssignedLabel() {
-        return getWebDriver().findElement(By.cssSelector("label[for='" + getInput().getAttribute("id") + "']"));
+        return getWebDriver().findElement(By.cssSelector("label[for='" + getInput().getDomAttribute("id") + "']"));
     }
 
     /**
@@ -86,7 +88,7 @@ public abstract class AbstractInputComponent extends AbstractComponent {
         Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
         input.sendKeys(Keys.chord(command, "a")); // select everything
         input.sendKeys(Keys.chord(command, "c")); // copy
-        return input.getAttribute("value");
+        return input.getDomAttribute("value");
     }
 
     /**
@@ -99,7 +101,7 @@ public abstract class AbstractInputComponent extends AbstractComponent {
         Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
         input.sendKeys(Keys.chord(command, "a")); // select everything
         input.sendKeys(Keys.chord(command, "v")); // paste
-        return input.getAttribute("value");
+        return input.getDomAttribute("value");
     }
 
     /**
@@ -130,6 +132,13 @@ public abstract class AbstractInputComponent extends AbstractComponent {
      */
     public void disable() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+    }
+
+    /**
+     * Sets tje focus to the element.
+     */
+    public void focus() {
+        new Actions(getWebDriver()).moveToElement(getInput()).click().perform();
     }
 
 }

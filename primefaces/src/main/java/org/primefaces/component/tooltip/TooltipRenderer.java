@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,60 +23,58 @@
  */
 package org.primefaces.component.tooltip;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class TooltipRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class TooltipRenderer extends CoreRenderer<Tooltip> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Tooltip tooltip = (Tooltip) component;
-        String target = SearchExpressionFacade.resolveClientIds(
-                context, component, tooltip.getFor());
+    public void encodeEnd(FacesContext context, Tooltip component) throws IOException {
+        String target = SearchExpressionUtils.resolveClientIdsForClientSide(
+                context, component, component.getFor());
 
-        encodeMarkup(context, tooltip, target);
-        encodeScript(context, tooltip, target);
+        encodeMarkup(context, component, target);
+        encodeScript(context, component, target);
     }
 
-    protected void encodeMarkup(FacesContext context, Tooltip tooltip, String target) throws IOException {
+    protected void encodeMarkup(FacesContext context, Tooltip component, String target) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         if (target != null) {
-            String styleClass = tooltip.getStyleClass();
+            String styleClass = component.getStyleClass();
             styleClass = styleClass == null ? Tooltip.CONTAINER_CLASS : Tooltip.CONTAINER_CLASS + " " + styleClass;
-            styleClass = styleClass + " ui-tooltip-" + tooltip.getPosition();
+            styleClass = styleClass + " ui-tooltip-" + component.getPosition();
 
-            writer.startElement("div", tooltip);
-            writer.writeAttribute("id", tooltip.getClientId(context), null);
+            writer.startElement("div", component);
+            writer.writeAttribute("id", component.getClientId(context), null);
             writer.writeAttribute("class", styleClass, "styleClass");
             writer.writeAttribute("role", "tooltip", null);
 
-            if (tooltip.getStyle() != null) {
-                writer.writeAttribute("style", tooltip.getStyle(), "style");
+            if (component.getStyle() != null) {
+                writer.writeAttribute("style", component.getStyle(), "style");
             }
 
-            writer.startElement("div", tooltip);
+            writer.startElement("div", component);
             writer.writeAttribute("class", "ui-tooltip-arrow", null);
             writer.endElement("div");
 
-            writer.startElement("div", tooltip);
-            writer.writeAttribute("class", "ui-tooltip-text ui-shadow ui-corner-all", null);
+            writer.startElement("div", component);
+            writer.writeAttribute("class", "ui-tooltip-text ui-shadow", null);
 
-            if (tooltip.getChildCount() > 0) {
-                renderChildren(context, tooltip);
+            if (component.getChildCount() > 0) {
+                renderChildren(context, component);
             }
             else {
-                String valueToRender = ComponentUtils.getValueToRender(context, tooltip);
+                String valueToRender = ComponentUtils.getValueToRender(context, component);
                 if (valueToRender != null) {
-                    if (tooltip.isEscape()) {
+                    if (component.isEscape()) {
                         writer.writeText(valueToRender, "value");
                     }
                     else {
@@ -91,33 +89,34 @@ public class TooltipRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeScript(FacesContext context, Tooltip tooltip, String target) throws IOException {
+    protected void encodeScript(FacesContext context, Tooltip component, String target) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Tooltip", tooltip)
-                .attr("showEvent", tooltip.getShowEvent(), null)
-                .attr("hideEvent", tooltip.getHideEvent(), null)
-                .attr("showEffect", tooltip.getShowEffect(), null)
-                .attr("hideEffect", tooltip.getHideEffect(), null)
-                .attr("showDelay", tooltip.getShowDelay(), 150)
-                .attr("hideDelay", tooltip.getHideDelay(), 0)
+        wb.init("Tooltip", component)
+                .attr("showEvent", component.getShowEvent(), null)
+                .attr("hideEvent", component.getHideEvent(), null)
+                .attr("showEffect", component.getShowEffect(), null)
+                .attr("hideEffect", component.getHideEffect(), null)
+                .attr("showDelay", component.getShowDelay(), 150)
+                .attr("hideDelay", component.getHideDelay(), 0)
                 .attr("target", target, null)
-                .attr("globalSelector", tooltip.getGlobalSelector(), null)
-                .attr("escape", tooltip.isEscape(), true)
-                .attr("trackMouse", tooltip.isTrackMouse(), false)
-                .attr("position", tooltip.getPosition(), "right")
-                .attr("myPos", tooltip.getMy(), null)
-                .attr("atPos", tooltip.getAt(), null)
-                .attr("delegate", tooltip.isDelegate(), false)
-                .attr("styleClass", tooltip.getStyleClass(), null)
-                .returnCallback("beforeShow", "function()", tooltip.getBeforeShow())
-                .callback("onShow", "function()", tooltip.getOnShow())
-                .callback("onHide", "function()", tooltip.getOnHide());
+                .attr("globalSelector", component.getGlobalSelector(), null)
+                .attr("escape", component.isEscape(), true)
+                .attr("trackMouse", component.isTrackMouse(), false)
+                .attr("position", component.getPosition(), "right")
+                .attr("myPos", component.getMy(), null)
+                .attr("atPos", component.getAt(), null)
+                .attr("delegate", component.isDelegate(), false)
+                .attr("styleClass", component.getStyleClass(), null)
+                .attr("autoHide", component.isAutoHide(), true)
+                .returnCallback("beforeShow", "function()", component.getBeforeShow())
+                .callback("onShow", "function()", component.getOnShow())
+                .callback("onHide", "function()", component.getOnHide());
 
         wb.finish();
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Tooltip component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

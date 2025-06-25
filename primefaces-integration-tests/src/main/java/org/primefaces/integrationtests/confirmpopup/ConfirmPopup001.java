@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.integrationtests.confirmpopup;
 
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
 import java.io.Serializable;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
-
-import org.primefaces.integrationtests.general.utilities.TestUtils;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 
 import lombok.Data;
 
@@ -45,6 +45,10 @@ public class ConfirmPopup001 implements Serializable {
 
     public void delete() {
         addMessage("Deleted", "Record deleted");
+    }
+
+    public void question() {
+        addMessage("Question", "Are you sure you want to proceed?");
     }
 
     public void addMessage(String summary, String detail) {

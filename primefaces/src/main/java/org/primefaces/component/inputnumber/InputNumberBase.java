@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,6 @@ package org.primefaces.component.inputnumber;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
 public abstract class InputNumberBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder {
@@ -36,26 +35,28 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     public static final String DEFAULT_RENDERER = "org.primefaces.component.InputNumberRenderer";
 
     public enum PropertyKeys {
-
-        placeholder,
-        widgetVar,
-        type,
-        symbol,
-        symbolPosition,
-        signPosition,
-        minValue,
-        maxValue,
-        roundMethod,
+        caretPositionOnFocus,
         decimalPlaces,
+        decimalPlacesRawValue,
         decimalSeparator,
-        thousandSeparator,
+        decimalSeparatorAlternative,
         emptyValue,
         inputStyle,
         inputStyleClass,
-        padControl,
         leadingZero,
-        decimalSeparatorAlternative,
-        modifyValueOnWheel
+        maxValue,
+        minValue,
+        modifyValueOnUpDownArrow,
+        modifyValueOnWheel,
+        padControl,
+        placeholder,
+        roundMethod,
+        selectOnFocus,
+        signPosition,
+        symbol,
+        symbolPosition,
+        thousandSeparator,
+        widgetVar
     }
 
     public InputNumberBase() {
@@ -81,14 +82,6 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public String getSymbol() {
@@ -147,8 +140,16 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         getStateHelper().put(PropertyKeys.decimalPlaces, decimalPlaces);
     }
 
+    public Integer getDecimalPlacesRawValue() {
+        return (Integer) getStateHelper().eval(PropertyKeys.decimalPlacesRawValue, null);
+    }
+
+    public void setDecimalPlacesRawValue(Integer decimalPlacesRawValue) {
+        getStateHelper().put(PropertyKeys.decimalPlacesRawValue, decimalPlacesRawValue);
+    }
+
     public String getDecimalSeparator() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.decimalSeparator,
+        return (String) getStateHelper().eval(PropertyKeys.decimalSeparator,
             () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
     }
 
@@ -157,7 +158,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     }
 
     public String getThousandSeparator() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.thousandSeparator,
+        return (String) getStateHelper().eval(PropertyKeys.thousandSeparator,
             () -> LocaleUtils.getThousandSeparator(getFacesContext()));
     }
 
@@ -189,11 +190,11 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
     }
 
-    public boolean isPadControl() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.padControl, true);
+    public String getPadControl() {
+        return (String) getStateHelper().eval(PropertyKeys.padControl, "true");
     }
 
-    public void setPadControl(boolean padControl) {
+    public void setPadControl(String padControl) {
         getStateHelper().put(PropertyKeys.padControl, padControl);
     }
 
@@ -221,4 +222,27 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
     }
 
+    public boolean isModifyValueOnUpDownArrow() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.modifyValueOnUpDownArrow, true);
+    }
+
+    public void setModifyValueOnUpDownArrow(boolean modifyValueOnUpDownArrow) {
+        getStateHelper().put(PropertyKeys.modifyValueOnUpDownArrow, modifyValueOnUpDownArrow);
+    }
+
+    public boolean isSelectOnFocus() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectOnFocus, true);
+    }
+
+    public void setSelectOnFocus(boolean selectOnFocus) {
+        getStateHelper().put(PropertyKeys.selectOnFocus, selectOnFocus);
+    }
+
+    public String getCaretPositionOnFocus() {
+        return (String) getStateHelper().eval(PropertyKeys.caretPositionOnFocus, null);
+    }
+
+    public void setCaretPositionOnFocus(String caretPositionOnFocus) {
+        getStateHelper().put(PropertyKeys.caretPositionOnFocus, caretPositionOnFocus);
+    }
 }

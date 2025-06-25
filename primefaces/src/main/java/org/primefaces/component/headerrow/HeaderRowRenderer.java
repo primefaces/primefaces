@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,21 +30,20 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-public class HeaderRowRenderer extends CoreRenderer {
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class HeaderRowRenderer extends CoreRenderer<HeaderRow> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        HeaderRow row = (HeaderRow) component;
+    public void encodeEnd(FacesContext context, HeaderRow component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean expandable = row.isExpandable();
-        boolean expanded = row.isExpanded();
+        boolean expandable = component.isExpandable();
+        boolean expanded = component.isExpanded();
 
         // GitHub #7296 prevent issue with PanelGrid rendering
         Object helperRenderer = context.getAttributes().remove(Constants.HELPER_RENDERER);
@@ -52,10 +51,10 @@ public class HeaderRowRenderer extends CoreRenderer {
         writer.startElement("tr", null);
         writer.writeAttribute("class", DataTable.HEADER_ROW_CLASS, null);
 
-        if (row.getChildCount() > 0) {
+        if (component.getChildCount() > 0) {
             boolean firstColumn = true;
-            for (int i = 0; i < row.getChildCount(); i++) {
-                UIComponent child = row.getChildren().get(i);
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent child = component.getChildren().get(i);
                 if (child.isRendered() && child instanceof Column) {
                     Column column = (Column) child;
                     encodeHeaderRowWithColumn(context, column, expandable, expanded, firstColumn);
@@ -65,7 +64,7 @@ public class HeaderRowRenderer extends CoreRenderer {
         }
         else {
             DataTable table = (DataTable) component.getParent();
-            encodeHeaderRowWithoutColumn(context, row, table, expandable, expanded);
+            encodeHeaderRowWithoutColumn(context, component, table, expandable, expanded);
         }
 
         writer.endElement("tr");
@@ -74,12 +73,10 @@ public class HeaderRowRenderer extends CoreRenderer {
 
     protected void encodeToggleIcon(FacesContext context, boolean expanded) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String ariaLabel = MessageFactory.getMessage(DataTable.ROW_GROUP_TOGGLER);
 
         writer.startElement("a", null);
         writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_CLASS, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         writer.writeAttribute("href", "#", null);
         writer.startElement("span", null);
         writer.writeAttribute("class", expanded ? DataTable.ROW_GROUP_TOGGLER_OPEN_ICON_CLASS : DataTable.ROW_GROUP_TOGGLER_CLOSED_ICON_CLASS, null);
@@ -153,7 +150,7 @@ public class HeaderRowRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, HeaderRow component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

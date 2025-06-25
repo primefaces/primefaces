@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,20 @@
  */
 package org.primefaces.component.fieldset;
 
-import java.util.Collection;
-import java.util.Map;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Map;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -47,10 +47,10 @@ public class Fieldset extends FieldsetBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Fieldset";
 
-    public static final String FIELDSET_CLASS = "ui-fieldset ui-widget ui-widget-content ui-corner-all ui-hidden-container";
+    public static final String FIELDSET_CLASS = "ui-fieldset ui-widget ui-widget-content ui-hidden-container";
     public static final String TOGGLEABLE_FIELDSET_CLASS = FIELDSET_CLASS + " ui-fieldset-toggleable";
     public static final String CONTENT_CLASS = "ui-fieldset-content";
-    public static final String LEGEND_CLASS = "ui-fieldset-legend ui-corner-all ui-state-default";
+    public static final String LEGEND_CLASS = "ui-fieldset-legend ui-state-default";
     public static final String TOGGLER_MINUS_CLASS = "ui-fieldset-toggler ui-icon ui-icon-minusthick";
     public static final String TOGGLER_PLUS_CLASS = "ui-fieldset-toggler ui-icon ui-icon-plusthick";
 

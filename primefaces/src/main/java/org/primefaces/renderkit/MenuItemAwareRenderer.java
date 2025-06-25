@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,38 +23,76 @@
  */
 package org.primefaces.renderkit;
 
-import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.DialogReturnAware;
+import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.divider.Divider;
+import org.primefaces.component.menuitem.UIMenuItem;
 import org.primefaces.event.MenuActionEvent;
-import org.primefaces.model.menu.*;
+import org.primefaces.model.menu.BaseMenuModel;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuGroup;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Separator;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
-public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.component.behavior.ClientBehavior;
+import jakarta.faces.component.behavior.ClientBehaviorContext;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.event.PhaseId;
 
-    private static final String SEPARATOR = "_";
+public class MenuItemAwareRenderer<T extends UIComponent> extends OutcomeTargetRenderer<T> {
+
+    private static final Logger LOGGER = Logger.getLogger(MenuItemAwareRenderer.class.getName());
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, T component) {
         decodeDynamicMenuItem(context, component);
+    }
+
+    protected boolean isMenuItemLink(FacesContext context, UIComponent source, MenuItem menuitem) {
+        return LangUtils.isNotBlank(menuitem.getUrl()) || LangUtils.isNotBlank(menuitem.getOutcome());
+    }
+
+    protected boolean isMenuItemSubmitting(FacesContext context, UIComponent source, MenuItem menuitem) {
+        boolean submitting;
+
+        // #1 first check for assigned server side callbacks
+        submitting = menuitem.getFunction() != null || LangUtils.isNotBlank(menuitem.getCommand());
+        if (!submitting && menuitem instanceof UIMenuItem) {
+            submitting = ((UIMenuItem) menuitem).getActionExpression() != null
+                    || ((UIMenuItem) menuitem).getActionListeners().length > 0;
+        }
+
+        // 2# AJAX
+        if (!submitting && menuitem.isAjax()) {
+            submitting = menuitem.isResetValues()
+                    || LangUtils.isNotBlank(menuitem.getUpdate())
+                    || LangUtils.isNotBlank(menuitem.getProcess());
+        }
+
+        return submitting;
     }
 
     protected void encodeOnClick(FacesContext context, UIComponent source, MenuItem menuitem) throws IOException {
@@ -62,9 +100,11 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         setConfirmationScript(context, menuitem);
 
         String onclick = menuitem.getOnclick();
+        boolean isLink = isMenuItemLink(context, source, menuitem);
+        boolean isSubmitting = isMenuItemSubmitting(context, source, menuitem);
 
         //GET
-        if (menuitem.getUrl() != null || menuitem.getOutcome() != null) {
+        if (isLink) {
             String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
             writer.writeAttribute("href", targetURL, null);
 
@@ -75,21 +115,25 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         //POST
         else {
             writer.writeAttribute("href", "#", null);
+        }
 
-            UIForm form = ComponentTraversalUtils.closestForm(context, source);
+        if (isSubmitting) {
+            String menuClientId = source.getClientId(context);
+            UIForm form = ComponentTraversalUtils.closestForm(source);
             if (form == null) {
-                throw new FacesException("MenuItem must be inside a form element");
+                LOGGER.log(Level.FINE, () -> "Menu '" + menuClientId
+                            + "' should be inside a form or should reference a form via its form attribute."
+                            + " We will try to find a fallback form on the client side.");
             }
 
             String command;
             if (menuitem.isDynamic()) {
-                String menuClientId = source.getClientId(context);
                 Map<String, List<String>> params = menuitem.getParams();
                 if (params == null) {
                     params = new LinkedHashMap<>();
                 }
-                List<String> idParams = Collections.singletonList(menuitem.getId());
-                params.put(menuClientId + "_menuid", idParams);
+
+                params.put(menuClientId + "_menuid", Collections.singletonList(menuitem.getId()));
 
                 command = menuitem.isAjax()
                         ? buildAjaxRequest(context, source, (AjaxSource) menuitem, form, params)
@@ -101,6 +145,10 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                         : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
             }
 
+            if (isLink) {
+                // allow CTRL+CLICK link to open new tab
+                command = "if(PF.metaKey(event)){return true};" + command;
+            }
             onclick = (onclick == null) ? command : onclick + ";" + command;
         }
 
@@ -195,39 +243,61 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         }
     }
 
-    protected MenuItem findMenuitem(List<MenuElement> elements, String id) {
+    protected MenuItem findMenuItemById(List<MenuElement> elements, String id) {
         if (elements == null || elements.isEmpty()) {
             return null;
         }
+        for (int i = 0; i < elements.size(); i++) {
+            MenuElement element = elements.get(i);
+            String menuId = element.getId();
+            if (menuId != null) {
+                menuId = menuId.split(Pattern.quote(BaseMenuModel.COORDINATES_SEPARATOR))[0];
+            }
+            if (Objects.equals(menuId, id)) {
+                return (MenuItem) element;
+            }
+            if (element instanceof MenuGroup) {
+                MenuItem result = findMenuItemById(((MenuGroup) element).getElements(), id);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+
+    protected MenuItem findMenuItemByCoordinates(List<MenuElement> elements, String coords) {
+        if (elements == null || elements.isEmpty()) {
+            return null;
+        }
+
+        String[] paths = coords.split(BaseMenuModel.ID_SEPARATOR);
+        if (paths.length == 0) {
+            return null;
+        }
+
+        int childIndex = Integer.parseInt(paths[0]);
+        if (childIndex >= elements.size()) {
+            return null;
+        }
+
+        MenuElement childElement = elements.get(childIndex);
+
+        if (paths.length == 1) {
+            return (MenuItem) childElement;
+        }
         else {
-            String[] paths = id.split(SEPARATOR);
-
-            if (paths.length == 0) {
-                return null;
-            }
-
-            int childIndex = Integer.parseInt(paths[0]);
-            if (childIndex >= elements.size()) {
-                return null;
-            }
-
-            MenuElement childElement = elements.get(childIndex);
-
-            if (paths.length == 1) {
-                return (MenuItem) childElement;
-            }
-            else {
-                String relativeIndex = id.substring(id.indexOf(SEPARATOR) + 1);
-
-                return findMenuitem(((MenuGroup) childElement).getElements(), relativeIndex);
-            }
+            String relativeIndex = coords.substring(coords.indexOf(BaseMenuModel.ID_SEPARATOR) + 1);
+            return findMenuItemByCoordinates(((MenuGroup) childElement).getElements(), relativeIndex);
         }
     }
 
     /**
-     * Decode menu item not present in JSF tree but added using model attribute
-     * @param context
-     * @param component
+     * Decode menu item not present in Faces tree but added using model attribute.
+     * ID is in format UUID|COORDS.
+     *
+     * @param context the FacesContext
+     * @param component the menu component
      * @return true if a menu item has been decoded, otherwise false
      */
     protected boolean decodeDynamicMenuItem(FacesContext context, UIComponent component) {
@@ -235,8 +305,26 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String menuid = params.get(clientId + "_menuid");
-        if (menuid != null) {
-            MenuItem menuitem = findMenuitem(((MenuItemAware) component).getElements(), menuid);
+        if (menuid == null) {
+            return false;
+        }
+
+        // split the UUID|COORDINATES by |
+        String[] ids = menuid.split(Pattern.quote(BaseMenuModel.COORDINATES_SEPARATOR));
+        if (ids.length == 0) {
+            return false;
+        }
+        String uuid = ids[0];
+        String coordinates = ids.length == 2 ? ids[1] : null;
+
+        MenuItem menuitem = findMenuItemById(((MenuItemAware) component).getElements(), uuid);
+        if (menuitem == null && coordinates != null) {
+            // #8867 fallback to old PF logic for RequestScoped
+            menuitem = findMenuItemByCoordinates(((MenuItemAware) component).getElements(), coordinates);
+        }
+
+        // skip removed/disabled menu items
+        if (menuitem != null && !menuitem.isDisabled()) {
             MenuActionEvent event = new MenuActionEvent(component, menuitem);
 
             if (menuitem.isImmediate()) {
@@ -249,6 +337,35 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
             component.queueEvent(event);
         }
 
-        return menuid != null;
+        return true;
+    }
+
+    protected boolean shouldBeRendered(FacesContext context, MenuItemAware abstractMenu) {
+        return abstractMenu.getElements().stream().anyMatch(me -> shouldBeRendered(context, me));
+    }
+
+    protected boolean shouldBeRendered(FacesContext context, MenuElement menuElement) {
+        if (menuElement instanceof MenuGroup) {
+            MenuGroup group = (MenuGroup) menuElement;
+            return group.getElements().stream().anyMatch(me -> shouldBeRendered(context, me));
+        }
+        else if (menuElement instanceof Separator) {
+            return false;
+        }
+        else {
+            try {
+                if (menuElement instanceof UIComponent) {
+                    UIComponent component = (UIComponent) menuElement;
+                    component.pushComponentToEL(context, component);
+                }
+                return menuElement.isRendered();
+            }
+            finally {
+                if (menuElement instanceof UIComponent) {
+                    UIComponent component = (UIComponent) menuElement;
+                    component.popComponentFromEL(context);
+                }
+            }
+        }
     }
 }

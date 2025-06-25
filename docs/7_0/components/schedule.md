@@ -25,7 +25,7 @@ value | null | Object | An org.primefaces.model.ScheduleModel instance represent
 locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
 aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
 view | month | String | The view type to use, possible values are 'month', 'agendaDay', 'agendaWeek', 'basicWeek', 'basicDay'
-initialDate | null | Object | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
+initialDate | null | Object | The initial date that is used when schedule loads. If omitted, the schedule starts on the current date
 showWeekends | true | Boolean | Specifies inclusion Saturday/Sunday columns in any of the views
 style | null | String | Style of the main container element of schedule
 styleClass | null | String | Style class of the main container element of schedule
@@ -38,6 +38,7 @@ rightHeaderTemplate | month, agendaWeek, agendaDay | String | Content of right s
 allDaySlot | true | Boolean | Determines if all-day slot will be displayed in agendaWeek or agendaDay views
 slotMinutes | 30 | Integer | Interval in minutes in an hour to create a slot. (deprecated: use slotDuration)
 slotDuration | 00:30:00 | String | The frequency for displaying time slots.
+slotLabelFormat | null | String | Determines the text that will be displayed within a time slot. The default English value will produce times that look like 5pm and 5:30pm. (see https://momentjs.com/docs/#/displaying/). Note that the format should be wrapped in a JSON array, for example `['HH:mm']`.
 firstHour | 6 | Integer | First hour to display in day view. (deprecated: use scrollTime)
 scrollTime | 06:00:00 | String | Determines how far down the scroll pane is initially scrolled down.
 minTime | null | String | Minimum time to display in a day view.

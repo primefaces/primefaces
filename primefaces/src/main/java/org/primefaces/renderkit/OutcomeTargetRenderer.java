@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,26 @@
  */
 package org.primefaces.renderkit;
 
-import java.util.*;
-
-import javax.faces.FacesException;
-import javax.faces.application.ConfigurableNavigationHandler;
-import javax.faces.application.NavigationCase;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionListener;
-import javax.faces.flow.FlowHandler;
-import javax.faces.lifecycle.ClientWindow;
-
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.LangUtils;
 
-public class OutcomeTargetRenderer extends CoreRenderer {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ConfigurableNavigationHandler;
+import jakarta.faces.application.NavigationCase;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ActionListener;
+import jakarta.faces.flow.FlowHandler;
+import jakarta.faces.lifecycle.ClientWindow;
+import jakarta.servlet.http.HttpServletRequest;
+
+public class OutcomeTargetRenderer<T extends UIComponent> extends CoreRenderer<T> {
 
     protected NavigationCase findNavigationCase(FacesContext context, UIOutcomeTarget outcomeTarget) {
         ConfigurableNavigationHandler navigationHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
@@ -48,13 +52,11 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             outcome = context.getViewRoot().getViewId();
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
-            if (outcomeTarget instanceof UIComponent) {
-                String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
+        if (outcomeTarget instanceof UIComponent) {
+            String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
 
-                if (toFlowDocumentId != null) {
-                    return navigationHandler.getNavigationCase(context, null, outcome, toFlowDocumentId);
-                }
+            if (toFlowDocumentId != null) {
+                return navigationHandler.getNavigationCase(context, null, outcome, toFlowDocumentId);
             }
         }
 
@@ -125,22 +127,20 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             }
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
-            String toFlowDocumentId = navCase.getToFlowDocumentId();
-            if (toFlowDocumentId != null) {
-                if (params == null) {
-                    params = new LinkedHashMap<>();
-                }
+        String toFlowDocumentId = navCase.getToFlowDocumentId();
+        if (toFlowDocumentId != null) {
+            if (params == null) {
+                params = new LinkedHashMap<>();
+            }
 
-                List<String> flowDocumentIdValues = new ArrayList<>();
-                flowDocumentIdValues.add(toFlowDocumentId);
-                params.put(FlowHandler.TO_FLOW_DOCUMENT_ID_REQUEST_PARAM_NAME, flowDocumentIdValues);
+            List<String> flowDocumentIdValues = new ArrayList<>();
+            flowDocumentIdValues.add(toFlowDocumentId);
+            params.put(FlowHandler.TO_FLOW_DOCUMENT_ID_REQUEST_PARAM_NAME, flowDocumentIdValues);
 
-                if (!FlowHandler.NULL_FLOW.equals(toFlowDocumentId)) {
-                    List<String> flowIdValues = new ArrayList<>();
-                    flowIdValues.add(navCase.getFromOutcome());
-                    params.put(FlowHandler.FLOW_ID_REQUEST_PARAM_NAME, flowIdValues);
-                }
+            if (!FlowHandler.NULL_FLOW.equals(toFlowDocumentId)) {
+                List<String> flowIdValues = new ArrayList<>();
+                flowIdValues.add(navCase.getFromOutcome());
+                params.put(FlowHandler.FLOW_ID_REQUEST_PARAM_NAME, flowIdValues);
             }
         }
 
@@ -155,18 +155,16 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         String url;
 
         boolean clientWindowRenderingModeEnabled = false;
-        Object clientWindow = null;
+        ClientWindow clientWindow = null;
         try {
-            if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()
-                        && outcomeTarget.isDisableClientWindow()) {
-
+            if (outcomeTarget.isDisableClientWindow()) {
                 clientWindow = context.getExternalContext().getClientWindow();
 
                 if (clientWindow != null) {
-                    clientWindowRenderingModeEnabled = ((ClientWindow) clientWindow).isClientWindowRenderModeEnabled(context);
+                    clientWindowRenderingModeEnabled = clientWindow.isClientWindowRenderModeEnabled(context);
 
                     if (clientWindowRenderingModeEnabled) {
-                        ((ClientWindow) clientWindow).disableClientWindowRenderMode(context);
+                        clientWindow.disableClientWindowRenderMode(context);
                     }
                 }
             }
@@ -198,11 +196,24 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             }
         }
         finally {
-            if (clientWindowRenderingModeEnabled && clientWindow != null) {
-                ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
+            if (clientWindowRenderingModeEnabled) {
+                clientWindow.enableClientWindowRenderMode(context);
             }
         }
 
         return url;
+    }
+
+    protected String getTargetRequestURL(FacesContext context, UIOutcomeTarget outcomeTarget) {
+        HttpServletRequest req = (HttpServletRequest) context.getExternalContext().getRequest();
+        String href = outcomeTarget.getHref();
+        String requestURL = req.getRequestURL().toString();
+
+        if (href != null) {
+            return "#".equals(href) ? requestURL + "#" : href;
+        }
+        else {
+            return LangUtils.substring(requestURL, 0, requestURL.length() - req.getRequestURI().length()) + getTargetURL(context, outcomeTarget);
+        }
     }
 }

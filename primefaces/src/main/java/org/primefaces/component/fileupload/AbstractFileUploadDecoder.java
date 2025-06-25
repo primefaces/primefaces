@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,28 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.primefaces.model.file.*;
+import org.primefaces.model.file.NIOUploadedFile;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.model.file.UploadedFileWrapper;
+import org.primefaces.model.file.UploadedFiles;
+import org.primefaces.model.file.UploadedFilesWrapper;
 import org.primefaces.util.FileUploadUtils;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 
 public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> implements FileUploadDecoder, FileUploadChunkDecoder<T> {
 
@@ -120,7 +129,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
         writeChunk(chunk, chunksDir, contentRange);
 
         if (contentRange.isLastChunk()) {
-            UploadedFile uploadedFile = processLastChunk(request, chunk, chunksDir, contentRange);
+            UploadedFile uploadedFile = processLastChunk(request, chunk, chunksDir, contentRange, fileUpload.getSizeLimit());
             request.setAttribute(MULTIPARTS, uploadedFile);
             fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
         }
@@ -150,7 +159,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
     }
 
     protected void writeChunk(UploadedFile uploadedFile, Path path, ContentRange contentRange) throws IOException {
-        if (Files.notExists(path)) {
+        if (!path.toFile().exists()) {
             Files.createDirectory(path);
         }
 
@@ -161,7 +170,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
         }
     }
 
-    protected UploadedFile processLastChunk(T request, UploadedFile chunk, Path chunksDir, ContentRange contentRange) throws IOException {
+    protected UploadedFile processLastChunk(T request, UploadedFile chunk, Path chunksDir, ContentRange contentRange, Long sizeLimit) throws IOException {
         String fileKey = generateFileInfoKey(request);
         Path whole = Paths.get(getUploadDirectory(request), "[" + fileKey +  "]" + chunk.getFileName());
         Files.deleteIfExists(whole);
@@ -179,7 +188,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
             throw new IOException("Merged file does not meet expected size: " + contentRange.getChunkTotalFileSize());
         }
 
-        return new NIOUploadedFile(whole, chunk.getFileName(), chunk.getContentType());
+        return new NIOUploadedFile(whole, chunk.getFileName(), chunk.getContentType(), sizeLimit, FileUploadUtils.getWebkitRelativePath(request));
     }
 
     protected String getContentRange(HttpServletRequest request) {

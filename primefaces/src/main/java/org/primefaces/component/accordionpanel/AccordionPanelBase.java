@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,16 @@
  */
 package org.primefaces.component.accordionpanel;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
+import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 
-public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
+
+public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder,
+        MultiViewStateAware<AccordionState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -39,6 +41,7 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
     public enum PropertyKeys {
 
         widgetVar,
+        active,
         activeIndex,
         style,
         styleClass,
@@ -49,7 +52,10 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         multiple,
         dir,
         tabindex,
-        tabController
+        tabController,
+        toggleSpeed,
+        scrollIntoView,
+        multiViewState
     }
 
     public AccordionPanelBase() {
@@ -67,6 +73,14 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+    public String getActive() {
+        return (String) getStateHelper().eval(PropertyKeys.active, null);
+    }
+
+    public void setActive(String active) {
+        getStateHelper().put(PropertyKeys.active, active);
     }
 
     public String getActiveIndex() {
@@ -133,6 +147,7 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         getStateHelper().put(PropertyKeys.multiple, multiple);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
@@ -149,11 +164,36 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
-    public javax.el.MethodExpression getTabController() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.tabController, null);
+    public jakarta.el.MethodExpression getTabController() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.tabController, null);
     }
 
-    public void setTabController(javax.el.MethodExpression tabController) {
+    public void setTabController(jakarta.el.MethodExpression tabController) {
         getStateHelper().put(PropertyKeys.tabController, tabController);
+    }
+
+    public int getToggleSpeed() {
+        return (Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
+    }
+
+    public void setToggleSpeed(int toggleSpeed) {
+        getStateHelper().put(PropertyKeys.toggleSpeed, toggleSpeed);
+    }
+
+    @Override
+    public boolean isMultiViewState() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
+    }
+
+    public void setMultiViewState(boolean multiViewState) {
+        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
+    }
+
+    public String getScrollIntoView() {
+        return (String) getStateHelper().eval(PropertyKeys.scrollIntoView, null);
+    }
+
+    public void setScrollIntoView(String scrollIntoView) {
+        getStateHelper().put(PropertyKeys.scrollIntoView, scrollIntoView);
     }
 }

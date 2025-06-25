@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,82 +23,79 @@
  */
 package org.primefaces.component.fieldset;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-public class FieldsetRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.Map;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class FieldsetRenderer extends CoreRenderer<Fieldset> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Fieldset fieldset = (Fieldset) component;
+    public void decode(FacesContext context, Fieldset component) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = fieldset.getClientId(context);
+        String clientId = component.getClientId(context);
         String toggleStateParam = clientId + "_collapsed";
 
         if (params.containsKey(toggleStateParam)) {
-            fieldset.setCollapsed(Boolean.parseBoolean(params.get(toggleStateParam)));
+            component.setCollapsed(Boolean.parseBoolean(params.get(toggleStateParam)));
         }
 
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Fieldset fieldset = (Fieldset) component;
-
-        if (fieldset.isContentLoadRequest(context)) {
-            renderChildren(context, fieldset);
+    public void encodeEnd(FacesContext context, Fieldset component) throws IOException {
+        if (component.isContentLoadRequest(context)) {
+            renderChildren(context, component);
         }
         else {
-            encodeMarkup(context, fieldset);
-            encodeScript(context, fieldset);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
     }
 
-    protected void encodeMarkup(FacesContext context, Fieldset fieldset) throws IOException {
+    protected void encodeMarkup(FacesContext context, Fieldset component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = fieldset.getClientId(context);
-        String widgetVar = fieldset.resolveWidgetVar(context);
-        boolean toggleable = fieldset.isToggleable();
-        String title = fieldset.getTitle();
+        String clientId = component.getClientId(context);
+        String widgetVar = component.resolveWidgetVar(context);
+        boolean toggleable = component.isToggleable();
+        String title = component.getTitle();
 
         String styleClass = toggleable ? Fieldset.TOGGLEABLE_FIELDSET_CLASS : Fieldset.FIELDSET_CLASS;
-        if (fieldset.isCollapsed()) {
+        if (component.isCollapsed()) {
             styleClass = styleClass + " ui-hidden-container";
         }
-        if (fieldset.getStyleClass() != null) {
-            styleClass = styleClass + " " + fieldset.getStyleClass();
+        if (component.getStyleClass() != null) {
+            styleClass = styleClass + " " + component.getStyleClass();
         }
 
-        writer.startElement("fieldset", fieldset);
+        writer.startElement("fieldset", component);
         if (title != null) {
-            writer.writeAttribute("title", fieldset.getTitle(), null);
+            writer.writeAttribute("title", component.getTitle(), null);
         }
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (fieldset.getStyle() != null) {
-            writer.writeAttribute("style", fieldset.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-        renderDynamicPassThruAttributes(context, fieldset);
+        renderDynamicPassThruAttributes(context, component);
 
-        encodeLegend(context, fieldset);
+        encodeLegend(context, component);
 
-        encodeContent(context, fieldset);
+        encodeContent(context, component);
 
         if (toggleable) {
-            encodeStateHolder(context, fieldset);
+            encodeStateHolder(context, component);
         }
 
         writer.endElement("fieldset");
@@ -120,37 +117,37 @@ public class FieldsetRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, Fieldset fieldset) throws IOException {
-        boolean toggleable = fieldset.isToggleable();
+    protected void encodeScript(FacesContext context, Fieldset component) throws IOException {
+        boolean toggleable = component.isToggleable();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Fieldset", fieldset);
+        wb.init("Fieldset", component);
 
         if (toggleable) {
             wb.attr("toggleable", true)
-                    .attr("dynamic", fieldset.isDynamic(), false)
-                    .attr("collapsed", fieldset.isCollapsed())
-                    .attr("toggleSpeed", fieldset.getToggleSpeed());
+                    .attr("dynamic", component.isDynamic(), false)
+                    .attr("collapsed", component.isCollapsed())
+                    .attr("toggleSpeed", component.getToggleSpeed());
         }
 
-        encodeClientBehaviors(context, fieldset);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected void encodeLegend(FacesContext context, Fieldset fieldset) throws IOException {
+    protected void encodeLegend(FacesContext context, Fieldset component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String legendText = fieldset.getLegend();
-        UIComponent legend = fieldset.getFacet("legend");
-        boolean renderFacet = ComponentUtils.shouldRenderFacet(legend);
+        String legendText = component.getLegend();
+        UIComponent legend = component.getFacet("legend");
+        boolean renderFacet = FacetUtils.shouldRenderFacet(legend);
 
         if (renderFacet || legendText != null) {
             writer.startElement("legend", null);
             writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
 
-            if (fieldset.isToggleable()) {
-                writer.writeAttribute("tabindex", fieldset.getTabindex(), null);
+            if (component.isToggleable()) {
+                writer.writeAttribute("tabindex", component.getTabindex(), null);
 
-                String togglerClass = fieldset.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
+                String togglerClass = component.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
 
                 writer.startElement("span", null);
                 writer.writeAttribute("class", togglerClass, null);
@@ -161,7 +158,7 @@ public class FieldsetRenderer extends CoreRenderer {
                 legend.encodeAll(context);
             }
             else {
-                if (fieldset.isEscape()) {
+                if (component.isEscape()) {
                     writer.writeText(legendText, "value");
                 }
                 else {
@@ -173,13 +170,13 @@ public class FieldsetRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeStateHolder(FacesContext context, Fieldset fieldset) throws IOException {
-        String name = fieldset.getClientId(context) + "_collapsed";
-        renderHiddenInput(context, name, String.valueOf(fieldset.isCollapsed()), false);
+    protected void encodeStateHolder(FacesContext context, Fieldset component) throws IOException {
+        String name = component.getClientId(context) + "_collapsed";
+        renderHiddenInput(context, name, String.valueOf(component.isCollapsed()), false);
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Fieldset component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,18 @@
  */
 package org.primefaces.showcase.view.csv;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
 import java.time.LocalDate;
 import java.util.Date;
+
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 
 @Named
 @RequestScoped
 public class ValidationView {
 
     private String text;
+    private String color;
     private String description;
     private Integer integer;
     private Double doubleNumber;
@@ -44,6 +46,7 @@ public class ValidationView {
     private LocalDate localDate;
     private LocalDate localDate2;
     private LocalDate localDate3;
+    private String uiLibrary;
 
     public String getText() {
         return text;
@@ -139,5 +142,36 @@ public class ValidationView {
 
     public void setLocalDate3(LocalDate localDate) {
         this.localDate3 = localDate;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getUiLibrary() {
+        return uiLibrary;
+    }
+
+    public void setUiLibrary(String uiLibrary) {
+        this.uiLibrary = uiLibrary;
+    }
+
+    public void modifyValues() {
+        setText("Mike");
+        setInteger(123);
+    }
+
+    public void modifyInteger() {
+        setInteger(456);
+    }
+
+    public void clearValues() {
+        setText(null);
+        setInteger(null);
+        setDoubleNumber(null);
     }
 }

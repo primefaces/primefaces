@@ -1,8 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -10,20 +9,31 @@
     </ui:define>
 
     <ui:define name="description">
-        Bar chart is created with a BarChartModel.
+        BarChart is created with raw JSON or using an <a href="https://github.com/xdev-software/chartjs-java-model" target="_blank" rel="noopener noreferrer">XDEV</a> model. When a dataset data is clicked, information can be passed to a backing bean using itemSelect ajax behavior. 
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/chart"/>
     <ui:param name="widgetLink" value="Chart-1"/>
 
     <ui:define name="implementation">
-        <div class="card">
-            <p:chart type="bar" model="#{chartView.barModel}" style="height:300px"/>
-        </div>
-        <br/><br/>
-        <div class="card">
-            <p:chart type="bar" model="#{chartView.horizontalBarModel}" style="height:300px"/>
-        </div>
+        <h:form>
+            <p:growl id="growl" showDetail="true"/>
+
+            <div class="card">
+                <h5>Bar</h5>
+                <p:chart value="#{chartView.barModel}" style="width: 100%; height: 500px;">
+                    <p:ajax event="itemSelect" listener="#{chartView.itemSelect}" update="growl"/>
+                </p:chart>
+            </div>
+            
+            <div class="card">
+                <h5>Stacked</h5>
+                <p:chart value="#{chartView.stackedBarModel}" style="width: 100%; height: 500px;">
+                    <p:ajax event="itemSelect" listener="#{chartView.itemSelect}" update="growl"/>
+                </p:chart>
+            </div>
+
+        </h:form>
     </ui:define>
 
 </ui:composition>

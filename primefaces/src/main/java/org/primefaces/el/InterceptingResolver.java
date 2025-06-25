@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,9 @@
  */
 package org.primefaces.el;
 
-import java.beans.FeatureDescriptor;
-import java.util.Iterator;
-
-import javax.el.ELContext;
-import javax.el.ELResolver;
-import javax.el.ValueReference;
+import jakarta.el.ELContext;
+import jakarta.el.ELResolver;
+import jakarta.el.ValueReference;
 
 public class InterceptingResolver extends ELResolver {
 
@@ -73,17 +70,10 @@ public class InterceptingResolver extends ELResolver {
     }
 
     @Override
-    public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context, Object base) {
-        return delegate.getFeatureDescriptors(context, base);
-    }
-
-    @Override
     public Class<?> getCommonPropertyType(ELContext context, Object base) {
         return delegate.getCommonPropertyType(context, base);
     }
 
-    // @Override
-    // < EL 2.2 compatibility
     @Override
     public Object invoke(ELContext context,
             Object base,
@@ -91,5 +81,10 @@ public class InterceptingResolver extends ELResolver {
             Class<?>[] paramTypes,
             Object[] params) {
         return delegate.invoke(context, base, method, paramTypes, params);
+    }
+
+    @Override
+    public <T> T convertToType(ELContext context, Object obj, Class<T> type) {
+        return delegate.convertToType(context, obj, type);
     }
 }

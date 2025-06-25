@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,8 @@ package org.primefaces.component.badge;
 import org.primefaces.model.badge.BadgeModel;
 import org.primefaces.model.badge.DefaultBadgeModel;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Badge extends BadgeBase {
@@ -42,6 +43,16 @@ public class Badge extends BadgeBase {
     public static final String SEVERITY_SUCCESS_CLASS = "ui-badge-success";
     public static final String SEVERITY_WARNING_CLASS = "ui-badge-warning";
     public static final String SEVERITY_DANGER_CLASS = "ui-badge-danger";
+    public static final String LABEL_CLASS = "ui-badge-label";
+    public static final String ICON_CLASS = "ui-badge-icon";
+
+    public BadgeRenderer getRenderer() {
+        return (BadgeRenderer) getFacesContext().getRenderKit().getRenderer(getFamily(), getRendererType());
+    }
+
+    public static Badge create(FacesContext context) {
+        return (Badge) context.getApplication().createComponent(Badge.COMPONENT_TYPE);
+    }
 
     public BadgeModel toBadgeModel() {
         return DefaultBadgeModel.builder()
@@ -50,6 +61,9 @@ public class Badge extends BadgeBase {
                 .size(getSize())
                 .style(getStyle())
                 .styleClass(getStyleClass())
+                .icon(getIcon())
+                .iconPos(getIconPos())
+                .onClick(getOnclick())
                 .visible(isVisible())
                 .build();
     }

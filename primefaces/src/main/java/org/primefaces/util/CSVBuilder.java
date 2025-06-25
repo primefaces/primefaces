@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,10 @@
  */
 package org.primefaces.util;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 
 /**
  * Helper to generate javascript code of a client side validation*
@@ -67,7 +67,7 @@ public class CSVBuilder {
 
     public CSVBuilder process(UIComponent component, String expressions) {
         if (LangUtils.isNotBlank(expressions)) {
-            String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions);
+            String resolvedExpressions = SearchExpressionUtils.resolveClientIdsForClientSide(context, component, expressions);
             buffer.append(",p:'").append(resolvedExpressions).append("'");
         }
 
@@ -76,8 +76,7 @@ public class CSVBuilder {
 
     public CSVBuilder update(UIComponent component, String expressions) {
         if (LangUtils.isNotBlank(expressions)) {
-            String resolvedExpressions = SearchExpressionFacade.resolveClientIds(
-                    context, component, expressions, SearchExpressionUtils.SET_VALIDATE_RENDERER);
+            String resolvedExpressions = SearchExpressionUtils.resolveClientIdsForClientSide(context, component, expressions);
             buffer.append(",u:'").append(resolvedExpressions).append("'");
         }
 

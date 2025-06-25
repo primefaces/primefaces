@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,32 @@
  */
 package org.primefaces.component.schedule;
 
+import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
+import org.primefaces.event.schedule.ScheduleEntryResizeEvent;
+import org.primefaces.event.schedule.ScheduleRangeEvent;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MapBuilder;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.ScheduleEntryResizeEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.ScheduleEvent;
-import org.primefaces.util.*;
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "schedule/schedule.css")
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -62,9 +67,11 @@ public class Schedule extends ScheduleBase {
             .put("dateSelect", SelectEvent.class)
             .put("dateDblSelect", SelectEvent.class)
             .put("eventSelect", SelectEvent.class)
+            .put("eventDblSelect", SelectEvent.class)
             .put("eventMove", ScheduleEntryMoveEvent.class)
             .put("eventResize", ScheduleEntryResizeEvent.class)
             .put("viewChange", SelectEvent.class)
+            .put("rangeSelect", ScheduleRangeEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
@@ -102,16 +109,26 @@ public class Schedule extends ScheduleBase {
                 String selectedDateStr = params.get(clientId + "_selectedDate");
                 ZoneId zoneId = CalendarUtils.calculateZoneId(this.getTimeZone());
                 LocalDateTime selectedDate =  CalendarUtils.toLocalDateTime(zoneId, selectedDateStr);
-                SelectEvent<?> selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), selectedDate);
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 wrapperEvent = selectEvent;
             }
-            else if ("eventSelect".equals(eventName)) {
+            if ("rangeSelect".equals(eventName)) {
+                String startDateStr = params.get(clientId + "_startDate");
+                String endDateStr = params.get(clientId + "_endDate");
+                ZoneId zoneId = CalendarUtils.calculateZoneId(this.getTimeZone());
+                LocalDateTime startDate =  CalendarUtils.toLocalDateTime(zoneId, startDateStr);
+                LocalDateTime endDate =  CalendarUtils.toLocalDateTime(zoneId, endDateStr);
+                ScheduleRangeEvent selectEvent = new ScheduleRangeEvent(this, behaviorEvent.getBehavior(), startDate, endDate);
+                selectEvent.setPhaseId(behaviorEvent.getPhaseId());
+                wrapperEvent = selectEvent;
+            }
+            else if ("eventSelect".equals(eventName) || "eventDblSelect".equals(eventName)) {
                 String selectedEventId = params.get(clientId + "_selectedEventId");
                 ScheduleEvent<?> selectedEvent = getValue().getEvent(selectedEventId);
 
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedEvent);
+                wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), selectedEvent);
             }
             else if ("eventMove".equals(eventName)) {
                 String movedEventId = params.get(clientId + "_movedEventId");
@@ -160,7 +177,7 @@ public class Schedule extends ScheduleBase {
                         endDeltaYear, endDeltaMonth, endDeltaDay, endDeltaMinute);
             }
             else if ("viewChange".equals(eventName)) {
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getView());
+                wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), getView());
             }
 
             if (wrapperEvent == null) {

@@ -46,6 +46,7 @@
   - [Themes](/core/themes.md)
   - [Third Party Libraries](/core/thirdpartylibs.md)
   - [Widgets](/core/widgets.md)
+  - [Misc](/core/misc.md)
 
 - Components
 

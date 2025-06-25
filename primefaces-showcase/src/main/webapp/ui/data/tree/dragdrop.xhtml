@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -31,7 +31,7 @@
                         </p:treeNode>
                     </p:tree>
 
-                    <h:outputText styleClass="pi pi-sort-alt p-mx-5 text-secondary" style="transform: rotate(90deg); font-size: 3rem" />
+                    <h:outputText styleClass="pi pi-sort-alt mx-5 text-secondary" style="transform: rotate(90deg); font-size: 3rem" />
 
                     <p:tree id="tree2" value="#{treeDNDView.root2}" var="node" selectionMode="single"
                             selection="#{treeDNDView.selectedNode2}" style="width:16rem"

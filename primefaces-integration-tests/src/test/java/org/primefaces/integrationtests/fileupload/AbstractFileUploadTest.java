@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import org.junit.jupiter.api.Assertions;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.Row;
 
@@ -35,31 +36,37 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
 
     protected File locateClientSideFile(String fileName) {
         String folder = AbstractFileUploadTest.class.getPackage().getName().replace(".", "/");
         URL url = AbstractFileUploadTest.class.getResource("/" + folder + "/" + fileName);
-        Assertions.assertNotNull(url, "client side file " + fileName + " does not exist in /" + folder);
+        assertNotNull(url, "client side file " + fileName + " does not exist in /" + folder);
         return new File(url.getPath().replace("%20", " "));
     }
 
     /**
-     * Uploaded files are displayed in a data table with columns name, size and errorMessage.
+     * Uploaded files are displayed in a data table with columns name and size.
      * @param uploadedFiles the data tble to check against
      * @param files the (client side) files uploaded
      */
     protected void assertUploadedFiles(DataTable uploadedFiles, File... files) {
-        Assertions.assertNotNull(uploadedFiles);
-        Assertions.assertNotNull(uploadedFiles.getRows());
+        assertNotNull(uploadedFiles);
+        assertNotNull(uploadedFiles.getRows());
         String expectedFiles = Arrays.stream(files).map(f -> f.getName())
                 .collect(Collectors.joining(","));
         String actualFiles = uploadedFiles.getRows().stream().map(r -> r.getCell(0).getText())
                 .collect(Collectors.joining(","));
         String diag = expectedFiles + " <> " + actualFiles;
-        Assertions.assertEquals(files.length, uploadedFiles.getRows().size(), diag);
+        assertEquals(files.length, uploadedFiles.getRows().size(), diag);
 
-        // sequence is not guarateed to be the same, so sort by name and size
+        // sequence is not guaranteed to be the same, so sort by name and size
         Arrays.sort(files, (f1, f2) -> {
             int res = f1.getName().compareTo(f2.getName());
             res = res == 0 ? (int) (f1.length() - f2.length()) : res;
@@ -73,10 +80,26 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
         });
         for (int f = 0; f < files.length; ++f) {
             Row row = rows.get(f);
-            Assertions.assertEquals(files[f].getName(), row.getCell(0).getText()); // same file name
-            Assertions.assertEquals("", row.getCell(2).getText(), row.getCell(2).getText()); // empty error message
-            Assertions.assertEquals(files[f].length(), Long.parseLong(row.getCell(1).getText())); // same file size
+            assertEquals(files[f].getName(), row.getCell(0).getText()); // same file name
+            assertEquals(files[f].length(), Long.parseLong(row.getCell(1).getText())); // same file size
         }
+    }
+
+    protected void wait4EmptyMesssage(DataTable uploadedFiles) {
+        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(
+                uploadedFiles.findElement(By.tagName("tbody")).findElement(By.cssSelector("tr.ui-datatable-empty-message"))));
+    }
+
+    protected void wait4File(DataTable uploadedFiles, String filename) {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
+        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
+                uploadedFiles.findElement(By.tagName("tbody")), filename));
+    }
+
+    protected void wait4File(DataTable uploadedFiles, int row, String filename) {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
+        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
+                uploadedFiles.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).get(row - 1), filename));
     }
 
 }

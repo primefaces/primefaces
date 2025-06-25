@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,26 @@
  */
 package org.primefaces.selenium;
 
-import org.junit.jupiter.api.*;
+import org.primefaces.selenium.internal.junit.BootstrapExtension;
+import org.primefaces.selenium.internal.junit.PageInjectionExtension;
+import org.primefaces.selenium.internal.junit.ScreenshotOnFailureExtension;
+import org.primefaces.selenium.internal.junit.WebDriverExtension;
+import org.primefaces.selenium.spi.WebDriverProvider;
+
+import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -32,23 +51,13 @@ import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.Logs;
-import org.primefaces.selenium.internal.junit.BootstrapExtension;
-import org.primefaces.selenium.internal.junit.PageInjectionExtension;
-import org.primefaces.selenium.internal.junit.WebDriverExtension;
-import org.primefaces.selenium.spi.WebDriverProvider;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(BootstrapExtension.class)
 @ExtendWith(WebDriverExtension.class)
 @ExtendWith(PageInjectionExtension.class)
+@ExtendWith(ScreenshotOnFailureExtension.class)
 public abstract class AbstractPrimePageTest {
 
     @BeforeEach
@@ -162,6 +171,12 @@ public abstract class AbstractPrimePageTest {
         }
     }
 
+    protected void assertClickableOrLoading(WebElement element) {
+        if (!PrimeSelenium.hasCssClass(element, "ui-state-loading") && !PrimeSelenium.isElementClickable(element)) {
+            Assertions.fail("Element should be clickable or loading!");
+        }
+    }
+
     protected void assertNotClickable(WebElement element) {
         if (PrimeSelenium.isElementClickable(element)) {
             Assertions.fail("Element should not be clickable!");
@@ -171,7 +186,7 @@ public abstract class AbstractPrimePageTest {
     protected void assertIsAt(Class<? extends AbstractPrimePage> pageClass) {
         String location;
         try {
-            location = PrimeSelenium.getUrl((AbstractPrimePage) pageClass.getDeclaredConstructor().newInstance());
+            location = PrimeSelenium.getUrl(pageClass.getDeclaredConstructor().newInstance());
         }
         catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
@@ -284,7 +299,7 @@ public abstract class AbstractPrimePageTest {
      * @param cssClasses the CSS class or classes to look for
      */
     protected void assertCss(WebElement element, String... cssClasses) {
-        String elementClass = element.getAttribute("class");
+        String elementClass = element.getDomAttribute("class");
         if (elementClass == null) {
             Assertions.fail("Element did not have CSS 'class' attribute.");
             return;
@@ -292,23 +307,42 @@ public abstract class AbstractPrimePageTest {
 
         String[] elementClasses = elementClass.split(" ");
 
-        boolean result = true;
-        for (String expected : cssClasses) {
-            boolean found = false;
-            for (String actual : elementClasses) {
-                if (actual.equalsIgnoreCase(expected)) {
-                    found = true;
+        for (String expectedClass : cssClasses) {
+            for (String expected : expectedClass.split(" ")) {
+                boolean found = false;
+                for (String actual : elementClasses) {
+                    if (actual.equalsIgnoreCase(expected)) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    Assertions.fail("Element expected CSS class '" + expected + "' but was not found in '" + elementClass + "'.");
                     break;
                 }
-            }
-
-            if (!found) {
-                Assertions.fail("Element expected CSS class '" + expected + "' but was not found in '" + elementClass + "'.");
-                break;
             }
         }
 
         // success
+    }
+
+    protected void noAjaxMinLoadAnimation() {
+        setAjaxMinLoadAnimation(0);
+    }
+
+    protected void setAjaxMinLoadAnimation(int milliseconds) {
+        if (milliseconds < 0) {
+            throw new IllegalArgumentException("milliseconds cannot be negative");
+        }
+        PrimeSelenium.executeScript("PrimeFaces.ajax.minLoadAnimation = " + milliseconds + ";");
+    }
+
+    /**
+     * Waits for the default minimal Ajax load animation duration.
+     */
+    protected void waitAjaxMinLoadAnimation() {
+        getWebDriver().manage().timeouts().implicitlyWait(Duration.of(500, ChronoUnit.MILLIS));
     }
 
     /**

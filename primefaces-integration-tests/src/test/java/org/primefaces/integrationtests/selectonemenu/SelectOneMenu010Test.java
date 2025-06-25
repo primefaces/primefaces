@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,26 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.SelectOneMenu;
 
-public class SelectOneMenu010Test extends AbstractPrimePageTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+class SelectOneMenu010Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: basic usecase with groups")
-    public void testBasic(Page page) {
-        page.selectOneMenu.select(1);
+    void basic(Page page) {
+        assertDoesNotThrow(() -> {
+            page.selectOneMenu.select(1);
+        });
     }
 
     public static class Page extends AbstractPrimePage {

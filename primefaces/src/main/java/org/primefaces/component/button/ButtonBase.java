@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.button;
 
-import javax.faces.component.html.HtmlOutcomeTargetButton;
-
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.html.HtmlOutcomeTargetButton;
 
 public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIOutcomeTarget {
 
@@ -45,6 +45,7 @@ public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widg
         target,
         escape,
         inline,
+        ariaLabel,
         disableClientWindow
     }
 
@@ -141,5 +142,13 @@ public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widg
     @Override
     public void setDisableClientWindow(boolean disableClientWindow) {
         getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 }

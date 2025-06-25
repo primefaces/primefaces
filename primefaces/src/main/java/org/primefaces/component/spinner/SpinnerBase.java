@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,11 @@ package org.primefaces.component.spinner;
 
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
-public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder {
+public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -60,6 +60,8 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     public static final String BUTTONS_HORIZONTAL = "horizontal";
     public static final String BUTTONS_HORIZONTAL_AFTER = "horizontal-after";
     public static final String BUTTONS_VERTICAL = "vertical";
+    public static final Double MAX_VALUE = Double.MAX_VALUE;
+    public static final Double MIN_VALUE = -Double.MAX_VALUE;
 
     public SpinnerBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -95,7 +97,7 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     }
 
     public double getMin() {
-        return (Double) getStateHelper().eval(PropertyKeys.min, Double.MIN_VALUE);
+        return (Double) getStateHelper().eval(PropertyKeys.min, MIN_VALUE);
     }
 
     public void setMin(double min) {
@@ -103,7 +105,7 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     }
 
     public double getMax() {
-        return (Double) getStateHelper().eval(PropertyKeys.max, Double.MAX_VALUE);
+        return (Double) getStateHelper().eval(PropertyKeys.max, MAX_VALUE);
     }
 
     public void setMax(double max) {
@@ -135,7 +137,7 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     }
 
     public String getDecimalSeparator() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.decimalSeparator,
+        return (String) getStateHelper().eval(PropertyKeys.decimalSeparator,
             () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
     }
 
@@ -144,7 +146,7 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     }
 
     public String getThousandSeparator() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.thousandSeparator,
+        return (String) getStateHelper().eval(PropertyKeys.thousandSeparator,
             () -> LocaleUtils.getThousandSeparator(getFacesContext()));
     }
 

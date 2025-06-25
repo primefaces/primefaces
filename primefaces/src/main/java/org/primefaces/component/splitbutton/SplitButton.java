@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,21 @@
  */
 package org.primefaces.component.splitbutton;
 
+import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -46,12 +49,12 @@ public class SplitButton extends SplitButtonBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SplitButton";
 
     public static final String STYLE_CLASS = "ui-splitbutton ui-buttonset ui-widget";
-    public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-left ui-button-text-icon-left";
-    public static final String BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-left ui-button-text-icon-right";
-    public static final String MENU_ICON_BUTTON_CLASS = "ui-splitbutton-menubutton  ui-button ui-widget ui-state-default ui-corner-right ui-button-icon-only";
-    public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-left ui-button-text-only";
-    public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-left ui-button-icon-only";
-    public static final String SPLITBUTTON_CONTAINER_CLASS = "ui-menu ui-splitbuttonmenu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
+    public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-icon-left";
+    public static final String BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-icon-right";
+    public static final String MENU_ICON_BUTTON_CLASS = "ui-splitbutton-menubutton ui-button ui-widget ui-state-default ui-button-icon-only";
+    public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
+    public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-icon-only";
+    public static final String SPLITBUTTON_CONTAINER_CLASS = "ui-menu ui-splitbuttonmenu ui-menu-dynamic ui-widget ui-widget-content ui-helper-clearfix ui-shadow";
     public static final String LIST_WRAPPER_CLASS = "ui-splitbuttonmenu-list-wrapper";
 
     private String confirmationScript;
@@ -66,22 +69,22 @@ public class SplitButton extends SplitButtonBase {
             if (!valueBlank && iconBlank) {
                 styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
             }
-            else if (!valueBlank && !iconBlank) {
+            else if (!valueBlank) {
                 styleClass = getIconPos().equals("left")
                              ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS
                              : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
             }
-            else if (valueBlank && !iconBlank) {
+            else if (!iconBlank) {
                 styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
             }
         }
         else if (!valueBlank && iconBlank) {
             styleClass = BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
-        else if (!valueBlank && !iconBlank) {
+        else if (!valueBlank) {
             styleClass = getIconPos().equals("left") ? BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         }
-        else if (valueBlank && !iconBlank) {
+        else if (!iconBlank) {
             styleClass = BUTTON_ICON_ONLY_BUTTON_CLASS;
         }
 
@@ -124,6 +127,7 @@ public class SplitButton extends SplitButtonBase {
         else {
             return getChildren().stream()
                         .filter(MenuElement.class::isInstance)
+                        .filter(UIComponent::isRendered)
                         .map(MenuElement.class::cast)
                         .collect(Collectors.toList());
         }
@@ -133,6 +137,15 @@ public class SplitButton extends SplitButtonBase {
         List elements = getElements();
 
         return (elements == null) ? 0 : elements.size();
+    }
+
+    public OverlayPanel getCustomOverlay() {
+        return getChildren().stream()
+                    .filter(OverlayPanel.class::isInstance)
+                    .filter(UIComponent::isRendered)
+                    .map(OverlayPanel.class::cast)
+                    .findAny()
+                    .orElse(null);
     }
 
     @Override

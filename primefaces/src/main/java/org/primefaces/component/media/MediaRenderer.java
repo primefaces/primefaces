@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,35 @@
  */
 package org.primefaces.component.media;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.component.media.player.PDFPlayer;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.AgentUtils;
 import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 
-public class MediaRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIParameter;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class MediaRenderer extends CoreRenderer<Media> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Media media = (Media) component;
-        MediaPlayer player = resolvePlayer(context, media);
+    public void encodeEnd(FacesContext context, Media component) throws IOException {
+        MediaPlayer player = resolvePlayer(context, component);
         ResponseWriter writer = context.getResponseWriter();
         String src;
         try {
-            src = DynamicContentSrcBuilder.build(context, media,
-                    media.getValueExpression(Media.PropertyKeys.value.name()),
-                    new Lazy<>(() -> media.getValue()), media.isCache(), true);
+            src = DynamicContentSrcBuilder.build(context, component,
+                    component.getValueExpression(Media.PropertyKeys.value.name()),
+                    new Lazy<>(() -> component.getValue()), component.isCache(), true);
         }
         catch (Exception ex) {
             throw new IOException(ex);
@@ -58,9 +59,9 @@ public class MediaRenderer extends CoreRenderer {
 
         String sourceParam = player.getSourceParam();
         String type = player.getType();
-        if (type != null && PDFPlayer.MIME_TYPE.equals(type)) {
-            String view = media.getView();
-            String zoom = media.getZoom();
+        if (PDFPlayer.MIME_TYPE.equals(type)) {
+            String view = component.getView();
+            String zoom = component.getZoom();
 
             if (view != null) {
                 src = src + "#view=" + view;
@@ -71,26 +72,22 @@ public class MediaRenderer extends CoreRenderer {
             }
         }
 
-        writer.startElement("object", media);
+        writer.startElement("object", component);
         writer.writeAttribute("type", player.getType(), null);
         writer.writeAttribute("data", src, null);
 
-        if (AgentUtils.isIE(context)) {
-            encodeIEConfig(writer, player);
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), null);
         }
 
-        if (media.getStyleClass() != null) {
-            writer.writeAttribute("class", media.getStyleClass(), null);
-        }
-
-        renderPassThruAttributes(context, media, Media.MEDIA_ATTRS);
+        renderPassThruAttributes(context, component, Media.MEDIA_ATTRS);
 
         if (sourceParam != null) {
             encodeParam(writer, player.getSourceParam(), src, false);
         }
 
-        if (media.getChildCount() > 0) {
-            for (UIComponent child : media.getChildren()) {
+        if (component.getChildCount() > 0) {
+            for (UIComponent child : component.getChildren()) {
                 if (child instanceof UIParameter) {
                     UIParameter param = (UIParameter) child;
 
@@ -99,17 +96,9 @@ public class MediaRenderer extends CoreRenderer {
             }
         }
 
-        renderChildren(context, media);
+        renderChildren(context, component);
 
         writer.endElement("object");
-    }
-
-    protected void encodeIEConfig(ResponseWriter writer, MediaPlayer player) throws IOException {
-        writer.writeAttribute("classid", player.getClassId(), null);
-
-        if (player.getCodebase() != null) {
-            writer.writeAttribute("codebase", player.getCodebase(), null);
-        }
     }
 
     protected void encodeParam(ResponseWriter writer, String name, Object value, boolean asAttribute) throws IOException {
@@ -132,9 +121,31 @@ public class MediaRenderer extends CoreRenderer {
         if (media.getPlayer() != null) {
             return MediaPlayerFactory.getPlayer(media.getPlayer());
         }
-        else if (media.getValue() instanceof String) {
+
+        Object value = media.getValue();
+
+        // resolve by content-type
+        if (value instanceof StreamedContent) {
             Map<String, MediaPlayer> players = MediaPlayerFactory.getPlayers();
-            String[] tokens = ((String) media.getValue()).split("\\.");
+            for (MediaPlayer mp : players.values()) {
+                if (Objects.equals(mp.getType(), ((StreamedContent) value).getContentType())) {
+                    return mp;
+                }
+            }
+        }
+
+        // resolve by filename
+        String filename = null;
+        if (value instanceof String) {
+            filename = (String) value;
+        }
+        else if (value instanceof StreamedContent) {
+            filename = ((StreamedContent) value).getName();
+        }
+
+        if (LangUtils.isNotBlank(filename)) {
+            Map<String, MediaPlayer> players = MediaPlayerFactory.getPlayers();
+            String[] tokens = filename.split("\\.");
             String type = tokens[tokens.length - 1];
 
             for (MediaPlayer mp : players.values()) {
@@ -151,7 +162,7 @@ public class MediaRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Media component) throws IOException {
         //Do nothing
     }
 

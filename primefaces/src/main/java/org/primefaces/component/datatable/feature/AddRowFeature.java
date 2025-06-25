@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,38 +26,23 @@ package org.primefaces.component.datatable.feature;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
 import java.io.IOException;
 
+import jakarta.faces.context.FacesContext;
+
 public class AddRowFeature implements DataTableFeature {
-
-    private static final AddRowFeature INSTANCE = new AddRowFeature();
-
-    private AddRowFeature() {
-    }
-
-    public static AddRowFeature getInstance() {
-        return INSTANCE;
-    }
-
-    @Override
-    public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("AddRowFeature should not encode.");
-    }
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         if (table.isSelectionEnabled()) {
-            SelectionFeature.getInstance().decodeSelectionRowKeys(context, table);
+            DataTableFeatures.selectionFeature().decodeSelectionRowKeys(context, table);
         }
 
-        String clientId = table.getClientId(context);
         int rowIndex = table.getRowCount() - 1;
         table.setRowIndex(table.getRowCount() - 1);
 
         if (table.isRowAvailable()) {
-            renderer.encodeRow(context, table, clientId, rowIndex);
+            renderer.encodeRow(context, table, rowIndex);
         }
     }
 

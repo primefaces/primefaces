@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,32 +23,18 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
-import java.util.Map;
-import javax.faces.FacesException;
-
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
+import java.io.IOException;
+import java.util.Map;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
+
 public class CellEditFeature implements DataTableFeature {
-
-    private static final CellEditFeature INSTANCE = new CellEditFeature();
-
-    private CellEditFeature() {
-    }
-
-    public static CellEditFeature getInstance() {
-        return INSTANCE;
-    }
-
-    @Override
-    public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("CellEditFeature should not decode.");
-    }
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {

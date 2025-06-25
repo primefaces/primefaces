@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class LengthValidator extends javax.faces.validator.LengthValidator implements ClientValidator {
+public class LengthValidator extends jakarta.faces.validator.LengthValidator implements ClientValidator {
 
     private boolean minimumSet;
     private boolean maximumSet;

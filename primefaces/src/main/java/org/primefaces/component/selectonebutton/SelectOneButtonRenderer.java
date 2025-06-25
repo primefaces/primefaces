@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,78 +23,76 @@
  */
 package org.primefaces.component.selectonebutton;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UISelectOne;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.model.SelectItem;
-import javax.faces.render.Renderer;
-
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class SelectOneButtonRenderer extends SelectOneRenderer {
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.render.Renderer;
+
+public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
-                "javax.faces.SelectOne",
-                "javax.faces.Radio");
+                "jakarta.faces.SelectOne",
+                "jakarta.faces.Radio");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SelectOneButton button = (SelectOneButton) component;
-
-        encodeMarkup(context, button);
-        encodeScript(context, button);
+    public void encodeEnd(FacesContext context, SelectOneButton component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, SelectOneButton button) throws IOException {
+    protected void encodeMarkup(FacesContext context, SelectOneButton component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = button.getClientId(context);
-        List<SelectItem> selectItems = getSelectItems(context, button);
+        String clientId = component.getClientId(context);
+        List<SelectItem> selectItems = getSelectItems(context, component);
         int selectItemsSize = selectItems.size();
-        String style = button.getStyle();
-        String styleClass = createStyleClass(button, SelectOneButton.STYLE_CLASS);
+        String style = component.getStyle();
+        String styleClass = createStyleClass(component, SelectOneButton.STYLE_CLASS);
         styleClass = styleClass + " ui-buttonset-" + selectItemsSize;
 
-        writer.startElement("div", button);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeSelectItems(context, button, selectItems);
+        encodeSelectItems(context, component, selectItems);
 
         writer.endElement("div");
     }
 
-    protected void encodeSelectItems(FacesContext context, SelectOneButton button, List<SelectItem> selectItems) throws IOException {
+    protected void encodeSelectItems(FacesContext context, SelectOneButton component, List<SelectItem> selectItems) throws IOException {
         int selectItemsSize = selectItems.size();
-        Converter converter = button.getConverter();
-        String name = button.getClientId(context);
-        Object value = button.getSubmittedValue();
+        Converter converter = component.getConverter();
+        String name = component.getClientId(context);
+        Object value = component.getSubmittedValue();
         if (value == null) {
-            value = button.getValue();
+            value = component.getValue();
         }
 
         Class type = value == null ? String.class : value.getClass();
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            boolean disabled = selectItem.isDisabled() || button.isDisabled();
+            boolean disabled = selectItem.isDisabled() || component.isDisabled();
             String id = name + UINamingContainer.getSeparatorChar(context) + i;
 
             boolean selected;
@@ -106,34 +104,24 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
                 selected = (coercedItemValue != null) && coercedItemValue.equals(value);
             }
 
-            encodeOption(context, button, selectItem, id, name, converter, selected, disabled, i, selectItemsSize);
+            encodeOption(context, component, selectItem, id, name, converter, selected, disabled, i, selectItemsSize);
         }
     }
 
-    protected void encodeOption(FacesContext context, SelectOneButton button, SelectItem option, String id, String name, Converter converter,
+    protected void encodeOption(FacesContext context, SelectOneButton component, SelectItem option, String id, String name, Converter converter,
                                 boolean selected, boolean disabled, int idx, int size) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        String itemValueAsString = getOptionAsString(context, button, converter, option.getValue());
+        String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
 
         String buttonStyle = HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS;
-        if (size == 1) {
-            buttonStyle = buttonStyle + " ui-corner-all";
-        }
-        else if (idx == 0) {
-            buttonStyle = buttonStyle + " ui-corner-left";
-        }
-        else if (idx == (size - 1)) {
-            buttonStyle = buttonStyle + " ui-corner-right";
-        }
-
         buttonStyle = selected ? buttonStyle + " ui-state-active" : buttonStyle;
         buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
 
         //button
         writer.startElement("div", null);
         writer.writeAttribute("class", buttonStyle, null);
-        writer.writeAttribute("tabindex", button.getTabindex(), null);
+        writer.writeAttribute("tabindex", component.getTabindex(), null);
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);
         }
@@ -146,13 +134,13 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, LangUtils.isEmpty(option.getDescription()) ? option.getLabel() : option.getDescription(), null);
 
         if (selected) {
             writer.writeAttribute("checked", "checked", null);
         }
 
-        renderAccessibilityAttributes(context, button);
+        renderAccessibilityAttributes(context, component);
         writer.endElement("input");
 
         //item label
@@ -171,19 +159,19 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, SelectOneButton button) throws IOException {
+    protected void encodeScript(FacesContext context, SelectOneButton component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneButton", button)
-                .attr("unselectable", button.isUnselectable(), true)
-                .callback("change", "function()", button.getOnchange());
+        wb.init("SelectOneButton", component)
+                .attr("unselectable", component.isUnselectable(), true)
+                .callback("change", "function()", component.getOnchange());
 
-        encodeClientBehaviors(context, button);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
-        return selectOne.getClientId(context);
+    protected String getSubmitParam(FacesContext context, SelectOneButton component) {
+        return component.getClientId(context);
     }
 }

@@ -28,7 +28,7 @@ ContextMenu provides an overlay menu displayed on mouse right-click event.
 | nodeType | null | String | Specific type of tree nodes to attach to.
 | event | null | String | Event to bind contextMenu display, default is contextmenu aka right click.
 | beforeShow | null | String | Client side callback to execute before showing.
-| selectionMode | multiple | String | Defines the selection behavior, e.g "single" or "multiple".
+| selectionMode | multiple | String | Defines the selection behavior, e.g., "single" or "multiple".
 | targetFilter | null | String | Selector to filter the elements to attach the menu.
 
 ## Getting started with ContextMenu
@@ -41,7 +41,7 @@ page meaning, right-click on anywhere on page will display the menu.
     <p:menuitem value="Save" action="#{bean.save}" update="msg"/>
     <p:menuitem value="Delete" action="#{bean.delete}" ajax="false"/>
     <p:menuitem value="Go Home" url=" http://www.primefaces.org " target="_blank"/>
-</p:contextMenu
+</p:contextMenu>
 ```
 ContextMenu example above is attached to the whole page and consists of three different
 menuitems with different use cases. First menuitem triggers an ajax action, second one triggers a

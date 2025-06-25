@@ -49,6 +49,7 @@ caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 scrollHeight | null | Integer | Defines the height of the scrollable area
 metaKeySelection | true | Boolean | The meta key (SHIFT or CTRL) must be held down to multi-select items.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
+collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.
 
 ## Getting started with SelectManyMenu
 SelectManyMenu usage is same as the standard one.

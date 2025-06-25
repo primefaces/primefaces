@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,6 @@
  */
 package org.primefaces.component.datepicker;
 
-import java.time.*;
-import java.util.*;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.datepicker.DateMetadata;
@@ -40,6 +30,27 @@ import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.PhaseId;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -102,7 +113,7 @@ public class DatePicker extends DatePickerBase {
 
         if (isValid() && ComponentUtils.isRequestSource(this, context) && customEvents != null) {
             for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
-                SelectEvent<?> selectEvent = new SelectEvent(this, event.getValue().getBehavior(), getValue());
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, event.getValue().getBehavior(), getValue());
 
                 if (event.getValue().getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
                     selectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
@@ -165,40 +176,33 @@ public class DatePicker extends DatePickerBase {
             //TODO: needs to be validated
         }
         else if (value instanceof List && getSelectionMode().equals("range")) {
-            List<?> rangeValues = (List) value;
+            List<?> rangeValues = (List<?>) value;
 
-            if (rangeValues.get(0) instanceof LocalDate) {
-                LocalDate startDate = (LocalDate) rangeValues.get(0);
-                validationResult = validateDateValue(context, startDate);
+            if (rangeValues.get(0) instanceof Comparable) {
+                Comparable startDate = (Comparable) rangeValues.get(0);
+                validationResult = validateValueInternal(context, startDate);
 
-                if (isValid()) {
-                    LocalDate endDate = (LocalDate) rangeValues.get(1);
-                    validationResult = validateDateValue(context, endDate);
+                if (isValid() && rangeValues.size() > 1) {
+                    Comparable endDate = (Comparable) rangeValues.get(1);
+                    validationResult = validateValueInternal(context, endDate);
 
-                    if (isValid() && startDate.isAfter(endDate)) {
-                        setValid(false);
-                        validationResult = ValidationResult.INVALID_RANGE_DATES_SEQUENTIAL;
-                    }
-                }
-            }
-            else if (rangeValues.get(0) instanceof Date) {
-                Date startDate = (Date) rangeValues.get(0);
-                validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate(startDate, CalendarUtils.calculateZoneId(getTimeZone())));
-
-                if (isValid()) {
-                    Date endDate = (Date) rangeValues.get(1);
-                    validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate(endDate, CalendarUtils.calculateZoneId(getTimeZone())));
-
-                    if (isValid() && startDate.after(endDate)) {
+                    if (isValid() && startDate.compareTo(endDate) > 0) {
                         setValid(false);
                         validationResult = ValidationResult.INVALID_RANGE_DATES_SEQUENTIAL;
                     }
                 }
             }
             else {
-                //no other type possible (as of 05/2019)
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, rangeValues.get(0).getClass().getTypeName() + " not supported", null);
-                context.addMessage(getClientId(context), message);
+                Object firstValue = rangeValues.get(0);
+                setValid(false);
+                if (firstValue == null) {
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "First date in range cannot be null", null);
+                    context.addMessage(getClientId(context), message);
+                }
+                else {
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, firstValue.getClass().getTypeName() + " not supported", null);
+                    context.addMessage(getClientId(context), message);
+                }
             }
         }
 
@@ -263,6 +267,38 @@ public class DatePicker extends DatePickerBase {
                             return ValidationResult.INVALID_DISABLED_DATE;
                         }
                     }
+                }
+            }
+        }
+
+        if (isValid()) {
+            List<Object> enabledDates = getEnabledDates();
+            if (enabledDates != null && !enabledDates.isEmpty()) {
+
+                boolean localValid = false;
+
+                for (Object enabledDate : enabledDates) {
+                    if (enabledDate instanceof LocalDate) {
+                        if (((LocalDate) enabledDate).isEqual(date)) {
+                            localValid = true;
+                            break;
+                        }
+                    }
+                    else if (enabledDate instanceof Date) {
+                        Calendar c = Calendar.getInstance(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(getTimeZone())), calculateLocale(context));
+                        c.setTime((Date) enabledDate);
+
+                        if (date.getYear() == c.get(Calendar.YEAR) &&
+                                date.getMonthValue() == (c.get(Calendar.MONTH) + 1) &&
+                                date.getDayOfMonth() == c.get(Calendar.DAY_OF_MONTH)) {
+                            localValid = true;
+                            break;
+                        }
+                    }
+                }
+                if (!localValid) {
+                    setValid(false);
+                    return ValidationResult.INVALID_DISABLED_DATE;
                 }
             }
         }
@@ -334,6 +370,21 @@ public class DatePicker extends DatePickerBase {
             }
         }
         return disabledDates;
+    }
+
+    protected List<Object> getInitialEnabledDates(FacesContext context) {
+        List<Object> enabledDates = getEnabledDates();
+        DateMetadataModel model = getModel();
+        if (model != null) {
+            enabledDates = new ArrayList<>();
+            for (Map.Entry<LocalDate, DateMetadata> entry : model.getDateMetadata().entrySet()) {
+                if (entry.getValue().isEnabled()) {
+                    enabledDates.add(entry.getKey());
+                }
+            }
+        }
+
+        return enabledDates;
     }
 
 }

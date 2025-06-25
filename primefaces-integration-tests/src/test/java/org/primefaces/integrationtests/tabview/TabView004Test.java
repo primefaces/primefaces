@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,6 @@
  */
 package org.primefaces.integrationtests.tabview;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
@@ -35,18 +30,25 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectOneMenu;
 import org.primefaces.selenium.component.TabView;
 
-public class TabView004Test extends AbstractPrimePageTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertSame;
+
+class TabView004Test extends AbstractPrimePageTest {
 
     @Test
-    @DisplayName("TabView: Tab#loaded should be resetted when rendering TabView again, otherwise select components are resettet")
-    public void testDynamic(Page page) {
+    @DisplayName("TabView: Tab#loaded should be reset when rendering TabView again, otherwise select components are reset")
+    void dynamic(Page page) {
         page.tabView.toggleTab(1);
 
         page.button.click();
         page.button.click();
         page.button.click();
 
-        Assertions.assertSame(0, page.msgs.getAllMessages().size());
+        assertSame(0, page.msgs.getAllMessages().size());
     }
 
     public static class Page extends AbstractPrimePage {
@@ -60,8 +62,8 @@ public class TabView004Test extends AbstractPrimePageTest {
         @FindBy(id = "form:tabview:selectonemenu")
         SelectOneMenu selectonemenu;
 
-        @FindBy(id = "form:tabview:secound")
-        WebElement secound;
+        @FindBy(id = "form:tabview:second")
+        WebElement second;
 
         @FindBy(id = "form:button")
         CommandButton button;

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,18 @@
  */
 package org.primefaces.component.columns;
 
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.util.LangUtils;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
 
 public class Columns extends ColumnsBase {
 
@@ -43,18 +44,9 @@ public class Columns extends ColumnsBase {
     private List<DynamicColumn> dynamicColumns;
 
     @Override
-    public String getSelectionMode() {
-        return null;
-    }
-
-    @Override
     public CellEditor getCellEditor() {
         if (cellEditor == null) {
-            for (UIComponent child : getChildren()) {
-                if (child instanceof CellEditor) {
-                    cellEditor = (CellEditor) child;
-                }
-            }
+            cellEditor = ComponentTraversalUtils.firstChildRendered(CellEditor.class, this);
         }
 
         return cellEditor;
@@ -120,4 +112,11 @@ public class Columns extends ColumnsBase {
         this.dynamicColumns = dynamicColumns;
     }
 
+    @Override
+    public Object saveState(FacesContext context) {
+        dynamicColumns = null;
+        cellEditor = null;
+
+        return super.saveState(context);
+    }
 }

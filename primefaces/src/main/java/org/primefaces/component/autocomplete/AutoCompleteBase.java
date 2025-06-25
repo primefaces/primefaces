@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ package org.primefaces.component.autocomplete;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.MessageFactory;
@@ -36,56 +37,53 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AutoCompleteRenderer";
 
-    public static final String DROPDOWN_LABEL = "primefaces.autocomplete.aria.DROPDOWN_LABEL";
-
     public enum PropertyKeys {
 
-        placeholder,
-        widgetVar,
-        completeMethod,
-        var,
-        itemLabel,
-        itemValue,
-        itemStyleClass,
-        maxResults,
-        minQueryLength,
-        queryDelay,
-        forceSelection,
-        scrollHeight,
-        dropdown,
-        panelStyle,
-        panelStyleClass,
-        multiple,
-        itemtipMyPosition,
-        itemtipAtPosition,
+        active,
+        appendTo,
+        at,
+        autoHighlight,
+        autoSelection,
         cache,
         cacheTimeout,
-        emptyMessage,
-        appendTo,
-        resultsMessage,
-        groupBy,
-        queryEvent,
+        completeEndpoint,
+        completeMethod,
+        dropdown,
         dropdownMode,
-        autoHighlight,
-        selectLimit,
+        dropdownTabindex,
+        dynamic,
+        emptyMessage,
+        escape,
+        forceSelection,
+        groupBy,
+        groupByTooltip,
+        highlightSelector,
         inputStyle,
         inputStyleClass,
-        groupByTooltip,
-        my,
-        at,
-        active,
-        type,
-        moreText,
-        unique,
-        dynamic,
-        autoSelection,
-        escape,
-        queryMode,
-        dropdownTabindex,
-        dropdownAriaLabel,
-        completeEndpoint,
+        itemLabel,
+        itemStyleClass,
+        itemtipAtPosition,
+        itemtipMyPosition,
+        itemValue,
+        lazyField,
         lazyModel,
-        lazyField
+        maxResults,
+        minQueryLength,
+        moreText,
+        multiple,
+        my,
+        panelStyle,
+        panelStyleClass,
+        placeholder,
+        queryDelay,
+        queryEvent,
+        queryMode,
+        scrollHeight,
+        selectLimit,
+        showEmptyMessage,
+        unique,
+        var,
+        widgetVar,
     }
 
     public AutoCompleteBase() {
@@ -113,11 +111,11 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public javax.el.MethodExpression getCompleteMethod() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
+    public jakarta.el.MethodExpression getCompleteMethod() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
     }
 
-    public void setCompleteMethod(javax.el.MethodExpression completeMethod) {
+    public void setCompleteMethod(jakarta.el.MethodExpression completeMethod) {
         getStateHelper().put(PropertyKeys.completeMethod, completeMethod);
     }
 
@@ -257,28 +255,12 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.cacheTimeout, cacheTimeout);
     }
 
-    public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, null);
-    }
-
-    public void setEmptyMessage(String emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
-    }
-
     public String getAppendTo() {
         return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
     }
 
     public void setAppendTo(String appendTo) {
         getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    public String getResultsMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.resultsMessage, null);
-    }
-
-    public void setResultsMessage(String resultsMessage) {
-        getStateHelper().put(PropertyKeys.resultsMessage, resultsMessage);
     }
 
     public Object getGroupBy() {
@@ -369,14 +351,6 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.active, active);
     }
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
     public String getMoreText() {
         return (String) getStateHelper().eval(PropertyKeys.moreText, "...");
     }
@@ -433,14 +407,6 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.dropdownTabindex, dropdownTabindex);
     }
 
-    public String getDropdownAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.dropdownAriaLabel, MessageFactory.getMessage(DROPDOWN_LABEL));
-    }
-
-    public void setDropdownAriaLabel(String dropdownAriaLabel) {
-        getStateHelper().put(PropertyKeys.dropdownAriaLabel, dropdownAriaLabel);
-    }
-
     public String getCompleteEndpoint() {
         return (String) getStateHelper().eval(PropertyKeys.completeEndpoint, null);
     }
@@ -449,11 +415,11 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.completeEndpoint, completeEndpoint);
     }
 
-    public LazyDataModel getLazyModel() {
-        return (LazyDataModel) getStateHelper().eval(PropertyKeys.lazyModel, null);
+    public LazyDataModel<?> getLazyModel() {
+        return (LazyDataModel<?>) getStateHelper().eval(PropertyKeys.lazyModel, null);
     }
 
-    public void setLazyModel(LazyDataModel lazyModel) {
+    public void setLazyModel(LazyDataModel<?> lazyModel) {
         getStateHelper().put(PropertyKeys.lazyModel, lazyModel);
     }
 
@@ -465,4 +431,27 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.lazyField, lazyField);
     }
 
+    public boolean isShowEmptyMessage() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showEmptyMessage, true);
+    }
+
+    public void setShowEmptyMessage(boolean showEmptyMessage) {
+        getStateHelper().put(PropertyKeys.showEmptyMessage, showEmptyMessage);
+    }
+
+    public String getHighlightSelector() {
+        return (String) getStateHelper().eval(PropertyKeys.highlightSelector, null);
+    }
+
+    public void setHighlightSelector(String highlightSelector) {
+        getStateHelper().put(PropertyKeys.highlightSelector, highlightSelector);
+    }
+
+    public String getEmptyMessage() {
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(getFacesContext(), UIPageableData.EMPTY_MESSAGE));
+    }
+
+    public void setEmptyMessage(String emptyMessage) {
+        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
+    }
 }

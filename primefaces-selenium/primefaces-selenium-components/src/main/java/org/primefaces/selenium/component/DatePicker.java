@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,23 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.AbstractInputComponent;
+import org.primefaces.selenium.component.base.ComponentUtils;
+import org.primefaces.selenium.findby.FindByParentPartialId;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.AbstractInputComponent;
-import org.primefaces.selenium.component.base.ComponentUtils;
-import org.primefaces.selenium.findby.FindByParentPartialId;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:datePicker}.
@@ -155,7 +158,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     public LocalDateTime getValue() {
-        if (getWidgetDate() == null) {
+        if (hasDate() == false) {
             return null;
         }
 
@@ -166,7 +169,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     public LocalDate getValueAsLocalDate() {
-        if (getWidgetDate() == null) {
+        if (hasDate() == false) {
             return null;
         }
         Long dayOfMonth = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getDate();");
@@ -222,6 +225,15 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
+     * Checks whether a date is selected
+     *
+     * @return true if a date is selected.
+     */
+    public boolean hasDate() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".hasDate();");
+    }
+
+    /**
      * Is this a lazy datepicker.
      *
      * @return true if lazy
@@ -229,6 +241,15 @@ public abstract class DatePicker extends AbstractInputComponent {
     public boolean isLazy() {
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript()
                 + ".cfg.lazyDataModel === undefined ? false : " + getWidgetByIdScript() + ".cfg.lazyDataModel");
+    }
+
+    /**
+     * Gets the input value from the widget.
+     *
+     * @return the input value or null
+     */
+    public String getInputValue() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".input.val();");
     }
 
     /**
@@ -287,7 +308,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
-     * Select a month from the drodown.
+     * Select a month from the dropdown.
      *
      * @param month the month to select
      */
@@ -297,21 +318,43 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
-     * Open the year select dropdown.
-     */
-    public void toggleYearDropdown() {
-        WebElement yearDropDown = showPanel().findElement(By.cssSelector("select.ui-datepicker-year"));
-        yearDropDown.click();
-    }
-
-    /**
-     * Select a year from the drodown.
+     * Select a year.
      *
      * @param year the year to select
      */
-    public void selectYearDropdown(int year) {
-        Select yearDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-year")));
-        yearDropDown.selectByValue(Integer.toString(year));
+    public void selectYear(int year) {
+        WebElement panel = showPanel();
+        try {
+            WebElement yearInput = panel.findElement(By.cssSelector("input.ui-datepicker-year"));
+            yearInput.sendKeys(Integer.toString(year));
+        }
+        catch (NoSuchElementException e) {
+            Select yearDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-year")));
+            yearDropDown.selectByValue(Integer.toString(year));
+        }
     }
 
+    /**
+     * Increment the years by count.
+     *
+     * @param count the number of years to increment
+     */
+    public void incrementYear(int count) {
+        WebElement yearInput = showPanel().findElement(By.cssSelector("input.ui-datepicker-year"));
+        for (int i = 0; i <  count; i++) {
+            yearInput.sendKeys(Keys.ARROW_UP);
+        }
+    }
+
+    /**
+     * Decrement the years by count.
+     *
+     * @param count the number of years to decrement
+     */
+    public void decrementYear(int count) {
+        WebElement yearInput = showPanel().findElement(By.cssSelector("input.ui-datepicker-year"));
+        for (int i = 0; i <  count; i++) {
+            yearInput.sendKeys(Keys.ARROW_DOWN);
+        }
+    }
 }

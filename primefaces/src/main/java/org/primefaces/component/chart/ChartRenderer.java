@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,86 +23,96 @@
  */
 package org.primefaces.component.chart;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.chart.renderer.*;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class ChartRenderer extends CoreRenderer {
+import java.io.IOException;
 
-    private static final String TYPE_PIE = "pie";
-    private static final String TYPE_LINE = "line";
-    private static final String TYPE_BAR = "bar";
-    private static final String TYPE_OHLC = "ohlc";
-    private static final String TYPE_DONUT = "donut";
-    private static final String TYPE_BUBBLE = "bubble";
-    private static final String TYPE_METERGAUGE = "metergauge";
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
-    private static final Map<String, org.primefaces.component.chart.renderer.BasePlotRenderer> CHART_RENDERERS;
-
-    static {
-        CHART_RENDERERS = new HashMap<>();
-        CHART_RENDERERS.put(TYPE_PIE, new PieRenderer());
-        CHART_RENDERERS.put(TYPE_LINE, new LineRenderer());
-        CHART_RENDERERS.put(TYPE_BAR, new BarRenderer());
-        CHART_RENDERERS.put(TYPE_OHLC, new OhlcRenderer());
-        CHART_RENDERERS.put(TYPE_DONUT, new DonutRenderer());
-        CHART_RENDERERS.put(TYPE_BUBBLE, new BubbleRenderer());
-        CHART_RENDERERS.put(TYPE_METERGAUGE, new MeterGaugeRenderer());
-    }
+public class ChartRenderer extends CoreRenderer<Chart> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Chart component) {
         super.decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Chart chart = (Chart) component;
-
-        encodeMarkup(context, chart);
-        encodeScript(context, chart);
+    public void encodeEnd(FacesContext context, Chart component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Chart chart) throws IOException {
+    protected void encodeMarkup(FacesContext context, Chart component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String style = chart.getStyle();
-        String styleClass = chart.getStyleClass();
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
+        String canvasStyle = component.getCanvasStyle();
+        String canvasStyleClass = component.getCanvasStyleClass();
+        styleClass = (styleClass != null) ? "ui-chart " + styleClass : "ui-chart";
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", chart.getClientId(context), null);
-        if (style != null) {
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if (LangUtils.isNotEmpty(style)) {
             writer.writeAttribute("style", style, "style");
         }
-        if (styleClass != null) {
-            writer.writeAttribute("class", styleClass, "styleClass");
+
+        writer.startElement("canvas", null);
+        writer.writeAttribute("id", clientId + "_canvas", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "img", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, component.getAriaLabel(), null);
+        if (LangUtils.isNotEmpty(canvasStyle)) {
+            writer.writeAttribute("style", canvasStyle, null);
         }
+        if (LangUtils.isNotEmpty(canvasStyleClass)) {
+            writer.writeAttribute("class", canvasStyleClass, null);
+        }
+        writer.endElement("canvas");
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, Chart chart) throws IOException {
-        String type = chart.getType();
-        BasePlotRenderer plotRenderer = CHART_RENDERERS.get(type);
-
+    protected void encodeScript(FacesContext context, Chart component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Chart", chart)
-                .attr("type", type);
+        wb.init("Chart", component)
+                .nativeAttr("config", renderConfig(context, component))
+                .nativeAttr("extender", component.getExtender());
 
-        if (chart.isResponsive()) {
-            wb.attr("responsive", true);
-        }
-
-        plotRenderer.render(context, chart);
-        encodeClientBehaviors(context, chart);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
+
+    /**
+     * Allow value to be a property or a facet of raw JSON.
+     */
+    protected String renderConfig(FacesContext context, Chart component) throws IOException {
+        UIComponent facet = component.getFacet("value");
+        if (FacetUtils.shouldRenderFacet(facet)) {
+            // swap writers
+            ResponseWriter originalWriter = context.getResponseWriter();
+            FastStringWriter fsw = new FastStringWriter();
+            ResponseWriter clonedWriter = originalWriter.cloneWithWriter(fsw);
+            context.setResponseWriter(clonedWriter);
+
+            // encode the component
+            facet.encodeAll(context);
+
+            // restore the original writer
+            context.setResponseWriter(originalWriter);
+            return fsw.toString();
+        }
+        else {
+            return component.getValue();
+        }
+    }
+
 }

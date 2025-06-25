@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -27,7 +27,7 @@
                             gridIcon="pi pi-th-large" listIcon="pi pi-bars">
 
                     <p:dataViewGridItem>
-                        <div class="card p-d-flex p-jc-center">
+                        <div class="card flex justify-content-center">
                             <h:panelGrid columns="2" cellpadding="7">
                                 <h:outputText value="Name:" styleClass="text-secondary"/>
                                 <h:outputText value="#{customer.name}"/>

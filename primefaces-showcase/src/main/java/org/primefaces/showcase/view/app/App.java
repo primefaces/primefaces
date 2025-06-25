@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,24 @@
  */
 package org.primefaces.showcase.view.app;
 
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
-
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.showcase.domain.Country;
 
 import java.io.Serializable;
 import java.util.Locale;
-import javax.faces.context.FacesContext;
-import org.primefaces.context.PrimeApplicationContext;
+
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @SessionScoped
 public class App implements Serializable {
 
-    private String theme = "saga";
+    @Inject private Themes themes;
+
+    private String theme = "saga-blue";
     private boolean darkMode = false;
     private String inputStyle = "outlined";
     private Country locale = new Country(0, Locale.US);
@@ -78,40 +81,27 @@ public class App implements Serializable {
         this.locale = locale;
     }
 
-    public void changeTheme(String theme, boolean darkMode) {
-        this.theme = theme;
-        this.darkMode = darkMode;
+    public void changeTheme(Themes.Theme theme) {
+        this.theme = theme.getId();
+        this.darkMode = theme.isDark();
+    }
+
+    public String getThemeName() {
+        for (Themes.Theme theme : themes.getThemes()) {
+            if (theme.getId().equals(this.getTheme())) {
+                return theme.getName();
+            }
+        }
+        return null;
     }
 
     public String getThemeImage() {
-        String result = getTheme();
-        switch (result) {
-            case "nova-light":
-                result = "nova.png";
-                break;
-            case "nova-colored":
-                result = "nova-accent.png";
-                break;
-            case "nova-dark":
-                result = "nova-alt.png";
-                break;
-            case "bootstrap4-blue-light":
-                result = "bootstrap4-light-blue.svg";
-                break;
-            case "bootstrap4-blue-dark":
-                result = "bootstrap4-dark-blue.svg";
-                break;
-            case "bootstrap4-purple-light":
-                result = "bootstrap4-light-purple.svg";
-                break;
-            case "bootstrap4-purple-dark":
-                result = "bootstrap4-dark-purple.svg";
-                break;
-            default:
-                result += ".png";
-                break;
+        for (Themes.Theme theme : themes.getThemes()) {
+            if (theme.getId().equals(this.getTheme())) {
+                return theme.getImage();
+            }
         }
-        return result;
+        return null;
     }
 
     public String getPrimeFacesVersion() {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,13 @@
  */
 package org.primefaces.model.menu;
 
+import org.primefaces.component.api.Confirmable;
+import org.primefaces.util.Callbacks;
+
 import java.util.List;
 import java.util.Map;
-import javax.el.MethodExpression;
-import org.primefaces.component.api.Confirmable;
-import org.primefaces.util.SerializableFunction;
+
+import jakarta.el.MethodExpression;
 
 public interface MenuItem extends MenuElement, Confirmable {
 
@@ -63,7 +65,7 @@ public interface MenuItem extends MenuElement, Confirmable {
     String getTarget();
 
     /**
-     * The JSF outcome of a navigation case which is resolved by the configured
+     * The Faces outcome of a navigation case which is resolved by the configured
      * {@code NavigationHandler}. Similar to {@code url}, but {@code url}
      * allows to specify fully qualified URLs.
      *
@@ -101,7 +103,7 @@ public interface MenuItem extends MenuElement, Confirmable {
      *
      * @return The outcome, which will be used for navigation.
      */
-    SerializableFunction<MenuItem, String> getFunction();
+    Callbacks.SerializableFunction<MenuItem, String> getFunction();
 
     boolean isImmediate();
 
@@ -115,4 +117,13 @@ public interface MenuItem extends MenuElement, Confirmable {
 
     String getRel();
 
+    String getAriaLabel();
+
+    Object getBadge();
+
+    String getUpdate();
+
+    String getProcess();
+
+    boolean isResetValues();
 }

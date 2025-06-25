@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,17 +33,19 @@ import java.util.function.Supplier;
  */
 public class Lazy<T> implements Serializable, Supplier<T> {
 
-    private static final Object NOT_INITIALIZED = new Object();
+    private static final long serialVersionUID = 1L;
+
+    private static final NotInitialized NOT_INITIALIZED = new NotInitialized();
 
     @SuppressWarnings("unchecked")
     private volatile T value = (T) NOT_INITIALIZED;
-    private volatile SerializableSupplier<T> init;
+    private volatile Callbacks.SerializableSupplier<T> init;
 
-    public Lazy(SerializableSupplier<T> init) {
+    public Lazy(Callbacks.SerializableSupplier<T> init) {
         this.init = init;
     }
 
-    public synchronized void reset(SerializableSupplier<T> init) {
+    public synchronized void reset(Callbacks.SerializableSupplier<T> init) {
         this.init = init;
         this.value = (T) NOT_INITIALIZED;
     }
@@ -52,6 +54,11 @@ public class Lazy<T> implements Serializable, Supplier<T> {
         this.value = value;
     }
 
+    public synchronized void reset() {
+        this.value = (T) NOT_INITIALIZED;
+    }
+
+    @Override
     public T get() {
         T result = value;
 
@@ -70,5 +77,8 @@ public class Lazy<T> implements Serializable, Supplier<T> {
 
     public boolean isInitialized() {
         return value != NOT_INITIALIZED;
+    }
+
+    static final class NotInitialized implements Serializable {
     }
 }

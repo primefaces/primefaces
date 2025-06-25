@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,15 +37,42 @@ public class GridLayoutUtils {
             .build();
 
     private static final Map<Integer, String> FLEX_COLUMN_MAP = MapBuilder.<Integer, String>builder()
-            .put(1, "p-col-12 p-md-12")
-            .put(2, "p-col-12 p-md-6")
-            .put(3, "p-col-12 p-md-4")
-            .put(4, "p-col-12 p-md-3")
-            .put(6, "p-col-12 p-md-2")
-            .put(12, "p-col-12 p-md-1")
+            .put(1, "col-12 md:col-12")
+            .put(2, "col-12 md:col-6")
+            .put(3, "col-12 md:col-4")
+            .put(4, "col-12 md:col-3")
+            .put(6, "col-12 md:col-2")
+            .put(12, "col-12 md:col-1")
             .build();
 
     private GridLayoutUtils() {
+    }
+
+    /**
+     * Get grid or flex main container grid Class.
+     * @param flex is either flex or grid CSS
+     * @return  either flex or grid CSS based on boolean
+     */
+    public static String getResponsiveClass(boolean flex) {
+        return flex ? "ui-grid-responsive" : "ui-grid ui-grid-responsive";
+    }
+
+    /**
+     * Get grid or flex main container grid Class.
+     * @param flex is either flex or grid CSS
+     * @return  either flex or grid CSS based on boolean
+     */
+    public static String getFlexGridClass(boolean flex) {
+        return flex ? "grid" : "ui-g";
+    }
+
+    /**
+     * Get grid or flex column Class.
+     * @param flex is either flex or grid CSS
+     * @return  either flex or grid CSS based on boolean
+     */
+    public static String getColumnClass(boolean flex, int columns) {
+        return flex ? getFlexColumnClass(columns) : getColumnClass(columns);
     }
 
     /**

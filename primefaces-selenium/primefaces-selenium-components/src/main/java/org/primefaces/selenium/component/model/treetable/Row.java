@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,37 +23,27 @@
  */
 package org.primefaces.selenium.component.model.treetable;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.datatable.Cell;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class Row extends org.primefaces.selenium.component.model.datatable.Row {
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
+public class Row extends org.primefaces.selenium.component.model.datatable.Row {
     public Row(WebElement webElement, List<Cell> cells) {
         super(webElement, cells);
     }
 
-    public boolean isToggleable() {
-        return (getToggler() != null);
-    }
-
-    public void toggle() {
-        if (isToggleable()) {
-            PrimeSelenium.guardAjax(getToggler()).click();
-        }
-    }
-
-    private WebElement getToggler() {
+    @Override
+    public WebElement getToggler() {
         return getCell(0).getWebElement().findElement(By.className("ui-treetable-toggler"));
     }
 
     public int getLevel() {
-        String cssClasses = getWebElement().getAttribute("class");
+        String cssClasses = getWebElement().getDomAttribute("class");
         Optional<String> levelClassOpt = Arrays.stream(cssClasses.split(" ")).filter(c -> c.startsWith("ui-node-level")).findFirst();
         if (levelClassOpt.isPresent()) {
             String levelClass = levelClassOpt.get();

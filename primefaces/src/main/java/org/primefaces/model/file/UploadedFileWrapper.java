@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,21 @@
  */
 package org.primefaces.model.file;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.faces.FacesWrapper;
-import javax.faces.component.StateHolder;
-import javax.faces.context.FacesContext;
+import java.io.Serializable;
+
+import jakarta.faces.FacesWrapper;
+import jakarta.faces.component.StateHolder;
+import jakarta.faces.context.FacesContext;
 
 /**
  * Internal wrapper to avoid the file binaries to beeing saved in the ViewState.
  */
-public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedFile>, StateHolder {
+public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedFile>, StateHolder, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private UploadedFile wrapped;
 
@@ -75,13 +80,19 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
     }
 
     @Override
-    public void write(String filePath) throws Exception {
-        getWrapped().write(filePath);
+    public File write(String directoryPath) throws Exception {
+        return getWrapped().write(directoryPath);
     }
 
     @Override
     public String getFileName() {
         return getWrapped().getFileName();
+    }
+
+
+    @Override
+    public String getWebkitRelativePath() {
+        return getWrapped().getWebkitRelativePath();
     }
 
     @Override

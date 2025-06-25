@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,15 @@
  */
 package org.primefaces.component.rowtoggler;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.datatable.DataTable;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 
 
 public class RowToggler extends RowTogglerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowToggler";
-
-    public static final String COLLAPSED_ICON = "ui-icon ui-icon-circle-triangle-e";
-    public static final String EXPANDED_ICON = "ui-icon ui-icon-circle-triangle-s";
-
-    public static final String ROW_TOGGLER = "primefaces.rowtoggler.aria.ROW_TOGGLER";
 
     private DataTable parentTable;
 

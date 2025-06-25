@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,44 +23,30 @@
  */
 package org.primefaces.context;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextFactory;
-import javax.faces.lifecycle.Lifecycle;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.FacesContextFactory;
+import jakarta.faces.lifecycle.Lifecycle;
 
 /**
  * {@link FacesContextFactory} to wrap the {@link FacesContext} with our {@link PrimeFacesContext}.
  */
 public class PrimeFacesContextFactory extends FacesContextFactory {
 
-    private FacesContextFactory wrapped;
-
-    // #6212 - don't remove it
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
-    public PrimeFacesContextFactory() {
-
-    }
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeFacesContextFactory(FacesContextFactory wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
     }
 
     @Override
     public FacesContext getFacesContext(Object context, Object request, Object response, Lifecycle lifecycle)
             throws FacesException {
 
-        FacesContext wrappedContext = wrapped.getFacesContext(context, request, response, lifecycle);
+        FacesContext wrappedContext = getWrapped().getFacesContext(context, request, response, lifecycle);
 
         if (wrappedContext instanceof PrimeFacesContext) {
             return wrappedContext;
         }
 
         return new PrimeFacesContext(wrappedContext);
-    }
-
-    @Override
-    public FacesContextFactory getWrapped() {
-        return wrapped;
     }
 }

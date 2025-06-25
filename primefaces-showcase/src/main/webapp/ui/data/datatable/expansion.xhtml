@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -19,11 +19,11 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <p:dataTable var="product" value="#{dtBasicView.products}" rowKey="#{product.id}">
+                <p:dataTable var="product" value="#{dtBasicView.products}" rowKey="#{product.code}">
                     <f:facet name="header">
                         Expand rows to see detailed information
                     </f:facet>
-                    <p:column style="width:2rem">
+                    <p:column style="width:2rem" ariaHeaderText="Row Toggler">
                         <p:rowToggler/>
                     </p:column>
 
@@ -32,7 +32,7 @@
                     </p:column>
 
                     <p:column headerText="Image">
-                        <p:graphicImage name="demo/images/product/#{product.image}" styleClass="p-shadow-2" width="100"/>
+                        <p:graphicImage name="demo/images/product/#{product.image}" styleClass="shadow-1" width="100"/>
                     </p:column>
 
                     <p:column headerText="Price">

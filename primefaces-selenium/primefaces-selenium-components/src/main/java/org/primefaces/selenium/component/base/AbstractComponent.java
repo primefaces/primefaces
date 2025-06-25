@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,11 @@
  */
 package org.primefaces.selenium.component.base;
 
-import org.json.JSONObject;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.AbstractPrimePageFragment;
 import org.primefaces.selenium.PrimeSelenium;
+
+import org.json.JSONObject;
+import org.openqa.selenium.WebElement;
 
 public abstract class AbstractComponent extends AbstractPrimePageFragment {
 
@@ -89,14 +90,22 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
         }
 
         // first check normal path if component is AJAXified
-        boolean isAjaxScript = ComponentUtils.isAjaxScript(element.getAttribute(event));
+        boolean isAjaxScript = ComponentUtils.isAjaxScript(element.getDomAttribute(event));
         if (isAjaxScript) {
             return true;
         }
 
         // now check for CSP events
-        String id = element.getAttribute("id");
+        String id = element.getDomAttribute("id");
         String cspScript = String.format(CSP_SCRIPT, id, event);
-        return PrimeSelenium.executeScript(cspScript);
+        Boolean csp = PrimeSelenium.executeScript(cspScript);
+        return csp != null && csp;
+    }
+
+    /**
+     * Destroy the widget.
+     */
+    public void destroy() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".destroy();");
     }
 }

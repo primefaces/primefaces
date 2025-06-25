@@ -1,3 +1,5 @@
+@use "core";
+
 .layout-config {
     position: fixed;
     padding: 0;
@@ -65,7 +67,7 @@
     }
 
     a {
-        color: $linkColor;
+        color: core.$linkColor;
         font-weight: 600;
         cursor: pointer;
 
@@ -96,7 +98,7 @@
 
             &.scale-active {
                 font-size: 1.25rem;
-                color: $linkColor;
+                color: core.$linkColor;
             }
         }
     }
@@ -126,11 +128,11 @@
 
         &:focus {
             outline: 0 none;
-            box-shadow: 0 0 0 0.2rem $focusBorderColor;
+            box-shadow: 0 0 0 0.2rem core.$focusBorderColor;
         }
     }
 
-    .p-grid > div {
+    .grid > div {
         padding: 1rem;
         text-align: center;
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,24 @@
  */
 package org.primefaces.integrationtests.cascadeselect;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CascadeSelect;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 
-public class CascadeSelect002Test extends BaseCascadeSelectTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class CascadeSelect002Test extends BaseCascadeSelectTest {
 
     @Test
     @Order(1)
     @DisplayName("CascadeSelect: select and submit item (SelectItems with value and label)")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         CascadeSelect cascadeSelect = page.cascadeSelect;
         cascadeSelect.toggleDropdown();
@@ -58,7 +60,7 @@ public class CascadeSelect002Test extends BaseCascadeSelectTest {
 
         // Assert
         assertMessage(page.messages, 0, "Selected GPU", "2080");
-        Assertions.assertEquals("RTX 2080", cascadeSelect.getSelectedLabel());
+        assertEquals("RTX 2080", cascadeSelect.getSelectedLabel());
         assertConfiguration(cascadeSelect.getWidgetConfiguration());
     }
 

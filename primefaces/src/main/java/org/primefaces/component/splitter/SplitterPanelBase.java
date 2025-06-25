@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.splitter;
 
-import javax.faces.component.UIPanel;
+import jakarta.faces.component.UIPanel;
 
 public abstract class SplitterPanelBase extends UIPanel {
 
@@ -33,7 +33,10 @@ public abstract class SplitterPanelBase extends UIPanel {
         size,
         minSize,
         style,
-        styleClass
+        styleClass,
+        tabindex,
+        ariaLabel,
+        ariaLabelledBy,
     }
 
     public SplitterPanelBase() {
@@ -46,7 +49,7 @@ public abstract class SplitterPanelBase extends UIPanel {
     }
 
     public Integer getSize() {
-        return (Integer) getStateHelper().eval(PropertyKeys.size, null);
+        return (Integer) getStateHelper().eval(PropertyKeys.size, 0);
     }
 
     public void setSize(Integer size) {
@@ -54,7 +57,7 @@ public abstract class SplitterPanelBase extends UIPanel {
     }
 
     public Integer getMinSize() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minSize, null);
+        return (Integer) getStateHelper().eval(PropertyKeys.minSize, 0);
     }
 
     public void setMinSize(Integer minSize) {
@@ -75,5 +78,29 @@ public abstract class SplitterPanelBase extends UIPanel {
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    public String getAriaLabelledBy() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabelledBy, null);
+    }
+
+    public void setAriaLabelledBy(String ariaLabelledBy) {
+        getStateHelper().put(PropertyKeys.ariaLabelledBy, ariaLabelledBy);
+    }
+
+    public String getTabindex() {
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+    }
+
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 }

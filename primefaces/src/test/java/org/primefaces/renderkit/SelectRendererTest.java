@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,24 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.selectonemenu.SelectOneMenu;
+
+import java.util.Objects;
+
+import jakarta.el.ELContext;
+import jakarta.el.ELException;
+import jakarta.el.ExpressionFactory;
+import jakarta.faces.application.Application;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.invocation.InvocationOnMock;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,24 +48,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Objects;
-
-import javax.el.ELContext;
-import javax.el.ELException;
-import javax.el.ExpressionFactory;
-import javax.faces.application.Application;
-import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.primefaces.component.selectonemenu.SelectOneMenu;
-
-public class SelectRendererTest {
+class SelectRendererTest {
 
     private static class ErrorString {
 
@@ -194,7 +195,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_converter() {
+    void isSelected_converter() {
         KvPair kv1 = new KvPair("", "");
         KvPair kv2 = new KvPair("foo", "");
         KvPair kv3 = new KvPair("", "bar");
@@ -211,7 +212,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_converter_nonStringValue_stringArray() {
+    void isSelected_converter_nonStringValue_stringArray() {
         KvPair kv1 = new KvPair("foo", "bar");
         KvPair kv2 = new KvPair("baz", "bom");
 
@@ -220,7 +221,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_converter_stringValue_nonStringArray() {
+    void isSelected_converter_stringValue_nonStringArray() {
         KvPair kv1 = new KvPair("foo", "bar");
         KvPair kv2 = new KvPair("baz", "bom");
 
@@ -229,7 +230,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_converter_stringValue_stringArray() {
+    void isSelected_converter_stringValue_stringArray() {
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{}, converter));
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{""}, converter));
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{"bar"}, converter));
@@ -239,7 +240,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_noConverter() {
+    void isSelected_noConverter() {
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{}, null));
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{""}, null));
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{"bar"}, null));
@@ -249,7 +250,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_noConverter_exceptionDuringCoerce() {
+    void isSelected_noConverter_exceptionDuringCoerce() {
         assertTrue(renderer.isSelected(context, component, new ErrorString("foo"),
                 new ErrorString[]{new ErrorString("foofoo")}, null));
         assertTrue(renderer.isSelected(context, component, new ErrorString("err"),
@@ -259,7 +260,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_nullArguments() {
+    void isSelected_nullArguments() {
         assertTrue(renderer.isSelected(context, component, null, null, null));
         assertFalse(renderer.isSelected(context, component, null, new String[]{""}, null));
         assertFalse(renderer.isSelected(context, component, "", null, null));
@@ -278,7 +279,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_refEqualArguments() {
+    void isSelected_refEqualArguments() {
         String str = "foo";
         String[] strArr = new String[]{""};
         KvPair kvPair = new KvPair("foo", "bar");
@@ -293,7 +294,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_valueArrayNotAnArray() {
+    void isSelected_valueArrayNotAnArray() {
         assertTrue(renderer.isSelected(context, component, new String(""), new String(""), null));
         assertFalse(renderer.isSelected(context, component, new String("foo"), new String(""), null));
         assertTrue(renderer.isSelected(context, component, new KvPair("a", "b"), new KvPair("a", "b"), null));
@@ -306,7 +307,7 @@ public class SelectRendererTest {
     }
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         renderer = mock(SelectRenderer.class);
         when(renderer.isSelected(any(), any(), any(), any(), any())).thenCallRealMethod();
         when(renderer.isSelectValueEqual(any(), any(), any(), any(), any())).thenCallRealMethod();
@@ -332,6 +333,6 @@ public class SelectRendererTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
     }
 }

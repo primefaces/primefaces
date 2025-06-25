@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,105 +23,107 @@
  */
 package org.primefaces.integrationtests.tristatecheckbox;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.TriStateCheckbox;
 
-public class TriStateCheckbox001Test extends AbstractPrimePageTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class TriStateCheckbox001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("TriStateCheckbox: click through all states")
-    public void testClickThrough(Page page) {
+    void clickThrough(Page page) {
         // Arrange / Assert
         TriStateCheckbox triStateCheckbox = page.triStateCheckbox;
-        Assertions.assertEquals("0", triStateCheckbox.getValue());
+        assertEquals(null, triStateCheckbox.getValue());
 
         // Act
         triStateCheckbox.click();
 
         // Assert
-        Assertions.assertEquals("1", triStateCheckbox.getValue());
+        assertEquals(Boolean.TRUE, triStateCheckbox.getValue());
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
 
         // Act
         triStateCheckbox.click();
 
         // Assert
-        Assertions.assertEquals("2", triStateCheckbox.getValue());
+        assertEquals(Boolean.FALSE, triStateCheckbox.getValue());
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
 
         // Act
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("2", triStateCheckbox.getValue());
+        assertEquals(Boolean.FALSE, triStateCheckbox.getValue());
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
     }
 
     @Test
     @Order(1)
     @DisplayName("TriStateCheckbox: widget toggle through all states")
-    public void testWidgetToggle(Page page) {
+    void widgetToggle(Page page) {
         // Arrange / Assert
         TriStateCheckbox triStateCheckbox = page.triStateCheckbox;
-        Assertions.assertEquals("0", triStateCheckbox.getValue());
+        assertEquals(null, triStateCheckbox.getValue());
 
         // Act
         triStateCheckbox.toggle();
 
         // Assert
-        Assertions.assertEquals("1", triStateCheckbox.getValue());
+        assertEquals(Boolean.TRUE, triStateCheckbox.getValue());
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
 
         // Act
         triStateCheckbox.toggle();
 
         // Assert
-        Assertions.assertEquals("2", triStateCheckbox.getValue());
+        assertEquals(Boolean.FALSE, triStateCheckbox.getValue());
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
 
         // Act
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("2", triStateCheckbox.getValue());
+        assertEquals(Boolean.FALSE, triStateCheckbox.getValue());
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("TriStateCheckbox: setValue")
-    public void testSetValue(Page page) {
+    void setValue(Page page) {
         // Arrange
         TriStateCheckbox triStateCheckbox = page.triStateCheckbox;
-        triStateCheckbox.setValue("1");
-        Assertions.assertEquals("1", triStateCheckbox.getValue());
+        triStateCheckbox.setValue(Boolean.TRUE);
+        assertEquals(Boolean.TRUE, triStateCheckbox.getValue());
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
 
         // Act
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("1", triStateCheckbox.getValue());
+        assertEquals(Boolean.TRUE, triStateCheckbox.getValue());
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
     }
 
     @Test
     @Order(4)
     @DisplayName("TriStateCheckbox: disabled")
-    public void testDisable(Page page) {
+    void disable(Page page) {
         // Arrange
         TriStateCheckbox triStateCheckbox = page.triStateCheckbox;
-        triStateCheckbox.setValue("1");
-        Assertions.assertEquals("1", triStateCheckbox.getValue());
+        triStateCheckbox.setValue(Boolean.TRUE);
+        assertEquals(Boolean.TRUE, triStateCheckbox.getValue());
 
         // Act
         triStateCheckbox.disable();
@@ -129,8 +131,8 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
 
         // Assert - value should not be accepted
         assertNotClickable(triStateCheckbox);
-        Assertions.assertEquals("1", triStateCheckbox.getValue());
-        Assertions.assertFalse(triStateCheckbox.isEnabled());
+        assertEquals(Boolean.TRUE, triStateCheckbox.getValue());
+        assertFalse(triStateCheckbox.isEnabled());
         assertCss(triStateCheckbox, "ui-state-disabled");
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
     }
@@ -138,11 +140,11 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("TriStateCheckbox: enabled")
-    public void testEnabled(Page page) {
+    void enabled(Page page) {
         // Arrange
         TriStateCheckbox triStateCheckbox = page.triStateCheckbox;
-        triStateCheckbox.setValue("1");
-        Assertions.assertEquals("1", triStateCheckbox.getValue());
+        triStateCheckbox.setValue(Boolean.TRUE);
+        assertEquals(Boolean.TRUE, triStateCheckbox.getValue());
 
         // Act
         triStateCheckbox.disable();
@@ -151,24 +153,24 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
 
         // Assert - value should not be accepted
         assertClickable(triStateCheckbox);
-        Assertions.assertEquals("2", triStateCheckbox.getValue());
-        Assertions.assertTrue(triStateCheckbox.isEnabled());
+        assertEquals(Boolean.FALSE, triStateCheckbox.getValue());
+        assertTrue(triStateCheckbox.isEnabled());
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
     }
 
     @Test
     @Order(6)
     @DisplayName("TriStateCheckbox: readonly")
-    public void testReadonly(Page page) {
+    void readonly(Page page) {
         // Arrange
         TriStateCheckbox triStateCheckbox = page.readonly;
-        Assertions.assertEquals("0", triStateCheckbox.getValue());
+        assertEquals(null, triStateCheckbox.getValue());
 
         // Act
         triStateCheckbox.toggle();
 
         // Assert - value should not be accepted
-        Assertions.assertEquals("0", triStateCheckbox.getValue());
+        assertEquals(null, triStateCheckbox.getValue());
         assertCss(triStateCheckbox.getBox(), "ui-chkbox-readonly");
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
     }
@@ -176,7 +178,7 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("TriStateCheckbox Config = " + cfg);
-        Assertions.assertTrue(cfg.has("id"));
+        assertTrue(cfg.has("id"));
     }
 
     public static class Page extends AbstractPrimePage {

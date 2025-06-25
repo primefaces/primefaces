@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,15 @@
  */
 package org.primefaces.component.menuitem;
 
-import javax.faces.component.UICommand;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.model.menu.MenuItem;
-import org.primefaces.util.SerializableFunction;
+import org.primefaces.util.Callbacks;
+
+import jakarta.faces.component.UICommand;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 
 public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable,
@@ -74,7 +74,9 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
         form,
         escape,
         rel,
-        ignoreComponentNotFound
+        ignoreComponentNotFound,
+        ariaLabel,
+        badge
     }
 
     public UIMenuItemBase() {
@@ -251,7 +253,7 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
 
     @Override
     public String getIconPos() {
-        return (String) getStateHelper().eval(PropertyKeys.iconPos, "right");
+        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
     }
 
     public void setIconPos(String iconPos) {
@@ -385,7 +387,7 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
     }
 
     @Override
-    public SerializableFunction<MenuItem, String> getFunction() {
+    public Callbacks.SerializableFunction<MenuItem, String> getFunction() {
         return null;
     }
 
@@ -396,5 +398,23 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
         getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
+
+    @Override
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    @Override
+    public Object getBadge() {
+        return getStateHelper().eval(PropertyKeys.badge, null);
+    }
+
+    public void setBadge(Object badge) {
+        getStateHelper().put(PropertyKeys.badge, badge);
     }
 }

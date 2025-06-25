@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -33,6 +33,8 @@
                     <p:submenu label="Navigations">
                         <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
                         <p:menuitem value="Internal" outcome="/ui/menu/menubar" icon="pi pi-upload"/>
+                        <p:menuitem value="Update (right click open in new tab)" action="#{menuView.update}" update="messages" url="http://www.primefaces.org" icon="pi pi-thumbs-up"/>
+                        <p:menuitem value="Logout (disabled)" icon="pi pi-power-off" disabled="true"/>
                     </p:submenu>
                 </p:menu>
             </div>
@@ -50,13 +52,15 @@
                     <p:submenu label="Navigations">
                         <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
                         <p:menuitem value="Internal" outcome="/ui/menu/menubar" icon="pi pi-upload"/>
+                        <p:menuitem value="Update (right click open in new tab)" action="#{menuView.update}" update="messages" url="http://www.primefaces.org" icon="pi pi-thumbs-up"/>
+                        <p:menuitem value="Logout (disabled)" icon="pi pi-power-off" disabled="true"/>
                     </p:submenu>
                 </p:menu>
             </div>
 
             <div class="card">
                 <h5>Programmatic</h5>
-                <p:menu model="#{menuView.model}"/>
+                <p:menu model="#{menuView.model}" toggleable="true" />
             </div>
 
             <div class="card">
@@ -71,6 +75,7 @@
                     <p:submenu label="Navigations">
                         <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
                         <p:menuitem value="Internal" outcome="/ui/menu/menubar" icon="pi pi-upload"/>
+                        <p:menuitem value="Update (right click open in new tab)" action="#{menuView.update}" update="messages" url="http://www.primefaces.org" icon="pi pi-thumbs-up"/>
                     </p:submenu>
                 </p:menu>
             </div>

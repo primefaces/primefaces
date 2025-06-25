@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,8 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
 
     private boolean disabled;
 
+    private boolean enabled;
+
     private String styleClass;
 
     public DefaultDateMetadata() {
@@ -55,6 +57,14 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
         this.styleClass = styleClass;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(disabled, styleClass);
@@ -62,22 +72,15 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof DefaultDateMetadata)) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         DefaultDateMetadata other = (DefaultDateMetadata) obj;
-        return disabled == other.disabled && Objects.equals(styleClass, other.styleClass);
+        return disabled == other.disabled && enabled == other.enabled && Objects.equals(styleClass, other.styleClass);
     }
 
     @Override
     public String toString() {
-        return "DefaultDateMetadata{" + "disabled=" + disabled + ", styleClass=" + styleClass + '}';
+        return "DefaultDateMetadata{" + "disabled=" + disabled + ", enabled = " + enabled + ", styleClass=" + styleClass + '}';
     }
 
     public static Builder builder() {
@@ -99,6 +102,11 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
 
         public Builder styleClass(String styleClass) {
             dateMetadata.setStyleClass(styleClass);
+            return this;
+        }
+
+        public Builder enabled(boolean enabled) {
+            dateMetadata.setEnabled(enabled);
             return this;
         }
 

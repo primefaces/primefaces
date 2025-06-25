@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -19,7 +19,7 @@
         <div class="card">
             <h:form>
                 <h:panelGrid columns="4" cellpadding="7">
-                    <h:outputLabel for="text" value="Text: (Change)"/>
+                    <p:outputLabel for="text" value="Text: (Change)"/>
                     <p:inputText id="text" value="#{validationView.text}" required="true">
                         <f:validateLength minimum="2" maximum="5"/>
                         <p:clientValidator/>
@@ -27,7 +27,7 @@
                     <p:message for="text" display="icon"/>
                     <h:outputText value="#{validationView.text}"/>
 
-                    <h:outputLabel for="integer" value="Integer: (Keyup)"/>
+                    <p:outputLabel for="integer" value="Integer: (Keyup)"/>
                     <p:inputText id="integer" value="#{validationView.integer}">
                         <p:clientValidator event="keyup"/>
                     </p:inputText>
@@ -35,7 +35,7 @@
                     <h:outputText value="#{validationView.integer}"/>
                 </h:panelGrid>
 
-                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="p-mt-3" />
+                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="mt-3" />
             </h:form>
         </div>
     </ui:define>

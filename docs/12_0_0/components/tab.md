@@ -24,6 +24,7 @@ titleStyleClass | null | String | Style class of the tab.
 disabled | false | Boolean | Disables tab element.
 closable | false | Boolean | Makes the tab closable when enabled.
 titletip | null | String | Tooltip of the tab header.
+menuTitle | null | String | Tooltip for the menu button.
 
 ## Getting started with the Tab
 See the sections of components who utilize _tab_ component for more information.

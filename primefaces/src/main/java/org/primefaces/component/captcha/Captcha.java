@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,29 @@
  */
 package org.primefaces.component.captcha;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MessageFactory;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
+import jakarta.el.ELException;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
 
-import org.primefaces.PrimeFaces;
 import org.json.JSONObject;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MessageFactory;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
@@ -52,6 +58,10 @@ public class Captcha extends CaptchaBase {
     public static final String PUBLIC_KEY = "primefaces.PUBLIC_CAPTCHA_KEY";
     public static final String PRIVATE_KEY = "primefaces.PRIVATE_CAPTCHA_KEY";
     public static final String INVALID_MESSAGE_ID = "primefaces.captcha.INVALID";
+    public static final String RECAPTCHA = "g-recaptcha";
+    public static final String HCAPTCHA = "h-captcha";
+
+    private static final Logger LOGGER = Logger.getLogger(Captcha.class.getName());
 
     @Override
     protected void validateValue(FacesContext context, Object value) {
@@ -62,7 +72,7 @@ public class Captcha extends CaptchaBase {
             boolean result = false;
 
             try {
-                URL url = new URL("https://www.google.com/recaptcha/api/siteverify");
+                URL url = new URI(getVerifyUrl()).toURL();
                 URLConnection conn = url.openConnection();
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
@@ -93,8 +103,9 @@ public class Captcha extends CaptchaBase {
             finally {
                 // the captcha token is valid for only one request, in case of an ajax request we have to get a new one
                 if (context.getPartialViewContext().isAjaxRequest()) {
-                    PrimeFaces.current().executeScript("if (document.getElementById('g-recaptcha-response')) { "
-                            + "try { grecaptcha.reset(); } catch (error) { PrimeFaces.error(error); } }");
+                    String script = String.format("if (document.getElementById('%s-response')) {try {%s.reset();} catch (error) {PrimeFaces.error(error);}}",
+                            getType(), getExecutor());
+                    PrimeFaces.current().executeScript(script);
                 }
             }
 
@@ -112,7 +123,7 @@ public class Captcha extends CaptchaBase {
                     params[0] = ComponentUtils.getLabel(context, this);
                     params[1] = value;
 
-                    msg = MessageFactory.getFacesMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(context, Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                 }
 
                 context.addMessage(getClientId(context), msg);
@@ -121,16 +132,23 @@ public class Captcha extends CaptchaBase {
     }
 
     private String createPostParameters(FacesContext context, Object value) throws UnsupportedEncodingException {
-        String privateKey = context.getApplication().evaluateExpressionGet(context,
-                context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY), String.class);
+        String privateKey = context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);
+        try {
+            if (privateKey != null) {
+                privateKey = context.getApplication().evaluateExpressionGet(context, privateKey, String.class);
+            }
+        }
+        catch (ELException e) {
+            LOGGER.fine(() -> "Error processing context parameter " + Captcha.PRIVATE_KEY + " as EL-expression: " + e.getMessage());
+        }
 
         if (privateKey == null) {
-            throw new FacesException("Cannot find private key for catpcha, use primefaces.PRIVATE_CAPTCHA_KEY context-param to define one");
+            throw new FacesException("Cannot find private key for catpcha, use " + Captcha.PRIVATE_KEY + " context-param to define one");
         }
 
         StringBuilder postParams = new StringBuilder();
-        postParams.append("secret=").append(URLEncoder.encode(privateKey, "UTF-8"));
-        postParams.append("&response=").append(value == null ? "" : URLEncoder.encode((String) value, "UTF-8"));
+        postParams.append("secret=").append(URLEncoder.encode(privateKey, StandardCharsets.UTF_8));
+        postParams.append("&response=").append(value == null ? Constants.EMPTY_STRING : URLEncoder.encode((String) value, StandardCharsets.UTF_8));
 
         String params = postParams.toString();
         postParams.setLength(0);

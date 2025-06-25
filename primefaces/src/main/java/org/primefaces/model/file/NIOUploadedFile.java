@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,54 +23,28 @@
  */
 package org.primefaces.model.file;
 
-import org.apache.commons.io.FilenameUtils;
-import org.primefaces.util.FileUploadUtils;
-
-import javax.faces.FacesException;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
-public class NIOUploadedFile implements UploadedFile {
+import jakarta.faces.FacesException;
 
-    private Path file;
-    private String filename;
-    private byte[] content;
+public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String contentType;
 
     public NIOUploadedFile() {
         // NOOP
     }
 
-    public NIOUploadedFile(Path file, String filename, String contentType) {
-        this.file = file;
-        this.filename = filename;
+    public NIOUploadedFile(Path source, String filename, String contentType, Long sizeLimit, String webKitRelativePath) {
+        super(source, filename, sizeLimit, webKitRelativePath);
         this.contentType = contentType;
-    }
-
-    @Override
-    public String getFileName() {
-        return filename;
-    }
-
-    @Override
-    public InputStream getInputStream() throws IOException {
-        return Files.newInputStream(file);
-    }
-
-    @Override
-    public byte[] getContent() {
-        if (content == null) {
-            try {
-                content = Files.readAllBytes(file);
-            }
-            catch (IOException e) {
-                throw new FacesException(e);
-            }
-        }
-        return content;
     }
 
     @Override
@@ -81,7 +55,7 @@ public class NIOUploadedFile implements UploadedFile {
     @Override
     public long getSize() {
         try {
-            return Files.size(file);
+            return Files.size(getSource());
         }
         catch (IOException e) {
             throw new FacesException(e);
@@ -89,13 +63,18 @@ public class NIOUploadedFile implements UploadedFile {
     }
 
     @Override
-    public void write(String filePath) throws Exception {
-        String validFileName = FileUploadUtils.getValidFilename(FilenameUtils.getName(getFileName()));
-        Files.copy(file, Paths.get(validFileName));
+    public void delete() throws IOException {
+        Files.delete(getSource());
     }
 
     @Override
-    public void delete() throws IOException {
-        Files.delete(file);
+    protected InputStream getSourceInputStream() throws IOException {
+        return Files.newInputStream(getSource());
     }
+
+    @Override
+    protected void write(File file) throws IOException {
+        Files.copy(getSource(), file.toPath());
+    }
+
 }

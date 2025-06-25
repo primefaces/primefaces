@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,19 @@
  */
 package org.primefaces.component.accordionpanel;
 
-import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.MetaRuleset;
-
 import org.primefaces.event.TabEvent;
 import org.primefaces.facelets.MethodRule;
 
+import jakarta.faces.view.facelets.ComponentConfig;
+import jakarta.faces.view.facelets.ComponentHandler;
+import jakarta.faces.view.facelets.MetaRule;
+import jakarta.faces.view.facelets.MetaRuleset;
+
 public class AccordionPanelComponentHandler extends ComponentHandler {
 
-    private static final MetaRule TABCHANGE_CONTROLLER
-            = new MethodRule("tabController", Boolean.class, new Class[]{TabEvent.class});
+    private static final MetaRule TABCHANGE_CONTROLLER = new MethodRule(AccordionPanel.PropertyKeys.tabController.name(),
+            Boolean.class,
+            new Class[]{TabEvent.class});
 
     public AccordionPanelComponentHandler(ComponentConfig config) {
         super(config);

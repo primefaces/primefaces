@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,47 @@
  */
 package org.primefaces.component.idlemonitor;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class IdleMonitorRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class IdleMonitorRenderer extends CoreRenderer<IdleMonitor> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, IdleMonitor component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        IdleMonitor idleMonitor = (IdleMonitor) component;
+    public void encodeEnd(FacesContext context, IdleMonitor component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
+    }
 
+    protected void encodeScript(FacesContext context, IdleMonitor component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("IdleMonitor", idleMonitor)
-                .attr("timeout", idleMonitor.getTimeout())
-                .attr("multiWindowSupport", idleMonitor.isMultiWindowSupport())
-                .callback("onidle", "function()", idleMonitor.getOnidle())
-                .callback("onactive", "function()", idleMonitor.getOnactive());
+        wb.init("IdleMonitor", component)
+                .attr("timeout", component.getTimeout())
+                .attr("multiWindowSupport", component.isMultiWindowSupport())
+                .callback("onidle", "function()", component.getOnidle())
+                .callback("onactive", "function()", component.getOnactive());
 
-        encodeClientBehaviors(context, idleMonitor);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
+    }
+
+    protected void encodeMarkup(FacesContext context, IdleMonitor idleMonitor) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = idleMonitor.getClientId(context);
+
+        writer.startElement("span", idleMonitor);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", "ui-idlemonitor", "styleClass");
+        writer.endElement("span");
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,30 @@
  */
 package org.primefaces.component.filedownload;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.IOUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.ResourceUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.StateHolder;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
-
-import org.apache.commons.io.IOUtils;
-import org.primefaces.PrimeFaces;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.util.*;
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.StateHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.ActionEvent;
+import jakarta.faces.event.ActionListener;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
 
@@ -51,22 +56,25 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
     private ValueExpression monitorKey;
 
+    private ValueExpression store;
+
     public FileDownloadActionListener() {
-        ResourceUtils.addComponentResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
+        ResourceUtils.addJavascriptResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
     }
 
-    public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition, ValueExpression monitorKey) {
+    public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition, ValueExpression monitorKey, ValueExpression store) {
         this();
         this.value = value;
         this.contentDisposition = contentDisposition;
         this.monitorKey = monitorKey;
+        this.store = store;
     }
 
     @Override
     public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
-        StreamedContent content = (StreamedContent) value.getValue(elContext);
+        StreamedContent content = value.getValue(elContext);
 
         if (content == null) {
             return;
@@ -81,10 +89,11 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     }
 
     protected void ajaxDownload(FacesContext context, StreamedContent content) {
-        String uri = DynamicContentSrcBuilder.buildStreaming(context, value, false);
+        UIComponent currentComponent = UIComponent.getCurrentComponent(context);
+        String uri = DynamicContentSrcBuilder.buildStreaming(context, currentComponent, value, false);
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
         PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
-                uri, content.getContentType(), content.getName(), monitorKeyCookieName));
+                uri, content.getContentType(), EscapeUtils.forJavaScript(content.getName()), monitorKeyCookieName));
     }
 
     protected void regularDownload(FacesContext context, StreamedContent content) {
@@ -100,10 +109,13 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
                 ? "/"
                 : externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
         ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", cookieOptions);
-        ResourceUtils.addNoCacheControl(externalContext);
+
+        Boolean store = this.store != null ? (Boolean) this.store.getValue(context.getELContext()) : Boolean.FALSE;
+        ResourceUtils.addNoCacheControl(externalContext, store);
 
         if (content.getContentLength() != null) {
-            externalContext.setResponseContentLength(content.getContentLength());
+            // we can't use externalContext.setResponseContentLength as our contentLength is a long
+            externalContext.setResponseHeader("Content-Length", String.valueOf(content.getContentLength()));
         }
 
         try {

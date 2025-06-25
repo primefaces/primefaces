@@ -63,7 +63,7 @@ DataTable displays data in tabular format.
 | pageLinks                 | 10                 | Integer          | Maximum number of page links to display.
 | paginator                 | false              | Boolean          | Enables pagination.
 | paginatorAlwaysVisible    | true               | Boolean          | Defines if paginator should be hidden if total data count is less than number of rows per page.
-| paginatorPosition         | both               | String           | Position of the paginator.
+| paginatorPosition         | both               | String           | Paginator can be positioned at the "top," "bottom," or "both." Default setting is "both."
 | paginatorTemplate         | null               | String           | Template of the paginator.
 | reflow                    | false              | Boolean          | Reflow mode is a responsive mode to display columns as stacked depending on screen size.
 | rendered                  | true               | Boolean          | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -80,7 +80,7 @@ DataTable displays data in tabular format.
 | rowSelector               | null               | String           | Client side check if rowclick triggered row click event not a clickable element in row content.
 | rowStatePreserved         | false              | Boolean          | Keeps state of its children on a per-row basis. Default is false.
 | rowStyleClass             | null               | String           | Style class for each row.
-| rows                      | null               | Integer          | Number of rows to display per page.
+| rows                      | 0                  | Integer          | Number of rows to display per page.
 | rowsPerPageLabel          | null               | String           | Label for the rowsPerPage dropdown.
 | rowsPerPageTemplate       | null               | String           | Template of the rowsPerPage dropdown.
 | saveOnCellBlur            | true               | Boolean          | Saves the changes in cell editing on blur, when set to false changes are discarded.
@@ -109,8 +109,9 @@ DataTable displays data in tabular format.
 | var                       | null               | String           | Name of the request-scoped variable used to refer each data.
 | virtualScroll             | false              | Boolean          | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
 | widgetVar                 | null               | String           | Name of the client side widget.
-| touchable                 | false              | Boolean          | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+| touchable                 | null              | Boolean           | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 | partialUpdate             | true               | Boolean          | When disabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable.
+| showSelectAll             | true               | Boolean          | Whether to show the select all checkbox inside the column's header.
 
 ## Getting started with the DataTable
 We will be using the same Car and CarBean classes described in DataGrid section.
@@ -204,7 +205,7 @@ Here are more examples based on different templates;
 - _{PreviousPageLink} {CurrentPageReport} {NextPageLink}_
 
 ## Paginator Position
-Paginator can be positoned using _paginatorPosition_ attribute in three different locations, "top",
+Paginator can be positioned using _paginatorPosition_ attribute in three different locations, "top",
 "bottom" or "both" (default).
 
 ## Custom Content in Paginator
@@ -333,8 +334,12 @@ necessary if the value of the filter facet is not defined.
 
 Please make sure that the filter is using the **same type as the column field** if you are using comparable
 filter match modes (like greater than). For example, if the column field is an integer, and you would like to
-add a greater than filter, make sure to convert the filter to integer as well. Do so by adding a `f:converter`
-(see example below).
+add a greater than filter, make sure to convert the filter to integer as well. Do so by using the column's `converter`
+attribute or adding a `f:converter` to the filter input (see example below).
+
+In case you want to filter `LocalDateTime` or `Date` values, use the converter tag
+`<f:convertDateTime type="localDateTime"/>` or `<f:convertDateTime type="date"/>` as child of the filtering `DatePicker`
+component.
 
 ```xhtml
 <p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}">
@@ -386,16 +391,23 @@ _filterMatchMode_ defines which built-in filtering algorithm would be used per c
 for this attribute are;
 
 - **startsWith** : Checks if column value starts with the filter value.
+- **notStartsWith** : Checks if column value does not start with the filter value.
 - **endsWith** : Checks if column value ends with the filter value.
+- **notEndsWith** : Checks if column value does not end with the filter value.
 - **contains** : Checks if column value contains the filter value.
-- **exact** : Checks if string representations of column value and filter value are same.
+- **notContains** : Checks if column value does not contain the filter value.
+- **exact** : Checks if string representations of column value and filter value are the same.
+- **notExact** : Checks if string representations of column value and filter value are not the same.
 - **lt** : Checks if column value is less than the filter value.
 - **lte** : Checks if column value is less than or equals the filter value.
 - **gt** : Checks if column value is greater than the filter value.
 - **gte** : Checks if column value is greater than or equals the filter value.
 - **equals** : Checks if column value equals the filter value.
+- **notEquals** : Checks if column value does not equal the filter value.
 - **in** : Checks if column value is in the collection of the filter value.
-- **range** : Checks if column value is within a provided range `(p:datePicker offers this functionality)`
+- **notIn** : Checks if column value is not in the collection of the filter value.
+- **between** : Checks if column value is within a provided range (`p:datePicker` offers this functionality).
+- **notBetween** : Checks if column value is not within a provided range (`p:datePicker` offers this functionality).
 
 In case the built-in methods do not suffice, custom filtering can be implemented using
 filterFunction approach.
@@ -533,6 +545,8 @@ keeps previous selections same as selecting a row with mouse click when metakey 
 ## RowKey
 RowKey should a unique identifier from your data model and used by datatable to find the selected
 rows. You must define this key by using the `rowKey` attribute.
+    
+!> RowKey must not contain a comma `,` as it will break row selection. See [`GitHub #8932`](https://github.com/primefaces/primefaces/issues/8932).
 
 ## Dynamic Columns
 Dynamic columns is handy in case you can’t know how many columns to render. Columns
@@ -751,13 +765,17 @@ Additionally, rowExpandMode attribute defines if multiple rows can be expanded a
 or not, valid values are "single" and "multiple" (default).
 
 ## Editing
-Incell editing provides an easy way to display editable data. _p:cellEditor_ is used to define the cell
-editor of a particular column. There are two types of editing, _row_ and _cell_. Row editing is the
-default mode and used by adding a _p:rowEditor_ component as row controls.
 
+When it comes to incell editing there are two possible options: _row_ and _cell_
+
+### Row Editing
+
+Row editing is the default mode. p:cellEditor is used to define the cell editor of a 
+particular column. By adding a _p:rowEditor_ component you get row controls to 
+start editing and commit or cancel changes for one row.
 
 ```xhtml
-<p:dataTable var="car" value="#{carBean.cars}" editable="true">
+<p:dataTable var="car" value="#{carBean.cars}" editable="true" editMode="row">
     <f:facet name="header">
         In-Cell Editing
     </f:facet>
@@ -777,12 +795,40 @@ default mode and used by adding a _p:rowEditor_ component as row controls.
     </p:column>
 </p:dataTable>
 ```
-When pencil icon is clicked, row is displayed in editable mode meaning input facets are displayed
-and output facets are hidden. Clicking tick icon only saves that particular row and cancel icon
-reverts the changes, both options are implemented with ajax interaction.
+When the pencil icon is clicked, the row is displayed in editable mode, 
+meaning input facets are displayed and output facets are hidden. 
+Clicking the tick icon only saves that particular row and the 
+cancel icon reverts the changes. Both options are implemented with ajax interaction.
 
-Another option for incell editing is cell editing, in this mode a cell switches to edit mode when it is
-clicked, losing focus triggers an ajax event to save the change value.
+### Cell Editing
+
+**WARNING**: With _cell_ edting mode _required_ attributes and bean validation annotations
+do not apply. See this [discussion](https://github.com/orgs/primefaces/discussions/1766)
+
+_p:cellEditor_ is again used to define the cell editor of a particular column. In contrast
+to _row_ editing there is no _p:rowEditor_ component and the _editMode_ attribute must
+be set to _cell_.
+
+```xhtml
+<p:dataTable var="car" value="#{carBean.cars}" editable="true" editMode="cell">
+    <f:facet name="header">
+        In-Cell Editing
+    </f:facet>
+    <p:column headerText="Model">
+        <p:cellEditor>
+            <f:facet name="output">
+                <h:outputText value="#{car.model}" />
+            </f:facet>
+            <f:facet name="input">
+                <h:inputText value="#{car.model}"/>
+            </f:facet>
+        </p:cellEditor>
+    </p:column>
+    //more columns with cell editors
+
+
+</p:dataTable>
+```
 
 ## Lazy Loading
 Lazy Loading is an approach to deal with huge datasets efficiently, regular AJAX based pagination
@@ -1097,18 +1143,19 @@ Widget: _PrimeFaces.widget.DataTable_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| getPaginator() | - | Paginator | Returns the paginator insance.
+| addRow() | - | void | Fetches the last row from the backend and inserts a row instead of updating the table itself.
 | clearFilters() | - | void | Clears all column filters
-| getSelectedRowsCount() | - | Number | Returns number of selected rows.
-| selectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Selects the given row.
-| unselectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Unselects the given row.
-| unselectAllRows() | - | void | Unselects all rows.
-| toggleCheckAll() | - | void | Toggles header checkbox state.
+| collapseAllRows() | - | void | Collapses all rows that are currently expanded.
 | filter() | - | void | Filters the data.
+| getPaginator() | - | Paginator | Returns the paginator instance.
+| getSelectedRowsCount() | - | Number | Returns number of selected rows.
 | selectAllRows() | - | void | Select all rows.
 | selectAllRowsOnPage() | - | void | Select all rows on current page.
+| selectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Selects the given row.
+| toggleCheckAll() | - | void | Toggles header checkbox state.
+| unselectAllRows() | - | void | Unselects all rows.
 | unselectAllRowsOnPage() | - | void | Unselect all rows on current page.
-| addRow() | - | void | Fetches the last row from the backend and inserts a row instead of updating the table itself.
+| unselectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Unselects the given row.
 
 
 ## Server Side API

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,35 @@
  */
 package org.primefaces.model.filter;
 
-import javax.faces.context.FacesContext;
 import java.util.List;
 import java.util.Locale;
 
+import jakarta.faces.context.FacesContext;
+
 public class BetweenFilterConstraint implements FilterConstraint {
+
+    private static final long serialVersionUID = 1L;
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (!(filter instanceof List) || ((List<?>) filter).size() != 2) {
+        if (filter != null && !(filter instanceof List)) {
+            throw new IllegalArgumentException("Filter should be a java.util.List");
+        }
+        List<?> filterList = (List<?>) filter;
+        if (filterList == null || filterList.size() != 2 || value == null) {
             return false;
         }
-
-        if (value instanceof Comparable) {
-            return isBetween((Comparable) value, (List) filter);
+        ComparableFilterConstraint.assertComparable(value);
+        Object start = filterList.get(0);
+        Object end = filterList.get(1);
+        if (start == null || end == null) {
+            return false;
         }
-
-        throw new IllegalArgumentException("Invalid type: " + value.getClass() + ". Valid type: " + Comparable.class.getName());
+        ComparableFilterConstraint.assertAssignable(end, value);
+        return isBetween((Comparable) value, (Comparable) start, (Comparable) end);
     }
 
-    protected boolean isBetween(Comparable value, List filter) {
-        Comparable start = (Comparable) filter.get(0);
-        Comparable end = (Comparable) filter.get(1);
+    protected boolean isBetween(Comparable value, Comparable start, Comparable end) {
         return value.compareTo(start) >= 0 && value.compareTo(end) <= 0;
     }
 }

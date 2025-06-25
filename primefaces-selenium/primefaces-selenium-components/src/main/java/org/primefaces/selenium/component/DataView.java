@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,14 @@
  */
 package org.primefaces.selenium.component;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractPageableData;
 
 import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:dataView}.
@@ -69,8 +70,8 @@ public abstract class DataView extends AbstractPageableData {
         List<WebElement> layoutButtons = getLayoutOptionsWebElement().findElements(By.className("ui-button"));
         for (WebElement layoutButton: layoutButtons) {
             WebElement layoutButtonInputHidden = layoutButton.findElement(By.tagName("input"));
-            if ("true".equals(layoutButtonInputHidden.getAttribute("checked"))) {
-                if ("list".equals(layoutButtonInputHidden.getAttribute("value"))) {
+            if ("true".equals(layoutButtonInputHidden.getDomProperty("checked"))) {
+                if ("list".equals(layoutButtonInputHidden.getDomProperty("value"))) {
                     return Layout.LIST;
                 }
                 else {
@@ -86,10 +87,10 @@ public abstract class DataView extends AbstractPageableData {
         List<WebElement> layoutButtons = getLayoutOptionsWebElement().findElements(By.className("ui-button"));
         for (WebElement layoutButton: layoutButtons) {
             WebElement layoutButtonInputHidden = layoutButton.findElement(By.tagName("input"));
-            if (layout == Layout.LIST && "list".equals(layoutButtonInputHidden.getAttribute("value"))) {
+            if (layout == Layout.LIST && "list".equals(layoutButtonInputHidden.getDomProperty("value"))) {
                 PrimeSelenium.guardAjax(layoutButton).click();
             }
-            else if (layout == Layout.GRID && "grid".equals(layoutButtonInputHidden.getAttribute("value"))) {
+            else if (layout == Layout.GRID && "grid".equals(layoutButtonInputHidden.getDomProperty("value"))) {
                 PrimeSelenium.guardAjax(layoutButton).click();
             }
         }

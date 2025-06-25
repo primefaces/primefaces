@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,47 +23,49 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.model.datatable.Row;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.model.datatable.Row;
 
-public class DataTable017Test extends AbstractDataTableTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class DataTable017Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: RowGroup - rowspan")
-    public void testRowGroup(Page page) {
+    void rowGroup(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         //page.button.click();
 
         // Assert
-        Assertions.assertNotNull(dataTable.getHeaderWebElement());
+        assertNotNull(dataTable.getHeaderWebElement());
 
         List<WebElement> rowElts = dataTable.getRowsWebElement();
-        Assertions.assertNotNull(rowElts);
-        Assertions.assertEquals(languages.size(), rowElts.size());
+        assertNotNull(rowElts);
+        assertEquals(languages.size(), rowElts.size());
 
         List<Row> rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(languages.size(), rows.size());
+        assertNotNull(rows);
+        assertEquals(languages.size(), rows.size());
 
-        Assertions.assertEquals("2", dataTable.getCell(0, 0).getWebElement().getAttribute("rowspan"));
-        Assertions.assertEquals("COMPILED", dataTable.getCell(0, 0).getText());
-        Assertions.assertEquals("3", dataTable.getCell(2, 0).getWebElement().getAttribute("rowspan"));
-        Assertions.assertEquals("INTERPRETED", dataTable.getCell(2, 0).getText());
+        assertEquals("2", dataTable.getCell(0, 0).getWebElement().getAttribute("rowspan"));
+        assertEquals("COMPILED", dataTable.getCell(0, 0).getText());
+        assertEquals("3", dataTable.getCell(2, 0).getWebElement().getAttribute("rowspan"));
+        assertEquals("INTERPRETED", dataTable.getCell(2, 0).getText());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -71,7 +73,7 @@ public class DataTable017Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("groupColumnIndexes"));
+        assertTrue(cfg.has("groupColumnIndexes"));
     }
 
     public static class Page extends AbstractPrimePage {

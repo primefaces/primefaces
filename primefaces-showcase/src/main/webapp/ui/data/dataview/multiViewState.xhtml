@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -22,7 +22,7 @@
                 <p:messages id="messages"/>
 
                 <p:commandButton value="Clear multiViewSate" action="#{dataGridView.clearMultiViewState}"
-                                 update="@form" styleClass="p-mb-5" />
+                                 update="@form" styleClass="mb-5" />
 
                 <p:dataView var="product" value="#{dataGridView.products}" multiViewState="true" rows="12"
                             paginator="true"

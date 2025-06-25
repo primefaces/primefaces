@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -39,8 +39,10 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form id="form">
-                <p:messages/>
-                <h:panelGrid columns="2" cellpadding="7">
+                <p:messages>
+                   <p:autoUpdate />
+                </p:messages>
+                <h:panelGrid columns="2" cellpadding="7" id="panel">
                     <p:outputLabel for="firstname" value="Firstname:"/>
                     <p:inputText id="firstname" value="#{requestContextView.user.firstname}" required="true"/>
 
@@ -48,7 +50,7 @@
                     <p:inputText id="surname" value="#{requestContextView.user.lastname}" required="true"/>
                 </h:panelGrid>
 
-                <p:commandButton value="Save" action="#{requestContextView.save}" styleClass="p-mt-2"
+                <p:commandButton value="Save" action="#{requestContextView.save}" styleClass="mt-2"
                                  oncomplete="handleComplete(xhr, status, args)"/>
 
                 <p:log/>

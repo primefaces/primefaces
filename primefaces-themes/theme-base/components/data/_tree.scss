@@ -1,0 +1,250 @@
+@use 'sass:list';
+@use 'sass:math';
+
+body {
+  .ui-tree {
+    border: $panelContentBorder;
+    background: $panelContentBg;
+    color: $panelContentTextColor;
+    padding: $panelContentPadding;
+    width: 100%;
+    border-radius: $borderRadius;
+
+    .ui-tree-container {
+      padding: 0;
+      margin: 0;
+
+      .ui-treenode {
+        padding: $treeNodePadding;
+
+        .ui-treenode-content {
+          @include flex();
+          @include flex-align-center();
+
+          .ui-tree-toggler {
+            display: inline-block;
+            float: none;
+            margin: 0 $inlineSpacing 0 0;
+            transition: $transition;
+            @include action-icon();
+
+            &.ui-icon-triangle-1-e {
+              @include icon-override("\e901");
+            }
+
+            &.ui-icon-triangle-1-s {
+              @include icon-override("\e902");
+            }
+
+            &.ui-icon-triangle-1-w {
+              @include icon-override("\e900");
+            }
+          }
+
+          .ui-treenode-leaf-icon {
+            width: $actionIconWidth;
+            height: $actionIconHeight;
+            margin: 0 $inlineSpacing 0 0;
+          }
+
+          .ui-treenode-icon {
+            margin: 0 $inlineSpacing 0 0;
+          }
+
+          .ui-treenode-label {
+            margin: 0;
+            padding: $treeNodeLabelPadding;
+            border-radius: $borderRadius;
+
+            &.ui-state-hover {
+              background: $inputListItemHoverBg;
+              color: $inputListItemTextHoverColor;
+            }
+
+            &.ui-state-highlight {
+              background: $inputListItemHighlightBg;
+              color: $inputListItemHighlightTextColor;
+            }
+          }
+
+          .ui-chkbox {
+            margin-right: $inlineSpacing * 2;
+
+            .ui-icon-minus {
+              @include icon-override("\e90f");
+              color: $panelContentTextColor;
+            }
+          }
+
+          &.ui-state-highlight {
+            background: $inputListItemHighlightBg;
+            color: $inputListItemHighlightTextColor;
+
+            .ui-tree-toggler,
+            .ui-treenode-icon {
+                color: $inputListItemHighlightTextColor;
+
+                &:hover {
+                  color: $inputListItemHighlightTextColor;
+                }
+            }
+          }
+
+          &.ui-tree-selectable:not(.ui-state-highlight):hover,
+          &.ui-tree-selectable:not(.ui-state-highlight).ui-state-hover {
+            background: $inputListItemHoverBg;
+            color: $inputListItemTextHoverColor;
+          }
+        }
+      }
+
+      .ui-tree-droppoint {
+        &.ui-state-hover {
+          background: $highlightBg;
+        }
+      }
+
+      .ui-treenode-outline {
+        @include focused-listitem();
+      }
+    }
+
+    &.ui-tree-horizontal {
+      padding-left: 0;
+      padding-right: 0;
+
+      .ui-treenode-content {
+        border: $panelContentBorder;
+        background: $panelContentBg;
+        color: $panelContentTextColor;
+        padding: $panelContentPadding;
+        border-radius: $borderRadius;
+
+        &.ui-state-hover {
+          background: $inputListItemHoverBg;
+          color: $inputListItemTextHoverColor;
+        }
+
+        &.ui-state-highlight {
+          background: $inputListItemHighlightBg;
+          color: $inputListItemHighlightTextColor;
+        }
+
+        .ui-tree-toggler {
+          margin-right: $inlineSpacing;
+          vertical-align: middle;
+
+          &.ui-icon-minus {
+            @include icon-override("\e90f");
+          }
+
+          &.ui-icon-plus {
+            @include icon-override("\e90d");
+          }
+        }
+
+        .ui-treenode-icon {
+          vertical-align: middle;
+          margin-right: $inlineSpacing;
+        }
+
+        .ui-treenode-label {
+          padding: 0;
+          vertical-align: middle;
+        }
+
+        .ui-chkbox {
+          margin-right: $inlineSpacing;
+
+          .ui-icon-minus {
+            @include icon-override("\e90f");
+            color: $panelContentTextColor;
+          }
+        }
+      }
+
+      .ui-treenode:before {
+        background-color: $panelContentBg;
+      }
+
+      &.ui-tree-rtl {
+        .ui-treenode-content {
+          .ui-tree-toggler {
+            margin-right: 0;
+            margin-left: $inlineSpacing;
+          }
+    
+          .ui-treenode-leaf-icon {
+            margin: 0 0 0 $inlineSpacing;
+          }
+    
+          .ui-treenode-icon {
+            margin: 0 0 0 $inlineSpacing;
+          }
+    
+          .ui-chkbox {
+            margin-right: 0;
+            margin-left: $inlineSpacing + 2;
+          }
+        }
+      }
+    }
+
+    .ui-tree-filter-container {
+      margin: 0 0 $inlineSpacing 0;
+
+      .ui-icon {
+        @include icon-override("\e908");
+        position: absolute;
+        left: list.nth($inputPadding, 2);
+        top: 50%;
+        right: auto;
+        bottom: auto;
+        margin-top: math.div(-1 * $iconSize, 2);
+        color: $inputIconColor;
+      }
+
+      .ui-inputfield {
+        padding: $inputPadding;
+        width: 100%;
+        padding-left: 2 * list.nth($inputPadding, 2) + $iconSize;
+      }
+    }
+
+    &.ui-tree-rtl {
+      .ui-tree-container {
+        .ui-treenode {
+          .ui-treenode-content {
+            .ui-tree-toggler {
+              margin-right: 0;
+              margin-left: $inlineSpacing;
+            }
+
+            .ui-treenode-leaf-icon {
+              margin: 0 0 0 $inlineSpacing;
+            }
+
+            .ui-treenode-icon {
+              margin: 0 0 0 $inlineSpacing;
+            }
+
+            .ui-chkbox {
+              margin-right: 0;
+              margin-left: $inlineSpacing + 2;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .ui-tree-draghelper {
+    border: 1px solid $highlightBg;
+  }
+
+  .ui-fluid {
+    .ui-tree {
+      width: 100%;
+    }
+  }
+}

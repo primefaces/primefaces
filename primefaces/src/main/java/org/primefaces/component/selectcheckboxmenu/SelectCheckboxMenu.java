@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,25 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
-import java.util.Collection;
-import java.util.Map;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
+import org.primefaces.component.column.Column;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -47,23 +52,34 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectCheckboxMenu";
 
-    public static final String STYLE_CLASS = "ui-selectcheckboxmenu ui-widget ui-state-default ui-corner-all";
+    public static final String STYLE_CLASS = "ui-selectcheckboxmenu ui-widget ui-state-default";
     public static final String LABEL_CONTAINER_CLASS = "ui-selectcheckboxmenu-label-container";
-    public static final String LABEL_CLASS = "ui-selectcheckboxmenu-label ui-corner-all";
-    public static final String TRIGGER_CLASS = "ui-selectcheckboxmenu-trigger ui-state-default ui-corner-right";
-    public static final String PANEL_CLASS = "ui-selectcheckboxmenu-panel ui-widget-content ui-corner-all ui-helper-hidden";
-    public static final String LIST_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
-    public static final String ITEM_CLASS = "ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all ui-helper-clearfix";
+    public static final String LABEL_CLASS = "ui-selectcheckboxmenu-label";
+    public static final String TRIGGER_CLASS = "ui-selectcheckboxmenu-trigger ui-state-default";
+    public static final String PANEL_CLASS = "ui-selectcheckboxmenu-panel ui-widget ui-widget-content ui-helper-hidden ui-input-overlay";
+    public static final String HEADER_CLASS = "ui-widget-header ui-selectcheckboxmenu-header ui-helper-clearfix";
+    public static final String FOOTER_CLASS = "ui-selectcheckboxmenu-footer";
+    public static final String FILTER_CONTAINER_CLASS = "ui-selectcheckboxmenu-filter-container";
+    public static final String FILTER_CLASS = "ui-selectcheckboxmenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
+    public static final String CLOSER_CLASS = "ui-selectcheckboxmenu-close";
+    public static final String ITEMS_WRAPPER_CLASS = "ui-selectcheckboxmenu-items-wrapper";
+    public static final String LIST_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-helper-reset";
+    public static final String TABLE_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-table ui-widget-content ui-widget ui-helper-reset";
+    public static final String ITEM_CLASS = "ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-helper-clearfix";
+    public static final String ROW_ITEM_GROUP_CLASS = "ui-selectcheckboxmenu-item-group ui-selectcheckboxmenu-row ui-widget-content";
+    public static final String ROW_ITEM_CLASS = "ui-selectcheckboxmenu-item ui-selectcheckboxmenu-row ui-widget-content";
     public static final String MULTIPLE_CLASS = "ui-selectcheckboxmenu-multiple";
-    public static final String MULTIPLE_CONTAINER_CLASS = "ui-selectcheckboxmenu-multiple-container ui-widget ui-inputfield ui-state-default ui-corner-all";
-    public static final String TOKEN_DISPLAY_CLASS = "ui-selectcheckboxmenu-token ui-state-active ui-corner-all";
+    public static final String MULTIPLE_CONTAINER_CLASS = "ui-selectcheckboxmenu-multiple-container ui-widget ui-inputfield ui-state-default";
+    public static final String TOKEN_DISPLAY_CLASS = "ui-selectcheckboxmenu-token ui-state-active";
     public static final String TOKEN_LABEL_CLASS = "ui-selectcheckboxmenu-token-label";
     public static final String TOKEN_ICON_CLASS = "ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close";
+    public static final String CHECKBOX_INPUT_CLASS = "ui-selectcheckboxmenu-item-input";
 
     private static final String DEFAULT_EVENT = "change";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("change", null)
             .put("toggleSelect", ToggleSelectEvent.class)
+            .put("itemSelect", SelectEvent.class)
             .put("itemUnselect", UnselectEvent.class)
             .build();
 
@@ -85,6 +101,39 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     }
 
     @Override
+    public String getInputClientId() {
+        return getClientId(getFacesContext()) + "_focus";
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return getClientId(getFacesContext());
+    }
+
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
+    }
+
+    public List<Column> getColumns() {
+        List<Column> columns = new ArrayList<>();
+
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (child instanceof Column) {
+                columns.add((Column) child);
+            }
+        }
+
+        return columns;
+    }
+
+    @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -97,12 +146,17 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
                 boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));
                 ToggleSelectEvent toggleSelectEvent = new ToggleSelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), checked);
                 toggleSelectEvent.setPhaseId(event.getPhaseId());
-
                 super.queueEvent(toggleSelectEvent);
+            }
+            else if ("itemSelect".equals(eventName)) {
+                Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, ((AjaxBehaviorEvent) event).getBehavior(), selectedItemValue);
+                selectEvent.setPhaseId(event.getPhaseId());
+                super.queueEvent(selectEvent);
             }
             else if ("itemUnselect".equals(eventName)) {
                 Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
-                UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
+                UnselectEvent<?> unselectEvent = new UnselectEvent<>(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
             }

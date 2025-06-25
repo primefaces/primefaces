@@ -6,7 +6,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>nova-light</param-value>
+    <param-value>saga</param-value>
 </context-param>
 ```
 
@@ -17,7 +17,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | CLIENT_SIDE_LOCALISATION | false | Adds `"locales/locale-" + locale.getLanguage() + ".js"` automatically for your locale. |
 | COOKIES_SAME_SITE |  | Defines the sameSite value for all cookies, which will be added by PrimeFaces. Currently this is only supported for cookies added on the clientside as Servlet API doesn't support it yet. |
 | CSP | false | Enable Content Security Policy to prevent cross-site scripting (XSS), clickjacking and other code injection attacks |
-| CSP_POLICY | null | Custom CSP Policy that allows you to whitelist sites that you need JavaScript from such as `script-src 'self' https: *.googleapis.com` |
+| CSP_POLICY | null | Custom CSP Policy that allows you to allowlist sites that you need JavaScript from such as `script-src 'self' https: *.googleapis.com` |
 | DIR | ltr | Defines orientation; 'ltr' or 'rtl' for right-to-left support. |
 | EARLY_POST_PARAM_EVALUATION | false | Make p:ajax behave like f:ajax for queued AJAX requests. See: https://github.com/primefaces/primefaces/issues/109 |
 | EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING | null | Comma separated list of exceptions for PrimeExceptionHandler to ignore e.g. `javax.faces.application.ViewExpiredException,javax.persistence.RollbackException`. |
@@ -30,7 +30,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | PRIME_ICONS  | true | Auto includes PrimeIcons font based icons. True by default for most themes use PrimeIcons. Only disable if you know you do not use PrimeIcons. |
 | RESET_VALUES | false | When enabled, AJAX updated inputs are always reset. |
 | SUBMIT | full | Defines ajax submit mode; 'full' or 'partial'. |
-| THEME | nova-light | Theme of the application. |
+| THEME | saga | Theme of the application. |
 | TOUCHABLE | true | Globally enables/disables touch support on browsers that support touch. |
 | TRANSFORM_METADATA | false | Transforms bean validation metadata to HTML attributes. |
 | UPLOADER | auto | Defines uploader mode; 'auto', 'native' or 'commons'. 'auto' means 'native' on JSF2.2+, otherwise 'commons'. |

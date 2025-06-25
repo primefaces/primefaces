@@ -33,7 +33,7 @@ NOTE: this example passes "cc" as component to start the search. To start from r
     <p:dialog id="dlg" widgetVar="dlg">
         //contents
     </p:dialog>
-    <p:commandButton type="button" value="Show" onclick="PF('#{p:resolveWidgetVar(‘dlg’, cc)}').show()" />
+    <p:commandButton type="button" value="Show" onclick="PF(`#{p:resolveWidgetVar('dlg', cc)}`).show()" />
 </cc:implementation>
 ```
 
@@ -52,7 +52,7 @@ Authorization function use HttpServletRequest API for the backend information.
 ifGranted(String role) | Returns true if user has the given role, else false.
 ifAllGranted(String roles) | Returns true if user has all of the given roles, else false.
 ifAnyGranted(String roles) | Returns true if user has any of the given roles, else false.
-ifNoneGranted(String roles) | Returns true if user has none of the given roles, else false. e.g `p:ifNoneGranted('ROLE_ADMIN,ROLE_OPERATOR')`
+ifNoneGranted(String roles) | Returns true if user has none of the given roles, else false. e.g. `p:ifNoneGranted('ROLE_ADMIN,ROLE_OPERATOR')`
 remoteUser() | Returns the name of the logged in user.
 userPrincipal() | Returns the principal instance of the logged in user.
 

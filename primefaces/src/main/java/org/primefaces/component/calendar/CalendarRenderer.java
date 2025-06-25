@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,35 +23,33 @@
  */
 package org.primefaces.component.calendar;
 
-import java.io.IOException;
-import java.util.Locale;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.api.UICalendar;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class CalendarRenderer extends BaseCalendarRenderer {
+import java.io.IOException;
+import java.util.Locale;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class CalendarRenderer extends BaseCalendarRenderer<Calendar> {
 
     @Override
-    protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
-        Calendar calendar = (Calendar) uicalendar;
+    protected void encodeMarkup(FacesContext context, Calendar component, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = calendar.getClientId(context);
-        String styleClass = calendar.getStyleClass();
+        String clientId = component.getClientId(context);
+        String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? Calendar.CONTAINER_CLASS : Calendar.CONTAINER_CLASS + " " + styleClass;
         String inputId = clientId + "_input";
-        boolean popup = calendar.isPopup();
+        boolean popup = component.isPopup();
 
-        writer.startElement("span", calendar);
+        writer.startElement("span", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
 
-        if (calendar.getStyle() != null) {
-            writer.writeAttribute("style", calendar.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
 
         //inline container
@@ -62,119 +60,119 @@ public class CalendarRenderer extends BaseCalendarRenderer {
         }
 
         //input
-        encodeInput(context, calendar, inputId, value, popup);
+        encodeInput(context, component, inputId, value, popup);
 
         writer.endElement("span");
 
     }
 
     @Override
-    protected void encodeScript(FacesContext context, UICalendar uicalendar, String value) throws IOException {
-        Calendar calendar = (Calendar) uicalendar;
-        Locale locale = calendar.calculateLocale(context);
-        String pattern = calendar.calculateWidgetPattern();
-        String mask = calendar.getMask();
+    protected void encodeScript(FacesContext context, Calendar component, String value) throws IOException {
+        Locale locale = component.calculateLocale(context);
+        String pattern = component.calculateWidgetPattern();
+        String mask = component.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Calendar", calendar);
+        wb.init("Calendar", component);
 
-        wb.attr("popup", calendar.isPopup())
+        wb.attr("popup", component.isPopup())
                 .attr("locale", locale.toString())
                 .attr("dateFormat", CalendarUtils.convertPattern(pattern));
 
         //default date
-        Object pagedate = calendar.getPagedate();
+        Object pagedate = component.getPagedate();
         String defaultDate = null;
 
-        if (calendar.isConversionFailed()) {
-            Class<?> dateType = resolveDateType(context, calendar);
-            defaultDate = CalendarUtils.getValueAsString(context, calendar, CalendarUtils.now(uicalendar, dateType));
+        if (component.isConversionFailed()) {
+            Class<?> dateType = resolveDateType(context, component);
+            defaultDate = CalendarUtils.getValueAsString(context, component, CalendarUtils.now(component, dateType));
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;
         }
         else if (pagedate != null) {
-            defaultDate = CalendarUtils.getValueAsString(context, calendar, pagedate);
+            defaultDate = CalendarUtils.getValueAsString(context, component, pagedate);
         }
 
         wb.attr("defaultDate", defaultDate, null)
-                .attr("numberOfMonths", calendar.getPages(), 1)
-                .attr("minDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMindate(), pattern), null)
-                .attr("maxDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMaxdate(), pattern), null)
-                .attr("showButtonPanel", calendar.isShowButtonPanel(), false)
-                .attr("showTodayButton", calendar.isShowTodayButton(), true)
-                .attr("showWeek", calendar.isShowWeek(), false)
-                .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
-                .attr("disabled", calendar.isDisabled(), false)
-                .attr("readonly", calendar.isReadonly(), false)
-                .attr("yearRange", calendar.getYearRange(), null)
-                .attr("focusOnSelect", calendar.isFocusOnSelect(), false)
-                .attr("touchable", ComponentUtils.isTouchable(context, calendar),  true);
+                .attr("numberOfMonths", component.getPages(), 1)
+                .attr("minDate", CalendarUtils.getValueAsString(context, component, component.getMindate(), pattern), null)
+                .attr("maxDate", CalendarUtils.getValueAsString(context, component, component.getMaxdate(), pattern), null)
+                .attr("showButtonPanel", component.isShowButtonPanel(), false)
+                .attr("showTodayButton", component.isShowTodayButton(), true)
+                .attr("showWeek", component.isShowWeek(), false)
+                .attr("disabledWeekends", component.isDisabledWeekends(), false)
+                .attr("disabled", component.isDisabled(), false)
+                .attr("readonly", component.isReadonly(), false)
+                .attr("yearRange", component.getYearRange(), null)
+                .attr("focusOnSelect", component.isFocusOnSelect(), false)
+                .attr("shortYearCutoff", component.getShortYearCutoff(), null)
+                .attr("touchable", ComponentUtils.isTouchable(context, component),  true);
 
-        if (calendar.isNavigator()) {
+        if (component.isNavigator()) {
             wb.attr("changeMonth", true).attr("changeYear", true);
         }
 
-        if (calendar.getEffect() != null) {
-            wb.attr("showAnim", calendar.getEffect()).attr("duration", calendar.getEffectDuration());
+        if (component.getEffect() != null) {
+            wb.attr("showAnim", component.getEffect()).attr("duration", component.getEffectDuration());
         }
 
-        String beforeShowDay = calendar.getBeforeShowDay();
+        String beforeShowDay = component.getBeforeShowDay();
         if (beforeShowDay != null) {
             wb.nativeAttr("preShowDay", beforeShowDay);
         }
 
-        String beforeShow = calendar.getBeforeShow();
+        String beforeShow = component.getBeforeShow();
         if (beforeShow != null) {
             wb.nativeAttr("preShow", beforeShow);
         }
 
-        String showOn = calendar.getShowOn();
+        String showOn = component.getShowOn();
         if (!"focus".equalsIgnoreCase(showOn)) {
-            wb.attr("showOn", showOn).attr("buttonTabindex", calendar.getButtonTabindex());
+            wb.attr("showOn", showOn).attr("buttonTabindex", component.getButtonTabindex());
         }
 
-        if (calendar.isShowOtherMonths()) {
-            wb.attr("showOtherMonths", true).attr("selectOtherMonths", calendar.isSelectOtherMonths());
+        if (component.isShowOtherMonths()) {
+            wb.attr("showOtherMonths", true).attr("selectOtherMonths", component.isSelectOtherMonths());
         }
 
-        if (calendar.hasTime()) {
-            String timeControlType = calendar.getTimeControlType();
+        if (component.hasTime()) {
+            String timeControlType = component.getTimeControlType();
 
-            wb.attr("timeOnly", calendar.isTimeOnly())
-                    .attr("stepHour", calendar.getStepHour())
-                    .attr("stepMinute", calendar.getStepMinute())
-                    .attr("stepSecond", calendar.getStepSecond())
-                    .attr("hourMin", calendar.getMinHour())
-                    .attr("hourMax", calendar.getMaxHour())
-                    .attr("minuteMin", calendar.getMinMinute())
-                    .attr("minuteMax", calendar.getMaxMinute())
-                    .attr("secondMin", calendar.getMinSecond())
-                    .attr("secondMax", calendar.getMaxSecond())
-                    .attr("timeInput", calendar.isTimeInput())
+            wb.attr("timeOnly", component.isTimeOnly())
+                    .attr("stepHour", component.getStepHour())
+                    .attr("stepMinute", component.getStepMinute())
+                    .attr("stepSecond", component.getStepSecond())
+                    .attr("hourMin", component.getMinHour())
+                    .attr("hourMax", component.getMaxHour())
+                    .attr("minuteMin", component.getMinMinute())
+                    .attr("minuteMax", component.getMaxMinute())
+                    .attr("secondMin", component.getMinSecond())
+                    .attr("secondMax", component.getMaxSecond())
+                    .attr("timeInput", component.isTimeInput())
                     .attr("controlType", timeControlType, null)
-                    .attr("showHour", calendar.getShowHour(), null)
-                    .attr("showMinute", calendar.getShowMinute(), null)
-                    .attr("showSecond", calendar.getShowSecond(), null)
-                    .attr("showMillisec", calendar.getShowMillisec(), null)
-                    .attr("oneLine", calendar.isOneLine())
-                    .attr("hour", calendar.getDefaultHour())
-                    .attr("minute", calendar.getDefaultMinute())
-                    .attr("second", calendar.getDefaultSecond())
-                    .attr("millisec", calendar.getDefaultMillisec());
+                    .attr("showHour", component.getShowHour(), null)
+                    .attr("showMinute", component.getShowMinute(), null)
+                    .attr("showSecond", component.getShowSecond(), null)
+                    .attr("showMillisec", component.getShowMillisec(), null)
+                    .attr("oneLine", component.isOneLine())
+                    .attr("hour", component.getDefaultHour())
+                    .attr("minute", component.getDefaultMinute())
+                    .attr("second", component.getDefaultSecond())
+                    .attr("millisec", component.getDefaultMillisecond());
 
-            String timeControlObject = calendar.getTimeControlObject();
+            String timeControlObject = component.getTimeControlObject();
             if ("custom".equalsIgnoreCase(timeControlType)) {
                 wb.nativeAttr("timeControlObject", timeControlObject);
             }
         }
 
         if (mask != null && !"false".equals(mask)) {
-            String patternTemplate = calendar.getPattern() == null ? pattern : calendar.getPattern();
-            String maskTemplate = ("true".equals(mask)) ? calendar.convertPattern(patternTemplate) : mask;
-            wb.attr("mask", maskTemplate).attr("maskSlotChar", calendar.getMaskSlotChar(), "_").attr("maskAutoClear", calendar.isMaskAutoClear(), true);
+            String patternTemplate = component.getPattern() == null ? pattern : component.getPattern();
+            String maskTemplate = ("true".equals(mask)) ? component.convertPattern(patternTemplate) : mask;
+            wb.attr("mask", maskTemplate).attr("maskSlotChar", component.getMaskSlotChar(), "_").attr("maskAutoClear", component.isMaskAutoClear(), true);
         }
 
-        encodeClientBehaviors(context, calendar);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }

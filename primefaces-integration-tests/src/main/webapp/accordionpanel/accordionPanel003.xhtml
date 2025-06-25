@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:selectBooleanCheckbox id="toggle" value="#{accordionPanel003.firstTabRendered}">
+                <p:ajax process="@this" update="accordionpanel"/>
+            </p:selectBooleanCheckbox>
+
+            <p:accordionPanel id="accordionpanel" multiViewState="true" active="tab2,tab3">
+                <p:tab key="tab1" title="Tab 1" rendered="#{accordionPanel003.firstTabRendered}">
+                    Dummy-Content 1
+                </p:tab>
+                <p:tab key="tab2" title="Tab 2">
+                    Dummy-Content 2
+                </p:tab>
+                <p:tab key="tab3" title="Tab 3">
+                    Dummy-Content 3
+                </p:tab>
+            </p:accordionPanel>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

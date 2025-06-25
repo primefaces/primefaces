@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,10 @@
  */
 package org.primefaces.selenium.component.model.datatable;
 
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.ComponentUtils;
+
 import java.util.Locale;
 
 import org.json.JSONObject;
@@ -30,9 +34,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 public class HeaderCell extends Cell {
 
@@ -73,8 +74,8 @@ public class HeaderCell extends Cell {
      * @param filterValue the value to set the filter
      */
     public void setFilterValue(JSONObject cfg, String filterValue) {
-        String filterEvent = cfg.getString("filterEvent");
-        int filterDelay = cfg.getInt("filterDelay");
+        String filterEvent = cfg.has("filterEvent") ? cfg.getString("filterEvent") : "keyup";
+        int filterDelay = cfg.has("filterDelay") ? cfg.getInt("filterDelay") : 0;
         setFilterValue(filterValue, filterEvent, filterDelay);
     }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.toggleswitch;
 
-import javax.faces.component.UIInput;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, InputHolder {
 
@@ -38,16 +38,19 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
 
     public enum PropertyKeys {
 
-        widgetVar,
-        label,
         ariaLabel,
         disabled,
+        label,
+        offIcon,
+        onblur,
         onchange,
+        onfocus,
+        onIcon,
+        readonly,
         style,
         styleClass,
         tabindex,
-        onfocus,
-        onblur
+        widgetVar,
     }
 
     public ToggleSwitchBase() {
@@ -137,6 +140,31 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
 
     public void setOnblur(String onblur) {
         getStateHelper().put(PropertyKeys.onblur, onblur);
+    }
+
+    public String getOnIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.onIcon, null);
+    }
+
+    public void setOnIcon(String onIcon) {
+        getStateHelper().put(PropertyKeys.onIcon, onIcon);
+    }
+
+    public String getOffIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.offIcon, null);
+    }
+
+    public void setOffIcon(String offIcon) {
+        getStateHelper().put(PropertyKeys.offIcon, offIcon);
+    }
+
+    public boolean isReadonly() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+
+    }
+
+    public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
     }
 
     @Override

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,42 @@
  */
 package org.primefaces.showcase.view.data.dataexporter;
 
-import com.lowagie.text.*;
-import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.PDFOptions;
 import org.primefaces.component.export.PDFOrientationType;
 import org.primefaces.showcase.domain.Product;
 import org.primefaces.showcase.service.ProductService;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.xssf.streaming.SXSSFCell;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+
 @Named
 @RequestScoped
 public class CustomizedDocumentsView implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private List<Product> products;
 
@@ -73,7 +85,7 @@ public class CustomizedDocumentsView implements Serializable {
         excelOpt.setFacetFontSize("10");
         excelOpt.setFacetFontColor("#0000ff");
         excelOpt.setFacetFontStyle("BOLD");
-        excelOpt.setCellFontColor("#00ff00");
+        excelOpt.setCellFontColor("#145c14");
         excelOpt.setCellFontSize("8");
         excelOpt.setFontName("Verdana");
 
@@ -114,19 +126,22 @@ public class CustomizedDocumentsView implements Serializable {
         this.service = service;
     }
 
-    public void postProcessXLS(Object document) {
-        HSSFWorkbook wb = (HSSFWorkbook) document;
-        HSSFSheet sheet = wb.getSheetAt(0);
-        HSSFRow header = sheet.getRow(0);
+    public void onRowExportXLS(Object document) {
+        SXSSFWorkbook wb = (SXSSFWorkbook) document;
+        SXSSFSheet sheet = wb.getSheetAt(0);
+        int rowIndex = sheet.getLastRowNum();
+        if (rowIndex % 2 == 0) { //striped rows
+            SXSSFRow header = sheet.getRow(rowIndex);
 
-        HSSFCellStyle cellStyle = wb.createCellStyle();
-        cellStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());
-        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            CellStyle cellStyle = wb.createCellStyle();
+            cellStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());
+            cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
-        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
-            HSSFCell cell = header.getCell(i);
+            for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
+                SXSSFCell cell = header.getCell(i);
 
-            cell.setCellStyle(cellStyle);
+                cell.setCellStyle(cellStyle);
+            }
         }
     }
 

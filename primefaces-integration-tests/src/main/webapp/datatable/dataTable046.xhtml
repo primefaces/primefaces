@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <!-- GitHub #11685 - Datatable: action not called if columns is rendered conditionally -->
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+            
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable001Dynamic.progLanguages}" var="lang" paginator="true" rows="3"
+                         filteredValue="#{dataTable001Dynamic.filteredProgLanguages}"
+                         filterEvent="enter"
+                         globalFilterOnly="#{dataTable001Dynamic.globalFilterOnly}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="2,3,5,10">
+                <p:columns value="#{dataTable001Dynamic.columns}" var="column" headerText="#{column.header}" field="#{column.property}" filterMatchMode="#{column.filterMatchMode}" rendered="#{column.rendered}">
+                    <p:commandButton id="buttonInTable" value="Click Me" update="@form" actionListener="#{dataTable046.execute}"/>
+                </p:columns>
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

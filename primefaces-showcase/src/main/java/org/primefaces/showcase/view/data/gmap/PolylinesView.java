@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,24 +27,26 @@ import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Overlay;
 import org.primefaces.model.map.Polyline;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import java.io.Serializable;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+
 @Named
-@RequestScoped
+@ViewScoped
 public class PolylinesView implements Serializable {
 
-    private MapModel polylineModel;
+    private MapModel<Long> polylineModel;
 
     @PostConstruct
     public void init() {
-        polylineModel = new DefaultMapModel();
+        polylineModel = new DefaultMapModel<>();
 
         //Shared coordinates
         LatLng coord1 = new LatLng(36.879466, 30.667648);
@@ -53,7 +55,8 @@ public class PolylinesView implements Serializable {
         LatLng coord4 = new LatLng(36.885233, 30.702323);
 
         //Polyline
-        Polyline polyline = new Polyline();
+        Polyline<Long> polyline = new Polyline<>();
+        polyline.setData(1L);
         polyline.getPaths().add(coord1);
         polyline.getPaths().add(coord2);
         polyline.getPaths().add(coord3);
@@ -66,11 +69,13 @@ public class PolylinesView implements Serializable {
         polylineModel.addOverlay(polyline);
     }
 
-    public MapModel getPolylineModel() {
+    public MapModel<Long> getPolylineModel() {
         return polylineModel;
     }
 
-    public void onPolylineSelect(OverlaySelectEvent event) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Polyline Selected", null));
+    public void onPolylineSelect(OverlaySelectEvent<Long> event) {
+        Overlay<Long> overlay = event.getOverlay();
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Polyline " + overlay.getData() + " Selected", null));
     }
 }

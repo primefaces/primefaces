@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,32 +23,34 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.DataTable;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.DataTable;
 
-public class DataTable012Test extends AbstractDataTableTest {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class DataTable012Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: single sort; sortBy on p:column; initial sort via sortBy on dataTable")
-    public void testSortByWithDefault(Page page) {
+    void sortByWithDefault(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable1;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
 
@@ -69,10 +71,10 @@ public class DataTable012Test extends AbstractDataTableTest {
     @Test
     @Order(2)
     @DisplayName("DataTable: single sort; field on p:column; initial sort via sortBy on dataTable")
-    public void testFieldWithDefault(Page page) {
+    void fieldWithDefault(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable2;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Act

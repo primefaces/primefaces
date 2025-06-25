@@ -1,0 +1,32 @@
+body {
+  .ui-card {
+    background: $panelContentBg;
+    color: $panelContentTextColor;
+    box-shadow: $cardShadow;
+    border-radius: $borderRadius;
+
+    .ui-card-body {
+      padding: $cardBodyPadding;
+    }
+
+    .ui-card-title {
+      font-size: $cardTitleFontSize;
+      font-weight: $cardTitleFontWeight;
+      margin-bottom: $inlineSpacing;
+    }
+
+    .ui-card-subtitle {
+      font-weight: $cardSubTitleFontWeight;
+      margin-bottom: $inlineSpacing;
+      color: $cardSubTitleColor;
+    }
+
+    .ui-card-content {
+      padding: $cardContentPadding;
+    }
+
+    .ui-card-footer {
+      padding: $cardFooterPadding;
+    }
+  }
+}

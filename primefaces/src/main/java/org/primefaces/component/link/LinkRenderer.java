@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,67 +23,65 @@
  */
 package org.primefaces.component.link;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 
-public class LinkRenderer extends OutcomeTargetRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class LinkRenderer extends OutcomeTargetRenderer<Link> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, Link component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Link link = (Link) component;
-        boolean shouldWriteId = shouldWriteId(link);
-        boolean disabled = link.isDisabled();
-        String style = link.getStyle();
+        boolean shouldWriteId = shouldWriteId(component);
+        boolean disabled = component.isDisabled();
+        String style = component.getStyle();
         String defaultStyleClass = disabled ? Link.DISABLED_STYLE_CLASS : Link.STYLE_CLASS;
-        String styleClass = link.getStyleClass();
+        String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         if (disabled) {
-            writer.startElement("span", link);
+            writer.startElement("span", component);
             if (shouldWriteId) {
-                writer.writeAttribute("id", link.getClientId(context), "id");
+                writer.writeAttribute("id", component.getClientId(context), "id");
             }
             writer.writeAttribute("class", styleClass, "styleClass");
             if (style != null) {
                 writer.writeAttribute("style", style, "style");
             }
 
-            renderContent(context, link);
+            renderContent(context, component);
             writer.endElement("span");
         }
         else {
-            String targetURL = getTargetURL(context, link);
+            String targetURL = getTargetURL(context, component);
             if (LangUtils.isBlank(targetURL)) {
                 targetURL = "#";
             }
 
-            writer.startElement("a", link);
+            writer.startElement("a", component);
             if (shouldWriteId) {
-                writer.writeAttribute("id", link.getClientId(context), "id");
+                writer.writeAttribute("id", component.getClientId(context), "id");
             }
             writer.writeAttribute("href", targetURL, null);
             writer.writeAttribute("class", styleClass, "styleClass");
-            renderPassThruAttributes(context, link, HTML.LINK_ATTRS_WITHOUT_EVENTS);
-            renderDomEvents(context, link, HTML.OUTPUT_EVENTS);
-            renderContent(context, link);
+            renderPassThruAttributes(context, component, HTML.LINK_ATTRS_WITHOUT_EVENTS);
+            renderDomEvents(context, component, HTML.OUTPUT_EVENTS);
+            renderContent(context, component);
             writer.endElement("a");
         }
     }
 
-    protected void renderContent(FacesContext context, Link link) throws IOException {
+    protected void renderContent(FacesContext context, Link component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Object value = link.getValue();
+        Object value = component.getValue();
 
         if (value != null) {
-            if (link.isEscape()) {
+            if (component.isEscape()) {
                 writer.writeText(value, "value");
             }
             else {
@@ -91,12 +89,12 @@ public class LinkRenderer extends OutcomeTargetRenderer {
             }
         }
         else {
-            renderChildren(context, link);
+            renderChildren(context, component);
         }
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Link component) throws IOException {
         //Do nothing
     }
 

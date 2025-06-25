@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,10 @@
  */
 package org.primefaces.application.resource;
 
-import java.io.ByteArrayInputStream;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.Constants;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,7 +34,14 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.application.ProjectStage;
+
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
@@ -58,7 +59,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
             try {
                 ExternalContext externalContext = context.getExternalContext();
                 Map<String, Object> session = externalContext.getSessionMap();
-                Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+                Map<String, String> dynamicResourcesMapping = (Map<String, String>) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
 
                 if (dynamicResourcesMapping != null) {
                     String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
@@ -128,7 +129,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                 context.responseComplete();
             }
             catch (Exception e) {
-                throw new IOException("Error in streaming dynamic resource", e);
+                throw new IOException("Error in streaming dynamic resource. Verify you are not using a @ViewScoped bean.", e);
             }
         }
     }
@@ -138,7 +139,8 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
             externalContext.setResponseContentType(streamedContent.getContentType());
         }
         if (streamedContent.getContentLength() != null) {
-            externalContext.setResponseContentLength(streamedContent.getContentLength());
+            // we can't use externalContext.setResponseContentLength as our contentLength is a long
+            externalContext.setResponseHeader("Content-Length", String.valueOf(streamedContent.getContentLength()));
         }
         if (streamedContent.getContentEncoding() != null) {
             externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());

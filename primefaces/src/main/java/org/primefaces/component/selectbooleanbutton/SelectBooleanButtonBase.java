@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.selectbooleanbutton;
 
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.html.HtmlSelectBooleanCheckbox;
 
 public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox implements Widget {
 
@@ -33,16 +33,14 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectBooleanButtonRenderer";
 
-    public static final String LABEL_ON = "primefaces.switch.LABEL_ON";
-    public static final String LABEL_OFF = "primefaces.switch.LABEL_OFF";
-
     public enum PropertyKeys {
 
         widgetVar,
         onLabel,
         offLabel,
         onIcon,
-        offIcon;
+        offIcon,
+        ariaLabel;
     }
 
     public SelectBooleanButtonBase() {
@@ -92,5 +90,13 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
 
     public void setOffIcon(String offIcon) {
         getStateHelper().put(PropertyKeys.offIcon, offIcon);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 }

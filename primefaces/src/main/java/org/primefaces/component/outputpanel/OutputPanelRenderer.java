@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,26 @@
  */
 package org.primefaces.component.outputpanel;
 
-import java.io.IOException;
-import java.util.Map;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class OutputPanelRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.Map;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class OutputPanelRenderer extends CoreRenderer<OutputPanel> {
 
     private static final String BLOCK = "div";
     private static final String INLINE = "span";
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        OutputPanel panel = (OutputPanel) component;
-
+    public void decode(FacesContext context, OutputPanel component) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = panel.getClientId();
+        String clientId = component.getClientId();
 
         if (params.containsKey(clientId + "_load")) {
             decodeBehaviors(context, component);
@@ -50,59 +50,57 @@ public class OutputPanelRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        OutputPanel panel = (OutputPanel) component;
-
-        if (panel.isContentLoadRequest(context)) {
-            renderChildren(context, panel);
+    public void encodeEnd(FacesContext context, OutputPanel component) throws IOException {
+        if (component.isContentLoadRequest(context)) {
+            renderChildren(context, component);
         }
         else {
-            encodeMarkup(context, panel);
-            if (isDeferredNecessary(context, panel)) {
-                encodeScript(context, panel);
+            encodeMarkup(context, component);
+            if (isDeferredNecessary(context, component)) {
+                encodeScript(context, component);
             }
         }
     }
 
-    public void encodeMarkup(FacesContext context, OutputPanel panel) throws IOException {
+    public void encodeMarkup(FacesContext context, OutputPanel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String tag = panel.getLayout().equals("block") ? BLOCK : INLINE;
-        String clientId = panel.getClientId(context);
-        String style = panel.getStyle();
-        String styleClass = panel.getStyleClass();
+        String tag = component.getLayout().equals("block") ? BLOCK : INLINE;
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? OutputPanel.CONTAINER_CLASS : OutputPanel.CONTAINER_CLASS + " " + styleClass;
 
-        writer.startElement(tag, panel);
+        writer.startElement(tag, component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
-            writer.writeAttribute("style", panel.getStyle(), "style");
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        if (isDeferredNecessary(context, panel)) {
-            UIComponent loadingFacet = panel.getFacet("loading");
-            if (ComponentUtils.shouldRenderFacet(loadingFacet)) {
+        if (isDeferredNecessary(context, component)) {
+            UIComponent loadingFacet = component.getFacet("loading");
+            if (FacetUtils.shouldRenderFacet(loadingFacet)) {
                 loadingFacet.encodeAll(context);
             }
             else {
-                renderLoading(context, panel);
+                renderLoading(context, component);
             }
         }
         else {
-            renderChildren(context, panel);
+            renderChildren(context, component);
         }
 
         writer.endElement(tag);
     }
 
-    protected void encodeScript(FacesContext context, OutputPanel panel) throws IOException {
+    protected void encodeScript(FacesContext context, OutputPanel component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("OutputPanel", panel);
+        wb.init("OutputPanel", component);
 
         wb.attr("deferred", true)
-                .attr("deferredMode", panel.getDeferredMode());
+                .attr("deferredMode", component.getDeferredMode());
 
-        encodeClientBehaviors(context, panel);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
@@ -115,18 +113,18 @@ public class OutputPanelRenderer extends CoreRenderer {
         writer.endElement("i");
     }
 
-    protected boolean isDeferredNecessary(FacesContext context, OutputPanel panel) {
-        if (!panel.isDeferred()) {
+    protected boolean isDeferredNecessary(FacesContext context, OutputPanel component) {
+        if (!component.isDeferred()) {
             return false;
         }
-        if (panel.isLoaded() != null) {
-            return !panel.isLoaded();
+        if (component.isLoaded() != null) {
+            return !component.isLoaded();
         }
         return !context.getPartialViewContext().isAjaxRequest();
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, OutputPanel component) throws IOException {
         //Do nothing
     }
 

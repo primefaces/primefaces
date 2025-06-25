@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,21 @@
  */
 package org.primefaces.showcase.view.data.datatable;
 
-import javax.faces.view.ViewScoped;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.event.ColumnToggleEvent;
+import org.primefaces.model.Visibility;
 import org.primefaces.showcase.domain.Product;
 import org.primefaces.showcase.service.ProductService;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named("dtBasicView")
 @ViewScoped
@@ -54,4 +60,14 @@ public class BasicView implements Serializable {
     public void setService(ProductService service) {
         this.service = service;
     }
+
+    public void onToggle(ColumnToggleEvent e) {
+        Integer index = (Integer) e.getData();
+        UIColumn column = e.getColumn();
+        Visibility visibility = e.getVisibility();
+        String header = column.getAriaHeaderText() != null ? column.getAriaHeaderText() : column.getHeaderText();
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Column " + index + " toggled: " + header + " " + visibility, null);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
 }

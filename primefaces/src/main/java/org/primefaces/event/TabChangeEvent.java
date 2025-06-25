@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,38 +23,16 @@
  */
 package org.primefaces.event;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
-
 import org.primefaces.component.tabview.Tab;
 
-public class TabChangeEvent<T> extends AbstractAjaxBehaviorEvent implements TabEvent<T> {
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
+
+public class TabChangeEvent<T> extends TabEvent<T> {
 
     private static final long serialVersionUID = 1L;
 
-    private transient Tab tab;
-    private T data;
-
-    public TabChangeEvent(UIComponent component, Behavior behavior, Tab tab) {
-        super(component, behavior);
-        this.tab = tab;
-    }
-
-    @Override
-    public Tab getTab() {
-        return tab;
-    }
-
-    public void setTab(Tab tab) {
-        this.tab = tab;
-    }
-
-    @Override
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
+    public TabChangeEvent(UIComponent component, Behavior behavior, Tab tab, T data, String type, int index) {
+        super(component, behavior, tab, data, type, index);
     }
 }

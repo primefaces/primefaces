@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,11 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.AbstractComponent;
+import org.primefaces.selenium.component.base.ComponentUtils;
+import org.primefaces.selenium.component.model.Tab;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,10 +35,6 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.AbstractComponent;
-import org.primefaces.selenium.component.base.ComponentUtils;
-import org.primefaces.selenium.component.model.Tab;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:accordionPanel}.
@@ -83,7 +84,7 @@ public abstract class AccordionPanel extends AbstractComponent {
     /**
      * Toggle the tab denoted by the specified index.
      *
-     * @param index the index of the tab to expand
+     * @param index the index of the tab to toggle
      */
     public void toggleTab(int index) {
         if (ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {
@@ -95,13 +96,37 @@ public abstract class AccordionPanel extends AbstractComponent {
     }
 
     /**
+     * Expands the tab denoted by the specified index.
+     *
+     * @param index the index of the tab to expand
+     */
+    public void expandTab(int index) {
+        WebElement tab = getHeaders().get(index);
+        if (tab.getDomAttribute("aria-expanded").equalsIgnoreCase("false")) {
+            toggleTab(index);
+        }
+    }
+
+    /**
+     * Collapse the tab denoted by the specified index.
+     *
+     * @param index the index of the tab to collapse
+     */
+    public void collapseTab(int index) {
+        WebElement tab = getHeaders().get(index);
+        if (tab.getDomAttribute("aria-expanded").equalsIgnoreCase("true")) {
+            toggleTab(index);
+        }
+    }
+
+    /**
      * Provides the selected {@link AccordionPanel} tab(s).
      *
      * @return the selected tab(s)
      */
     public List<Tab> getSelectedTabs() {
         return getTabs().stream()
-                    .filter(tab -> tab.getHeader().getAttribute("class").contains("ui-state-active"))
+                    .filter(tab -> tab.getHeader().getDomAttribute("class").contains("ui-state-active"))
                     .collect(Collectors.toList());
     }
 }

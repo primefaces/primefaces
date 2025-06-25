@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,9 @@ package org.primefaces.integrationtests.tristatecheckbox;
 
 import java.io.Serializable;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 import lombok.Data;
 
@@ -37,8 +37,8 @@ import lombok.Data;
 public class TriStateCheckbox001 implements Serializable {
 
     private static final long serialVersionUID = -7518459955779385834L;
-    private String value;
-    private String readonly;
+    private Boolean value;
+    private Boolean readonly;
 
     @PostConstruct
     public void init() {

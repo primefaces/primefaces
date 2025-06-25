@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,36 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.component.datepicker.DatePicker;
+import org.primefaces.convert.DateTimePatternConverter;
+import org.primefaces.convert.PatternConverter;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.datepicker.DatePicker;
-import org.primefaces.convert.DateTimePatternConverter;
-import org.primefaces.convert.PatternConverter;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
 
 public class CalendarUtils {
 
@@ -55,7 +63,7 @@ public class CalendarUtils {
     private CalendarUtils() {
     }
 
-    public static final String getValueAsString(FacesContext context, UICalendar calendar) {
+    public static String getValueAsString(FacesContext context, UICalendar calendar) {
         Object submittedValue = calendar.getSubmittedValue();
         if (submittedValue != null) {
             return submittedValue.toString();
@@ -85,7 +93,7 @@ public class CalendarUtils {
         }
 
         if (value instanceof Date) {
-            return convertDate2LocalDate((Date) value);
+            return convertDate2LocalDate((Date) value, calculateZoneId(calendar.getTimeZone()));
         }
 
         String pattern = calendar.calculatePattern();
@@ -149,7 +157,7 @@ public class CalendarUtils {
         }
 
         if (value instanceof Date) {
-            return convertDate2LocalTime((Date) value);
+            return convertDate2LocalTime((Date) value, calculateZoneId(calendar.getTimeZone()));
         }
 
         String pattern = calendar.calculatePattern();
@@ -178,7 +186,7 @@ public class CalendarUtils {
             }
         }
 
-        Converter converter = context.getApplication().createConverter(value.getClass());
+        Converter<?> converter = context.getApplication().createConverter(value.getClass());
         if (converter != null) {
             Object obj = converter.getAsObject(context, calendar, value.toString());
             if (obj instanceof LocalTime) {
@@ -244,15 +252,19 @@ public class CalendarUtils {
         throw new FacesException(component + " : \"" + id + "\"@\"" + attributeName + "\" has unsupported type " + type);
     }
 
-    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value) {
+    public static String getValueAsString(FacesContext context, UICalendar calendar, Object value) {
+        return getValueAsString(context, calendar, value, false);
+    }
+
+    public static String getValueAsString(FacesContext context, UICalendar calendar, Object value, boolean ignoreConverter) {
         if (value == null) {
             return null;
         }
 
-        return getValueAsString(context, calendar, value, calendar.calculatePattern());
+        return getValueAsString(context, calendar, value, calendar.calculatePattern(), ignoreConverter);
     }
 
-    public static final String getTimeOnlyValueAsString(FacesContext context, UICalendar calendar) {
+    public static String getTimeOnlyValueAsString(FacesContext context, UICalendar calendar) {
         Object value = calendar.getValue();
         if (value == null) {
             return null;
@@ -261,7 +273,11 @@ public class CalendarUtils {
         return getValueAsString(context, calendar, value, calendar.calculateTimeOnlyPattern());
     }
 
-    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
+    public static String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
+        return getValueAsString(context, calendar, value, pattern, false);
+    }
+
+    public static String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern, boolean ignoreConverter) {
         if (value == null) {
             return null;
         }
@@ -276,29 +292,26 @@ public class CalendarUtils {
                     valuesAsString.append(separator);
                 }
 
-                valuesAsString.append(getValue(context, calendar, values.get(i), pattern));
+                valuesAsString.append(getValue(context, calendar, values.get(i), pattern, ignoreConverter));
             }
 
             return valuesAsString.toString();
         }
         else {
-            return getValue(context, calendar, value, pattern);
+            return getValue(context, calendar, value, pattern, ignoreConverter);
         }
     }
 
-    public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
-        //first ask the converter
-        Converter converter = calendar.getConverter();
-        if (converter != null) {
-            if (converter instanceof javax.faces.convert.DateTimeConverter) {
-                javax.faces.convert.DateTimeConverter nativeConverter = (javax.faces.convert.DateTimeConverter) converter;
-                String dateType = nativeConverter.getType();
-                // only run converter if type for dates match
-                if (value.getClass().getSimpleName().equalsIgnoreCase(dateType)) {
-                    return converter.getAsString(context, calendar, value);
-                }
-            }
-            else {
+    public static String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
+        return getValue(context, calendar, value, pattern, false);
+    }
+
+    public static String getValue(FacesContext context, UICalendar calendar, Object value, String pattern, boolean ignoreConverter) {
+        if (!ignoreConverter) {
+            //first ask the converter
+            Converter converter = calendar.getConverter();
+            // always use the user-applied converter first
+            if (converter != null) {
                 return converter.getAsString(context, calendar, value);
             }
         }
@@ -336,7 +349,7 @@ public class CalendarUtils {
             Class<?> type = ELUtils.getType(context, calendar.getValueExpression("value"));
             if (type != null && type != Object.class && type != Date.class &&
                     type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != YearMonth.class) {
-                converter = context.getApplication().createConverter(type);
+                Converter converter = context.getApplication().createConverter(type);
                 if (converter != null) {
                     return converter.getAsString(context, calendar, value);
                 }
@@ -352,7 +365,7 @@ public class CalendarUtils {
      * @param pattern Pattern to be converted
      * @return converted pattern
      */
-    public static final String convertPattern(String pattern) {
+    public static String convertPattern(String pattern) {
         if (pattern == null) {
             return null;
         }
@@ -473,10 +486,6 @@ public class CalendarUtils {
         }
     }
 
-    public static LocalDate convertDate2LocalDate(Date date) {
-        return convertDate2LocalDate(date, ZoneId.systemDefault());
-    }
-
     public static LocalDate convertDate2LocalDate(Date date, ZoneId zoneId) {
         if (date == null) {
             return null;
@@ -484,6 +493,10 @@ public class CalendarUtils {
         else {
             return convertDate2ZonedDateTime(date, zoneId).toLocalDate();
         }
+    }
+
+    public static LocalDate convertDate2LocalDate(Date date) {
+        return convertDate2LocalDate(date, ZoneId.systemDefault());
     }
 
     public static LocalDateTime convertDate2LocalDateTime(Date date) {
@@ -507,9 +520,12 @@ public class CalendarUtils {
         if (date == null) {
             return null;
         }
-        else {
-            return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
+
+        if (date instanceof java.sql.Time) {
+            return ((java.sql.Time) date).toLocalTime();
         }
+
+        return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
     }
 
     public static Date convertLocalDate2Date(LocalDate localDate, ZoneId zoneId) {
@@ -534,6 +550,10 @@ public class CalendarUtils {
         }
     }
 
+    public static Date convertLocalTime2Date(LocalTime localTime) {
+        return convertLocalTime2Date(localTime, ZoneId.systemDefault());
+    }
+
     public static Date convertLocalTime2Date(LocalTime localTime, ZoneId zoneId) {
         if (localTime == null) {
             return null;
@@ -543,7 +563,7 @@ public class CalendarUtils {
         }
     }
 
-    public static final String removeTime(String pattern) {
+    public static String removeTime(String pattern) {
         for (String timeChar : TIME_CHARS) {
             if (pattern.contains(timeChar)) {
                 pattern = pattern.substring(0, pattern.indexOf(timeChar));
@@ -552,7 +572,7 @@ public class CalendarUtils {
         return pattern.trim();
     }
 
-    public static final boolean hasTime(String pattern) {
+    public static boolean hasTime(String pattern) {
         for (String timeChar : TIME_CHARS) {
             if (pattern.contains(timeChar)) {
                 return true;
@@ -575,9 +595,8 @@ public class CalendarUtils {
 
         ZonedDateTime zonedDateTimeUtc = ZonedDateTime.parse(isoDateString);
         ZonedDateTime zonedDateTimeTargetZone = zonedDateTimeUtc.withZoneSameInstant(zoneId);
-        LocalDateTime localDateTime = zonedDateTimeTargetZone.toLocalDateTime();
 
-        return localDateTime;
+        return zonedDateTimeTargetZone.toLocalDateTime();
     }
 
     /**
@@ -622,19 +641,35 @@ public class CalendarUtils {
         return now;
     }
 
-    public static List<String> splitRange(final String dateRange, final String pattern, final String separator) {
-        final String token = Constants.SPACE + separator + Constants.SPACE;
-        if (pattern.contains(token)) {
-            throw new FacesException("Pattern '" + pattern + "' contains separator '" + token + "'");
+    public static List<String> splitRange(String input, String datePattern, String rangeSeparator,
+                                          boolean week) {
+
+        // security check
+        String token = Constants.SPACE + rangeSeparator + Constants.SPACE;
+        if (datePattern.contains(token)) {
+            throw new FacesException("Pattern '" + datePattern + "' contains separator '" + token + "'");
         }
-        final List<String> dates = new ArrayList<>();
-        if (!dateRange.contains(token)) {
-            return dates;
+
+        // fast return
+        if (input == null || !input.contains(token)) {
+            return Collections.emptyList();
         }
-        final int index = dateRange.indexOf(token);
-        dates.add(dateRange.substring(0, index));
-        dates.add(dateRange.substring(index + token.length()));
-        return dates;
+
+        int tokenIndex = input.indexOf(token);
+        String from = input.substring(0, tokenIndex);
+        String to = input.substring(tokenIndex + token.length());
+
+        if (week) {
+            // hardcoded pattern, see JS:
+            // formattedValue += ' (' + this.options.locale.weekHeader + ' ' + week + ')';
+            int weekNumberIndex = to.lastIndexOf(" (");
+            // there are cases when weeknumber might not get displayed on client and therefore not submitted
+            if (weekNumberIndex != -1) {
+                to = to.substring(0, weekNumberIndex);
+            }
+        }
+
+        return Arrays.asList(from, to);
     }
 
 }

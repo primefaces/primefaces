@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,8 @@
  */
 package org.primefaces.integrationtests.general.utilities;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 
 public class TestUtils {
 
@@ -64,10 +64,10 @@ public class TestUtils {
     }
 
     /**
-     * Add´s a message containing JSF-impl and -version.
+     * Add´s a message containing Faces-impl and -version.
      * @return
      */
-    public static FacesMessage addJsfImplMessage() {
+    public static FacesMessage addFacesImplMessage() {
         Package p = FacesContext.class.getPackage();
         return addMessage(p.getImplementationTitle(), p.getImplementationVersion());
     }

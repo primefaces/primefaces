@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.breadcrumb;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -33,7 +33,7 @@ public class BreadCrumb extends BreadCrumbBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.BreadCrumb";
 
-    public static final String CONTAINER_CLASS = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-helper-clearfix ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-helper-clearfix";
     public static final String ITEMS_CLASS = "ui-breadcrumb-items";
     public static final String OPTIONS_CLASS = "ui-breadcrumb-options";
 }

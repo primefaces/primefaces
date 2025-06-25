@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,28 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.SelectOneMenu;
 
-public class SelectOneMenu011Test extends AbstractPrimePageTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class SelectOneMenu011Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: test quote escaping")
-    public void testBasic(Page page) {
-        Assertions.assertTrue(page.selectOneMenu.getLabel(1).contains("\"")
+    void basic(Page page) {
+        assertTrue(page.selectOneMenu.getLabel(1).contains("\"")
                 || page.selectOneMenu.getLabel(1).contains("&quot;"));
 
         page.selectOneMenu.select(1);
-        Assertions.assertTrue(page.selectOneMenu.getSelectedLabel().contains("\"")
+        assertTrue(page.selectOneMenu.getSelectedLabel().contains("\"")
                 || page.selectOneMenu.getSelectedLabel().contains("&quot;"));
     }
 

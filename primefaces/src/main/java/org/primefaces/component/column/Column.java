@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,16 @@
  */
 package org.primefaces.component.column;
 
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.util.List;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.util.LangUtils;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
 
 public class Column extends ColumnBase {
 
@@ -39,20 +40,7 @@ public class Column extends ColumnBase {
 
     @Override
     public CellEditor getCellEditor() {
-        CellEditor cellEditor = null;
-
-        int childCount = getChildCount();
-        if (childCount > 0) {
-            for (int i = 0; i < childCount; i++) {
-                UIComponent child = getChildren().get(i);
-                if (child instanceof CellEditor && ((CellEditor) child).isRendered()) {
-                    cellEditor = (CellEditor) child;
-                    break;
-                }
-            }
-        }
-
-        return cellEditor;
+        return ComponentTraversalUtils.firstChildRendered(CellEditor.class, this);
     }
 
     @Override

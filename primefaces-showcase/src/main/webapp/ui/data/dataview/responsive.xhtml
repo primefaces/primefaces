@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -11,7 +11,7 @@
 
     <ui:define name="description">
         DataView offers basic responsiveness. You can improve this for e.g. large screen via gridRowStyleClass-attribute.
-        Additional you can use PrimeFlex instead of Grid CSS via flex-attribute or set primefaces.FLEX as context-param.
+        Additional you can use <a href="https://primeflex.org/" target="_blank" rel="noopener noreferrer">PrimeFlex</a> instead of Grid CSS via flex-attribute or set primefaces.FLEX as context-param.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/dataview"/>
@@ -23,7 +23,7 @@
                 <p:dataView var="product" value="#{dataGridView.products}" rows="12" paginator="true"
                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                             gridIcon="pi pi-th-large" listIcon="pi pi-bars"
-                            layout="grid" gridRowStyleClass="p-lg-6 p-xl-4" flex="true">
+                            layout="grid" gridRowStyleClass="lg:col-6 xl:col-4" flex="true">
 
                     <p:dataViewGridItem>
                         <div class="product-grid-item card border-1">

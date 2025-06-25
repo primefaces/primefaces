@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,33 +23,36 @@
  */
 package org.primefaces.integrationtests.selectoneradio;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectOneRadio;
 
-public class SelectOneRadio005Test extends AbstractPrimePageTest {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class SelectOneRadio005Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneRadio: Readonly")
-    public void testReadonly(Page page) {
+    void readonly(Page page) {
         // Arrange
         SelectOneRadio selectOneRadio = page.selectOneRadio;
-        Assertions.assertTrue(selectOneRadio.isReadOnly());
-        Assertions.assertEquals("Lando", selectOneRadio.getSelectedLabel());
+        assertTrue(selectOneRadio.isReadOnly());
+        assertEquals("Lando", selectOneRadio.getSelectedLabel());
 
         // Act
         selectOneRadio.select("Charles");
         page.submit.click();
 
         // Assert
-        Assertions.assertEquals("Lando", selectOneRadio.getSelectedLabel());
+        assertEquals("Lando", selectOneRadio.getSelectedLabel());
     }
 
     public static class Page extends AbstractPrimePage {

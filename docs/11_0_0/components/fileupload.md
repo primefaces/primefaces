@@ -22,7 +22,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component.
 | accept | null | String | Filters files in native file browser dialog.
-| allowTypes | null | String | Regular expression for accepted file types, e.g. /(\\.\|\\/)(gif\|jpe?g\|png)$/
+| allowTypes | null | String | Regular expression for accepted file types, e.g., /(\\.\|\\/)(gif\|jpeg|jpg\|png)$/
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | cancelButtonTitle | null | String | Native title tooltip for cancel button
@@ -265,6 +265,22 @@ Any return of `false` from the `onupload` callback will not send the files:
 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" onupload="return confirm('Are you sure?')"/>
 ```
 
+#### Validate Files Before Adding
+You can add a client side callback, if you want to use a custom function to approve a file before adding using `onAdd`.
+For example only add a file if its named exactly `primefaces.pdf`.
+
+```javascript
+function onAddFile(file, callback) {
+   if (file.name === "primefaces.pdf") {
+       // this callback adds the file to the list
+       callback.call(this, file);
+   }
+}
+```
+
+```xhtml
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" onAdd="onAddFile(file, callback);"/>
+```
 
 
 
@@ -281,7 +297,7 @@ Users can be restricted to only select the file types you’ve configured, examp
 how to accept images only.
 
 ```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+<p:fileUpload listener="#{fileBean.handleFileUpload}" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"/>
 ```
 
 
@@ -371,7 +387,7 @@ contents yourself in your backing bean.
 FileUpload supports chunked upload using the `maxChunkSize` attribute but only in advanced mode!
 
 #### Resuming chunked file uploads
-FileUpload is able to resume uploads that have been canceled (e.g user abort, lost of connection etc.)
+FileUpload is able to resume uploads that have been canceled (e.g. user abort, lost of connection etc.)
 At first, you'll need to enable chunking and add this servlet:
 
 ```xml
@@ -415,7 +431,7 @@ File uploads per se introduce some security risks, for best practices you should
 
 Here are some measures that can be taken into account when using PrimeFaces's `fileUpload` component:
 1. Consider **limiting the size** of uploaded files. As of PrimeFaces 6.2 this will be double-checked at server side as well: `p:fileUpload sizeLimit="1024"`. See https://github.com/primefaces/primefaces/issues/3290.
-2. Consider **restricting file names** of uploaded files. As of PrimeFaces 7.0 this will be double-checked at server side as well: `p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/"`. See https://github.com/primefaces/primefaces/issues/2791.
+2. Consider **restricting file names** of uploaded files. As of PrimeFaces 7.0 this will be double-checked at server side as well: `p:fileUpload allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"`. See https://github.com/primefaces/primefaces/issues/2791.
 3. Consider **enabling content type validation**. This feature has been introduced with PrimeFaces 7.0 and can be used by combining the `accept` and `validateContentType` attributes: `p:fileUpload accept="image/*" validateContentType="true"`.
    For reliable content type validation we recommend to use [Apache Tika](https://tika.apache.org/) or [mime-types](https://github.com/overview/mime-types), which will be picked up automatically if available in classpath.
    If you wish to use your own [FileTypeDetector](https://docs.oracle.com/javase/8/docs/api/java/nio/file/spi/FileTypeDetector.html) or use one which is not registered as a SPI service, then register it in your webapp in `META-INF/services` directory with filename `java.nio.file.spi.FileTypeDetector`.

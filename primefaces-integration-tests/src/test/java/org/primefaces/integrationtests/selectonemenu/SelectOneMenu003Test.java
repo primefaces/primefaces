@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,29 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.SelectOneMenu;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.SelectOneMenu;
 
-public class SelectOneMenu003Test extends AbstractPrimePageTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class SelectOneMenu003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: disabled")
-    public void testDisabled(Page page) {
+    void disabled(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
 
@@ -52,8 +54,26 @@ public class SelectOneMenu003Test extends AbstractPrimePageTest {
 
         // Assert
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals(null, options.get(2).getAttribute("disabled"));
-        Assertions.assertEquals("true", options.get(3).getAttribute("disabled"));
+        assertNull(options.get(2).getAttribute("disabled"));
+        assertEquals("true", options.get(3).getAttribute("disabled"));
+
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("SelectOneMenu: itemEscaped")
+    void itemEscaped(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+
+        // Act
+        selectOneMenu.toggleDropdown();
+
+        // Assert
+        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        assertEquals("Wii U", options.get(4).getText());
+        assertEquals("Nintendo Switch", options.get(5).getText());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -61,7 +81,7 @@ public class SelectOneMenu003Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
+        assertTrue(cfg.has("appendTo"));
     }
 
     public static class Page extends AbstractPrimePage {

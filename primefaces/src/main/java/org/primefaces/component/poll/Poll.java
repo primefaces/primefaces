@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.poll;
 
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.PrimeFaces;
+
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -38,7 +38,7 @@ public class Poll extends PollBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Poll";
 
     @Override
-    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+    public void broadcast(jakarta.faces.event.FacesEvent event) throws jakarta.faces.event.AbortProcessingException {
         super.broadcast(event); //backward compatibility
 
         FacesContext facesContext = getFacesContext();
@@ -50,7 +50,7 @@ public class Poll extends PollBase {
 
         ValueExpression expr = getValueExpression(PropertyKeys.stop.toString());
         if (expr != null) {
-            Boolean stop = (Boolean) expr.getValue(facesContext.getELContext());
+            Boolean stop = expr.getValue(facesContext.getELContext());
 
             if (Boolean.TRUE.equals(stop)) {
                 String widgetVar = resolveWidgetVar();

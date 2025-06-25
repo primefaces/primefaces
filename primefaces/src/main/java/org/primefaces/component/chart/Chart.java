@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,23 @@
  */
 package org.primefaces.component.chart;
 
-import java.util.Collection;
-import java.util.Map;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.util.MapBuilder;
 
-@ResourceDependency(library = "primefaces", name = "charts/charts.css")
+import java.util.Collection;
+import java.util.Map;
+
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
+
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-@ResourceDependency(library = "primefaces", name = "charts/charts.js")
+@ResourceDependency(library = "primefaces", name = "moment/moment.js")
+@ResourceDependency(library = "primefaces", name = "chart/chart.js")
 public class Chart extends ChartBase {
-
-    public static final String COMPONENT_TYPE = "org.primefaces.component.Chart";
 
     private static final String DEFAULT_EVENT = "itemSelect";
 
@@ -72,11 +70,15 @@ public class Chart extends ChartBase {
             BehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             Map<String, String> map = getFacesContext().getExternalContext().getRequestParameterMap();
             int itemIndex = Integer.parseInt(map.get("itemIndex"));
-            int seriesIndex = Integer.parseInt(map.get("seriesIndex"));
+            int dataSetIndex = Integer.parseInt(map.get("dataSetIndex"));
+            String data = map.get("data");
 
-            ItemSelectEvent itemSelectEvent = new ItemSelectEvent(this, behaviorEvent.getBehavior(), itemIndex, seriesIndex);
+            ItemSelectEvent itemSelectEvent = new ItemSelectEvent(this, behaviorEvent.getBehavior(), itemIndex, dataSetIndex, data);
 
             super.queueEvent(itemSelectEvent);
+        }
+        else {
+            super.queueEvent(event);
         }
     }
 }

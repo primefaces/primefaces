@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -56,7 +56,7 @@
     </ui:define>
 
     <ui:define name="description">
-        A custom client converter or a validator can be implemented easily. Both JSF and Bean Validation APIs are supported.
+        A custom client converter or a validator can be implemented easily. Both Jakarta Faces and Bean Validation APIs are supported.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/csvJavascriptAPI"/>
@@ -68,20 +68,20 @@
                 <p:growl showDetail="true"/>
 
                 <h:panelGrid columns="4" cellpadding="7">
-                    <h:outputLabel for="email1" value="Email 1: (JSF Validation)"/>
+                    <p:outputLabel for="email1" value="Email 1: (Faces Validation)"/>
                     <p:inputText id="email1" value="#{customValidationView.text}">
                         <f:validator validatorId="custom.emailValidator"/>
                     </p:inputText>
                     <p:message for="email1" display="tooltip"/>
                     <h:outputText value="#{customValidationView.text}"/>
 
-                    <h:outputLabel for="email2" value="Email 2: (Bean Validation)"/>
+                    <p:outputLabel for="email2" value="Email 2: (Bean Validation)"/>
                     <p:inputText id="email2" value="#{customValidationView.email}"/>
                     <p:message for="email2" display="tooltip"/>
                     <h:outputText value="#{customValidationView.email}"/>
                 </h:panelGrid>
                 
-                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="p-mt-3" />
+                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="mt-3" />
             </h:form>
         </div>
     </ui:define>

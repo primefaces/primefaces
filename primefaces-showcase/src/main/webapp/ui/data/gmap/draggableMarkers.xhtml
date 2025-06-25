@@ -1,12 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+        <script src="https://maps.google.com/maps/api/js?key=AIzaSyCvCDkYieuUBmMWon_mfLAfjuaeuosuqow&amp;sensor=false"></script>
     </ui:define>
 
     <ui:define name="title">
@@ -14,7 +14,7 @@
     </ui:define>
 
     <ui:define name="description">
-        When a draggable marker is dragged and dropped, a server side markerDragListener can be invoked passing a MarkerDragEvent that contains a reference to the dragged marker whose positon is updated already.
+        When a draggable marker is dragged and dropped, a server side markerDragListener can be invoked passing a MarkerDragEvent that contains a reference to the dragged marker whose position is updated already.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/gmap"/>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,37 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.SelectOneMenu;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.SelectOneMenu;
 
-public class SelectOneMenu005Test extends AbstractPrimePageTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class SelectOneMenu005Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: hideNoSelectionOption")
-    public void testHideNoSelectionOption(Page page) {
+    void hideNoSelectionOption(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
         selectOneMenu.toggleDropdown();
 
         // Assert
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals(5, options.size());
+        assertEquals(5, options.size());
 
         // Act
         selectOneMenu.select("PS4");
@@ -58,7 +61,7 @@ public class SelectOneMenu005Test extends AbstractPrimePageTest {
 
         // Assert
         options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals(4, options.size());
+        assertEquals(4, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -66,7 +69,7 @@ public class SelectOneMenu005Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
+        assertTrue(cfg.has("appendTo"));
     }
 
     public static class Page extends AbstractPrimePage {

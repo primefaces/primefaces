@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,35 +23,34 @@
  */
 package org.primefaces.component.picklist;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.model.DualListModel;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
 
-import org.primefaces.component.column.Column;
-import org.primefaces.model.DualListModel;
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
-import org.primefaces.util.WidgetBuilder;
-
-public class PickListRenderer extends InputRenderer {
+public class PickListRenderer extends InputRenderer<PickList> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        PickList pickList = (PickList) component;
-        if (!shouldDecode(pickList)) {
+    public void decode(FacesContext context, PickList component) {
+        if (!shouldDecode(component)) {
             return;
         }
-        String clientId = pickList.getClientId(context);
+        String clientId = component.getClientId(context);
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
 
         String sourceParamKey = clientId + "_source";
@@ -60,50 +59,48 @@ public class PickListRenderer extends InputRenderer {
         String[] sourceParam = params.containsKey(sourceParamKey) ? params.get(sourceParamKey) : new String[]{};
         String[] targetParam = params.containsKey(targetParamKey) ? params.get(targetParamKey) : new String[]{};
 
-        pickList.setSubmittedValue(new String[][]{sourceParam, targetParam});
+        component.setSubmittedValue(new String[][]{sourceParam, targetParam});
 
-        decodeBehaviors(context, pickList);
+        decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        PickList pickList = (PickList) component;
-
-        encodeMarkup(facesContext, pickList);
-        encodeScript(facesContext, pickList);
+    public void encodeEnd(FacesContext facesContext, PickList component) throws IOException {
+        encodeMarkup(facesContext, component);
+        encodeScript(facesContext, component);
     }
 
-    protected void encodeMarkup(FacesContext context, PickList pickList) throws IOException {
+    protected void encodeMarkup(FacesContext context, PickList component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = pickList.getClientId(context);
-        DualListModel model = getModelValueToRender(context, pickList);
-        String styleClass = pickList.getStyleClass();
+        String clientId = component.getClientId(context);
+        DualListModel model = getModelValueToRender(context, component);
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? PickList.CONTAINER_CLASS : PickList.CONTAINER_CLASS + " " + styleClass;
-        String labelDisplay = pickList.getLabelDisplay();
-        boolean vertical = pickList.getOrientation().equals("vertical");
+        String labelDisplay = component.getLabelDisplay();
+        boolean vertical = component.getOrientation().equals("vertical");
         if (vertical) {
             styleClass += " ui-picklist-vertical";
         }
 
-        if (pickList.isResponsive()) {
+        if (component.isResponsive()) {
             styleClass += " ui-picklist-responsive";
         }
 
-        writer.startElement("div", pickList);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
-        if (pickList.getStyle() != null) {
-            writer.writeAttribute("style", pickList.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
 
         //Target List Reorder Buttons
-        if (pickList.isShowSourceControls()) {
-            encodeListControls(context, pickList, PickList.SOURCE_CONTROLS, labelDisplay);
+        if (component.isShowSourceControls()) {
+            encodeListControls(context, component, PickList.SOURCE_CONTROLS, labelDisplay);
         }
 
         //Source List
-        encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(),
-                pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter(), true);
+        encodeList(context, component, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(),
+                component.getFacet("sourceCaption"), component.isShowSourceFilter(), true);
 
         //Buttons
         writer.startElement("div", null);
@@ -111,27 +108,27 @@ public class PickListRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.BUTTONS_CELL_CLASS, null);
         if (vertical) {
-            encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.VERTICAL_ADD_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.VERTICAL_ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.VERTICAL_REMOVE_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.VERTICAL_REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.ADD_BUTTON_CLASS, PickList.VERTICAL_ADD_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.ADD_ALL_BUTTON_CLASS, PickList.VERTICAL_ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.REMOVE_BUTTON_CLASS, PickList.VERTICAL_REMOVE_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.REMOVE_ALL_BUTTON_CLASS, PickList.VERTICAL_REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
         }
         else {
-            encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.ADD_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.REMOVE_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.ADD_BUTTON_CLASS, PickList.ADD_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.ADD_ALL_BUTTON_CLASS, PickList.ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.REMOVE_BUTTON_CLASS, PickList.REMOVE_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.REMOVE_ALL_BUTTON_CLASS, PickList.REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
         }
         writer.endElement("div");
         writer.endElement("div");
 
         //Target List
-        encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(),
-                pickList.getFacet("targetCaption"), pickList.isShowTargetFilter(), false);
+        encodeList(context, component, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(),
+                component.getFacet("targetCaption"), component.isShowTargetFilter(), false);
 
         //Target List Reorder Buttons
-        if (pickList.isShowTargetControls()) {
-            encodeListControls(context, pickList, PickList.TARGET_CONTROLS, labelDisplay);
+        if (component.isShowTargetControls()) {
+            encodeListControls(context, component, PickList.TARGET_CONTROLS, labelDisplay);
         }
 
         /* For ScreenReader */
@@ -140,42 +137,43 @@ public class PickListRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, PickList pickList) throws IOException {
+    protected void encodeScript(FacesContext context, PickList component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PickList", pickList)
-                .attr("effect", pickList.getEffect())
-                .attr("effectSpeed", pickList.getEffectSpeed())
-                .attr("escape", pickList.isEscape())
-                .attr("showSourceControls", pickList.isShowSourceControls(), false)
-                .attr("showTargetControls", pickList.isShowTargetControls(), false)
-                .attr("disabled", pickList.isDisabled(), false)
-                .attr("filterEvent", pickList.getFilterEvent(), null)
-                .attr("filterDelay", pickList.getFilterDelay(), Integer.MAX_VALUE)
-                .attr("filterMatchMode", pickList.getFilterMatchMode(), null)
-                .nativeAttr("filterFunction", pickList.getFilterFunction(), null)
-                .attr("showCheckbox", pickList.isShowCheckbox(), false)
-                .callback("onTransfer", "function(e)", pickList.getOnTransfer())
-                .attr("tabindex", pickList.getTabindex(), "0")
-                .attr("escapeValue", pickList.isEscapeValue())
-                .attr("transferOnDblclick", pickList.isTransferOnDblclick(), true)
-                .attr("transferOnCheckboxClick", pickList.isTransferOnCheckboxClick(), false);
+        wb.init("PickList", component)
+                .attr("effect", component.getEffect())
+                .attr("effectSpeed", component.getEffectSpeed())
+                .attr("escape", component.isEscape())
+                .attr("showSourceControls", component.isShowSourceControls(), false)
+                .attr("showTargetControls", component.isShowTargetControls(), false)
+                .attr("disabled", component.isDisabled(), false)
+                .attr("filterEvent", component.getFilterEvent(), null)
+                .attr("filterDelay", component.getFilterDelay(), Integer.MAX_VALUE)
+                .attr("filterMatchMode", component.getFilterMatchMode(), null)
+                .attr("filterNormalize", component.isFilterNormalize(), false)
+                .nativeAttr("filterFunction", component.getFilterFunction(), null)
+                .attr("showCheckbox", component.isShowCheckbox(), false)
+                .callback("onTransfer", "function(e)", component.getOnTransfer())
+                .attr("tabindex", component.getTabindex(), "0")
+                .attr("escapeValue", component.isEscapeValue())
+                .attr("transferOnDblclick", component.isTransferOnDblclick(), true)
+                .attr("transferOnCheckboxClick", component.isTransferOnCheckboxClick(), false);
 
-        encodeClientBehaviors(context, pickList);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected void encodeListControls(FacesContext context, PickList pickList, String styleClass, String labelDisplay) throws IOException {
+    protected void encodeListControls(FacesContext context, PickList component, String styleClass, String labelDisplay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.BUTTONS_CELL_CLASS, null);
-        encodeButton(context, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS, PickList.MOVE_UP_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS, PickList.MOVE_TOP_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS, PickList.MOVE_DOWN_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS, PickList.MOVE_BOTTOM_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, PickList.MOVE_UP_BUTTON_CLASS, PickList.MOVE_UP_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, PickList.MOVE_TOP_BUTTON_CLASS, PickList.MOVE_TOP_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, PickList.MOVE_DOWN_BUTTON_CLASS, PickList.MOVE_DOWN_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, PickList.MOVE_BOTTOM_BUTTON_CLASS, PickList.MOVE_BOTTOM_BUTTON_ICON_CLASS, labelDisplay);
         writer.endElement("div");
         writer.endElement("div");
     }
@@ -189,7 +187,7 @@ public class PickListRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeButton(FacesContext context, String title, String styleClass, String icon, String labelDisplay) throws IOException {
+    protected void encodeButton(FacesContext context, String styleClass, String icon, String labelDisplay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean tooltip = "tooltip".equals(labelDisplay);
         String buttonClass = tooltip ? HTML.BUTTON_ICON_ONLY_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
@@ -197,10 +195,6 @@ public class PickListRenderer extends InputRenderer {
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass + " " + styleClass, null);
-
-        if (tooltip) {
-            writer.writeAttribute("title", title, null);
-        }
 
         //icon
         writer.startElement("span", null);
@@ -210,13 +204,12 @@ public class PickListRenderer extends InputRenderer {
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.writeText(title, null);
         writer.endElement("span");
 
         writer.endElement("button");
     }
 
-    protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption,
+    protected void encodeList(FacesContext context, PickList component, String listId, String styleClass, List model, UIComponent caption,
                               boolean filter, boolean isSource) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -226,26 +219,22 @@ public class PickListRenderer extends InputRenderer {
 
         // only render required on target list
         if (!isSource) {
-            renderARIARequired(context, pickList);
+            renderARIARequired(context, component);
         }
 
         if (filter) {
-            encodeFilter(context, pickList, listId + "_filter", isSource);
+            encodeFilter(context, component, listId + "_filter", isSource);
         }
 
-        if (ComponentUtils.shouldRenderFacet(caption)) {
+        if (FacetUtils.shouldRenderFacet(caption)) {
             encodeCaption(context, caption);
-            styleClass += " ui-corner-bottom";
-        }
-        else {
-            styleClass += " ui-corner-all";
         }
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
-        encodeOptions(context, pickList, model, isSource);
+        encodeOptions(context, component, model, isSource);
 
         writer.endElement("ul");
 
@@ -268,20 +257,20 @@ public class PickListRenderer extends InputRenderer {
     }
 
     @SuppressWarnings("unchecked")
-    protected void encodeOptions(FacesContext context, PickList pickList, List model, boolean isSource) throws IOException {
+    protected void encodeOptions(FacesContext context, PickList component, List model, boolean isSource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String var = pickList.getVar();
-        Converter converter = pickList.getConverter();
-        boolean showCheckbox = pickList.isShowCheckbox();
-        boolean checkboxChecked = pickList.isTransferOnCheckboxClick() ? !isSource : false;
+        String var = component.getVar();
+        Converter converter = component.getConverter();
+        boolean showCheckbox = component.isShowCheckbox();
+        boolean checkboxChecked = component.isTransferOnCheckboxClick() && !isSource;
 
         for (Iterator it = model.iterator(); it.hasNext(); ) {
             Object item = it.next();
             context.getExternalContext().getRequestMap().put(var, item);
             String itemValue = converter != null ?
-                               converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
-            String itemLabel = pickList.getItemLabel();
-            String itemClass = pickList.isItemDisabled() ? PickList.ITEM_CLASS + " " + PickList.ITEM_DISABLED_CLASS : PickList.ITEM_CLASS;
+                               converter.getAsString(context, component, component.getItemValue()) : component.getItemValue().toString();
+            String itemLabel = component.getItemLabel();
+            String itemClass = component.isItemDisabled() ? PickList.ITEM_CLASS + " " + PickList.ITEM_DISABLED_CLASS : PickList.ITEM_CLASS;
 
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
@@ -289,7 +278,7 @@ public class PickListRenderer extends InputRenderer {
             writer.writeAttribute("data-item-label", itemLabel, null);
             writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
 
-            if (pickList.getChildCount() > 0) {
+            if (component.getChildCount() > 0) {
                 writer.startElement("table", null);
                 writer.writeAttribute(HTML.ARIA_ROLE, "presentation", null);
 
@@ -302,7 +291,7 @@ public class PickListRenderer extends InputRenderer {
                     writer.endElement("td");
                 }
 
-                for (UIComponent kid : pickList.getChildren()) {
+                for (UIComponent kid : component.getChildren()) {
                     if (kid instanceof Column && kid.isRendered()) {
                         Column column = (Column) kid;
 
@@ -328,7 +317,7 @@ public class PickListRenderer extends InputRenderer {
                     RendererUtils.encodeCheckbox(context, checkboxChecked);
                 }
 
-                if (pickList.isEscape()) {
+                if (component.isEscape()) {
                     writer.writeText(itemLabel, null);
                 }
                 else {
@@ -362,10 +351,12 @@ public class PickListRenderer extends InputRenderer {
         }
     }
 
-    protected void encodeFilter(FacesContext context, PickList pickList, String name, boolean isSource) throws IOException {
+    protected void encodeFilter(FacesContext context, PickList picklist, String name, boolean isSource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         String styleClass = PickList.FILTER_CLASS + (isSource ? " ui-source-filter-input" : " ui-target-filter-input");
+        String placeholder = isSource ? picklist.getSourceFilterPlaceholder() : picklist.getTargetFilterPlaceholder();
+        String ariaLabel = LangUtils.isNotBlank(placeholder) ? placeholder : null;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.FILTER_CONTAINER, null);
@@ -376,7 +367,13 @@ public class PickListRenderer extends InputRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
+        if (LangUtils.isNotBlank(ariaLabel)) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        }
+
+        if (LangUtils.isNotBlank(placeholder)) {
+            writer.writeAttribute("placeholder", placeholder, null);
+        }
         writer.endElement("input");
 
         writer.startElement("span", null);
@@ -399,7 +396,7 @@ public class PickListRenderer extends InputRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, PickList component) throws IOException {
         //Rendering happens on encodeEnd
     }
 
@@ -408,12 +405,12 @@ public class PickListRenderer extends InputRenderer {
         return true;
     }
 
-    protected DualListModel getModelValueToRender(FacesContext context, PickList pickList) {
-        Object submittedValue = pickList.getSubmittedValue();
-        if (submittedValue != null) {
-            return (DualListModel) getConvertedValue(context, pickList, submittedValue);
+    protected DualListModel getModelValueToRender(FacesContext context, PickList component) {
+        Object submittedValue = component.getSubmittedValue();
+        if (submittedValue != null && submittedValue instanceof String[][]) {
+            return (DualListModel) getConvertedValue(context, component, submittedValue);
         }
 
-        return (DualListModel) pickList.getValue();
+        return (DualListModel) component.getValue();
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,6 @@
  */
 package org.primefaces.component.column;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.column.renderer.ColumnGroupHelperRenderer;
 import org.primefaces.component.column.renderer.HelperColumnRenderer;
 import org.primefaces.component.column.renderer.PanelGridBodyColumnRenderer;
@@ -37,7 +30,13 @@ import org.primefaces.component.column.renderer.PanelGridFacetColumnRenderer;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 
-public class ColumnRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import jakarta.faces.context.FacesContext;
+
+public class ColumnRenderer extends CoreRenderer<Column> {
 
     static final Map<String, HelperColumnRenderer> RENDERERS;
 
@@ -49,24 +48,23 @@ public class ColumnRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Column column = (Column) component;
+    public void encodeEnd(FacesContext context, Column component) throws IOException {
         String helperKey = (String) context.getAttributes().get(Constants.HELPER_RENDERER);
 
         if (helperKey != null) {
             HelperColumnRenderer renderer = RENDERERS.get(helperKey);
 
             if (renderer != null) {
-                renderer.encode(context, column);
+                renderer.encode(context, component);
             }
         }
         else {
-            renderChildren(context, column);
+            renderChildren(context, component);
         }
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Column component) throws IOException {
         //Do nothing
     }
 

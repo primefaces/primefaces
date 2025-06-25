@@ -1,0 +1,83 @@
+body {
+  .ui-rating {
+    .ui-rating-cancel {
+      float: none;
+      display: inline-block;
+      margin-right: $inlineSpacing;
+      overflow: visible;
+
+      &.ui-state-focus {
+        @include focused();
+      }
+
+      a {
+        @include icon-override("\e90c");
+        text-indent: 0;
+        transition: $transition;
+        display: block;
+        font-size: $ratingIconFontSize;
+        height: $ratingIconHeight;
+        width: $ratingIconWidth;
+        color: $ratingCancelIconColor;
+        overflow: visible;
+
+        &:hover {
+          color: $ratingCancelHoverIconColor;
+        }
+      }
+    }
+
+    .ui-rating-star {
+      float: none;
+      display: inline-block;
+      margin-right: $inlineSpacing;
+      overflow: visible;
+
+      &.ui-state-focus {
+        @include focused();
+      }
+
+      a {
+        @include icon-override("\e937");
+        text-indent: 0;
+        display: block;
+        font-size: $ratingIconFontSize;
+        height: $ratingIconHeight;
+        width: $ratingIconWidth;
+        color: $ratingStarIconColor;
+        overflow: visible;
+
+        &:hover {
+          color: $ratingStarIconHoverColor;
+        }
+      }
+    }
+
+    .ui-rating-star-on {
+      a {
+        @include icon-override("\e936");
+        display: block;
+        font-size: $ratingIconFontSize;
+        height: $ratingIconHeight;
+        width: $ratingIconWidth;
+        color: $ratingStarActiveIconColor;
+      }
+    }
+	
+    &.ui-state-error {
+     .ui-rating-star {
+        a {
+          color: $inputErrorBorderColor;
+        }
+      }
+    }
+  }
+
+  .ui-state-highlight {
+    .ui-rating-star {
+      a {
+        color: $highlightTextColor;
+      }
+    }
+  }
+}

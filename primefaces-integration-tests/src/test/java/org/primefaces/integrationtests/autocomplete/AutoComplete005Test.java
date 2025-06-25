@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,17 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
+import org.primefaces.integrationtests.general.model.Driver;
+import org.primefaces.integrationtests.general.service.RealDriverService;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.AutoComplete;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Messages;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,21 +41,17 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.integrationtests.general.model.Driver;
-import org.primefaces.integrationtests.general.service.RealDriverService;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.AutoComplete;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.Messages;
 
-public class AutoComplete005Test extends AbstractPrimePageTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class AutoComplete005Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("AutoComplete: Multiple + forceSelection=true - https://github.com/primefaces/primefaces/issues/7211")
-    public void testMultipleForce(Page page) {
+    void multipleForce(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autocompleteMultiple;
 
@@ -67,7 +70,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
 
         // Act - Chr(istoph) - not allowed
         autoComplete.setValueWithoutTab("Chr");
-        PrimeSelenium.guardAjax(autoComplete.getInput()).sendKeys(Keys.ENTER);
+        autoComplete.getInput().sendKeys(Keys.ENTER);
 
         RealDriverService realDriverService = new RealDriverService();
         realDriverService.init();
@@ -78,24 +81,24 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
         // Assert - Part 1
         WebElement hInputSelect = autoComplete.getWrappedElement().findElement(By.id(autoComplete.getId() + "_hinput"));
         List<WebElement> options = hInputSelect.findElements(By.cssSelector("option"));
-        Assertions.assertEquals(2, options.size());
-        Assertions.assertEquals(Integer.toString(driverMax.getId()), options.get(0).getAttribute("value"));
-        Assertions.assertEquals(Integer.toString(driverLando.getId()), options.get(1).getAttribute("value"));
+        assertEquals(2, options.size());
+        assertEquals(Integer.toString(driverMax.getId()), options.get(0).getDomAttribute("value"));
+        assertEquals(Integer.toString(driverLando.getId()), options.get(1).getDomAttribute("value"));
 
         // Act
         page.buttonSubmit.click();
 
         // Assert - Part 2
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Lando"));
-        Assertions.assertFalse(page.messages.getMessage(0).getDetail().contains("Chr"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("Max"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("Lando"));
+        assertFalse(page.messages.getMessage(0).getDetail().contains("Chr"));
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("AutoComplete: Multiple + forceSelection=false - https://github.com/primefaces/primefaces/issues/8006")
-    public void testMultipleWithoutForce(Page page) {
+    void multipleWithoutForce(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autocompleteMultiple;
 
@@ -125,10 +128,10 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
 
         WebElement hInputSelect = autoComplete.getWrappedElement().findElement(By.id(autoComplete.getId() + "_hinput"));
         List<WebElement> options = hInputSelect.findElements(By.cssSelector("option"));
-        Assertions.assertEquals(3, options.size());
-        Assertions.assertEquals(Integer.toString(driverMax.getId()), options.get(0).getAttribute("value"));
-        Assertions.assertEquals(Integer.toString(driverLando.getId()), options.get(1).getAttribute("value"));
-        Assertions.assertEquals("Chr", options.get(2).getAttribute("value"));
+        assertEquals(3, options.size());
+        assertEquals(Integer.toString(driverMax.getId()), options.get(0).getDomAttribute("value"));
+        assertEquals(Integer.toString(driverLando.getId()), options.get(1).getDomAttribute("value"));
+        assertEquals("Chr", options.get(2).getDomAttribute("value"));
 
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
@@ -136,7 +139,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("AutoComplete: invalid behaviour for forceSelection=true and autoSelection=false - https://github.com/primefaces/primefaces/issues/7832")
-    public void testGitHub7832(Page page) {
+    void gitHub7832(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autocompleteSingle;
 
@@ -155,14 +158,14 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getAllMessages().isEmpty());
+        assertTrue(page.messages.getAllMessages().isEmpty());
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("AutoComplete Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
+        assertTrue(cfg.has("appendTo"));
     }
 
     public static class Page extends AbstractPrimePage {

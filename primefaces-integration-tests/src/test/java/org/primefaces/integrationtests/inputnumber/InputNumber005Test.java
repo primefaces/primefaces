@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,6 @@
  */
 package org.primefaces.integrationtests.inputnumber;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
@@ -38,12 +30,22 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputNumber;
 import org.primefaces.selenium.component.base.ComponentUtils;
 
-public class InputNumber005Test extends AbstractPrimePageTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class InputNumber005Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("InputNumber: dot as thousand separator - https://github.com/primefaces/primefaces/issues/7271")
-    public void testThousandSeparatorDot(Page page) {
+    void thousandSeparatorDot(Page page) {
         if (PrimeSelenium.isSafari()) {
             System.out.println(
                     "Test disabled on Safari because sendKeys has issues with Safari and there´s so alternative way to do this test.");
@@ -52,7 +54,7 @@ public class InputNumber005Test extends AbstractPrimePageTest {
 
         // Arrange
         InputNumber inputNumber = page.inputnumber;
-        Assertions.assertEquals("", inputNumber.getValue());
+        assertEquals("", inputNumber.getValue());
 
         // Act
         WebElement input = inputNumber.getInput();
@@ -62,14 +64,14 @@ public class InputNumber005Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("1.234,00", inputNumber.getValue());
+        assertEquals("1.234,00", inputNumber.getValue());
         assertConfiguration(inputNumber.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        Assertions.assertEquals("2", cfg.get("decimalPlaces"));
+        assertEquals(2, cfg.get("decimalPlaces"));
     }
 
     public static class Page extends AbstractPrimePage {

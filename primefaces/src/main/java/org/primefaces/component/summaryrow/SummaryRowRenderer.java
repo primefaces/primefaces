@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,23 @@
  */
 package org.primefaces.component.summaryrow;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 
-public class SummaryRowRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class SummaryRowRenderer extends CoreRenderer<SummaryRow> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SummaryRow row = (SummaryRow) component;
-        DataTable table = (DataTable) row.getParent();
+    public void encodeEnd(FacesContext context, SummaryRow component) throws IOException {
+        DataTable table = (DataTable) component.getParent();
         ResponseWriter writer = context.getResponseWriter();
         HeaderRow headerRow = table.getHeaderRow();
 
@@ -54,7 +53,7 @@ public class SummaryRowRenderer extends CoreRenderer {
             writer.writeAttribute("style", "display: none;", null);
         }
 
-        for (UIComponent kid : row.getChildren()) {
+        for (UIComponent kid : component.getChildren()) {
             if (kid.isRendered() && kid instanceof Column) {
                 Column column = (Column) kid;
                 String style = column.getStyle();
@@ -85,7 +84,7 @@ public class SummaryRowRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, SummaryRow component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

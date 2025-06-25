@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,51 +23,51 @@
  */
 package org.primefaces.component.button;
 
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
-public class ButtonRenderer extends OutcomeTargetRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class ButtonRenderer extends OutcomeTargetRenderer<Button> {
 
     private static final String SB_BUILD_ONCLICK = ButtonRenderer.class.getName() + "#buildOnclick";
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Button button = (Button) component;
-
-        encodeMarkup(context, button);
-        encodeScript(context, button);
+    public void encodeEnd(FacesContext context, Button component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    public void encodeMarkup(FacesContext context, Button button) throws IOException {
+    public void encodeMarkup(FacesContext context, Button component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = button.getClientId(context);
-        String value = (String) button.getValue();
-        String icon = button.getIcon();
+        String clientId = component.getClientId(context);
+        Object value = component.getValue();
+        String icon = component.getIcon();
+        String title = component.getTitle();
 
-        writer.startElement("button", button);
+        writer.startElement("button", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("name", clientId, "name");
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
+        writer.writeAttribute("class", component.resolveStyleClass(), "styleClass");
 
-        renderPassThruAttributes(context, button, HTML.BUTTON_WITHOUT_CLICK_ATTRS);
+        renderPassThruAttributes(context, component, HTML.BUTTON_WITHOUT_CLICK_ATTRS);
 
-        if (button.isDisabled()) {
+        if (component.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        writer.writeAttribute("onclick", buildOnclick(context, button), null);
+        writer.writeAttribute("onclick", buildOnclick(context, component), null);
 
         //icon
         if (!isValueBlank(icon)) {
-            String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
+            String defaultIconClass = component.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
             String iconClass = defaultIconClass + " " + icon;
 
             writer.startElement("span", null);
@@ -79,46 +79,36 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (value == null) {
-            writer.write("ui-button");
-        }
-        else {
-            if (button.isEscape()) {
-                writer.writeText(value, "value");
-            }
-            else {
-                writer.write(value);
-            }
-        }
+        renderButtonValue(writer, component.isEscape(), value, title, component.getAriaLabel());
 
         writer.endElement("span");
 
         writer.endElement("button");
     }
 
-    public void encodeScript(FacesContext context, Button button) throws IOException {
+    public void encodeScript(FacesContext context, Button component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Button", button);
+        wb.init("Button", component);
         wb.finish();
     }
 
-    protected String buildOnclick(FacesContext context, Button button) {
-        String userOnclick = button.getOnclick();
+    protected String buildOnclick(FacesContext context, Button component) {
+        String userOnclick = component.getOnclick();
         StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
-        String targetURL = getTargetURL(context, button);
+        String targetURL = getTargetURL(context, component);
 
         if (userOnclick != null) {
             onclick.append(userOnclick).append(";");
         }
 
-        String onclickBehaviors = getEventBehaviors(context, button, "click", null);
+        String onclickBehaviors = getEventBehaviors(context, component, "click", null);
         if (onclickBehaviors != null) {
             onclick.append(onclickBehaviors).append(";");
         }
 
         if (targetURL != null) {
             onclick.append("window.open('").append(EscapeUtils.forJavaScript(targetURL)).append("','");
-            onclick.append(EscapeUtils.forJavaScript(button.getTarget())).append("')");
+            onclick.append(EscapeUtils.forJavaScript(component.getTarget())).append("')");
         }
 
         return onclick.toString();

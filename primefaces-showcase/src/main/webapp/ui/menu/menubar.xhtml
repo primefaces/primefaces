@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -21,7 +21,10 @@
             <h:form>
                 <p:growl id="messages"/>
 
-                <p:menubar>
+                <p:menubar hideDelay="1000">
+                     <f:facet name="start">
+                        <p:graphicImage name="images/primefaces-logo.svg" library="showcase" />
+                    </f:facet>
                     <p:submenu label="File" icon="pi pi-fw pi-file">
                         <p:submenu label="New" icon="pi pi-fw pi-plus">
                             <p:menuitem value="Bookmark" icon="pi pi-fw pi-bookmark"/>
@@ -30,6 +33,7 @@
                         <p:menuitem value="Delete" icon="pi pi-fw pi-trash"/>
                         <p:divider />
                         <p:menuitem value="Export" icon="pi pi-fw pi-external-link"/>
+                        <p:menuitem value="Duplicate" icon="pi pi-fw pi-copy" disabled="true"/>
                     </p:submenu>
 
                     <p:submenu label="Edit" icon="pi pi-fw pi-pencil">
@@ -64,8 +68,8 @@
 
                     <p:menuitem value="Quit" icon="pi pi-fw pi-power-off"/>
 
-                    <f:facet name="options">
-                        <div class="ui-input-icon-left p-mr-2">
+                    <f:facet name="end">
+                        <div class="ui-input-icon-left mr-2">
                             <i class="pi pi-fw pi-search" />
                             <p:inputText placeholder="Search"/>
                         </div>

@@ -27,14 +27,14 @@ globalOnly | false | String | When true, only facesmessages with no clientIds ar
 redisplay | true | Boolean | Defines if already rendered messages should be displayed
 for | null | String | The clientId or name of associated key, takes precedence when used with globalOnly.
 forType | null | String | Type of the "for" attribute. Valid values are "key" and "expression".
-forIgnores | null | String | Defines a list of keys and clientIds, which should NOT be rendered by this component. Seperated by space or comma.
+forIgnores | null | String | Defines a list of keys and clientIds, which should NOT be rendered by this component. Separated by space or comma.
 escape | true | Boolean | Defines whether HTML would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
 closable | false | Boolean | Adds a close icon to hide the messages.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 showIcon | true | Boolean | Defines if severity icons would be displayed.
-skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summaray are equals.
+skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summary are equals.
 
 ## Getting started with Messages
 Message usage is exactly same as standard messages.
@@ -95,5 +95,5 @@ ui-messages-{severity}-summary | Summary text
 ui-messages-{severity}-detail | Detail text
 ui-messages-{severity}-icon | Icon of the message.
 
-* {severity} can be ‘info’, ‘error’, ‘warn’ and error.
+* {severity} can be `info`, `warn`, `error` and `fatal`.
 

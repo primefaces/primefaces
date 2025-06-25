@@ -1,0 +1,20 @@
+@use "sass:meta";
+
+:root {
+    @if meta.variable-exists(colors) {
+        @each $name, $color in $colors {
+            @for $i from 0 through 5 {
+                @if ($i == 0) {
+                    --p-#{$name}-50:#{tint($color, (5 - $i) * 19%)};
+                }
+                @else {
+                    --p-#{$name}-#{$i * 100}:#{tint($color, (5 - $i) * 19%)};
+                }
+            }
+
+            @for $i from 1 through 4 {
+                --p-#{$name}-#{($i + 5) * 100}:#{shade($color, $i * 15%)};
+            }
+        }
+    }
+}

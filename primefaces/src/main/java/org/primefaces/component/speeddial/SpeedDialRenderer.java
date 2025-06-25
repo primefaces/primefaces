@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,74 +30,74 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
-import org.primefaces.util.LangUtils;
 
-public class SpeedDialRenderer extends BaseMenuRenderer {
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class SpeedDialRenderer extends BaseMenuRenderer<SpeedDial> {
 
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+    protected void encodeMarkup(FacesContext context, SpeedDial component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        SpeedDial speedDial = (SpeedDial) abstractMenu;
-        String clientId = speedDial.getClientId(context);
+        String clientId = component.getClientId(context);
 
-        writer.startElement("div", speedDial);
+        writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
 
-        encodeContainer(context, speedDial);
+        encodeContainer(context, component);
 
-        if (speedDial.isMask()) {
-            encodeMask(context, speedDial);
+        if (component.isMask()) {
+            encodeMask(context, component);
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeContainer(FacesContext context, SpeedDial speedDial) throws IOException {
+    protected void encodeContainer(FacesContext context, SpeedDial component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
                 .add(SpeedDial.CONTAINER_CLASS)
-                .add("ui-speeddial-" + speedDial.getType())
-                .add(!"circle".equals(speedDial.getType()), "ui-speeddial-direction-" + speedDial.getDirection())
-                .add(speedDial.isDisabled(), "ui-disabled")
-                .add(speedDial.getStyleClass())
+                .add("ui-speeddial-" + component.getType())
+                .add(!"circle".equals(component.getType()), "ui-speeddial-direction-" + component.getDirection())
+                .add(component.isDisabled(), "ui-disabled")
+                .add(component.getStyleClass())
                 .build();
-        String containerStyle = speedDial.getStyle();
+        String containerStyle = component.getStyle();
 
-        writer.startElement("div", speedDial);
+        writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, "class");
 
         if (containerStyle != null) {
             writer.writeAttribute("style", containerStyle, "style");
         }
 
-        BadgeRenderer.encode(context, speedDial.getBadge(), this::encodeButton, speedDial);
-        encodeList(context, speedDial);
+        BadgeRenderer.encodeOverlayed(context, component.getBadge(), this::encodeButton, component);
+        encodeList(context, component);
 
         writer.endElement("div");
     }
 
-    protected void encodeList(FacesContext context, SpeedDial speedDial) throws IOException {
-        if (speedDial.getElementsCount() <= 0) {
+    protected void encodeList(FacesContext context, SpeedDial component) throws IOException {
+        if (component.getElementsCount() <= 0 || component.getElements().stream().noneMatch(me -> shouldBeRendered(context, me))) {
             return;
         }
-        List<MenuElement> elements = speedDial.getElements();
+        List<MenuElement> elements = component.getElements();
 
         ResponseWriter writer = context.getResponseWriter();
         String listClass = getStyleClassBuilder(context)
                 .add(SpeedDial.LIST_CLASS)
-                .add(speedDial.getMaskStyleClass())
+                .add(component.getMaskStyleClass())
                 .build();
 
-        writer.startElement("ul", speedDial);
+        writer.startElement("ul", null);
         writer.writeAttribute("class", listClass, "class");
         writer.writeAttribute("role", "menu", "role");
 
@@ -110,6 +110,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 String title = menuItem.getTitle();
                 String style = menuItem.getStyle();
                 String rel = menuItem.getRel();
+                String ariaLabel = menuItem.getAriaLabel();
 
                 writer.startElement("li", null);
                 writer.writeAttribute("role", "none", "role");
@@ -142,12 +143,16 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                     writer.writeAttribute("rel", rel, null);
                 }
 
+                if (LangUtils.isNotEmpty(ariaLabel)) {
+                    writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+                }
+
                 if (disabled) {
                     writer.writeAttribute("href", "#", null);
                     writer.writeAttribute("onclick", "return false;", null);
                 }
                 else {
-                    encodeOnClick(context, speedDial, menuItem);
+                    encodeOnClick(context, component, menuItem);
                 }
 
                 if (icon != null) {
@@ -183,21 +188,31 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
         writer.endElement("ul");
     }
 
-    protected void encodeButton(FacesContext context, SpeedDial speedDial) throws IOException {
+    protected void encodeButton(FacesContext context, SpeedDial component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String buttonStyle = speedDial.getButtonStyle();
-        boolean isDisabled = speedDial.isDisabled();
+        String buttonStyle = component.getButtonStyle();
+        String ariaLabel = component.getAriaLabel();
+        String title = component.getTitle();
+        boolean isDisabled = component.isDisabled();
         String buttonStyleClass = getStyleClassBuilder(context)
                 .add(HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
                 .add(SpeedDial.BUTTON_CLASS)
-                .add(speedDial.isRotateAnimation(), "ui-speeddial-rotate")
-                .add(speedDial.getHideIcon() != null, "ui-speeddial-dual-icon")
-                .add(speedDial.getButtonStyleClass())
+                .add(component.isRotateAnimation(), "ui-speeddial-rotate")
+                .add(component.getHideIcon() != null, "ui-speeddial-dual-icon")
+                .add(component.getButtonStyleClass())
                 .build();
 
-        writer.startElement("button", speedDial);
+        writer.startElement("button", component);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("class", buttonStyleClass, "class");
+
+        if (LangUtils.isNotEmpty(ariaLabel)) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        }
+
+        if (LangUtils.isNotEmpty(title)) {
+            writer.writeAttribute("title", title, null);
+        }
 
         if (buttonStyle != null) {
             writer.writeAttribute("style", buttonStyle, "style");
@@ -209,20 +224,20 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
 
         //show icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + speedDial.getShowIcon(), null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + component.getShowIcon(), null);
         writer.endElement("span");
 
         //hide icon
-        if (LangUtils.isNotEmpty(speedDial.getHideIcon())) {
+        if (LangUtils.isNotEmpty(component.getHideIcon())) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + speedDial.getHideIcon(), null);
+            writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + component.getHideIcon(), null);
             writer.endElement("span");
         }
 
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.writeText("ui-button", null);
+        writer.writeText(getIconOnlyButtonText(title, ariaLabel), null);
         writer.endElement("span");
 
         writer.endElement("button");
@@ -236,7 +251,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 .build();
         String maskStyle = speedDial.getMaskStyle();
 
-        writer.startElement("div", speedDial);
+        writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, "class");
 
         if (maskStyle != null) {
@@ -247,29 +262,33 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        SpeedDial speedDial = (SpeedDial) abstractMenu;
-        String clientId = speedDial.getClientId(context);
+    protected void encodeScript(FacesContext context, SpeedDial component) throws IOException {
+        String clientId = component.getClientId(context);
 
-        UIForm form = ComponentTraversalUtils.closestForm(context, speedDial);
+        UIForm form = ComponentTraversalUtils.closestForm(component);
         if (form == null) {
             throw new FacesException("SpeedDial : \"" + clientId + "\" must be inside a form element");
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SpeedDial", speedDial)
-                .attr("visible", speedDial.isVisible(), false)
-                .attr("direction", speedDial.getDirection(), "up")
-                .attr("transitionDelay", speedDial.getTransitionDelay(), 30)
-                .attr("type", speedDial.getType(), "linear")
-                .attr("radius", speedDial.getRadius(), 0)
-                .attr("mask", speedDial.isMask(), false)
-                .attr("hideOnClickOutside", speedDial.isHideOnClickOutside(), true)
-                .attr("keepOpen", speedDial.isKeepOpen(), false)
-                .callback("onVisibleChange", "function(visible)", speedDial.getOnVisibleChange())
-                .callback("onClick", "function(event)", speedDial.getOnClick())
-                .callback("onShow", "function()", speedDial.getOnShow())
-                .callback("onHide", "function()", speedDial.getOnHide());
+        wb.init("SpeedDial", component)
+                .attr("visible", component.isVisible(), false)
+                .attr("direction", component.getDirection(), "up")
+                .attr("transitionDelay", component.getTransitionDelay(), 30)
+                .attr("type", component.getType(), "linear")
+                .attr("radius", component.getRadius(), 0)
+                .attr("mask", component.isMask(), false)
+                .attr("hideOnClickOutside", component.isHideOnClickOutside(), true)
+                .attr("keepOpen", component.isKeepOpen(), false)
+                .callback("onVisibleChange", "function(visible)", component.getOnVisibleChange())
+                .callback("onClick", "function(event)", component.getOnClick())
+                .callback("onShow", "function()", component.getOnShow())
+                .callback("onHide", "function()", component.getOnHide());
         wb.finish();
+    }
+
+    @Override
+    protected boolean shouldBeRendered(FacesContext context, SpeedDial component) {
+        return true;
     }
 }

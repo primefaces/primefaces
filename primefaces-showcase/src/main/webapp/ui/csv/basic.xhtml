@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -10,7 +10,7 @@
     </ui:define>
 
     <ui:define name="description">
-        Client Side Validation Framework implements JSF validation API within the browser.
+        Client Side Validation Framework implements Jakarta Faces validation API within the browser.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/csv"/>
@@ -28,13 +28,17 @@
                     <p:message for="name"/>
                     <h:outputText value="#{validationView.text}"/>
 
-                    <h:outputLabel for="number" value="Number:"/>
-                    <p:inputMask id="number" value="#{validationView.integer}" label="Number" mask="9[99]"
-                                    validateMask="false">
+                    <p:outputLabel for="number" value="Number:"/>
+                    <p:inputNumber id="number" value="#{validationView.integer}">
                         <f:validateLength minimum="2" maximum="3"/>
-                    </p:inputMask>
+                    </p:inputNumber>
                     <p:message for="number"/>
                     <h:outputText value="#{validationView.integer}"/>
+                    
+                    <h:outputLabel for="color" value="Color:"/>
+                    <p:colorPicker id="color" value="#{validationView.color}" required="true" label="Color"/>
+                    <p:message for="color"/>
+                    <h:outputText value="#{validationView.color}"/>
 
                     <h:outputLabel for="dd" value="Double:"/>
                     <p:inputText id="dd" value="#{validationView.doubleNumber}"
@@ -134,11 +138,11 @@
                 <p:remoteCommand name="rc" update="grid" process="name number" validateClient="true"/>
                 <p:defaultCommand target="btnAjax"/>
 
-                <div class="p-pt-3">
-                    <p:commandButton value="Non-Ajax" ajax="false" validateClient="true" styleClass="p-mr-2" />
-                    <p:commandButton value="Ajax" id="btnAjax" update="grid"  validateClient="true" styleClass="p-mr-2" />
-                    <p:commandButton value="Partial" update="grid" process="name number" validateClient="true" styleClass="p-mr-2" />
-                    <p:commandButton value="Disabled" ajax="false"  styleClass="p-mr-2"/>
+                <div class="pt-3">
+                    <p:commandButton value="Non-Ajax" ajax="false" validateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Ajax" id="btnAjax" update="grid"  validateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Partial" update="grid" process="name number" validateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Disabled (without CSV)" ajax="false"  styleClass="mr-2"/>
                     <p:commandButton value="Remote Command" type="button" onclick="rc()" />
                 </div>
                 

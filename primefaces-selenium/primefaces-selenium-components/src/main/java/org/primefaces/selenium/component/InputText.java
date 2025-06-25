@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,13 @@
  */
 package org.primefaces.selenium.component;
 
-import java.io.Serializable;
-
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
+
+import java.io.Serializable;
+
+import org.openqa.selenium.Keys;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:inputText}.
@@ -37,19 +37,28 @@ import org.primefaces.selenium.component.base.ComponentUtils;
 public abstract class InputText extends AbstractInputComponent {
 
     public String getValue() {
-        return getInput().getAttribute("value");
+        return getInput().getDomProperty("value");
     }
 
     public void setValue(Serializable value) {
-        WebElement input = getInput();
-        input.clear();
-        ComponentUtils.sendKeys(input, value.toString());
+        boolean ajaxified = isOnchangeAjaxified();
+        String oldValue = getValue();
+        if (oldValue != null && oldValue.length() > 0) {
+            if (ajaxified) {
+                PrimeSelenium.guardAjax(getInput()).clear();
+            }
+            else {
+                getInput().clear();
+            }
+        }
 
-        if (isOnchangeAjaxified()) {
-            PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
+        ComponentUtils.sendKeys(getInput(), value.toString());
+
+        if (ajaxified) {
+            PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
         }
         else {
-            input.sendKeys(Keys.TAB);
+            getInput().sendKeys(Keys.TAB);
         }
     }
 }

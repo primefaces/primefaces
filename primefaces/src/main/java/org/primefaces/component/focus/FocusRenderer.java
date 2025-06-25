@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,21 @@
  */
 package org.primefaces.component.focus;
 
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.RendererUtils;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.renderkit.CoreRenderer;
-
-public class FocusRenderer extends CoreRenderer {
+public class FocusRenderer extends CoreRenderer<Focus> {
 
     private static final Map<String, Integer> SEVERITY_ORDINALS = new HashMap<>();
 
@@ -48,32 +49,31 @@ public class FocusRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Focus focus = (Focus) component;
+    public void encodeEnd(FacesContext context, Focus component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         //Dummy markup for ajax update
-        writer.startElement("span", focus);
-        writer.writeAttribute("id", focus.getClientId(context), "id");
+        writer.startElement("span", component);
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.endElement("span");
 
-        writer.startElement("script", focus);
-        writer.writeAttribute("type", "text/javascript", null);
+        writer.startElement("script", component);
+        RendererUtils.encodeScriptTypeIfNecessary(context);
 
-        if (isValueBlank(focus.getFor())) {
-            encodeImplicitFocus(context, focus);
+        if (isValueBlank(component.getFor())) {
+            encodeImplicitFocus(context, component);
         }
         else {
-            encodeExplicitFocus(context, focus);
+            encodeExplicitFocus(context, component);
         }
 
         writer.endElement("script");
     }
 
-    protected void encodeExplicitFocus(FacesContext context, Focus focus) throws IOException {
+    protected void encodeExplicitFocus(FacesContext context, Focus component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent forComponent = SearchExpressionFacade.resolveComponent(
-                context, focus, focus.getFor());
+        UIComponent forComponent = SearchExpressionUtils.contextlessResolveComponent(
+                context, component, component.getFor());
 
         String clientId = forComponent.getClientId(context);
 
@@ -82,18 +82,18 @@ public class FocusRenderer extends CoreRenderer {
         writer.write("});");
     }
 
-    protected void encodeImplicitFocus(FacesContext context, Focus focus) throws IOException {
+    protected void encodeImplicitFocus(FacesContext context, Focus component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String invalidClientId = findFirstInvalidComponentClientId(context, focus);
+        String invalidClientId = findFirstInvalidComponentClientId(context, component);
 
         writer.write("$(function(){");
 
         if (invalidClientId != null) {
             writer.write("PrimeFaces.focus('" + invalidClientId + "');");
         }
-        else if (focus.getContext() != null) {
-            UIComponent focusContext = SearchExpressionFacade.resolveComponent(
-                    context, focus, focus.getContext());
+        else if (component.getContext() != null) {
+            UIComponent focusContext = SearchExpressionUtils.contextlessResolveComponent(
+                    context, component, component.getContext());
 
             writer.write("PrimeFaces.focus(null, '" + focusContext.getClientId(context) + "');");
         }
@@ -104,8 +104,8 @@ public class FocusRenderer extends CoreRenderer {
         writer.write("});");
     }
 
-    protected String findFirstInvalidComponentClientId(FacesContext context, Focus focus) {
-        int minSeverityOrdinal = SEVERITY_ORDINALS.get(focus.getMinSeverity());
+    protected String findFirstInvalidComponentClientId(FacesContext context, Focus component) {
+        int minSeverityOrdinal = SEVERITY_ORDINALS.get(component.getMinSeverity());
 
         for (Iterator<String> iterator = context.getClientIdsWithMessages(); iterator.hasNext(); ) {
             String clientId = iterator.next();

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,26 +24,33 @@
 package org.primefaces.component.tree;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.event.*;
+import org.primefaces.event.NodeCollapseEvent;
+import org.primefaces.event.NodeExpandEvent;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.NodeUnselectEvent;
+import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.MatchMode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.model.filter.*;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.el.MethodExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.PhaseId;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -54,19 +61,20 @@ public class Tree extends TreeBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tree";
 
-    public static final String FILTER_CLASS = "ui-tree-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CLASS = "ui-tree-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String FILTER_CONTAINER = "ui-tree-filter-container";
-    public static final String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
-    public static final String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
-    public static final String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content";
+    public static final String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content";
+    public static final String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content";
+    public static final String HORIZONTAL_CONTAINER_RTL_CLASS = "ui-tree ui-tree-horizontal ui-tree-rtl ui-widget ui-widget-content";
     public static final String ROOT_NODES_CLASS = "ui-tree-container";
     public static final String PARENT_NODE_CLASS = "ui-treenode ui-treenode-parent";
     public static final String LEAF_NODE_CLASS = "ui-treenode ui-treenode-leaf";
     public static final String CHILDREN_NODES_CLASS = "ui-treenode-children";
     public static final String NODE_CONTENT_CLASS_V = "ui-treenode-content";
     public static final String SELECTABLE_NODE_CONTENT_CLASS_V = "ui-treenode-content ui-tree-selectable";
-    public static final String NODE_CONTENT_CLASS_H = "ui-treenode-content ui-state-default ui-corner-all";
-    public static final String SELECTABLE_NODE_CONTENT_CLASS_H = "ui-treenode-content ui-tree-selectable ui-state-default ui-corner-all";
+    public static final String NODE_CONTENT_CLASS_H = "ui-treenode-content ui-state-default";
+    public static final String SELECTABLE_NODE_CONTENT_CLASS_H = "ui-treenode-content ui-tree-selectable ui-state-default";
     public static final String EXPANDED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-s";
     public static final String COLLAPSED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-e";
     public static final String COLLAPSED_ICON_RTL_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-w";
@@ -74,29 +82,7 @@ public class Tree extends TreeBase {
     public static final String COLLAPSED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-plus";
     public static final String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
     public static final String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
-    public static final String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
-
-    static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
-            .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
-            .put(MatchMode.NOT_STARTS_WITH, new NegationFilterConstraintWrapper(new StartsWithFilterConstraint()))
-            .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
-            .put(MatchMode.NOT_ENDS_WITH, new NegationFilterConstraintWrapper(new EndsWithFilterConstraint()))
-            .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
-            .put(MatchMode.NOT_CONTAINS, new NegationFilterConstraintWrapper(new ContainsFilterConstraint()))
-            .put(MatchMode.EXACT, new ExactFilterConstraint())
-            .put(MatchMode.NOT_EXACT, new NegationFilterConstraintWrapper(new ExactFilterConstraint()))
-            .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
-            .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
-            .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
-            .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
-            .put(MatchMode.EQUALS, new EqualsFilterConstraint())
-            .put(MatchMode.NOT_EQUALS, new NegationFilterConstraintWrapper(new EqualsFilterConstraint()))
-            .put(MatchMode.IN, new InFilterConstraint())
-            .put(MatchMode.NOT_IN, new NegationFilterConstraintWrapper(new InFilterConstraint()))
-            .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
-            .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
-            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new BetweenFilterConstraint()))
-            .build();
+    public static final String NODE_LABEL_CLASS = "ui-treenode-label";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("select", NodeSelectEvent.class)
@@ -110,9 +96,9 @@ public class Tree extends TreeBase {
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private Map<String, UITreeNode> nodes;
-    private TreeNode dragNode;
-    private TreeNode[] dragNodes;
-    private TreeNode dropNode;
+    private TreeNode<?> dragNode;
+    private TreeNode<?>[] dragNodes;
+    private TreeNode<?> dropNode;
     private boolean retValOnDrop = true;
     private List<String> filteredRowKeys = new ArrayList<>();
 
@@ -120,7 +106,7 @@ public class Tree extends TreeBase {
         UITreeNode node = getTreeNodes().get(type);
 
         if (node == null) {
-            throw new javax.faces.FacesException("Unsupported tree node type:" + type);
+            throw new jakarta.faces.FacesException("Unsupported tree node type:" + type);
         }
         else {
             return node;
@@ -177,18 +163,18 @@ public class Tree extends TreeBase {
             String clientId = getClientId(context);
             FacesEvent wrapperEvent = null;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-            TreeNode root = getValue();
+            TreeNode<?> root = getValue();
 
             if ("expand".equals(eventName)) {
                 setRowKey(root, params.get(clientId + "_expandNode"));
-                TreeNode expandedNode = getRowNode();
+                TreeNode<?> expandedNode = getRowNode();
                 expandedNode.setExpanded(true);
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), expandedNode);
             }
             else if ("collapse".equals(eventName)) {
                 setRowKey(root, params.get(clientId + "_collapseNode"));
-                TreeNode collapsedNode = getRowNode();
+                TreeNode<?> collapsedNode = getRowNode();
                 collapsedNode.setExpanded(false);
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), collapsedNode);
@@ -293,39 +279,39 @@ public class Tree extends TreeBase {
         }
     }
 
-    TreeNode getDragNode() {
+    TreeNode<?> getDragNode() {
         return dragNode;
     }
 
-    void setDragNode(TreeNode dragNode) {
+    void setDragNode(TreeNode<?> dragNode) {
         this.dragNode = dragNode;
     }
 
-    TreeNode[] getDragNodes() {
+    TreeNode<?>[] getDragNodes() {
         return dragNodes;
     }
 
-    void setDragNodes(TreeNode[] dragNodes) {
+    void setDragNodes(TreeNode<?>[] dragNodes) {
         this.dragNodes = dragNodes;
     }
 
-    TreeNode getDropNode() {
+    TreeNode<?> getDropNode() {
         return dropNode;
     }
 
-    void setDropNode(TreeNode dropNode) {
+    void setDropNode(TreeNode<?> dropNode) {
         this.dropNode = dropNode;
     }
 
     @Override
-    protected boolean shouldVisitNode(TreeNode node) {
+    protected boolean shouldVisitNode(TreeNode<?> node) {
         return !isDynamic() || (node.isExpanded() || node.getParent() == null);
     }
 
     @Override
-    protected void processColumnChildren(FacesContext context, PhaseId phaseId, TreeNode root, String nodeKey) {
+    protected void processColumnChildren(FacesContext context, PhaseId phaseId, TreeNode<?> root, String nodeKey) {
         setRowKey(root, nodeKey);
-        TreeNode treeNode = getRowNode();
+        TreeNode<?> treeNode = getRowNode();
 
         if (treeNode == null) {
             return;
@@ -363,13 +349,13 @@ public class Tree extends TreeBase {
         }
     }
 
-    public TreeNode createCopyOfTreeNode(TreeNode<?> node) {
+    public TreeNode<?> createCopyOfTreeNode(TreeNode<?> node) {
         TreeNode newNode;
         if (node instanceof CheckboxTreeNode) {
-            newNode = new CheckboxTreeNode(node.getData());
+            newNode = new CheckboxTreeNode<>(node.getData());
         }
         else {
-            newNode = new DefaultTreeNode(node.getData());
+            newNode = new DefaultTreeNode<>(node.getData());
         }
 
         newNode.setType(node.getType());

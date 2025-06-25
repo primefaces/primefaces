@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -115,11 +115,11 @@ public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea i
         this.getStateHelper().put(PropertyKeys.countBytesAsChars, countBytesAsChars);
     }
 
-    public javax.el.MethodExpression getCompleteMethod() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
+    public jakarta.el.MethodExpression getCompleteMethod() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
     }
 
-    public void setCompleteMethod(javax.el.MethodExpression completeMethod) {
+    public void setCompleteMethod(jakarta.el.MethodExpression completeMethod) {
         getStateHelper().put(PropertyKeys.completeMethod, completeMethod);
     }
 

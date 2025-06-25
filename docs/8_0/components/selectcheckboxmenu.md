@@ -54,6 +54,7 @@ dynamic | false | Boolean | Defines if dynamic loading is enabled for the elemen
 labelSeparator | , | String | Separator for joining item lables if updateLabel is set to true. Default is ",".
 emptyLabel | null | String | Label to be shown in updateLabel mode when no item is selected. If not set the label is shown.
 filterPlaceholder | null | String  | Placeholder text to show when filter input is empty.
+collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.
 
 ## Getting started with SelectCheckboxMenu
 SelectCheckboxMenu usage is same as the standard selectManyCheckbox or PrimeFaces
@@ -85,13 +86,22 @@ function customFilter(itemLabel, filterValue) {
     //return true to accept and false to reject
 }
 ```
+
 ## Ajax Behavior Events
-In addition to common DOM events like change, selectCheckboxMenu provides _toggleSelect_ event.
+
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `change`  
+**Available Events:** `change, itemUnselect, toggleSelect`  
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 toggleSelect | org.primefaces.event.ToggleSelectEvent | When toggle all checkbox changes.
 itemUnselect | org.primefaces.event.UnselectEvent | When a item is removed via the close-icon.
+
+```xhtml
+<p:ajax event="change" listener="#{bean.handlechange}" update="msgs" />
+```
 
 ## Skinning
 SelectCheckboxMenu resides in a main container which _style_ and _styleClass_ attributes apply. As

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,8 +48,6 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
         ariaLabel,
         collision,
         maxHeight,
-        autoDisplay,
-        toggleEvent,
         delay,
         buttonStyle,
         buttonStyleClass,
@@ -178,22 +176,6 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
     }
 
-    public boolean isAutoDisplay() {
-        return (boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
-    }
-
-    public void setAutoDisplay(boolean autoDisplay) {
-        getStateHelper().put(PropertyKeys.autoDisplay, autoDisplay);
-    }
-
-    public String getToggleEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.toggleEvent, null);
-    }
-
-    public void setToggleEvent(String toggleEvent) {
-        getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
-    }
-
     public int getDelay() {
         return (int) getStateHelper().eval(PropertyKeys.delay, 0);
     }
@@ -219,7 +201,7 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public boolean isDisableOnAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, true);
     }
 
     public void setDisableOnAjax(boolean disableOnAjax) {

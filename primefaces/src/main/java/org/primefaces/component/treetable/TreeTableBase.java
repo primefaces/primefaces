@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,17 @@
  */
 package org.primefaces.component.treetable;
 
-import javax.el.MethodExpression;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
-import org.primefaces.component.api.*;
+import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.UIPageableData;
+import org.primefaces.component.api.UITable;
+import org.primefaces.component.api.UITree;
+import org.primefaces.component.api.Widget;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.MessageFactory;
+
+import jakarta.el.MethodExpression;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable,
         UITable<TreeTableState> {
@@ -50,6 +55,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         emptyMessage,
         resizableColumns,
         rowStyleClass,
+        rowTitle,
         liveResize,
         sortBy,
         nativeElements,
@@ -64,7 +70,6 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         paginator,
         paginatorTemplate,
         rowsPerPageTemplate,
-        rowsPerPageLabel,
         currentPageReportTemplate,
         pageLinks,
         paginatorPosition,
@@ -72,6 +77,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         rows,
         first,
         filterBy,
+        filterNormalize,
         globalFilter,
         globalFilterFunction,
         globalFilterOnly,
@@ -86,13 +92,14 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         cloneOnFilter,
         saveOnCellBlur,
         showGridlines,
-        size
+        size,
+        resizeMode,
+        exportTag,
+        exportRowTag
     }
 
     protected enum InternalPropertyKeys {
-        defaultFilter,
         filterByAsMap,
-        defaultSort,
         sortByAsMap,
         columnMeta,
         width;
@@ -172,7 +179,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     }
 
     public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(UIPageableData.EMPTY_MESSAGE));
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(getFacesContext(), UIPageableData.EMPTY_MESSAGE));
     }
 
     public void setEmptyMessage(String emptyMessage) {
@@ -193,6 +200,14 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setRowStyleClass(String rowStyleClass) {
         getStateHelper().put(PropertyKeys.rowStyleClass, rowStyleClass);
+    }
+
+    public String getRowTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.rowTitle, null);
+    }
+
+    public void setRowTitle(String rowTitle) {
+        getStateHelper().put(PropertyKeys.rowTitle, rowTitle);
     }
 
     public boolean isLiveResize() {
@@ -293,6 +308,14 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.paginator, paginator);
     }
 
+    public String getResizeMode() {
+        return (String) getStateHelper().eval(PropertyKeys.resizeMode, null);
+    }
+
+    public void setResizeMode(String resizeMode) {
+        getStateHelper().put(PropertyKeys.resizeMode, resizeMode);
+    }
+
     @Override
     public String getPaginatorTemplate() {
         return (String) getStateHelper().eval(PropertyKeys.paginatorTemplate,
@@ -310,15 +333,6 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setRowsPerPageTemplate(String rowsPerPageTemplate) {
         getStateHelper().put(PropertyKeys.rowsPerPageTemplate, rowsPerPageTemplate);
-    }
-
-    @Override
-    public String getRowsPerPageLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
-    }
-
-    public void setRowsPerPageLabel(String rowsPerPageLabel) {
-        getStateHelper().put(PropertyKeys.rowsPerPageLabel, rowsPerPageLabel);
     }
 
     @Override
@@ -510,5 +524,30 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setSize(String size) {
         getStateHelper().put(PropertyKeys.size, size);
+    }
+
+    public String getExportRowTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportRowTag, null);
+    }
+
+    public void setExportRowTag(String exportRowTag) {
+        getStateHelper().put(PropertyKeys.exportRowTag, exportRowTag);
+    }
+
+    public String getExportTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
+    }
+
+    public void setExportTag(String exportTag) {
+        getStateHelper().put(PropertyKeys.exportTag, exportTag);
+    }
+
+    @Override
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }

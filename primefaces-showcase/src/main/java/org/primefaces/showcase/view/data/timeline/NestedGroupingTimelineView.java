@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,27 @@
  */
 package org.primefaces.showcase.view.data.timeline;
 
-import org.primefaces.model.timeline.TimelineGroup;
-import org.primefaces.showcase.domain.Order;
-import org.primefaces.event.timeline.*;
+import org.primefaces.PrimeFaces;
+import org.primefaces.component.timeline.TimelineUpdater;
+import org.primefaces.event.timeline.TimelineModificationEvent;
 import org.primefaces.model.timeline.TimelineEvent;
+import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.model.timeline.TimelineModel;
+import org.primefaces.showcase.domain.Order;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
-import org.primefaces.PrimeFaces;
-import org.primefaces.component.timeline.TimelineUpdater;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named("nestedGroupingTimelineView")
 @ViewScoped

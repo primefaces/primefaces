@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -10,7 +10,7 @@
     </ui:define>
 
     <ui:define name="description">
-        Columns can be resized in two ways, with a helper or live.
+        Columns can be resized in two ways, with a helper or live. Double-click on resizer or press <code>ALT+W</code> to auto-adjust the column width to fit text like Excel.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>

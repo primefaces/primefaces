@@ -1,0 +1,127 @@
+@use 'sass:color';
+
+body {
+  .ui-message {
+    padding: $inputPadding;
+    display: inline-block;
+    border-radius: $borderRadius;
+
+    &.ui-message-success {
+      background: $successMessageBg;
+      border: $successMessageBorder;
+      border-width: $messageBorderWidth;
+      color: $successMessageTextColor;
+
+      .ui-message-success-icon {
+        @include icon-override("\e909");
+        margin: 0;
+        color: $successMessageIconColor;
+        float: none;
+        width: auto;
+        height: auto;
+        position: relative;
+        top: 1px;
+      }
+
+      .ui-message-success-detail {
+        margin-left: $inlineSpacing;
+      }
+    }
+
+    &.ui-message-info {
+      background: $infoMessageBg;
+      border: $infoMessageBorder;
+      border-width: $messageBorderWidth;
+      color: $infoMessageTextColor;
+
+      .ui-message-info-icon {
+        @include icon-override("\e924");
+        margin: 0;
+        color: $infoMessageIconColor;
+        float: none;
+        width: auto;
+        height: auto;
+        position: relative;
+        top: 1px;
+      }
+
+      .ui-message-info-detail {
+        margin-left: $inlineSpacing;
+      }
+    }
+
+    &.ui-message-warn {
+      background: $warnMessageBg;
+      border: $warnMessageBorder;
+      border-width: $messageBorderWidth;
+      color: $warnMessageTextColor;
+
+      .ui-message-warn-icon {
+        @include icon-override("\e922");
+        margin: 0;
+        color: $warnMessageIconColor;
+        float: none;
+        width: auto;
+        height: auto;
+        position: relative;
+        top: 1px;
+      }
+
+      .ui-message-warn-detail {
+        margin-left: $inlineSpacing;
+      }
+    }
+
+    &.ui-message-error {
+      background: $errorMessageBg;
+      border: $errorMessageBorder;
+      border-width: $messageBorderWidth;
+      color: $errorMessageTextColor;
+
+      .ui-message-error-icon {
+        @include icon-override("\e90c");
+        margin: 0;
+        color: $errorMessageIconColor;
+        float: none;
+        width: auto;
+        height: auto;
+        position: relative;
+        top: 1px;
+      }
+
+      .ui-message-error-detail {
+        margin-left: $inlineSpacing;
+      }
+    }
+
+    &.ui-message-fatal {
+      background: color.scale($errorMessageBg, $lightness: -20%);
+      border: solid color.scale($errorMessageBg, $lightness: -50%);
+      border-width: $messageBorderWidth;
+      color: color.scale($successMessageTextColor, $lightness: -75%);
+
+      .ui-message-fatal-icon {
+        @include icon-override("\e935");
+        margin: 0;
+        color: color.scale($errorMessageIconColor, $lightness: -75%);
+        float: none;
+        width: auto;
+        height: auto;
+        position: relative;
+        top: 1px;
+      }
+      .ui-message-fatal-detail {
+        margin-left: $inlineSpacing;
+      }
+    }
+
+    &.ui-message-icon-only {
+      width: auto;
+      height: auto;
+    }
+  }
+
+  .ui-widget + .ui-message {
+    margin: 0 0 0 $inlineSpacing;
+  }
+}

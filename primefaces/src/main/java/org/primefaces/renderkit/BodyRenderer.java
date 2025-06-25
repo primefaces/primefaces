@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,19 @@
  */
 package org.primefaces.renderkit;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.ListIterator;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.HTML;
 
-public class BodyRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.List;
+import java.util.ListIterator;
+
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class BodyRenderer extends CoreRenderer<UIComponent> {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -46,7 +48,7 @@ public class BodyRenderer extends CoreRenderer {
         }
 
         String styleClass = (String) component.getAttributes().get("styleClass");
-        if (styleClass != null && styleClass.length() != 0) {
+        if (styleClass != null && !styleClass.isEmpty()) {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
 
@@ -60,27 +62,30 @@ public class BodyRenderer extends CoreRenderer {
         encodeResources(context);
 
         if (!context.getPartialViewContext().isAjaxRequest()) {
-            encodeOnloadScripts(writer);
+            encodeOnloadScripts(context, writer);
         }
 
         writer.endElement("body");
     }
 
-    protected void encodeOnloadScripts(ResponseWriter writer) throws IOException {
+    protected void encodeOnloadScripts(FacesContext context, ResponseWriter writer) throws IOException {
         List<String> scripts = PrimeRequestContext.getCurrentInstance().getScriptsToExecute();
 
         if (!scripts.isEmpty()) {
             writer.startElement("script", null);
-            writer.writeAttribute("type", "text/javascript", null);
+            RendererUtils.encodeScriptTypeIfNecessary(context);
 
-            writer.write("$(function(){");
+            writer.write("(function(){const pfLoad=() => {");
 
             for (int i = 0; i < scripts.size(); i++) {
                 writer.write(scripts.get(i));
                 writer.write(';');
             }
 
-            writer.write("});");
+            writer.write("};if(window.$){$(function(){pfLoad()})}");
+            writer.write("else if(document.readyState==='complete'){pfLoad()}");
+            writer.write("else{document.addEventListener('DOMContentLoaded', pfLoad)}})();");
+
             writer.endElement("script");
         }
     }

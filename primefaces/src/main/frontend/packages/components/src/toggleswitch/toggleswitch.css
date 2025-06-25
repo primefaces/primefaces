@@ -1,0 +1,65 @@
+.ui-toggleswitch {
+    position: relative;
+    display: inline-block;
+    width: 3em;
+    height: 1.75em;
+}
+
+.ui-toggleswitch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: .3s;
+    transition: .3s;
+    border-radius: 30px;
+}
+
+.ui-toggleswitch-handler {
+    position: absolute;
+    height: 1.250em;
+    width: 1.250em;
+    left: .25em;
+    bottom: .25em;
+    border-radius: 50%;
+    -webkit-transition: .3s;
+    transition: .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ui-toggleswitch-checked .ui-toggleswitch-handler {
+    -webkit-transform: translateX(1.250em);
+    transform: translateX(1.250em);
+}
+
+.ui-toggleswitch-dual-icon .ui-toggleswitch-handler {
+    position: relative;
+}
+
+.ui-toggleswitch-dual-icon .ui-toggleswitch-handler span {
+    position: absolute;
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: opacity,transform;
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+
+.ui-toggleswitch-dual-icon .ui-toggleswitch-handler span + span {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.ui-toggleswitch-dual-icon.ui-toggleswitch-checked .ui-toggleswitch-handler span {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.ui-toggleswitch-dual-icon.ui-toggleswitch-checked .ui-toggleswitch-handler span + span {
+    opacity: 0;
+    transform: rotate(90deg);
+}

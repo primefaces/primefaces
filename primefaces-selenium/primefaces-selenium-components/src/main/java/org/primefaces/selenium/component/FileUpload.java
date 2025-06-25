@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,21 @@
  */
 package org.primefaces.selenium.component;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.Guard;
+
+import java.io.File;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:fileUpload}.
@@ -46,7 +47,7 @@ public abstract class FileUpload extends AbstractInputComponent {
     @Override
     public WebElement getInput() {
         // in case of mode=simple skinSimple=false the input element is this element
-        boolean isInputFile = "input".equals(getTagName()) && "file".equals(getAttribute("type"));
+        boolean isInputFile = "input".equals(getTagName()) && "file".equals(getDomAttribute("type"));
         return isInputFile ? this : findElement(By.id(getId() + "_input"));
     }
 
@@ -55,7 +56,7 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the file name
      */
     public String getValue() {
-        return getInput().getAttribute("value");
+        return getInput().getDomProperty("value");
     }
 
     /**
@@ -64,6 +65,16 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @param value the file name to set
      */
     public void setValue(Serializable value) {
+        setValue(value, true);
+    }
+
+    /**
+     * Sets the input's value.
+     * This should be the files absolute path.
+     * @param value the file name to
+     * @param useGuard use guard to wait until the upload finished
+     */
+    public void setValue(Serializable value, boolean useGuard) {
         Runnable runnable = () -> {
             if (getInput() != this && !PrimeSelenium.isChrome()) {
                 // input file cannot be cleared if skinSimple=false or in Chrome
@@ -76,17 +87,22 @@ public abstract class FileUpload extends AbstractInputComponent {
         };
 
         if (isAutoUpload()) {
-            if (isAdvancedMode()) {
-                Runnable guarded = Guard.custom(
-                    runnable,
-                    200,
-                    ConfigProvider.getInstance().getTimeoutFileUpload(),
-                    PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
+            if (useGuard) {
+                if (isAdvancedMode()) {
+                    Runnable guarded = Guard.custom(
+                            runnable,
+                            200,
+                            ConfigProvider.getInstance().getTimeoutFileUpload(),
+                            PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
 
-                guarded.run();
+                    guarded.run();
+                }
+                else {
+                    PrimeSelenium.guardAjax(runnable).run();
+                }
             }
             else {
-                PrimeSelenium.guardAjax(runnable).run();
+                runnable.run();
             }
         }
         else {
@@ -99,12 +115,21 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @param values the file name(s) to set
      */
     public void setValue(File... values) {
+        setValue(true, values);
+    }
+
+    /**
+     * Sets the input's value from given files.
+     * @param values the file name(s) to set
+     * @param useGuard use guard to wait until the upload finished
+     */
+    public void setValue(boolean useGuard, File... values) {
         // several references in the WEB state that (at least) Firefox and Chrome accept
         // multiple filenames separated by a new line character
         String paths = Arrays.stream(values)
                 .map(f -> f.getAbsolutePath())
                 .collect(Collectors.joining("\n"));
-        setValue(paths);
+        setValue(paths, useGuard);
     }
 
     /**
@@ -150,11 +175,11 @@ public abstract class FileUpload extends AbstractInputComponent {
     }
 
     /**
-     * Gets the value displayed by the widget.
+     * Gets the displayed filename.
      *
      * @return the widget's value
      */
-    public String getWidgetValue() {
+    public String getFilename() {
         return findElement(By.className("ui-fileupload-filename")).getText();
     }
 

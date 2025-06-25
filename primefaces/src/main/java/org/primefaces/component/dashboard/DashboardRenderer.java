@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,54 +23,65 @@
  */
 package org.primefaces.component.dashboard;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.panel.Panel;
-import org.primefaces.model.DashboardColumn;
-import org.primefaces.model.DashboardModel;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.dashboard.DashboardModel;
+import org.primefaces.model.dashboard.DashboardWidget;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class DashboardRenderer extends CoreRenderer {
+import java.io.IOException;
+import java.util.List;
+
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class DashboardRenderer extends CoreRenderer<Dashboard> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Dashboard component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Dashboard dashboard = (Dashboard) component;
-
-        encodeMarkup(context, dashboard);
-        encodeScript(context, dashboard);
+    public void encodeEnd(FacesContext context, Dashboard component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext contextr, Dashboard dashboard) throws IOException {
-        ResponseWriter writer = contextr.getResponseWriter();
-        String clientId = dashboard.getClientId(contextr);
+    protected void encodeMarkup(FacesContext context, Dashboard component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = component.getClientId(context);
+        boolean responsive = component.isResponsive();
+        String var = component.getVar();
 
-        writer.startElement("div", dashboard);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
-        String styleClass = dashboard.getStyleClass() != null ? Dashboard.CONTAINER_CLASS + " " + dashboard.getStyleClass() : Dashboard.CONTAINER_CLASS;
-        if (dashboard.isDisabled()) {
-            styleClass = styleClass + " ui-state-disabled";
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add(Dashboard.CONTAINER_CLASS)
+                .add(component.getStyleClass())
+                .add(component.isDisabled(), "ui-state-disabled")
+                .add(responsive, GridLayoutUtils.getFlexGridClass(true))
+                .build();
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (dashboard.getStyle() != null) {
-            writer.writeAttribute("style", dashboard.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        DashboardModel model = dashboard.getModel();
+        DashboardModel model = component.getModel();
         if (model != null) {
-            for (DashboardColumn column : model.getColumns()) {
+            List<DashboardWidget> widgets = model.getWidgets();
+            for (int i = 0; i < widgets.size(); i++) {
+                DashboardWidget column = widgets.get(i);
                 String columnStyle = column.getStyle();
-                String columnStyleClass = column.getStyleClass();
-                columnStyleClass = (columnStyleClass == null) ? Dashboard.COLUMN_CLASS : Dashboard.COLUMN_CLASS + " " + columnStyleClass;
+                String columnStyleClass = getStyleClassBuilder(context)
+                        .add(!responsive, Dashboard.COLUMN_CLASS)
+                        .add(responsive, Dashboard.PANEL_CLASS)
+                        .add(column.getStyleClass())
+                        .build();
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", columnStyleClass, null);
@@ -79,10 +90,16 @@ public class DashboardRenderer extends CoreRenderer {
                 }
 
                 for (String widgetId : column.getWidgets()) {
-                    Panel widget = findWidget(widgetId, dashboard);
-
+                    Panel widget = (Panel) SearchExpressionUtils.contextlessResolveComponent(context, component, widgetId);
                     if (widget != null) {
-                        renderChild(contextr, widget);
+                        ComponentUtils.executeInRequestScope(context, var, column.getValue(), () -> {
+                            try {
+                                return renderChild(context, widget);
+                            }
+                            catch (IOException e) {
+                                throw new FacesException(e);
+                            }
+                        });
                     }
                 }
 
@@ -93,30 +110,20 @@ public class DashboardRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, Dashboard dashboard) throws IOException {
+    protected void encodeScript(FacesContext context, Dashboard component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dashboard", dashboard)
-                .attr("disabled", !dashboard.isReordering(), false);
+        wb.init("Dashboard", component)
+                .attr("responsive", component.isResponsive(), false)
+                .attr("disabled", !component.isReordering(), false)
+                .attr("scope", component.getScope());
 
-        encodeClientBehaviors(context, dashboard);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected Panel findWidget(String id, Dashboard dashboard) {
-        for (UIComponent child : dashboard.getChildren()) {
-            Panel panel = (Panel) child;
-
-            if (panel.getId().equals(id)) {
-                return panel;
-            }
-        }
-
-        return null;
-    }
-
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Dashboard component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

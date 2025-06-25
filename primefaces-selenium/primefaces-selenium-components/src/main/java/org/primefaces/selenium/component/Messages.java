@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,10 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.component.base.AbstractComponent;
+import org.primefaces.selenium.component.model.Msg;
+import org.primefaces.selenium.component.model.Severity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,9 +34,6 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.component.base.AbstractComponent;
-import org.primefaces.selenium.component.model.Msg;
-import org.primefaces.selenium.component.model.Severity;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:messages}.
@@ -55,7 +56,7 @@ public abstract class Messages extends AbstractComponent {
         List<WebElement> messagesSeverities = findElements(By.tagName("div"));
         for (WebElement messageSeverity : messagesSeverities) {
 
-            Severity severity = Severity.toSeverity(messageSeverity.getAttribute("class"));
+            Severity severity = Severity.toSeverity(messageSeverity.getDomAttribute("class"));
 
             for (WebElement message : messageSeverity.findElements(By.cssSelector("li"))) {
                 Msg msg = new Msg();

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,6 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
@@ -38,15 +30,25 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 
-public class DataTable010Test extends AbstractDataTableTest {
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class DataTable010Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: selection - multiple with paging")
-    public void testSelectionMultipleWithPaging(Page page) {
+    void selectionMultipleWithPaging(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         Actions actions = new Actions(page.getWebDriver());
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
@@ -55,8 +57,8 @@ public class DataTable010Test extends AbstractDataTableTest {
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
-        Assertions.assertEquals("1", page.messages.getMessage(0).getDetail());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
+        assertEquals("1", page.messages.getMessage(0).getDetail());
 
         // Act
         dataTable.selectPage(2);
@@ -64,8 +66,8 @@ public class DataTable010Test extends AbstractDataTableTest {
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
-        Assertions.assertEquals("1,5", page.messages.getMessage(0).getDetail());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
+        assertEquals("1,5", page.messages.getMessage(0).getDetail());
 
         // Act
         dataTable.selectPage(1);
@@ -73,18 +75,18 @@ public class DataTable010Test extends AbstractDataTableTest {
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
-        Assertions.assertEquals("1,2,5", page.messages.getMessage(0).getDetail());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
+        assertEquals("1,2,5", page.messages.getMessage(0).getDetail());
         assertConfiguration(page.dataTable.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("DataTable: selection - multiple with paging and filtering")
-    public void testSelectionMultipleWithPagingAndFiltering(Page page) {
+    void selectionMultipleWithPagingAndFiltering(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         Actions actions = new Actions(page.getWebDriver());
 
         // Act
@@ -92,8 +94,8 @@ public class DataTable010Test extends AbstractDataTableTest {
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
-        Assertions.assertEquals("1", page.messages.getMessage(0).getDetail());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
+        assertEquals("1", page.messages.getMessage(0).getDetail());
 
         // Act
         dataTable.selectPage(2);
@@ -101,53 +103,53 @@ public class DataTable010Test extends AbstractDataTableTest {
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
-        Assertions.assertEquals("1,5", page.messages.getMessage(0).getDetail());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
+        assertEquals("1,5", page.messages.getMessage(0).getDetail());
 
         // Act
         dataTable.filter(1, "Java");
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
-        Assertions.assertEquals("1,5", page.messages.getMessage(0).getDetail());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
+        assertEquals("1,5", page.messages.getMessage(0).getDetail());
 
         // Act
         actions.keyDown(Keys.META).click(dataTable.getCell(1, 0).getWebElement()).keyUp(Keys.META).perform();
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
-        Assertions.assertEquals("1,3,5", page.messages.getMessage(0).getDetail());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
+        assertEquals("1,3,5", page.messages.getMessage(0).getDetail());
         assertConfiguration(page.dataTable.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("DataTable: selection - multiple with paging, filtering and delete row")
-    public void testSelectionMultipleWithPagingAndFilteringAndDelete(Page page) {
-        testSelectionMultipleWithPagingAndFiltering(page);
+    void selectionMultipleWithPagingAndFilteringAndDelete(Page page) {
+        selectionMultipleWithPagingAndFiltering(page);
 
         // Act
         page.buttonDelete.click();
 
         // Assert
-        Assertions.assertEquals(1, page.dataTable.getRows().stream().count());
-        Assertions.assertEquals("JavaScript", page.dataTable.getCell(0, 1).getText());
+        assertEquals(1, page.dataTable.getRows().stream().count());
+        assertEquals("JavaScript", page.dataTable.getCell(0, 1).getText());
 
         // Act
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
-        Assertions.assertEquals("3,5", page.messages.getMessage(0).getDetail()); // TODO: this is still kind of weird because we deleted Java (ID 3) before
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
+        assertEquals("3,5", page.messages.getMessage(0).getDetail()); // TODO: this is still kind of weird because we deleted Java (ID 3) before
         assertConfiguration(page.dataTable.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("selectionMode"));
+        assertTrue(cfg.has("selectionMode"));
     }
 
     public static class Page extends AbstractPrimePage {

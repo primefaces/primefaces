@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,29 @@
  */
 package org.primefaces.component.importenum;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import javax.faces.FacesException;
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.TagAttribute;
-import javax.faces.view.facelets.TagConfig;
-import javax.faces.view.facelets.TagHandler;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.LangUtils;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.facelets.FaceletContext;
+import jakarta.faces.view.facelets.TagAttribute;
+import jakarta.faces.view.facelets.TagConfig;
+import jakarta.faces.view.facelets.TagHandler;
 
 /**
  * {@link TagHandler} for the <code>ImportEnum</code> component.
  */
 public class ImportEnumTagHandler extends TagHandler {
-
     private static final String DEFAULT_ALL_SUFFIX = "ALL_VALUES";
+    private static final Logger LOG = Logger.getLogger(ImportEnumTagHandler.class.getName());
 
     private final TagAttribute typeTagAttribute;
     private final TagAttribute varTagAttribute;
@@ -109,9 +110,16 @@ public class ImportEnumTagHandler extends TagHandler {
 
         if (type.isEnum()) {
 
-            boolean cacheEnabled = facesContext.isProjectStage(ProjectStage.Production);
+            // allSuffix was not considered by the cache.
+            // allSuffix now got deprecated. If still used, create a new map each time.
+            boolean cacheEnabled = allSuffix == null && facesContext.isProjectStage(ProjectStage.Production);
             Map<Class<?>, Map<String, Object>> cache
                     = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnumCacheMap();
+
+            if (allSuffix != null && facesContext.isProjectStage(ProjectStage.Development)) {
+                LOG.info("The allSuffix attribute of '<p:importEnum/>' is deprecated and will be removed in a "
+                        + "future version. Please use the 'ALL_VALUES' attribute to access all enum values.");
+            }
 
             Map<String, Object> enums;
 
@@ -121,6 +129,8 @@ public class ImportEnumTagHandler extends TagHandler {
             else {
                 enums = new EnumHashMap<>(type);
 
+                enums.put(DEFAULT_ALL_SUFFIX, type.getEnumConstants());
+
                 for (Object value : type.getEnumConstants()) {
                     Enum<?> currentEnum = (Enum<?>) value;
                     enums.put(currentEnum.name(), currentEnum);
@@ -129,8 +139,6 @@ public class ImportEnumTagHandler extends TagHandler {
                 if (allSuffix != null) {
                     enums.put(allSuffix, type.getEnumConstants());
                 }
-
-                enums.put(DEFAULT_ALL_SUFFIX, type.getEnumConstants());
 
                 enums = Collections.unmodifiableMap(enums);
 

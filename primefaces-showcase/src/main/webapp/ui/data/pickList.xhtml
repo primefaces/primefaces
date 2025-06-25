@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -38,11 +38,14 @@
                 <p:pickList id="pojoPickList" value="#{pickListView.countries}" var="country"
                             itemValue="#{country}" itemLabel="#{country.name}" showSourceControls="true"
                             showTargetControls="true" showCheckbox="true"
-                            showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"
-                            converter="#{countryConverter}" responsive="true">
+                            showSourceFilter="true" showTargetFilter="true" 
+                            sourceFilterPlaceholder="Filter unsubscribed countries"
+                            targetFilterPlaceholder="Filter subscribed countries"
+                            filterMatchMode="contains" converter="#{countryConverter}" responsive="true">
 
-                    <f:facet name="sourceCaption">Available</f:facet>
-                    <f:facet name="targetCaption">Starting</f:facet>
+                    <f:attribute name="widgetPreConstruct" value="cfg.labels.aria.moveUp = 'Slide Up'; cfg.labels.aria.moveDown = 'Slide Down'; cfg.labels.aria.moveTop = 'Slide Top'; cfg.labels.aria.moveBottom = 'Slide Bottom'; cfg.labels.aria.moveToSource = 'Unsubscribe'; cfg.labels.aria.moveToTarget = 'Subscribe'; cfg.labels.aria.moveAllToSource = 'Unsubscribe All'; cfg.labels.aria.moveAllToTarget = 'Subscribe All';" />
+                    <f:facet name="sourceCaption">Unsubscribed</f:facet>
+                    <f:facet name="targetCaption">Subscribed</f:facet>
 
                     <p:ajax event="transfer" listener="#{pickListView.onTransfer}" update="msg"/>
                     <p:ajax event="select" listener="#{pickListView.onSelect}" update="msg"/>
@@ -50,8 +53,8 @@
                     <p:ajax event="reorder" listener="#{pickListView.onReorder}" update="msg"/>
 
                     <p:column style="width:94%">
-                        <div class="p-d-flex p-ai-center">
-                            <span class="flag flag-#{country.code} p-mr-2" style="width: 30px; height: 20px" />
+                        <div class="flex align-items-center">
+                            <span class="flag flag-#{country.code} mr-2" style="width: 30px; height: 20px" />
                             <h:outputText value="#{country.name}"/>
                         </div>
                     </p:column>

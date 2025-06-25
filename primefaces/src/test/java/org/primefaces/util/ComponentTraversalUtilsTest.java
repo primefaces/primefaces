@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,19 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIOutput;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.component.UIOutput;
 
 import org.junit.jupiter.api.Test;
 
-public class ComponentTraversalUtilsTest {
+import static org.junit.jupiter.api.Assertions.assertSame;
+
+class ComponentTraversalUtilsTest {
 
     @Test
-    public void closestForm() {
+    void closestForm() {
         UIForm outerForm = new UIForm();
         UIForm innerForm = new UIForm();
         UINamingContainer container = new UINamingContainer();
@@ -45,12 +45,12 @@ public class ComponentTraversalUtilsTest {
         container.getChildren().add(innerForm);
         outerForm.getChildren().add(container);
 
-        UIComponent result = ComponentTraversalUtils.closestForm(null, cmp);
+        UIComponent result = ComponentTraversalUtils.closestForm(cmp);
         assertSame(innerForm, result, "Expected closest surrounding UIForm");
     }
 
     @Test
-    public void closestNamingContainer() {
+    void closestNamingContainer() {
         UINamingContainer outerContainer = new UINamingContainer();
         UINamingContainer innerContainer = new UINamingContainer();
         UIForm form = new UIForm();

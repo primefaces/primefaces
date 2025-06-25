@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,23 @@
  */
 package org.primefaces.component.lifecycle;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class LifecycleRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.event.PhaseId;
+
+public class LifecycleRenderer extends CoreRenderer<Lifecycle> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Lifecycle lifecycle = (Lifecycle) component;
-        String clientId = lifecycle.getClientId(context);
+    public void encodeEnd(FacesContext context, Lifecycle component) throws IOException {
+        String clientId = component.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("table", lifecycle);
+        writer.startElement("table", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", Lifecycle.STYLE_CLASS, null);
 
@@ -57,7 +55,7 @@ public class LifecycleRenderer extends CoreRenderer {
         writer.endElement("table");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Lifecycle", lifecycle);
+        wb.init("Lifecycle", component);
         wb.finish();
     }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,57 +23,58 @@
  */
 package org.primefaces.component.sidebar;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class SidebarRenderer extends CoreRenderer {
+import java.io.IOException;
+
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+
+public class SidebarRenderer extends CoreRenderer<Sidebar> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Sidebar sidebar = (Sidebar) component;
+    public void decode(FacesContext context, Sidebar component) {
+        decodeBehaviors(context, component);
+    }
 
-        if (sidebar.isContentLoadRequest(context)) {
-            renderChildren(context, sidebar);
+    @Override
+    public void encodeEnd(FacesContext context, Sidebar component) throws IOException {
+        if (component.isContentLoadRequest(context)) {
+            renderChildren(context, component);
         }
         else {
-            encodeMarkup(context, sidebar);
-            encodeScript(context, sidebar);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
     }
 
-    protected void encodeMarkup(FacesContext context, Sidebar sidebar) throws IOException {
+    protected void encodeMarkup(FacesContext context, Sidebar component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String style = sidebar.getStyle();
-        String styleClass = sidebar.getStyleClass();
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? Sidebar.STYLE_CLASS : Sidebar.STYLE_CLASS + " " + styleClass;
-        styleClass = sidebar.isFullScreen() ? styleClass + " " + Sidebar.FULL_BAR_CLASS : styleClass;
-        styleClass += " ui-sidebar-" + sidebar.getPosition();
+        styleClass = component.isFullScreen() ? styleClass + " " + Sidebar.FULL_BAR_CLASS : styleClass;
+        styleClass += " ui-sidebar-" + component.getPosition();
 
-        writer.startElement("div", sidebar);
-        writer.writeAttribute("id", sidebar.getClientId(context), null);
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
-        if (sidebar.isShowCloseIcon()) {
+        if (component.isShowCloseIcon()) {
             encodeCloseIcon(context);
         }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Sidebar.CONTENT_CLASS, null);
-        writer.writeAttribute("id", sidebar.getClientId(context) + "_content", null);
+        writer.writeAttribute("id", component.getClientId(context) + "_content", null);
 
-        if (!sidebar.isDynamic()) {
-            renderChildren(context, sidebar);
+        if (!component.isDynamic()) {
+            renderChildren(context, component);
         }
 
         writer.endElement("div");
@@ -94,27 +95,26 @@ public class SidebarRenderer extends CoreRenderer {
         writer.endElement("a");
     }
 
-    private void encodeScript(FacesContext context, Sidebar sidebar) throws IOException {
+    private void encodeScript(FacesContext context, Sidebar component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Sidebar", sidebar)
-                .attr("visible", sidebar.isVisible(), false)
-                .attr("modal", sidebar.isModal(), true)
-                .attr("blockScroll", sidebar.isBlockScroll(), false)
-                .attr("baseZIndex", sidebar.getBaseZIndex(), 0)
-                .attr("dynamic", sidebar.isDynamic(), false)
-                .attr("showCloseIcon", sidebar.isShowCloseIcon(), true)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, sidebar, sidebar.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
-                .callback("onHide", "function()", sidebar.getOnHide())
-                .callback("onShow", "function()", sidebar.getOnShow());
+        wb.init("Sidebar", component)
+                .attr("visible", component.isVisible(), false)
+                .attr("modal", component.isModal(), true)
+                .attr("blockScroll", component.isBlockScroll(), false)
+                .attr("baseZIndex", component.getBaseZIndex(), 0)
+                .attr("dynamic", component.isDynamic(), false)
+                .attr("showCloseIcon", component.isShowCloseIcon(), true)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()))
+                .callback("onHide", "function()", component.getOnHide())
+                .callback("onShow", "function()", component.getOnShow());
 
-        encodeClientBehaviors(context, sidebar);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Sidebar component) throws IOException {
         //Do nothing
     }
 

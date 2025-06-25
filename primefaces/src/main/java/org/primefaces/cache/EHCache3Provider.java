@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,20 +40,20 @@ public class EHCache3Provider implements CacheProvider {
 
     @Override
     public Object get(String region, String key) {
-        Cache cacheRegion = getRegion(region);
+        Cache<String, Object> cacheRegion = getRegion(region);
         return cacheRegion.get(key);
     }
 
     @Override
     public void put(String region, String key, Object object) {
-        Cache cacheRegion = getRegion(region);
+        Cache<String, Object> cacheRegion = getRegion(region);
 
         cacheRegion.put(key, object);
     }
 
     @Override
     public void remove(String region, String key) {
-        Cache cacheRegion = getRegion(region);
+        Cache<String, ?> cacheRegion = getRegion(region);
 
         cacheRegion.remove(key);
     }
@@ -63,7 +63,7 @@ public class EHCache3Provider implements CacheProvider {
         // not supported by EHCache 3
     }
 
-    protected Cache getRegion(String regionName) {
+    protected Cache<String, Object> getRegion(String regionName) {
         return getCacheManager().getCache(regionName, String.class, Object.class);
     }
 

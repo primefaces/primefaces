@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -32,28 +32,26 @@
                 </p:growl>
                 
                 <h5 style="margin-top:0px">Basic Layout</h5>
-                <p:selectManyCheckbox id="basic" value="#{checkboxView.selectedOptions}">
-                    <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
-                    <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
-                    <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
-                </p:selectManyCheckbox>
-                
-                <h5>Basic Layout - AJAX</h5>
                 <p:selectManyCheckbox id="basicAjax" value="#{checkboxView.selectedOptions}" widgetVar="blub">
                     <p:ajax listener="#{checkboxView.selectedOptionsChanged}" />
                     <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
                     <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
                     <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
                 </p:selectManyCheckbox>
-
-                <h5>Grid Layout</h5>
-                <p:selectManyCheckbox id="grid" value="#{checkboxView.selectedCities}" layout="grid" columns="3" styleClass="grid-checkbox">
-                    <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
-                </p:selectManyCheckbox>
-
+                
                 <h5>Responsive</h5>
                 <p:selectManyCheckbox id="grid2" value="#{checkboxView.selectedCities2}" layout="responsive"
                                       columns="3">
+                    <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                </p:selectManyCheckbox>
+
+                <h5>Line Direction</h5>
+                <p:selectManyCheckbox id="lineDirection" value="#{checkboxView.selectedCities}" layout="lineDirection">
+                    <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                </p:selectManyCheckbox>
+                
+                <h5>Page Direction</h5>
+                <p:selectManyCheckbox id="pageDirection" value="#{checkboxView.selectedCities}" layout="pageDirection">
                     <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectManyCheckbox>
 
@@ -66,19 +64,19 @@
                         <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
                     </p:selectManyCheckbox>
 
-                    <div class="p-grid p-text-center">
-                        <div class="p-col">
-                            <p:outputLabel for="opt1" value="Option 1" styleClass="p-d-block p-mb-2"/>
+                    <div class="grid text-center">
+                        <div class="col">
+                            <p:outputLabel for="opt1" value="Option 1" styleClass="block mb-2"/>
                             <p:checkbox id="opt1" for="custom" itemIndex="0"/>
                         </div>
                         
-                        <div class="p-col">
-                            <p:outputLabel for="opt2" value="Option 2" styleClass="p-d-block p-mb-2"/>
+                        <div class="col">
+                            <p:outputLabel for="opt2" value="Option 2" styleClass="block mb-2"/>
                             <p:checkbox id="opt2" for="custom" itemIndex="1"/>
                         </div>
 
-                        <div class="p-col">
-                            <p:outputLabel for="opt3" value="Option 3" styleClass="p-d-block p-mb-2"/>
+                        <div class="col">
+                            <p:outputLabel for="opt3" value="Option 3" styleClass="block mb-2"/>
                             <p:checkbox id="opt3" for="custom" itemIndex="2"/>
                         </div>
                     </div>
@@ -92,6 +90,10 @@
                 </p:selectManyCheckbox>
             </h:form>
         </div>
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/org/primefaces/showcase/convert/CountryConverter.java"/>
     </ui:define>
 
 </ui:composition>

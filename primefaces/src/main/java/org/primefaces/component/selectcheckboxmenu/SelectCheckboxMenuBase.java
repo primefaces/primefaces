@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,13 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
-import javax.faces.component.html.HtmlSelectManyCheckbox;
-
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, PrimeClientBehaviorHolder {
+import jakarta.faces.component.html.HtmlSelectManyCheckbox;
+
+public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, InputHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -36,26 +37,30 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public enum PropertyKeys {
 
-        widgetVar,
-        scrollHeight,
-        onShow,
-        onHide,
-        filter,
-        filterMatchMode,
-        filterFunction,
-        filterPlaceholder,
+        appendTo,
         caseSensitive,
+        dynamic,
+        emptyLabel,
+        filter,
+        filterFunction,
+        filterMatchMode,
+        filterNormalize,
+        filterPlaceholder,
+        labelSeparator,
+        multiple,
+        onHide,
+        onShow,
         panelStyle,
         panelStyleClass,
-        appendTo,
+        scrollHeight,
+        selectedLabel,
+        showHeader,
+        showSelectAll,
         tabindex,
         title,
-        showHeader,
         updateLabel,
-        multiple,
-        dynamic,
-        labelSeparator,
-        emptyLabel
+        var,
+        widgetVar
     }
 
     public SelectCheckboxMenuBase() {
@@ -75,11 +80,11 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public int getScrollHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
+    public String getScrollHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.scrollHeight, "200");
     }
 
-    public void setScrollHeight(int scrollHeight) {
+    public void setScrollHeight(String scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
     }
 
@@ -147,6 +152,14 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         getStateHelper().put(PropertyKeys.panelStyle, panelStyle);
     }
 
+    public String getVar() {
+        return (String) getStateHelper().eval(SelectCheckboxMenuBase.PropertyKeys.var, null);
+    }
+
+    public void setVar(String var) {
+        getStateHelper().put(SelectCheckboxMenuBase.PropertyKeys.var, var);
+    }
+
     public String getPanelStyleClass() {
         return (String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
     }
@@ -191,6 +204,14 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         getStateHelper().put(PropertyKeys.showHeader, showHeader);
     }
 
+    public boolean isShowSelectAll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSelectAll, true);
+    }
+
+    public void setShowSelectAll(boolean showSelectAll) {
+        getStateHelper().put(PropertyKeys.showSelectAll, showSelectAll);
+    }
+
     public boolean isUpdateLabel() {
         return (Boolean) getStateHelper().eval(PropertyKeys.updateLabel, false);
     }
@@ -229,5 +250,21 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public void setEmptyLabel(String emptyLabel) {
         getStateHelper().put(PropertyKeys.emptyLabel, emptyLabel);
+    }
+
+    public String getSelectedLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.selectedLabel, null);
+    }
+
+    public void setSelectedLabel(String selectedLabel) {
+        getStateHelper().put(PropertyKeys.selectedLabel, selectedLabel);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }

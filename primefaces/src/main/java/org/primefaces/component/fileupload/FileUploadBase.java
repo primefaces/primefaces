@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,9 @@
  */
 package org.primefaces.component.fileupload;
 
-import javax.faces.component.UIInput;
 import org.primefaces.component.api.Widget;
+
+import jakarta.faces.component.UIInput;
 
 public abstract class FileUploadBase extends UIInput implements Widget {
 
@@ -34,55 +35,49 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public enum PropertyKeys {
 
-        widgetVar,
-        style,
-        styleClass,
-        update,
-        global,
-        process,
-        listener,
-        multiple,
-        auto,
-        label,
-        allowTypes,
-        fileLimit,
-        sizeLimit,
-        mode,
-        uploadLabel,
-        cancelLabel,
-        invalidSizeMessage,
-        invalidFileMessage,
-        fileLimitMessage,
-        dragDropSupport,
-        onstart,
-        oncomplete,
-        onerror,
-        onupload,
-        onvalidationfailure,
-        oncancel,
-        disabled,
-        messageTemplate,
-        previewWidth,
-        skinSimple,
         accept,
-        sequential,
-        chooseIcon,
-        uploadIcon,
+        auto,
+        cancelButtonStyleClass,
+        cancelButtonTitle,
         cancelIcon,
-        onAdd,
-        validateContentType,
-        virusScan,
+        cancelLabel,
+        chooseButtonStyleClass,
+        chooseButtonTitle,
+        chooseIcon,
+        disabled,
+        displayFilename,
+        dragDrop,
+        dropZone,
+        global,
+        ignoreAutoUpdate,
+        label,
+        listener,
         maxChunkSize,
         maxRetries,
+        messageTemplate,
+        mode,
+        multiple,
+        onAdd,
+        oncancel,
+        oncomplete,
+        onerror,
+        onstart,
+        onupload,
+        onvalidationfailure,
+        previewWidth,
+        process,
         retryTimeout,
+        sequential,
+        skinSimple,
+        style,
+        styleClass,
         title,
-        chooseButtonTitle,
-        uploadButtonTitle,
-        cancelButtonTitle,
-        chooseButtonStyleClass,
+        update,
         uploadButtonStyleClass,
-        cancelButtonStyleClass,
-        dropZone
+        uploadButtonTitle,
+        uploadIcon,
+        uploadLabel,
+        widgetVar
     }
 
     public FileUploadBase() {
@@ -134,11 +129,11 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.process, process);
     }
 
-    public javax.el.MethodExpression getListener() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
+    public jakarta.el.MethodExpression getListener() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
     }
 
-    public void setListener(javax.el.MethodExpression fileUploadListener) {
+    public void setListener(jakarta.el.MethodExpression fileUploadListener) {
         getStateHelper().put(PropertyKeys.listener, fileUploadListener);
     }
 
@@ -166,30 +161,6 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.label, label);
     }
 
-    public String getAllowTypes() {
-        return (String) getStateHelper().eval(PropertyKeys.allowTypes, null);
-    }
-
-    public void setAllowTypes(String allowTypes) {
-        getStateHelper().put(PropertyKeys.allowTypes, allowTypes);
-    }
-
-    public int getFileLimit() {
-        return (Integer) getStateHelper().eval(PropertyKeys.fileLimit, Integer.MAX_VALUE);
-    }
-
-    public void setFileLimit(int fileLimit) {
-        getStateHelper().put(PropertyKeys.fileLimit, fileLimit);
-    }
-
-    public Long getSizeLimit() {
-        return (Long) getStateHelper().eval(PropertyKeys.sizeLimit, Long.MAX_VALUE);
-    }
-
-    public void setSizeLimit(Long sizeLimit) {
-        getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
-    }
-
     public String getMode() {
         return (String) getStateHelper().eval(PropertyKeys.mode, "advanced");
     }
@@ -214,36 +185,12 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.cancelLabel, cancelLabel);
     }
 
-    public String getInvalidSizeMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.invalidSizeMessage, null);
+    public boolean isDragDrop() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.dragDrop, true);
     }
 
-    public void setInvalidSizeMessage(String invalidSizeMessage) {
-        getStateHelper().put(PropertyKeys.invalidSizeMessage, invalidSizeMessage);
-    }
-
-    public String getInvalidFileMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.invalidFileMessage, null);
-    }
-
-    public void setInvalidFileMessage(String invalidFileMessage) {
-        getStateHelper().put(PropertyKeys.invalidFileMessage, invalidFileMessage);
-    }
-
-    public String getFileLimitMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.fileLimitMessage, null);
-    }
-
-    public void setFileLimitMessage(String fileLimitMessage) {
-        getStateHelper().put(PropertyKeys.fileLimitMessage, fileLimitMessage);
-    }
-
-    public boolean isDragDropSupport() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dragDropSupport, true);
-    }
-
-    public void setDragDropSupport(boolean dragDropSupport) {
-        getStateHelper().put(PropertyKeys.dragDropSupport, dragDropSupport);
+    public void setDragDrop(boolean dragDrop) {
+        getStateHelper().put(PropertyKeys.dragDrop, dragDrop);
     }
 
     public String getOnstart() {
@@ -271,8 +218,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getOnvalidationfailure() {
-        Object eval = getStateHelper().eval(PropertyKeys.onvalidationfailure, null);
-        return (String) eval;
+        return (String) getStateHelper().eval(PropertyKeys.onvalidationfailure, null);
     }
 
     public void setOnvalidationfailure(String onvalidationfailure) {
@@ -344,7 +290,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getChooseIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.chooseIcon, "ui-icon-plusthick");
+        return (String) getStateHelper().eval(PropertyKeys.chooseIcon, "pi pi-plus");
     }
 
     public void setChooseIcon(String chooseIcon) {
@@ -352,7 +298,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getUploadIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.uploadIcon, "ui-icon-arrowreturnthick-1-n");
+        return (String) getStateHelper().eval(PropertyKeys.uploadIcon, "pi pi-upload");
     }
 
     public void setUploadIcon(String uploadIcon) {
@@ -360,7 +306,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getCancelIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.cancelIcon, "ui-icon-cancel");
+        return (String) getStateHelper().eval(PropertyKeys.cancelIcon, "pi pi-times");
     }
 
     public void setCancelIcon(String cancelIcon) {
@@ -373,22 +319,6 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setOnAdd(String onAdd) {
         getStateHelper().put(PropertyKeys.onAdd, onAdd);
-    }
-
-    public boolean isValidateContentType() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.validateContentType, false);
-    }
-
-    public void setValidateContentType(boolean validateContentType) {
-        getStateHelper().put(PropertyKeys.validateContentType, validateContentType);
-    }
-
-    public boolean isVirusScan() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.virusScan, false);
-    }
-
-    public void setVirusScan(boolean virusScan) {
-        getStateHelper().put(PropertyKeys.virusScan, virusScan);
     }
 
     public Long getMaxChunkSize() {
@@ -485,5 +415,21 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setDropZone(String dropZone) {
         getStateHelper().put(PropertyKeys.dropZone, dropZone);
+    }
+
+    public boolean isDisplayFilename() {
+        return (boolean) getStateHelper().eval(PropertyKeys.displayFilename, () -> !(getMode().equals("simple") && isAuto()));
+    }
+
+    public void setDisplayFilename(boolean displayFilename) {
+        getStateHelper().put(PropertyKeys.displayFilename, displayFilename);
+    }
+
+    public boolean isIgnoreAutoUpdate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
+    }
+
+    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
+        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
     }
 }
