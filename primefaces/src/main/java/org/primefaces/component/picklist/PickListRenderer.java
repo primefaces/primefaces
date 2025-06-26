@@ -42,7 +42,9 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = PickList.DEFAULT_RENDERER, componentFamily = PickList.COMPONENT_FAMILY)
 public class PickListRenderer extends InputRenderer<PickList> {
 
     @Override

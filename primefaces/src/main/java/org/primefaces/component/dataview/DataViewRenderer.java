@@ -39,7 +39,9 @@ import java.util.logging.Logger;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = DataView.DEFAULT_RENDERER, componentFamily = DataView.COMPONENT_FAMILY)
 public class DataViewRenderer extends DataRenderer<DataView> {
 
     private static final Logger LOGGER = Logger.getLogger(DataViewRenderer.class.getName());

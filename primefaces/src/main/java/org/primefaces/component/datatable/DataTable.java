@@ -79,6 +79,7 @@ import jakarta.el.ELContext;
 import jakarta.el.ValueExpression;
 import jakarta.faces.FacesException;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.visit.VisitCallback;
 import jakarta.faces.component.visit.VisitContext;
@@ -96,6 +97,7 @@ import jakarta.faces.model.DataModel;
 import jakarta.faces.model.IterableDataModel;
 import jakarta.faces.model.ListDataModel;
 
+@FacesComponent(value = DataTable.COMPONENT_TYPE, namespace = DataTable.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
