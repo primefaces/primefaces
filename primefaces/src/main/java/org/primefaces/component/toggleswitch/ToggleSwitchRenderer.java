@@ -135,10 +135,10 @@ public class ToggleSwitchRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_CHECKED, checked, null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
-        if (checked) {
+        if (checked && !toggleSwitch.isDisabled()) {
+            writer.writeAttribute(HTML.ARIA_CHECKED, "true", null);
             writer.writeAttribute("checked", "checked", null);
         }
 
