@@ -36,6 +36,6 @@ public class PrevPageLinkRenderer extends PageLinkRenderer implements PaginatorE
     public void render(FacesContext context, Pageable pageable) throws IOException {
         boolean disabled = pageable.getPage() == 0;
 
-        super.render(context, pageable, UIPageableData.PAGINATOR_PREV_PAGE_LINK_CLASS, UIPageableData.PAGINATOR_PREV_PAGE_ICON_CLASS, disabled);
+        super.render(context, pageable, UIPageableData.PAGINATOR_PREV_PAGE_LINK_CLASS, null, disabled);
     }
 }
