@@ -38,6 +38,6 @@ public class LastPageLinkRenderer extends PageLinkRenderer implements PaginatorE
         int pageCount = pageable.getPageCount();
 
         boolean disabled = (currentPage == (pageCount - 1)) || (currentPage == 0 && pageCount == 0);
-        super.render(context, pageable, UIPageableData.PAGINATOR_LAST_PAGE_LINK_CLASS, UIPageableData.PAGINATOR_LAST_PAGE_ICON_CLASS, disabled);
+        super.render(context, pageable, UIPageableData.PAGINATOR_LAST_PAGE_LINK_CLASS, null, disabled);
     }
 }
