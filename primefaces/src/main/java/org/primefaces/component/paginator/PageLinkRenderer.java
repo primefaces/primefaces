@@ -24,6 +24,7 @@
 package org.primefaces.component.paginator;
 
 import org.primefaces.component.api.Pageable;
+import org.primefaces.util.LangUtils;
 
 import java.io.IOException;
 
@@ -42,9 +43,11 @@ public class PageLinkRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("tabindex", tabindex, null);
 
-        writer.startElement("span", null);
-        writer.writeAttribute("class", iconClass, null);
-        writer.endElement("span");
+        if (LangUtils.isNotEmpty(iconClass)) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", iconClass, null);
+            writer.endElement("span");
+        }
 
         writer.endElement("button");
     }
