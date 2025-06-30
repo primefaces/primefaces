@@ -37,8 +37,6 @@ import org.primefaces.component.paginator.PageLinksRenderer;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
@@ -217,15 +215,6 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
             // for headerText of column
             if (ariaHeaderText == null) {
                 ariaHeaderText = column.getHeaderText();
-            }
-
-            // for header facet
-            if (ariaHeaderText == null) {
-                UIComponent headerFacet = column.getFacet("header");
-                if (FacetUtils.shouldRenderFacet(headerFacet)) {
-                    // encode and strip all HTML tags
-                    ariaHeaderText = HTML_TAG_PATTERN.matcher(ComponentUtils.encodeComponent(headerFacet, context)).replaceAll(Constants.EMPTY_STRING);
-                }
             }
 
             return ariaHeaderText;
