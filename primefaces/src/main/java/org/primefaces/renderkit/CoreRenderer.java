@@ -30,6 +30,7 @@ import org.primefaces.component.api.RTLAware;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
+import org.primefaces.util.AgentUtils;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -312,6 +313,10 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         }
         if (value != null) {
             writer.writeAttribute("value", value, null);
+        }
+        // autocomplete="off" is invalid HTML but fixes Firefox caching issues
+        if (AgentUtils.isFirefox(context)) {
+            writer.writeAttribute("autocomplete", "off", null);
         }
         writer.endElement("input");
     }
