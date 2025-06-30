@@ -47,14 +47,9 @@ public abstract class SelectOneRenderer<T extends UISelectOne> extends SelectRen
 
         String submittedValue = params.containsKey(clientId) ? params.get(clientId) : "";
         List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component), submittedValue);
-        if (!validSubmittedValues.isEmpty()) {
-            component.setSubmittedValue(validSubmittedValues.contains(submittedValue)
-                    ? submittedValue
-                    : validSubmittedValues.get(0));
-        }
-        else if ("".equals(submittedValue)) {
-            component.setSubmittedValue("");
-        }
+        component.setSubmittedValue(validSubmittedValues.isEmpty() || validSubmittedValues.contains(submittedValue)
+                ? submittedValue
+                : validSubmittedValues.get(0));
 
         decodeBehaviors(context, component);
     }
