@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.selectoneradio;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectOneRadio;
 
 import org.junit.jupiter.api.DisplayName;
@@ -37,6 +38,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SelectOneRadio006Test extends AbstractPrimePageTest {
 
@@ -55,13 +57,18 @@ class SelectOneRadio006Test extends AbstractPrimePageTest {
         jse.executeScript("arguments[0].value='three-disabled';", optionTwo);
         selectOneRadio.select("Two");
 
-        // Assert
-        assertEquals("One", selectOneRadio.getSelectedLabel());
+        page.submit.click();
+
+        // page should be displaying an error message because a disabled option was selected
+        assertTrue(getWebDriver().getPageSource().contains("Error"));
     }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:selectoneradio")
         SelectOneRadio selectOneRadio;
+
+        @FindBy(id = "form:submit")
+        CommandButton submit;
 
         @Override
         public String getLocation() {

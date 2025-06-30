@@ -17,9 +17,9 @@
                 <f:selectItem itemValue="two" itemLabel="Two"/>
                 <f:selectItem itemValue="three-disabled" itemLabel="Three (disabled)" itemDisabled="true"/>
                 <f:selectItem itemValue="four-disabled" itemLabel="Four (disabled)" itemDisabled="true"/>
-
-                <p:ajax update="@form"/>
             </p:selectOneRadio>
+
+            <p:commandButton id="submit" update="@form" value="Submit"/>
         </h:form>
 
     </h:body>
