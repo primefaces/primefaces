@@ -675,7 +675,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("scope", "col", null);
-        if (LangUtils.isNotBlank(column.getAriaHeaderText())) {
+        if (LangUtils.isNotBlank(ariaHeaderLabel)) {
             writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         }
         if (component != null) {
