@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:selectOneRadio id="selectoneradio" value="#{selectOneRadio006.value}">
+                <f:selectItem itemValue="one" itemLabel="One"/>
+                <f:selectItem itemValue="two" itemLabel="Two"/>
+                <f:selectItem itemValue="three-disabled" itemLabel="Three (disabled)" itemDisabled="true"/>
+                <f:selectItem itemValue="four-disabled" itemLabel="Four (disabled)" itemDisabled="true"/>
+            </p:selectOneRadio>
+
+            <p:commandButton id="submit" update="@form" value="Submit"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
