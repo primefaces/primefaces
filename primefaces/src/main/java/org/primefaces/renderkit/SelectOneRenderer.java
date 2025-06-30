@@ -52,6 +52,9 @@ public abstract class SelectOneRenderer<T extends UISelectOne> extends SelectRen
                     ? submittedValue
                     : validSubmittedValues.get(0));
         }
+        else if ("".equals(submittedValue)) {
+            component.setSubmittedValue("");
+        }
 
         decodeBehaviors(context, component);
     }
