@@ -162,7 +162,7 @@
             <description>
                 <![CDATA[Comma-separated list of allowed media types for content type validation.
                 When specified, this takes precedence over the accept attribute for content type validation.
-                Example: "application/pdf,image/jpeg,image/png"]]>
+                Example: "application/pdf,image/jpeg,image/png,text/plain"]]>
             </description>
             <name>allowMediaTypes</name>
             <required>false</required>
