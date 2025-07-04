@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.tree;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = UITreeNode.COMPONENT_TYPE, namespace = UITreeNode.COMPONENT_FAMILY)
 public class UITreeNode extends UITreeNodeBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UITreeNode";

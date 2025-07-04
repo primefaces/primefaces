@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = RowToggler.DEFAULT_RENDERER, componentFamily = RowToggler.COMPONENT_FAMILY)
 public class RowTogglerRenderer extends CoreRenderer<RowToggler> {
 
     @Override

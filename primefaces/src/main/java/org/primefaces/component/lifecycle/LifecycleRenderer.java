@@ -31,7 +31,9 @@ import java.io.IOException;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.PhaseId;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Lifecycle.DEFAULT_RENDERER, componentFamily = Lifecycle.COMPONENT_FAMILY)
 public class LifecycleRenderer extends CoreRenderer<Lifecycle> {
 
     @Override

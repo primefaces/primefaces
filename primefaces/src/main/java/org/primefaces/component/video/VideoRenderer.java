@@ -31,12 +31,14 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
 import org.apache.commons.io.FilenameUtils;
 
 /**
  * The HTML <video> element is used to embed sound content in documents.
  */
+@FacesRenderer(rendererType = Video.DEFAULT_RENDERER, componentFamily = Video.COMPONENT_FAMILY)
 public class VideoRenderer extends CoreRenderer<Video> {
 
     @Override
