@@ -1,7 +1,7 @@
 # ImportEnum
 
 In older EL versions (< 3.0), it's not possible to use enum constants or any other static
-fields/methods in an EL expression. As it is not really a good practive to create beans with
+fields/methods in an EL expression. As it is not really a good practice to create beans with
 getter/setter for each constants class, we provide an utils tag which allows to import enum values in
 a page.
 
