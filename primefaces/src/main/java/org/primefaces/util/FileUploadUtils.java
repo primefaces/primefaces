@@ -476,12 +476,12 @@ public class FileUploadUtils {
      * Extracts file extensions from an HTML accept attribute and converts them to a JavaScript-compatible
      * regular expression pattern. Only processes dot-prefixed extensions (e.g., ".pdf", ".doc") and
      * ignores MIME types (e.g., "image/*", "text/plain").
-     * @param componentAccept Raw accept attribute from the component (e.g., ".pdf,.doc,image/*")
+     * @param accept Raw accept attribute from the component (e.g., ".pdf,.doc,image/*")
      * @return a regex pattern matching the file extensions (e.g., "/.*\.(pdf|doc)/"), or null if no valid extensions found
      */
-    public static String extractAllowTypes(String componentAccept) {
-        if (LangUtils.isBlank(componentAccept)) return null;
-        return Arrays.stream(componentAccept.split(","))
+    public static String extractAllowTypes(String accept) {
+        if (LangUtils.isBlank(accept)) return null;
+        return Arrays.stream(accept.split(","))
                 .map(String::trim)
                 .filter(part -> part.startsWith("."))
                 .map(part -> part.substring(1).trim())

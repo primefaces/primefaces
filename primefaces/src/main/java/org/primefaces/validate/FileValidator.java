@@ -116,15 +116,15 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
      * Resolves the accept value for validation.
      * If content-type validation is enabled, returns either the validator's allowMediaTypes
      * or the component's accept attribute.
-     * @param componentAccept Raw accept attribute from the component
+     * @param accept Raw accept attribute from the component
      * @return the accept value to use for validation, or null if content type validation is disabled
      */
-    private String resolveAccept(String componentAccept) {
+    private String resolveAccept(String accept) {
         if (Boolean.TRUE.equals(getContentType())) {
             if (LangUtils.isNotBlank(getAllowMediaTypes())) {
                 return getAllowMediaTypes();
             }
-            return componentAccept;
+            return accept;
         }
         return null;
     }
@@ -134,14 +134,14 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
      * Returns the validator's allowTypes if configured. If allowTypes is not configured
      * and content-type validation is enabled, extracts file extensions from the component's
      * accept attribute and converts them to a regex pattern.
-     * @param componentAccept Raw accept attribute from the component
+     * @param accept Raw accept attribute from the component
      * @param component The UI component being validated
      * @return the file types pattern to use for validation, or null if none found
      */
-    private String resolveAllowTypes(String componentAccept, UIComponent component) {
+    private String resolveAllowTypes(String accept, UIComponent component) {
         String allowTypes = getAllowTypes();
         if (LangUtils.isBlank(allowTypes) && Boolean.TRUE.equals(getContentType())) {
-            String extractedAllowTypes = FileUploadUtils.extractAllowTypes(componentAccept);
+            String extractedAllowTypes = FileUploadUtils.extractAllowTypes(accept);
             if (LangUtils.isNotBlank(extractedAllowTypes)) {
                 allowTypes = extractedAllowTypes;
             }
