@@ -109,23 +109,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr id="activeIndex" class="rowColor">
+                        <tr id="active" class="rowColor">
+                            <td class="colFirst"><a href="#active"><code>active</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                Index or key of the active tab or a comma separated string of indexes/keys when multiple mode is on. Alternative: all. Default: 0.
+            </td>
+                        </tr>
+                        <tr id="activeIndex" class="altColor">
                             <td class="colFirst"><a href="#activeIndex"><code>activeIndex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">
-                Index of the active tab or a comma separated string of indexes when multiple mode is on. Alternative: all. Default: 0.
+                (DEPRECATED, use active instead!) Index of the active tab or a comma separated string of indexes when multiple mode is on. Alternative: all. Default: 0.
             </td>
                         </tr>
-                        <tr id="binding" class="altColor">
+                        <tr id="binding" class="rowColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.component.UIComponent</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">
                 An el expression referring to a server side UIComponent instance in a backing bean.
             </td>
                         </tr>
-                        <tr id="cache" class="rowColor">
+                        <tr id="cache" class="altColor">
                             <td class="colFirst"><a href="#cache"><code>cache</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -133,7 +141,7 @@
                 Defines if activating a dynamic tab should load the contents from server again.
             </td>
                         </tr>
-                        <tr id="dir" class="altColor">
+                        <tr id="dir" class="rowColor">
                             <td class="colFirst"><a href="#dir"><code>dir</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -141,7 +149,7 @@
                 Defines text direction, valid values are "ltr" (default) and "rtl".
             </td>
                         </tr>
-                        <tr id="dynamic" class="rowColor">
+                        <tr id="dynamic" class="altColor">
                             <td class="colFirst"><a href="#dynamic"><code>dynamic</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -149,7 +157,7 @@
                 Defines the toggle mode.
             </td>
                         </tr>
-                        <tr id="id" class="altColor">
+                        <tr id="id" class="rowColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -157,7 +165,7 @@
                 Unique identifier of the component in a namingContainer.
             </td>
                         </tr>
-                        <tr id="multiple" class="rowColor">
+                        <tr id="multiple" class="altColor">
                             <td class="colFirst"><a href="#multiple"><code>multiple</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -165,7 +173,7 @@
                 Enables activating multiple tabs, default is false.
             </td>
                         </tr>
-                        <tr id="multiViewState" class="altColor">
+                        <tr id="multiViewState" class="rowColor">
                             <td class="colFirst"><a href="#multiViewState"><code>multiViewState</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -173,7 +181,7 @@
                 Whether to keep AccordionPanel state across views, defaults to false.
             </td>
                         </tr>
-                        <tr id="onTabChange" class="rowColor">
+                        <tr id="onTabChange" class="altColor">
                             <td class="colFirst"><a href="#onTabChange"><code>onTabChange</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -181,7 +189,7 @@
                 Client side callback to execute when a tab is clicked.
             </td>
                         </tr>
-                        <tr id="onTabClose" class="altColor">
+                        <tr id="onTabClose" class="rowColor">
                             <td class="colFirst"><a href="#onTabClose"><code>onTabClose</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -189,7 +197,7 @@
                 Client side callback to execute when a tab is closed.
             </td>
                         </tr>
-                        <tr id="onTabShow" class="rowColor">
+                        <tr id="onTabShow" class="altColor">
                             <td class="colFirst"><a href="#onTabShow"><code>onTabShow</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -197,7 +205,7 @@
                 Client side callback to execute when a tab is shown.
             </td>
                         </tr>
-                        <tr id="prependId" class="altColor">
+                        <tr id="prependId" class="rowColor">
                             <td class="colFirst"><a href="#prependId"><code>prependId</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -205,7 +213,7 @@
                 AccordionPanel is a naming container thus prepends its id to its children by default, a false value turns this behavior off except for dynamic tabs.
             </td>
                         </tr>
-                        <tr id="rendered" class="rowColor">
+                        <tr id="rendered" class="altColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -213,7 +221,7 @@
                 Boolean value to specify the rendering of the component, when set to false component will not be rendered.
             </td>
                         </tr>
-                        <tr id="scrollIntoView" class="altColor">
+                        <tr id="scrollIntoView" class="rowColor">
                             <td class="colFirst"><a href="#scrollIntoView"><code>scrollIntoView</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -221,7 +229,7 @@
                  Should the tab scroll into view. One of start, center, end, nearest, or null if disabled. Default is null.
             </td>
                         </tr>
-                        <tr id="style" class="rowColor">
+                        <tr id="style" class="altColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -229,7 +237,7 @@
                 Inline style of the container element.
             </td>
                         </tr>
-                        <tr id="styleClass" class="altColor">
+                        <tr id="styleClass" class="rowColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -237,15 +245,15 @@
                 Style class of the container element.
             </td>
                         </tr>
-                        <tr id="tabController" class="rowColor">
+                        <tr id="tabController" class="altColor">
                             <td class="colFirst"><a href="#tabController"><code>tabController</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.el.MethodExpression</code>)
+                                (<i>must evaluate to </i><code>jakarta.el.MethodExpression</code>)
                     </td><td class="colLast">
                 Method providing suggestions.
             </td>
                         </tr>
-                        <tr id="tabindex" class="altColor">
+                        <tr id="tabindex" class="rowColor">
                             <td class="colFirst"><a href="#tabindex"><code>tabindex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -253,7 +261,7 @@
                 Position of the headers in the tabbing order. Default is 0.
             </td>
                         </tr>
-                        <tr id="toggleSpeed" class="rowColor">
+                        <tr id="toggleSpeed" class="altColor">
                             <td class="colFirst"><a href="#toggleSpeed"><code>toggleSpeed</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -261,7 +269,7 @@
                 Sets toggle animation speed in milliseconds. Default is 500.
             </td>
                         </tr>
-                        <tr id="value" class="altColor">
+                        <tr id="value" class="rowColor">
                             <td class="colFirst"><a href="#value"><code>value</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.util.List</code>)
@@ -269,12 +277,12 @@
                 List to iterate to display dynamic number of tabs.
             </td>
                         </tr>
-                        <tr id="var" class="rowColor">
+                        <tr id="var" class="altColor">
                             <td class="colFirst"><a href="#var"><code>var</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>java.lang.String</code></td><td class="colLast">
                 Name of collection iterator to use in dynamic number of tabs.
             </td>
                         </tr>
-                        <tr id="varStatus" class="altColor">
+                        <tr id="varStatus" class="rowColor">
                             <td class="colFirst"><a href="#varStatus"><code>varStatus</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -282,7 +290,7 @@
                 Name of the exported request scoped variable for the status of the iteration.
             </td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
