@@ -35,7 +35,6 @@ import org.primefaces.util.MessageFactory;
 import org.primefaces.validate.base.AbstractPrimeValidator;
 import org.primefaces.virusscan.VirusException;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -142,37 +141,17 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
     private String resolveAllowTypes(String componentAccept, UIComponent component) {
         String allowTypes = getAllowTypes();
         if (LangUtils.isBlank(allowTypes) && Boolean.TRUE.equals(getContentType())) {
-            String extractedAllowTypes = extractAllowTypes(componentAccept);
+            String extractedAllowTypes = FileUploadUtils.extractAllowTypes(componentAccept);
             if (LangUtils.isNotBlank(extractedAllowTypes)) {
                 allowTypes = extractedAllowTypes;
             }
             else {
-                LOGGER.log(Level.WARNING, "Attribute allowTypes is missing in p:validateFile. ClientId: " + component.getClientId());
+                LOGGER.log(Level.WARNING,
+                    "Either allowTypes attribute in p:validateFile or accept attribute with filename extension(s) in p:fileUpload is required. ClientId: "
+                    + component.getClientId());
             }
         }
         return allowTypes;
-    }
-
-    /**
-     * Extracts file extensions from an HTML accept attribute and converts them to a JavaScript-compatible
-     * regular expression pattern. Only processes dot-prefixed extensions (e.g., ".pdf", ".doc") and
-     * ignores MIME types (e.g., "image/*", "text/plain").
-     * @param componentAccept Raw accept attribute from the component (e.g., ".pdf,.doc,image/*")
-     * @return a regex pattern matching the file extensions (e.g., "/.*\.(pdf|doc)/"), or null if no valid extensions found
-     */
-    private static String extractAllowTypes(String componentAccept) {
-        if (LangUtils.isBlank(componentAccept)) return null;
-        return Arrays.stream(componentAccept.split(","))
-                .map(String::trim)
-                .filter(part -> part.startsWith("."))
-                .map(part -> part.substring(1).trim())
-                .filter(ext -> !ext.isEmpty())
-                .filter(ext -> ext.matches("[a-zA-Z0-9]{1,10}"))
-                .distinct()
-                .collect(Collectors.collectingAndThen(
-                        Collectors.toList(),
-                        list -> list.isEmpty() ? null : "/.*\\.(" + String.join("|", list) + ")/"
-                ));
     }
 
     protected void validateUploadedFiles(FacesContext context, UploadedFiles uploadedFiles, String accept, String allowTypes) {
