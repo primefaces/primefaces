@@ -19367,6 +19367,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Style of the html container element.]]>
             </description>
             <name>style</name>
