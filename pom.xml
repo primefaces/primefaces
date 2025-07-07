@@ -74,7 +74,7 @@
         <junit.version>5.13.3</junit.version>
         <poi.version>5.4.1</poi.version>
         <jacoco.version>0.8.13</jacoco.version>
-        <tomcat.version>11.0.9</tomcat.version>
+        <tomcat.version>10.1.43</tomcat.version>
         <slf4j.version>2.0.17</slf4j.version>
 
         <sonar.skip>true</sonar.skip>
