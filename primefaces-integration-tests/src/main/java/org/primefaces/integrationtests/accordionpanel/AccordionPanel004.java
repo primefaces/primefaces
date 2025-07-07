@@ -21,23 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.paginator;
+package org.primefaces.integrationtests.accordionpanel;
 
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIPageableData;
 
-import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
-public class LastPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
+import lombok.Data;
 
-    @Override
-    public void render(FacesContext context, Pageable pageable) throws IOException {
-        int currentPage = pageable.getPage();
-        int pageCount = pageable.getPageCount();
+@Data
+@Named
+@ViewScoped
+public class AccordionPanel004 implements Serializable {
+    private boolean isFirstTabRendered;
 
-        boolean disabled = (currentPage == (pageCount - 1)) || (currentPage == 0 && pageCount == 0);
-        super.render(context, pageable, UIPageableData.PAGINATOR_LAST_PAGE_LINK_CLASS, null, disabled);
+    public List<String> getTabs() {
+        List<String> tabs = new ArrayList<>(3);
+
+        if (isFirstTabRendered) {
+            tabs.add("tab1");
+        }
+
+        tabs.add("tab2");
+        tabs.add("tab3");
+
+        return tabs;
     }
 }

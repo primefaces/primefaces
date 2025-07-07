@@ -67,6 +67,7 @@ public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
                 .add(component.getStyleClass())
                 .add(checked, ToggleSwitch.CHECKED_CLASS)
                 .add(disabled, "ui-state-disabled")
+                .add(component.isReadonly(), "ui-state-readonly")
                 .add(component.getOffIcon() != null, "ui-toggleswitch-dual-icon")
                 .build();
 
@@ -130,10 +131,10 @@ public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_CHECKED, checked, null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
-        if (checked) {
+        if (checked && !component.isDisabled()) {
+            writer.writeAttribute(HTML.ARIA_CHECKED, "true", null);
             writer.writeAttribute("checked", "checked", null);
         }
 

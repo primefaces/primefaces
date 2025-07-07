@@ -29,13 +29,13 @@ public class AccordionState implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String activeIndex;
+    private String active;
 
-    public String getActiveIndex() {
-        return activeIndex;
+    public String getActive() {
+        return active;
     }
 
-    public void setActiveIndex(String activeIndex) {
-        this.activeIndex = activeIndex;
+    public void setActive(String active) {
+        this.active = active;
     }
 }

@@ -21,23 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.paginator;
+package org.primefaces.integrationtests.selectoneradio;
 
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIPageableData;
+import java.io.Serializable;
 
-import java.io.IOException;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
-import jakarta.faces.context.FacesContext;
+import lombok.Data;
 
-public class LastPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
+@Named
+@ViewScoped
+@Data
+public class SelectOneRadio006 implements Serializable {
 
-    @Override
-    public void render(FacesContext context, Pageable pageable) throws IOException {
-        int currentPage = pageable.getPage();
-        int pageCount = pageable.getPageCount();
+    private static final long serialVersionUID = -7518459955779385834L;
 
-        boolean disabled = (currentPage == (pageCount - 1)) || (currentPage == 0 && pageCount == 0);
-        super.render(context, pageable, UIPageableData.PAGINATOR_LAST_PAGE_LINK_CLASS, null, disabled);
+    private String value;
+
+    @PostConstruct
+    public void init() {
+        value = "one";
     }
+
 }

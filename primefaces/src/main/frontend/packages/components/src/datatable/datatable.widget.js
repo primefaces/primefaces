@@ -3607,9 +3607,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                         .on("keydown" + namespace, $this.jqId + " tr.ui-row-editing", function(e) {
                             switch (e.key) {
                                 case 'Enter':
-                                    var target = $(e.target);
-                                    // GitHub #7028
-                                    if(target.is("textarea")) {
+                                    // #7028/#13927 Do not proceed if target is a textarea, button, link, or TextEditor
+                                    if(PrimeFaces.utils.isEnterKeyBlocked(e)) {
                                          return true;
                                     }
                                     $(this).closest("tr").find(".ui-row-editor-check").trigger("click");
@@ -3898,8 +3897,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                         input = $(this);
 
                         if(key === 'Enter') {
-                            // GitHub #7028
-                            if(input.is("textarea")) {
+                            // #7028/#13927 Do not proceed if target is a textarea, button, link, or TextEditor
+                            if(PrimeFaces.utils.isEnterKeyBlocked(e)) {
                                 return true;
                             }
                             $this.saveCell(cell);
@@ -5576,10 +5575,15 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     /**
      * Computes the `colspan value for the table rows.
      * @private
+     * @param {boolean} visibleOnly If true, only visible columns are considered.
      * @return {number} The computed `colspan` value.
      */
-    calculateColspan() {
-        var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column):visible'),
+    calculateColspan(visibleOnly = false) {
+        var headerSelector = '> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column)';
+        if (visibleOnly) {
+            headerSelector += ':visible';
+        }
+        var visibleHeaderColumns = this.thead.find(headerSelector),
             colSpanValue = 0;
 
         for(var i = 0; i < visibleHeaderColumns.length; i++) {
@@ -5653,7 +5657,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @private
      */
     updateExpandedRowsColspan() {
-        var colspanValue = this.calculateColspan(),
+        var colspanValue = this.calculateColspan(true),
             $this = this;
         this.getExpandedRows().each(function() {
             $this.updateColspan($(this).next('.ui-expanded-row-content'), colspanValue);
