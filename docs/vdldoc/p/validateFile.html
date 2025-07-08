@@ -106,7 +106,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr id="allowTypes" class="rowColor">
+                        <tr id="allowMediaTypes" class="rowColor">
+                            <td class="colFirst"><a href="#allowMediaTypes"><code>allowMediaTypes</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                Comma-separated list of allowed media types for content type validation.
+                When specified, this takes precedence over the accept attribute for content type validation.
+                Example: "application/pdf,image/jpeg,image/png,text/plain"
+            </td>
+                        </tr>
+                        <tr id="allowTypes" class="altColor">
                             <td class="colFirst"><a href="#allowTypes"><code>allowTypes</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -114,7 +124,7 @@
                 Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/
             </td>
                         </tr>
-                        <tr id="contentType" class="altColor">
+                        <tr id="contentType" class="rowColor">
                             <td class="colFirst"><a href="#contentType"><code>contentType</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -122,7 +132,7 @@
                 Wheter the content type should be validated based on the accept attribute of the attached component. Default is false.
             </td>
                         </tr>
-                        <tr id="fileLimit" class="rowColor">
+                        <tr id="fileLimit" class="altColor">
                             <td class="colFirst"><a href="#fileLimit"><code>fileLimit</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -130,7 +140,7 @@
                 Maximum number of files to be uploaded.
             </td>
                         </tr>
-                        <tr id="sizeLimit" class="altColor">
+                        <tr id="sizeLimit" class="rowColor">
                             <td class="colFirst"><a href="#sizeLimit"><code>sizeLimit</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Long</code>)
@@ -138,7 +148,7 @@
                 Individual file size limit in bytes. Default is unlimited.
             </td>
                         </tr>
-                        <tr id="virusScan" class="rowColor">
+                        <tr id="virusScan" class="altColor">
                             <td class="colFirst"><a href="#virusScan"><code>virusScan</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
