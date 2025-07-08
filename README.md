@@ -159,13 +159,7 @@ Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=15.0.5` to update all modules versions
-- Commit and push the changes to GitHub
-- In GitHub create a new Release titled `15.0.5` to tag this release
-- Run `mvn clean deploy -Prelease` to push to Maven Central
-- Rename Milestone in GitHub Issues and close it
-- Create a new Milestone
-
+Visit the [Release Checklist](https://github.com/primefaces/primefaces/wiki/Release-Checklist) for how to release an LTS or STS version.
 
 ### License
 ***
