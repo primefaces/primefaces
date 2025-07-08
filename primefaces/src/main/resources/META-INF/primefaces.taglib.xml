@@ -1775,7 +1775,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Enables dropdown mode when set true.]]>
             </description>
             <name>dropdown</name>
             <required>false</required>
