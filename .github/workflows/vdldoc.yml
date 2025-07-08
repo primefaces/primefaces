@@ -37,7 +37,11 @@ jobs:
 
       - name: Generate VDL Documentation
         working-directory: primefaces
-        run: mvn vdldoc:vdldoc -Pvdldoc-publish --batch-mode --show-version
+        run: mvn vdldoc:vdldoc --batch-mode --show-version
+
+      - name: Copy VDL Documentation
+        run: |
+          cp -r primefaces/target/site/vdldoc/* docs/vdldoc/
 
       - name: Check for changes
         id: check-changes
