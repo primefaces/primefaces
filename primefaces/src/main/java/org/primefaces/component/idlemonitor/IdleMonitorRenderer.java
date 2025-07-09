@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = IdleMonitor.DEFAULT_RENDERER, componentFamily = IdleMonitor.COMPONENT_FAMILY)
 public class IdleMonitorRenderer extends CoreRenderer<IdleMonitor> {
 
     @Override

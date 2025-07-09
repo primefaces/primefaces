@@ -33,7 +33,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Button.DEFAULT_RENDERER, componentFamily = Button.COMPONENT_FAMILY)
 public class ButtonRenderer extends OutcomeTargetRenderer<Button> {
 
     private static final String SB_BUILD_ONCLICK = ButtonRenderer.class.getName() + "#buildOnclick";

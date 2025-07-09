@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.el.MethodExpression;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIParameter;
 import jakarta.faces.context.FacesContext;
@@ -40,7 +41,7 @@ import jakarta.faces.event.ActionEvent;
 import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
-
+@FacesComponent(value = UIMenuItem.COMPONENT_TYPE, namespace = UIMenuItem.COMPONENT_FAMILY)
 public class UIMenuItem extends UIMenuItemBase implements DialogReturnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UIMenuItem";

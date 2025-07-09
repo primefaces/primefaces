@@ -24,7 +24,9 @@
 package org.primefaces.component.log;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Log.COMPONENT_TYPE, namespace = Log.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "log/log.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
