@@ -121,6 +121,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
         //button
         writer.startElement("div", null);
         writer.writeAttribute("class", buttonStyle, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "radio", null);
         writer.writeAttribute("tabindex", component.getTabindex(), null);
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);
