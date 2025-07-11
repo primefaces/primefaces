@@ -82,8 +82,8 @@ public class ResourceUtils {
     }
 
     public static String toBase64(FacesContext context, Resource resource) {
-        try {
-            return toBase64(context, resource.getInputStream(), resource.getContentType());
+        try (InputStream is = resource.getInputStream()) {
+            return toBase64(context, is, resource.getContentType());
         }
         catch (IOException e) {
             throw new FacesException("Could not open InputStream from Resource[library=" + resource.getLibraryName()
@@ -135,19 +135,19 @@ public class ResourceUtils {
     }
 
     public static byte[] toByteArray(InputStream is) {
-        try (ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
-            int nRead;
-            byte[] data = new byte[16384];
-
-            while ((nRead = is.read(data, 0, data.length)) != -1) {
-                buffer.write(data, 0, nRead);
+        if (is == null) {
+            throw new IllegalArgumentException("InputStream must not be null");
+        }
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = is.read(buffer)) != -1) {
+                output.write(buffer, 0, read);
             }
 
-            buffer.flush();
-
-            return buffer.toByteArray();
+            return output.toByteArray();
         }
-        catch (Exception e) {
+        catch (IOException e) {
             throw new FacesException("Could not read InputStream to byte[]", e);
         }
     }
