@@ -192,8 +192,10 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
             for (int i = 0; i < dataCount; i++) {
                 acco.setIndex(i);
-                boolean active = isActive(tab, activeIndexes, i);
-                encodeTab(context, acco, tab, i, active, dynamic, repeating, rtl);
+                if (tab.isRendered()) {
+                    boolean activated = isActive(tab, activeIndexes, i);
+                    encodeTab(context, acco, tab, i, activated, dynamic, repeating, rtl);
+                }
             }
 
             acco.setIndex(-1);
