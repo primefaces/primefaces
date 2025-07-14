@@ -100,7 +100,7 @@ public class DynamicContentSrcBuilder {
                     return ResourceUtils.toBase64(context, is);
                 }
                 catch (IOException e) {
-                    throw new FacesException("Could not open InputStream from InputStream", e);
+                    throw new FacesException("Could not open InputStream from StreamedContent", e);
                 }
             }
         }
