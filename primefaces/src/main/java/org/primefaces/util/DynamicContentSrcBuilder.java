@@ -28,6 +28,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URLEncoder;
@@ -72,7 +73,12 @@ public class DynamicContentSrcBuilder {
                 if (streamedContent.getWriter() != null) {
                     return ResourceUtils.toBase64(context, streamedContent.getWriter(), streamedContent.getContentType());
                 }
-                return ResourceUtils.toBase64(context, streamedContent.getStream().get(), streamedContent.getContentType());
+                try (InputStream is = streamedContent.getStream().get()) {
+                    return ResourceUtils.toBase64(context, is, streamedContent.getContentType());
+                }
+                catch (IOException e) {
+                    throw new FacesException("Could not open InputStream from StreamedContent", e);
+                }
             }
         }
         else if (byte[].class.isAssignableFrom(type)) {
@@ -90,7 +96,12 @@ public class DynamicContentSrcBuilder {
                 return buildStreaming(context, component, extractedVE, cache);
             }
             else {
-                return ResourceUtils.toBase64(context, (InputStream) value.get());
+                try (InputStream is = (InputStream) value.get()) {
+                    return ResourceUtils.toBase64(context, is);
+                }
+                catch (IOException e) {
+                    throw new FacesException("Could not open InputStream from StreamedContent", e);
+                }
             }
         }
 
