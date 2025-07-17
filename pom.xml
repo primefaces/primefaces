@@ -289,7 +289,7 @@
             <plugin>
                 <groupId>org.jreleaser</groupId>
                 <artifactId>jreleaser-maven-plugin</artifactId>
-                <version>1.18.0</version>
+                <version>1.19.0</version>
                 <inherited>false</inherited>
                 <configuration>
                     <jreleaser>
