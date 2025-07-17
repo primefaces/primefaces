@@ -565,7 +565,7 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
                     <minimizeJar>true</minimizeJar>
-                    <createSourcesJar>true</createSourcesJar>
+                    <createSourcesJar>false</createSourcesJar>
                     <shadeSourcesContent>true</shadeSourcesContent>
                     <relocations>
                         <relocation>
