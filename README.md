@@ -74,14 +74,14 @@ Version | Status | JSF version | Java version | Documentation
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>15.0.5</version>
+      <version>15.0.6</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>15.0.5</version>
+      <version>15.0.6</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
