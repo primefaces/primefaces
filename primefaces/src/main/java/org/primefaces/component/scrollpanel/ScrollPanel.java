@@ -24,7 +24,9 @@
 package org.primefaces.component.scrollpanel;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = ScrollPanel.COMPONENT_TYPE, namespace = ScrollPanel.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "scrollpanel/scrollpanel.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

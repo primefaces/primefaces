@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Tag.DEFAULT_RENDERER, componentFamily = Tag.COMPONENT_FAMILY)
 public class TagRenderer extends CoreRenderer<Tag> {
 
     @Override
