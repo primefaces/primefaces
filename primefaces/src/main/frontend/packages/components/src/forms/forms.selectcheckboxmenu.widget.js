@@ -780,13 +780,12 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
 
         var closeSelector = '> li.ui-selectcheckboxmenu-token > .ui-selectcheckboxmenu-token-icon';
         this.multiItemContainer.off('click', closeSelector).on('click', closeSelector, null, function(e) {
+            if (!$this.isLoaded()) {
+                $this._renderPanel();
+            }
             var itemValue = $(this).parent().data("item-value");
             var item = $this.items.filter('[data-item-value="' + CSS.escape(itemValue) + '"]');
             if (item && item.length) {
-                if (!$this.isLoaded()) {
-                    $this._renderPanel();
-                }
-
                 //".ui-chkbox" is a grandchild when columns are used!
                 $this.uncheck(item.find('.ui-chkbox').children('.ui-chkbox-box'), true);
             }
