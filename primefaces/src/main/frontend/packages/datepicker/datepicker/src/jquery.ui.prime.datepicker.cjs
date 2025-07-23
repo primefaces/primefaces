@@ -2373,7 +2373,7 @@ $.widget("prime.datePicker", {
     },
 
     onInputChange: function(event) {
-        if ((this.options.autoMonthFormat || !this.inputfield.val() || this.options.showMinMaxRange) && this.options.monthNavigator && this.options.view !== 'month') { 
+        if ((this.options.autoMonthFormat || !this.inputfield.val()) && this.options.monthNavigator && this.options.view !== 'month') { 
             var viewMonth = this.viewDate.getMonth();
             viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
             this.viewDate.setMonth(viewMonth);
@@ -3564,7 +3564,7 @@ $.widget("prime.datePicker", {
 
         this.viewDate = value;
 
-        if ((this.options.autoMonthFormat || !this.inputfield.val() || this.options.showMinMaxRange) && this.options.monthNavigator && this.options.view !== 'month') {
+        if ((this.options.autoMonthFormat || !this.inputfield.val()) && this.options.monthNavigator && this.options.view !== 'month') {
             var viewMonth = this.viewDate.getMonth();
             viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
             this.viewDate.setMonth(viewMonth);
