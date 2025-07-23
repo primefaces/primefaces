@@ -402,8 +402,8 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     collapseTreeItem: function(submenu) {
         var submenuLink = submenu.find('> .ui-menuitem-link');
 
-        submenuLink.find('> .ui-menuitem-text').attr('aria-expanded', false);
-        submenuLink.find('> .ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s');
+        submenuLink.find('> .ui-menuitem-text').attr('aria-expanded', "false");
+        submenuLink.find('> .ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
         submenu.children('.ui-menu-list').hide();
 
         this.removeAsExpanded(submenu);
