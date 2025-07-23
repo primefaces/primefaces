@@ -35,7 +35,9 @@ import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = DataList.DEFAULT_RENDERER, componentFamily = DataList.COMPONENT_FAMILY)
 public class DataListRenderer extends DataRenderer<DataList> {
 
     private static final Logger LOGGER = Logger.getLogger(DataListRenderer.class.getName());

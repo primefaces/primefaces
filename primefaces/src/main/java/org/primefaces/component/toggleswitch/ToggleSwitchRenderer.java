@@ -33,7 +33,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ToggleSwitch.DEFAULT_RENDERER, componentFamily = ToggleSwitch.COMPONENT_FAMILY)
 public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
 
     @Override

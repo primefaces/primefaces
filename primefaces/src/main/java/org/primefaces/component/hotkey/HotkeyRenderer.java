@@ -33,7 +33,9 @@ import java.util.Map;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.ActionEvent;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Hotkey.DEFAULT_RENDERER, componentFamily = Hotkey.COMPONENT_FAMILY)
 public class HotkeyRenderer extends CoreRenderer<Hotkey> {
 
     @Override

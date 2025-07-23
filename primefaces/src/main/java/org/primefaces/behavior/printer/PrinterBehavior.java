@@ -31,15 +31,19 @@ import org.primefaces.util.LangUtils;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.behavior.ClientBehaviorContext;
+import jakarta.faces.component.behavior.FacesBehavior;
 import jakarta.faces.context.FacesContext;
 
 import org.json.JSONObject;
 
+@FacesBehavior(PrinterBehavior.BEHAVIOR_ID)
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "printer/printer.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 public class PrinterBehavior extends AbstractBehavior {
+
+    public static final String BEHAVIOR_ID = "org.primefaces.component.PrinterBehavior";
 
     public enum PropertyKeys implements BehaviorAttribute {
         target(String.class),
