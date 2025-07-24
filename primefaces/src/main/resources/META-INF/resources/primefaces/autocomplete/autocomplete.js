@@ -376,7 +376,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.dropdown.on("mouseup", function() {
             if ($this.active) {
                 $this.searchWithDropdown();
-                $this.input.trigger('focus');
+                PrimeFaces.queueTask(() => { $this.input.trigger('focus'); }, 1);
             }
         }).on("keyup", function(e) {
             if (PrimeFaces.utils.isActionKey(e)) {
