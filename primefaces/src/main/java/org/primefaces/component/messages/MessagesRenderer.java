@@ -110,6 +110,7 @@ public class MessagesRenderer extends UINotificationRenderer<Messages> {
     protected void encodeScript(FacesContext context, Messages component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Messages", component)
+                .attr("closable", component.isClosable())
                 .finish();
     }
 
