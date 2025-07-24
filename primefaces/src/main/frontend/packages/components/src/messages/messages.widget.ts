@@ -5,6 +5,7 @@
  * configuration is usually meant to be read-only and should not be modified.
  */
 export interface MessagesCfg extends PrimeType.widget.BaseWidgetCfg {
+    closable: boolean;
 }
 
 /**
@@ -37,9 +38,9 @@ export class Messages<Cfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.
         if (severityContainer.length === 0) {
             severityContainer = this.jq.append(
                  '<div class="ui-messages-' + msg.severity + '">' +
-                    '<a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;" role="button" aria-label="'+closeLabel+'">' +
+                    (this.cfg.closable ? '<a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;" role="button" aria-label="' + closeLabel + '">' +
                         '<span class="ui-icon ui-icon-close"></span>' +
-                    '</a>' +
+                    '</a>' : '') +
                     '<span class="ui-messages-' + msg.severity + '-icon"></span>' +
                     '<ul>' +
 

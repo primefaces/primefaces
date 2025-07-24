@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:messages id="messages" widgetVar="messages">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:messages id="messagesClosable" widgetVar="messagesClosable" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>
