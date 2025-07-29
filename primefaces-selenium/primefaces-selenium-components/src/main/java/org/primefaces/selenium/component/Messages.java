@@ -39,7 +39,7 @@ import org.openqa.selenium.WebElement;
  * Component wrapper for the PrimeFaces {@code p:messages}.
  */
 public abstract class Messages extends AbstractComponent {
-    public WebElement getClose(String severity) {
+    public WebElement getCloseButton(String severity) {
         return findElement(By.cssSelector(".ui-messages-" + severity + " > .ui-messages-close"));
     }
 
