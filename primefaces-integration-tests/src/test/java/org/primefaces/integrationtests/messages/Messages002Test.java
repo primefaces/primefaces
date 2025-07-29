@@ -37,19 +37,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class Messages002Test extends AbstractPrimePageTest {
     @Test
-    @DisplayName("clients-side appendMessage: close icon not rendered")
+    @DisplayName("client-side appendMessage: close icon not rendered")
     public void testNotClosable(Page page) {
         PrimeSelenium.executeScript("PF('messages').appendMessage({severity:'info', summary:'Info'});");
 
-        assertThrows(NoSuchElementException.class, () -> page.messages.getClose("info"));
+        assertThrows(NoSuchElementException.class, () -> page.messages.getCloseButton("info"));
     }
 
     @Test
-    @DisplayName("clients-side appendMessage: close icon rendered")
+    @DisplayName("client-side appendMessage: close icon rendered")
     public void testClosable(Page page) {
         PrimeSelenium.executeScript("PF('messagesClosable').appendMessage({severity:'info', summary:'Info'});");
 
-        assertDisplayed(page.messagesClosable.getClose("info"));
+        assertDisplayed(page.messagesClosable.getCloseButton("info"));
     }
 
     public static class Page extends AbstractPrimePage {
