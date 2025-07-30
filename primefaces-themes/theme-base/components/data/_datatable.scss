@@ -52,6 +52,7 @@ body {
         border: $datatableHeaderCellBorder;
         border-width: $datatableHeaderCellBorderWidth;
         text-align: left;
+        box-sizing: content-box;
         transition: $transition;
 
         .ui-column-title {
@@ -236,6 +237,7 @@ body {
         padding: $datatableFooterCellPadding;
         font-weight: $datatableFooterCellFontWeight;
         text-align: left;
+        box-sizing: content-box;
       }
     }
 
