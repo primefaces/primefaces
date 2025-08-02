@@ -346,19 +346,21 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
         // Otherwise, use cfg.atPos if available, or fall back to cfg.position
         var configPosition = this.cfg.trackMouse ? this.cfg.position : (this.cfg.atPos || this.cfg.position);
         
-        // Extract the last word from the position string (e.g., "top right" becomes "right")
-        configPosition = configPosition.split(' ').pop().trim();
-        
+        // Split the configPosition into an array of strings e.g. "left center"
+        configPosition = configPosition.split(' ');
+
+        // Initialize the tooltipClass with 'ui-tooltip-'
         var tooltipClass = 'ui-tooltip-';
-        switch (configPosition) {
-            case "right":
-            case "left":
+        for (var i = 0; i < configPosition.length; i++) {
+            var pos = configPosition[i];
+            if (pos === "right" || pos === "left") {
                 tooltipClass += feedback['horizontal'] == 'left' ? 'right' : 'left';
                 break;
-            case "top":
-            case "bottom":
+            }
+            else if (pos === "top" || pos === "bottom") {
                 tooltipClass += feedback['vertical'] == 'top' ? 'bottom' : 'top';
                 break;
+            }
         }
         
         this.jq.removeClass('ui-tooltip-left ui-tooltip-right ui-tooltip-top ui-tooltip-bottom')
