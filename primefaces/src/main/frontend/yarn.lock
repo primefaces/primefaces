@@ -324,7 +324,7 @@ __metadata:
     "@types/webcamjs": "npm:1.0.0"
     "@xenorange/esbuild-plugin-banned-dependencies": "npm:1.0.0"
     "@xenorange/esbuild-plugin-faces-resource-loader": "npm:1.1.2"
-    "@xenorange/esbuild-plugin-load-from-expression": "npm:1.0.0"
+    "@xenorange/esbuild-plugin-load-from-expression": "npm:1.1.0"
     "@xenorange/yarn-patch-package-update-squash": "npm:1.0.0"
     autonumeric: "npm:4.10.8"
     autosize: "npm:6.0.1"
@@ -354,15 +354,15 @@ __metadata:
     moment-timezone: "npm:0.6.0"
     primeicons: "npm:7.0.0"
     primelocale: "npm:2.1.4"
-    propagating-hammerjs: "npm:2.0.1"
+    propagating-hammerjs: "npm:3.0.0"
     quill: "npm:2.0.3"
     rangyinputs: "npm:1.2.0"
     raphael: "npm:2.3.0"
     typescript: "npm:5.8.3"
     uuid: "npm:11.1.0"
-    vis-data: "npm:7.1.10"
-    vis-timeline: "npm:7.7.4"
-    vis-util: "npm:5.0.7"
+    vis-data: "npm:8.0.1"
+    vis-timeline: "npm:8.2.1"
+    vis-util: "npm:6.0.0"
     webcamjs: "patch:webcamjs@npm%3A1.0.26#~/.yarn/patches/webcamjs-npm-1.0.26-e450e6a36f.patch"
     xss: "npm:1.0.15"
   languageName: unknown
@@ -548,12 +548,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xenorange/esbuild-plugin-load-from-expression@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@xenorange/esbuild-plugin-load-from-expression@npm:1.0.0"
+"@xenorange/esbuild-plugin-load-from-expression@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@xenorange/esbuild-plugin-load-from-expression@npm:1.1.0"
   peerDependencies:
     esbuild: 0.x.x
-  checksum: 10c0/fa2f5871d45da491561fe202b6265e488b226e65c50700f319b08281d4466968e34cf259572e14081624b13027fecb3cf67ccadfb8ada0c789c6d2cb15d06069
+  checksum: 10c0/af3a73be783da83fc17fcef4e5c00c7024645fb037d6cfed50844f3da142f896b308f28764dd15e1fae958b162213dcb1ae8879e04b77f6f30960762412a2ef9
   languageName: node
   linkType: hard
 
@@ -1011,12 +1011,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"propagating-hammerjs@npm:2.0.1":
-  version: 2.0.1
-  resolution: "propagating-hammerjs@npm:2.0.1"
+"propagating-hammerjs@npm:3.0.0":
+  version: 3.0.0
+  resolution: "propagating-hammerjs@npm:3.0.0"
   peerDependencies:
     "@egjs/hammerjs": ^2.0.17
-  checksum: 10c0/c708d4fc2e11ddcc59c4d84dcb5bebc27093cbb7cab63a328b1486599be3b57a061cf58baf1f375decb62d6479589dcc5af260ee2695bcddee84785cad8eabca
+  checksum: 10c0/ac3dd6e6fdf4c84abc148d2b656bb3a66dd9eadef65daa25ea1dc632334523e7b1e4f1bbffce3256e75bf77543f94f4e6334f153a8a5e98e0ea8eb47bb02fda2
   languageName: node
   linkType: hard
 
@@ -1102,40 +1102,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vis-data@npm:7.1.10":
-  version: 7.1.10
-  resolution: "vis-data@npm:7.1.10"
+"vis-data@npm:8.0.1":
+  version: 8.0.1
+  resolution: "vis-data@npm:8.0.1"
   peerDependencies:
     uuid: ^3.4.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
-    vis-util: ^5.0.1
-  checksum: 10c0/a031eed05640e1a42c451e93e083481d5d2526bf16df484b8c5448df36258315eea1d02b951af92de6fe43d1dd0ff37833ca43d3b6be60e5574d2742cc1b71f6
+    vis-util: ">=6.0.0"
+  checksum: 10c0/7653f514e59740a5d375173731b955e818d47f39771638eb808d977aa952696ae05be295ef0037d54575a52f5b7baed454907d855a2cb82644c7a7c7e1cfbd96
   languageName: node
   linkType: hard
 
-"vis-timeline@npm:7.7.4":
-  version: 7.7.4
-  resolution: "vis-timeline@npm:7.7.4"
+"vis-timeline@npm:8.2.1":
+  version: 8.2.1
+  resolution: "vis-timeline@npm:8.2.1"
   peerDependencies:
     "@egjs/hammerjs": ^2.0.0
     component-emitter: ^1.3.0
     keycharm: ^0.2.0 || ^0.3.0 || ^0.4.0
     moment: ^2.24.0
-    propagating-hammerjs: ^1.4.0 || ^2.0.0
+    propagating-hammerjs: ^1.4.0 || ^2.0.0 || ^3.0.0
     uuid: ^3.4.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
-    vis-data: ^6.3.0 || ^7.0.0
-    vis-util: ^5.0.1
+    vis-data: ">=8.0.0"
+    vis-util: ">=6.0.0"
     xss: ^1.0.0
-  checksum: 10c0/c29a23a023824002d2b5814369b11732df41185b6a113cfef6989d3a7d3a8e0cfbf08f84ac3716d170c54dacbe68e12f6a3e4f29461bee014f609da4755e8720
+  checksum: 10c0/68f2b29fe9496377b6ff828a23924cbdff49562f79c7d9a42c32ac5b8e861c9ce2df3a844037fda2711f9f29bde0b1c815d5954cdd70c81ae315f1e5dd6ce6eb
   languageName: node
   linkType: hard
 
-"vis-util@npm:5.0.7":
-  version: 5.0.7
-  resolution: "vis-util@npm:5.0.7"
+"vis-util@npm:6.0.0":
+  version: 6.0.0
+  resolution: "vis-util@npm:6.0.0"
   peerDependencies:
     "@egjs/hammerjs": ^2.0.0
     component-emitter: ^1.3.0 || ^2.0.0
-  checksum: 10c0/8e460327b063335ade3a0ef9902c9fb93111036efcd13715513f075cd8972155388e84ccf1987ba8d947d671b257fb109d0cccbf0e18f061f0a303c9a46d0d92
+  checksum: 10c0/8e7dc67a60c681f9d769736b56ca9a813e713e9628effdccbaabce6517337bc61591be2034805eba099f29d3ea43a91131f1d866129a951dae933d8702b032a7
   languageName: node
   linkType: hard
 

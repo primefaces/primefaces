@@ -220,6 +220,7 @@ async function createFrontendBuildTask(project) {
         if (buildSettings.loadFromExpression !== undefined) {
             buildOptions.plugins.push(loadFromExpressionPlugin({
                 expressions: buildSettings.loadFromExpression,
+                conditions: ["import", "module"],
             }));
         }
         buildTasks.push(buildOptions);

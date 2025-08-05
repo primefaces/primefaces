@@ -1,6 +1,6 @@
-import { Timeline as VisTimeline } from "vis-timeline/esnext/esm/vis-timeline-graph2d.js";
-import { DataSet } from "vis-data/esnext/esm/vis-data.js";
-import * as VisUtil from "vis-util/esnext/esm/vis-util.js";
+import { Timeline as VisTimeline } from "vis-timeline/esnext";
+import { DataSet } from "vis-data/esnext";
+import * as VisUtil from "vis-util/esnext";
 
 /**
  * __PrimeFaces Timeline Widget__
