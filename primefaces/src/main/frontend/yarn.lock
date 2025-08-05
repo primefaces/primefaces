@@ -324,7 +324,7 @@ __metadata:
     "@types/webcamjs": "npm:1.0.0"
     "@xenorange/esbuild-plugin-banned-dependencies": "npm:1.0.0"
     "@xenorange/esbuild-plugin-faces-resource-loader": "npm:1.1.2"
-    "@xenorange/esbuild-plugin-load-from-expression": "npm:1.0.0"
+    "@xenorange/esbuild-plugin-load-from-expression": "npm:1.1.0"
     "@xenorange/yarn-patch-package-update-squash": "npm:1.0.0"
     autonumeric: "npm:4.10.8"
     autosize: "npm:6.0.1"
@@ -548,12 +548,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xenorange/esbuild-plugin-load-from-expression@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@xenorange/esbuild-plugin-load-from-expression@npm:1.0.0"
+"@xenorange/esbuild-plugin-load-from-expression@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@xenorange/esbuild-plugin-load-from-expression@npm:1.1.0"
   peerDependencies:
     esbuild: 0.x.x
-  checksum: 10c0/fa2f5871d45da491561fe202b6265e488b226e65c50700f319b08281d4466968e34cf259572e14081624b13027fecb3cf67ccadfb8ada0c789c6d2cb15d06069
+  checksum: 10c0/af3a73be783da83fc17fcef4e5c00c7024645fb037d6cfed50844f3da142f896b308f28764dd15e1fae958b162213dcb1ae8879e04b77f6f30960762412a2ef9
   languageName: node
   linkType: hard
 

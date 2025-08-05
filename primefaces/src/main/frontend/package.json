@@ -65,7 +65,7 @@
     "@types/pnpapi": "0.0.5",
     "@xenorange/esbuild-plugin-banned-dependencies": "1.0.0",
     "@xenorange/esbuild-plugin-faces-resource-loader": "1.1.2",
-    "@xenorange/esbuild-plugin-load-from-expression": "1.0.0",
+    "@xenorange/esbuild-plugin-load-from-expression": "1.1.0",
     "@xenorange/yarn-patch-package-update-squash": "1.0.0",
     "autosize": "6.0.1",
     "blueimp-file-upload": "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch",
@@ -133,5 +133,5 @@
   "resolutions": {
     "jquery": "4.0.0-beta.2"
   },
-  "packageManager": "yarn@4.6.0"
+  "packageManager": "yarn@4.9.2"
 }
