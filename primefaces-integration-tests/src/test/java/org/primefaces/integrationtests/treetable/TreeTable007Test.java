@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.treetable;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
@@ -83,6 +84,7 @@ class TreeTable007Test extends AbstractTreeTableTest {
         PrimeSelenium.guardAjax(input).sendKeys(Keys.ESCAPE);
 
         // Assert
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.elementToBeClickable(treeTable.getRow(1).getCell(3).getWebElement().findElement(By.cssSelector("button"))));
         PrimeSelenium.guardAjax(treeTable.getRow(1).getCell(3).getWebElement().findElement(By.cssSelector("button"))).click();
         assertMessage(page.messages, 0, "selected document", "Spanish - IT;10kb;Folder");
 
