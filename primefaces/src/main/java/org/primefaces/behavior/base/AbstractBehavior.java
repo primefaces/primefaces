@@ -25,6 +25,7 @@ package org.primefaces.behavior.base;
 
 import org.primefaces.el.ValueExpressionStateHelper;
 
+import jakarta.el.ValueExpression;
 import jakarta.faces.component.StateHelper;
 import jakarta.faces.component.behavior.ClientBehaviorBase;
 import jakarta.faces.context.FacesContext;
@@ -47,6 +48,14 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         }
 
         return stateHelper;
+    }
+
+    public ValueExpression getValueExpression(String name) {
+        if (name == null) {
+            throw new NullPointerException();
+        }
+
+        return ((ValueExpressionStateHelper) getStateHelper()).getBinding(name);
     }
 
     @Override

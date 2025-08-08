@@ -23,15 +23,19 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.UITable;
+import org.primefaces.component.poll.PollBase;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.csp.CspResponseWriter;
+import org.primefaces.event.DynamicOncompleteEvent;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.renderkit.RendererUtils;
 
 import java.io.IOException;
@@ -60,6 +64,7 @@ import jakarta.faces.FacesException;
 import jakarta.faces.FacesWrapper;
 import jakarta.faces.application.ConfigurableNavigationHandler;
 import jakarta.faces.application.NavigationCase;
+import jakarta.faces.component.ActionSource;
 import jakarta.faces.component.EditableValueHolder;
 import jakarta.faces.component.StateHelper;
 import jakarta.faces.component.UIComponent;
@@ -77,6 +82,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.event.PhaseId;
 import jakarta.faces.render.Renderer;
 
 public class ComponentUtils {
@@ -263,6 +269,11 @@ public class ComponentUtils {
     public static void decodeBehaviors(FacesContext context, UIComponent component) {
         if (!(component instanceof ClientBehaviorHolder)) {
             return;
+        }
+
+        if (component instanceof AjaxSource && component.getValueExpression("oncomplete") != null) {
+            PhaseId phaseId = isImmediate(component) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION;
+            component.queueEvent(new DynamicOncompleteEvent(component, (AjaxSource) component, phaseId));
         }
 
         Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
@@ -799,4 +810,23 @@ public class ComponentUtils {
             return value;
         }
     }
+
+    public static boolean isImmediate(UIComponent component) {
+        if (component instanceof ActionSource) {
+            return ((ActionSource) component).isImmediate();
+        }
+        else if (component instanceof EditableValueHolder) {
+            return ((EditableValueHolder) component).isImmediate();
+        }
+        else if (component instanceof MenuItem) {
+            return ((MenuItem) component).isImmediate();
+        }
+        else if (component instanceof PollBase) {
+            return ((PollBase) component).isImmediate();
+        }
+        else {
+            return false;
+        }
+    }
+
 }
