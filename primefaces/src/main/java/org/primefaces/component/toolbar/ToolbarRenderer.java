@@ -32,7 +32,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Toolbar.DEFAULT_RENDERER, componentFamily = Toolbar.COMPONENT_FAMILY)
 public class ToolbarRenderer extends CoreRenderer<Toolbar> {
 
     @Override

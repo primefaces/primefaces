@@ -38,8 +38,10 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = SelectManyButton.DEFAULT_RENDERER, componentFamily = SelectManyButton.COMPONENT_FAMILY)
 public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButton> {
 
     @Override

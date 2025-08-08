@@ -33,7 +33,9 @@ import java.util.Objects;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = LinkButton.DEFAULT_RENDERER, componentFamily = LinkButton.COMPONENT_FAMILY)
 public class LinkButtonRenderer extends OutcomeTargetRenderer<LinkButton> {
 
     @Override

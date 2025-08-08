@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = AjaxExceptionHandler.DEFAULT_RENDERER, componentFamily = AjaxExceptionHandler.COMPONENT_FAMILY)
 public class AjaxExceptionHandlerRenderer extends CoreRenderer<AjaxExceptionHandler> {
 
     @Override

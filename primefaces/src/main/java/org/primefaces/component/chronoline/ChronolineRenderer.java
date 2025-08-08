@@ -32,7 +32,9 @@ import java.util.Collection;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Chronoline.DEFAULT_RENDERER, componentFamily = Chronoline.COMPONENT_FAMILY)
 public class ChronolineRenderer extends CoreRenderer<Chronoline> {
 
     @Override

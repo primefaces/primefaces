@@ -38,8 +38,10 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = SelectOneListbox.DEFAULT_RENDERER, componentFamily = SelectOneListbox.COMPONENT_FAMILY)
 public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox> {
 
     @Override

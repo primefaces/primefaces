@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.graphicimage;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = GraphicImage.COMPONENT_TYPE, namespace = GraphicImage.COMPONENT_FAMILY)
 public class GraphicImage extends GraphicImageBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.GraphicImage";

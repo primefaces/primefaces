@@ -24,7 +24,9 @@
 package org.primefaces.component.stack;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Stack.COMPONENT_TYPE, namespace = Stack.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "stack/stack.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = NotificationBar.DEFAULT_RENDERER, componentFamily = NotificationBar.COMPONENT_FAMILY)
 public class NotificationBarRenderer extends CoreRenderer<NotificationBar> {
 
     @Override
