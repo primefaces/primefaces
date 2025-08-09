@@ -44,7 +44,7 @@ public interface DialogReturnAware {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            return eventName.equals(EVENT_DIALOG_RETURN);
+            return EVENT_DIALOG_RETURN.equals(eventName);
         }
         return false;
     }
