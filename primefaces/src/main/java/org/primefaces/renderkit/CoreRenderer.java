@@ -500,7 +500,8 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
                 .onstart(source.getOnstart())
                 .onerror(source.getOnerror())
                 .onsuccess(source.getOnsuccess())
-                .oncomplete(component.getValueExpression("oncomplete") == null ? source.getOncomplete() : null); // If oncomplete is a ValueExpression, then it's handled in ComponentUtils#decodeBehaviors().
+                // If oncomplete is a ValueExpression, then it's handled in ComponentUtils#decodeBehaviors().
+                .oncomplete(component.getValueExpression("oncomplete") == null ? source.getOncomplete() : null);
 
         return builder;
     }

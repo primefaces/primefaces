@@ -120,7 +120,8 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
                 .onstart(ajaxBehavior.getOnstart())
                 .onerror(ajaxBehavior.getOnerror())
                 .onsuccess(ajaxBehavior.getOnsuccess())
-                .oncomplete(ajaxBehavior.getValueExpression("oncomplete") == null ? ajaxBehavior.getOncomplete() : null) // If oncomplete is a ValueExpression, then it's handled in AjaxBehaviorRenderer#decode().
+                // If oncomplete is a ValueExpression, then it's handled in AjaxBehaviorRenderer#decode().
+                .oncomplete(ajaxBehavior.getValueExpression("oncomplete") == null ? ajaxBehavior.getOncomplete() : null)
                 .params(component)
                 .buildBehavior(renderingMode);
 

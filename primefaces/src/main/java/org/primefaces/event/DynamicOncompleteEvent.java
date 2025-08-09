@@ -23,12 +23,12 @@
  */
 package org.primefaces.event;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.AjaxSource;
+
 import jakarta.el.ValueExpression;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.event.PhaseId;
-
-import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.AjaxSource;
 
 /**
  * Queue this event during decode in case your {@code oncomplete} attribute is a {@link ValueExpression}.
