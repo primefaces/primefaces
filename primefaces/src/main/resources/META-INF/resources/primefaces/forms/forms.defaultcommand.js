@@ -46,7 +46,7 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
             data = data || e.data;
-            if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id) || (!$this.scope && !data.scopeEnter) || $this.scope[0] === closestForm[0]) {
+            if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id) || (!$this.scope && !data.scopeEnter) || ($this.scope && $this.scope[0] === closestForm[0])) {
                 // #7028/#13927 Do not proceed if target is a textarea, button, link, or TextEditor
                 if (PrimeFaces.utils.isEnterKeyBlocked(e)) {
                     return true;
