@@ -44,6 +44,10 @@ public class TriStateCheckbox extends TriStateCheckboxBase {
 
     @Override
     public void validate(FacesContext context) {
+        if (isDisabled() || isReadonly()) {
+            return;
+        }
+
         Object submittedValue = getSubmittedValue();
         if (submittedValue != null) {
             super.validate(context);
