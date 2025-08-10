@@ -48,7 +48,7 @@ public class CoreAjax002 {
     }
 
     public void addCallbackParam() {
-        PrimeFaces.current().ajax().addCallbackParam("param", "callbackParam");
+        PrimeFaces.current().ajax().addCallbackParam("param", "ok");
     }
 
     public String getProperty() {

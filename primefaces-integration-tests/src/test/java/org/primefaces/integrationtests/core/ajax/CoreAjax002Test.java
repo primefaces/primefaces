@@ -85,11 +85,19 @@ class CoreAjax002Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @DisplayName("Core-AJAX: Assert oncomplete arguments and window context - https://github.com/primefaces/primefaces/issues/13700")
-    void assertOncompleteArgumentsAndWindowContext(Page page) {
+    @DisplayName("Core-AJAX: Assert literal oncomplete arguments and window context - https://github.com/primefaces/primefaces/issues/13700")
+    void assertLiteralOncompleteArgumentsAndWindowContext(Page page) {
         assertEquals("", page.output7.getText());
         page.button7.click();
-        assertEquals("modified 4 success callbackParam 1true 2true 3true 4true", page.output7.getText());
+        assertEquals("literal 4 success ok true true true true", page.output7.getText());
+    }
+
+    @Test
+    @DisplayName("Core-AJAX: Assert dynamic oncomplete arguments and window context - https://github.com/primefaces/primefaces/issues/13700")
+    void assertDynamicOncompleteArgumentsAndWindowContext(Page page) {
+        assertEquals("", page.output8.getText());
+        page.button8.click();
+        assertEquals("modified 4 success ok true true true true", page.output8.getText());
     }
 
     public static class Page extends AbstractPrimePage {
@@ -134,6 +142,12 @@ class CoreAjax002Test extends AbstractPrimePageTest {
 
         @FindBy(id = "output7")
         WebElement output7;
+
+        @FindBy(id = "form8:button")
+        CommandButton button8;
+
+        @FindBy(id = "output8")
+        WebElement output8;
 
         @Override
         public String getLocation() {
