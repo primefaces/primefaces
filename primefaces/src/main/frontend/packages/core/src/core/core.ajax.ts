@@ -1025,7 +1025,7 @@ export class AjaxRequest {
                                 window.PrimeFaces.scriptContext.status,
                                 window.PrimeFaces.scriptContext.args,
                                 window.PrimeFaces.scriptContext.data
-                            );`, pfSettings.nonce);
+                            );`, pfSettings.nonce, window);
                         }
                     } finally {
                         delete (window.PrimeFaces as any).scriptContext;

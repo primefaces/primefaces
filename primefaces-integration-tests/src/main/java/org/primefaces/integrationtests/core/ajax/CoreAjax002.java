@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.core.ajax;
 
+import org.primefaces.PrimeFaces;
+
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 
@@ -43,6 +45,10 @@ public class CoreAjax002 {
 
     public void fullOncomplete6() {
         oncomplete = "$('#output6').text('modified');";
+    }
+
+    public void addCallbackParam() {
+        PrimeFaces.current().ajax().addCallbackParam("param", "callbackParam");
     }
 
     public String getProperty() {

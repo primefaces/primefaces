@@ -53,5 +53,12 @@
             <span id="output6"></span>
         </h:form>
 
+        <h:form id="form7">
+            <p:commandButton id="button" value="Assert oncomplete arguments and window context"
+                actionListener="#{coreAjax002.modifyProperty}"
+                action="#{coreAjax002.addCallbackParam}"
+                oncomplete="$('#output7').text(`#{coreAjax002.property} \${xhr.readyState} \${status} \${args.param} 1\${!!data} 2\${!!window} 3\${!!window.PrimeFaces} 4\${!!window.PF}`)" />
+            <span id="output7"></span>
+        </h:form>
     </h:body>
 </html>
