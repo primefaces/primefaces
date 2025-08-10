@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:h="jakarta.faces.html"
+      xmlns:p="primefaces">
+
+    <h:head>
+        <title>coreAjax002</title>
+    </h:head>
+
+    <h:body>
+        <h:form id="form1">
+            <p:commandButton id="button" value="UICommand with literal oncomplete"
+                action="#{coreAjax002.modifyProperty1}"
+                oncomplete="$('#output1').text('literal');" />
+            <span id="output1"></span>
+        </h:form>
+
+        <h:form id="form2">
+            <p:commandButton id="button" value="UICommand with partial EL oncomplete"
+                action="#{coreAjax002.modifyProperty1}"
+                oncomplete="$('#output2').text('#{coreAjax002.property}');" />
+            <span id="output2"></span>
+        </h:form>
+
+        <h:form id="form3">
+            <p:commandButton id="button" value="UICommand with full EL oncomplete"
+                action="#{coreAjax002.modifyProperty2}"
+                oncomplete="#{coreAjax002.oncomplete}" />
+            <span id="output3"></span>
+        </h:form>
+
+        <h:form id="form4">
+            <p:commandButton id="button" value="AjaxBehavior with literal oncomplete">
+                <p:ajax 
+                    listener="#{coreAjax002.modifyProperty1}"
+                    oncomplete="$('#output4').text('literal');" />
+            </p:commandButton>
+            <span id="output4"></span>
+        </h:form>
+
+        <h:form id="form5">
+            <p:commandButton id="button" value="AjaxBehavior with partial EL oncomplete">
+                <p:ajax 
+                    listener="#{coreAjax002.modifyProperty1}"
+                    oncomplete="$('#output5').text('#{coreAjax002.property}')" />
+            </p:commandButton>
+            <span id="output5"></span>
+        </h:form>
+
+        <h:form id="form6">
+            <p:commandButton id="button" value="AjaxBehavior with full EL oncomplete">
+                <p:ajax 
+                    listener="#{coreAjax002.modifyProperty3}"
+                    oncomplete="#{coreAjax002.oncomplete}" />
+            </p:commandButton>
+            <span id="output6"></span>
+        </h:form>
+
+    </h:body>
+</html>
