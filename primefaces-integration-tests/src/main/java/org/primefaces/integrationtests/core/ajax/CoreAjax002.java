@@ -33,15 +33,15 @@ public class CoreAjax002 {
     private String property = "initial";
     private String oncomplete;
 
-    public void modifyProperty1() {
+    public void modifyProperty() {
         property = "modified";
     }
 
-    public void modifyProperty2() {
+    public void fullOncomplete3() {
         oncomplete = "$('#output3').text('modified');";
     }
 
-    public void modifyProperty3() {
+    public void fullOncomplete6() {
         oncomplete = "$('#output6').text('modified');";
     }
 
