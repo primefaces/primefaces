@@ -995,8 +995,7 @@ export class AjaxRequest {
                 core.debug('DOM is updated.');
             })
             .always(function(this: PrimeType.ajax.PrimeFacesSettings, data, status, xhr: string | PrimeType.ajax.pfXHR) {
-                const pfArgs = typeof xhr === "string" ? undefined : xhr.pfArgs;
-                const pfScripts = typeof xhr === "string" ? [] : (xhr.pfScripts || []);
+                const { pfArgs = {}, pfScripts = [], pfSettings = {} } = typeof xhr === "string" ? {} : xhr;
 
                 // first call the extension callback (e.g. datatable paging)
                 if (cfg.ext && cfg.ext.oncomplete) {
@@ -1009,8 +1008,28 @@ export class AjaxRequest {
                 }
 
                 // finally, call the programmatic scripts
-                for (const script of pfScripts) {
-                    new Function("xhr", "status", "args", "data", script)(xhr, status, pfArgs, data);
+                if (pfScripts.length) {
+                    try {
+                        (window.PrimeFaces as any).scriptContext = {
+                            xhr: xhr,
+                            status: status,
+                            args: pfArgs,
+                            data: data
+                        };
+
+                        for (const script of pfScripts) {
+                            csp.eval(`(function(xhr, status, args, data) {
+                                ${script}
+                            })(
+                                window.PrimeFaces.scriptContext.xhr,
+                                window.PrimeFaces.scriptContext.status,
+                                window.PrimeFaces.scriptContext.args,
+                                window.PrimeFaces.scriptContext.data
+                            );`, pfSettings.nonce);
+                        }
+                    } finally {
+                        delete (window.PrimeFaces as any).scriptContext;
+                    }
                 }
 
                 if (global) {
