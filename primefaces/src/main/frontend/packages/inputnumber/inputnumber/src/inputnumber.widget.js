@@ -157,6 +157,39 @@ PrimeFaces.widget.InputNumber = class InputNumber extends PrimeFaces.widget.Base
 
         // Change handler with value comparison
         wrapEventHandler('change', function(e) {
+            var element = $this.autonumeric;
+            if (!element) {
+                return;
+            }
+
+            // Get the numeric value
+            var newValue = '';
+            if ($this.cfg.decimalPlacesRawValue > $this.cfg.decimalPlaces) {
+                // if using raw decimal places we need to get the numeric string
+                newValue = element.getNumericString();
+            } else {
+                // if using decimal places we can use the input value
+                newValue = $this.value;
+            }
+
+            // Process the value if it exists, remove formatting characters
+            if (newValue && newValue.length > 0) {
+                if ($this.cfg.digitGroupSeparator) {
+                    newValue = newValue.replaceAll($this.cfg.digitGroupSeparator, '');
+                }
+                if ($this.cfg.currencySymbol) {
+                    newValue = newValue.replaceAll($this.cfg.currencySymbol, '');
+                }
+
+                // Set the cleaned value
+                element.set(newValue.trim(), null, true);
+
+                // GitHub #8610: reset the raw values so we don't fire change event if 1.0 == 1.00
+                if (element.rawValueOnFocus !== '' && element.rawValue !== '' && Number(element.rawValue) === Number(element.rawValueOnFocus)) {
+                    element.rawValueOnFocus = element.rawValue;
+                }
+            }
+
             var newValue = $this.copyValueToHiddenInput();
             // #10046 do not call on Change if the value has not changed
             if (newValue === $this.initialValue || 
@@ -170,54 +203,6 @@ PrimeFaces.widget.InputNumber = class InputNumber extends PrimeFaces.widget.Base
         // Simple input and keydown handlers
         wrapEventHandler('input');
         wrapEventHandler('keydown');
-
-        this.bindInputEvents();
-    }
-
-    /**
-     * Binds input listener which fixes a browser autofill issue.
-     * See: https://github.com/autoNumeric/autoNumeric/issues/536
-     * @private
-     */
-    bindInputEvents() {
-        var $this = this;
-
-        // GitHub #6447: browser auto fill fix
-        this.input.off('blur.inputnumber').on('blur.inputnumber', function(e) {
-            var element = AutoNumeric.getAutoNumericElement(this);
-            if (!element) {
-                return;
-            }
-
-            // Get the numeric value
-            var newValue = '';
-            if ($this.cfg.decimalPlacesRawValue > $this.cfg.decimalPlaces) {
-                // if using raw decimal places we need to get the numeric string
-                newValue = element.getNumericString();
-            } else {
-                // if using decimal places we can use the input value
-                newValue = this.value;
-            }
-
-            // Process the value if it exists, remove formatting characters
-            if (newValue && newValue.length > 0) {
-                if ($this.cfg.digitGroupSeparator) {
-                    newValue = newValue.replaceAll($this.cfg.digitGroupSeparator, '');
-                }
-                if ($this.cfg.currencySymbol) {
-                    newValue = newValue.replaceAll($this.cfg.currencySymbol, '');
-                }
-                
-                // Set the cleaned value
-                element.set(newValue.trim(), null, true);
-
-                // GitHub #8610: reset the raw values so we don't fire change event if 1.0 == 1.00
-                if (element.rawValueOnFocus !== '' && element.rawValue !== '' && Number(element.rawValue) === Number(element.rawValueOnFocus)) {
-                    element.rawValueOnFocus = element.rawValue;
-                }
-            }
-            $this.copyValueToHiddenInput();
-        });
     }
 
     /**
