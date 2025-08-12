@@ -195,6 +195,10 @@ public class ValueExpressionStateHelper implements StateHelper {
         bindings.put(key, ve);
     }
 
+    public ValueExpression getBinding(String key) {
+        return bindings != null ? bindings.get(key) : null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -28,7 +28,6 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,15 +46,8 @@ import org.json.JSONObject;
 
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
-    private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
-
-    static {
-        Map<String, String> callbackExtensionParams = new HashMap<>();
-        callbackExtensionParams.put("ln", "primefaces");
-        callbackExtensionParams.put("type", "args");
-
-        CALLBACK_EXTENSION_PARAMS = Collections.unmodifiableMap(callbackExtensionParams);
-    }
+    private static final Map<String, String> CALLBACK_EXTENSION_PARAMS = Map.of("ln", "primefaces", "type", "args");
+    private static final Map<String, String> CALLBACK_EXTENSION_SCRIPTS = Map.of("ln", "primefaces", "type", "script");
 
     private boolean metadataRendered;
 
@@ -212,20 +204,21 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         List<String> initScripts = requestContext.getInitScriptsToExecute();
         List<String> scripts = requestContext.getScriptsToExecute();
 
-        if (!initScripts.isEmpty() || !scripts.isEmpty()) {
+        if (!initScripts.isEmpty()) {
             startEval();
 
-            for (int i = 0; i < initScripts.size(); i++) {
-                getWrapped().write(initScripts.get(i));
-                getWrapped().write(';');
-            }
-
-            for (int i = 0; i < scripts.size(); i++) {
-                getWrapped().write(scripts.get(i));
+            for (String initScript : initScripts) {
+                getWrapped().write(initScript);
                 getWrapped().write(';');
             }
 
             endEval();
+        }
+
+        for (String script : scripts) {
+            startExtension(CALLBACK_EXTENSION_SCRIPTS);
+            getWrapped().write(script);
+            endExtension();
         }
     }
 
