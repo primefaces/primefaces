@@ -97,7 +97,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.type = this.cfg.type || 'linear';
         this.cfg.radius = this.cfg.radius || 0;
         this.cfg.mask = this.cfg.mask || false;
-        this.cfg.hideOnClickOutside = this.cfg.hideOnClickOutside || true;
+        this.cfg.hideOnClickOutside = this.cfg.hideOnClickOutside === undefined ? true : this.cfg.hideOnClickOutside;
         this.cfg.keepOpen = this.cfg.keepOpen || false;
 
         this.visible = this.cfg.visible;
@@ -121,13 +121,17 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
 
         this.bindEvents();
 
+
+        if (this.cfg.visible) {
+            this.show();
+        }
     },
 
     /**
      * Creates responsive style of the item container.
      * @private
      */
-    createItemContainerStyle: function () {
+    createItemContainerStyle: function() {
         if (this.cfg.type !== 'linear') {
             var button = this.button.get(0);
             var firstItem = this.items.get(0);
@@ -145,7 +149,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
      * Updates styles of the action items.
      * @private
      */
-    updateItemStyles: function () {
+    updateItemStyles: function() {
         var $this = this;
 
         for (var i = 0; i < this.itemsCount; i++) {
@@ -158,7 +162,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function () {
+    bindEvents: function() {
         var $this = this;
 
         this.button.on('click.speeddial', function(e) {
@@ -182,11 +186,11 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this.visible = true;
         this.updateItemStyles();
 
-        if(this.cfg.onVisibleChange) {
+        if (this.cfg.onVisibleChange) {
             this.cfg.onVisibleChange.call(this, true);
         }
 
-        if(this.cfg.onShow) {
+        if (this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
     },
@@ -203,11 +207,11 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this.visible = false;
         this.updateItemStyles();
 
-        if(this.cfg.onVisibleChange) {
+        if (this.cfg.onVisibleChange) {
             this.cfg.onVisibleChange.call(this, false);
         }
 
-        if(this.cfg.onHide) {
+        if (this.cfg.onHide) {
             this.cfg.onHide.call(this);
         }
     },
@@ -220,7 +224,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     onClick: function(event) {
         this.visible ? this.hide() : this.show();
 
-        if(this.cfg.onClick) {
+        if (this.cfg.onClick) {
             this.cfg.onClick.call(this, event);
         }
 
@@ -247,7 +251,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         if (!this.documentClickListener) {
-            this.documentClickListener = function (event) {
+            this.documentClickListener = function(event) {
                 if ($this.visible && $this.isOutsideClicked(event)) {
                     $this.hide();
                 }
