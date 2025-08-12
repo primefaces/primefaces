@@ -115,14 +115,14 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this.createItemContainerStyle();
         this.updateItemStyles();
 
-        if (this.cfg.hideOnClickOutside) {
+        if(this.cfg.hideOnClickOutside) {
             this.bindDocumentClickListener();
         }
 
         this.bindEvents();
 
 
-        if (this.cfg.visible) {
+        if(this.cfg.visible) {
             this.show();
         }
     },
@@ -132,11 +132,11 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     createItemContainerStyle: function () {
-        if (this.cfg.type !== 'linear') {
+        if(this.cfg.type !== 'linear') {
             var button = this.button.get(0);
             var firstItem = this.items.get(0);
 
-            if (button && firstItem) {
+            if(button && firstItem) {
                 var wDiff = Math.abs(button.offsetWidth - firstItem.offsetWidth);
                 var hDiff = Math.abs(button.offsetHeight - firstItem.offsetHeight);
                 this.itemContainer.get(0).style.setProperty('--item-diff-x', wDiff / 2 + 'px');
@@ -178,7 +178,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
      * Shows item container of the speeddial.
      */
     show: function () {
-        if (this.mask) {
+        if(this.mask) {
             this.mask.addClass('ui-speeddial-mask-visible');
         }
 
@@ -186,11 +186,11 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this.visible = true;
         this.updateItemStyles();
 
-        if (this.cfg.onVisibleChange) {
+        if(this.cfg.onVisibleChange) {
             this.cfg.onVisibleChange.call(this, true);
         }
 
-        if (this.cfg.onShow) {
+        if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
     },
@@ -199,7 +199,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
      * Hides item container of the speed dial.
      */
     hide: function () {
-        if (this.mask) {
+        if(this.mask) {
             this.mask.removeClass('ui-speeddial-mask-visible');
         }
 
@@ -207,11 +207,11 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this.visible = false;
         this.updateItemStyles();
 
-        if (this.cfg.onVisibleChange) {
+        if(this.cfg.onVisibleChange) {
             this.cfg.onVisibleChange.call(this, false);
         }
 
-        if (this.cfg.onHide) {
+        if(this.cfg.onHide) {
             this.cfg.onHide.call(this);
         }
     },
@@ -224,7 +224,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     onClick: function(event) {
         this.visible ? this.hide() : this.show();
 
-        if (this.cfg.onClick) {
+        if(this.cfg.onClick) {
             this.cfg.onClick.call(this, event);
         }
 
@@ -236,7 +236,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     onItemClick: function () {
-        if (!this.cfg.keepOpen) {
+        if(!this.cfg.keepOpen) {
             this.hide();
         }
 
@@ -250,9 +250,9 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     bindDocumentClickListener: function () {
         var $this = this;
 
-        if (!this.documentClickListener) {
+        if(!this.documentClickListener) {
             this.documentClickListener = function(event) {
-                if ($this.visible && $this.isOutsideClicked(event)) {
+                if($this.visible && $this.isOutsideClicked(event)) {
                     $this.hide();
                 }
 
@@ -302,11 +302,11 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         var x = '';
         var y = '';
 
-        if (type !== 'linear') {
+        if(type !== 'linear') {
             var length = this.itemsCount;
             var radius = this.cfg.radius || (length * 20);
 
-            if (type === 'circle') {
+            if(type === 'circle') {
                 step = 2 * Math.PI / length;
 
                 return {
@@ -314,37 +314,37 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
                     top: 'calc(' + (radius * Math.sin(step * index)) + 'px + var(--item-diff-y, 0px))',
                 }
             }
-            else if (type === 'semi-circle') {
+            else if(type === 'semi-circle') {
                 step = Math.PI / (length - 1);
                 x = 'calc(' + (radius * Math.cos(step * index)) + 'px + var(--item-diff-x, 0px))';
                 y = 'calc(' + (radius * Math.sin(step * index)) + 'px + var(--item-diff-y, 0px))';
-                if (direction === 'up') {
+                if(direction === 'up') {
                     return { left: x, bottom: y };
                 }
-                else if (direction === 'down') {
+                else if(direction === 'down') {
                     return { left: x, top: y };
                 }
-                else if (direction === 'left') {
+                else if(direction === 'left') {
                     return { right: y, top: x };
                 }
-                else if (direction === 'right') {
+                else if(direction === 'right') {
                     return { left: y, top: x };
                 }
             }
-            else if (type === 'quarter-circle') {
+            else if(type === 'quarter-circle') {
                 step = Math.PI / (2 * (length - 1));
                 x = 'calc(' + (radius * Math.cos(step * index)) + 'px + var(--item-diff-x, 0px))';
                 y = 'calc(' + (radius * Math.sin(step * index)) + 'px + var(--item-diff-y, 0px))';
-                if (direction === 'up-left') {
+                if(direction === 'up-left') {
                     return { right: x, bottom: y };
                 }
-                else if (direction === 'up-right') {
+                else if(direction === 'up-right') {
                     return { left: x, bottom: y };
                 }
-                else if (direction === 'down-left') {
+                else if(direction === 'down-left') {
                     return { right: y, top: x };
                 }
-                else if (direction === 'down-right') {
+                else if(direction === 'down-right') {
                     return { left: y, top: x };
                 }
             }
