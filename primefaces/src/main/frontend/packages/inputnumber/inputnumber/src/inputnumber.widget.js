@@ -169,7 +169,7 @@ PrimeFaces.widget.InputNumber = class InputNumber extends PrimeFaces.widget.Base
                 newValue = element.getNumericString();
             } else {
                 // if using decimal places we can use the input value
-                newValue = $this.value;
+                newValue = this.value;
             }
 
             // Process the value if it exists, remove formatting characters
