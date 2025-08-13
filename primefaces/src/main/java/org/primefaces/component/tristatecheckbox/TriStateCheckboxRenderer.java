@@ -72,7 +72,20 @@ public class TriStateCheckboxRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, TriStateCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
-        Boolean value = (Boolean) checkbox.getValue();
+        Object rawValue = checkbox.getValue();
+        Boolean value = null;
+        if (rawValue instanceof String) {
+            String stringValue = (String) rawValue;
+            if (LangUtils.isBlank(stringValue)) {
+                value = null;
+            }
+            else {
+                value = Boolean.valueOf(stringValue);
+            }
+        }
+        else {
+            value = (Boolean) rawValue;
+        }
 
         boolean disabled = checkbox.isDisabled();
         boolean readonly = checkbox.isReadonly();
