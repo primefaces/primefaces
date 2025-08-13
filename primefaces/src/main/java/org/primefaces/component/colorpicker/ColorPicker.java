@@ -31,9 +31,11 @@ import java.util.Locale;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.BehaviorEvent;
 
+@FacesComponent(value = ColorPicker.COMPONENT_TYPE, namespace = ColorPicker.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "colorpicker/colorpicker.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

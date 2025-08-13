@@ -32,7 +32,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = CellEditor.DEFAULT_RENDERER, componentFamily = CellEditor.COMPONENT_FAMILY)
 public class CellEditorRenderer extends CoreRenderer<CellEditor> {
 
     @Override

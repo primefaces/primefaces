@@ -33,7 +33,9 @@ import jakarta.faces.FacesException;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.ActionEvent;
 import jakarta.faces.event.PhaseId;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Poll.DEFAULT_RENDERER, componentFamily = Poll.COMPONENT_FAMILY)
 public class PollRenderer extends CoreRenderer<Poll> {
 
     @Override

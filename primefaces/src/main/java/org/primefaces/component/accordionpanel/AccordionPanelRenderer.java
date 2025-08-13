@@ -42,7 +42,9 @@ import java.util.Map;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = AccordionPanel.DEFAULT_RENDERER, componentFamily = AccordionPanel.COMPONENT_FAMILY)
 public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
     private static final String SB_RESOLVE_ACTIVE_INDEX = AccordionPanelRenderer.class.getName() + "#resolveActive";

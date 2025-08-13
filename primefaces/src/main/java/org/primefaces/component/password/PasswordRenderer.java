@@ -33,7 +33,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Password.DEFAULT_RENDERER, componentFamily = Password.COMPONENT_FAMILY)
 public class PasswordRenderer extends InputRenderer<Password> {
 
     @Override

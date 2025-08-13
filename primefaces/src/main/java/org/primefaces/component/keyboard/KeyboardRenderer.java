@@ -32,7 +32,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Keyboard.DEFAULT_RENDERER, componentFamily = Keyboard.COMPONENT_FAMILY)
 public class KeyboardRenderer extends InputRenderer<Keyboard> {
 
     @Override

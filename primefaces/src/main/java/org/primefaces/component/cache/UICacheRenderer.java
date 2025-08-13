@@ -35,7 +35,9 @@ import java.util.logging.Logger;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = UICache.DEFAULT_RENDERER, componentFamily = UICache.COMPONENT_FAMILY)
 public class UICacheRenderer extends CoreRenderer<UICache> {
 
     private static final Logger LOGGER = Logger.getLogger(UICacheRenderer.class.getName());

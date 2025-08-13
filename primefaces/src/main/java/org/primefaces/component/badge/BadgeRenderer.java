@@ -33,7 +33,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Badge.DEFAULT_RENDERER, componentFamily = Badge.COMPONENT_FAMILY)
 public class BadgeRenderer extends CoreRenderer<Badge> {
 
     @Override

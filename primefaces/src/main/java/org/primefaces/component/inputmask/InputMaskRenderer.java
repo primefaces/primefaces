@@ -36,7 +36,9 @@ import java.util.regex.Pattern;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = InputMask.DEFAULT_RENDERER, componentFamily = InputMask.COMPONENT_FAMILY)
 public class InputMaskRenderer extends InputRenderer<InputMask> {
 
     private static final String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";

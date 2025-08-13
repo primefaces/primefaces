@@ -43,7 +43,9 @@ import jakarta.faces.component.UIForm;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.PhaseId;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Wizard.DEFAULT_RENDERER, componentFamily = Wizard.COMPONENT_FAMILY)
 public class WizardRenderer extends CoreRenderer<Wizard> {
 
     @Override

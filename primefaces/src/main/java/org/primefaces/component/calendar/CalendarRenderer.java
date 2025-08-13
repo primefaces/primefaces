@@ -32,7 +32,9 @@ import java.util.Locale;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Calendar.DEFAULT_RENDERER, componentFamily = Calendar.COMPONENT_FAMILY)
 public class CalendarRenderer extends BaseCalendarRenderer<Calendar> {
 
     @Override

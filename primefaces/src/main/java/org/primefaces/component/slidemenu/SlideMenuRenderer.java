@@ -33,7 +33,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = SlideMenu.DEFAULT_RENDERER, componentFamily = SlideMenu.COMPONENT_FAMILY)
 public class SlideMenuRenderer extends TieredMenuRenderer {
 
     @Override

@@ -44,7 +44,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = InputNumber.DEFAULT_RENDERER, componentFamily = InputNumber.COMPONENT_FAMILY)
 public class InputNumberRenderer extends InputRenderer<InputNumber> {
 
     // Default values for "minValue"/"maxValue" properties of the AutoNumeric Plugin

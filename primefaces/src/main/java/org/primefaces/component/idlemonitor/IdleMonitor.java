@@ -29,8 +29,10 @@ import java.util.Collection;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.event.BehaviorEvent;
 
+@FacesComponent(value = IdleMonitor.COMPONENT_TYPE, namespace = IdleMonitor.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "idlemonitor/idlemonitor.js")

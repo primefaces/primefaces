@@ -58,10 +58,12 @@ import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 
+@FacesRenderer(rendererType = ImageCropper.DEFAULT_RENDERER, componentFamily = ImageCropper.COMPONENT_FAMILY)
 public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
 
     private static final Pattern IMAGE_TYPE_PATTERN = Pattern.compile("^image/([^;]+);?.*$");

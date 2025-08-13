@@ -44,7 +44,9 @@ import jakarta.faces.component.behavior.ClientBehaviorContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.ActionEvent;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = CommandLink.DEFAULT_RENDERER, componentFamily = CommandLink.COMPONENT_FAMILY)
 public class CommandLinkRenderer extends CoreRenderer<CommandLink> {
 
     private static final String SB_BUILD_ONCLICK = CommandLinkRenderer.class.getName() + "#buildOnclick";

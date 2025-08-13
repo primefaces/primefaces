@@ -36,7 +36,9 @@ import jakarta.faces.application.Resource;
 import jakarta.faces.application.ResourceHandler;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = GraphicImage.DEFAULT_RENDERER, componentFamily = GraphicImage.COMPONENT_FAMILY)
 public class GraphicImageRenderer extends CoreRenderer<GraphicImage> {
 
     @Override

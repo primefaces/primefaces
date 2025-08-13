@@ -30,10 +30,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = StaticMessage.COMPONENT_TYPE, namespace = StaticMessage.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class StaticMessage extends StaticMessageBase {
 

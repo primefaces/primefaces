@@ -36,7 +36,9 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Focus.DEFAULT_RENDERER, componentFamily = Focus.COMPONENT_FAMILY)
 public class FocusRenderer extends CoreRenderer<Focus> {
 
     private static final Map<String, Integer> SEVERITY_ORDINALS = new HashMap<>();

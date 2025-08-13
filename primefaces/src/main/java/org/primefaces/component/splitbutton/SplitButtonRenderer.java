@@ -52,7 +52,9 @@ import jakarta.faces.component.UIForm;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.ActionEvent;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = SplitButton.DEFAULT_RENDERER, componentFamily = SplitButton.COMPONENT_FAMILY)
 public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
 
     private static final String SB_BUILD_ONCLICK = SplitButtonRenderer.class.getName() + "#buildOnclick";

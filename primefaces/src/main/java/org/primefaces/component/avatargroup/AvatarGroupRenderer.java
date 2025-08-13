@@ -29,7 +29,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = AvatarGroup.DEFAULT_RENDERER, componentFamily = AvatarGroup.COMPONENT_FAMILY)
 public class AvatarGroupRenderer extends CoreRenderer<AvatarGroup> {
 
     @Override

@@ -25,10 +25,11 @@ package org.primefaces.component.rowtoggler;
 
 import org.primefaces.component.datatable.DataTable;
 
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
-
+@FacesComponent(value = RowToggler.COMPONENT_TYPE, namespace = RowToggler.COMPONENT_FAMILY)
 public class RowToggler extends RowTogglerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowToggler";

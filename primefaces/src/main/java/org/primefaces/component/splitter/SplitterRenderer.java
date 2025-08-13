@@ -34,7 +34,9 @@ import java.util.Objects;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Splitter.DEFAULT_RENDERER, componentFamily = Splitter.COMPONENT_FAMILY)
 public class SplitterRenderer extends CoreRenderer<Splitter> {
 
     @Override

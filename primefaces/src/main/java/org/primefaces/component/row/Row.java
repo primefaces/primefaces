@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.row;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = Row.COMPONENT_TYPE, namespace = Row.COMPONENT_FAMILY)
 public class Row extends RowBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Row";

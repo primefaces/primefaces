@@ -35,7 +35,9 @@ import java.util.List;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Carousel.DEFAULT_RENDERER, componentFamily = Carousel.COMPONENT_FAMILY)
 public class CarouselRenderer extends CoreRenderer<Carousel> {
 
     @Override

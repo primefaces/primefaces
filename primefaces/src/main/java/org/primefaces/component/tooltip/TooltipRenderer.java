@@ -32,7 +32,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Tooltip.DEFAULT_RENDERER, componentFamily = Tooltip.COMPONENT_FAMILY)
 public class TooltipRenderer extends CoreRenderer<Tooltip> {
 
     @Override

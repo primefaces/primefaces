@@ -35,7 +35,9 @@ import java.util.List;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Steps.DEFAULT_RENDERER, componentFamily = Steps.COMPONENT_FAMILY)
 public class StepsRenderer extends BaseMenuRenderer<Steps> {
 
     @Override

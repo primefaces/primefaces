@@ -32,7 +32,9 @@ import java.io.IOException;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = KeyFilter.DEFAULT_RENDERER, componentFamily = KeyFilter.COMPONENT_FAMILY)
 public class KeyFilterRenderer extends CoreRenderer<KeyFilter> {
 
     @Override

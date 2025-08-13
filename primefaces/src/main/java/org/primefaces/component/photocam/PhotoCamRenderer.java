@@ -34,8 +34,10 @@ import java.util.Map;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.PhaseId;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.xml.bind.DatatypeConverter;
 
+@FacesRenderer(rendererType = PhotoCam.DEFAULT_RENDERER, componentFamily = PhotoCam.COMPONENT_FAMILY)
 public class PhotoCamRenderer extends CoreRenderer<PhotoCam> {
 
     @Override

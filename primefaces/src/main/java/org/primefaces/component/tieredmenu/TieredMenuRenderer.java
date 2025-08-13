@@ -41,7 +41,9 @@ import java.util.List;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = TieredMenu.DEFAULT_RENDERER, componentFamily = TieredMenu.COMPONENT_FAMILY)
 public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
 
     @Override

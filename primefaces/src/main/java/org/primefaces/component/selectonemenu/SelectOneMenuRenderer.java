@@ -46,8 +46,10 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = SelectOneMenu.DEFAULT_RENDERER, componentFamily = SelectOneMenu.COMPONENT_FAMILY)
 public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
 
     @Override

@@ -24,7 +24,9 @@
 package org.primefaces.component.toolbar;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Toolbar.COMPONENT_TYPE, namespace = Toolbar.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Toolbar extends ToolbarBase {
 

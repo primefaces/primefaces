@@ -37,7 +37,9 @@ import java.util.List;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Dock.DEFAULT_RENDERER, componentFamily = Dock.COMPONENT_FAMILY)
 public class DockRenderer extends BaseMenuRenderer<Dock> {
 
     @Override

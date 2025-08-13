@@ -50,6 +50,10 @@
         <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
         <param-value>true</param-value>
     </context-param>
+    <context-param>
+        <param-name>org.apache.myfaces.annotation.USE_CDI_FOR_ANNOTATION_SCANNING</param-name>
+        <param-value>true</param-value>
+    </context-param>
 
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>

@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.headerrow;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = HeaderRow.COMPONENT_TYPE, namespace = HeaderRow.COMPONENT_FAMILY)
 public class HeaderRow extends HeaderRowBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.HeaderRow";

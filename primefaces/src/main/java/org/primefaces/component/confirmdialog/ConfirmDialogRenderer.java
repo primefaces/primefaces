@@ -35,7 +35,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ConfirmDialog.DEFAULT_RENDERER, componentFamily = ConfirmDialog.COMPONENT_FAMILY)
 public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
 
     @Override

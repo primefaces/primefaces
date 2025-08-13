@@ -41,8 +41,10 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = CascadeSelect.DEFAULT_RENDERER, componentFamily = CascadeSelect.COMPONENT_FAMILY)
 public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
 
     @Override

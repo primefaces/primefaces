@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.rowexpansion;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = RowExpansion.COMPONENT_TYPE, namespace = RowExpansion.COMPONENT_FAMILY)
 public class RowExpansion extends RowExpansionBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowExpansion";

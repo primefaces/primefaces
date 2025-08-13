@@ -34,7 +34,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Knob.DEFAULT_RENDERER, componentFamily = Knob.COMPONENT_FAMILY)
 public class KnobRenderer extends CoreRenderer<Knob> {
 
     public static final String RENDERER_TYPE = "org.primefaces.component.KnobRenderer";

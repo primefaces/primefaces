@@ -34,7 +34,9 @@ import java.util.Arrays;
 import jakarta.el.MethodExpression;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Terminal.DEFAULT_RENDERER, componentFamily = Terminal.COMPONENT_FAMILY)
 public class TerminalRenderer extends CoreRenderer<Terminal> {
 
     @Override

@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.organigramnode;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = UIOrganigramNode.COMPONENT_TYPE, namespace = UIOrganigramNode.COMPONENT_FAMILY)
 public class UIOrganigramNode extends UIOrganigramNodeBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OrganigramNode";

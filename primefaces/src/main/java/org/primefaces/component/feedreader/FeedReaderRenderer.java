@@ -33,7 +33,9 @@ import java.util.Map;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = FeedReader.DEFAULT_RENDERER, componentFamily = FeedReader.COMPONENT_FAMILY)
 public class FeedReaderRenderer extends CoreRenderer<FeedReader> {
 
     @Override

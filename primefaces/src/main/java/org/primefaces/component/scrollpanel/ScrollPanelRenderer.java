@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ScrollPanel.DEFAULT_RENDERER, componentFamily = ScrollPanel.COMPONENT_FAMILY)
 public class ScrollPanelRenderer extends CoreRenderer<ScrollPanel> {
 
     @Override

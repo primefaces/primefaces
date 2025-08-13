@@ -39,7 +39,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = PanelGrid.DEFAULT_RENDERER, componentFamily = PanelGrid.COMPONENT_FAMILY)
 public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
 
     @Override
