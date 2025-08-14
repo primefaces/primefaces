@@ -708,6 +708,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.3</version>
                 <configuration>
+                    <!--
+                    see https://stackoverflow.com/questions/79278490/mockito-is-currently-self-attaching-to-enable-the-inline-mock-maker-this-will-n
+                    official solution is https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+                    -->
                     <argLine>
                         -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
                         -Xshare:off
