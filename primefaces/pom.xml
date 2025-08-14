@@ -711,8 +711,7 @@
                     <!--
                     see https://stackoverflow.com/questions/79278490/mockito-is-currently-self-attaching-to-enable-the-inline-mock-maker-this-will-n
                     official solution is https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3, but we don´t get it up and working as of 08/2025
-                    official solution is https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3, but we don't get it up and working as of 08/2025
-                    @{argLine} added so we don't loose jacoco-javaagent
+                    @{argLine} added so we don't lose jacoco-javaagent
                     -->
                     <argLine>@{argLine} -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar</argLine>
                 </configuration>
