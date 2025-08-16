@@ -15,6 +15,11 @@
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Draggable.OnStopCallback.event The drag event that occurred.
  * @param {JQueryUI.DraggableEventUIParams} PrimeFaces.widget.Draggable.OnStopCallback.ui Details about the drag event.
  * 
+ * @typedef PrimeFaces.widget.Draggable.OnDragCallback Callback for when dragging. See also {@link DraggableCfg.onDrag}.
+ * @this {PrimeFaces.widget.Draggable} PrimeFaces.widget.Draggable.OnDragCallback 
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Draggable.OnDragCallback.event The drag event that occurred.
+ * @param {JQueryUI.DraggableEventUIParams} PrimeFaces.widget.Draggable.OnDragCallback.ui Details about the drag event.
+ * 
  * @interface {PrimeFaces.widget.DraggableCfg} cfg The configuration for the {@link  Draggable| Draggable widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
@@ -25,6 +30,7 @@
  * 
  * @prop {PrimeFaces.widget.Draggable.OnStartCallback} cfg.onStart Callback for when dragging starts.
  * @prop {PrimeFaces.widget.Draggable.OnStopCallback} cfg.onStop Callback for when dragging ends.
+ * @prop {PrimeFaces.widget.Draggable.OnDragCallback} cfg.onDrag Callback for when dragging.
  * @prop {string} cfg.target ID of the target of this draggable.
  */
 PrimeFaces.widget.Draggable = class Draggable extends PrimeFaces.widget.BaseWidget {
@@ -55,6 +61,12 @@ PrimeFaces.widget.Draggable = class Draggable extends PrimeFaces.widget.BaseWidg
         this.cfg.stop = function(event, ui) {
             if ($this.cfg.onStop) {
                 $this.cfg.onStop.call($this, event, ui);
+            }
+        };
+
+        this.cfg.drag = function(event, ui) {
+            if ($this.cfg.onDrag) {
+                $this.cfg.onDrag.call($this, event, ui);
             }
         };
 
