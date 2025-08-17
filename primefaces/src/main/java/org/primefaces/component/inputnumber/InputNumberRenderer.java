@@ -196,7 +196,7 @@ public class InputNumberRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", inputNumber.getType(), null);
-        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("autocomplete", inputNumber.getAutocomplete(), null);
         writer.writeAttribute("value", valueToRender, null);
 
         if (!isValueBlank(style)) {
