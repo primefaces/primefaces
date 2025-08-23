@@ -60,6 +60,9 @@ public class DataTableXMLExporter extends DataTableExporter<PrintWriter, Exporte
         String doctag = table.getExportTag() != null ? table.getExportTag() : table.getId();
         document.append("<?xml version=\"1.0\"?>\n").append("<").append(doctag).append(">\n");
 
+        // GitHub #14103: must be called so visible columns are cached
+        getExportableColumns(table);
+
         super.exportTable(context, table, index);
 
         document.append("</").append(doctag).append(">");
