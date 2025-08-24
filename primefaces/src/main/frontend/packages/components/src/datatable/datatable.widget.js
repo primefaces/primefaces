@@ -1848,7 +1848,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {number} width New width in pixels to set.
      */
     setOuterWidth(element, width) {
-        if (element.css('box-sizing') === 'border-box') { // Github issue: #5014
+        if (element.css('box-sizing') === 'content-box') { // Github issue: #5014
             element.outerWidth(width);
         }
         else {
@@ -1875,7 +1875,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         if(!width) {
             width = col[0].style.width;
-            isOuterWidth = width && (col.css('box-sizing') === 'border-box');
+            isOuterWidth = width && (col.css('box-sizing') === 'content-box');
         }
 
         if(!width) {
