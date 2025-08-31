@@ -141,14 +141,14 @@ PrimeFaces.widget.SelectOneRadio = class SelectOneRadio extends PrimeFaces.widge
                 var radio = $(this),
                 input = radio.prev().children(':radio');
 
-                var isDifferentRadio = $this.cfg.unselectable || !$this.checkedRadio || !$this.checkedRadio.is(radio);
+                var isSelectableRadio = $this.cfg.unselectable || !$this.checkedRadio || !$this.checkedRadio.is(radio);
 
                 // configure ARIA
                 $this.jq.find('[role=radio]').attr('aria-checked', false);
                 $this.setAriaChecked(radio, true);
 
                 // configure UI
-                if(!radio.hasClass('ui-state-active') && isDifferentRadio) {
+                if(!radio.hasClass('ui-state-active') && isSelectableRadio) {
                     $this.unselect($this.checkedRadio);
                     $this.select(radio);
                 }
@@ -157,7 +157,7 @@ PrimeFaces.widget.SelectOneRadio = class SelectOneRadio extends PrimeFaces.widge
                 }
 
                 // fire events only if the radio is different
-                if (isDifferentRadio) {
+                if (isSelectableRadio) {
                     $this.fireClickEvent(input, e);
                     input.trigger('change');
                     input.trigger('focus.selectOneRadio');
