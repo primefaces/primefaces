@@ -2753,7 +2753,7 @@
                 }
             }
             if (focused) {
-                focused.first().trigger('focus');
+                PrimeFaces.queueTask(function() { focused.first().trigger('focus') }, 1);
             }
 
             $this.inputfield.attr('aria-expanded', 'true');
