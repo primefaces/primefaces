@@ -2737,7 +2737,7 @@ $.widget("prime.datePicker", {
             }
         }
         if (focused) {
-            focused.first().trigger('focus');
+            PrimeFaces.queueTask(function() { focused.first().trigger('focus') });
         }
 
         $this.inputfield.attr('aria-expanded', 'true');
