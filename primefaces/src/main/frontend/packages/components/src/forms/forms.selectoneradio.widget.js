@@ -141,9 +141,14 @@ PrimeFaces.widget.SelectOneRadio = class SelectOneRadio extends PrimeFaces.widge
                 var radio = $(this),
                 input = radio.prev().children(':radio');
 
+                var isSelectableRadio = $this.cfg.unselectable || !$this.checkedRadio || !$this.checkedRadio.is(radio);
+
+                // configure ARIA
                 $this.jq.find('[role=radio]').attr('aria-checked', false);
                 $this.setAriaChecked(radio, true);
-                if(!radio.hasClass('ui-state-active')) {
+
+                // configure UI
+                if(!radio.hasClass('ui-state-active') && isSelectableRadio) {
                     $this.unselect($this.checkedRadio);
                     $this.select(radio);
                 }
@@ -151,9 +156,12 @@ PrimeFaces.widget.SelectOneRadio = class SelectOneRadio extends PrimeFaces.widge
                     $this.unselect($this.checkedRadio);
                 }
 
-                $this.fireClickEvent(input, e);
-                input.trigger('change');
-                input.trigger('focus.selectOneRadio');
+                // fire events only if the radio is different
+                if (isSelectableRadio) {
+                    $this.fireClickEvent(input, e);
+                    input.trigger('change');
+                    input.trigger('focus.selectOneRadio');
+                }
 
                 // Github issue #4467
                 e.stopPropagation();
