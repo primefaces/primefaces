@@ -1456,7 +1456,7 @@ export class Core {
      * @param context The ID of a container with an element to focus
      */
     focus(id?: string | null, context?: string): void {
-        var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
+        var selector = ':not(:submit):not(:button):not([readonly]):input:visible:enabled[name]';
         
         // if looking in container like dialog also check for first link
         if (context) {
