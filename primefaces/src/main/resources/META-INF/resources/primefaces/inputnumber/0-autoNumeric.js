@@ -47,10 +47,10 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 /**
  *               AutoNumeric.js
  *
- * @version      4.10.8
- * @date         2024-12-27 UTC 00:20
+ * @version      4.10.9
+ * @date         2025-09-03 UTC 09:00
  *
- * @authors      2016-2024 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
+ * @authors      2016-2025 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
  *               2009-2016 Bob Knothe <bob.knothe@gmail.com>
  * @contributors Sokolov Yura and others, cf. AUTHORS
  * @copyright    Alexandre Bonneau & Robert J. Knothe
@@ -7023,7 +7023,7 @@ var AutoNumeric = /*#__PURE__*/function () {
      * @returns {string}
      */
     function version() {
-      return '4.10.6';
+      return '4.10.9';
     }
   }, {
     key: "_setArgumentsValues",
@@ -9187,7 +9187,9 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_cleanValueForRangeParse",
     value: function _cleanValueForRangeParse(value) {
-      value = value.toString().replace(',', '.');
+      if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(value)) {
+        value = value.toString().replace(',', '.');
+      }
       return _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].parseStr(value);
     }
 
@@ -11746,69 +11748,77 @@ var AutoNumericHelper = /*#__PURE__*/function () {
      *
      * This function is adapted from Big.js https://github.com/MikeMcl/big.js/. Many thanks to Mike.
      *
-     * @param {number|string} n A numeric value.
+     * @param {number|string} value A numeric value.
      * @returns {{}}
      */
   }, {
     key: "parseStr",
-    value: function parseStr(n) {
-      var x = {}; // A Big number instance.
+    value: function parseStr(value) {
+      if (AutoNumericHelper.isUndefinedOrNullOrEmpty(value)) {
+        return {
+          s: 1,
+          e: 0,
+          c: [0]
+        }; // Return the representation for null/undefined
+      }
+
+      var result = {}; // A Big number instance.
       var e;
       var i;
       var nL;
       var j;
 
       // Minus zero?
-      if (n === 0 && 1 / n < 0) {
-        n = '-0';
+      if (value === 0 && 1 / value < 0) {
+        value = '-0';
       }
 
       // Determine sign. 1 positive, -1 negative
-      n = n.toString();
-      if (this.isNegativeStrict(n, '-')) {
-        n = n.slice(1);
-        x.s = -1;
+      value = value.toString();
+      if (this.isNegativeStrict(value, '-')) {
+        value = value.slice(1);
+        result.s = -1;
       } else {
-        x.s = 1;
+        result.s = 1;
       }
 
       // Decimal point?
-      e = n.indexOf('.');
+      e = value.indexOf('.');
       if (e > -1) {
-        n = n.replace('.', '');
+        value = value.replace('.', '');
       }
 
       // Length of string if no decimal character
       if (e < 0) {
         // Integer
-        e = n.length;
+        e = value.length;
       }
 
       // Determine leading zeros
-      i = n.search(/[1-9]/i) === -1 ? n.length : n.search(/[1-9]/i);
-      nL = n.length;
+      i = value.search(/[1-9]/i) === -1 ? value.length : value.search(/[1-9]/i);
+      nL = value.length;
       if (i === nL) {
         // Zero
-        x.e = 0;
-        x.c = [0];
+        result.e = 0;
+        result.c = [0];
       } else {
         // Determine trailing zeros
-        for (j = nL - 1; n.charAt(j) === '0'; j -= 1) {
+        for (j = nL - 1; value.charAt(j) === '0'; j -= 1) {
           nL -= 1;
         }
         nL -= 1;
 
         // Decimal location
-        x.e = e - i - 1;
-        x.c = [];
+        result.e = e - i - 1;
+        result.c = [];
 
         // Convert string to array of digits without leading/trailing zeros
         for (e = 0; i <= nL; i += 1) {
-          x.c[e] = +n.charAt(i);
+          result.c[e] = +value.charAt(i);
           e += 1;
         }
       }
-      return x;
+      return result;
     }
 
     /**
@@ -14227,3 +14237,4 @@ __webpack_exports__ = __webpack_exports__["default"];
 /******/ })()
 ;
 });
+//# sourceMappingURL=autoNumeric.js.map
