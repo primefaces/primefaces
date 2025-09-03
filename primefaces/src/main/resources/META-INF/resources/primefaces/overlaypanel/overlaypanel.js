@@ -543,7 +543,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * Applies focus to the first focusable element of the content in the panel.
      */
     applyFocus: function() {
-        this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').trigger('focus');
+        PrimeFaces.focus(null, this.id);
     },
 
     /**
