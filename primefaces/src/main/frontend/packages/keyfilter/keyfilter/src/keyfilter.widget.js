@@ -36,7 +36,7 @@ PrimeFaces.widget.KeyFilter = class KeyFilter extends PrimeFaces.widget.BaseWidg
         if (this.target.is(':input')) {
             this.applyKeyFilter(this.target, cfg);
         } else {
-            var nestedInput = $(':not(:submit):not(:button):input:visible:enabled:first', this.target);
+            var nestedInput = $(':not(:submit):not(:button):not([readonly]):input:visible:enabled:first', this.target);
             this.applyKeyFilter(nestedInput, cfg);
         }
     }
