@@ -32,7 +32,7 @@
         <!-- dependency versions -->
         <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
         <jetty.version>12.1.0</jetty.version>
-        <lombok.version>1.18.38</lombok.version>
+        <lombok.version>1.18.40</lombok.version>
     </properties>
 
     <dependencies>
