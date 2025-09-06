@@ -32,12 +32,10 @@ import org.primefaces.util.FacetUtils;
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.ClientBehaviorContext;
-import jakarta.faces.component.behavior.FacesBehavior;
 import jakarta.faces.context.FacesContext;
 
 import org.json.JSONObject;
 
-@FacesBehavior(ConfirmBehavior.BEHAVIOR_ID)
 public class ConfirmBehavior extends AbstractBehavior {
 
     public static final String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";

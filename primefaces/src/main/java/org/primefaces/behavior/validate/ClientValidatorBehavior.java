@@ -35,9 +35,7 @@ import java.util.logging.Logger;
 import jakarta.faces.application.ProjectStage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.ClientBehaviorContext;
-import jakarta.faces.component.behavior.FacesBehavior;
 
-@FacesBehavior(ClientValidatorBehavior.BEHAVIOR_ID)
 public class ClientValidatorBehavior extends AbstractBehavior {
 
     public static final String BEHAVIOR_ID = "org.primefaces.behavior.ClientValidatorBehavior";

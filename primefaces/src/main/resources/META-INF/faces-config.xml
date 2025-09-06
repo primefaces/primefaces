@@ -39,6 +39,26 @@
         </system-event-listener>
     </application>
 
+    <behavior>
+        <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.ajax.AjaxBehavior</behavior-class>
+    </behavior>
+
+    <behavior>
+        <behavior-id>org.primefaces.component.PrinterBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.printer.PrinterBehavior</behavior-class>
+    </behavior>
+
+    <behavior>
+        <behavior-id>org.primefaces.behavior.ConfirmBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.confirm.ConfirmBehavior</behavior-class>
+    </behavior>
+
+    <behavior>
+        <behavior-id>org.primefaces.behavior.ClientValidatorBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.validate.ClientValidatorBehavior</behavior-class>
+    </behavior>
+
     <validator>
         <validator-id>jakarta.faces.Length</validator-id>
         <validator-class>org.primefaces.validate.LengthValidator</validator-class>
