@@ -422,7 +422,8 @@ public abstract class SelectRenderer extends InputRenderer {
                 if (selectItem.isDisabled()) {
                     if (LangUtils.contains(submittedValues, selectItemVal) && !LangUtils.contains(oldValues, selectItemVal)) {
                         // disabled select item has been selected
-                        throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
+                        // #13954: ignore it silently for now
+                        //throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
                     }
                     else if (LangUtils.contains(oldValues, selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
