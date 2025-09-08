@@ -28,6 +28,7 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectOneRadio;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SelectOneRadio006Test extends AbstractPrimePageTest {
 
     @Test
+    @Disabled("GitHub #13954: Disabled options are ignored silently for now")
     @Order(1)
     @DisplayName("SelectOneRadio: Select Disabled Option")
     void selectDisabled(Page page) {
