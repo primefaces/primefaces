@@ -272,7 +272,11 @@
             }
             this.bindResponsiveResizeListener();
             // #13634 ensure input is formatted correctly after AJAX update
-            this.inputfield.val(this.getValueToRender());
+            let inputValue = this.getValueToRender();
+            if (!inputValue && this.options.keepInvalid && this.options.defaultDate) {
+                inputValue = this.options.defaultDate;
+            }
+            this.inputfield.val(inputValue);
         },
 
         parseOptionValue: function(option) {
