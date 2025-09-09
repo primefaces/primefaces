@@ -72,6 +72,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         
         // default date should be input value before widget value
         this.cfg.defaultDate = this.input.val() || this.cfg.defaultDate;
+        this.cfg.focusOnSelect = !!this.cfg.focusOnSelect;
 
         //i18n and l7n
         this.configureLocale();

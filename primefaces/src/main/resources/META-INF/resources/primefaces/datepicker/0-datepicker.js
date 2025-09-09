@@ -52,6 +52,7 @@
             showIcon: false,
             icon: 'ui-icon ui-icon-calendar',
             showOnFocus: true,
+            focusOnSelect: false,
             keepInvalid: false,
             numberOfMonths: 1,
             view: 'date',
@@ -3079,7 +3080,7 @@
                 this.selectDate(event, dateMeta);
             }
 
-            if (!this.options.inline && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
+            if (!this.options.inline && this.options.focusOnSelect && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
                 PrimeFaces.queueTask(function() {
                     $this.hideOverlay();
                 }, 100);
