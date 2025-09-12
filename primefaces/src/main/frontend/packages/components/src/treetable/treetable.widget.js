@@ -234,6 +234,14 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             this.paginator.init(this.cfg.paginator);
             this.paginator.bindSwipeEvents(this.jq, this.cfg);
         }
+
+        //double click
+        if (this.hasBehavior('dblselect')) {
+            var rowSelector = '> tr.ui-treetable-selectable-node';
+            this.tbody.off('dblclick.treeTable', rowSelector).on('dblclick.treeTable', rowSelector, null, function(e) {
+                $this.onRowDblclick(e, $(this));
+            });
+        }
     }
 
     /**
@@ -1049,6 +1057,35 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             if(this.cfg.disabledTextSelection) {
                 PrimeFaces.clearSelection();
             }
+        }
+    }
+
+    /**
+     * Callback for a double click event on a node.
+     * @private
+     * @param {JQuery.TriggeredEvent} event The click event that occurred.
+     * @param {JQuery} node The node that was clicked.
+     */
+    onRowDblclick(event, node) {
+        var selected = node.hasClass('ui-state-highlight'),
+            nodeKey = node.attr('data-rk');
+
+        if (this.isCheckboxSelection()) {
+            if (!selected) {
+                this.toggleCheckboxNode(node);
+            }
+        }
+        else {
+            if (this.isSingleSelection() || !selected) {
+                this.unselectAllNodes();
+            }
+            this.selectNode(node, true);
+        }
+
+        this.fireSelectEvent(nodeKey, 'dblselect');
+
+        if (this.cfg.disabledTextSelection) {
+            PrimeFaces.clearSelection();
         }
     }
 

@@ -132,6 +132,7 @@ TreeTable provides various ajax behavior events to respond user actions.
 expand | org.primefaces.event.NodeExpandEvent | When a node is expanded.
 collapse | org.primefaces.event.NodeCollapseEvent | When a node is collapsed.
 select | org.primefaces.event.NodeSelectEvent | When a node is selected.
+dblselect | org.primefaces.event.NodeSelectEvent | When a node is selected with double click.
 unselect | org.primefaces.event.NodeUnselectEvent | When a node is unselected.
 contextMenu | org.primefaces.event.NodeSelectEvent | ContextMenu display.
 colResize | org.primefaces.event.ColumnResizeEvent | When a column is resized.
