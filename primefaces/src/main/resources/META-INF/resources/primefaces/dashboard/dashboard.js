@@ -42,6 +42,9 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     renderResponsive: function() {
+        if (this.cfg.disabled) {
+            return;
+        }
         this.cfg.draggable = this.jqId + ' .ui-dashboard-panel';
         this.cfg.panels = this.jqId + ' .ui-panel';
         this.bindDraggable();
