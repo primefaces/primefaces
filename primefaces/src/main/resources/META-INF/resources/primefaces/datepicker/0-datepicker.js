@@ -2772,6 +2772,12 @@
             }
             var $this = this;
 
+            // #14158 needed for float label
+            let parent = this.inputfield.parent();
+            if (parent.is("div, span:not('.ui-float-label')")) {
+                parent.addClass('ui-inputwrapper-focus');
+            }
+
             this.transition.show({
                 onEnter: function() {
                     if ($this.options.onBeforeShow) {
@@ -3145,6 +3151,9 @@
             if (this.options.onSelect) {
                 this.options.onSelect.call(this, event, date);
             }
+
+            // #14158 needed for float label
+            PrimeFaces.updateFilledState(this.inputfield, this.inputfield.parent());
         },
 
         incrementHour: function(event) {
