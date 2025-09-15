@@ -122,6 +122,7 @@ public class TreeTable extends TreeTableBase {
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("contextMenu", NodeSelectEvent.class)
             .put("select", NodeSelectEvent.class)
+            .put("dblselect", NodeSelectEvent.class)
             .put("unselect", NodeUnselectEvent.class)
             .put("expand", NodeExpandEvent.class)
             .put("collapse", NodeCollapseEvent.class)
@@ -183,7 +184,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if ("select".equals(eventName)) {
+            else if ("select".equals(eventName) || "dblselect".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
                 TreeNode<?> node = getRowNode();
