@@ -1085,6 +1085,39 @@ JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
         ...
 ```
 
+
+### Add custom sorting
+You can manipulate generated sort orders (from the DataTable columns) via sortEnricher. For example, this enricher will override default null ordering to place nulls next to blank strings:
+
+```java
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
+        ...
+        .sortEnricher((filterBy, cb, cq, root, predicates) -> {
+            SortMeta sortByExternalIdMeta = sortBy.values().stream()
+                .filter(sortByEntry -> sortByEntry.getField().equals("externalId"))
+                .findAny()
+                .orElse(null);
+            if (sortByExternalIdMeta != null) {
+                switch (sortByExternalIdMeta.getOrder()) {
+                case UNSORTED:
+                    break;
+                case ASCENDING:
+                    orders.clear();
+                    orders.add(cb.asc(cb.nullif(cb.trim(root.get("externalId")), cb.literal(""))));
+                    break;
+                case DESCENDING:
+                    orders.clear();
+                    orders.add(cb.desc(cb.nullif(cb.trim(root.get("externalId")), cb.literal(""))));
+                    break;
+                }
+            }
+        })
+        ...
+```
+
+Note that `.clear()` removes all applied sorting from the UI, and so will give unexpected results for multiple-sorted DataTables.
+
+
 #### Add additional filters
 You can add your own/custom FilterMeta to manipulate generated predicates:
 ```java
