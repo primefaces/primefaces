@@ -91,14 +91,19 @@ public class ProgressBarRenderer extends CoreRenderer {
         //value
         writer.startElement("div", progressBar);
         writer.writeAttribute("class", ProgressBar.VALUE_CLASS, null);
-        if (value != 0) {
+        if (value >= 0) {
             writer.writeAttribute("style", "display:block;width:" + value + "%", style);
         }
         //label
         writer.startElement("div", progressBar);
         writer.writeAttribute("class", ProgressBar.LABEL_CLASS, null);
         if (labelTemplate != null) {
-            writer.writeAttribute("style", "display:block", style);
+            if (value == 0) {
+                writer.writeAttribute("style", "color:var(--text-color);display:block", style);
+            }
+            else {
+                writer.writeAttribute("style", "display:block", style);
+            }
             writer.writeText(labelTemplate.replace("{value}", String.valueOf(value)), null);
         }
         writer.endElement("div"); // label end
