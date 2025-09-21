@@ -355,7 +355,7 @@
         clear: left;
         float: left;
         border: 0px none;
-        display: block;
+        display: flex;
         text-align: left !important;
         width: 100% !important;
     }
@@ -392,5 +392,15 @@
     .ui-datatable-reflow tr.ui-datatable-empty-message > td {
         display: block;
         border: 0 none;
+    }
+
+    .ui-datatable-reflow .ui-datatable-data .ui-sortable-placeholder td {
+        padding: .5em;
+        border: 0;
+    }
+
+    .ui-datatable-reflow.ui-sortable-helper,
+    .ui-datatable-reflow.ui-sortable-helper td {
+        max-width: 90vw;
     }
 }
