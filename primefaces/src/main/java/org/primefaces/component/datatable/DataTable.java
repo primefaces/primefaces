@@ -394,7 +394,15 @@ public class DataTable extends DataTableBase {
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
                 String rowsPerPageParam = params.get(clientId + "_rows");
-                Integer rowsPerPage = LangUtils.isNotBlank(rowsPerPageParam) ? Integer.parseInt(rowsPerPageParam) : null;
+                Integer rowsPerPage = null;
+                if (LangUtils.isNotBlank(rowsPerPageParam)) {
+                    if ("*".equals(rowsPerPageParam)) { // GitHub #14187 ShowAll option
+                        rowsPerPage = rows;
+                    }
+                    else {
+                        rowsPerPage = Integer.parseInt(rowsPerPageParam);
+                    }
+                }
 
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page, rowsPerPage);
             }
