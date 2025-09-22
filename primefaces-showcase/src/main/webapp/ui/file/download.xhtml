@@ -24,7 +24,8 @@
 
     <ui:define name="description">
         FileDownload is used to stream binary contents like files stored in database to the client. FileDownload is used by attaching it to any Faces command component
-        like button or a link. Additionally presentation of download can be configured with the contentDisposition attribute that takes either "attachment" or "inline" as a value.
+        like button or a link. Additionally, presentation of download can be configured with the contentDisposition attribute that takes either "attachment" or "inline" as a value.
+        When "inline" is used, the browser tries to open the file within itself if supported instead of downloading. Use "inline" together with the attribute store="true" to make sure that the opened file is proposed to be saved with its original name if the opened file shall be saved. Otherwise, Chrome and Edge, will use the screen's name as default for the file save.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/filedownload"/>
@@ -40,6 +41,11 @@
                 <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);"
                                  icon="pi pi-arrow-down" styleClass="mr-2">
                     <p:fileDownload value="#{fileDownloadView.file}"/>
+                </p:commandButton>
+
+                <p:commandButton value="Inline Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);"
+                                 icon="pi pi-arrow-down" styleClass="mr-2">
+                    <p:fileDownload value="#{fileDownloadView.file}" contentDisposition="inline" store="true" />
                 </p:commandButton>
 
                 <p:commandButton value="Ajax Download" icon="pi pi-arrow-down" styleClass="ui-button-outlined">
