@@ -124,6 +124,9 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         this.generateItems(this.sourceList, this.sourceInput);
         this.generateItems(this.targetList, this.targetInput);
 
+        //always bind button events and labels
+        this.bindButtonEvents();
+
         if(this.cfg.disabled) {
             $(this.jqId + ' li.ui-picklist-item').addClass('ui-state-disabled');
             $(this.jqId + ' button').attr('disabled', 'disabled').addClass('ui-state-disabled');
@@ -133,8 +136,6 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.bindDragDopEvents();
 
             this.bindItemEvents();
-
-            this.bindButtonEvents();
 
             this.bindFilterEvents();
 
