@@ -10,6 +10,10 @@
     vertical-align: middle;
 }
 
+.ui-picklist .ui-picklist-buttons button {
+    pointer-events: auto;
+}
+
 .ui-picklist .ui-picklist-list {
     list-style-type: none;
     margin: 0;
