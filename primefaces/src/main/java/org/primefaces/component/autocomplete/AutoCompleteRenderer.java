@@ -899,8 +899,8 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         }
         else {
             writer.startElement("li", null);
+            writer.writeAttribute("id", component.getClientId(context) + "_moretext", null);
             writer.writeAttribute("class", AutoComplete.MORE_TEXT_LIST_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_LABEL, moreText, null);
             writer.writeText(moreText, "moreText");
             writer.endElement("li");
         }
