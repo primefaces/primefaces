@@ -197,6 +197,18 @@ PrimeFaces.widget.Spinner = class Spinner extends PrimeFaces.widget.BaseWidget {
                 $this.format();
             }
         })
+        .on('paste.spinner', function(e) {
+            PrimeFaces.queueTask(function() {
+                $this.updateValue();
+                if ($this.value) {
+                    $this.input.trigger('change');
+                    $this.format();
+                }
+                else {
+                    $this.input.val('');
+                }
+            });
+        })
         .on('blur.spinner', function(e) {
             $this.format();
         })
