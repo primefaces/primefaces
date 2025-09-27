@@ -892,6 +892,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
             writer.startElement("td", null);
             writer.writeAttribute("colspan", colSize, null);
+            writer.writeAttribute("data-item-label", moreText, null);
             writer.writeText(moreText, "moreText");
             writer.endElement("td");
 
@@ -900,7 +901,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         else {
             writer.startElement("li", null);
             writer.writeAttribute("class", AutoComplete.MORE_TEXT_LIST_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_LABEL, moreText, null);
+            writer.writeAttribute("data-item-label", moreText, null);
             writer.writeText(moreText, "moreText");
             writer.endElement("li");
         }
