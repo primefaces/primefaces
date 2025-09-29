@@ -40,7 +40,7 @@ import java.math.BigInteger;
 import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
+import javax.faces.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
@@ -195,8 +195,8 @@ public class InputNumberRenderer extends InputRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
-        writer.writeAttribute("type", component.getType(), null);
-        writer.writeAttribute("autocomplete", LangUtils.defaultIfBlank(component.getAutocomplete(), "off"), null);
+        writer.writeAttribute("type", inputNumber.getType(), null);
+        writer.writeAttribute("autocomplete", LangUtils.defaultIfBlank(inputNumber.getAutocomplete(), "off"), null);
         writer.writeAttribute("value", valueToRender, null);
 
         if (!isValueBlank(style)) {
