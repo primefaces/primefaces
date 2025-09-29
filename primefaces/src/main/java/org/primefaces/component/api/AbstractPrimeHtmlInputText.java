@@ -97,11 +97,6 @@ public abstract class AbstractPrimeHtmlInputText extends HtmlInputText {
         return EVENT_NAMES;
     }
 
-    @Override
-    public String getAutocomplete() {
-        return (String) getStateHelper().eval(HtmlInputText.PropertyKeys.autocomplete, "off");
-    }
-
     public String getInputmode() {
         return (String) getStateHelper().eval(PropertyKeys.inputmode, null);
     }

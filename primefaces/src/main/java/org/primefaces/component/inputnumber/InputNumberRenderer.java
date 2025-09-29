@@ -194,7 +194,7 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", component.getType(), null);
-        writer.writeAttribute("autocomplete", component.getAutocomplete(), null);
+        writer.writeAttribute("autocomplete", LangUtils.defaultIfBlank(component.getAutocomplete(), "off"), null);
         writer.writeAttribute("value", valueToRender, null);
 
         if (!isValueBlank(style)) {
