@@ -40,7 +40,7 @@ import java.math.BigInteger;
 import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.UIComponent;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
