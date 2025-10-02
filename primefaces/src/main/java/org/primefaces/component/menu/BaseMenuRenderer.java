@@ -48,6 +48,9 @@ import jakarta.faces.context.ResponseWriter;
 
 public abstract class BaseMenuRenderer<T extends AbstractMenu> extends MenuItemAwareRenderer<T> {
 
+    public static final SimpleEntry<String, String> ARIA_ROLE_MENUITEM = new SimpleEntry<>(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM);
+    public static final SimpleEntry<String, String> ARIA_CURRENT_PAGE = new SimpleEntry<>(HTML.ARIA_CURRENT, HTML.ARIA_CURRENT_PAGE);
+
     @Override
     public void encodeEnd(FacesContext context, T component) throws IOException {
         MenuModel model = component.getModel();
@@ -95,7 +98,7 @@ public abstract class BaseMenuRenderer<T extends AbstractMenu> extends MenuItemA
     }
 
     protected void encodeMenuItem(FacesContext context, T menu, MenuItem menuitem, String tabindex) throws IOException {
-        encodeMenuItem(context, menu, menuitem, tabindex, new SimpleEntry<>(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM));
+        encodeMenuItem(context, menu, menuitem, tabindex, ARIA_ROLE_MENUITEM);
     }
 
     protected void encodeMenuItem(FacesContext context, T menu, MenuItem menuitem, String tabindex, Entry<String, String> aria) throws IOException {

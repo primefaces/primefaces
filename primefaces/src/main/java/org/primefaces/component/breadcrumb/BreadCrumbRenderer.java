@@ -35,7 +35,6 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -115,7 +114,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer<BreadCrumb> {
                     else {
                         Entry<String, String> attr = null;
                         if (last) {
-                            attr = new SimpleEntry<>(HTML.ARIA_CURRENT, HTML.ARIA_CURRENT_PAGE);
+                            attr = ARIA_CURRENT_PAGE;
                         }
                         encodeMenuItem(context, component, item, component.getTabindex(), attr);
                     }
