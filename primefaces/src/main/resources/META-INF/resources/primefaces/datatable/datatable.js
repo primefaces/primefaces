@@ -1735,6 +1735,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.adjustScrollWidth();
             }
         });
+
+        // Add or remove CSS classes based on scroll overflow direction
+        const el = this.scrollBody && this.scrollBody[0];
+        if (el) {
+            const hasHorizontalScroll = el.scrollWidth > el.clientWidth;
+            const hasVerticalScroll = el.scrollHeight > el.clientHeight;
+
+            el.classList.toggle('ui-scrollable-x', hasHorizontalScroll);
+            el.classList.toggle('ui-scrollable-y', hasVerticalScroll);
+        }
     },
 
     /**
