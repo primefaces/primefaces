@@ -2537,9 +2537,10 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Updates the vertical scroll position and adjusts the margin.
-     * @private
-     */
+    * Updates the vertical scroll position and adjusts the margin.
+    * Also toggles CSS classes on the scroll body to indicate horizontal/vertical overflow.
+    * @private
+    */
     updateVerticalScroll() {
         if(this.cfg.scrollable && this.cfg.scrollHeight) {
             if(this.bodyTable.outerHeight() < this.scrollBody.outerHeight()) {
@@ -2551,6 +2552,17 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                 this.scrollFooterBox.css('margin-right', this.marginRight);
             }
         }
+
+        // Add or remove CSS classes based on scroll overflow direction
+        if (!this.scrollBody || !this.scrollBody[0]) {
+            return;
+        }
+        const el = this.scrollBody[0];
+        const hasHorizontalScroll = el.scrollWidth > el.clientWidth;
+        const hasVerticalScroll   = el.scrollHeight > el.clientHeight;
+
+        el.classList.toggle('ui-scrollable-x', hasHorizontalScroll);
+        el.classList.toggle('ui-scrollable-y', hasVerticalScroll);
     }
 
     /**
