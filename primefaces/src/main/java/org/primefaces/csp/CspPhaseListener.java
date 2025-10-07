@@ -23,6 +23,9 @@
  */
 package org.primefaces.csp;
 
+import jakarta.el.ELContext;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.ValueExpression;
 import org.primefaces.PrimeFaces;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeFacesContext;
@@ -99,6 +102,12 @@ public class CspPhaseListener implements PhaseListener {
             externalContext.addResponseHeader("Content-Security-Policy-Report-Only", policy);
         }
         else {
+            if (customPolicy != null) {
+                ELContext elContext = context.getELContext();
+                ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+                ValueExpression ve = expressionFactory.createValueExpression(elContext, customPolicy, String.class);
+                customPolicy = ve.getValue(elContext);
+            }
             String policy = LangUtils.isBlank(customPolicy) ? "script-src 'self'" : customPolicy;
             policy += " 'nonce-" + state.getNonce() + "';";
             externalContext.addResponseHeader("Content-Security-Policy", policy);
