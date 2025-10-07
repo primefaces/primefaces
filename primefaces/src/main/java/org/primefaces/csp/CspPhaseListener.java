@@ -23,15 +23,15 @@
  */
 package org.primefaces.csp;
 
-import jakarta.el.ELContext;
-import jakarta.el.ExpressionFactory;
-import jakarta.el.ValueExpression;
 import org.primefaces.PrimeFaces;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeFacesContext;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 
+import jakarta.el.ELContext;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.ValueExpression;
 import jakarta.faces.application.ProjectStage;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
