@@ -182,6 +182,7 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
         }
 
         this.container.addClass('ui-speeddial-opened');
+        this.container.find('a').attr("tabindex", "0");
         this.visible = true;
         this.updateItemStyles();
 
@@ -203,6 +204,7 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
         }
 
         this.container.removeClass('ui-speeddial-opened');
+        this.container.find('a').attr("tabindex", "-1");
         this.visible = false;
         this.updateItemStyles();
 
