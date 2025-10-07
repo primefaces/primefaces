@@ -10,6 +10,12 @@ body {
         font-size: $speedDialButtonIconFontSize;
       }
     }
+
+    &:focus {
+      outline: $buttonFocusOutline;
+      outline-offset: $buttonFocusOutlineOffset;
+      box-shadow: $buttonFocusShadow;
+    }
   }
 
   .ui-speeddial-action {
@@ -21,6 +27,12 @@ body {
     &:hover {
       background: $speedDialActionHoverBg;
       color: $speedDialActionTextHoverColor;
+    }
+
+    &:focus {
+      outline: $buttonFocusOutline;
+      outline-offset: $buttonFocusOutlineOffset;
+      box-shadow: $buttonFocusShadow;
     }
   }
 
