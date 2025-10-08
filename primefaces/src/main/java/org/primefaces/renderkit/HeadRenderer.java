@@ -41,9 +41,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
@@ -102,11 +99,7 @@ public class HeadRenderer extends Renderer {
         String themeParamValue = applicationContext.getConfig().getTheme();
 
         if (themeParamValue != null) {
-            ELContext elContext = context.getELContext();
-            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
-            ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
-
-            theme = (String) ve.getValue(elContext);
+            theme = context.getApplication().evaluateExpressionGet(context, themeParamValue, String.class);
         }
         else {
             theme = "saga-blue";     //default
