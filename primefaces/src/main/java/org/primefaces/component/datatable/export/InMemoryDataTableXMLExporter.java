@@ -31,28 +31,21 @@ import org.primefaces.util.EscapeUtils;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
-public class DataTableXMLExporter extends DataTableExporter<PrintWriter, ExporterOptions> {
+public class InMemoryDataTableXMLExporter extends DataTableExporter<StringBuilder, ExporterOptions> {
 
-    public DataTableXMLExporter() {
+    public InMemoryDataTableXMLExporter() {
         super(null, Collections.emptySet(), false);
     }
 
     @Override
-    protected PrintWriter createDocument(FacesContext context) throws IOException {
-        try {
-            OutputStreamWriter osw = new OutputStreamWriter(os(), exportConfiguration.getEncodingType());
-            return new PrintWriter(osw);
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new FacesException(e);
-        }
+    protected StringBuilder createDocument(FacesContext context) throws IOException {
+        return new StringBuilder();
     }
 
     @Override
@@ -87,7 +80,14 @@ public class DataTableXMLExporter extends DataTableExporter<PrintWriter, Exporte
         super.postExport(context);
 
         if (document != null) {
-            document.flush();
+            try {
+                OutputStreamWriter osw = new OutputStreamWriter(os(), exportConfiguration.getEncodingType());
+                osw.write(document.toString());
+                osw.flush();
+            }
+            catch (UnsupportedEncodingException e) {
+                throw new FacesException(e);
+            }
         }
     }
 
