@@ -14,4 +14,7 @@ ENV CATALINA_OPTS="-Xms512m -Xmx1024m"
 
 EXPOSE 8080
 
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:8080/jakarta.faces.resource/components.css.xhtml?ln=primefaces || exit 1
+
 CMD ["catalina.sh", "run"]
