@@ -1,7 +1,7 @@
-FROM tomee:10.1.2-ubuntu-plus
+FROM tomee:10.1.2-jre21-alpine-webprofile
 
 # Install unzip if not already available
-RUN apt-get update && apt-get install -y unzip && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache unzip
 
 # Ensure webapps directory is clean and create the ROOT directory
 RUN rm -rf /usr/local/tomee/webapps/* && mkdir -p /usr/local/tomee/webapps/ROOT
