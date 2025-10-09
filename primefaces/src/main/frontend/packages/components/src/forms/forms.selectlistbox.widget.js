@@ -224,13 +224,13 @@ PrimeFaces.widget.SelectListbox = class SelectListbox extends PrimeFaces.widget.
                 filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), lowercase, normalize);
 
         if(filterValue === '') {
-            this.items.filter(':hidden').show();
+            this.allItems.filter(':hidden').show();
         }
         else {
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
                 itemLabel = PrimeFaces.toSearchable(option.text(), lowercase, normalize),
-                item = this.items.eq(i);
+                item = this.allItems.eq(i);
 
                 if(this.filterMatcher(itemLabel, filterValue))
                     item.show();
