@@ -88,10 +88,6 @@
         <param-name>com.sun.faces.numberOfViewsInSession</param-name>
         <param-value>5</param-value>
     </context-param>
-    <context-param>
-        <param-name>com.sun.faces.serializeServerState</param-name>
-        <param-value>false</param-value>
-    </context-param>
 
     <context-param>
         <param-name>org.apache.myfaces.NUMBER_OF_VIEWS_IN_SESSION</param-name>
