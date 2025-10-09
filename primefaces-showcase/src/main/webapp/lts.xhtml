@@ -209,7 +209,7 @@
             <div class="card mb-5">
                 <div class="text-2xl text-900 font-semibold mb-3">Usage</div>
                 <p class="m-0 line-height-3 mb-5 text-secondary text-lg text-800">
-                    LTS versions are distributed to <a href="https://repository.primefaces.org/org/primefaces/primefaces/" class="text-primary font-medium hover:underline">PrimeFaces Repository</a> and require a license key along with a pass key to be verified at your web.xml. The keys would be available at
+                    LTS versions are distributed to <a href="https://central.sonatype.com/artifact/org.primefaces/primefaces/" class="text-primary font-medium hover:underline">Maven Central Repository</a> and require a license key along with a pass key to be verified at your web.xml. The keys would be available at
                     <a href="https://www.primefaces.org/store/lts.xhtml" class="text-primary font-medium hover:underline">PrimeStore</a> under LTS Licenses section.
                 </p>
                 <span class="text-900 font-semibold">web.xml</span>
@@ -228,15 +228,6 @@
 
                 <span class="text-900 font-semibold">pom.xml</span>
 <pre><code class="language-xml">
-&lt;repositories&gt;
-    &lt;repository&gt;
-        &lt;id&gt;prime-repo&lt;/id&gt;
-        &lt;name&gt;PrimeFaces Maven Repository&lt;/name&gt;
-        &lt;url&gt;https://repository.primefaces.org&lt;/url&gt;
-        &lt;layout&gt;default&lt;/layout&gt;
-    &lt;/repository&gt;
-&lt;/repositories&gt;
-
 &lt;dependency&gt;
     &lt;groupId&gt;org.primefaces&lt;/groupId&gt;
     &lt;artifactId&gt;primefaces&lt;/artifactId&gt;
