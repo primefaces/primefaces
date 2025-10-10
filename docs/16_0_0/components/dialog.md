@@ -190,7 +190,7 @@ If you’d like to add custom actions to a dialog titlebar, use actions facet wi
 <p:dialog>
     <f:facet name="actions">
         <h:commandLink styleClass=""ui-dialog-titlebar-icon"">
-            <h:outputText styleClass="ui-icon pi pi-question" />
+            <i class="ui-icon pi pi-question"></i>
         </h:commandLink>
     </f:facet>
     //content
