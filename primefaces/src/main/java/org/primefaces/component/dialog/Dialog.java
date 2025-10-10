@@ -62,6 +62,7 @@ public class Dialog extends DialogBase {
     public static final String MAXIMIZE_ICON_CLASS = "ui-icon ui-icon-extlink";
     public static final String CONTENT_CLASS = "ui-dialog-content ui-widget-content";
     public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-content";
+    public static final String DIALOG_ACTIONS_CLASS = "ui-dialog-actions";
 
     private static final String DEFAULT_EVENT = "close";
 
