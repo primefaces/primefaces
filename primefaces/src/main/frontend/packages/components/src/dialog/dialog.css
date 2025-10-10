@@ -56,3 +56,15 @@
 .ui-message-dialog .ui-dialog-content {
     padding: 1em;
 }
+
+.ui-dialog .ui-dialog-actions {
+    float: right;
+}
+
+.ui-dialog .ui-dialog-actions .ui-dialog-titlebar-icon {
+    display: inline-block;
+}
+
+.ui-dialog .ui-dialog-actions .ui-state-loading .ui-icon:not(.ui-icon-loading) {
+    display: initial;
+}
