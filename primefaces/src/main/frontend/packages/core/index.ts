@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
-import { globalAjaxSetup } from "./src/core/core.ajax.js";
 import { PF as _PF, core, type Core } from "./src/core/core.js";
+import { globalAjaxSetup } from "./src/core/core.ajax.js";
 import { globalUtilsSetup } from "./src/core/core.utils.js";
 
 import type { AjaxExceptionHandler } from "./src/ajaxexceptionhandler/ajaxexceptionhandler.js";
