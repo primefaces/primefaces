@@ -563,11 +563,13 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             e.preventDefault();
         });
 
+        this.maximizeIcon.attr('aria-label', this.getAriaLabel('maximizeLabel'));
         this.maximizeIcon.on("click", function(e) {
             $this.toggleMaximize();
             e.preventDefault();
         });
 
+        this.minimizeIcon.attr('aria-label', this.getAriaLabel('minimizeLabel'));
         this.minimizeIcon.on("click", function(e) {
             $this.toggleMinimize();
             e.preventDefault();
