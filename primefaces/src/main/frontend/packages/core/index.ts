@@ -10,11 +10,11 @@ import type { BaseWidget, DeferredWidget, DynamicOverlayWidget } from "./src/cor
 import type { Poll } from "./src/poll/poll.js";
 
 import { registerKillSwitchHookForPoll } from "./src/poll/poll.js";
-import { registerCommonValidators } from "./src/validation/validation.validators.js";
-import { registerBeanValidationMessages, registerBeanValidationValidators } from "./src/validation/validation.bv.js";
-import { registerCommonValidationMessages } from "./src/validation/validation.common.js";
 import { registerCommonConverters } from "./src/validation/validation.converters.js";
+import { registerCommonValidationMessages } from "./src/validation/validation.common.js";
+import { registerCommonValidators } from "./src/validation/validation.validators.js";
 import { registerCommonHighlighters } from "./src/validation/validation.highlighters.js";
+import { registerBeanValidationMessages, registerBeanValidationValidators } from "./src/validation/validation.bv.js";
 
 exposeToGlobalScope();
 
