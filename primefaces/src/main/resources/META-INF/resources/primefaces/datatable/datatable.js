@@ -1314,6 +1314,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.selectRowWithCheckbox(checkbox, e);
                 else
                     $this.unselectRowWithCheckbox(checkbox, e);
+
+                e.preventDefault();
+                e.stopPropagation();
             });
         }
         else {
@@ -1360,6 +1363,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     else {
                         $this.selectRowWithCheckbox(checkbox, e);
                     }
+                    e.preventDefault();
+                    e.stopPropagation();
                 },
                 'keydown.dataTable': function(e) {
                     if ($this.cfg.selectionRowMode === 'none' && PrimeFaces.utils.isActionKey(e)) {
