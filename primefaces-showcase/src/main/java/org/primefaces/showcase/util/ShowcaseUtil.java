@@ -82,6 +82,12 @@ public class ShowcaseUtil {
     // EXCLUDE-SOURCE-START
     private static FileContent getFileContent(String fullPath, Boolean readBeans) {
         try {
+            // in case we get a request with .jsf, we should remap it to .xhtml
+            // later we could remove .jsf mapping propably
+            if (fullPath.endsWith(".jsf")) {
+                fullPath = fullPath.substring(0, fullPath.length() - ".jsf".length()) + ".xhtml";
+            }
+
             // Finding in WEB ...
             FacesContext fc = FacesContext.getCurrentInstance();
             InputStream is = fc.getExternalContext().getResourceAsStream(fullPath);
