@@ -15,7 +15,7 @@ such as excel, pdf, csv and xml.
 
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
-type | null | String | Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "xml".
+type | null | String | Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "csvmemory", "xml", "xmlmemory".
 target | null | String | Search expression to resolve one or multiple target components.
 fileName | null | String | Filename of the generated export file, defaults to target component id.
 pageOnly | false | Boolean | Exports only current page instead of whole dataset.
@@ -243,6 +243,23 @@ public void preProcessPDF(Object document) throws IOException, BadElementExcepti
     String logo = servletContext.getRealPath("") + File.separator + "images" +
     File.separator + "prime_logo.png";
     pdf.add(Image.getInstance(logo));
+}
+```
+#### Escape Formulas in a CSV
+
+This example escapes formulas in a CSV, please note this requires the `type` of `csvmemory`.
+
+```xhtml
+<h:commandButton value="Export as CSV">
+    <p:dataExporter type="csvmemory" target="tableId" fileName="cars" postProcessor="#{bean.postProcessCSV}"/>
+</h:commandButton>
+```
+```java
+public void postProcessCSV(Object document) {
+    StringBuilder csv = (StringBuilder) document;
+    String content = csv.toString();
+    String newContent = content.replace("\"=", "\"'=");
+    csv.replace(0, csv.length(), newContent);
 }
 ```
 ## Customization
