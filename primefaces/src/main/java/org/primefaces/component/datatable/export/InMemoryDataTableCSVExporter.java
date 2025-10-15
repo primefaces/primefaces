@@ -39,6 +39,14 @@ import java.util.EnumSet;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
+/**
+ * InMemoryDataTableCSVExporter exists to support post-processors adjusting text inside the document.
+ * The existing DataTableCSVExporter uses a PrintWriter as the backing document, which is stream-based,
+ * making it resistant to editing the text of the document after it has been written.
+ * InMemoryDataTableCSVExporter uses a StringBuilder as the backing document,
+ * allowing a post-processor to make any necessary changes to the entire document without restriction.
+ * Though be aware there may be a higher memory requirement.
+ */
 public class InMemoryDataTableCSVExporter extends DataTableExporter<StringBuilder, CSVOptions> {
 
     public InMemoryDataTableCSVExporter() {

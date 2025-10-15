@@ -37,6 +37,14 @@ import java.util.Collections;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
+/**
+ * InMemoryDataTableXMLExporter exists to support post-processors adjusting text inside the document.
+ * The existing DataTableXMLExporter uses a PrintWriter as the backing document, which is stream-based,
+ * making it resistant to editing the text of the document after it has been written.
+ * InMemoryDataTableXMLExporter uses a StringBuilder as the backing document,
+ * allowing a post-processor to make any necessary changes to the entire document without restriction.
+ * Though be aware there may be a higher memory requirement.
+ */
 public class InMemoryDataTableXMLExporter extends DataTableExporter<StringBuilder, ExporterOptions> {
 
     public InMemoryDataTableXMLExporter() {
