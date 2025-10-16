@@ -136,6 +136,10 @@ public class PrimeConfiguration {
         }
 
         value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.CSP));
+        if (value != null) {
+            value = context.getApplication().evaluateExpressionGet(context, value, String.class);
+            value = value == null ? "" : value;
+        }
         switch (value) {
             case "true":
                 csp = Boolean.TRUE;
