@@ -174,7 +174,6 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
             LOGGER.log(Level.SEVERE, "Error in streaming barcode resource. {0}", new Object[]{e.getMessage()});
         }
         finally {
-            externalContext.responseFlushBuffer();
             context.responseComplete();
         }
     }
