@@ -27,6 +27,24 @@ Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/prime
 ```bash
 wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/14.0.0/primefaces-cli-14.0.0.jar
 ```
+## PrimeFlex → Tailwind migration
+
+This tool replaces PrimeFlex - CSS - classes in your HTML, XHTML, ... - files with Tailwind - CSS - classes.
+
+### Start CLI and show help
+
+```shell
+java -cp "pfcli.jar" org.primefaces.cli.migration.tailwind.PrimeFlexMigration --help
+```
+
+### Migrate all XHTML and HTML - files in one directory (including subdirectories)
+
+```shell
+java -cp "pfcli.jar" org.primefaces.cli.migration.tailwind.PrimeFlexMigration c:\projects\myapp -e="html,xhtml"
+```
+
+You manually have to remove PrimeFlex - CSS - file from your project and add Tailwind - CSS - file.
+
 
 ## PrimeFlex 2 → PrimeFlex 3 migration
 
