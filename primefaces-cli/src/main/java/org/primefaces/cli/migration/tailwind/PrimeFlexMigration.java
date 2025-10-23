@@ -75,6 +75,11 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         put("grid", "grid grid-cols-12 gap-4");
         put("grid-nogutter", "");
 
+        // Legacy/form utilities - moved from regex to dictionary
+        put("field", "mb-4");
+        put("formgrid", "grid grid-cols-12 gap-4");
+        put("ui-fluid", "w-full");
+
         // Grid Columns (1-12)
         for (int i = 1; i <= 12; i++) {
             put("col-" + i, "col-span-" + i);
@@ -409,11 +414,6 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
      * These handle cases where the dictionary can't cover all variations.
      */
     private void initDynamicPatterns() {
-        // Legacy patterns not in dictionary
-        replaceRegex.put("\\b(ui-fluid)\\b", "w-full");
-        replaceRegex.put("\\b(formgrid)\\b", "grid grid-cols-12 gap-4");
-        replaceRegex.put("\\b(field)\\b", "flex flex-col mb-4");
-
         // Optional p- prefix handling (for backward compatibility)
         replaceRegex.put("\\b(p-)?grid\\b", "grid");
         replaceRegex.put("\\b(p-)?col-fixed\\b", "col-auto");
@@ -505,19 +505,20 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         replaceRegex.put("\\b(p-)?overflow-visible\\b", "overflow-visible");
     }
 
-    protected String migrateContent(String content) {
-        if (content == null || content.isEmpty()) {
-            return content;
+    @Override
+    public String migrateSource(String source) {
+        if (source == null || source.isEmpty()) {
+            return source;
         }
 
         // Only process class and styleClass attributes - order matters for proper replacement
         // Process double quotes first, then single quotes
-        content = replaceClassAttributes(content, "class", "\"");
-        content = replaceClassAttributes(content, "class", "'");
-        content = replaceClassAttributes(content, "styleClass", "\"");
-        content = replaceClassAttributes(content, "styleClass", "'");
+        source = replaceClassAttributes(source, "class", "\"");
+        source = replaceClassAttributes(source, "class", "'");
+        source = replaceClassAttributes(source, "styleClass", "\"");
+        source = replaceClassAttributes(source, "styleClass", "'");
 
-        return content;
+        return source;
     }
 
     private String replaceClassAttributes(String content, String attributeName, String quoteChar) {
