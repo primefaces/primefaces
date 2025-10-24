@@ -164,7 +164,8 @@ PrimeFaces.widget.TextEditor = class TextEditor extends PrimeFaces.widget.Deferr
                 return;
             }
 
-            $this.editor.blur(); // Triggers selection-change event above
+            // Triggers selection-change event above
+            PrimeFaces.queueTask(() => $this.editor.blur(), 200);
         });
     }
 
