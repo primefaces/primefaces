@@ -36,6 +36,12 @@ PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
         this.itemContainer = this.jq.children('ul');
         this.inputContainer = this.itemContainer.children('.ui-chips-input-token');
         this.hasFloatLabel = PrimeFaces.utils.hasFloatLabel(this.jq);
+        
+        // Ensure separator is only 1 character
+        this.cfg.separator = this.cfg.separator !== undefined ? this.cfg.separator : ',';
+        if (typeof this.cfg.separator === "string" && this.cfg.separator.length > 1) {
+            this.cfg.separator = this.cfg.separator.charAt(0);
+        }
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -105,6 +111,15 @@ PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
                     $this.updateFloatLabel();
                     if ($this.cfg.max && $this.cfg.max === $this.hinput.children('option').length) {
                         e.preventDefault();
+                        break;
+                    }
+
+                    // Check if the pressed key matches the separator character
+                    if (e.key === $this.cfg.separator) {
+                        $this.addItem(value, true);
+                        e.preventDefault();
+                        e.stopPropagation();
+                        break;
                     }
                     break;
             }
@@ -137,8 +152,7 @@ PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
             return;
         }
 
-        var separator = this.cfg.separator !== undefined ? this.cfg.separator : ',';
-        var tokens = value.split(separator);
+        var tokens = value.split(this.cfg.separator);
         for (var i = 0; i < tokens.length; i++) {
             var token = tokens[i];
             if (token && token.trim().length && (!this.cfg.max || this.cfg.max > this.hinput.children('option').length)) {
