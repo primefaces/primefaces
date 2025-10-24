@@ -78,7 +78,6 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         // Legacy/form utilities - moved from regex to dictionary
         put("field", "mb-4");
         put("formgrid", "grid grid-cols-12 gap-4");
-        put("ui-fluid", "w-full");
 
         // Grid Columns (1-12)
         for (int i = 1; i <= 12; i++) {
