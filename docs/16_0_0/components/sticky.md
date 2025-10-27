@@ -23,8 +23,9 @@ viewport during scrolling.
 id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-target | null | String | Component to make sticky.
 margin | 0 | Integer | Margin to the top of the page during fixed scrolling.
+stickyTopAt | null | String | Selector for elements fixed at the top of the page whose height should be considered when positioning the sticky element.
+target | null | String | Component to make sticky.
 
 ## Getting started with Sticky
 Sticky requires a target to keep in viewport on scroll. Here is a sticky toolbar;
