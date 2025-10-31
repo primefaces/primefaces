@@ -36,23 +36,25 @@ public abstract class GMapBase extends UIComponentBase implements Widget, Client
     public static final String DEFAULT_RENDERER = "org.primefaces.component.GMapRenderer";
 
     public enum PropertyKeys {
-
-        widgetVar,
+        apiKey,
+        apiVersion,
+        center,
+        disableDefaultUI,
+        disableDoubleClickZoom,
+        draggable,
+        fitBounds,
+        libraries,
+        mapTypeControl,
         model,
+        navigationControl,
+        onPointClick,
+        scrollWheel,
+        streetView,
         style,
         styleClass,
         type,
-        center,
-        zoom,
-        streetView,
-        disableDefaultUI,
-        navigationControl,
-        mapTypeControl,
-        draggable,
-        disableDoubleClickZoom,
-        onPointClick,
-        fitBounds,
-        scrollWheel
+        widgetVar,
+        zoom
     }
 
     public GMapBase() {
@@ -190,5 +192,29 @@ public abstract class GMapBase extends UIComponentBase implements Widget, Client
 
     public void setScrollWheel(boolean scrollWheel) {
         getStateHelper().put(PropertyKeys.scrollWheel, scrollWheel);
+    }
+
+    public String getApiKey() {
+        return (String) getStateHelper().eval(PropertyKeys.apiKey, null);
+    }
+
+    public void setApiKey(String apiKey) {
+        getStateHelper().put(PropertyKeys.apiKey, apiKey);
+    }
+
+    public String getApiVersion() {
+        return (String) getStateHelper().eval(PropertyKeys.apiVersion, "weekly");
+    }
+
+    public void setApiVersion(String apiVersion) {
+        getStateHelper().put(PropertyKeys.apiVersion, apiVersion);
+    }
+
+    public String getLibraries() {
+        return (String) getStateHelper().eval(PropertyKeys.libraries, null);
+    }
+
+    public void setLibraries(String libraries) {
+        getStateHelper().put(PropertyKeys.libraries, libraries);
     }
 }

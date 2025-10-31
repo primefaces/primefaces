@@ -11608,6 +11608,30 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Google Maps API key. Required for asynchronous loading if Google Maps is not already loaded via script tag.]]>
+            </description>
+            <name>apiKey</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>    
+        <attribute>
+            <description>
+                <![CDATA[Google Maps API version. Valid values: 'weekly', 'beta', 'alpha', or a specific version number.]]>
+            </description>
+            <name>apiVersion</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Comma-separated list of additional Google Maps libraries to load (e.g., 'places,geometry').]]>
+            </description>
+            <name>libraries</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[An org.primefaces.model.MapModel instance.]]>
             </description>
             <name>model</name>
