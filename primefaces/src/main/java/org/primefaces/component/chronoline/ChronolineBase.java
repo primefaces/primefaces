@@ -29,7 +29,7 @@ public abstract class ChronolineBase extends PrimeUIData {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.Chronoline";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.ChronolineRenderer";
 
     public enum PropertyKeys {
         align,
