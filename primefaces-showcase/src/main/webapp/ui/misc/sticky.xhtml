@@ -14,20 +14,6 @@
         Scroll down to see the sticky toolbar.
     </ui:define>
 
-    <ui:define name="head">
-        <style>
-            .ui-sticky {
-                top: 70px !important;
-            }
-
-            @media (max-width: 960px) {
-                .ui-sticky {
-                    top: 110px !important;
-                }
-            }
-        </style>
-    </ui:define>
-
     <ui:param name="documentationLink" value="/components/sticky"/>
     <ui:param name="widgetLink" value="Sticky-1"/>
 
@@ -47,7 +33,7 @@
 
             <div style="height:800px"></div>
 
-            <p:sticky target="tb"/>
+            <p:sticky target="tb" stickyTopAt=".layout-topbar"/>
         </div>
     </ui:define>
 

@@ -10,5 +10,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
 
 * Spinner
     * Added `dir="rtl"` right to left support.
+* Sticky
+    * Added `stickyTopAt` attribute for elements fixed at the top of the page whose height should be considered when positioning the sticky element.
 * TreeTable
   * Added `resizeMode` attribute to support column resizing using the "expand" mode.
