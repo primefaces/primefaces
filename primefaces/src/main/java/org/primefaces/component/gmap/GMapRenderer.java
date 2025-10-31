@@ -86,7 +86,10 @@ public class GMapRenderer extends CoreRenderer<GMap> {
         wb.init("GMap", component)
                 .nativeAttr("mapTypeId", "google.maps.MapTypeId." + component.getType().toUpperCase())
                 .nativeAttr("center", "new google.maps.LatLng(" + component.getCenter() + ")")
-                .attr("zoom", component.getZoom());
+                .attr("zoom", component.getZoom())
+                .attr("apiKey", component.getApiKey())
+                .attr("apiVersion", component.getApiVersion())
+                .attr("libraries", component.getLibraries());
 
 
         if (!component.isFitBounds()) {
