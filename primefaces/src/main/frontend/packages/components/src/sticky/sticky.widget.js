@@ -43,7 +43,7 @@ PrimeFaces.widget.Sticky = class Sticky extends PrimeFaces.widget.BaseWidget {
             height: this.target.height()
         };
 
-        this.calculateDynamicOffset();
+        this.calculateDynamicMargin();
 
         this.bindEvents();
     }
