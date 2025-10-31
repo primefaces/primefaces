@@ -161,8 +161,13 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
                 return;
             }
 
+            // MS Edge spell check completion event
+            if (!e.relatedTarget && e.target === $this.editor.root) {
+                return;
+            }
+
             // Triggers selection-change event above
-            PrimeFaces.queueTask(() => $this.editor.blur(), 200);
+            $this.editor.blur();
         });
     },
 
