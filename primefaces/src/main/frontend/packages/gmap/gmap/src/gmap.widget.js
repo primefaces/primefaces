@@ -185,6 +185,14 @@ PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
             return;
         }
 
+        if (this.cfg.mapTypeId) {
+            this.cfg.mapTypeId = google.maps.MapTypeId[this.cfg.mapTypeId];
+        }
+
+        if (this.cfg.center) {
+            var center = this.cfg.center.split(',');
+            this.cfg.center = new google.maps.LatLng(center[0], center[1]);
+        }
         this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
         this.cfg.fitBounds = this.cfg.fitBounds !== false;
         this.viewport = this.map.getBounds();
