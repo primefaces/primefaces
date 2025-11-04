@@ -382,6 +382,9 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     show(duration?: number | string): void {
         if(this.isVisible()) {
+			if(this.minimized) {
+				this.toggleMinimize();
+			}
             return;
         }
 
@@ -480,6 +483,10 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         if (!this.isVisible()) {
             return;
         }
+
+		if(this.minimized) {
+			this.toggleMinimize();
+		}
 
         this.lastOffset = [ this.box.css('top'), this.box.css('left') ];
 
