@@ -149,8 +149,10 @@ public class Panel extends PanelBase {
         ELContext elContext = context.getELContext();
         ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
                 getValueExpression(PropertyKeys.collapsed.toString()), true);
-        if (expr != null && !expr.isReadOnly(elContext)) {
-            expr.setValue(elContext, isCollapsed());
+        if (expr != null) {
+            if (!expr.isReadOnly(elContext)) {
+                expr.setValue(elContext, isCollapsed());
+            }
             getStateHelper().remove(PropertyKeys.collapsed);
         }
     }
