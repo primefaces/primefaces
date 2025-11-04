@@ -240,6 +240,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     show: function(duration) {
         if(this.isVisible()) {
+			if(this.minimized) {
+				this.toggleMinimize();
+			}
             return;
         }
         
@@ -344,6 +347,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(!this.isVisible()) {
             return;
         }
+		
+		if(this.minimized) {
+			this.toggleMinimize();
+		}
 
         var animated = this.cfg.hideEffect;
         if(animated) {
