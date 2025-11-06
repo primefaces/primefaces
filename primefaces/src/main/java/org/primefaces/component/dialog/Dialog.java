@@ -161,8 +161,10 @@ public class Dialog extends DialogBase {
             ELContext elContext = context.getELContext();
             ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
                     getValueExpression(PropertyKeys.visible.toString()), true);
-            if (expr != null && !expr.isReadOnly(elContext)) {
-                expr.setValue(elContext, isVisible());
+            if (expr != null) {
+                if (!expr.isReadOnly(elContext)) {
+                    expr.setValue(elContext, isVisible());
+                }
                 getStateHelper().remove(PropertyKeys.visible);
             }
         }
