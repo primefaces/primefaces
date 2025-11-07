@@ -21,6 +21,7 @@
 }
 
 .pi:before {
+    display: inline-block;
     --webkit-backface-visibility:hidden;
     backface-visibility: hidden;
 }
@@ -37,16 +38,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .pi-spin {
-    -webkit-animation-delay: -1ms;
-    animation-delay: -1ms;
-    -webkit-animation-duration: 1ms;
-    animation-duration: 1ms;
-    -webkit-animation-iteration-count: 1;
-    animation-iteration-count: 1;
-    -webkit-transition-delay: 0s;
-    transition-delay: 0s;
-    -webkit-transition-duration: 0s;
-    transition-duration: 0s;
+    -webkit-animation: fa-spin 5s infinite linear;
+    animation: fa-spin 5s infinite linear;
   }
 }
 
