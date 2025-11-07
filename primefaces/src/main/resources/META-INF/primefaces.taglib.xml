@@ -24462,7 +24462,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables or enables the component.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -24470,7 +24470,15 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Layout of the selectOneButton, valid values are 'custom' or 'default'.]]>
+            </description>
+            <name>layout</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Label of the button.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -24478,7 +24486,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Javascript to execute when the value of the button changes.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -24486,7 +24494,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the button element.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -24494,7 +24502,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the button element.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
