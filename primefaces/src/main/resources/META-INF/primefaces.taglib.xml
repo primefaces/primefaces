@@ -9686,30 +9686,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>jakarta.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Value of the component.]]>
             </description>
             <name>value</name>
@@ -25075,14 +25051,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
-            </description>
-            <name>ariaDescribedBy</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
             </description>
             <name>hideNoSelectionOption</name>
@@ -25925,14 +25893,6 @@
         <attribute>
             <description>
                 <![CDATA[Position of the element in the tabbing order. Default to "0".]]>
-            </description>
-            <name>tabindex</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Position of the element in the tabbing order.]]>
             </description>
             <name>tabindex</name>
             <required>false</required>
@@ -32345,14 +32305,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.]]>
-            </description>
-            <name>locale</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Position of the button in the tabbing order.]]>
             </description>
             <name>buttonTabindex</name>
@@ -32496,14 +32448,6 @@
             <name>hourFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Whether to display timepicker only. Default is false.]]>
-            </description>
-            <name>timeOnly</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -32800,22 +32744,6 @@
             <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Display the current calendar week infront of each row in the calendar panel.]]>
-            </description>
-            <name>showWeek</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[A javascript method that is used to calculate the calendar week. Default implementations are available if start of week is monday, sunday or saturday.]]>
-            </description>
-            <name>weekCalculator</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
