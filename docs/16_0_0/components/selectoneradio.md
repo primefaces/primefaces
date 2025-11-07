@@ -115,6 +115,17 @@ index of the selectItem.
 For the better accessibility support, you might want to wrap each custom radio button in an element
 with a `role="radio"` attribute.
 
+## Ajax Behavior Events
+
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `change`  
+**Available Events:** `change`  
+
+```xhtml
+<p:ajax event="change" listener="#{bean.handlechange}" update="msgs" />
+```
+
 ## Client Side API
 Widget: _PrimeFaces.widget.SelectOneRadio_
 
