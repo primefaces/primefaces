@@ -81,6 +81,16 @@ public class Chips extends ChipsBase {
     }
 
     @Override
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().get("ariaDescribedBy");
+    }
+
+    @Override
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
+    }
+
+    @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
     }

@@ -24,6 +24,7 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 accesskey | null | String | Access key that when pressed transfers focus to the input element.
 alt | null | String | Alternate textual description of the input field.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 autoClear | true | Boolean | Clears the field on blur when incomplete input is entered.
 autocomplete | null | String | Controls browser autocomplete behavior.
 converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id

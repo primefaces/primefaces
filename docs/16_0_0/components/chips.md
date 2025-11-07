@@ -20,6 +20,7 @@ Chips is used to enter multiple values on an inputfield.
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
+| ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 | converterMessage | null | String | Message to be displayed when conversion fails.

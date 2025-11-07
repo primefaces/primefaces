@@ -38,6 +38,7 @@ public abstract class AbstractPrimeHtmlInputTextArea extends HtmlInputTextarea {
 
     // new HTML5 events
     public enum PropertyKeys {
+        ariaDescribedBy,
         inputmode,
         oncut,
         oncopy,
@@ -103,6 +104,14 @@ public abstract class AbstractPrimeHtmlInputTextArea extends HtmlInputTextarea {
 
     public void setInputmode(String inputmode) {
         getStateHelper().put(PropertyKeys.inputmode, inputmode);
+    }
+
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaDescribedBy, null);
+    }
+
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put(PropertyKeys.ariaDescribedBy, ariaDescribedBy);
     }
 
     public String getOncut() {

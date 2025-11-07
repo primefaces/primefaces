@@ -35,6 +35,7 @@ validatorMessage | null | String | Message to be displayed when validation field
 widgetVar | null | String | Name of the client side widget.
 accesskey | null | String | Access key that when pressed transfers focus to the input element.
 alt | null | String | Alternate textual description of the input field.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 autocomplete | null | String | Controls browser autocomplete behavior.
 dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 disabled | false | Boolean | Disables input field

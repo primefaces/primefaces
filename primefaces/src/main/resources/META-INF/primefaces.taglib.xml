@@ -3029,6 +3029,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Controls browser autocomplete behavior.]]>
             </description>
             <name>autocomplete</name>
@@ -4505,6 +4513,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Controls browser autocomplete behavior.]]>
             </description>
             <name>autocomplete</name>
@@ -5137,6 +5153,14 @@
                 <![CDATA[Alternate textual description of the input element.]]>
             </description>
             <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -13268,6 +13292,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Controls browser autocomplete behavior.]]>
             </description>
             <name>autocomplete</name>
@@ -13802,6 +13834,14 @@
                 <![CDATA[Alternate textual description of the input element.]]>
             </description>
             <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -14466,6 +14506,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Alternate textual description of the input element.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Controls browser autocomplete behavior.]]>
             </description>
             <name>autocomplete</name>
@@ -14977,6 +15025,14 @@
                 <![CDATA[Access key to transfer focus to the input element.]]>
             </description>
             <name>accesskey</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -15540,6 +15596,14 @@
                 <![CDATA[Alternate textual description of the input element.]]>
             </description>
             <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -20133,6 +20197,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Controls browser autocomplete behavior.]]>
             </description>
             <name>autocomplete</name>
@@ -23249,7 +23321,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Text to be used as the label for the component.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -23332,6 +23404,14 @@
                 <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
             </description>
             <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -23463,6 +23543,14 @@
                 <![CDATA[User presentable name of the component.]]>
             </description>
             <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -23820,9 +23908,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[User presentable name.]]>
             </description>
             <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+         <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -23994,6 +24090,14 @@
                 <![CDATA[ User presentable name.]]>
             </description>
             <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+         <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -24199,9 +24303,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[User presentable name.]]>
             </description>
             <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+         <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -24486,6 +24598,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Javascript to execute when the value of the button changes.]]>
             </description>
             <name>onchange</name>
@@ -24665,9 +24785,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[User presentable name.]]>
             </description>
             <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -24899,6 +25027,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Controls browser autocomplete behavior for editable input field.]]>
             </description>
             <name>autocomplete</name>
@@ -24934,6 +25070,14 @@
                 <![CDATA[User presentable name used in conjuction with 'alwaysDisplayLabel' to display instead of selected item.]]>
             </description>
             <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -25804,6 +25948,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Font size for typing in a signature. Default is 40.]]>
             </description>
             <name>fontSize</name>
@@ -26305,6 +26457,14 @@
                 <![CDATA[Alternate textual description of the input element.]]>
             </description>
             <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -27323,6 +27483,14 @@
                 <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
             </description>
             <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -29538,6 +29706,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Disables or enables the switch.]]>
             </description>
             <name>disabled</name>
@@ -31118,6 +31294,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute on state change.]]>
             </description>
             <name>onchange</name>
@@ -31708,6 +31892,14 @@
                 <![CDATA[Alternate textual description of the input element.]]>
             </description>
             <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -33985,6 +34177,14 @@
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

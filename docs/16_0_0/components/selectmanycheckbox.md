@@ -43,6 +43,7 @@ styleClass | null | String | Style class of the container.
 tabindex | null | String | Position of the component in the tabbing order.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 
 ## Getting started with SelectManyCheckbox
 SelectManyCheckbox usage is same as the standard one.

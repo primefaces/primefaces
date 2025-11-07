@@ -23,7 +23,10 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
+import org.primefaces.component.api.AbstractPrimeHtmlInputTextArea;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
@@ -143,8 +146,26 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
             InputHolder inputHolder = ((InputHolder) component);
             String labelledBy = inputHolder.getLabelledBy();
             if (LangUtils.isNotBlank(labelledBy)) {
-                writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
+                UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, labelledBy);
+                writer.writeAttribute(HTML.ARIA_LABELLEDBY, target.getClientId(context), null);
             }
+            String ariaDescribedBy = inputHolder.getAriaDescribedBy();
+            if (LangUtils.isNotBlank(ariaDescribedBy)) {
+                UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, ariaDescribedBy);
+                writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target.getClientId(context), null);
+            }
+        }
+
+        String ariaDescribedBy = null;
+        if (component instanceof AbstractPrimeHtmlInputText) {
+            ariaDescribedBy = ((AbstractPrimeHtmlInputText) component).getAriaDescribedBy();
+        }
+        else if (component instanceof AbstractPrimeHtmlInputTextArea) {
+            ariaDescribedBy = ((AbstractPrimeHtmlInputTextArea) component).getAriaDescribedBy();
+        }
+        if (LangUtils.isNotBlank(ariaDescribedBy)) {
+            UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, ariaDescribedBy);
+            writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target.getClientId(context), null);
         }
 
         if (disabled) {
