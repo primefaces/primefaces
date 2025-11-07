@@ -21,6 +21,7 @@ SelectCheckboxMenu is a multi select component that displays options in an overl
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.

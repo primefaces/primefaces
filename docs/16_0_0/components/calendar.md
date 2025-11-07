@@ -26,6 +26,7 @@ ajax selection and more.
 | value | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) | Value of the component
 | accesskey | null | String | Access key that when pressed transfers focus to the input element.
 | alt | null | String | Alternate textual description of the input field.
+| ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 | autocomplete | null | String | Controls browser autocomplete behavior.
 | beforeShow | null | String | Callback to execute before displaying calendar, element and calendar instance are passed as parameters
 | beforeShowDay | null | String | Client side callback to execute before displaying a date, used to customize date display.

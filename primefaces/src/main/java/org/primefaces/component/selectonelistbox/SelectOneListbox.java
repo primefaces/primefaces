@@ -97,6 +97,16 @@ public class SelectOneListbox extends SelectOneListboxBase {
     }
 
     @Override
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().get("ariaDescribedBy");
+    }
+
+    @Override
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
+    }
+
+    @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();

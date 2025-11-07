@@ -122,6 +122,16 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
         getStateHelper().put("labelledby", labelledBy);
     }
 
+    @Override
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().get("ariaDescribedBy");
+    }
+
+    @Override
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
+    }
+
     public List<Column> getColumns() {
         List<Column> columns = new ArrayList<>();
 
