@@ -188,6 +188,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
             String styleClass = createStyleClass(component, SelectOneButton.STYLE_CLASS);
             writer.startElement("span", component);
             writer.writeAttribute("id", component.getClientId(context), "id");
+            writer.writeAttribute(HTML.ARIA_ROLE, "radiogroup", null);
             if (style != null) {
                 writer.writeAttribute("style", style, "style");
             }

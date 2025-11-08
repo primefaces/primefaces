@@ -42,7 +42,7 @@ public class SelectOneButtonView {
 
     public void onChange(AjaxBehaviorEvent event) {
         Object value = ((SelectOneButton) event.getSource()).getValue();
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Method", value + " selected.");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Button", value + " selected.");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
