@@ -10,6 +10,12 @@ RUN rm -rf /usr/local/tomee/webapps/* && mkdir -p /usr/local/tomee/webapps/ROOT
 COPY target/primefaces-showcase-*.war /tmp/primefaces-showcase.war
 RUN unzip -q /tmp/primefaces-showcase.war -d /usr/local/tomee/webapps/ROOT && rm /tmp/primefaces-showcase.war
 
+RUN sed -i '/<Host name="localhost"/a \
+    <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" \
+           prefix="localhost_access_log" suffix=".txt" \
+           pattern="%h %l %u %t \"%r\" %s %b %D \"%{User-Agent}i\"" />' \
+    /usr/local/tomee/conf/server.xml
+
 ENV CATALINA_OPTS="-Xms512m -Xmx1024m"
 
 EXPOSE 8080
