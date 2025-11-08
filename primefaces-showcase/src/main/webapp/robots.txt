@@ -1,27 +1,2 @@
 User-agent: *
-Crawl-delay: 10
-
-# Block everything first
-Disallow: /
-
-# Allow root and root-level .xhtml files
-Allow: /$
-Allow: /*.xhtml$
-
-# But block specific paths
-Disallow: /ui/
-Disallow: /jakarta.faces.resource/
-Disallow: /resources/
-
-# Block aggressive bots
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: SemrushBot
-Disallow: /
-
-User-agent: DotBot
-Disallow: /
-
-User-agent: MJ12bot
 Disallow: /
