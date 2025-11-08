@@ -39,8 +39,10 @@ import jakarta.servlet.http.HttpServletResponse;
 public class BotBlockingFilter implements Filter {
 
     private static final Pattern BOT_PATTERN = Pattern.compile(
-            ".*(bot|crawler|spider|scrape|curl|wget|python|java\\/|apache|http|scan|" +
-                    "AhrefsBot|SemrushBot|DotBot|MJ12bot|BLEXBot|archive\\.org_bot).*",
+            ".*(bot|crawl|spider|scrapy|curl|wget|httpclient|python|java|ruby|go-http|okhttp|" +
+                    "node|axios|postman|Apache-HttpClient|libwww|pingdom|uptime|monitor|slurp|" +
+                    "AhrefsBot|SemrushBot|Baiduspider|MJ12bot|DotBot|BLEXBot|YandexBot|" +
+                    "PetalBot|archive\\.org_bot|facebookexternalhit|twitterbot|linkedinbot).*",
             Pattern.CASE_INSENSITIVE
     );
 
@@ -54,19 +56,29 @@ public class BotBlockingFilter implements Filter {
         String userAgent = httpRequest.getHeader("User-Agent");
         String requestUri = httpRequest.getRequestURI();
 
-        // Allow robots.txt
-        if (requestUri.endsWith("/robots.txt")) {
+        // Always allow robots.txt
+        if (requestUri != null && requestUri.endsWith("/robots.txt")) {
             chain.doFilter(request, response);
             return;
         }
 
-        // Block known bots
-        if (userAgent != null && BOT_PATTERN.matcher(userAgent).matches()) {
+        // Missing User-Agent (very common in malicious bots)
+        if (userAgent == null || userAgent.isBlank()) {
             httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            httpResponse.setHeader("X-Bot-Blocked", "true");
+            httpResponse.getWriter().write("Access denied: missing User-Agent");
+            return;
+        }
+
+        // Known bot signatures
+        if (BOT_PATTERN.matcher(userAgent).matches()) {
+            httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            httpResponse.setHeader("X-Bot-Blocked", "true");
             httpResponse.getWriter().write("Bot access denied");
             return;
         }
 
+        // Continue for normal traffic
         chain.doFilter(request, response);
     }
 }
