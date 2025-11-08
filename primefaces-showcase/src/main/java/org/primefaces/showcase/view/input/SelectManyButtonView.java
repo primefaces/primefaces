@@ -23,9 +23,14 @@
  */
 package org.primefaces.showcase.view.input;
 
+import org.primefaces.component.selectmanybutton.SelectManyButton;
+
 import java.util.List;
 
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Named;
 
 @Named
@@ -33,6 +38,15 @@ import jakarta.inject.Named;
 public class SelectManyButtonView {
 
     private List<String> selectedOptions;
+    private List<String> selectedColors;
+    private List<String> selectedDevices;
+
+    public void onChange(AjaxBehaviorEvent event) {
+        Object value = ((SelectManyButton) event.getSource()).getValue();
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected Devices",
+                value != null ? value.toString() : "None selected.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
     public List<String> getSelectedOptions() {
         return selectedOptions;
@@ -40,5 +54,21 @@ public class SelectManyButtonView {
 
     public void setSelectedOptions(List<String> selectedOptions) {
         this.selectedOptions = selectedOptions;
+    }
+
+    public List<String> getSelectedColors() {
+        return selectedColors;
+    }
+
+    public void setSelectedColors(List<String> selectedColors) {
+        this.selectedColors = selectedColors;
+    }
+
+    public List<String> getSelectedDevices() {
+        return selectedDevices;
+    }
+
+    public void setSelectedDevices(List<String> selectedDevices) {
+        this.selectedDevices = selectedDevices;
     }
 }

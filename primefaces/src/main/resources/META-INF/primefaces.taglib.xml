@@ -23890,7 +23890,15 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
-         <attribute>
+        <attribute>
+            <description>
+                <![CDATA[Layout of the buttons, valid values are custom or default.]]>
+            </description>
+            <name>layout</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
             <description>
                 <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
             </description>

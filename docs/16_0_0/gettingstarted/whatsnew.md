@@ -18,6 +18,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
    * Widget automatically detects if Google Maps is already loaded and supports both static and async loading methods.
 * SelectOneButton
     * Added new `layout="custom"` to allow complete control over rendering
+* SelectManyButton
+    * Added new `layout="custom"` to allow complete control over rendering
 * Spinner
     * Added `dir="rtl"` right to left support.
 * Sticky
