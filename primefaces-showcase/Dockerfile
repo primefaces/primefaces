@@ -15,7 +15,7 @@ RUN sed -i '/AccessLogValve/,+1d' /usr/local/tomee/conf/server.xml && \
     sed -i '/<\/Host>/i \
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" \
                prefix="localhost_access_log" suffix=".txt" \
-               pattern="%h %l %u %t &quot;%r&quot; %s %b %D &quot;%{User-Agent}i&quot;" />' \
+               pattern="%{X-Forwarded-For}i %h %l %u %t &quot;%r&quot; %s %b %D &quot;%{User-Agent}i&quot;" />' \
         /usr/local/tomee/conf/server.xml
 
 ENV CATALINA_OPTS="-Xms512m -Xmx1024m"
