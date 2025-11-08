@@ -71,12 +71,24 @@
                 border-color: #f7931a;
                 background: #fff8f0;
             }
+            .payment-button.creditcard {
+                border-color: #6c757d;
+            }
+            .payment-button.creditcard.ui-state-active {
+                border-color: #6c757d;
+                background: #f8f9fa;
+            }
             .payment-button.cash {
                 border-color: #28a745;
             }
             .payment-button.cash.ui-state-active {
                 border-color: #28a745;
                 background: #f0fff4;
+            }
+            .payment-button.ui-state-disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                pointer-events: none;
             }
             .payment-icon {
                 font-size: 2.5rem;
@@ -87,6 +99,9 @@
             }
             .payment-button.bitcoin .payment-icon {
                 color: #f7931a;
+            }
+            .payment-button.creditcard .payment-icon {
+                color: #6c757d;
             }
             .payment-button.cash .payment-icon {
                 color: #28a745;
@@ -126,7 +141,8 @@
                 </p:growl>
 
                 <h5 class="mt-0">Default</h5>
-                <p:selectOneButton value="#{selectOneButtonView.option}">
+                <p:selectOneButton value="#{selectOneButtonView.option}" unselectable="false">
+                    <p:ajax event="change" listener="#{selectOneButtonView.onChange}" />
                     <f:selectItem itemLabel="Option1" itemValue="Option1"/>
                     <f:selectItem itemLabel="Option2" itemValue="Option2"/>
                     <f:selectItem itemLabel="Option3" itemValue="Option3"/>
@@ -134,6 +150,7 @@
 
                 <h5>Unselectable</h5>
                 <p:selectOneButton value="#{selectOneButtonView.option2}" unselectable="true">
+                    <p:ajax event="change" listener="#{selectOneButtonView.onChange}" />
                     <f:selectItem itemLabel="Option1" itemValue="Option1"/>
                     <f:selectItem itemLabel="Option2" itemValue="Option2"/>
                     <f:selectItem itemLabel="Option3" itemValue="Option3"/>
@@ -141,6 +158,7 @@
 
                 <h5>Custom Layout (Facet)</h5>
                 <p:selectOneButton id="customButton" value="#{selectOneButtonView.color}">
+                    <p:ajax event="change" listener="#{selectOneButtonView.onChange}" />
                     <f:selectItem itemLabel="Red" itemValue="Red"/>
                     <f:selectItem itemLabel="Green" itemValue="Green"/>
                     <f:selectItem itemLabel="Blue" itemValue="Blue"/>
@@ -152,9 +170,11 @@
                         <div class="custom-button" role="radio" tabindex="0">
                             <span class="legend" style="background:green; display:inline-block; width:1rem; height:1rem; border-radius:0.25rem; vertical-align:middle; margin-right:0.5rem;"/> Green
                         </div>
-                        <div class="custom-button" role="radio" tabindex="0">
-                            <span class="legend" style="background:blue; display:inline-block; width:1rem; height:1rem; border-radius:0.25rem; vertical-align:middle; margin-right:0.5rem;"/> Blue
-                        </div>
+                        <p:badge icon="pi pi-bell" severity="info" iconPos="left">
+                            <div class="custom-button" role="radio" tabindex="0">
+                                <span class="legend" style="background:blue; display:inline-block; width:1rem; height:1rem; border-radius:0.25rem; vertical-align:middle; margin-right:0.5rem;"/> Blue
+                            </div>
+                        </p:badge>
                     </f:facet>
                 </p:selectOneButton>
 
@@ -165,6 +185,7 @@
 
                         <f:selectItem itemLabel="PayPal" itemValue="PayPal"/>
                         <f:selectItem itemLabel="Bitcoin" itemValue="Bitcoin"/>
+                        <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" itemDisabled="true"/>
                         <f:selectItem itemLabel="Cash" itemValue="Cash"/>
                     </p:selectOneButton>
 
@@ -178,6 +199,11 @@
                             <i class="pi pi-bitcoin payment-icon"></i>
                             <div class="payment-title">Bitcoin</div>
                             <div class="payment-tagline">Cryptocurrency payment</div>
+                        </div>
+                        <div class="payment-button creditcard ui-state-disabled" role="radio" tabindex="-1">
+                            <i class="pi pi-credit-card payment-icon"></i>
+                            <div class="payment-title">Credit Card</div>
+                            <div class="payment-tagline">Currently unavailable</div>
                         </div>
                         <div class="payment-button cash" role="radio" tabindex="0">
                             <i class="pi pi-money-bill payment-icon"></i>
