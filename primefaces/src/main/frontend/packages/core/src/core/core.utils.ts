@@ -361,9 +361,7 @@ export class Utils {
                 }
             }
 
-            if (core.hideOverlaysOnViewportChange === true) {
-                hideCallback(e, $eventTarget);
-            }
+            hideCallback(e, $eventTarget);
         });
 
         return {
