@@ -329,9 +329,7 @@ if (!PrimeFaces.utils) {
                     }
                 }
 
-                if (PrimeFaces.hideOverlaysOnViewportChange === true) {
-                    hideCallback(e, $eventTarget);
-                }
+                hideCallback(e, $eventTarget);
             });
 
             return {
