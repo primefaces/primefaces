@@ -1955,10 +1955,14 @@
                 yearNavigatorSelector = '.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year';
             this.panel.off('change.datePicker-monthNav', monthNavigatorSelector)
                 .on('change.datePicker-monthNav', monthNavigatorSelector, null, this.onMonthDropdownChange.bind($this));
-            this.panel.off('change.datePicker-yearnav keydown.datePicker-yearnav keyup.datePicker-yearnav', yearNavigatorSelector)
-                .on('change.datePicker-yearnav', yearNavigatorSelector, null, this.onYearInputChange.bind($this))
+            this.panel.off('change.datePicker-yearnav', yearNavigatorSelector)
+                .on('change.datePicker-yearnav', yearNavigatorSelector, null, this.onYearInputChange.bind($this));
+
+            if (this.isYearNavigatorInput()) {
+                this.panel.off('keydown.datePicker-yearnav keyup.datePicker-yearnav', yearNavigatorSelector)
                 .on('keydown.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyDown(event);})
                 .on('keyup.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyUp(event);});
+            }
 
             var monthViewMonthSelector = '.ui-monthpicker > .ui-monthpicker-month';
             this.panel.off('click.datePicker-monthViewMonth', monthViewMonthSelector).on('click.datePicker-monthViewMonth', monthViewMonthSelector, null, function(e) {
