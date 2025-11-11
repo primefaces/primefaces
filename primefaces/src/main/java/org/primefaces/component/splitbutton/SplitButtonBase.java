@@ -70,7 +70,8 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
         disableOnAjax,
         filterNormalize,
         filterInputAutoFocus,
-        ariaLabel
+        ariaLabel,
+        dynamic
     }
 
     public SplitButtonBase() {
@@ -352,5 +353,13 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     public void setAriaLabel(String ariaLabel) {
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    public boolean isDynamic() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+    }
+
+    public void setDynamic(boolean dynamic) {
+        getStateHelper().put(PropertyKeys.dynamic, dynamic);
     }
 }

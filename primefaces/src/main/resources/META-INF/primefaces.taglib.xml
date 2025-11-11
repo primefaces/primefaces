@@ -27462,6 +27462,15 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if dynamic loading is enabled for the element's panel.
+                If the value is "true", the overlay is not rendered on page load to improve performance. Default is false.]]>
+            </description>
+            <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

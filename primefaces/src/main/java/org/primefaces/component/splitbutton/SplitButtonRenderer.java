@@ -88,8 +88,14 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
             model.generateUniqueIds();
         }
 
-        encodeMarkup(context, component);
-        encodeScript(context, component);
+        if (component.isDynamic() && component.isDynamicLoadRequest(context)) {
+            String menuId = component.getClientId(context) + "_menu";
+            encodeMenu(context, component, menuId);
+        }
+        else {
+            encodeMarkup(context, component);
+            encodeScript(context, component);
+        }
     }
 
     protected void encodeMarkup(FacesContext context, SplitButton component) throws IOException {
@@ -114,7 +120,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         OverlayPanel customOverlay = component.getCustomOverlay();
         if (customOverlay != null || component.getElementsCount() > 0) {
             encodeMenuIcon(context, component, menuButtonId, menuId, hasOverlay);
-            if (hasOverlay) {
+            if (hasOverlay && !component.isDynamic()) {
                 encodeMenu(context, component, menuId);
             }
         }
@@ -233,6 +239,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
 
         wb.attr("disableOnAjax", component.isDisableOnAjax(), true)
             .attr("disabledAttr", component.isDisabled(), false)
+            .attr("dynamic", component.isDynamic(), false)
             .finish();
     }
 

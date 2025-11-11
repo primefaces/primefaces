@@ -174,4 +174,8 @@ public class SplitButton extends SplitButtonBase {
     public String getDefaultEventName() {
         return "click";
     }
+
+    public boolean isDynamicLoadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_dynamicload");
+    }
 }
