@@ -39,7 +39,8 @@ public abstract class ColumnTogglerBase extends UIComponentBase implements Widge
 
         widgetVar,
         trigger,
-        datasource;
+        datasource,
+        showSelectAll;
     }
 
     public ColumnTogglerBase() {
@@ -73,5 +74,13 @@ public abstract class ColumnTogglerBase extends UIComponentBase implements Widge
 
     public void setDatasource(String datasource) {
         getStateHelper().put(PropertyKeys.datasource, datasource);
+    }
+
+    public boolean isShowSelectAll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSelectAll, true);
+    }
+
+    public void setShowSelectAll(boolean showSelectAll) {
+        getStateHelper().put(PropertyKeys.showSelectAll, showSelectAll);
     }
 }
