@@ -220,11 +220,6 @@ public class PickListRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.LIST_WRAPPER_CLASS, null);
 
-        // only render required on target list
-        if (!isSource) {
-            renderARIARequired(context, pickList);
-        }
-
         if (filter) {
             encodeFilter(context, pickList, listId + "_filter", isSource);
         }
