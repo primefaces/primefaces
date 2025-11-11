@@ -23,6 +23,8 @@ ColumnToggler is a helper component for datatable to toggle visibility of column
 | widgetVar | null | String | Name of the client side widget.
 | trigger | null | String | A search expression resolving to a component to get attached to.
 | datasource | null | String | A search expression resolving to a DataTable component whose columns to be toggled.
+| showSelectAll | true | Boolean | Whether to show the select all checkbox. Defaults to true. |
+
 
 ## Getting Started with ColumnToggler
 See column toggler section in datatable documentation for detailed information.

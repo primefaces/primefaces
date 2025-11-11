@@ -8,6 +8,8 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../migrationguide/16_0_0) for more enhancements and changes.
 
+* ColumnToggler
+    * Added `showSelectAll` property to show/hide the select all checkbox
 * Input(s)
     * Any component based on these now has an `ariaDescribedBy` property
 * GMap

@@ -6535,6 +6535,14 @@
             <required>true</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to show the select all checkbox. Defaults to true.]]>
+            </description>
+            <name>showSelectAll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
