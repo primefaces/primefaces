@@ -20,6 +20,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
     * Added new `layout="custom"` to allow complete control over rendering
 * SelectManyButton
     * Added new `layout="custom"` to allow complete control over rendering
+* SplitButton
+    * Added new `dynamic="true"` to allow lazy loading of the menu elements
 * Spinner
     * Added `dir="rtl"` right to left support.
 * Sticky

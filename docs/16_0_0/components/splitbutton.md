@@ -38,6 +38,7 @@ SplitButton displays a command by default and additional ones in an overlay.
 | onerror | null | String | Client side callback to execute when ajax request fails.
 | global | true | Boolean | Defines whether to trigger ajaxStatus or not.
 | delay | null | String | If less than _delay_ milliseconds elapses between calls to _request()_ only the most recent one is sent and all other requests are discarded. If this option is not specified, or if the value of _delay_ is the literal string 'none' without the quotes, no delay is used.
+| dynamic | false | Boolean | Enables dynamic loading of menu items via AJAX when set to true. Default is false.
 | partialSubmit | false | Boolean | Enables serialization of values belonging to the partially processed components only.
 | partialSubmitFilter | null | String | Selector to use when partial submit is on, default is ":input" to select all descendant inputs of a partially processed components.
 | resetValues | false | Boolean | If true, local values of input components to be updated within the ajax request would be reset.
