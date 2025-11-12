@@ -126,7 +126,7 @@ public class Panel extends PanelBaseImpl {
 
         ELContext elContext = context.getELContext();
         ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
-                getValueExpression(PropertyKeys.collapsed.toString()), true);
+                getValueExpression(PropertyKeys.collapsed), true);
         if (expr != null) {
             if (!expr.isReadOnly(elContext)) {
                 expr.setValue(elContext, isCollapsed());

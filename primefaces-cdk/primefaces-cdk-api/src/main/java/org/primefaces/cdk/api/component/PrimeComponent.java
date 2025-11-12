@@ -30,6 +30,7 @@ import org.primefaces.cdk.api.facet.PrimeFacet;
 
 import java.util.List;
 
+import jakarta.el.ValueExpression;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.ClientBehaviorContext;
 import jakarta.faces.context.ExternalContext;
@@ -60,6 +61,12 @@ public interface PrimeComponent {
     }
 
     UIComponent getFacet(String name);
+
+    default ValueExpression getValueExpression(PrimePropertyKeys property) {
+        return getValueExpression(property.getName());
+    }
+
+    ValueExpression getValueExpression(String name);
 
     List<UIComponent> getChildren();
 
