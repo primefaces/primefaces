@@ -17694,6 +17694,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Icon to display on the button instead of the label.]]>
+            </description>
+            <name>buttonIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Icon of the menu button.]]>
             </description>
             <name>icon</name>

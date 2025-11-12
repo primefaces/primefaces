@@ -18,6 +18,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
    * Added `apiVersion` attribute to specify API version (weekly, beta, alpha, or specific version).
    * Added `libraries` attribute to load additional Google Maps libraries (e.g., places, geometry).
    * Widget automatically detects if Google Maps is already loaded and supports both static and async loading methods.
+* MenuButton
+    * Added new `buttonIcon` attribute to display an icon in place of the button label.
 * SelectOneButton
     * Added new `layout="custom"` to allow complete control over rendering
 * SelectManyButton
