@@ -21,25 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.api;
+package org.primefaces.cdk.api;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-
-import jakarta.faces.event.BehaviorEvent;
-
-public interface PrimeClientBehaviorHolder extends org.primefaces.cdk.api.component.PrimeClientBehaviorHolder {
-
-    Set<String> DEFAULT_SELECT_EVENT_NAMES =
-            Set.of("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup",
-                    "mousedown", "mousemove", "mouseout", "mouseover", "mouseup");
-
-    Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
-
-    @Override
-    default Collection<String> getImplicitBehaviorEventNames() {
-        return Collections.emptyList(); // not required yet
+/**
+ * Interface for facet key enums.
+ *
+ * <p>Generated FacetKeys enums for components with {@link Facet} annotations
+ * implement this interface to provide type-safe access to facet names.</p>
+ *
+ * <p>Example generated enum:</p>
+ * <pre>{@code
+ * public enum FacetKeys implements PrimeFacetKeys {
+ *     header,
+ *     footer
+ * }
+ * }</pre>
+ *
+ * @see Facet
+ */
+public interface PrimeFacetKeys {
+    /**
+     * Returns the facet name.
+     *
+     * <p>Default implementation returns the enum constant name via toString().</p>
+     *
+     * @return the facet name
+     */
+    default String getName() {
+        return toString();
     }
 }

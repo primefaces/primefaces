@@ -23,41 +23,29 @@
  */
 package org.primefaces.component.panel;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.CloseEvent;
+import org.primefaces.event.ToggleEvent;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder,
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "toogle", event = ToggleEvent.class),
+    @FacesBehaviorEvent(name = "close", event = CloseEvent.class)
+})
+public abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder,
         MultiViewStateAware<PanelState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PanelRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        header,
-        footer,
-        toggleable,
-        toggleSpeed,
-        style,
-        styleClass,
-        collapsed,
-        closable,
-        closeSpeed,
-        visible,
-        closeTitle,
-        toggleTitle,
-        menuTitle,
-        renderEmptyFacets,
-        toggleOrientation,
-        toggleableHeader,
-        multiViewState
-    }
 
     public PanelBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -68,148 +56,70 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Facet
+    public abstract UIComponent getOptionsFacet();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Facet
+    public abstract UIComponent getHeaderFacet();
 
-    public String getHeader() {
-        return (String) getStateHelper().eval(PropertyKeys.header, null);
-    }
+    @Facet
+    public abstract UIComponent getFooterFacet();
 
-    public void setHeader(String header) {
-        getStateHelper().put(PropertyKeys.header, header);
-    }
+    @Facet
+    public abstract UIComponent getActionsFacet();
 
-    public String getFooter() {
-        return (String) getStateHelper().eval(PropertyKeys.footer, null);
-    }
+    @Property(description = "Name of the client side widget.")
+    public abstract String getWidgetVar();
 
-    public void setFooter(String footer) {
-        getStateHelper().put(PropertyKeys.footer, footer);
-    }
+    @Property(description = "Header text.")
+    public abstract String getHeader();
 
-    public boolean isToggleable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
-    }
+    @Property(description = "Footer text.")
+    public abstract String getFooter();
 
-    public void setToggleable(boolean toggleable) {
-        getStateHelper().put(PropertyKeys.toggleable, toggleable);
-    }
+    @Property(description = "Makes panel toggleable. Default is false.")
+    public abstract boolean isToggleable();
 
-    public int getToggleSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
-    }
+    @Property(defaultValue = "500", description = "Speed of toggling in milliseconds. Default is 500")
+    public abstract int getToggleSpeed();
 
-    public void setToggleSpeed(int toggleSpeed) {
-        getStateHelper().put(PropertyKeys.toggleSpeed, toggleSpeed);
-    }
+    @Property(description = "Style of the panel.")
+    public abstract String getStyle();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Style class of the panel.")
+    public abstract String getStyleClass();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Renders a toggleable panel as collapsed. Default is false.")
+    public abstract boolean isCollapsed();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(description = "Make panel closable. Default is false.")
+    public abstract boolean isClosable();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "500", description = "Speed of closing effect in milliseconds. Default is 500.")
+    public abstract int getCloseSpeed();
 
-    public boolean isCollapsed() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
-    }
+    @Property(defaultValue = "true", description = "Renders panel as hidden. Default is true.")
+    public abstract boolean isVisible();
 
-    public void setCollapsed(boolean collapsed) {
-        getStateHelper().put(PropertyKeys.collapsed, collapsed);
-    }
+    @Property(description = "Title label for closer element of closable panel.")
+    public abstract String getCloseTitle();
 
-    public boolean isClosable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.closable, false);
-    }
+    @Property(description = "Title attribute for toggler element of toggleable panel.")
+    public abstract String getToggleTitle();
 
-    public void setClosable(boolean closable) {
-        getStateHelper().put(PropertyKeys.closable, closable);
-    }
+    @Property(description = "Title attribute for menu element on panel header.")
+    public abstract String getMenuTitle();
 
-    public int getCloseSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.closeSpeed, 500);
-    }
+    @Property(defaultValue = "vertical", description = "Defines the orientation of the toggle animation, valid values are \"vertical\" and \"horizontal\".")
+    public abstract String getToggleOrientation();
 
-    public void setCloseSpeed(int closeSpeed) {
-        getStateHelper().put(PropertyKeys.closeSpeed, closeSpeed);
-    }
+    @Property(description = "Defines if the panel is toggleable by clicking on the whole panel header. Default is false.")
+    public abstract boolean isToggleableHeader();
 
-    public boolean isVisible() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.visible, true);
-    }
-
-    public void setVisible(boolean visible) {
-        getStateHelper().put(PropertyKeys.visible, visible);
-    }
-
-    public String getCloseTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.closeTitle, null);
-    }
-
-    public void setCloseTitle(String closeTitle) {
-        getStateHelper().put(PropertyKeys.closeTitle, closeTitle);
-    }
-
-    public String getToggleTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.toggleTitle, null);
-    }
-
-    public void setToggleTitle(String toggleTitle) {
-        getStateHelper().put(PropertyKeys.toggleTitle, toggleTitle);
-    }
-
-    public String getMenuTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.menuTitle, null);
-    }
-
-    public void setMenuTitle(String menuTitle) {
-        getStateHelper().put(PropertyKeys.menuTitle, menuTitle);
-    }
-
-    public String getToggleOrientation() {
-        return (String) getStateHelper().eval(PropertyKeys.toggleOrientation, "vertical");
-    }
-
-    public void setToggleOrientation(String toggleOrientation) {
-        getStateHelper().put(PropertyKeys.toggleOrientation, toggleOrientation);
-    }
-
-    public boolean isToggleableHeader() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.toggleableHeader, false);
-    }
-
-    public void setToggleableHeader(boolean toggleableHeader) {
-        getStateHelper().put(PropertyKeys.toggleableHeader, toggleableHeader);
-    }
-
-    public boolean isRenderEmptyFacets() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.renderEmptyFacets, false);
-    }
-
-    public void setRenderEmptyFacets(boolean renderEmptyFacets) {
-        getStateHelper().put(PropertyKeys.renderEmptyFacets, renderEmptyFacets);
-    }
+    @Property(description = "Render facets even if their children are not rendered. Default is false.")
+    public abstract boolean isRenderEmptyFacets();
 
     @Override
-    public boolean isMultiViewState() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
-    }
-
-    public void setMultiViewState(boolean multiViewState) {
-        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
-    }
+    @Property(description = "Whether to keep Panel state across views, defaults to false.")
+    public abstract boolean isMultiViewState();
 }
