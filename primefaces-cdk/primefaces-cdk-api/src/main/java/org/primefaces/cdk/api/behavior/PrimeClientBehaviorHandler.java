@@ -216,7 +216,8 @@ public abstract class PrimeClientBehaviorHandler<E extends PrimeClientBehavior>
         else {
             Collection<String> eventNames = holder.getEventNames();
             if (!eventNames.contains(eventName)) {
-                throw new TagException(tag, "Event:" + eventName + " is not supported.");
+                throw new TagException(tag, "Event: " + eventName + " is not supported on "
+                        + parent.getClass().getSimpleName() + ".");
             }
         }
 
