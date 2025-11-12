@@ -82,7 +82,7 @@ public class Panel extends PanelBaseImpl {
         if (isClientBehaviorRequestSource(context)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (isClientBehaviorRequestEvent(context, BehaviorEventKeys.toogle)) {
+            if (isClientBehaviorRequestEvent(context, BehaviorEventKeys.toggle)) {
                 boolean collapsed = Boolean.parseBoolean(params.get(clientId + "_collapsed"));
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
 
