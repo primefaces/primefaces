@@ -23,6 +23,8 @@
  */
 package org.primefaces.cdk.impl.taglib;
 
+import org.primefaces.cdk.api.Function;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -111,6 +113,7 @@ public class TaglibMojo extends AbstractMojo {
             // Find all component and behavior classes
             List<Class<?>> componentClasses = findAnnotatedClasses(FacesComponent.class);
             List<Class<?>> behaviorClasses = findAnnotatedClasses(FacesBehavior.class);
+            List<FunctionInfo> functionInfos = findFunctionInfos();
 
             getLog().info("Found " + componentClasses.size() + " component classes");
             getLog().info("Found " + behaviorClasses.size() + " behavior classes");
@@ -128,7 +131,7 @@ public class TaglibMojo extends AbstractMojo {
                     .collect(Collectors.toList());
 
             // Generate the taglib XML
-            Document document = generateTaglibXml(componentInfos, behaviorInfos);
+            Document document = generateTaglibXml(functionInfos, componentInfos, behaviorInfos);
 
             // Save the taglib XML to file
             File taglibFile = new File(outputDirectory, shortName + ".taglib.xml");
@@ -140,6 +143,31 @@ public class TaglibMojo extends AbstractMojo {
         catch (Exception e) {
             getLog().error("Error generating taglib XML", e);
             throw new MojoExecutionException("Error generating taglib XML", e);
+        }
+    }
+
+    private List<FunctionInfo> findFunctionInfos() throws MojoExecutionException {
+        getLog().info("Scanning for @" + Function.class.getName() + " annotated methods...");
+
+        try {
+            Collection<Class<?>> projectClasses = getAllProjectClasses();
+            List<FunctionInfo> allFunctions = new ArrayList<>();
+
+            for (Class<?> clazz : projectClasses) {
+                List<FunctionInfo> functions = TaglibUtils.getFunctionInfos(clazz);
+                if (!functions.isEmpty()) {
+                    allFunctions.addAll(functions);
+                }
+            }
+
+            Collection<String> classNames = allFunctions.stream().map(FunctionInfo::getName).collect(Collectors.toList());
+            getLog().info("Found functions: " + String.join(",", classNames));
+
+            return allFunctions;
+        }
+        catch (Exception e) {
+            getLog().error("Error while scanning", e);
+            throw new MojoExecutionException("Error while scanning", e);
         }
     }
 
@@ -201,7 +229,7 @@ public class TaglibMojo extends AbstractMojo {
         }
     }
 
-    private Document generateTaglibXml(List<ComponentInfo> componentInfos, List<BehaviorInfo> behaviorInfos) {
+    private Document generateTaglibXml(List<FunctionInfo> functionInfos, List<ComponentInfo> componentInfos, List<BehaviorInfo> behaviorInfos) {
         Document document = DocumentHelper.createDocument();
         Element faceletTaglib = document.addElement("facelet-taglib")
                 .addAttribute("xmlns", "https://jakarta.ee/xml/ns/jakartaee")
@@ -212,6 +240,16 @@ public class TaglibMojo extends AbstractMojo {
         faceletTaglib.addElement("namespace").addText(uri);
         faceletTaglib.addElement("short-name").addText(shortName);
         faceletTaglib.addElement("display-name").addText(displayName);
+
+        for (FunctionInfo functionInfo : functionInfos) {
+            Element function = faceletTaglib.addElement("function");
+            function.addElement("function-name").addText(functionInfo.getName());
+            function.addElement("function-class").addText(functionInfo.getClazz());
+            function.addElement("function-signature").addText(functionInfo.getSignature());
+            if (functionInfo.getDescription() != null && !functionInfo.getDescription().isEmpty()) {
+                function.addElement("description").addText(functionInfo.getDescription());
+            }
+        }
 
         // Add a tag for each component
         for (ComponentInfo componentInfo : componentInfos) {

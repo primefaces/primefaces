@@ -24,6 +24,7 @@
 package org.primefaces.cdk.impl.taglib;
 
 import org.primefaces.cdk.api.FacesBehaviorHandler;
+import org.primefaces.cdk.api.Function;
 import org.primefaces.cdk.api.Property;
 
 import java.lang.reflect.Field;
@@ -74,6 +75,50 @@ public final class TaglibUtils {
     private static String getComponentType(Class<?> componentClass) {
         FacesComponent annotation = componentClass.getAnnotation(FacesComponent.class);
         return annotation.value();
+    }
+
+    public static List<FunctionInfo> getFunctionInfos(Class<?> clazz) {
+        List<FunctionInfo> functions = new ArrayList<>();
+
+        for (Method method : clazz.getDeclaredMethods()) {
+            Function annotation = method.getAnnotation(Function.class);
+            if (annotation == null) {
+                continue;
+            }
+
+            // Determine function name
+            String functionName = annotation.name();
+            if (functionName == null || functionName.isEmpty()) {
+                functionName = method.getName();
+            }
+
+            // Get function signature
+            StringBuilder signature = new StringBuilder();
+            signature.append(method.getReturnType().getName());
+            signature.append(" ");
+            signature.append(functionName);
+            signature.append("(");
+
+            Class<?>[] paramTypes = method.getParameterTypes();
+            for (int i = 0; i < paramTypes.length; i++) {
+                signature.append(paramTypes[i].getName());
+                if (i < paramTypes.length - 1) {
+                    signature.append(",");
+                }
+            }
+            signature.append(")");
+
+            FunctionInfo info = new FunctionInfo(
+                    functionName,
+                    clazz.getName(),
+                    signature.toString(),
+                    annotation.description()
+            );
+
+            functions.add(info);
+        }
+
+        return functions;
     }
 
     public static ComponentInfo getComponentInfo(Class<?> componentClass) throws IllegalAccessException {
