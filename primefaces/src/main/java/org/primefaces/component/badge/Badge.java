@@ -32,7 +32,8 @@ import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Badge.COMPONENT_TYPE, namespace = Badge.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Badge extends BadgeBase {
+public class Badge extends BadgeBaseImpl {
+
     public static final String COMPONENT_TYPE = "org.primefaces.component.Badge";
 
     public static final String STYLE_CLASS = "ui-badge ui-widget";

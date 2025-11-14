@@ -21,25 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.api;
+package org.primefaces.cdk.api;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import jakarta.faces.event.BehaviorEvent;
+/**
+ * Marks an abstract component base class for implementation generation.
+ *
+ * <p>Use this annotation on abstract classes ending with "Base" to generate
+ * an implementation class even when the class has no {@link Property} or
+ * {@link Facet} annotations. This is useful for components that only need
+ * the generated PrimeComponent interface implementation.</p>
+ *
+ * <p>Example:</p>
+ * <pre>{@code
+ * @FacesComponentBase
+ * public abstract class InputTextBase extends HtmlInputText {
+ *     // No properties/facets, but generates InputTextBaseImpl
+ * }
+ * }</pre>
+ *
+ * @see Property
+ * @see Facet
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+public @interface FacesComponentBase {
 
-public interface PrimeClientBehaviorHolder extends org.primefaces.cdk.api.component.PrimeClientBehaviorHolder {
-
-    Set<String> DEFAULT_SELECT_EVENT_NAMES =
-            Set.of("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup",
-                    "mousedown", "mousemove", "mouseout", "mouseover", "mouseup");
-
-    Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
-
-    @Override
-    default Collection<String> getImplicitBehaviorEventNames() {
-        return Collections.emptyList(); // not required yet
-    }
 }

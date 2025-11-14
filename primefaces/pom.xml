@@ -41,6 +41,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces-cdk-api</artifactId>
+            <version>${project.version}</version>
+            <optional>true</optional>
+        </dependency>
+
         <!-- shaded dependencies, dont put it into dependencyManagement, it will overwrite e.g. commons-io version from POI -->
         <dependency>
             <groupId>org.json</groupId>
@@ -325,6 +332,20 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.primefaces</groupId>
+                            <artifactId>primefaces-cdk-impl</artifactId>
+                            <version>${project.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.5.0</version>
                 <configuration>
@@ -571,6 +592,13 @@
                         <relocation>
                             <pattern>org.json</pattern>
                             <shadedPattern>org.primefaces.shaded.json</shadedPattern>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.primefaces.cdk.api</pattern>
+                            <shadedPattern>org.primefaces.cdk.api</shadedPattern>
                             <includes>
                                 <include>**</include>
                             </includes>
