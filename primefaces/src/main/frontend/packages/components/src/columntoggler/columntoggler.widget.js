@@ -91,6 +91,7 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
      * @inheritdoc
      */
     render() {
+        this.jq.empty();
         this.columns = this.thead.find('> tr > th:not(.ui-static-column)');
         this.panel = $(PrimeFaces.escapeClientId(this.cfg.id)).attr('role', 'dialog').addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow')
             .append('<ul class="ui-columntoggler-items" role="group"></ul>').appendTo(document.body);
@@ -589,6 +590,7 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
      * Brings up this column toggler so that the user can which column to hide or show.
      */
     show() {
+        this.subscribeToColumnOrderChange();
         this.alignPanel();
         this.panel.show();
         this.visible = true;
@@ -741,12 +743,41 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
             this.togglerStateHolder.val(stateVal.replace(oldColState, newColState));
 
             // #12195 must reset the navigable cells to keyboard accessibility of hidden/shown columns
-            if (!this.tableWidget) {
-                this.tableWidget = PrimeFaces.getWidgetsByType(PrimeFaces.widget.DataTable).find(widget => widget.id === this.tableId);
+            const tableWidget = this.getTableWidget();
+            if (tableWidget) {
+                tableWidget.setupNavigableCells();
             }
-            if (this.tableWidget) {
-                this.tableWidget.setupNavigableCells();
-            }
+        }
+    }
+
+    /**
+     * Gets the table widget.
+     * @private
+     * @return {PrimeFaces.widget.DataTable} The table widget.
+     */
+    getTableWidget() {
+        if (!this.tableWidget) {
+            this.tableWidget = PrimeFaces.getWidgetsByType(PrimeFaces.widget.DataTable).find(widget => widget.id === this.tableId);
+        }
+        return this.tableWidget;
+    }
+
+    /**
+     * Gets the table widget and subscribes to its saveColumnOrder method to call render() when column order changes.
+     * @private
+     */
+    subscribeToColumnOrderChange() {
+        if (this.tableWidget) {
+            return;
+        }
+        const tableWidget = this.getTableWidget();
+        if (tableWidget && tableWidget.saveColumnOrder) {
+            const originalSaveColumnOrder = tableWidget.saveColumnOrder.bind(tableWidget);
+            const $this = this;
+            tableWidget.saveColumnOrder = function() {
+                originalSaveColumnOrder();
+                $this.refresh($this.cfg);
+            };
         }
     }
 
