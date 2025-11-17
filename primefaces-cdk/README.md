@@ -267,8 +267,8 @@ Generates JSF taglib XML from compiled classes.
         <tag-name>confirm</tag-name>
         <behavior>
             <behavior-id>org.primefaces.component.ConfirmBehavior</behavior-id>
+            <handler-class>org.primefaces.component.ConfirmBehaviorHandler</handler-class>
         </behavior>
-        <handler-class>org.primefaces.component.ConfirmBehaviorHandler</handler-class>
     </tag>
     
     <!-- EL Function -->
