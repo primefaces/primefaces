@@ -21,25 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.api;
+package org.primefaces.cdk.api.component;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 import jakarta.faces.event.BehaviorEvent;
 
-public interface PrimeClientBehaviorHolder extends org.primefaces.cdk.api.component.PrimeClientBehaviorHolder {
-
-    Set<String> DEFAULT_SELECT_EVENT_NAMES =
-            Set.of("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup",
-                    "mousedown", "mousemove", "mouseout", "mouseover", "mouseup");
+public interface PrimeClientBehaviorHolder extends ClientBehaviorHolder {
 
     Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
 
-    @Override
-    default Collection<String> getImplicitBehaviorEventNames() {
-        return Collections.emptyList(); // not required yet
-    }
+    Collection<String> getImplicitBehaviorEventNames();
 }

@@ -21,25 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.api;
+package org.primefaces.cdk.api;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import jakarta.faces.event.BehaviorEvent;
-
-public interface PrimeClientBehaviorHolder extends org.primefaces.cdk.api.component.PrimeClientBehaviorHolder {
-
-    Set<String> DEFAULT_SELECT_EVENT_NAMES =
-            Set.of("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup",
-                    "mousedown", "mousemove", "mouseout", "mouseover", "mouseup");
-
-    Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
-
-    @Override
-    default Collection<String> getImplicitBehaviorEventNames() {
-        return Collections.emptyList(); // not required yet
-    }
+/**
+ * Container annotation for multiple {@link FacesBehaviorEvent} annotations.
+ *
+ * <p>This annotation is automatically used when multiple @FacesBehaviorEvent
+ * annotations are placed on the same class.</p>
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface FacesBehaviorEvents {
+    FacesBehaviorEvent[] value();
 }

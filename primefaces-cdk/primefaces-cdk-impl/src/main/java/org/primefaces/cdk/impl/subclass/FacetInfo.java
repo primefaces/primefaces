@@ -21,25 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.api;
+package org.primefaces.cdk.impl.subclass;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import org.primefaces.cdk.api.Facet;
 
-import jakarta.faces.event.BehaviorEvent;
+import javax.lang.model.element.ExecutableElement;
 
-public interface PrimeClientBehaviorHolder extends org.primefaces.cdk.api.component.PrimeClientBehaviorHolder {
+public class FacetInfo {
 
-    Set<String> DEFAULT_SELECT_EVENT_NAMES =
-            Set.of("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup",
-                    "mousedown", "mousemove", "mouseout", "mouseover", "mouseup");
+    private final String name;
+    private final String returnType;
+    private final ExecutableElement getterElement;
+    private final Facet annotation;
 
-    Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
+    FacetInfo(String name, String returnType, ExecutableElement getterElement, Facet annotation) {
+        this.name = name;
+        this.returnType = returnType;
+        this.getterElement = getterElement;
+        this.annotation = annotation;
+    }
 
-    @Override
-    default Collection<String> getImplicitBehaviorEventNames() {
-        return Collections.emptyList(); // not required yet
+    public String getName() {
+        return name;
+    }
+
+    public String getReturnType() {
+        return returnType;
+    }
+
+    public ExecutableElement getGetterElement() {
+        return getterElement;
+    }
+
+    public Facet getAnnotation() {
+        return annotation;
     }
 }

@@ -21,25 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.api;
+package org.primefaces.cdk.impl.taglib;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+public class FunctionInfo {
 
-import jakarta.faces.event.BehaviorEvent;
+    private String name;
+    private String clazz;
+    private String signature;
+    private String description;
 
-public interface PrimeClientBehaviorHolder extends org.primefaces.cdk.api.component.PrimeClientBehaviorHolder {
+    public FunctionInfo(String name, String clazz, String signature, String description) {
+        this.name = name;
+        this.clazz = clazz;
+        this.signature = signature;
+        this.description = description;
+    }
 
-    Set<String> DEFAULT_SELECT_EVENT_NAMES =
-            Set.of("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup",
-                    "mousedown", "mousemove", "mouseout", "mouseover", "mouseup");
+    public String getName() {
+        return name;
+    }
 
-    Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
+    public String getClazz() {
+        return clazz;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     @Override
-    default Collection<String> getImplicitBehaviorEventNames() {
-        return Collections.emptyList(); // not required yet
+    public String toString() {
+        return "FunctionInfo{" +
+                "name='" + name + '\'' +
+                ", clazz='" + clazz + '\'' +
+                ", signature='" + signature + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

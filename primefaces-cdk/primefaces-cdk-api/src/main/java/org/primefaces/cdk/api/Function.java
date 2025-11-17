@@ -21,25 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.api;
+package org.primefaces.cdk.api;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import jakarta.faces.event.BehaviorEvent;
+/**
+ * Marks a static method to be exposed as an EL function in the Faces taglib.
+ *
+ * <p>Example:</p>
+ * <pre>{@code
+ * @Function
+ * public static String closestWidgetVar(UIComponent component) {
+ *     // implementation
+ * }
+ *
+ * // Usage in EL: #{p:closestWidgetVar(component)}
+ * }</pre>
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.METHOD})
+public @interface Function {
 
-public interface PrimeClientBehaviorHolder extends org.primefaces.cdk.api.component.PrimeClientBehaviorHolder {
+    /**
+     * The function name in EL expressions. Defaults to the method name.
+     *
+     * @return the function name, or empty to use the method name
+     */
+    String name() default "";
 
-    Set<String> DEFAULT_SELECT_EVENT_NAMES =
-            Set.of("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup",
-                    "mousedown", "mousemove", "mouseout", "mouseover", "mouseup");
-
-    Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
-
-    @Override
-    default Collection<String> getImplicitBehaviorEventNames() {
-        return Collections.emptyList(); // not required yet
-    }
+    /**
+     * Description of the function for documentation and taglib generation.
+     *
+     * @return the function description
+     */
+    String description() default "";
 }
