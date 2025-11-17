@@ -21,20 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.behavior.confirm;
+package org.primefaces.behavior.printer;
 
-import org.primefaces.cdk.api.behavior.PrimeClientBehaviorHandler;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.api.behavior.PrimeClientBehavior;
 
-import jakarta.faces.view.facelets.BehaviorConfig;
+public abstract class PrinterBehaviorBase extends PrimeClientBehavior {
 
-public class ConfirmBehaviorHandler extends PrimeClientBehaviorHandler<ConfirmBehavior> {
+    @Property(description = "Target component to print.")
+    public abstract String getTarget();
 
-    public ConfirmBehaviorHandler(BehaviorConfig config) {
-        super(config);
-    }
-
-    @Override
-    public String getBehaviorId() {
-        return ConfirmBehavior.BEHAVIOR_ID;
-    }
+    @Property(description = "Configuration options for the printer.")
+    public abstract String getConfiguration();
 }
+
