@@ -46,6 +46,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -309,8 +310,14 @@ public class AnnotationProcessor extends AbstractProcessor {
             scanPrimeComponentInterface(propsMap, facetsMap);
         }
 
-        List<PropertyInfo> props = new ArrayList<>(propsMap.values());
-        List<FacetInfo> facets = new ArrayList<>(facetsMap.values());
+        List<PropertyInfo> props = propsMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+        List<FacetInfo> facets = facetsMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
 
         try {
             generateImplementation(classElement, props, facets, behaviorEventInfos, isBehavior);

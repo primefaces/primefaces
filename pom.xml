@@ -365,15 +365,6 @@
             </build>
         </profile>
         <profile>
-            <id>vscode-ide</id>
-            <activation>
-                <property><name>m2e.version</name></property>
-            </activation>
-            <properties>
-                <build.output>target-ide</build.output>
-            </properties>
-        </profile>
-        <profile>
             <id>coverage</id>
             <build>
                 <plugins>

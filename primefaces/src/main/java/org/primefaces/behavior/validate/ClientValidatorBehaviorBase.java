@@ -21,20 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.behavior.confirm;
+package org.primefaces.behavior.validate;
 
-import org.primefaces.cdk.api.behavior.PrimeClientBehaviorHandler;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.api.behavior.PrimeClientBehavior;
 
-import jakarta.faces.view.facelets.BehaviorConfig;
+public abstract class ClientValidatorBehaviorBase extends PrimeClientBehavior {
 
-public class ConfirmBehaviorHandler extends PrimeClientBehaviorHandler<ConfirmBehavior> {
+    @Property(description = "Event name to trigger validation.")
+    public abstract String getEvent();
 
-    public ConfirmBehaviorHandler(BehaviorConfig config) {
-        super(config);
-    }
-
-    @Override
-    public String getBehaviorId() {
-        return ConfirmBehavior.BEHAVIOR_ID;
-    }
+    @Property(description = "Disables the client validator behavior.", defaultValue = "false")
+    public abstract boolean isDisabled();
 }
+
