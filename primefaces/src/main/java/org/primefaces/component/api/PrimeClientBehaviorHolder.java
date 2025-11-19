@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -41,5 +43,11 @@ public interface PrimeClientBehaviorHolder extends org.primefaces.cdk.api.compon
     @Override
     default Collection<String> getImplicitBehaviorEventNames() {
         return Collections.emptyList(); // not required yet
+    }
+
+    // just for now until all components using CDK
+    @Override
+    default PrimeClientBehaviorEventKeys[] getClientBehaviorEventKeys() {
+        return null;
     }
 }

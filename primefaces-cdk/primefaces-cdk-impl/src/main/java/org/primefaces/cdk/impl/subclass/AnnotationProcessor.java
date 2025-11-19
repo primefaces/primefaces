@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
-import org.primefaces.cdk.api.PrimeBehaviorEventKeys;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.cdk.api.PrimeFacetKeys;
 import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
@@ -78,7 +78,7 @@ import javax.tools.JavaFileObject;
  * <ul>
  *   <li>PropertyKeys enum with StateHelper-backed getters/setters</li>
  *   <li>FacetKeys enum with facet accessors</li>
- *   <li>BehaviorEventKeys enum with ClientBehaviorHolder implementation</li>
+ *   <li>ClientBehaviorEventKeys enum with ClientBehaviorHolder implementation</li>
  *   <li>PrimeComponent interface implementation for non-behaviors</li>
  * </ul>
  *
@@ -607,7 +607,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             writeClassDeclaration(w, genName, baseName, isBehavior, hasEvents);
             writePropertyKeys(w, props);
             writeFacetKeys(w, facets, isBehavior);
-            writeBehaviorEventKeys(w, behaviorEventInfos, hasEvents);
+            writeClientBehaviorEventKeys(w, behaviorEventInfos, hasEvents);
             writePropertyMethods(w, props);
             writeFacetMethods(w, facets);
             w.println("}");
@@ -721,11 +721,11 @@ public class AnnotationProcessor extends AbstractProcessor {
     /**
      * Writes BehaviorEventKeys enum and ClientBehaviorHolder methods.
      */
-    private void writeBehaviorEventKeys(PrintWriter w, List<BehaviorEventInfo> events, boolean hasEvents) {
+    private void writeClientBehaviorEventKeys(PrintWriter w, List<BehaviorEventInfo> events, boolean hasEvents) {
         if (!hasEvents) return;
 
         // BehaviorEventKeys enum
-        w.println("    public enum BehaviorEventKeys implements " + PrimeBehaviorEventKeys.class.getName() + " {");
+        w.println("    public enum ClientBehaviorEventKeys implements " + PrimeClientBehaviorEventKeys.class.getName() + " {");
         for (int i = 0; i < events.size(); i++) {
             BehaviorEventInfo event = events.get(i);
             w.print("        " + event.getName() + "(\"" + event.getName() + "\", " +
@@ -737,7 +737,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("        private final Class<? extends BehaviorEvent> eventClass;");
         w.println("        private final boolean implicit;");
         w.println();
-        w.println("        BehaviorEventKeys(String eventName, Class<? extends BehaviorEvent> eventClass, boolean implicit) {");
+        w.println("        ClientBehaviorEventKeys(String eventName, Class<? extends BehaviorEvent> eventClass, boolean implicit) {");
         w.println("            this.eventName = eventName;");
         w.println("            this.eventClass = eventClass;");
         w.println("            this.implicit = implicit;");
@@ -767,19 +767,25 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println();
         w.println("    static {");
         w.println("        Map<String, Class<? extends BehaviorEvent>> map = new java.util.HashMap<>();");
-        w.println("        for (BehaviorEventKeys key : BehaviorEventKeys.values()) {");
+        w.println("        for (ClientBehaviorEventKeys key : ClientBehaviorEventKeys.values()) {");
         w.println("            map.put(key.getEventName(), key.getEventClass());");
         w.println("        }");
         w.println("        BEHAVIOR_EVENT_MAPPING = java.util.Collections.unmodifiableMap(map);");
-        w.println("        IMPLICIT_BEHAVIOR_EVENT_NAMES = Arrays.stream(BehaviorEventKeys.values())");
-        w.println("                .filter(BehaviorEventKeys::isImplicit)");
-        w.println("                .map(BehaviorEventKeys::getEventName)");
+        w.println("        IMPLICIT_BEHAVIOR_EVENT_NAMES = Arrays.stream(ClientBehaviorEventKeys.values())");
+        w.println("                .filter(ClientBehaviorEventKeys::isImplicit)");
+        w.println("                .map(ClientBehaviorEventKeys::getEventName)");
         w.println("                .collect(Collectors.toUnmodifiableList());");
         w.println("        EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();");
         w.println("    }");
         w.println();
 
         // ClientBehaviorHolder methods
+        w.println("    @Override");
+        w.println("    public " + PrimeClientBehaviorEventKeys.class.getName() + "[] getClientBehaviorEventKeys() {");
+        w.println("        return ClientBehaviorEventKeys.values();");
+        w.println("    }");
+        w.println();
+
         w.println("    @Override");
         w.println("    public Collection<String> getImplicitBehaviorEventNames() {");
         w.println("        return IMPLICIT_BEHAVIOR_EVENT_NAMES;");

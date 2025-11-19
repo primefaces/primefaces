@@ -79,10 +79,10 @@ public class Panel extends PanelBaseImpl {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(context);
 
-        if (isClientBehaviorRequestSource(context)) {
+        if (isAjaxBehaviorEventSource(event)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (isClientBehaviorRequestEvent(context, BehaviorEventKeys.toggle)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.toggle)) {
                 boolean collapsed = Boolean.parseBoolean(params.get(clientId + "_collapsed"));
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
 
@@ -90,7 +90,7 @@ public class Panel extends PanelBaseImpl {
                 eventToQueue.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(new ToggleEvent(this, behaviorEvent.getBehavior(), visibility));
             }
-            else if (isClientBehaviorRequestEvent(context, BehaviorEventKeys.close)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.close)) {
                 CloseEvent eventToQueue = new CloseEvent(this, behaviorEvent.getBehavior());
                 eventToQueue.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(eventToQueue);
@@ -103,7 +103,7 @@ public class Panel extends PanelBaseImpl {
 
     @Override
     public void processDecodes(FacesContext context) {
-        if (isClientBehaviorRequestEvent(context)) {
+        if (isAjaxRequestSource(context)) {
             decode(context);
         }
         else {
@@ -113,14 +113,14 @@ public class Panel extends PanelBaseImpl {
 
     @Override
     public void processValidators(FacesContext context) {
-        if (!isClientBehaviorRequestEvent(context)) {
+        if (!isAjaxRequestSource(context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if (!isClientBehaviorRequestEvent(context)) {
+        if (!isAjaxRequestSource(context)) {
             super.processUpdates(context);
         }
 

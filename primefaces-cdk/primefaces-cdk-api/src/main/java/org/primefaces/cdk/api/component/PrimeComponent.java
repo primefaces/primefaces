@@ -23,7 +23,6 @@
  */
 package org.primefaces.cdk.api.component;
 
-import org.primefaces.cdk.api.PrimeBehaviorEventKeys;
 import org.primefaces.cdk.api.PrimeFacetKeys;
 import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.facet.PrimeFacet;
@@ -32,9 +31,6 @@ import java.util.List;
 
 import jakarta.el.ValueExpression;
 import jakarta.faces.component.UIComponent;
-import jakarta.faces.component.behavior.ClientBehaviorContext;
-import jakarta.faces.context.ExternalContext;
-import jakarta.faces.context.FacesContext;
 
 public interface PrimeComponent {
 
@@ -71,27 +67,6 @@ public interface PrimeComponent {
     List<UIComponent> getChildren();
 
     int getChildCount();
-
-    default boolean isClientBehaviorRequestSource(FacesContext context) {
-        UIComponent component = (UIComponent) this;
-        String partialSource = context.getExternalContext().getRequestParameterMap().get(ClientBehaviorContext.BEHAVIOR_SOURCE_PARAM_NAME);
-        return component.getClientId(context).equals(partialSource);
-    }
-
-    default boolean isClientBehaviorRequestEvent(FacesContext context, PrimeBehaviorEventKeys... targetEvents) {
-        UIComponent component = (UIComponent) this;
-        ExternalContext externalContext = context.getExternalContext();
-        String partialSource = externalContext.getRequestParameterMap().get(ClientBehaviorContext.BEHAVIOR_SOURCE_PARAM_NAME);
-        String partialEvent = externalContext.getRequestParameterMap().get(ClientBehaviorContext.BEHAVIOR_EVENT_PARAM_NAME);
-        if (component.getClientId(context).equals(partialSource)) {
-            for (PrimeBehaviorEventKeys targetEvent : targetEvents) {
-                if (partialEvent.equals(targetEvent.getEventName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     /* not needed yet - maybe a alternative name to widgetVar
     @Property

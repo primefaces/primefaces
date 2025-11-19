@@ -44,7 +44,7 @@ import jakarta.faces.event.BehaviorEvent;
  *
  * @see FacesBehaviorEvent
  */
-public interface PrimeBehaviorEventKeys {
+public interface PrimeClientBehaviorEventKeys {
 
     /**
      * Returns the event name.

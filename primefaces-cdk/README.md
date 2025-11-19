@@ -84,7 +84,7 @@ public class AjaxBehaviorHandler extends PrimeClientBehaviorHandler<AjaxBehavior
 #### Typical Behavior Structure
 
 ```
-ConfirmBehaviorBase       (abstract, extends PrimeBehavior, @Property)
+ConfirmBehaviorBase       (abstract, extends PrimeClientBehavior, @Property)
     ↓ extends
 ConfirmBehaviorBaseImpl   (generated, abstract, PropertyKeys, getAllProperties())
     ↓ extends
@@ -133,7 +133,7 @@ public abstract UIComponent getFooterFacet();
 ```
 
 ### `@FacesBehaviorEvent` / `@FacesBehaviorEvents`
-Defines client behavior events for components and generates `PrimeBehaviorEventKeys` enum.
+Defines client behavior events for components and generates `PrimeClientBehaviorEventKeys` enum.
 
 ```java
 @FacesBehaviorEvents({
@@ -187,11 +187,11 @@ Generates the implementation classes at compile-time like mentioned above.
 - **Hierarchy scanning** - Collects `@Property`, `@Facet`, `@FacetBehaviorEvent`, `@FacesBehaviorHandler` from superclasses and interfaces
 - **Deduplication** - Prevents duplicate properties in inheritance tree
 - **PrimeComponent integration** - Automatically implements methods for components
-- **PrimeBehavior integration** - Automatically implements methods for components
+- **PrimeClientBehavior integration** - Automatically implements methods for components
 - **Same package generation** - `*Impl` generated alongside source class
 - **PrimePropertyKeys enum** - Type-safe property access
 - **PrimeFacetKeys enum** - Type-safe facet access
-- **PrimeBehaviorEventKeys enum** - Type-safe facet access
+- **PrimeClientBehaviorEventKeys enum** - Type-safe facet access
 
 
 Usage:
