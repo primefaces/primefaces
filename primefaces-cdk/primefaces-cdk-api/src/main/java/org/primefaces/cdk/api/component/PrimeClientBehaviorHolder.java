@@ -74,7 +74,7 @@ public interface PrimeClientBehaviorHolder extends ClientBehaviorHolder {
         String partialEvent = externalContext.getRequestParameterMap().get(ClientBehaviorContext.BEHAVIOR_EVENT_PARAM_NAME);
         if (component.getClientId(context).equals(partialSource)) {
             for (PrimeClientBehaviorEventKeys targetEvent : targetEvents) {
-                if (partialEvent.equals(targetEvent.getEventName())) {
+                if (partialEvent.equals(targetEvent.getName())) {
                     return true;
                 }
             }

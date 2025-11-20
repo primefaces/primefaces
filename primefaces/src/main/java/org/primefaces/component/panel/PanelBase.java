@@ -37,8 +37,8 @@ import jakarta.faces.component.UIPanel;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 @FacesBehaviorEvents({
-    @FacesBehaviorEvent(name = "toggle", event = ToggleEvent.class),
-    @FacesBehaviorEvent(name = "close", event = CloseEvent.class)
+    @FacesBehaviorEvent(name = "toggle", event = ToggleEvent.class, description = "Fires when panel is toggled."),
+    @FacesBehaviorEvent(name = "close", event = CloseEvent.class, description = "Fires when panel is closed.")
 })
 public abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder,
         MultiViewStateAware<PanelState> {

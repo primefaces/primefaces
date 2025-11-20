@@ -81,6 +81,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.42</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Data Exporter -->
         <dependency>
             <groupId>org.apache.poi</groupId>

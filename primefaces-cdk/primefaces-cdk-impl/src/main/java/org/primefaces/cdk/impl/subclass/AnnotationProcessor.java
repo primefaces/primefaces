@@ -673,19 +673,45 @@ public class AnnotationProcessor extends AbstractProcessor {
     private void writePropertyKeys(PrintWriter w, List<PropertyInfo> props) {
         w.println("    public enum PropertyKeys implements " + PrimePropertyKeys.class.getName() + " {");
         for (int i = 0; i < props.size(); i++) {
-            w.print("        " + props.get(i).getName() + "(" + props.get(i).getReturnType() + ".class)");
-            w.println(i < props.size() - 1 ? "," : ";");
+            PropertyInfo prop = props.get(i);
+            String description = prop.getAnnotation().description().replace("\"", "\\\"");
+            String defaultValue = prop.getAnnotation().defaultValue().replace("\"", "\\\"");
+            w.print("        " + prop.getName() + "(" + prop.getReturnType() + ".class, \"" + description + "\", "
+                    + prop.getAnnotation().required() + ", \"" + defaultValue + "\")");
+            w.println(i < props.size() - 1 ? "," : "");
         }
+        w.println(";");
         w.println();
         w.println("        private final Class<?> expectedType;");
+        w.println("        private final String description;");
+        w.println("        private final boolean required;");
+        w.println("        private final String defaultValue;");
         w.println();
-        w.println("        PropertyKeys(Class<?> expectedType) {");
+        w.println("        PropertyKeys(Class<?> expectedType, String description, boolean required, String defaultValue) {");
         w.println("            this.expectedType = expectedType;");
+        w.println("            this.description = description;");
+        w.println("            this.required = required;");
+        w.println("            this.defaultValue = defaultValue;");
         w.println("        }");
         w.println();
         w.println("        @Override");
         w.println("        public Class<?> getExpectedType() {");
         w.println("            return expectedType;");
+        w.println("        }");
+        w.println();
+        w.println("        @Override");
+        w.println("        public String getDescription() {");
+        w.println("            return description;");
+        w.println("        }");
+        w.println();
+        w.println("        @Override");
+        w.println("        public boolean isRequired() {");
+        w.println("            return required;");
+        w.println("        }");
+        w.println();
+        w.println("        @Override");
+        w.println("        public String getDefaultValue() {");
+        w.println("            return defaultValue;");
         w.println("        }");
         w.println("    }");
         w.println();
@@ -704,9 +730,24 @@ public class AnnotationProcessor extends AbstractProcessor {
         if (!isBehavior) {
             w.println("    public enum FacetKeys implements " + PrimeFacetKeys.class.getName() + " {");
             for (int i = 0; i < facets.size(); i++) {
-                w.print("        " + facets.get(i).getName());
+                FacetInfo facet = facets.get(i);
+                String description = facet.getAnnotation().description().replace("\"", "\\\"");
+                w.print("        " + facet.getName() + "(\"" + description + "\")");
                 w.println(i < facets.size() - 1 ? "," : "");
             }
+            w.println(";");
+            w.println();
+            w.println("        private final String description;");
+            w.println();
+            w.println("        FacetKeys(String description) {");
+            w.println("            this.description = description;");
+            w.println("        }");
+            w.println();
+            w.println("        @Override");
+            w.println("        public String getDescription() {");
+            w.println("            return description;");
+            w.println("        }");
+            w.println();
             w.println("    }");
             w.println();
 
@@ -728,29 +769,37 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("    public enum ClientBehaviorEventKeys implements " + PrimeClientBehaviorEventKeys.class.getName() + " {");
         for (int i = 0; i < events.size(); i++) {
             BehaviorEventInfo event = events.get(i);
+            String description = event.getDescription().replace("\"", "\\\"");
             w.print("        " + event.getName() + "(\"" + event.getName() + "\", " +
-                    event.getEventClass() + ".class, " + event.isImplicit() + ")");
+                    event.getEventClass() + ".class, \"" + description + "\", " + event.isImplicit() + ")");
             w.println(i < events.size() - 1 ? "," : ";");
         }
         w.println();
-        w.println("        private final String eventName;");
-        w.println("        private final Class<? extends BehaviorEvent> eventClass;");
+        w.println("        private final String name;");
+        w.println("        private final Class<? extends BehaviorEvent> type;");
+        w.println("        private final String description;");
         w.println("        private final boolean implicit;");
         w.println();
-        w.println("        ClientBehaviorEventKeys(String eventName, Class<? extends BehaviorEvent> eventClass, boolean implicit) {");
-        w.println("            this.eventName = eventName;");
-        w.println("            this.eventClass = eventClass;");
+        w.println("        ClientBehaviorEventKeys(String name, Class<? extends BehaviorEvent> type, String description, boolean implicit) {");
+        w.println("            this.name = name;");
+        w.println("            this.type = type;");
+        w.println("            this.description = description;");
         w.println("            this.implicit = implicit;");
         w.println("        }");
         w.println();
         w.println("        @Override");
-        w.println("        public String getEventName() {");
-        w.println("            return eventName;");
+        w.println("        public String getName() {");
+        w.println("            return name;");
         w.println("        }");
         w.println();
         w.println("        @Override");
-        w.println("        public Class<? extends BehaviorEvent> getEventClass() {");
-        w.println("            return eventClass;");
+        w.println("        public Class<? extends BehaviorEvent> getType() {");
+        w.println("            return type;");
+        w.println("        }");
+        w.println();
+        w.println("        @Override");
+        w.println("        public String getDescription() {");
+        w.println("            return description;");
         w.println("        }");
         w.println();
         w.println("        @Override");
@@ -768,12 +817,12 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("    static {");
         w.println("        Map<String, Class<? extends BehaviorEvent>> map = new java.util.HashMap<>();");
         w.println("        for (ClientBehaviorEventKeys key : ClientBehaviorEventKeys.values()) {");
-        w.println("            map.put(key.getEventName(), key.getEventClass());");
+        w.println("            map.put(key.getName(), key.getType());");
         w.println("        }");
         w.println("        BEHAVIOR_EVENT_MAPPING = java.util.Collections.unmodifiableMap(map);");
         w.println("        IMPLICIT_BEHAVIOR_EVENT_NAMES = Arrays.stream(ClientBehaviorEventKeys.values())");
         w.println("                .filter(ClientBehaviorEventKeys::isImplicit)");
-        w.println("                .map(ClientBehaviorEventKeys::getEventName)");
+        w.println("                .map(ClientBehaviorEventKeys::getName)");
         w.println("                .collect(Collectors.toUnmodifiableList());");
         w.println("        EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();");
         w.println("    }");

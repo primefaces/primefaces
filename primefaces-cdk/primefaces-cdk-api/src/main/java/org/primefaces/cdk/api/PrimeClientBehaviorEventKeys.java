@@ -53,7 +53,7 @@ public interface PrimeClientBehaviorEventKeys {
      *
      * @return the event name
      */
-    default String getEventName() {
+    default String getName() {
         return toString();
     }
 
@@ -62,7 +62,14 @@ public interface PrimeClientBehaviorEventKeys {
      *
      * @return the event class
      */
-    Class<? extends BehaviorEvent> getEventClass();
+    Class<? extends BehaviorEvent> getType();
+
+    /**
+     * Description of the event for documentation.
+     *
+     * @return the event description
+     */
+    String getDescription();
 
     /**
      * Returns whether this is an implicit event automatically handled by the renderer.

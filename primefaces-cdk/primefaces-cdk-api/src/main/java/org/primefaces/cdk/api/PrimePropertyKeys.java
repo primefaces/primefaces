@@ -71,4 +71,28 @@ public interface PrimePropertyKeys {
     default String getName() {
         return toString();
     }
+
+    /**
+     * Description of the property for documentation and taglib generation.
+     *
+     * @return the property description
+     */
+    String getDescription();
+
+    /**
+     * Whether the property is required.
+     *
+     * @return true if required, false otherwise
+     */
+    boolean isRequired();
+
+    /**
+     * Default value for the property.
+     *
+     * <p>For primitives, a default is automatically provided if not specified
+     * (e.g., false for boolean, 0 for int).</p>
+     *
+     * @return the default value as a string
+     */
+    String getDefaultValue();
 }
