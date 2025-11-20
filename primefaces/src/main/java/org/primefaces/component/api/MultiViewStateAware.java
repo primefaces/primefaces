@@ -23,8 +23,11 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
+
 public interface MultiViewStateAware<T> {
 
+    @Property(description = "Whether to keep Panel state across views, defaults to false.")
     boolean isMultiViewState();
 
     void restoreMultiViewState();

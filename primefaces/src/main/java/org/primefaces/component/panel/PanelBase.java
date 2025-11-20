@@ -56,16 +56,16 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
         return COMPONENT_FAMILY;
     }
 
-    @Facet
+    @Facet(description = "Built-in support to display a fully customizable popup menu, an icon to display the menu is placed at top-right corner")
     public abstract UIComponent getOptionsFacet();
 
-    @Facet
+    @Facet(description = "Allows to place HTML in the header. Alternative to headerText.")
     public abstract UIComponent getHeaderFacet();
 
-    @Facet
+    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
     public abstract UIComponent getFooterFacet();
 
-    @Facet
+    @Facet(description = "Allows to add custom action to the titlebar.")
     public abstract UIComponent getActionsFacet();
 
     @Property(description = "Name of the client side widget.")
@@ -118,8 +118,4 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
 
     @Property(description = "Render facets even if their children are not rendered. Default is false.")
     public abstract boolean isRenderEmptyFacets();
-
-    @Override
-    @Property(description = "Whether to keep Panel state across views, defaults to false.")
-    public abstract boolean isMultiViewState();
 }
