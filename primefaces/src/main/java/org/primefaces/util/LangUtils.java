@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.cdk.api.utils.ReflectionUtils;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -301,48 +303,27 @@ public class LangUtils {
     }
 
     public static boolean isClassAvailable(String name) {
-        return tryToLoadClassForName(name) != null;
+        return ReflectionUtils.isClassAvailable(name);
     }
 
     public static <T> Class<T> tryToLoadClassForName(String name) {
-        try {
-            return loadClassForName(name);
-        }
-        catch (ClassNotFoundException e) {
-            return null;
-        }
+        return ReflectionUtils.tryToLoadClassForName(name);
     }
 
     public static Method tryToLoadMethodForName(Class<?> clazz, String name, Class<?>... args) {
-        try {
-            return clazz.getDeclaredMethod(name, args);
-        }
-        catch (NoSuchMethodException e) {
-            return null;
-        }
+        return ReflectionUtils.tryToLoadMethodForName(clazz, name, args);
     }
 
     public static <T> Class<T> loadClassForName(String name) throws ClassNotFoundException {
-        try {
-            return (Class<T>) Class.forName(name, false, LangUtils.class.getClassLoader());
-        }
-        catch (ClassNotFoundException e) {
-            return (Class<T>) Class.forName(name, false, getContextClassLoader());
-        }
+        return ReflectionUtils.loadClassForName(name);
     }
 
     public static ClassLoader getContextClassLoader() {
-        return Thread.currentThread().getContextClassLoader();
+        return ReflectionUtils.getContextClassLoader();
     }
 
-    public static ClassLoader getCurrentClassLoader(Class clazz) {
-        ClassLoader cl = getContextClassLoader();
-
-        if (cl == null && clazz != null) {
-            cl = clazz.getClassLoader();
-        }
-
-        return cl;
+    public static ClassLoader getCurrentClassLoader(Class<?> clazz) {
+        return ReflectionUtils.getCurrentClassLoader(clazz);
     }
 
     /**
