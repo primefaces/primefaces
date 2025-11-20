@@ -164,8 +164,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
                 }
 
                 writer.startElement("div", null);
-                writer.writeAttribute("class", columnClass, null);
-                writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
+                if (LangUtils.isNotEmpty(columnClass)) {
+                    writer.writeAttribute("class", columnClass, null);
+                }
                 encodeOption(context, component, selectItem, id, name, converter, selected, disabled);
                 writer.endElement("div");
 
