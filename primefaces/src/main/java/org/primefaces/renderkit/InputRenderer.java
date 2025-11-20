@@ -146,13 +146,12 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
             InputHolder inputHolder = ((InputHolder) component);
             String labelledBy = inputHolder.getLabelledBy();
             if (LangUtils.isNotBlank(labelledBy)) {
-                UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, labelledBy);
-                writer.writeAttribute(HTML.ARIA_LABELLEDBY, target.getClientId(context), null);
+                writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
             }
             String ariaDescribedBy = inputHolder.getAriaDescribedBy();
             if (LangUtils.isNotBlank(ariaDescribedBy)) {
-                UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, ariaDescribedBy);
-                writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target.getClientId(context), null);
+                String target = SearchExpressionUtils.resolveClientIds(ariaDescribedBy, component);
+                writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target, null);
             }
         }
 
@@ -164,8 +163,8 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
             ariaDescribedBy = ((AbstractPrimeHtmlInputTextArea) component).getAriaDescribedBy();
         }
         if (LangUtils.isNotBlank(ariaDescribedBy)) {
-            UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, ariaDescribedBy);
-            writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target.getClientId(context), null);
+            String target = SearchExpressionUtils.resolveClientIds(ariaDescribedBy, component);
+            writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target, null);
         }
 
         if (disabled) {
