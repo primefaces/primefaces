@@ -52,14 +52,14 @@ package org.primefaces.cdk.api;
 public interface PrimePropertyKeys {
 
     /**
-     * Returns the expected type for this property.
+     * Returns the type for this property.
      *
      * <p>This type should be used when converting tag attribute values via
      * {@link jakarta.faces.view.facelets.TagAttribute#getObject(jakarta.faces.view.facelets.FaceletContext, Class)}.</p>
      *
-     * @return the expected object type for this property
+     * @return the object type for this property
      */
-    Class<?> getExpectedType();
+    Class<?> getType();
 
     /**
      * Returns the property name.

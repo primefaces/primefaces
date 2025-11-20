@@ -30,26 +30,46 @@ import javax.lang.model.element.ExecutableElement;
 public class PropertyInfo {
 
     private final String name;
-    private final String returnType;
+    private final String type;
     private final ExecutableElement getterElement;
     private final ExecutableElement setterElement;
-    private final Property annotation;
+    private final boolean generateSetter;
+    private final String description;
+    private final String defaultValue;
+    private final boolean required;
 
-    PropertyInfo(String name, String returnType, ExecutableElement getterElement,
+    PropertyInfo(String name, String type, ExecutableElement getterElement,
                  ExecutableElement setterElement, Property annotation) {
         this.name = name;
-        this.returnType = returnType;
+        this.type = type;
         this.getterElement = getterElement;
         this.setterElement = setterElement;
-        this.annotation = annotation;
+        this.description = annotation.description();
+        this.defaultValue = annotation.defaultValue();
+        this.required = annotation.required();
+        this.generateSetter = true;
+    }
+
+    PropertyInfo(String name, String type, ExecutableElement getterElement,
+                 ExecutableElement setterElement, String description, String defaultValue, boolean required) {
+        this.name = name;
+        this.type = type;
+        this.getterElement = getterElement;
+        this.setterElement = setterElement;
+        this.description = description;
+        this.defaultValue = defaultValue;
+        this.required = required;
+        // in this case, this is an extracted property from a parent component without @Property annotation
+        // -> skip generation
+        this.generateSetter = false;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getReturnType() {
-        return returnType;
+    public String getType() {
+        return type;
     }
 
     public ExecutableElement getGetterElement() {
@@ -60,7 +80,19 @@ public class PropertyInfo {
         return setterElement;
     }
 
-    public Property getAnnotation() {
-        return annotation;
+    public String getDescription() {
+        return description;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public boolean isGenerateSetter() {
+        return generateSetter;
     }
 }

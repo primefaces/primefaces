@@ -237,7 +237,7 @@ public abstract class PrimeClientBehaviorHandler<E extends PrimeClientBehavior>
     protected void init(FaceletContext ctx, E behavior, String eventName, UIComponent parent) {
         for (PrimePropertyKeys property : behavior.getPropertyKeys()) {
             TagAttribute tag = getAttribute(property.getName());
-            setBehaviorAttribute(ctx, behavior, tag, property.getExpectedType());
+            setBehaviorAttribute(ctx, behavior, tag, property.getType());
         }
     }
 }

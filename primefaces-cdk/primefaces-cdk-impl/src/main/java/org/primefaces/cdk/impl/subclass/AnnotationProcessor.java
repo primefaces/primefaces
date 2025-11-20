@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -284,6 +285,20 @@ public class AnnotationProcessor extends AbstractProcessor {
                     propsMap.put(propName, info);
                 }
             }
+        }
+
+        List<String> ignores = Arrays.asList("attributes", "behaviors", "rendererType", "bindings", "passThroughAttributes", "systemEventListeners");
+        Set<PropertyInfo> inheritedPropertyKeys = collectInheritedPropertyKeys(classElement);
+
+        // Add inherited property keys that aren't already defined
+        for (PropertyInfo inheritedKey : inheritedPropertyKeys) {
+            if (!propsMap.containsKey(inheritedKey.getName()) && !ignores.contains(inheritedKey.getName())) {
+                propsMap.put(inheritedKey.getName(), inheritedKey);
+            }
+        }
+        if (!propsMap.containsKey("id")) {
+            propsMap.put("id", new PropertyInfo("id", "java.lang.String", null, null,
+                    "Unique identifier of the component in a namingContainer.", "", false));
         }
 
         // Build facet infos
@@ -668,50 +683,228 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     /**
+     * Collects PropertyKeys from parent classes using reflection and Element API.
+     */
+    private Set<PropertyInfo> collectInheritedPropertyKeys(TypeElement classElement) {
+        Set<PropertyInfo> propertyInfos = new LinkedHashSet<>();
+
+        TypeElement current = classElement.getSuperclass() != null ?
+                (TypeElement) processingEnv.getTypeUtils().asElement(classElement.getSuperclass()) : null;
+
+        while (current != null &&
+                !current.getQualifiedName().toString().equals("java.lang.Object")) {
+
+            String className = current.getQualifiedName().toString();
+            boolean foundViaReflection = false;
+
+            // Try reflection first (works for compiled classes with package-private PropertyKeys)
+            try {
+                Class<?> clazz = Class.forName(className, false,
+                        this.getClass().getClassLoader());
+                collectPropertyKeysViaReflection(clazz, current, propertyInfos);
+                foundViaReflection = true;
+            }
+            catch (ClassNotFoundException e) {
+                // Expected for classes being compiled in this round
+            }
+            catch (Exception e) {
+                messager.printMessage(Diagnostic.Kind.WARNING,
+                        "Reflection failed for " + className + ": " + e.getMessage());
+            }
+
+            // Fallback to Element API if reflection didn't work
+            if (!foundViaReflection) {
+                collectPropertyKeysFromElement(current, propertyInfos);
+            }
+
+            // Move to superclass
+            TypeMirror superclass = current.getSuperclass();
+            if (superclass == null) break;
+            Element superElement = processingEnv.getTypeUtils().asElement(superclass);
+            current = (superElement instanceof TypeElement) ?
+                    (TypeElement) superElement : null;
+        }
+
+        return propertyInfos;
+    }
+
+    /**
+     * Collects PropertyKeys using reflection (works for package-private enums).
+     */
+    private void collectPropertyKeysViaReflection(Class<?> clazz, TypeElement typeElement,
+                                                  Set<PropertyInfo> propertyInfos) {
+        try {
+            // getDeclaredClasses() returns ALL nested classes including package-private!
+            for (Class<?> innerClass : clazz.getDeclaredClasses()) {
+                if (innerClass.isEnum() &&
+                        innerClass.getSimpleName().equals("PropertyKeys")) {
+
+                    // Get enum constants
+                    Object[] enumConstants = innerClass.getEnumConstants();
+                    if (enumConstants != null) {
+                        messager.printMessage(Diagnostic.Kind.NOTE,
+                                "Found " + enumConstants.length + " PropertyKeys in " +
+                                        clazz.getName() + " via reflection");
+
+                        for (Object constant : enumConstants) {
+                            String keyName = ((Enum<?>) constant).name();
+
+                            // Try to find getter method for this property
+                            String returnType = findPropertyReturnType(clazz, typeElement, keyName);
+
+                            // Create PropertyInfo with null getter/setter (inherited, no implementation needed)
+                            String description = "";
+                            String defaultValue = "";
+                            switch (keyName) {
+                                case "rendered":
+                                    description = "Boolean value to specify the rendering of the component, when set to false component will not be rendered.";
+                                    defaultValue = "true";
+                                    break;
+                                case "binding":
+                                    description = "An el expression referring to a server side UIComponent instance in a backing bean.";
+                                    break;
+                            }
+
+                            PropertyInfo info = new PropertyInfo(keyName, returnType, null, null, description, defaultValue, false);
+                            propertyInfos.add(info);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            messager.printMessage(Diagnostic.Kind.WARNING,
+                    "Failed to scan " + clazz.getName() + " via reflection: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Collects PropertyKeys using Element API (works for classes being compiled).
+     */
+    private void collectPropertyKeysFromElement(TypeElement element, Set<PropertyInfo> propertyInfos) {
+        // Scan using Element API (only works for public/protected and same-package)
+        for (Element enclosed : element.getEnclosedElements()) {
+            if (enclosed.getKind() == ElementKind.ENUM &&
+                    enclosed.getSimpleName().toString().equals("PropertyKeys")) {
+
+                TypeElement enumElement = (TypeElement) enclosed;
+                for (Element enumConstant : enumElement.getEnclosedElements()) {
+                    if (enumConstant.getKind() == ElementKind.ENUM_CONSTANT) {
+                        String keyName = enumConstant.getSimpleName().toString();
+
+                        // Try to find getter method for this property
+                        String returnType = findPropertyReturnTypeFromElement(element, keyName);
+
+                        // Create PropertyInfo with null getter/setter (inherited, no implementation needed)
+                        PropertyInfo info = new PropertyInfo(keyName, returnType, null, null, "", "", false);
+                        propertyInfos.add(info);
+                    }
+                }
+
+                messager.printMessage(Diagnostic.Kind.NOTE,
+                        "Found PropertyKeys in " + element.getQualifiedName() + " via Element API");
+            }
+        }
+    }
+
+    /**
+     * Finds the return type of a property getter using reflection.
+     */
+    private String findPropertyReturnType(Class<?> clazz, TypeElement typeElement, String propertyName) {
+        // Try common getter naming patterns
+        String[] getterNames = {"get" + capitalize(propertyName), "is" + capitalize(propertyName)};
+
+        // Try reflection first
+        for (String getterName : getterNames) {
+            try {
+                java.lang.reflect.Method method = clazz.getDeclaredMethod(getterName);
+                return method.getReturnType().getName();
+            }
+            catch (NoSuchMethodException e) {
+                // Try next pattern
+            }
+        }
+
+        // Fallback to Element API
+        if (typeElement != null) {
+            return findPropertyReturnTypeFromElement(typeElement, propertyName);
+        }
+
+        // Default to Object if we can't determine
+        return "java.lang.Object";
+    }
+
+    /**
+     * Finds the return type of a property getter using Element API.
+     */
+    private String findPropertyReturnTypeFromElement(TypeElement element, String propertyName) {
+        String[] getterNames = {"get" + capitalize(propertyName), "is" + capitalize(propertyName)};
+
+        for (Element enclosed : element.getEnclosedElements()) {
+            if (enclosed.getKind() == ElementKind.METHOD) {
+                ExecutableElement method = (ExecutableElement) enclosed;
+                String methodName = method.getSimpleName().toString();
+
+                for (String getterName : getterNames) {
+                    if (methodName.equals(getterName) && method.getParameters().isEmpty()) {
+                        return method.getReturnType().toString();
+                    }
+                }
+            }
+        }
+
+        // Default to Object if we can't find the getter
+        return "java.lang.Object";
+    }
+
+    /**
      * Writes PropertyKeys enum and getPropertyKeys method.
      */
     private void writePropertyKeys(PrintWriter w, List<PropertyInfo> props) {
         w.println("    public enum PropertyKeys implements " + PrimePropertyKeys.class.getName() + " {");
         for (int i = 0; i < props.size(); i++) {
             PropertyInfo prop = props.get(i);
-            String description = prop.getAnnotation().description().replace("\"", "\\\"");
-            String defaultValue = prop.getAnnotation().defaultValue().replace("\"", "\\\"");
-            w.print("        " + prop.getName() + "(" + prop.getReturnType() + ".class, \"" + description + "\", "
-                    + prop.getAnnotation().required() + ", \"" + defaultValue + "\")");
+            String type = prop.getType() + ".class";
+            type = type.replace("<?>.class", ".class");
+            String description = prop.getDescription().replace("\"", "\\\"");
+            String defaultValue = prop.getDefaultValue().replace("\"", "\\\"");
+            boolean required = prop.isRequired();
+            w.print("        " + prop.getName() + "(" + type + ", \"" + description + "\", "
+                    + required + ", \"" + defaultValue + "\")");
             w.println(i < props.size() - 1 ? "," : "");
         }
         w.println(";");
         w.println();
-        w.println("        private final Class<?> expectedType;");
-        w.println("        private final String description;");
-        w.println("        private final boolean required;");
-        w.println("        private final String defaultValue;");
+        w.println("        private final Class<?> _type;");
+        w.println("        private final String _description;");
+        w.println("        private final boolean _required;");
+        w.println("        private final String _defaultValue;");
         w.println();
-        w.println("        PropertyKeys(Class<?> expectedType, String description, boolean required, String defaultValue) {");
-        w.println("            this.expectedType = expectedType;");
-        w.println("            this.description = description;");
-        w.println("            this.required = required;");
-        w.println("            this.defaultValue = defaultValue;");
+        w.println("        PropertyKeys(Class<?> type, String description, boolean required, String defaultValue) {");
+        w.println("            this._type = type;");
+        w.println("            this._description = description;");
+        w.println("            this._required = required;");
+        w.println("            this._defaultValue = defaultValue;");
         w.println("        }");
         w.println();
         w.println("        @Override");
-        w.println("        public Class<?> getExpectedType() {");
-        w.println("            return expectedType;");
+        w.println("        public Class<?> getType() {");
+        w.println("            return _type;");
         w.println("        }");
         w.println();
         w.println("        @Override");
         w.println("        public String getDescription() {");
-        w.println("            return description;");
+        w.println("            return _description;");
         w.println("        }");
         w.println();
         w.println("        @Override");
         w.println("        public boolean isRequired() {");
-        w.println("            return required;");
+        w.println("            return _required;");
         w.println("        }");
         w.println();
         w.println("        @Override");
         w.println("        public String getDefaultValue() {");
-        w.println("            return defaultValue;");
+        w.println("            return _defaultValue;");
         w.println("        }");
         w.println("    }");
         w.println();
@@ -737,15 +930,15 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
             w.println(";");
             w.println();
-            w.println("        private final String description;");
+            w.println("        private final String _description;");
             w.println();
             w.println("        FacetKeys(String description) {");
-            w.println("            this.description = description;");
+            w.println("            this._description = description;");
             w.println("        }");
             w.println();
             w.println("        @Override");
             w.println("        public String getDescription() {");
-            w.println("            return description;");
+            w.println("            return _description;");
             w.println("        }");
             w.println();
             w.println("    }");
@@ -775,36 +968,36 @@ public class AnnotationProcessor extends AbstractProcessor {
             w.println(i < events.size() - 1 ? "," : ";");
         }
         w.println();
-        w.println("        private final String name;");
-        w.println("        private final Class<? extends BehaviorEvent> type;");
-        w.println("        private final String description;");
-        w.println("        private final boolean implicit;");
+        w.println("        private final String _name;");
+        w.println("        private final Class<? extends BehaviorEvent> _type;");
+        w.println("        private final String _description;");
+        w.println("        private final boolean _implicit;");
         w.println();
         w.println("        ClientBehaviorEventKeys(String name, Class<? extends BehaviorEvent> type, String description, boolean implicit) {");
-        w.println("            this.name = name;");
-        w.println("            this.type = type;");
-        w.println("            this.description = description;");
-        w.println("            this.implicit = implicit;");
+        w.println("            this._name = name;");
+        w.println("            this._type = type;");
+        w.println("            this._description = description;");
+        w.println("            this._implicit = implicit;");
         w.println("        }");
         w.println();
         w.println("        @Override");
         w.println("        public String getName() {");
-        w.println("            return name;");
+        w.println("            return _name;");
         w.println("        }");
         w.println();
         w.println("        @Override");
         w.println("        public Class<? extends BehaviorEvent> getType() {");
-        w.println("            return type;");
+        w.println("            return _type;");
         w.println("        }");
         w.println();
         w.println("        @Override");
         w.println("        public String getDescription() {");
-        w.println("            return description;");
+        w.println("            return _description;");
         w.println("        }");
         w.println();
         w.println("        @Override");
         w.println("        public boolean isImplicit() {");
-        w.println("            return implicit;");
+        w.println("            return _implicit;");
         w.println("        }");
         w.println("    }");
         w.println();
@@ -894,14 +1087,11 @@ public class AnnotationProcessor extends AbstractProcessor {
     private void writeGetter(PrintWriter w, PropertyInfo p) {
         if (p.getGetterElement() == null) return;
 
-        String type = p.getReturnType();
+        String type = p.getType();
         String methodName = p.getGetterElement().getSimpleName().toString();
 
-        String defaultValue = null;
-        if (p.getAnnotation() != null && !p.getAnnotation().defaultValue().isEmpty()) {
-            defaultValue = p.getAnnotation().defaultValue();
-        }
-        else {
+        String defaultValue = p.getDefaultValue();
+        if (defaultValue == null || defaultValue.isBlank()) {
             defaultValue = getDefaultValueForPrimitive(type);
         }
 
@@ -951,8 +1141,12 @@ public class AnnotationProcessor extends AbstractProcessor {
      * Writes a property setter method with StateHelper access.
      */
     private void writeSetter(PrintWriter w, PropertyInfo p) {
+        if (!p.isGenerateSetter()) {
+            return;
+        }
+
         String setterName = "set" + capitalize(p.getName());
-        String type = p.getReturnType();
+        String type = p.getType();
 
         if (p.getSetterElement() != null) {
             w.println("    @Override");
