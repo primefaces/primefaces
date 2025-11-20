@@ -68,9 +68,6 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
     @Facet(description = "Allows to add custom action to the titlebar.")
     public abstract UIComponent getActionsFacet();
 
-    @Property(description = "Name of the client side widget.")
-    public abstract String getWidgetVar();
-
     @Property(description = "Header text.")
     public abstract String getHeader();
 

@@ -38,7 +38,8 @@ public abstract class AjaxExceptionHandlerBase extends UIComponentBase implement
 
         onexception,
         update,
-        type;
+        type,
+        widgetVar;
     }
 
     public AjaxExceptionHandlerBase() {
@@ -74,4 +75,12 @@ public abstract class AjaxExceptionHandlerBase extends UIComponentBase implement
         getStateHelper().put(PropertyKeys.type, type);
     }
 
+    @Override
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
+    }
+
+    public void setWidgetVar(java.lang.String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
 }

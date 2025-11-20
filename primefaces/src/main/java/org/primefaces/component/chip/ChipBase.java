@@ -43,7 +43,7 @@ public abstract class ChipBase extends UIComponentBase implements Widget, Client
         removable,
         removeIcon,
         style,
-        styleClass
+        styleClass;
     }
 
     public ChipBase() {
@@ -111,4 +111,12 @@ public abstract class ChipBase extends UIComponentBase implements Widget, Client
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
+    @Override
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
+    }
+
+    public void setWidgetVar(java.lang.String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
 }
