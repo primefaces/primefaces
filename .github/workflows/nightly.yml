@@ -48,7 +48,7 @@ jobs:
             profile: 'chrome,client-state-saving,theme-nova,mojarra-4.1'
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Setup firefox
         uses: browser-actions/setup-firefox@v1
       - name: Set up JDK ${{ matrix.java }}
