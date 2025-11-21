@@ -75,9 +75,18 @@ PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if (cfg.preventPaste) {
-            //disable paste
+            // Safari requires this to prevent paste from clipboard
+            input.on('beforeinput', function (e) {
+                if (e.originalEvent && e.originalEvent.inputType === 'insertFromPaste') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+
+            // disable paste as a safety measure on all browsers
             input.on('paste', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
             });
         }
     }
