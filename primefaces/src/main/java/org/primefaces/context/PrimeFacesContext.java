@@ -23,6 +23,7 @@
  */
 package org.primefaces.context;
 
+import org.primefaces.application.resource.BooleanAwareResponseWriter;
 import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
 import org.primefaces.application.resource.MoveScriptsToBottomState;
 import org.primefaces.config.PrimeConfiguration;
@@ -89,7 +90,8 @@ public class PrimeFacesContext extends FacesContextWrapper {
         ResponseWriter wrappedWriter = writer;
         while (wrappedWriter != null) {
             if (wrappedWriter instanceof ResponseWriterWrapper) {
-                if (wrappedWriter instanceof MoveScriptsToBottomResponseWriter
+                if (wrappedWriter instanceof BooleanAwareResponseWriter
+                        || wrappedWriter instanceof MoveScriptsToBottomResponseWriter
                         || wrappedWriter instanceof CspResponseWriter) {
                     alreadyWrapped = true;
                     break;
@@ -101,12 +103,14 @@ public class PrimeFacesContext extends FacesContextWrapper {
             }
         }
 
-        if (!alreadyWrapped) {
-            if (csp && !getPartialViewContext().isAjaxRequest()) {
+        if (!alreadyWrapped && !getPartialViewContext().isAjaxRequest()) {
+            writer = new BooleanAwareResponseWriter(writer);
+
+            if (csp) {
                 writer = new CspResponseWriter(writer, cspState);
             }
 
-            if (moveScriptsToBottom && !getPartialViewContext().isAjaxRequest()) {
+            if (moveScriptsToBottom) {
                 writer = new MoveScriptsToBottomResponseWriter(writer, moveScriptsToBottomState);
             }
         }
