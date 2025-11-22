@@ -1769,7 +1769,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     resetColumnsWidth: function() {
         this.bodyTable.find(".ui-datatable-scrollable-theadclone").remove();
         this.cloneTableHeader(this.thead, this.bodyTable);
-    }
+    },
 
     /**
      * Clones a table header and removes duplicate IDs.
