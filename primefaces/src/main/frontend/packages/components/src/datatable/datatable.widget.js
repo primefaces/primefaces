@@ -1596,6 +1596,17 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             column.find(".ui-column-title").remove(); // #11078
             column.prepend('<span class="ui-column-title">' + PrimeFaces.escapeHTML(title) + '</span>');
         }
+
+        var namespace = '.datatable' + this.id;
+        $(document).off("sortstart" + namespace).on("sortstart" + namespace, ".ui-datatable-reflow .ui-sortable", function(event, ui) {
+            PrimeFaces.queueTask(() => {
+                $(".ui-sortable-helper").addClass("ui-datatable-reflow");
+                $(".ui-sortable-placeholder").find("td").attr("role", "gridcell");
+            });
+        });
+        this.addDestroyListener(() => {
+            $(document).off("sortstart" + namespace);
+        });
     }
 
     /**
