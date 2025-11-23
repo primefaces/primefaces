@@ -40,7 +40,7 @@
         return this.on('keypress.keyfilter', function(e) {
             // PF GitHub #1852 / #3785 keyCode.CONTROL and keyCode.ALT
             var key = e.key;
-            if (key === 'Control' || key == 'Alt' || e.ctrlKey || e.altKey) 
+            if (key === 'Control' || key === 'Alt' || key === 'Meta' || e.ctrlKey || e.altKey || e.metaKey)
             {
                 return;
             }
