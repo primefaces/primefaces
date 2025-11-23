@@ -29,12 +29,14 @@ public class BehaviorEventInfo {
     private final String eventClass;
     private final String description;
     private final boolean implicit;
+    private final boolean defaultEvent;
 
-    public BehaviorEventInfo(String name, String eventClass, String description, boolean implicit) {
+    public BehaviorEventInfo(String name, String eventClass, String description, boolean implicit, boolean defaultEvent) {
         this.name = name;
         this.eventClass = eventClass;
         this.description = description;
         this.implicit = implicit;
+        this.defaultEvent = defaultEvent;
     }
 
     public String getName() {
@@ -51,5 +53,9 @@ public class BehaviorEventInfo {
 
     public boolean isImplicit() {
         return implicit;
+    }
+
+    public boolean isDefaultEvent() {
+        return defaultEvent;
     }
 }

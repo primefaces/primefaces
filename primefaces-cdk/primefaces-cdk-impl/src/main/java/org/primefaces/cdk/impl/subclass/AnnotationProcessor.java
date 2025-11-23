@@ -453,6 +453,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         String eventClass = null;
         String description = "";
         boolean implicit = false;
+        boolean defaultEvent = false;
 
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
                 eventAnnotation.getElementValues().entrySet()) {
@@ -472,11 +473,14 @@ public class AnnotationProcessor extends AbstractProcessor {
                 case "implicit":
                     implicit = (boolean) entry.getValue().getValue();
                     break;
+                case "defaultEvent":
+                    defaultEvent = (boolean) entry.getValue().getValue();
+                    break;
             }
         }
 
         if (name != null && eventClass != null) {
-            return new BehaviorEventInfo(name, eventClass, description, implicit);
+            return new BehaviorEventInfo(name, eventClass, description, implicit, defaultEvent);
         }
 
         return null;
@@ -958,6 +962,8 @@ public class AnnotationProcessor extends AbstractProcessor {
     private void writeClientBehaviorEventKeys(PrintWriter w, List<BehaviorEventInfo> events, boolean hasEvents) {
         if (!hasEvents) return;
 
+        BehaviorEventInfo defaultEvent = null;
+
         // BehaviorEventKeys enum
         w.println("    public enum ClientBehaviorEventKeys implements " + PrimeClientBehaviorEventKeys.class.getName() + " {");
         for (int i = 0; i < events.size(); i++) {
@@ -966,6 +972,9 @@ public class AnnotationProcessor extends AbstractProcessor {
             w.print("        " + event.getName() + "(\"" + event.getName() + "\", " +
                     event.getEventClass() + ".class, \"" + description + "\", " + event.isImplicit() + ")");
             w.println(i < events.size() - 1 ? "," : ";");
+            if (event.isDefaultEvent()) {
+                defaultEvent = event;
+            }
         }
         w.println();
         w.println("        private final String _name;");
@@ -1025,6 +1034,12 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("    @Override");
         w.println("    public " + PrimeClientBehaviorEventKeys.class.getName() + "[] getClientBehaviorEventKeys() {");
         w.println("        return ClientBehaviorEventKeys.values();");
+        w.println("    }");
+        w.println();
+
+        w.println("    @Override");
+        w.println("    public String getDefaultEventName() {");
+        w.println("        return " + (defaultEvent != null ? "\"" + defaultEvent.getName() + "\"" : "null") + ";");
         w.println("    }");
         w.println();
 

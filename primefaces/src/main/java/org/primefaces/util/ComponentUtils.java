@@ -309,7 +309,7 @@ public class ComponentUtils {
     }
 
     public static boolean isTouchable(FacesContext context, TouchAware component) {
-        Boolean local = component.isTouchable();
+        Boolean local = component.getTouchable();
         if (local != null) {
             return local;
         }

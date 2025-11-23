@@ -247,7 +247,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
             .add(active, AccordionPanel.ACTIVE_TAB_CONTENT_CLASS, AccordionPanel.INACTIVE_TAB_CONTENT_CLASS)
             .build();
 
-        UIComponent titleFacet = tab.getFacet("title");
+        UIComponent titleFacet = tab.getTitleFacet();
         String title = tab.getTitle();
         String tabindex = tab.isDisabled() ? "-1" : component.getTabindex();
 
@@ -291,7 +291,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
         }
 
         //actions
-        UIComponent actionsFacet = tab.getFacet("actions");
+        UIComponent actionsFacet = tab.getActionsFacet();
         if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);

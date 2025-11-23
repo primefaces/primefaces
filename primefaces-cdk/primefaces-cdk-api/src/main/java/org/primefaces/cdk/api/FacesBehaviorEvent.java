@@ -84,4 +84,14 @@ public @interface FacesBehaviorEvent {
      * @return true if this is an implicit/built-in event, false otherwise
      */
     boolean implicit() default false;
+
+    /**
+     * Whether this is the default event.
+     *
+     * <p>When true, the event is the default event for the component. For example, TabViews's "tabChange" event
+     * is the default event because it is the event that is fired when the user switches to a different tab.</p>
+     *
+     * @return true if this is the default event, false otherwise
+     */
+    boolean defaultEvent() default false;
 }

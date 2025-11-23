@@ -23,25 +23,15 @@
  */
 package org.primefaces.component.tabview;
 
-import jakarta.faces.component.UIPanel;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIPanel;
 
 public abstract class TabBase extends UIPanel {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public enum PropertyKeys {
-
-        title,
-        titleStyle,
-        titleStyleClass,
-        disabled,
-        closable,
-        titletip,
-        ariaLabel,
-        menuTitle,
-        key
-    }
 
     public TabBase() {
         setRendererType(null);
@@ -52,76 +42,40 @@ public abstract class TabBase extends UIPanel {
         return COMPONENT_FAMILY;
     }
 
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
+    @Facet(description = "Allows to add custom action to the tab header.")
+    public abstract UIComponent getActionsFacet();
 
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
+    @Facet(description = "Allows to add custom options to the tab header.")
+    public abstract UIComponent getOptionsFacet();
 
-    public String getTitleStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.titleStyle, null);
-    }
+    @Facet(description = "Allows to place HTML in the title. Alternative to title.")
+    public abstract UIComponent getTitleFacet();
 
-    public void setTitleStyle(String titleStyle) {
-        getStateHelper().put(PropertyKeys.titleStyle, titleStyle);
-    }
+    @Property(description = "Title text of the tab.")
+    public abstract String getTitle();
 
-    public String getTitleStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.titleStyleClass, null);
-    }
+    @Property(description = "Inline style of the tab title.")
+    public abstract String getTitleStyle();
 
-    public void setTitleStyleClass(String titleStyleClass) {
-        getStateHelper().put(PropertyKeys.titleStyleClass, titleStyleClass);
-    }
+    @Property(description = "Style class of the tab title.")
+    public abstract String getTitleStyleClass();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(defaultValue = "false", description = "When true, tab cannot be activated. Default is false.")
+    public abstract boolean isDisabled();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(defaultValue = "false", description = "When true, tab can be closed. Default is false.")
+    public abstract boolean isClosable();
 
-    public boolean isClosable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.closable, false);
-    }
+    @Property(description = "Tooltip text of the tab title.")
+    public abstract String getTitletip();
 
-    public void setClosable(boolean closable) {
-        getStateHelper().put(PropertyKeys.closable, closable);
-    }
+    @Property(description = "Label for screen readers.")
+    public abstract String getAriaLabel();
 
-    public String getTitletip() {
-        return (String) getStateHelper().eval(PropertyKeys.titletip, null);
-    }
+    @Property(description = "Title text for the menu.")
+    public abstract String getMenuTitle();
 
-    public void setTitletip(String titletip) {
-        getStateHelper().put(PropertyKeys.titletip, titletip);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
-
-    public String getMenuTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.menuTitle, null);
-    }
-
-    public void setMenuTitle(String menuTitle) {
-        getStateHelper().put(PropertyKeys.menuTitle, menuTitle);
-    }
-
-    public String getKey() {
-        return (String) getStateHelper().eval(PropertyKeys.key, null);
-    }
-
-    public void setKey(String key) {
-        getStateHelper().put(PropertyKeys.key, key);
-    }
+    @Property(description = "Unique key to identify the tab.")
+    public abstract String getKey();
 
 }
