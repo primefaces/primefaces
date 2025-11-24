@@ -28,9 +28,8 @@ import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.component.media.player.PDFPlayer;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.Lazy;
 
 import java.io.IOException;
 import java.util.Map;
@@ -51,9 +50,7 @@ public class MediaRenderer extends CoreRenderer<Media> {
         ResponseWriter writer = context.getResponseWriter();
         String src;
         try {
-            src = DynamicContentSrcBuilder.build(context, component,
-                    component.getValueExpression(Media.PropertyKeys.value.name()),
-                    new Lazy<>(() -> component.getValue()), component.isCache(), true);
+            src = component.resolveSource(context, component);
         }
         catch (Exception ex) {
             throw new IOException(ex);
@@ -82,7 +79,7 @@ public class MediaRenderer extends CoreRenderer<Media> {
             writer.writeAttribute("class", component.getStyleClass(), null);
         }
 
-        renderPassThruAttributes(context, component, Media.MEDIA_ATTRS);
+        renderPassThruAttributes(context, component, HTML.MEDIA_ATTRS);
 
         if (sourceParam != null) {
             encodeParam(writer, player.getSourceParam(), src, false);

@@ -201,14 +201,19 @@ public class HTML {
         "currentTime",
         "defaultMuted",
         "defaultPlaybackRate",
-        "disableremoteplayback",
         "disablepictureinpicture",
+        "disableremoteplayback",
+        "height",
         "loop",
         "muted",
         "playbackRate",
         "playsinline",
+        "poster",
         "preload",
-        "volume"
+        "style",
+        "usemap",
+        "volume",
+        "width"
     );
 
     public static final List<String> MEDIA_EVENTS = LangUtils.unmodifiableList(
