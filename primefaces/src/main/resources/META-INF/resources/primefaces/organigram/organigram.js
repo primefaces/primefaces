@@ -308,7 +308,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
                 .end()
                 .html();
 
-        var node = $("<div>");
+        var node = $("<div></div>");
 
         // copy class and style from source
         node.attr("class", nodeSource.attr("class"));
