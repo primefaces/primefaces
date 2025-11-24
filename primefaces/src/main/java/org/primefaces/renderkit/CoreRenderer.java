@@ -911,13 +911,37 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         ComponentUtils.encodeIndexedId(context, component, index);
     }
 
-    protected boolean endsWithLenghtUnit(String val) {
-        return val.endsWith("px") || val.endsWith("%") // most common first
-                || val.endsWith("cm") || val.endsWith("mm") || val.endsWith("in")
-                || val.endsWith("pt") || val.endsWith("pc")
-                || val.endsWith("em") || val.endsWith("ex") || val.endsWith("ch") || val.endsWith("rem")
-                || val.endsWith("vw") || val.endsWith("vh")
-                || val.endsWith("vmin") || val.endsWith("vmax");
+    /**
+     * Determines if the given CSS value ends with a valid CSS length unit.
+     * Handles the common units and basic "calc()" function (removes a single trailing ')').
+     *
+     * @param val a CSS value string, possibly with a unit, or ending with ')'
+     * @return true if the value ends with a recognized CSS length unit, false otherwise
+     */
+    protected boolean endsWithLengthUnit(String val) {
+        if (LangUtils.isBlank(val)) {
+            return false;
+        }
+        // #14395 support calc() CSS function by stripping a single trailing ')'
+        if (val.endsWith(")")) {
+            val = val.substring(0, val.length() - 1);
+        }
+        // Array of common CSS length units
+        final String[] units = {
+            "px", "%", // most common first
+            "cm", "mm", "in",
+            "pt", "pc",
+            "em", "ex", "ch", "rem",
+            "vw", "vh", "vmin", "vmax"
+        };
+
+        for (int i = 0; i < units.length; i++) {
+            String unit = units[i];
+            if (val.endsWith(unit)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
