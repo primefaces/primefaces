@@ -5854,8 +5854,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             this.updateExpandedRowsColspan();
         }
 
-        // reset the column widths if the table has an auto layout
-        if(this.scrollBody && this.isAutoLayout()) {
+        // reset the position and column widths if scrollable
+        if(this.scrollBody) {
             // reset scroll position to left-top.
             this.scrollBody.scrollTop(0).scrollLeft(0); 
 
