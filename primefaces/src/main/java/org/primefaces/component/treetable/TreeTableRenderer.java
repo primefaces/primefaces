@@ -666,7 +666,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (width != null) {
-            String unit = endsWithLenghtUnit(width) ? Constants.EMPTY_STRING : "px";
+            String unit = endsWithLengthUnit(width) ? Constants.EMPTY_STRING : "px";
             if (style != null) {
                 style = style + ";width:" + width + unit;
             }
