@@ -1764,6 +1764,15 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
+     * Resets the column widths of this DataTable.
+     * @protected
+     */
+    resetColumnsWidth() {
+        this.bodyTable.find(".ui-datatable-scrollable-theadclone").remove();
+        this.cloneTableHeader(this.thead, this.bodyTable);
+    }
+
+    /**
      * Clones a table header and removes duplicate IDs.
      * @private
      * @param {JQuery} thead The head (`THEAD`) of the table to clone.
@@ -1771,17 +1780,56 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @return {JQuery} The cloned table head.
      */
     cloneTableHeader(thead, table) {
-        var clone = thead.clone();
-        clone.find('th').each(function() {
-            var header = $(this);
-            header.attr('id', header.attr('id') + '_clone');
-            header.removeAttr('aria-label');
-            header.children().not('.ui-column-title').remove();
-            header.children('.ui-column-title').children().remove();
-        });
-        clone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(table);
+        const theadClone = thead.clone();
+        const firstRow = this.firstRow();
+        const isAutoLayout = firstRow.length > 0 && this.isAutoLayout();
 
-        return clone;
+        if (isAutoLayout) {
+            theadClone.find("th").each(function() {
+                $(this).css({width: "", minWidth: ""}); // clear out width so table-layout:auto is properly recalculated
+            });
+            theadClone.insertBefore(this.tbody);
+        }
+
+        theadClone.find("th").each(function(i) {
+            const th = $(this);
+
+            if (isAutoLayout) {
+                const td = firstRow.find("td").eq(i);
+                const width = td.width();
+                th.css({width: width + "px"}).data("width", width); // remember width in data so minWidth can be set after prependTo
+            }
+
+            th.attr("id", th.attr("id") + "_clone");
+            th.removeAttr("aria-label");
+            th.children().not(".ui-column-title").remove();
+            th.children(".ui-column-title").children().remove();
+        });
+
+        theadClone.removeAttr("id").addClass("ui-datatable-scrollable-theadclone").height(0).prependTo(table);
+
+        if (isAutoLayout) {
+            thead.find("th").each(function(i) {
+                const th = $(this);
+                const thClone = theadClone.find("th").eq(i);
+                const width = thClone.data("width"); // because setting minWidth doesn't work before prependTo
+                th.css({width: width + "px", minWidth: width + "px"});
+                thClone.css({width: width + "px", minWidth: width + "px"});
+            });
+
+            if (!thead.data("resizeTimer")) {
+                thead.data("resizeTimer", true);
+                const thiz = this;
+                var resizeTimer;
+    
+                $(window).on('resize', function() {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(thiz.resetColumnsWidth.bind(thiz), 100);
+                });
+            }
+        }
+
+        return theadClone;
     }
 
     /**
@@ -4584,12 +4632,31 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
+     * Checks whether this DataTable has got an auto layout.
+     * @protected
+     * @return {boolean} `true` if this DataTable has got an auto layout, or `false` otherwise.
+     */
+    isAutoLayout() {
+        return $(this.jq).find("table").css("table-layout") === "auto";
+    }
+
+    /**
+     * Retrieves the first data row in the table body, excluding any empty message rows.
+     * This is used to calculate the proper column widths.
+     * @protected
+     * @returns {JQuery} The first table row that does not have the 'ui-datatable-empty-message' class.
+     */
+    firstRow() {
+        return this.tbody.find("tr:not(.ui-datatable-empty-message)").first(); 
+    }
+
+    /**
      * Adds and sets up an invisible row for internal purposes.
      * @protected
      */
     addGhostRow() {
-        var firstRow = this.tbody.find('tr:first');
-        if(firstRow.hasClass('ui-datatable-empty-message')) {
+        const firstRow = this.firstRow();
+        if(firstRow.length === 0) {
             return;
         }
 
@@ -5785,6 +5852,18 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         // update the colspan of the expanded rows
         if(this.cfg.expansion) {
             this.updateExpandedRowsColspan();
+        }
+
+        // reset the position and column widths if scrollable
+        if(this.scrollBody) {
+            // reset scroll position to left-top.
+            this.scrollBody.scrollTop(0).scrollLeft(0); 
+
+            // reset the column widths if the first row exists
+            const firstRow = this.firstRow();
+            if (firstRow.length && this.isAutoLayout()) {
+                this.resetColumnsWidth();
+            }
         }
     }
 
