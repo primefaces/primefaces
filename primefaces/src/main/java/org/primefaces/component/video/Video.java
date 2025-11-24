@@ -34,6 +34,7 @@ public class Video extends UIMedia {
     public static final String CONTAINER_CLASS = "ui-media ui-video";
 
     public enum PropertyKeys {
+        controls,
         width,
         height,
         preload,
@@ -47,6 +48,14 @@ public class Video extends UIMedia {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public boolean isControls() {
+        return (boolean) getStateHelper().eval(PropertyKeys.controls, true);
+    }
+
+    public void setControls(boolean controls) {
+        getStateHelper().put(PropertyKeys.controls, controls);
     }
 
     public String getWidth() {
