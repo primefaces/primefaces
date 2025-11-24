@@ -76,7 +76,7 @@ import jakarta.faces.render.Renderer;
  * Most of the code is copied from MyFaces.
  */
 @SuppressWarnings("unchecked")
-public abstract class UITabPanel extends UIPanel implements NamingContainer {
+public abstract class UITabPanelBase extends UIPanel implements NamingContainer {
 
     private static final DataModel<?> EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
 
@@ -84,7 +84,7 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
 
     private static final Object[] LEAF_NO_STATE = new Object[]{null, null};
 
-    private static final String SB_ID = UITabPanel.class.getName() + "#id";
+    private static final String SB_ID = UITabPanelBase.class.getName() + "#id";
 
     // Holds for each row the states of the child components of this UIData.
     // Note that only "partial" component state is saved: the component fields
@@ -130,32 +130,8 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
     @Property(defaultValue = "true", description = "Whether to prepend the component id to its children. Default is true.")
     public abstract boolean isPrependId();
 
-    public void setVar(String var) {
-        getStateHelper().put("var", var);
-    }
-
-    public void setSize(int size) {
-        getStateHelper().put("size", size);
-    }
-
-    public void setVarStatus(String varStatus) {
-        getStateHelper().put("varStatus", varStatus);
-    }
-
-    public void setOffset(int offset) {
-        getStateHelper().put("offset", offset);
-    }
-
     public void setStep(int step) {
         getStateHelper().put("step", step);
-    }
-
-    public void setDynamic(boolean dynamic) {
-        getStateHelper().put("dynamic", dynamic);
-    }
-
-    public void setPrependId(boolean prependId) {
-        getStateHelper().put("prependId", prependId);
     }
 
     // Concrete setters for internal use
@@ -1399,7 +1375,7 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
         private final FacesEvent _target;
         private final int _index;
 
-        public IndexedEvent(UITabPanel owner, FacesEvent target, int index) {
+        public IndexedEvent(UITabPanelBase owner, FacesEvent target, int index) {
             super(owner);
             _target = target;
             _index = index;
@@ -1422,7 +1398,7 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
 
         @Override
         public void processListener(FacesListener listener) {
-            UITabPanel owner = (UITabPanel) getComponent();
+            UITabPanelBase owner = (UITabPanelBase) getComponent();
 
             // safe the current index, count aside
             final int prevIndex = owner._index;

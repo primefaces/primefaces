@@ -26,14 +26,14 @@ package org.primefaces.component.galleria;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.UITabPanelBase;
 import org.primefaces.component.api.Widget;
 
 import java.util.List;
 
 import jakarta.faces.component.UIComponent;
 
-public abstract class GalleriaBase extends UITabPanel implements Widget, PrimeClientBehaviorHolder {
+public abstract class GalleriaBase extends UITabPanelBase implements Widget, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

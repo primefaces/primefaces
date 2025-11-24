@@ -27,7 +27,7 @@ import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.TouchAware;
-import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.UITabPanelBase;
 import org.primefaces.component.api.UITable;
 import org.primefaces.component.poll.PollBase;
 import org.primefaces.config.PrimeConfiguration;
@@ -573,7 +573,7 @@ public class ComponentUtils {
         UIComponent parent = component;
         while (null != (parent = parent.getParent())) {
             if (parent instanceof jakarta.faces.component.UIData || isUIRepeat(parent)
-                    || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
+                    || (parent instanceof UITabPanelBase && ((UITabPanelBase) parent).isRepeating())) {
                 return true;
             }
         }
