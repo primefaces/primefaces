@@ -326,12 +326,11 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     }
 
     @Override
-    public Boolean isTouchable() {
+    public Boolean getTouchable() {
         return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
     }
 
-    @Override
-    public void setTouchable(Boolean touchable) {
+    public void setTouchable(boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 

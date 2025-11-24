@@ -240,7 +240,7 @@ public class CarouselRenderer extends CoreRenderer<Carousel> {
     protected void encodeHeader(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String headerText = component.getHeaderText();
-        UIComponent facet = component.getFacet("header");
+        UIComponent facet = component.getHeaderFacet();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (headerText == null && !shouldRenderFacet) {
@@ -263,7 +263,7 @@ public class CarouselRenderer extends CoreRenderer<Carousel> {
     protected void encodeFooter(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String footerText = component.getFooterText();
-        UIComponent facet = component.getFacet("footer");
+        UIComponent facet = component.getFooterFacet();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (footerText == null && !shouldRenderFacet) {

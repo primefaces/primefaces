@@ -85,11 +85,10 @@ public class UIPageableData extends PrimeUIData implements Pageable, TouchAware 
     }
 
     @Override
-    public Boolean isTouchable() {
+    public Boolean getTouchable() {
         return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
     }
 
-    @Override
     public void setTouchable(Boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
     }

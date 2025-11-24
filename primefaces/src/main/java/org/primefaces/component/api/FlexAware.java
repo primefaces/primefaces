@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
+
 /**
  * Use PrimeFlex instead Grid CSS
  */
@@ -33,5 +35,6 @@ public interface FlexAware {
      *
      * @return true to use PrimeFlex instead of Grid CSS.
      */
+    @Property(description = "Use modern FlexGrid CSS for this component. Default is false.")
     Boolean getFlex();
 }

@@ -23,43 +23,28 @@
  */
 package org.primefaces.component.carousel;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
-import org.primefaces.model.ResponsiveOption;
+import org.primefaces.event.PageChangeEvent;
 
 import java.util.List;
 
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UIComponent;
 
-public abstract class CarouselBase extends UITabPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, TouchAware {
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "pageChange", event = PageChangeEvent.class, description = "Fires when a page is changed.", defaultEvent = true)
+})
+public abstract class CarouselBase extends UITabPanel implements Widget, PrimeClientBehaviorHolder, TouchAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CarouselRenderer";
-
-    public enum PropertyKeys {
-        widgetVar,
-        page,
-        paginator,
-        circular,
-        autoplayInterval,
-        numVisible,
-        numScroll,
-        responsiveOptions,
-        orientation,
-        verticalViewPortHeight,
-        style,
-        styleClass,
-        contentStyleClass,
-        containerStyleClass,
-        indicatorsContentStyleClass,
-        headerText,
-        footerText,
-        touchable,
-        onPageChange
-    }
 
     public CarouselBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -70,157 +55,62 @@ public abstract class CarouselBase extends UITabPanel implements Widget, ClientB
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Facet(description = "Allows to place HTML in the header. Alternative to headerText.")
+    public abstract UIComponent getHeaderFacet();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
+    public abstract UIComponent getFooterFacet();
 
-    public int getPage() {
-        return (Integer) getStateHelper().eval(PropertyKeys.page, 0);
-    }
+    @Property(defaultValue = "0", description = "Index of the first page. Default is 0.")
+    public abstract int getPage();
 
-    public void setPage(int page) {
-        getStateHelper().put(PropertyKeys.page, page);
-    }
+    @Property(defaultValue = "true", description = "When enabled, displays paginator. Default is true.")
+    public abstract boolean isPaginator();
 
-    public boolean isCircular() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.circular, false);
-    }
+    @Property(defaultValue = "false", description = "Defines if scrolling would be infinite. Default is false.")
+    public abstract boolean isCircular();
 
-    public void setCircular(boolean circular) {
-        getStateHelper().put(PropertyKeys.circular, circular);
-    }
+    @Property(defaultValue = "0", description = "Time in milliseconds to scroll items automatically. Default is 0 (disabled).")
+    public abstract int getAutoplayInterval();
 
-    public int getAutoplayInterval() {
-        return (Integer) getStateHelper().eval(PropertyKeys.autoplayInterval, 0);
-    }
+    @Property(defaultValue = "1", description = "Number of items per page. Default is 1.")
+    public abstract int getNumVisible();
 
-    public void setAutoplayInterval(int autoplayInterval) {
-        getStateHelper().put(PropertyKeys.autoplayInterval, autoplayInterval);
-    }
+    @Property(defaultValue = "1", description = "Number of items to scroll. Default is 1.")
+    public abstract int getNumScroll();
 
-    public int getNumVisible() {
-        return (Integer) getStateHelper().eval(PropertyKeys.numVisible, 1);
-    }
+    @Property(description = "A list of breakpoint ResponsiveOption for responsive design.")
+    public abstract List getResponsiveOptions();
 
-    public void setNumVisible(int numVisible) {
-        getStateHelper().put(PropertyKeys.numVisible, numVisible);
-    }
+    @Property(defaultValue = "horizontal", description = "Specifies the layout of the component, valid values are \"horizontal\" and \"vertical\". "
+        + "Default is horizontal.")
+    public abstract String getOrientation();
 
-    public int getNumScroll() {
-        return (Integer) getStateHelper().eval(PropertyKeys.numScroll, 1);
-    }
+    @Property(defaultValue = "300px", description = "Height of the viewport in vertical layout. Default is 300px.")
+    public abstract String getVerticalViewPortHeight();
 
-    public void setNumScroll(int numScroll) {
-        getStateHelper().put(PropertyKeys.numScroll, numScroll);
-    }
+    @Property(description = "Inline style of the carousel.")
+    public abstract String getStyle();
 
-    public List<ResponsiveOption> getResponsiveOptions() {
-        return (List<ResponsiveOption>) getStateHelper().eval(PropertyKeys.responsiveOptions, null);
-    }
+    @Property(description = "Style class of the carousel.")
+    public abstract String getStyleClass();
 
-    public void setResponsiveOptions(List<ResponsiveOption> responsiveOptions) {
-        getStateHelper().put(PropertyKeys.responsiveOptions, responsiveOptions);
-    }
+    @Property(description = "Style class of the carousel content.")
+    public abstract String getContentStyleClass();
 
-    public String getOrientation() {
-        return (String) getStateHelper().eval(PropertyKeys.orientation, "horizontal");
-    }
+    @Property(description = "Style class of the carousel container.")
+    public abstract String getContainerStyleClass();
 
-    public void setOrientation(String orientation) {
-        getStateHelper().put(PropertyKeys.orientation, orientation);
-    }
+    @Property(description = "Style class of the carousel indicators content.")
+    public abstract String getIndicatorsContentStyleClass();
 
-    public String getVerticalViewPortHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.verticalViewPortHeight, "300px");
-    }
+    @Property(description = "Text content of the header.")
+    public abstract String getHeaderText();
 
-    public void setVerticalViewPortHeight(String verticalViewPortHeight) {
-        getStateHelper().put(PropertyKeys.verticalViewPortHeight, verticalViewPortHeight);
-    }
+    @Property(description = "Text content of the footer.")
+    public abstract String getFooterText();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Client side callback to execute when a page is changed.")
+    public abstract String getOnPageChange();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getContentStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, null);
-    }
-
-    public void setContentStyleClass(String contentStyleClass) {
-        getStateHelper().put(PropertyKeys.contentStyleClass, contentStyleClass);
-    }
-
-    public String getContainerStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.containerStyleClass, null);
-    }
-
-    public void setContainerStyleClass(String containerStyleClass) {
-        getStateHelper().put(PropertyKeys.containerStyleClass, containerStyleClass);
-    }
-
-    public String getIndicatorsContentStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.indicatorsContentStyleClass, null);
-    }
-
-    public void setIndicatorsContentStyleClass(String indicatorsContentStyleClass) {
-        getStateHelper().put(PropertyKeys.indicatorsContentStyleClass, indicatorsContentStyleClass);
-    }
-
-    public String getHeaderText() {
-        return (String) getStateHelper().eval(PropertyKeys.headerText, null);
-    }
-
-    public void setHeaderText(String headerText) {
-        getStateHelper().put(PropertyKeys.headerText, headerText);
-    }
-
-    public String getFooterText() {
-        return (String) getStateHelper().eval(PropertyKeys.footerText, null);
-    }
-
-    public void setFooterText(String footerText) {
-        getStateHelper().put(PropertyKeys.footerText, footerText);
-    }
-
-    @Override
-    public Boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
-    }
-
-    @Override
-    public void setTouchable(Boolean touchable) {
-        getStateHelper().put(PropertyKeys.touchable, touchable);
-    }
-
-    public String getOnPageChange() {
-        return (String) getStateHelper().eval(PropertyKeys.onPageChange, null);
-    }
-
-    public void setOnPageChange(String onPageChange) {
-        getStateHelper().put(PropertyKeys.onPageChange, onPageChange);
-    }
-
-    public boolean isPaginator() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.paginator, true);
-    }
-
-    public void setPaginator(boolean paginator) {
-        getStateHelper().put(PropertyKeys.paginator, paginator);
-    }
 }

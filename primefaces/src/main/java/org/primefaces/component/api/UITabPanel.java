@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -75,7 +76,7 @@ import jakarta.faces.render.Renderer;
  * Most of the code is copied from MyFaces.
  */
 @SuppressWarnings("unchecked")
-public class UITabPanel extends UIPanel implements NamingContainer {
+public abstract class UITabPanel extends UIPanel implements NamingContainer {
 
     private static final DataModel<?> EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
 
@@ -105,73 +106,65 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     private Object _origValue;
     private Object _origVarStatus;
 
-    public enum PropertyKeys {
-        value,
-        var,
-        size,
-        varStatus,
-        offset,
-        step,
-        dynamic,
-        prependId
-    }
+    @Property(description = "Value binding expression to a data model.")
+    public abstract Object getValue();
 
-    public int getOffset() {
-        return (Integer) getStateHelper().eval(PropertyKeys.offset, 0);
-    }
+    @Property(description = "Name of the request-scoped variable used to reference each data object in the iteration.")
+    public abstract String getVar();
 
-    public void setOffset(int offset) {
-        getStateHelper().put(PropertyKeys.offset, offset);
-    }
+    @Property(defaultValue = "-1", description = "Maximum number of items to iterate. Default is -1 (all items).")
+    public abstract int getSize();
 
-    public int getSize() {
-        return (Integer) getStateHelper().eval(PropertyKeys.size, -1);
+    @Property(description = "Name of the request-scoped variable used to expose the iteration status.")
+    public abstract String getVarStatus();
+
+    @Property(defaultValue = "0", description = "Index of the first item to iterate. Default is 0.")
+    public abstract int getOffset();
+
+    @Property(defaultValue = "1", description = "Step size for iteration. Default is 1.")
+    public abstract int getStep();
+
+    @Property(description = "When enabled, only active tab contents are rendered. Default is false.")
+    public abstract boolean isDynamic();
+
+    @Property(defaultValue = "true", description = "Whether to prepend the component id to its children. Default is true.")
+    public abstract boolean isPrependId();
+
+    public void setVar(String var) {
+        getStateHelper().put("var", var);
     }
 
     public void setSize(int size) {
-        getStateHelper().put(PropertyKeys.size, size);
-    }
-
-    public int getStep() {
-        return (Integer) getStateHelper().eval(PropertyKeys.step, 1);
-    }
-
-    public void setStep(int step) {
-        getStateHelper().put(PropertyKeys.step, step);
-    }
-
-    public String getVar() {
-        return (String) getStateHelper().get(PropertyKeys.var);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
-
-    public String getVarStatus() {
-        return (String) getStateHelper().get(PropertyKeys.varStatus);
+        getStateHelper().put("size", size);
     }
 
     public void setVarStatus(String varStatus) {
-        getStateHelper().put(PropertyKeys.varStatus, varStatus);
+        getStateHelper().put("varStatus", varStatus);
     }
 
-    public boolean isDynamic() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+    public void setOffset(int offset) {
+        getStateHelper().put("offset", offset);
     }
 
-    public void setDynamic(boolean _dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, _dynamic);
+    public void setStep(int step) {
+        getStateHelper().put("step", step);
     }
 
-    public boolean isPrependId() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.prependId, true);
+    public void setDynamic(boolean dynamic) {
+        getStateHelper().put("dynamic", dynamic);
     }
 
-    public void setPrependId(boolean _prependId) {
-        getStateHelper().put(PropertyKeys.prependId, _prependId);
+    public void setPrependId(boolean prependId) {
+        getStateHelper().put("prependId", prependId);
     }
 
+    // Concrete setters for internal use
+    public void setValue(Object value) {
+        getStateHelper().put("value", value);
+        _dataModelMap.clear();
+        _rowStates.clear();
+        _isValidChilds = true;
+    }
     protected DataModel<?> getDataModel() {
         String clientID = "";
 
@@ -226,17 +219,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             throw new IllegalArgumentException("name " + name);
         }
         super.setValueExpression(name, binding);
-    }
-
-    public Object getValue() {
-        return getStateHelper().eval(PropertyKeys.value);
-    }
-
-    public void setValue(Object value) {
-        getStateHelper().put(PropertyKeys.value, value);
-        _dataModelMap.clear();
-        _rowStates.clear();
-        _isValidChilds = true;
     }
 
     @Override
