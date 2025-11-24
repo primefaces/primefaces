@@ -5861,7 +5861,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
             // reset the column widths if the first row exists
             const firstRow = this.firstRow();
-            if (firstRow.length) {
+            if (firstRow.length && this.isAutoLayout()) {
                 this.resetColumnsWidth();
             }
         }
