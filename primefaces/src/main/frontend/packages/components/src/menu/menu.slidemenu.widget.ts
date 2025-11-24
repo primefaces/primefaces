@@ -118,10 +118,17 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
                $this.forward(submenu);
                e.preventDefault();
             }
+        })
+        .on("focus", function() {
+            $(this).addClass('ui-state-focus');
+        })
+        .on("blur", function() {
+            $(this).removeClass('ui-state-focus');
         });
 
-        this.backward.on("click", () => {
-            this.back();
+        this.backward.on("click", function(e) {
+            $this.back();
+            e.preventDefault();
         });
     }
 
@@ -147,6 +154,9 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
                 _self.backward.fadeIn('fast');
             }
         });
+        this.backwardButton = _self.backward.children('ui-menuitem-link');
+        this.backwardButton.attr('tabindex', 0);
+        this.changeTabindex();
     }
 
     /**
@@ -172,6 +182,9 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
                 }
             });
         }
+        this.backwardButton = _self.backward.children('ui-menuitem-link');
+        this.backwardButton.attr('tabindex', -1);
+        this.changeTabindex();
     }
 
     /**
@@ -210,10 +223,15 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
      * Renders the client-side parts of this widget.
      */
     private render(): void {
+        this.menuList = this.backward.children('ul.ui-menu-list');
+        this.menuItem = this.menuList.children('li.ui-menuitem ');
+        this.backButton = this.menuItem.children('a.ui-menuitem-link');
+
         this.submenus.width(this.jq.width() ?? 0);
-        this.wrapper.height((this.rootList.outerHeight(true) ?? 0) + (this.backward.outerHeight(true) ?? 0));
+        this.wrapper.height((this.rootList.outerHeight(true) ?? 0) + (this.backButton.outerHeight(true) ?? 0));
         this.content.height(this.rootList.outerHeight(true) ?? 0);
         this.rendered = true;
+        this.backward.attr('style', 'display: none;');
     }
 
     override show(): void {
@@ -231,5 +249,17 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
                 }
             });
         }
+    }
+
+    /**
+    * Change the tabindex of the menu elements
+    * @private
+    */
+    private changeTabindex() {
+        this.linksActive = this.jq.find('a.ui-menuitem-link[tabindex=0]');
+        this.linksInactive = this.jq.find('a.ui-menuitem-link[tabindex=-1]');
+
+        this.linksActive.attr('tabindex', -1);
+        this.linksInactive.attr('tabindex', 0);
     }
 }
