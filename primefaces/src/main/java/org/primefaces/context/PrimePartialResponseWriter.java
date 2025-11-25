@@ -208,7 +208,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             startEval();
 
             for (String initScript : initScripts) {
-                getWrapped().write(initScript);
+                getWrapped().write(EscapeUtils.forXml(initScript));
                 getWrapped().write(';');
             }
 
@@ -217,7 +217,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
         for (String script : scripts) {
             startExtension(CALLBACK_EXTENSION_SCRIPTS);
-            getWrapped().write(script);
+            getWrapped().write(EscapeUtils.forXml(script));
             endExtension();
         }
     }
