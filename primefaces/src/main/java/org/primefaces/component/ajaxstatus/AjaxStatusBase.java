@@ -57,8 +57,8 @@ public abstract class AjaxStatusBase extends UIComponentBase implements Widget {
     @Facet(description = "Facet to show content when AJAX request fails with error.")
     public abstract UIComponent getErrorFacet();
 
-    @Facet(description = "Default facet to show content when there is no current AJAX activity.")
-    public abstract UIComponent getDefaultStatusFacet();
+    @Facet(description = "Default facet to show when there is no AJAX request in progress.")
+    public abstract UIComponent getDefaultFacet();
 
     @Property(description = "Delay in milliseconds before showing the status.", defaultValue = "0")
     public abstract int getDelay();

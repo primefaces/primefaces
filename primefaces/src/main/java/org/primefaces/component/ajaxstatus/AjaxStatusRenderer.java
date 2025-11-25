@@ -90,7 +90,7 @@ public class AjaxStatusRenderer extends CoreRenderer<AjaxStatus> {
             encodeFacet(context, clientId, errorFacet, AjaxStatus.ERROR, true);
         }
 
-        UIComponent defaultFacet = component.getDefaultStatusFacet();
+        UIComponent defaultFacet = component.getDefaultFacet();
         if (FacetUtils.shouldRenderFacet(defaultFacet)) {
             encodeFacet(context, clientId, defaultFacet, AjaxStatus.DEFAULT, false);
         }
