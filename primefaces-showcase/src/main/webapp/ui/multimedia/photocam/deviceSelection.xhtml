@@ -59,7 +59,7 @@
                 var deviceSelector = document.querySelector("select.photoCamDevices");
                 var availableDevices = photoCam.getAvailableDevices();
                 if (availableDevices) {
-                    availableDevices.then(devices => { 
+                    availableDevices.then(devices => {
                             while (deviceSelector.options.length > 3) {
                                 deviceSelector.remove(3);
                             }
