@@ -267,13 +267,7 @@ public class ComponentUtils {
     }
 
     public static void decodeBehaviors(FacesContext context, UIComponent component) {
-        if (!(component instanceof ClientBehaviorHolder)) {
-            return;
-        }
-
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String partialSource = params.get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
-        if (partialSource != null && !component.getClientId().equals(partialSource)) {
+        if (!(component instanceof ClientBehaviorHolder) || !isRequestSource(component, context)) {
             return;
         }
 
@@ -287,6 +281,7 @@ public class ComponentUtils {
             return;
         }
 
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String behaviorEvent = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         if (behaviorEvent != null) {
             List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
