@@ -271,6 +271,12 @@ public class ComponentUtils {
             return;
         }
 
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String partialSource = params.get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
+        if (partialSource != null && !component.getClientId().equals(partialSource)) {
+            return;
+        }
+
         if (component instanceof AjaxSource && component.getValueExpression("oncomplete") != null) {
             PhaseId phaseId = isImmediate(component) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION;
             component.queueEvent(new DynamicOncompleteEvent(component, (AjaxSource) component, phaseId));
@@ -281,20 +287,12 @@ public class ComponentUtils {
             return;
         }
 
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String behaviorEvent = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-
-        if (null != behaviorEvent) {
+        if (behaviorEvent != null) {
             List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
-
             if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
-                String behaviorSource = params.get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
-                String clientId = component.getClientId(context);
-
-                if (behaviorSource != null && clientId.equals(behaviorSource)) {
-                    for (ClientBehavior behavior : behaviorsForEvent) {
-                        behavior.decode(context, component);
-                    }
+                for (ClientBehavior behavior : behaviorsForEvent) {
+                    behavior.decode(context, component);
                 }
             }
         }
