@@ -50,7 +50,7 @@ public class MediaRenderer extends CoreRenderer<Media> {
         ResponseWriter writer = context.getResponseWriter();
         String src;
         try {
-            src = component.resolveSource(context, component);
+            src = component.resolveSource(context);
         }
         catch (Exception ex) {
             throw new IOException(ex);
