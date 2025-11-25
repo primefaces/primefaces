@@ -28,9 +28,9 @@
                         <ui:repeat var="prop" value="#{cc.attrs.value.properties}">
                             <tr>
                                 <td scope="col">#{prop.name}</td>
-                                <td scope="col">#{prop.type}</td>
+                                <td scope="col">#{prop.type.getName()}</td>
                                 <td scope="col">#{prop.required}</td>
-                                <td scope="col">#{prop.defaultValue}</td>
+                                <td scope="col">#{componentDocumentationController.resolveDefaultValue(prop)}</td>
                                 <td scope="col">#{prop.description}</td>
                             </tr>
                         </ui:repeat>

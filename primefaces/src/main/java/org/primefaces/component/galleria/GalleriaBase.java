@@ -72,63 +72,63 @@ public abstract class GalleriaBase extends UITabPanel implements Widget, PrimeCl
     @Property(description = "Style class of the container element.")
     public abstract String getStyleClass();
 
-    @Property(defaultValue = "0", description = "Index of the first item. Default is 0.")
+    @Property(defaultValue = "0", description = "Index of the first item.")
     public abstract int getActiveIndex();
 
-    @Property(defaultValue = "false", description = "Whether to display the component on fullscreen. Default is false.")
+    @Property(defaultValue = "false", description = "Whether to display the component on fullscreen.")
     public abstract boolean isFullScreen();
 
     @Property(description = "Close icon on fullscreen mode.")
     public abstract String getCloseIcon();
 
-    @Property(defaultValue = "3", description = "Number of items per page. Default is 3.")
+    @Property(defaultValue = "3", description = "Number of items per page.")
     public abstract int getNumVisible();
 
     @Property(description = "A list of breakpoint ResponsiveOption for responsive design.")
     public abstract List getResponsiveOptions();
 
-    @Property(defaultValue = "true", description = "Whether to display thumbnail container. Default is true.")
+    @Property(defaultValue = "true", description = "Whether to display thumbnail container.")
     public abstract boolean isShowThumbnails();
 
-    @Property(defaultValue = "false", description = "Whether to display indicator container. Default is false.")
+    @Property(defaultValue = "false", description = "Whether to display indicator container.")
     public abstract boolean isShowIndicators();
 
-    @Property(defaultValue = "false", description = "When enabled, indicator container is displayed on item container. Default is false.")
+    @Property(defaultValue = "false", description = "When enabled, indicator container is displayed on item container.")
     public abstract boolean isShowIndicatorsOnItem();
 
-    @Property(defaultValue = "false", description = "Whether to display caption container. Default is false.")
+    @Property(defaultValue = "false", description = "Whether to display caption container.")
     public abstract boolean isShowCaption();
 
-    @Property(defaultValue = "false", description = "Whether to display item navigators. Default is false.")
+    @Property(defaultValue = "false", description = "Whether to display item navigators..")
     public abstract boolean isShowItemNavigators();
 
-    @Property(defaultValue = "true", description = "Whether to display thumbnail navigators. Default is true.")
+    @Property(defaultValue = "true", description = "Whether to display thumbnail navigators.")
     public abstract boolean isShowThumbnailNavigators();
 
-    @Property(defaultValue = "false", description = "Whether to display item navigators on hover. Default is false.")
+    @Property(defaultValue = "false", description = "Whether to display item navigators on hover.")
     public abstract boolean isShowItemNavigatorsOnHover();
 
-    @Property(defaultValue = "false", description = "Whether to change item on indicator hover. Default is false.")
+    @Property(defaultValue = "false", description = "Whether to change item on indicator hover.")
     public abstract boolean isChangeItemOnIndicatorHover();
 
-    @Property(defaultValue = "false", description = "Defines if scrolling would be infinite. Default is false.")
+    @Property(defaultValue = "false", description = "Defines if scrolling would be infinite.")
     public abstract boolean isCircular();
 
-    @Property(defaultValue = "false", description = "Enables autoplay for the gallery. Default is false.")
+    @Property(defaultValue = "false", description = "Enables autoplay for the gallery.")
     public abstract boolean isAutoPlay();
 
-    @Property(defaultValue = "4000", description = "Time in milliseconds between item transitions. Default is 4000.")
+    @Property(defaultValue = "4000", description = "Time in milliseconds between item transitions.")
     public abstract int getTransitionInterval();
 
-    @Property(defaultValue = "bottom", description = "Position of thumbnails. Valid values are \"bottom\", \"top\", \"left\" and \"right\". Default is bottom.")
+    @Property(defaultValue = "bottom", description = "Position of thumbnails. Valid values are \"bottom\", \"top\", \"left\" and \"right\".")
     public abstract String getThumbnailsPosition();
 
-    @Property(defaultValue = "450px", description = "Height of the viewport in vertical layout. Default is 450px.")
+    @Property(defaultValue = "450px", description = "Height of the viewport in vertical layout.")
     public abstract String getVerticalViewPortHeight();
 
-    @Property(defaultValue = "bottom", description = "Position of indicators. Valid values are \"bottom\", \"top\", \"left\" and \"right\". Default is bottom.")
+    @Property(defaultValue = "bottom", description = "Position of indicators. Valid values are \"bottom\", \"top\", \"left\" and \"right\".")
     public abstract String getIndicatorsPosition();
 
-    @Property(defaultValue = "0", description = "Specifies the tab order of element in tab navigation. Default is 0.")
+    @Property(defaultValue = "0", description = "Specifies the tab order of element in tab navigation.")
     public abstract String getTabindex();
 }

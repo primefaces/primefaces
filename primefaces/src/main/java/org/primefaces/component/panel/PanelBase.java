@@ -74,10 +74,10 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
     @Property(description = "Footer text.")
     public abstract String getFooter();
 
-    @Property(description = "Makes panel toggleable. Default is false.")
+    @Property(description = "Makes panel toggleable.")
     public abstract boolean isToggleable();
 
-    @Property(defaultValue = "500", description = "Speed of toggling in milliseconds. Default is 500")
+    @Property(defaultValue = "500", description = "Speed of toggling in milliseconds.")
     public abstract int getToggleSpeed();
 
     @Property(description = "Style of the panel.")
@@ -86,16 +86,16 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
     @Property(description = "Style class of the panel.")
     public abstract String getStyleClass();
 
-    @Property(description = "Renders a toggleable panel as collapsed. Default is false.")
+    @Property(description = "Renders a toggleable panel as collapsed.")
     public abstract boolean isCollapsed();
 
-    @Property(description = "Make panel closable. Default is false.")
+    @Property(description = "Make panel closable.")
     public abstract boolean isClosable();
 
-    @Property(defaultValue = "500", description = "Speed of closing effect in milliseconds. Default is 500.")
+    @Property(defaultValue = "500", description = "Speed of closing effect in milliseconds.")
     public abstract int getCloseSpeed();
 
-    @Property(defaultValue = "true", description = "Renders panel as hidden. Default is true.")
+    @Property(defaultValue = "true", description = "Renders panel as hidden.")
     public abstract boolean isVisible();
 
     @Property(description = "Title label for closer element of closable panel.")
@@ -110,9 +110,9 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
     @Property(defaultValue = "vertical", description = "Defines the orientation of the toggle animation, valid values are \"vertical\" and \"horizontal\".")
     public abstract String getToggleOrientation();
 
-    @Property(description = "Defines if the panel is toggleable by clicking on the whole panel header. Default is false.")
+    @Property(description = "Defines if the panel is toggleable by clicking on the whole panel header.")
     public abstract boolean isToggleableHeader();
 
-    @Property(description = "Render facets even if their children are not rendered. Default is false.")
+    @Property(description = "Render facets even if their children are not rendered.")
     public abstract boolean isRenderEmptyFacets();
 }

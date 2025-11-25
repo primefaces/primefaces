@@ -32,6 +32,7 @@ import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.PageChangeEvent;
+import org.primefaces.model.ResponsiveOption;
 
 import java.util.List;
 
@@ -61,32 +62,31 @@ public abstract class CarouselBase extends UITabPanel implements Widget, PrimeCl
     @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
     public abstract UIComponent getFooterFacet();
 
-    @Property(defaultValue = "0", description = "Index of the first page. Default is 0.")
+    @Property(defaultValue = "0", description = "Index of the first page.")
     public abstract int getPage();
 
-    @Property(defaultValue = "true", description = "When enabled, displays paginator. Default is true.")
+    @Property(defaultValue = "true", description = "When enabled, displays paginator.")
     public abstract boolean isPaginator();
 
-    @Property(defaultValue = "false", description = "Defines if scrolling would be infinite. Default is false.")
+    @Property(defaultValue = "false", description = "Defines if scrolling would be infinite.")
     public abstract boolean isCircular();
 
-    @Property(defaultValue = "0", description = "Time in milliseconds to scroll items automatically. Default is 0 (disabled).")
+    @Property(defaultValue = "0", description = "Time in milliseconds to scroll items automatically, whereas 0 means disabled.")
     public abstract int getAutoplayInterval();
 
-    @Property(defaultValue = "1", description = "Number of items per page. Default is 1.")
+    @Property(defaultValue = "1", description = "Number of items per page.")
     public abstract int getNumVisible();
 
-    @Property(defaultValue = "1", description = "Number of items to scroll. Default is 1.")
+    @Property(defaultValue = "1", description = "Number of items to scroll.")
     public abstract int getNumScroll();
 
     @Property(description = "A list of breakpoint ResponsiveOption for responsive design.")
-    public abstract List getResponsiveOptions();
+    public abstract List<ResponsiveOption> getResponsiveOptions();
 
-    @Property(defaultValue = "horizontal", description = "Specifies the layout of the component, valid values are \"horizontal\" and \"vertical\". "
-        + "Default is horizontal.")
+    @Property(defaultValue = "horizontal", description = "Specifies the layout of the component, valid values are \"horizontal\" and \"vertical\".")
     public abstract String getOrientation();
 
-    @Property(defaultValue = "300px", description = "Height of the viewport in vertical layout. Default is 300px.")
+    @Property(defaultValue = "300px", description = "Height of the viewport in vertical layout.")
     public abstract String getVerticalViewPortHeight();
 
     @Property(description = "Inline style of the carousel.")

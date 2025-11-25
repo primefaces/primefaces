@@ -298,7 +298,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
         if (!propsMap.containsKey("id")) {
             propsMap.put("id", new PropertyInfo("id", "java.lang.String", null, null,
-                    "Unique identifier of the component in a namingContainer.", "", false));
+                    "Unique identifier of the component in a namingContainer.", "", "", false));
         }
 
         // Build facet infos
@@ -769,7 +769,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                                     break;
                             }
 
-                            PropertyInfo info = new PropertyInfo(keyName, returnType, null, null, description, defaultValue, false);
+                            PropertyInfo info = new PropertyInfo(keyName, returnType, null, null, description, defaultValue, "", false);
                             propertyInfos.add(info);
                         }
                     }
@@ -800,7 +800,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                         String returnType = findPropertyReturnTypeFromElement(element, keyName);
 
                         // Create PropertyInfo with null getter/setter (inherited, no implementation needed)
-                        PropertyInfo info = new PropertyInfo(keyName, returnType, null, null, "", "", false);
+                        PropertyInfo info = new PropertyInfo(keyName, returnType, null, null, "", "", "", false);
                         propertyInfos.add(info);
                     }
                 }
@@ -869,12 +869,19 @@ public class AnnotationProcessor extends AbstractProcessor {
         for (int i = 0; i < props.size(); i++) {
             PropertyInfo prop = props.get(i);
             String type = prop.getType() + ".class";
-            type = type.replace("<?>.class", ".class");
+            type = type.replaceAll("<[^>]+>", "");
             String description = prop.getDescription().replace("\"", "\\\"");
             String defaultValue = prop.getDefaultValue().replace("\"", "\\\"");
+            if (defaultValue.isEmpty()) {
+                defaultValue = getDefaultValueForPrimitive(prop.getType());
+            }
+            if (defaultValue == null) {
+                defaultValue = "";
+            }
+            String implicitDefaultValue = prop.getImplicitDefaultValue().replace("\"", "\\\"");
             boolean required = prop.isRequired();
             w.print("        " + prop.getName() + "(" + type + ", \"" + description + "\", "
-                    + required + ", \"" + defaultValue + "\")");
+                    + required + ", \"" + defaultValue + "\", \"" + implicitDefaultValue + "\")");
             w.println(i < props.size() - 1 ? "," : "");
         }
         w.println(";");
@@ -883,12 +890,14 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("        private final String _description;");
         w.println("        private final boolean _required;");
         w.println("        private final String _defaultValue;");
+        w.println("        private final String _implicitDefaultValue;");
         w.println();
-        w.println("        PropertyKeys(Class<?> type, String description, boolean required, String defaultValue) {");
+        w.println("        PropertyKeys(Class<?> type, String description, boolean required, String defaultValue, String implicitDefaultValue) {");
         w.println("            this._type = type;");
         w.println("            this._description = description;");
         w.println("            this._required = required;");
         w.println("            this._defaultValue = defaultValue;");
+        w.println("            this._implicitDefaultValue = implicitDefaultValue;");
         w.println("        }");
         w.println();
         w.println("        @Override");
@@ -909,6 +918,11 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("        @Override");
         w.println("        public String getDefaultValue() {");
         w.println("            return _defaultValue;");
+        w.println("        }");
+        w.println();
+        w.println("        @Override");
+        w.println("        public String getImplicitDefaultValue() {");
+        w.println("            return _implicitDefaultValue;");
         w.println("        }");
         w.println("    }");
         w.println();

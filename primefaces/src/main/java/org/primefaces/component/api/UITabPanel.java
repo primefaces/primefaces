@@ -112,22 +112,22 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
     @Property(description = "Name of the request-scoped variable used to reference each data object in the iteration.")
     public abstract String getVar();
 
-    @Property(defaultValue = "-1", description = "Maximum number of items to iterate. Default is -1 (all items).")
+    @Property(defaultValue = "-1", description = "Maximum number of items to iterate, whereas -1 means 'all items'.")
     public abstract int getSize();
 
     @Property(description = "Name of the request-scoped variable used to expose the iteration status.")
     public abstract String getVarStatus();
 
-    @Property(defaultValue = "0", description = "Index of the first item to iterate. Default is 0.")
+    @Property(defaultValue = "0", description = "Index of the first item to iterate.")
     public abstract int getOffset();
 
-    @Property(defaultValue = "1", description = "Step size for iteration. Default is 1.")
+    @Property(defaultValue = "1", description = "Step size for iteration.")
     public abstract int getStep();
 
-    @Property(description = "When enabled, only active tab contents are rendered. Default is false.")
+    @Property(description = "When enabled, only active tab contents are rendered.")
     public abstract boolean isDynamic();
 
-    @Property(defaultValue = "true", description = "Whether to prepend the component id to its children. Default is true.")
+    @Property(defaultValue = "true", description = "Whether to prepend the component id to its children.")
     public abstract boolean isPrependId();
 
     public void setVar(String var) {

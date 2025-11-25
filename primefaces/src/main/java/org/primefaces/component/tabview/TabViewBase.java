@@ -64,16 +64,16 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
     @Facet(description = "Allows to add custom action to the tab header.")
     public abstract UIComponent getActionsFacet();
 
-    @Property(defaultValue = "0", description = "Index of the active tab. Default is 0.")
+    @Property(defaultValue = "0", description = "Index of the active tab.")
     public abstract int getActiveIndex();
 
     @Property(description = "Animation effect to use when changing tabs.")
     public abstract String getEffect();
 
-    @Property(defaultValue = "normal", description = "Duration of the animation effect. Default is normal.")
+    @Property(defaultValue = "normal", description = "Duration of the animation effect.")
     public abstract String getEffectDuration();
 
-    @Property(defaultValue = "true", description = "When enabled, dynamically loaded tab contents are cached. Default is true.")
+    @Property(defaultValue = "true", description = "When enabled, dynamically loaded tab contents are cached.")
     public abstract boolean isCache();
 
     @Property(description = "Client side callback to execute when a tab is changed.")
@@ -88,22 +88,21 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
     @Property(description = "Style class of the tab view.")
     public abstract String getStyleClass();
 
-    @Property(defaultValue = "top", description = "Specifies the position of tab headers. Valid values are \"top\", \"bottom\", \"left\" and \"right\"."
-        + " Default is top.")
+    @Property(defaultValue = "top", description = "Specifies the position of tab headers. Valid values are \"top\", \"bottom\", \"left\" and \"right\".")
     public abstract String getOrientation();
 
     @Property(description = "Client side callback to execute when a tab is closed.")
     public abstract String getOnTabClose();
 
-    @Property(defaultValue = "false", description = "When enabled, tabs can be scrolled. Default is false.")
+    @Property(defaultValue = "false", description = "When enabled, tabs can be scrolled.")
     public abstract boolean isScrollable();
 
     @Property(description = "Position of the element in the tabbing order.")
     public abstract String getTabindex();
 
-    @Property(defaultValue = "false", description = "When enabled, focuses on the tab containing the first error on validation failure. Default is false.")
+    @Property(defaultValue = "false", description = "When enabled, focuses on the tab containing the first error on validation failure.")
     public abstract boolean isFocusOnError();
 
-    @Property(defaultValue = "false", description = "When enabled, focuses on the last active tab when the component is rendered. Default is false.")
+    @Property(defaultValue = "false", description = "When enabled, focuses on the last active tab when the component is rendered.")
     public abstract boolean isFocusOnLastActiveTab();
 }

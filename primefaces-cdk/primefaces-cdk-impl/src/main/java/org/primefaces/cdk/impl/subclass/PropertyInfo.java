@@ -36,6 +36,7 @@ public class PropertyInfo {
     private final boolean generateSetter;
     private final String description;
     private final String defaultValue;
+    private final String implicitDefaultValue;
     private final boolean required;
 
     PropertyInfo(String name, String type, ExecutableElement getterElement,
@@ -46,18 +47,20 @@ public class PropertyInfo {
         this.setterElement = setterElement;
         this.description = annotation.description();
         this.defaultValue = annotation.defaultValue();
+        this.implicitDefaultValue = annotation.implicitDefaultValue();
         this.required = annotation.required();
         this.generateSetter = true;
     }
 
     PropertyInfo(String name, String type, ExecutableElement getterElement,
-                 ExecutableElement setterElement, String description, String defaultValue, boolean required) {
+                 ExecutableElement setterElement, String description, String defaultValue, String implicitDefaultValue, boolean required) {
         this.name = name;
         this.type = type;
         this.getterElement = getterElement;
         this.setterElement = setterElement;
         this.description = description;
         this.defaultValue = defaultValue;
+        this.implicitDefaultValue = implicitDefaultValue;
         this.required = required;
         // in this case, this is an extracted property from a parent component without @Property annotation
         // -> skip generation
@@ -94,5 +97,9 @@ public class PropertyInfo {
 
     public boolean isGenerateSetter() {
         return generateSetter;
+    }
+
+    public String getImplicitDefaultValue() {
+        return implicitDefaultValue;
     }
 }

@@ -183,12 +183,14 @@ public final class TaglibUtils {
                 property == null ? null : property.description(),
                 getter == null ? null : getter.getReturnType(),
                 property == null ? false : property.required(),
-                property == null ? null : property.defaultValue());
+                property == null ? null : property.defaultValue(),
+                property == null ? null : property.implicitDefaultValue());
 
         if (propertyInfo.getDescription() == null) {
             switch (name) {
                 case "id":
                     propertyInfo.setDescription("Unique identifier of the component in a namingContainer.");
+                    propertyInfo.setImplicitDefaultValue("generated");
                     break;
                 case "binding":
                     propertyInfo.setDescription("An el expression referring to a server side UIComponent instance in a backing bean.");

@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.Property;
 
 public interface RTLAware {
 
-    @Property(defaultValue = "ltr", description = "Defines text direction, valid values are ltr and rtl. Default is ltr.")
+    @Property(defaultValue = "ltr", description = "Defines text direction, valid values are ltr and rtl.")
     String getDir();
 
     default boolean isRTL() {

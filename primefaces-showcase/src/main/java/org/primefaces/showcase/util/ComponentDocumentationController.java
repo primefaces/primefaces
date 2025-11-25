@@ -28,6 +28,7 @@ import org.primefaces.cdk.api.PrimeFacetKeys;
 import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.component.PrimeClientBehaviorHolder;
 import org.primefaces.cdk.api.component.PrimeComponent;
+import org.primefaces.util.LangUtils;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
@@ -41,6 +42,13 @@ public class ComponentDocumentationController {
 
     private final Component panel = new Component(org.primefaces.component.panel.Panel.class);
     private final Component badge = new Component(org.primefaces.component.badge.Badge.class);
+
+    public String resolveDefaultValue(PrimePropertyKeys property) {
+        if (LangUtils.isNotBlank(property.getImplicitDefaultValue())) {
+            return property.getImplicitDefaultValue();
+        }
+        return property.getDefaultValue();
+    }
 
     public static class Component {
         private final Class<? extends PrimeComponent> clazz;

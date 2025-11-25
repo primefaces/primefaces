@@ -95,4 +95,13 @@ public interface PrimePropertyKeys {
      * @return the default value as a string
      */
     String getDefaultValue();
+
+    /**
+     * Implicit default value for the property.
+     * {@link #getDefaultValue()} is used to generate the default value for the {@link jakarta.faces.component.StateHelper}, whereas
+     * the implicit default value is just for documentation purpose, as the defaults are set "implicit" in javascript.
+     *
+     * @return the implicit default value as a string
+     */
+    String getImplicitDefaultValue();
 }

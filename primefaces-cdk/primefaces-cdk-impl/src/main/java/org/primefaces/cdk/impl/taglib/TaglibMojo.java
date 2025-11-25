@@ -264,9 +264,14 @@ public class TaglibMojo extends AbstractMojo {
             // Add attributes for each property
             for (PropertyInfo propertyInfo : componentInfo.getProperties()) {
                 Element attribute = tag.addElement("attribute");
-                if (propertyInfo.getDescription() != null && !propertyInfo.getDescription().isEmpty()) {
-                    attribute.addElement("description").addCDATA(propertyInfo.getDescription());
+                String description = propertyInfo.getDescription() == null ? "" : propertyInfo.getDescription();
+                if (propertyInfo.getImplicitDefaultValue() != null && !propertyInfo.getImplicitDefaultValue().isEmpty()) {
+                    description += "Default is " + propertyInfo.getImplicitDefaultValue() + ".";
                 }
+                else if (propertyInfo.getDefaultValue() != null && !propertyInfo.getDefaultValue().isEmpty()) {
+                    description += "Default is " + propertyInfo.getDefaultValue() + ".";
+                }
+                attribute.addElement("description").addCDATA(description);
                 attribute.addElement("name").addText(propertyInfo.getName());
                 attribute.addElement("required").addText(String.valueOf(propertyInfo.isRequired()));
                 attribute.addElement("type").addText(propertyInfo.getType().getName());

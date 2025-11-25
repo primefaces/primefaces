@@ -79,14 +79,14 @@ public abstract class AjaxBehaviorBase extends PrimeClientBehavior {
     @Property(description = "Method to process in partial request.")
     public abstract MethodExpression getListener();
 
-    @Property(description = "Timeout in milliseconds for ajax request. Default is 0 (no timeout).", defaultValue = "0")
+    @Property(description = "Timeout in milliseconds for ajax request, whereas 0 means no timeout.", defaultValue = "0")
     public abstract int getTimeout();
 
     @Property(description = "Selector to use when partial submit is on, default is \":input\" to select all descendant inputs "
             + "of a partially processed components.")
     public abstract String getPartialSubmitFilter();
 
-    @Property(description = "Form to serialize for an ajax request. Default is the enclosing form.")
+    @Property(description = "Form to serialize for an ajax request.", implicitDefaultValue = "The enclosing form")
     public abstract String getForm();
 
     @Property(description = "Containers components like, datatable, panel, tabview skip their children if the request owner is them. "
@@ -97,7 +97,6 @@ public abstract class AjaxBehaviorBase extends PrimeClientBehavior {
             defaultValue = "true")
     public abstract boolean isSkipChildren();
 
-    @Property(description = "If true, unresolvable components referenced in the update/process attribute are ignored. "
-            + "Default is 'false' and therefore a ComponentNotFoundException will be thrown.")
+    @Property(description = "If true, unresolvable components (ComponentNotFoundException) referenced in the update/process attribute are ignored.")
     public abstract boolean isIgnoreComponentNotFound();
 }

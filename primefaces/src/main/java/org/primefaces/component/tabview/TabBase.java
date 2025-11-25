@@ -60,10 +60,10 @@ public abstract class TabBase extends UIPanel {
     @Property(description = "Style class of the tab title.")
     public abstract String getTitleStyleClass();
 
-    @Property(defaultValue = "false", description = "When true, tab cannot be activated. Default is false.")
+    @Property(defaultValue = "false", description = "When true, tab cannot be activated.")
     public abstract boolean isDisabled();
 
-    @Property(defaultValue = "false", description = "When true, tab can be closed. Default is false.")
+    @Property(defaultValue = "false", description = "When true, tab can be closed.")
     public abstract boolean isClosable();
 
     @Property(description = "Tooltip text of the tab title.")

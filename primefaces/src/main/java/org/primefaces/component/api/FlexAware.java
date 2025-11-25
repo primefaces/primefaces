@@ -35,6 +35,6 @@ public interface FlexAware {
      *
      * @return true to use PrimeFlex instead of Grid CSS.
      */
-    @Property(description = "Use modern FlexGrid CSS for this component. Default is false.")
+    @Property(description = "Use modern FlexGrid CSS for this component.")
     Boolean getFlex();
 }

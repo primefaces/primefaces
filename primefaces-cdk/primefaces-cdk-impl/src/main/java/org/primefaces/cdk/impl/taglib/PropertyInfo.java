@@ -30,8 +30,9 @@ public class PropertyInfo {
     private Class<?> type;
     private boolean required;
     private String defaultValue;
+    private String implicitDefaultValue;
 
-    public PropertyInfo(String name, String description, Class<?> type, boolean required, String defaultValue) {
+    public PropertyInfo(String name, String description, Class<?> type, boolean required, String defaultValue, String implicitDefaultValue) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -73,6 +74,14 @@ public class PropertyInfo {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public String getImplicitDefaultValue() {
+        return implicitDefaultValue;
+    }
+
+    public void setImplicitDefaultValue(String implicitDefaultValue) {
+        this.implicitDefaultValue = implicitDefaultValue;
     }
 
     @Override

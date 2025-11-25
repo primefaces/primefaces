@@ -57,7 +57,7 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
     @Property(description = "Id of the active tab.")
     public abstract String getActive();
 
-    @Property(defaultValue = "0", description = "Index of the active tab. Default is 0.")
+    @Property(defaultValue = "0", description = "Index of the active tab.")
     public abstract String getActiveIndex();
 
     @Property(description = "Style of the accordion panel.")
@@ -75,19 +75,19 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
     @Property(description = "Client side callback to execute when a tab is closed.")
     public abstract String getOnTabClose();
 
-    @Property(defaultValue = "true", description = "When enabled, dynamically loaded tab contents are cached. Default is true.")
+    @Property(defaultValue = "true", description = "When enabled, dynamically loaded tab contents are cached.")
     public abstract boolean isCache();
 
-    @Property(description = "Allows multiple tabs to be active at the same time. Default is false.")
+    @Property(description = "Allows multiple tabs to be active at the same time.")
     public abstract boolean isMultiple();
 
-    @Property(defaultValue = "0", description = "Position of the element in the tabbing order. Default is 0.")
+    @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")
     public abstract String getTabindex();
 
     @Property(description = "MethodExpression to control tab access.")
     public abstract jakarta.el.MethodExpression getTabController();
 
-    @Property(defaultValue = "500", description = "Speed of toggling in milliseconds. Default is 500.")
+    @Property(defaultValue = "500", description = "Speed of toggling in milliseconds.")
     public abstract int getToggleSpeed();
 
     @Property(description = "Scrolls the active tab into view. Valid values are start, center, end, nearest.")
