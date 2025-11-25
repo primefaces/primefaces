@@ -52,23 +52,31 @@
 
             function populateDeviceMenu() {
                 var photoCam = PF('pc');
-                var deviceSelector = document.querySelector("select");
+                if (!photoCam) {
+                    setTimeout(populateDeviceMenu, 100);
+                    return;
+                }
+                var deviceSelector = document.querySelector("select.photoCamDevices");
                 var availableDevices = photoCam.getAvailableDevices();
                 if (availableDevices) {
-                    availableDevices.then(devices => devices.forEach(device => {
+                    availableDevices.then(devices => { 
+                            while (deviceSelector.options.length > 3) {
+                                deviceSelector.remove(3);
+                            }
+							devices.forEach(device => {
                             var option = document.createElement("option");
-                            option.text = device.label;
+                            option.text = device.label || device.deviceId;
                             option.value = device.deviceId;
                             deviceSelector.appendChild(option);
-                        })
-                    );
+                        });
+                    });
                 } else {
                     console.log("no devices available");
                 }
             }
-
-            populateDeviceMenu();
-
+            document.addEventListener('DOMContentLoaded', function() {
+                populateDeviceMenu();
+            });
             //]]>
 
         </script>
