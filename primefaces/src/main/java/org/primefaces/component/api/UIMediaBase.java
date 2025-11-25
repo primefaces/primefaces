@@ -37,17 +37,17 @@ import jakarta.faces.context.FacesContext;
  */
 public abstract class UIMediaBase extends UIComponentBase {
 
-    public String resolveSource(FacesContext context, UIMediaBase media) throws IOException {
+    public String resolveSource(FacesContext context) throws IOException {
         try {
-            return DynamicContentSrcBuilder.build(context, media, media.getValueExpression("value"),
-                    new Lazy<>(() -> media.getValue()), media.isCache(), true);
+            return DynamicContentSrcBuilder.build(context, this, this.getValueExpression("value"),
+                    new Lazy<>(() -> this.getValue()), this.isCache(), true);
         }
         catch (Exception ex) {
             throw new IOException(ex);
         }
     }
 
-    @Property(defaultValue = "true", description = "Whether to cache the media content. Default is true.")
+    @Property(defaultValue = "true", description = "Whether to cache the media content")
     public abstract boolean isCache();
 
     @Property(description = "Specifies that the media will start playing as soon as it is ready.")
