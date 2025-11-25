@@ -363,7 +363,7 @@ public class AppMenu {
         treeTableMenuItems.add(new MenuItem("Gridlines", "/ui/data/treetable/gridlines"));
         treeTableMenuItems.add(new MenuItem("Selection", "/ui/data/treetable/selection"));
         treeTableMenuItems.add(new MenuItem("Events", "/ui/data/treetable/events"));
-        dataTableMenuItems.add(new MenuItem("Field", "/ui/data/treetable/field"));
+        treeTableMenuItems.add(new MenuItem("Field", "/ui/data/treetable/field"));
         treeTableMenuItems.add(new MenuItem("ContextMenu", "/ui/data/treetable/contextMenu"));
         treeTableMenuItems.add(new MenuItem("Scroll", "/ui/data/treetable/scroll"));
         treeTableMenuItems.add(new MenuItem("Resize", "/ui/data/treetable/resize"));
