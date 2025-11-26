@@ -53,9 +53,7 @@ public interface PrimeClientBehaviorEventKeys {
      *
      * @return the event name
      */
-    default String getName() {
-        return toString();
-    }
+    String getName();
 
     /**
      * Returns the BehaviorEvent class for this event.

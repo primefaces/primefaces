@@ -880,24 +880,31 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
             String implicitDefaultValue = prop.getImplicitDefaultValue().replace("\"", "\\\"");
             boolean required = prop.isRequired();
-            w.print("        " + prop.getName() + "(" + type + ", \"" + description + "\", "
+            w.print("        " + escapeKeyword(prop.getName()) + "(\"" + prop.getName() + "\", " + type + ", \"" + description + "\", "
                     + required + ", \"" + defaultValue + "\", \"" + implicitDefaultValue + "\")");
             w.println(i < props.size() - 1 ? "," : "");
         }
         w.println(";");
         w.println();
+        w.println("        private final String _name;");
         w.println("        private final Class<?> _type;");
         w.println("        private final String _description;");
         w.println("        private final boolean _required;");
         w.println("        private final String _defaultValue;");
         w.println("        private final String _implicitDefaultValue;");
         w.println();
-        w.println("        PropertyKeys(Class<?> type, String description, boolean required, String defaultValue, String implicitDefaultValue) {");
+        w.println("        PropertyKeys(String name, Class<?> type, String description, boolean required, String defaultValue, String implicitDefaultValue) {");
+        w.println("            this._name = name;");
         w.println("            this._type = type;");
         w.println("            this._description = description;");
         w.println("            this._required = required;");
         w.println("            this._defaultValue = defaultValue;");
         w.println("            this._implicitDefaultValue = implicitDefaultValue;");
+        w.println("        }");
+        w.println();
+        w.println("        @Override");
+        w.println("        public String getName() {");
+        w.println("            return _name;");
         w.println("        }");
         w.println();
         w.println("        @Override");
@@ -943,15 +950,22 @@ public class AnnotationProcessor extends AbstractProcessor {
             for (int i = 0; i < facets.size(); i++) {
                 FacetInfo facet = facets.get(i);
                 String description = facet.getAnnotation().description().replace("\"", "\\\"");
-                w.print("        " + facet.getName() + "(\"" + description + "\")");
+                w.print("        " + escapeKeyword(facet.getName()) + "(\"" + facet.getName() + "\", \"" + description + "\")");
                 w.println(i < facets.size() - 1 ? "," : "");
             }
             w.println(";");
             w.println();
+            w.println("        private final String _name;");
             w.println("        private final String _description;");
             w.println();
-            w.println("        FacetKeys(String description) {");
+            w.println("        FacetKeys(String name, String description) {");
+            w.println("            this._name = name;");
             w.println("            this._description = description;");
+            w.println("        }");
+            w.println();
+            w.println("        @Override");
+            w.println("        public String getName() {");
+            w.println("            return _name;");
             w.println("        }");
             w.println();
             w.println("        @Override");
@@ -983,7 +997,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         for (int i = 0; i < events.size(); i++) {
             BehaviorEventInfo event = events.get(i);
             String description = event.getDescription().replace("\"", "\\\"");
-            w.print("        " + event.getName() + "(\"" + event.getName() + "\", " +
+            w.print("        " + escapeKeyword(event.getName()) + "(\"" + event.getName() + "\", " +
                     event.getEventClass() + ".class, \"" + description + "\", " + event.isImplicit() + ")");
             w.println(i < events.size() - 1 ? "," : ";");
             if (event.isDefaultEvent()) {
@@ -1105,7 +1119,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         w.println("    @Override");
         w.println("    public UIComponent " + methodName + "() {");
-        w.println("        return getFacet(FacetKeys." + f.getName() + ");");
+        w.println("        return getFacet(FacetKeys." + escapeKeyword(f.getName()) + ");");
         w.println("    }");
         w.println();
     }
@@ -1129,15 +1143,15 @@ public class AnnotationProcessor extends AbstractProcessor {
         if (defaultValue != null) {
             if (String.class.getName().equals(type)) {
                 w.println("        return (" + type + ") getStateHelper().eval(PropertyKeys." +
-                        p.getName() + ", \"" + defaultValue + "\");");
+                        escapeKeyword(p.getName()) + ", \"" + defaultValue + "\");");
             }
             else {
                 w.println("        return (" + type + ") getStateHelper().eval(PropertyKeys." +
-                        p.getName() + ", " + defaultValue + ");");
+                        escapeKeyword(p.getName()) + ", " + defaultValue + ");");
             }
         }
         else {
-            w.println("        return (" + type + ") getStateHelper().eval(PropertyKeys." + p.getName() + ");");
+            w.println("        return (" + type + ") getStateHelper().eval(PropertyKeys." + escapeKeyword(p.getName()) + ");");
         }
         w.println("    }");
         w.println();
@@ -1180,8 +1194,8 @@ public class AnnotationProcessor extends AbstractProcessor {
         if (p.getSetterElement() != null) {
             w.println("    @Override");
         }
-        w.println("    public void " + setterName + "(" + type + " " + p.getName() + ") {");
-        w.println("        getStateHelper().put(PropertyKeys." + p.getName() + ", " + p.getName() + ");");
+        w.println("    public void " + setterName + "(" + type + " " + escapeKeyword(p.getName()) + ") {");
+        w.println("        getStateHelper().put(PropertyKeys." + escapeKeyword(p.getName()) + ", " + escapeKeyword(p.getName()) + ");");
         w.println("    }");
         w.println();
     }
@@ -1215,5 +1229,22 @@ public class AnnotationProcessor extends AbstractProcessor {
     private String capitalize(String s) {
         if (s == null || s.isEmpty()) return s;
         return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
+
+    private String escapeKeyword(String name) {
+        String[] javaKeywords = {
+            "abstract", "assert", "boolean", "break", "byte",
+            "case", "catch", "char", "class", "const",
+            "continue", "default", "do", "double", "else",
+            "enum", "extends", "final", "finally", "float",
+            "for", "goto", "if", "implements", "import",
+            "instanceof", "int", "interface", "long", "native",
+            "new", "package", "private", "protected", "public",
+            "return", "short", "static", "strictfp", "super",
+            "switch", "synchronized", "this", "throw", "throws",
+            "transient", "try", "void", "volatile", "while",
+            "true", "false", "null"
+        };
+        return Arrays.asList(javaKeywords).contains(name) ? "_" + name : name;
     }
 }

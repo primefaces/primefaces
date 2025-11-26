@@ -25,6 +25,7 @@ package org.primefaces.cdk.impl.taglib;
 
 import org.primefaces.cdk.api.FacesBehaviorHandler;
 import org.primefaces.cdk.api.Function;
+import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
 
 import java.lang.reflect.Field;
@@ -284,6 +285,9 @@ public final class TaglibUtils {
 
                     for (Object enumConstant : enumConstants) {
                         String propertyName = ((Enum<?>) enumConstant).name();
+                        if (enumConstant instanceof PrimePropertyKeys) {
+                            propertyName = ((PrimePropertyKeys) enumConstant).getName();
+                        }
 
                         if (properties.contains(propertyName)) {
                             continue;

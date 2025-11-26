@@ -47,9 +47,7 @@ public interface PrimeFacetKeys {
      *
      * @return the facet name
      */
-    default String getName() {
-        return toString();
-    }
+    String getName();
 
     /**
      * Description of the facet for documentation.

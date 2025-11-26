@@ -68,9 +68,7 @@ public interface PrimePropertyKeys {
      *
      * @return the property name
      */
-    default String getName() {
-        return toString();
-    }
+    String getName();
 
     /**
      * Description of the property for documentation and taglib generation.
