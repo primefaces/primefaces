@@ -23,29 +23,16 @@
  */
 package org.primefaces.component.avatar;
 
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
+
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class AvatarBase extends UIComponentBase {
+public abstract class AvatarBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AvatarRenderer";
-
-    public enum PropertyKeys {
-        label,
-        icon,
-        size,
-        shape,
-        dynamicColor,
-        title,
-        style,
-        styleClass,
-        gravatar,
-        gravatarConfig,
-        saturation,
-        lightness,
-        alpha
-    }
 
     public AvatarBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -56,108 +43,37 @@ public abstract class AvatarBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.label, null);
-    }
+    @Property(description = "Text to display inside the avatar.")
+    public abstract String getLabel();
 
-    public void setLabel(String label) {
-        getStateHelper().put(PropertyKeys.label, label);
-    }
+    @Property(description = "Icon of the avatar.")
+    public abstract String getIcon();
 
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
+    @Property(description = "Size of the avatar, valid options are \"large\" and \"xlarge\".")
+    public abstract String getSize();
 
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
+    @Property(defaultValue = "square", description = "Shape of the avatar, valid options are \"square\" and \"circle\".")
+    public abstract String getShape();
 
-    public String getSize() {
-        return (String) getStateHelper().eval(PropertyKeys.size, null);
-    }
+    @Property(defaultValue = "false", description = "Whether to generate a dynamic color based on the label.")
+    public abstract boolean isDynamicColor();
 
-    public void setSize(String size) {
-        getStateHelper().put(PropertyKeys.size, size);
-    }
+    @Property(description = "Title attribute of the avatar.")
+    public abstract String getTitle();
 
-    public String getShape() {
-        return (String) getStateHelper().eval(PropertyKeys.shape, "square");
-    }
+    @Property(description = "Gravatar email address.")
+    public abstract String getGravatar();
 
-    public void setShape(String shape) {
-        getStateHelper().put(PropertyKeys.shape, shape);
-    }
+    @Property(description = "Gravatar configuration parameters.")
+    public abstract String getGravatarConfig();
 
-    public boolean isDynamicColor() {
-        return (Boolean) getStateHelper().eval(AvatarBase.PropertyKeys.dynamicColor, false);
-    }
+    @Property(defaultValue = "100", description = "Saturation value for dynamic color generation (0-100).")
+    public abstract Integer getSaturation();
 
-    public void setDynamicColor(boolean dynamicColor) {
-        getStateHelper().put(AvatarBase.PropertyKeys.dynamicColor, dynamicColor);
-    }
+    @Property(defaultValue = "40", description = "Lightness value for dynamic color generation (0-100).")
+    public abstract Integer getLightness();
 
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, getLabel());
-    }
-
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getGravatar() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.gravatar, null);
-    }
-
-    public void setGravatar(String gravatar) {
-        getStateHelper().put(AvatarBase.PropertyKeys.gravatar, gravatar);
-    }
-
-    public String getGravatarConfig() {
-        return (String) getStateHelper().eval(AvatarBase.PropertyKeys.gravatarConfig, null);
-    }
-
-    public void setGravatarConfig(String gravatarConfig) {
-        getStateHelper().put(AvatarBase.PropertyKeys.gravatarConfig, gravatarConfig);
-    }
-
-    public Integer getSaturation() {
-        return (Integer) getStateHelper().eval(PropertyKeys.saturation, 100);
-    }
-
-    public void setSaturation(Integer size) {
-        getStateHelper().put(PropertyKeys.saturation, size);
-    }
-
-    public Integer getLightness() {
-        return (Integer) getStateHelper().eval(PropertyKeys.lightness, 40);
-    }
-
-    public void setLightness(Integer size) {
-        getStateHelper().put(PropertyKeys.lightness, size);
-    }
-
-    public Integer getAlpha() {
-        return (Integer) getStateHelper().eval(PropertyKeys.alpha, 100);
-    }
-
-    public void setAlpha(Integer size) {
-        getStateHelper().put(PropertyKeys.alpha, size);
-    }
+    @Property(defaultValue = "100", description = "Alpha value for dynamic color generation (0-100).")
+    public abstract Integer getAlpha();
 
 }

@@ -21,25 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.avatargroup;
+package org.primefaces.component.api;
 
-import org.primefaces.component.api.StyleAware;
+import org.primefaces.cdk.api.Property;
+/**
+ * An interface for components that have support for styling via inline styles and CSS classes.
+ * <p>
+ * Components implementing this interface provide methods to get the inline style and style class properties,
+ * allowing customization of the appearance either directly or via theming.
+ * </p>
+ */
+public interface StyleAware {
 
-import jakarta.faces.component.UIComponentBase;
+    @Property(description = "Inline style of the component.")
+    String getStyle();
 
-public abstract class AvatarGroupBase extends UIComponentBase implements StyleAware {
-
-    public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.AvatarGroupRenderer";
-
-    public AvatarGroupBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
+    @Property(description = "Style class of the component.")
+    String getStyleClass();
 
 }

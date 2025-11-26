@@ -35,7 +35,7 @@ import jakarta.faces.context.FacesContext;
 /**
  * Base class for HTML5 audio and video components.
  */
-public abstract class UIMediaBase extends UIComponentBase {
+public abstract class UIMediaBase extends UIComponentBase implements StyleAware {
 
     public String resolveSource(FacesContext context) throws IOException {
         try {
@@ -166,12 +166,6 @@ public abstract class UIMediaBase extends UIComponentBase {
 
     @Property(description = "Specifies if and how the author thinks the media should be loaded when the page loads. Values are auto, metadata, and none.")
     public abstract String getPreload();
-
-    @Property(description = "Inline style of the media component.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the media component.")
-    public abstract String getStyleClass();
 
     @Property(description = "Media source value.")
     public abstract Object getValue();

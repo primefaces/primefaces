@@ -26,6 +26,7 @@ package org.primefaces.component.galleria;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 
@@ -33,7 +34,7 @@ import java.util.List;
 
 import jakarta.faces.component.UIComponent;
 
-public abstract class GalleriaBase extends UITabPanel implements Widget, PrimeClientBehaviorHolder {
+public abstract class GalleriaBase extends UITabPanel implements Widget, PrimeClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -65,12 +66,6 @@ public abstract class GalleriaBase extends UITabPanel implements Widget, PrimeCl
 
     @Property(description = "Value binding expression to a data model.")
     public abstract Object getValue();
-
-    @Property(description = "Inline style of the container element.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the container element.")
-    public abstract String getStyleClass();
 
     @Property(defaultValue = "0", description = "Index of the first item.")
     public abstract int getActiveIndex();

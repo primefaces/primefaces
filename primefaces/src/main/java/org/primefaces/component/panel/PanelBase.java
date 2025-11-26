@@ -28,6 +28,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.ToggleEvent;
@@ -40,7 +41,7 @@ import jakarta.faces.component.behavior.ClientBehaviorHolder;
     @FacesBehaviorEvent(name = "toggle", event = ToggleEvent.class, description = "Fires when panel is toggled.", defaultEvent = true),
     @FacesBehaviorEvent(name = "close", event = CloseEvent.class, description = "Fires when panel is closed.")
 })
-public abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder,
+public abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder, StyleAware,
         MultiViewStateAware<PanelState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -79,12 +80,6 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
 
     @Property(defaultValue = "500", description = "Speed of toggling in milliseconds.")
     public abstract int getToggleSpeed();
-
-    @Property(description = "Style of the panel.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the panel.")
-    public abstract String getStyleClass();
 
     @Property(description = "Renders a toggleable panel as collapsed.")
     public abstract boolean isCollapsed();

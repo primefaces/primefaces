@@ -30,6 +30,7 @@ import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
@@ -42,7 +43,7 @@ import jakarta.faces.component.UIComponent;
     @FacesBehaviorEvent(name = "tabChange", event = TabChangeEvent.class, description = "Fires when a tab is changed.", defaultEvent = true),
     @FacesBehaviorEvent(name = "tabClose", event = TabCloseEvent.class, description = "Fires when a tab is closed.")
 })
-public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, TouchAware, PrimeClientBehaviorHolder,
+public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, StyleAware, TouchAware, PrimeClientBehaviorHolder,
         MultiViewStateAware<TabViewState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -81,12 +82,6 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
 
     @Property(description = "Client side callback to execute when a tab is shown.")
     public abstract String getOnTabShow();
-
-    @Property(description = "Inline style of the tab view.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the tab view.")
-    public abstract String getStyleClass();
 
     @Property(defaultValue = "top", description = "Specifies the position of tab headers. Valid values are \"top\", \"bottom\", \"left\" and \"right\".")
     public abstract String getOrientation();
