@@ -23,24 +23,16 @@
  */
 package org.primefaces.component.ajaxexceptionhandler;
 
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
-
 
 public abstract class AjaxExceptionHandlerBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AjaxExceptionHandlerRenderer";
-
-    public enum PropertyKeys {
-
-        onexception,
-        update,
-        type,
-        widgetVar;
-    }
 
     public AjaxExceptionHandlerBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -51,36 +43,12 @@ public abstract class AjaxExceptionHandlerBase extends UIComponentBase implement
         return COMPONENT_FAMILY;
     }
 
-    public String getOnexception() {
-        return (String) getStateHelper().eval(PropertyKeys.onexception, null);
-    }
+    @Property(description = "Client-side callback to execute when an exception occurs.")
+    public abstract String getOnexception();
 
-    public void setOnexception(String onexception) {
-        getStateHelper().put(PropertyKeys.onexception, onexception);
-    }
+    @Property(description = "Component(s) to update after exception handling.")
+    public abstract String getUpdate();
 
-    public String getUpdate() {
-        return (String) getStateHelper().eval(PropertyKeys.update, null);
-    }
-
-    public void setUpdate(String update) {
-        getStateHelper().put(PropertyKeys.update, update);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    @Override
-    public java.lang.String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
-    }
-
-    public void setWidgetVar(java.lang.String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Exception type to handle. If not specified, handles all exceptions.")
+    public abstract String getType();
 }
