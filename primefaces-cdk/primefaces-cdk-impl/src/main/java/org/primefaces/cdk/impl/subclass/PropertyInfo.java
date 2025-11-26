@@ -38,6 +38,7 @@ public class PropertyInfo {
     private final String defaultValue;
     private final String implicitDefaultValue;
     private final boolean required;
+    private final boolean callSuper;
 
     PropertyInfo(String name, String type, ExecutableElement getterElement,
                  ExecutableElement setterElement, Property annotation) {
@@ -49,6 +50,7 @@ public class PropertyInfo {
         this.defaultValue = annotation.defaultValue();
         this.implicitDefaultValue = annotation.implicitDefaultValue();
         this.required = annotation.required();
+        this.callSuper = annotation.callSuper();
         this.generateSetter = true;
     }
 
@@ -62,6 +64,7 @@ public class PropertyInfo {
         this.defaultValue = defaultValue;
         this.implicitDefaultValue = implicitDefaultValue;
         this.required = required;
+        this.callSuper = false;
         // in this case, this is an extracted property from a parent component without @Property annotation
         // -> skip generation
         this.generateSetter = false;
@@ -101,5 +104,9 @@ public class PropertyInfo {
 
     public String getImplicitDefaultValue() {
         return implicitDefaultValue;
+    }
+
+    public boolean isCallSuper() {
+        return callSuper;
     }
 }
