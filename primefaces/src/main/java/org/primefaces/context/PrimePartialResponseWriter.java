@@ -217,7 +217,9 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
         for (String script : scripts) {
             startExtension(CALLBACK_EXTENSION_SCRIPTS);
-            getWrapped().write(EscapeUtils.forXml(script));
+            getWrapped().startCDATA();
+            getWrapped().write(EscapeUtils.forCDATA(script));
+            getWrapped().endCDATA();
             endExtension();
         }
     }
