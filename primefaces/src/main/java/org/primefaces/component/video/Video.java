@@ -50,14 +50,6 @@ public class Video extends UIMedia {
         return COMPONENT_FAMILY;
     }
 
-    public boolean isControls() {
-        return (boolean) getStateHelper().eval(PropertyKeys.controls, true);
-    }
-
-    public void setControls(boolean controls) {
-        getStateHelper().put(PropertyKeys.controls, controls);
-    }
-
     public String getWidth() {
         return (String) getStateHelper().eval(PropertyKeys.width, null);
     }

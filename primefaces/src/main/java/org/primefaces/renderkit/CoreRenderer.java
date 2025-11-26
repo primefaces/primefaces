@@ -256,13 +256,22 @@ public abstract class CoreRenderer extends Renderer {
         renderPassThroughAttributes(context, component);
     }
 
+    /**
+     * Renders a single attribute on the given UIComponent if the value should be rendered.
+     *
+     * @param context   the current FacesContext instance
+     * @param component the component on which to render the attribute
+     * @param attribute the name of the attribute to render
+     * @param value     the value of the attribute
+     * @throws IOException if an input/output error occurs during rendering
+     */
     protected void renderAttribute(FacesContext context, UIComponent component, String attribute, Object value)
                 throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         if (shouldRenderAttribute(value)) {
             String stringValue = value.toString();
-            if (Boolean.parseBoolean(stringValue)) {
+            if ("true".equalsIgnoreCase(stringValue)) {
                 writer.writeAttribute(attribute, true, attribute);
             }
             else {
@@ -435,6 +444,30 @@ public abstract class CoreRenderer extends Renderer {
         return false;
     }
 
+    /**
+     * Determines whether the provided value should be rendered as an attribute on a UI component.
+     * <p>
+     * This method checks the value against its most relevant type:
+     * <ul>
+     *   <li><b>null</b>: returns {@code false} (do not render).</li>
+     *   <li><b>Boolean</b>: returns its value (only render if {@code true}).</li>
+     *   <li><b>String</b>: returns {@code true} if the string is not "false" (case-insensitive).</li>
+     *   <li><b>Number</b> (subclasses):
+     *     <ul>
+     *       <li>{@link Integer}: do not render if equal to {@link Integer#MIN_VALUE}.</li>
+     *       <li>{@link Double}: do not render if equal to {@link Double#MIN_VALUE}.</li>
+     *       <li>{@link Long}: do not render if equal to {@link Long#MIN_VALUE}.</li>
+     *       <li>{@link Byte}: do not render if equal to {@link Byte#MIN_VALUE}.</li>
+     *       <li>{@link Float}: do not render if equal to {@link Float#MIN_VALUE}.</li>
+     *       <li>{@link Short}: do not render if equal to {@link Short#MIN_VALUE}.</li>
+     *     </ul>
+     *   </li>
+     *   <li>All other types: always render (returns {@code true}).</li>
+     * </ul>
+     *
+     * @param value the value to check for rendering suitability
+     * @return {@code true} if the value should be rendered, {@code false} otherwise
+     */
     protected boolean shouldRenderAttribute(Object value) {
         if (value == null) {
             return false;
@@ -464,6 +497,10 @@ public abstract class CoreRenderer extends Renderer {
             else if (value instanceof Short) {
                 return number.shortValue() != Short.MIN_VALUE;
             }
+        }
+        else if (value instanceof String) {
+            // #14390: passthrough attribute with "false" should be treated like boolean false
+            return !"false".equalsIgnoreCase((String) value);
         }
 
         return true;
