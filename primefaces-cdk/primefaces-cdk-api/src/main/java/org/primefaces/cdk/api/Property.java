@@ -86,4 +86,12 @@ public @interface Property {
      * @return the implicit default value as a string
      */
     String implicitDefaultValue() default "";
+
+    /**
+     * Whether the generated getter and setter should call super.getXXX() and super.setXXX()
+     * instead of using StateHelper directly.
+     *
+     * @return true if methods should call super, false otherwise
+     */
+    boolean callSuper() default false;
 }

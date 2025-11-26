@@ -23,32 +23,25 @@
  */
 package org.primefaces.component.inputtextarea;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputTextArea;
+import org.primefaces.component.api.CountCharactersAware;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SelectEvent;
 
-public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea implements Widget, RTLAware, MixedClientBehaviorHolder {
+import jakarta.el.MethodExpression;
+
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected.")
+})
+public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea implements Widget, CountCharactersAware, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.InputTextareaRenderer";
-
-    public enum PropertyKeys {
-
-        placeholder,
-        widgetVar,
-        autoResize,
-        maxlength,
-        counter,
-        counterTemplate,
-        countBytesAsChars,
-        completeMethod,
-        minQueryLength,
-        queryDelay,
-        scrollHeight,
-        addLine
-    }
 
     public InputTextareaBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -59,99 +52,21 @@ public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea i
         return COMPONENT_FAMILY;
     }
 
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
+    @Property(description = "Adds a new line when Enter key is pressed.", defaultValue = "false")
+    public abstract boolean isAddLine();
 
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
+    @Property(description = "When enabled, textarea automatically resizes its height based on user input.", defaultValue = "true")
+    public abstract boolean isAutoResize();
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "MethodExpression to provide suggestions for autocomplete functionality.")
+    public abstract MethodExpression getCompleteMethod();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Minimum number of characters to trigger autocomplete query.", defaultValue = "3")
+    public abstract int getMinQueryLength();
 
-    public boolean isAutoResize() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoResize, true);
-    }
+    @Property(description = "Delay in milliseconds before triggering autocomplete query.", defaultValue = "700")
+    public abstract int getQueryDelay();
 
-    public void setAutoResize(boolean autoResize) {
-        getStateHelper().put(PropertyKeys.autoResize, autoResize);
-    }
-
-    public int getMaxlength() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxlength, Integer.MAX_VALUE);
-    }
-
-    public void setMaxlength(int maxlength) {
-        getStateHelper().put(PropertyKeys.maxlength, maxlength);
-    }
-
-    public String getCounter() {
-        return (String) getStateHelper().eval(PropertyKeys.counter, null);
-    }
-
-    public void setCounter(String counter) {
-        getStateHelper().put(PropertyKeys.counter, counter);
-    }
-
-    public String getCounterTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
-    }
-
-    public void setCounterTemplate(String counterTemplate) {
-        getStateHelper().put(PropertyKeys.counterTemplate, counterTemplate);
-    }
-
-    public boolean getCountBytesAsChars() {
-        return (Boolean) this.getStateHelper().eval(PropertyKeys.countBytesAsChars, false);
-    }
-
-    public void setCountBytesAsChars(boolean countBytesAsChars) {
-        this.getStateHelper().put(PropertyKeys.countBytesAsChars, countBytesAsChars);
-    }
-
-    public jakarta.el.MethodExpression getCompleteMethod() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
-    }
-
-    public void setCompleteMethod(jakarta.el.MethodExpression completeMethod) {
-        getStateHelper().put(PropertyKeys.completeMethod, completeMethod);
-    }
-
-    public int getMinQueryLength() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minQueryLength, 3);
-    }
-
-    public void setMinQueryLength(int minQueryLength) {
-        getStateHelper().put(PropertyKeys.minQueryLength, minQueryLength);
-    }
-
-    public int getQueryDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.queryDelay, 700);
-    }
-
-    public void setQueryDelay(int queryDelay) {
-        getStateHelper().put(PropertyKeys.queryDelay, queryDelay);
-    }
-
-    public int getScrollHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
-    }
-
-    public void setScrollHeight(int scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
-
-    public boolean isAddLine() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.addLine, false);
-    }
-
-    public void setAddLine(boolean addLine) {
-        getStateHelper().put(PropertyKeys.addLine, addLine);
-    }
+    @Property(description = "Maximum height in pixels before scrolling is enabled.", defaultValue = "2147483647")
+    public abstract int getScrollHeight();
 }
