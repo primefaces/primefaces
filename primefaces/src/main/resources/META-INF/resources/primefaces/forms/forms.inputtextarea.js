@@ -35,6 +35,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
+        this.items = $();
 
         if(this.cfg.autoResize)
             this.renderDeferred();
