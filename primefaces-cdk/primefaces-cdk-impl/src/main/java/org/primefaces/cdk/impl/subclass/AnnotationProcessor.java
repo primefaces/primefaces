@@ -116,13 +116,11 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         Set<TypeElement> componentsToGenerate = new HashSet<>();
 
-        // Collect base classes marked with @FacesComponentBase
+        // Collect base classes marked with @FacesComponentBase OR ending with "Base"
         for (Element e : roundEnv.getElementsAnnotatedWith(FacesComponentBase.class)) {
             if (e.getKind() == ElementKind.CLASS && e.getModifiers().contains(Modifier.ABSTRACT)) {
                 TypeElement typeElement = (TypeElement) e;
-                if (typeElement.getSimpleName().toString().endsWith("Base")) {
-                    componentsToGenerate.add(typeElement);
-                }
+                componentsToGenerate.add(typeElement);
             }
         }
 
@@ -191,10 +189,11 @@ public class AnnotationProcessor extends AbstractProcessor {
             TypeElement owner = (TypeElement) method.getEnclosingElement();
             methodsByType.computeIfAbsent(owner, k -> new LinkedHashSet<>()).add(method);
 
-            // Add to generation set if it's an abstract Base class
+            // Add to generation set if it's an abstract class ending with "Base" OR has @FacesComponentBase
             if (owner.getKind() == ElementKind.CLASS &&
                     owner.getModifiers().contains(Modifier.ABSTRACT) &&
-                    owner.getSimpleName().toString().endsWith("Base")) {
+                    (owner.getSimpleName().toString().endsWith("Base") ||
+                            owner.getAnnotation(FacesComponentBase.class) != null)) {
                 componentsToGenerate.add(owner);
             }
         }
@@ -210,12 +209,20 @@ public class AnnotationProcessor extends AbstractProcessor {
                                     Map<TypeElement, Set<ExecutableElement>> propertyTargets,
                                     Map<TypeElement, Set<ExecutableElement>> facetTargets) {
         for (Element root : roundEnv.getRootElements()) {
-            if (root.getKind() != ElementKind.CLASS) continue;
+            if (root.getKind() != ElementKind.CLASS) {
+                continue;
+            }
             TypeElement candidate = (TypeElement) root;
 
             if (!candidate.getModifiers().contains(Modifier.ABSTRACT)) continue;
-            if (!candidate.getSimpleName().toString().endsWith("Base")) continue;
-            if (componentsToGenerate.contains(candidate)) continue;
+            // Check if ends with "Base" OR has @FacesComponentBase annotation
+            if (!candidate.getSimpleName().toString().endsWith("Base") &&
+                    candidate.getAnnotation(FacesComponentBase.class) == null) {
+                continue;
+            }
+            if (componentsToGenerate.contains(candidate)) {
+                continue;
+            }
 
             boolean shouldGenerate = inheritsAnnotations(candidate, annotatedPropertiesByType, annotatedFacetsByType);
 

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
@@ -76,6 +77,7 @@ import jakarta.faces.render.Renderer;
  * Most of the code is copied from MyFaces.
  */
 @SuppressWarnings("unchecked")
+@FacesComponentBase
 public abstract class UITabPanel extends UIPanel implements NamingContainer {
 
     private static final DataModel<?> EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
@@ -112,51 +114,37 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
     @Property(description = "Name of the request-scoped variable used to reference each data object in the iteration.")
     public abstract String getVar();
 
+    public abstract void setVar(String var);
+
     @Property(defaultValue = "-1", description = "Maximum number of items to iterate, whereas -1 means 'all items'.")
     public abstract int getSize();
+
+    public abstract void setSize(int size);
 
     @Property(description = "Name of the request-scoped variable used to expose the iteration status.")
     public abstract String getVarStatus();
 
+    public abstract void setVarStatus(String varStatus);
+
     @Property(defaultValue = "0", description = "Index of the first item to iterate.")
     public abstract int getOffset();
+
+    public abstract void setOffset(int offset);
 
     @Property(defaultValue = "1", description = "Step size for iteration.")
     public abstract int getStep();
 
+    public abstract void setStep(int step);
+
     @Property(description = "When enabled, only active tab contents are rendered.")
     public abstract boolean isDynamic();
+
+    public abstract void setDynamic(boolean dynamic);
 
     @Property(defaultValue = "true", description = "Whether to prepend the component id to its children.")
     public abstract boolean isPrependId();
 
-    public void setVar(String var) {
-        getStateHelper().put("var", var);
-    }
-
-    public void setSize(int size) {
-        getStateHelper().put("size", size);
-    }
-
-    public void setVarStatus(String varStatus) {
-        getStateHelper().put("varStatus", varStatus);
-    }
-
-    public void setOffset(int offset) {
-        getStateHelper().put("offset", offset);
-    }
-
-    public void setStep(int step) {
-        getStateHelper().put("step", step);
-    }
-
-    public void setDynamic(boolean dynamic) {
-        getStateHelper().put("dynamic", dynamic);
-    }
-
-    public void setPrependId(boolean prependId) {
-        getStateHelper().put("prependId", prependId);
-    }
+    public abstract void setPrependId(boolean prependId);
 
     // Concrete setters for internal use
     public void setValue(Object value) {
