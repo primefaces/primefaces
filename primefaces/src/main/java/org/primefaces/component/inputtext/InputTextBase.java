@@ -26,7 +26,6 @@ package org.primefaces.component.inputtext;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
-import org.primefaces.component.inputtextarea.InputTextareaBase;
 
 public abstract class InputTextBase extends AbstractPrimeHtmlInputText implements Widget, RTLAware {
 
@@ -94,10 +93,10 @@ public abstract class InputTextBase extends AbstractPrimeHtmlInputText implement
     }
 
     public boolean getCountBytesAsChars() {
-        return (Boolean) this.getStateHelper().eval(InputTextareaBase.PropertyKeys.countBytesAsChars, false);
+        return (Boolean) this.getStateHelper().eval(PropertyKeys.countBytesAsChars, false);
     }
 
     public void setCountBytesAsChars(boolean countBytesAsChars) {
-        this.getStateHelper().put(InputTextareaBase.PropertyKeys.countBytesAsChars, countBytesAsChars);
+        this.getStateHelper().put(PropertyKeys.countBytesAsChars, countBytesAsChars);
     }
 }
