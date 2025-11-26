@@ -23,25 +23,18 @@
  */
 package org.primefaces.component.video;
 
-import org.primefaces.component.api.UIMedia;
+import org.primefaces.component.api.UIMediaBaseImpl;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Video.COMPONENT_TYPE, namespace = Video.COMPONENT_FAMILY)
-public class Video extends UIMedia {
+public class Video extends UIMediaBaseImpl {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String DEFAULT_RENDERER = "org.primefaces.component.VideoRenderer";
     public static final String COMPONENT_TYPE = "org.primefaces.component.Video";
 
     public static final String CONTAINER_CLASS = "ui-media ui-video";
-
-    public enum PropertyKeys {
-        width,
-        height,
-        preload,
-        poster;
-    }
 
     public Video() {
         setRendererType(DEFAULT_RENDERER);
@@ -50,37 +43,5 @@ public class Video extends UIMedia {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    public String getWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.width, null);
-    }
-
-    public void setWidth(String width) {
-        getStateHelper().put(PropertyKeys.width, width);
-    }
-
-    public String getHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.height, null);
-    }
-
-    public void setHeight(String height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
-
-    public String getPreload() {
-        return (String) getStateHelper().eval(PropertyKeys.preload, null);
-    }
-
-    public void setPreload(String preload) {
-        getStateHelper().put(PropertyKeys.preload, preload);
-    }
-
-    public String getPoster() {
-        return (String) getStateHelper().eval(PropertyKeys.poster, null);
-    }
-
-    public void setPoster(String poster) {
-        getStateHelper().put(PropertyKeys.poster, poster);
     }
 }

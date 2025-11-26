@@ -68,22 +68,9 @@ public class VideoRenderer extends CoreRenderer<Video> {
         writer.writeAttribute("id", clientId, "id");
         renderPassThruAttributes(context, component, HTML.MEDIA_ATTRS_WITH_EVENTS);
 
-        if (LangUtils.isNotBlank(component.getHeight())) {
-            writer.writeAttribute("height", component.getHeight(), null);
-        }
-        if (LangUtils.isNotBlank(component.getWidth())) {
-            writer.writeAttribute("width", component.getWidth(), null);
-        }
-        if (LangUtils.isNotBlank(component.getPreload())) {
-            writer.writeAttribute("preload", component.getPreload(), null);
-        }
-        if (LangUtils.isNotBlank(component.getPoster())) {
-            writer.writeAttribute("poster", component.getPoster(), null);
-        }
-
         VideoType player = resolvePlayer(context, component);
         writer.startElement("source", null);
-        writer.writeAttribute("src", component.resolveSource(context, component), null);
+        writer.writeAttribute("src", component.resolveSource(context), null);
         writer.writeAttribute("type", player.getMediaType(), null);
         writer.endElement("source");
 

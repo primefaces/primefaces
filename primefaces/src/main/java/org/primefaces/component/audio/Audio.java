@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.audio;
 
-import org.primefaces.component.api.UIMedia;
+import org.primefaces.component.api.UIMediaBaseImpl;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Audio.COMPONENT_TYPE, namespace = Audio.COMPONENT_FAMILY)
-public class Audio extends UIMedia {
+public class Audio extends UIMediaBaseImpl {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AudioRenderer";
