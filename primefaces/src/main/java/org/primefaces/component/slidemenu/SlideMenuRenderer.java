@@ -92,6 +92,7 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         //back navigator
         writer.startElement("div", menu);
         writer.writeAttribute("class", SlideMenu.BACKWARD_CLASS, null);
+        writer.writeAttribute("style", "visibility: hidden;" , null);
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);

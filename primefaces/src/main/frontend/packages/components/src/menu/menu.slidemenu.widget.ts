@@ -2,7 +2,7 @@ import { Menu, type MenuCfg } from "./menu.base.widget.js";
 
 /**
  * The configuration for the {@link  SlideMenu} widget.
- * 
+ *
  * You can access this configuration via {@link SlideMenu.cfg | cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  */
@@ -11,9 +11,9 @@ export interface SlideMenuCfg extends MenuCfg {
 
 /**
  * __PrimeFaces SlideMenu Widget__
- * 
+ *
  * SlideMenu is used to display nested submenus with sliding animation.
- * 
+ *
  * @typeParam Cfg Type of the configuration object.
  */
 export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg> {
@@ -129,6 +129,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
         this.backward.on("click", function(e) {
             $this.back();
             e.preventDefault();
+            PrimeFaces.queueTask(function() {$this.content.find('a.ui-menuitem-link:first').trigger('focus')}, 0);
         });
     }
 
@@ -152,6 +153,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
         }, 500, 'easeInOutCirc', function() {
             if(_self.backward.is(':hidden')) {
                 _self.backward.fadeIn('fast');
+                PrimeFaces.queueTask(function() {submenu.find('a.ui-menuitem-link:first').trigger('focus')}, 0);
             }
         });
         this.backwardButton = _self.backward.children('ui-menuitem-link');
@@ -189,7 +191,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
 
     /**
      * Adds the menu page to the top of the stack.
-     * @param submenu A menu page to push to the stack. 
+     * @param submenu A menu page to push to the stack.
      */
     private push(submenu: JQuery): void {
         this.stack.push(submenu);
@@ -230,11 +232,24 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
         this.submenus.width(this.jq.width() ?? 0);
         this.wrapper.height((this.rootList.outerHeight(true) ?? 0) + (this.backButton.outerHeight(true) ?? 0));
         this.content.height(this.rootList.outerHeight(true) ?? 0);
-        this.rendered = true;
         this.backward.attr('style', 'display: none;');
+        this.rendered = true;
+    }
+
+    /**
+     * Change the tabindex of the menu elements
+     * @private
+     */
+    private changeTabindex() {
+        this.linksActive = this.jq.find('a.ui-menuitem-link[tabindex=0]');
+        this.linksInactive = this.jq.find('a.ui-menuitem-link[tabindex=-1]');
+
+        this.linksActive.attr('tabindex', -1);
+        this.linksInactive.attr('tabindex', 0);
     }
 
     override show(): void {
+        const $this = this;
         if (this.transition) {
             this.transition.show({
                 onEnter: () => {
@@ -246,20 +261,9 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
                 },
                 onEntered: () => {
                     this.bindPanelEvents();
+                    PrimeFaces.queueTask(function() {$this.content.find('a.ui-menuitem-link:first').trigger('focus')}, 0);
                 }
             });
         }
-    }
-
-    /**
-    * Change the tabindex of the menu elements
-    * @private
-    */
-    private changeTabindex() {
-        this.linksActive = this.jq.find('a.ui-menuitem-link[tabindex=0]');
-        this.linksInactive = this.jq.find('a.ui-menuitem-link[tabindex=-1]');
-
-        this.linksActive.attr('tabindex', -1);
-        this.linksInactive.attr('tabindex', 0);
     }
 }
