@@ -30958,6 +30958,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Controls pruning during filtering. "none" keeps children of matching nodes; "descendants" prunes non-matching children unless they or their descendants match. Default is none.]]>
+            </description>
+            <name>filterPrune</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the cell edit behavior, valid values are "eager" (default) and "lazy".]]>
             </description>
             <name>cellEditMode</name>

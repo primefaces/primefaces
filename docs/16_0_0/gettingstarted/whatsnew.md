@@ -32,3 +32,4 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
     * Added `stickyTopAt` attribute for elements fixed at the top of the page whose height should be considered when positioning the sticky element.
 * TreeTable
     * Added `resizeMode` attribute to support column resizing using the "expand" mode.
+    * Added `filterPrune="descendants"` to prune non-matching children unless they or their descendants match a filter.

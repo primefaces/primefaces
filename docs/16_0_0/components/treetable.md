@@ -39,6 +39,7 @@ filterDelay | 300 | Integer | Delay in milliseconds before sending an ajax filte
 filterEvent | keyup | String | Event triggering filter for input filters. If "enter" it will only filter after ENTER key is pressed.
 filteredValue  | null | TreeNode | TreeNode to keep filtered data.
 filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.
+filterPrune | none | String | Controls pruning during filtering. Use `descendants` to prune non-matching children unless they or their descendants match; `none` keeps children of matching nodes. |
 first | 0 | Integer | Index of the first data to display.
 globalFilter | null | String | Value of the global filter to use when filtering by default.
 globalFilterFunction | null | MethodExpression | Custom implementation to globally filter a value against a constraint.
@@ -151,6 +152,19 @@ Widget: _PrimeFaces.widget.TreeTable_
 | --- | --- | --- | --- |
 | clearFilters() | - | void | Clears all column filters
 
+## Filtering prune mode
+Set `filterPrune="descendants"` to hide non-matching children of a matched node unless they (or their descendants) match the filter. Omit the attribute or use `none` to keep children of matched nodes visible.
+
+```xhtml
+<p:treeTable value="#{bean.root}"
+             var="node"
+             filterPrune="descendants">
+    <p:column headerText="Name" filterBy="#{node.name}" filterMatchMode="contains">
+        #{node.name}
+    </p:column>
+</p:treeTable>
+```
+
 ## ContextMenu
 TreeTable has special integration with context menu, you can even match different context menus
 with different tree nodes using _nodeType_ option of context menu that matches the tree node type.
@@ -211,4 +225,3 @@ Following is the list of structural style classes;
 .ui-treetable-data | Body element of the table containing data
 
 As skinning style classes are global, see the main theming section for more information.
-
