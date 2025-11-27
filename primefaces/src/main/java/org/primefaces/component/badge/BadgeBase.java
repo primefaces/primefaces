@@ -24,11 +24,12 @@
 package org.primefaces.component.badge;
 
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class BadgeBase extends UIComponentBase implements Widget {
+public abstract class BadgeBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -51,12 +52,6 @@ public abstract class BadgeBase extends UIComponentBase implements Widget {
 
     @Property(description = "Size of the badge, valid options are \"large\" and \"xlarge\".")
     public abstract String getSize();
-
-    @Property(description = "Inline style of the component.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the component.")
-    public abstract String getStyleClass();
 
     @Property(defaultValue = "true", description = "Whether to hide the badge (but render the children).")
     public abstract boolean isVisible();

@@ -28,6 +28,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
@@ -41,7 +42,7 @@ import jakarta.faces.component.UIComponent;
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "pageChange", event = PageChangeEvent.class, description = "Fires when a page is changed.", defaultEvent = true)
 })
-public abstract class CarouselBase extends UITabPanel implements Widget, PrimeClientBehaviorHolder, TouchAware {
+public abstract class CarouselBase extends UITabPanel implements Widget, PrimeClientBehaviorHolder, TouchAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -88,12 +89,6 @@ public abstract class CarouselBase extends UITabPanel implements Widget, PrimeCl
 
     @Property(defaultValue = "300px", description = "Height of the viewport in vertical layout.")
     public abstract String getVerticalViewPortHeight();
-
-    @Property(description = "Inline style of the carousel.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the carousel.")
-    public abstract String getStyleClass();
 
     @Property(description = "Style class of the carousel content.")
     public abstract String getContentStyleClass();

@@ -25,12 +25,13 @@ package org.primefaces.component.ajaxstatus;
 
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class AjaxStatusBase extends UIComponentBase implements Widget {
+public abstract class AjaxStatusBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -74,10 +75,4 @@ public abstract class AjaxStatusBase extends UIComponentBase implements Widget {
 
     @Property(description = "Client-side callback to execute when AJAX request fails.")
     public abstract String getOnerror();
-
-    @Property(description = "Inline style of the component.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the component.")
-    public abstract String getStyleClass();
 }

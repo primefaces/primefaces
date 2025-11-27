@@ -30,7 +30,7 @@ import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Avatar.COMPONENT_TYPE, namespace = Avatar.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Avatar extends AvatarBase {
+public class Avatar extends AvatarBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Avatar";
 
     public static final String STYLE_CLASS = "ui-avatar ui-widget";
