@@ -22,6 +22,7 @@ if (window.PrimeFaces) {
     allDayText: "Ganzer Tag",
     moreLinkText: "Mehr...",
     noEventsText: "Keine Einträge",
+    unexpectedError: "Unerwarteter Fehler",
     aria: {
       "datatable.sort.ASC": "Spalten aufsteigend sortieren",
       "datatable.sort.DESC": "Spalten absteigend sortieren",
