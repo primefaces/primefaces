@@ -149,6 +149,7 @@ if (window.PrimeFaces) {
     allDayText: "Tutto il giorno",
     moreLinkText: "Altro...",
     noEventsText: "Nessun evento",
+    unexpectedError: "Errore imprevisto",
     aria: {
       "datatable.sort.ASC": "attiva per ordinare la colonna in senso crescente",
       "datatable.sort.DESC": "attiva per ordinare la colonna in senso descrescente",
