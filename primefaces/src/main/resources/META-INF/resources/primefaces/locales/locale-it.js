@@ -87,6 +87,7 @@ if (window.PrimeFaces) {
       jumpToPageDropdownLabel: "Vai alla Dropdown delle pagine",
       jumpToPageInputLabel: "Vai all'Input delle pagine",
       lastPageLabel: "Ultima pagina",
+      listLabel: "Elenco delle opzioni",
       listView: "Lista",
       moveAllToSource: "Muovi tutto alla sorgente",
       moveAllToTarget: "Muovi tutto all'elemento",
