@@ -28,7 +28,7 @@ import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Card.COMPONENT_TYPE, namespace = Card.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Card extends CardBase {
+public class Card extends CardBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Card";
 
     public static final String STYLE_CLASS = "ui-card ui-widget ui-widget-content";
