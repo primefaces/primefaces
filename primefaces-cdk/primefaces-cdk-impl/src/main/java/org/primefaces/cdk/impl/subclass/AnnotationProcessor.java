@@ -127,20 +127,24 @@ public class AnnotationProcessor extends AbstractProcessor {
         // Collect annotated properties and facets by their declaring type
         Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType = new HashMap<>();
         Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType = new HashMap<>();
+        Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType = new HashMap<>();
 
         collectAnnotatedMethods(roundEnv, Property.class, annotatedPropertiesByType, componentsToGenerate);
         collectAnnotatedMethods(roundEnv, Facet.class, annotatedFacetsByType, componentsToGenerate);
+        collectAnnotatedBehaviorEvents(roundEnv, annotatedBehaviorEventsByType, componentsToGenerate);
 
         // Scan class hierarchies for inherited annotations
         Map<TypeElement, Set<ExecutableElement>> propertyTargets = new HashMap<>();
         Map<TypeElement, Set<ExecutableElement>> facetTargets = new HashMap<>();
+        Map<TypeElement, List<BehaviorEventInfo>> behaviorEventTargets = new HashMap<>();
 
         for (TypeElement classElement : componentsToGenerate) {
             Set<ExecutableElement> allProperties = new LinkedHashSet<>();
             Set<ExecutableElement> allFacets = new LinkedHashSet<>();
+            List<BehaviorEventInfo> allBehaviorEvents = new ArrayList<>();
 
             scanHierarchyForAnnotations(classElement, annotatedPropertiesByType, annotatedFacetsByType,
-                    allProperties, allFacets);
+                    annotatedBehaviorEventsByType, allProperties, allFacets, allBehaviorEvents);
 
             if (!allProperties.isEmpty()) {
                 propertyTargets.put(classElement, allProperties);
@@ -148,16 +152,19 @@ public class AnnotationProcessor extends AbstractProcessor {
             if (!allFacets.isEmpty()) {
                 facetTargets.put(classElement, allFacets);
             }
+            if (!allBehaviorEvents.isEmpty()) {
+                behaviorEventTargets.put(classElement, allBehaviorEvents);
+            }
         }
 
-        // Check for subclasses that inherit properties/facets
-        discoverSubclasses(roundEnv, annotatedPropertiesByType, annotatedFacetsByType,
-                componentsToGenerate, propertyTargets, facetTargets);
+        // Check for subclasses that inherit properties/facets/behavior events
+        discoverSubclasses(roundEnv, annotatedPropertiesByType, annotatedFacetsByType, annotatedBehaviorEventsByType,
+                componentsToGenerate, propertyTargets, facetTargets, behaviorEventTargets);
 
         // Generate implementation classes
         for (TypeElement classElement : componentsToGenerate) {
             generateComponent(classElement, annotatedPropertiesByType, annotatedFacetsByType,
-                    propertyTargets, facetTargets);
+                    propertyTargets, facetTargets, behaviorEventTargets);
         }
 
         return true;
@@ -200,14 +207,63 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     /**
+     * Collects behavior events annotated with {@code @FacesBehaviorEvents} or {@code @FacesBehaviorEvent}.
+     */
+    private void collectAnnotatedBehaviorEvents(RoundEnvironment roundEnv,
+                                                 Map<TypeElement, List<BehaviorEventInfo>> behaviorEventsByType,
+                                                 Set<TypeElement> componentsToGenerate) {
+        for (Element e : roundEnv.getElementsAnnotatedWith(FacesBehaviorEvents.class)) {
+            if (e.getKind() != ElementKind.CLASS && e.getKind() != ElementKind.INTERFACE) {
+                continue;
+            }
+
+            TypeElement typeElement = (TypeElement) e;
+            List<BehaviorEventInfo> events = extractBehaviorEvents(typeElement);
+
+            if (!events.isEmpty()) {
+                behaviorEventsByType.put(typeElement, events);
+
+                // Add to generation set if it's an abstract Base class
+                if (typeElement.getKind() == ElementKind.CLASS &&
+                        typeElement.getModifiers().contains(Modifier.ABSTRACT) &&
+                        typeElement.getSimpleName().toString().endsWith("Base")) {
+                    componentsToGenerate.add(typeElement);
+                }
+            }
+        }
+
+        for (Element e : roundEnv.getElementsAnnotatedWith(FacesBehaviorEvent.class)) {
+            if (e.getKind() != ElementKind.CLASS && e.getKind() != ElementKind.INTERFACE) {
+                continue;
+            }
+
+            TypeElement typeElement = (TypeElement) e;
+            List<BehaviorEventInfo> events = extractBehaviorEvents(typeElement);
+
+            if (!events.isEmpty()) {
+                behaviorEventsByType.put(typeElement, events);
+
+                // Add to generation set if it's an abstract Base class
+                if (typeElement.getKind() == ElementKind.CLASS &&
+                        typeElement.getModifiers().contains(Modifier.ABSTRACT) &&
+                        typeElement.getSimpleName().toString().endsWith("Base")) {
+                    componentsToGenerate.add(typeElement);
+                }
+            }
+        }
+    }
+
+    /**
      * Discovers subclasses that should be generated based on inherited annotations.
      */
     private void discoverSubclasses(RoundEnvironment roundEnv,
                                     Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
                                     Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
+                                    Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType,
                                     Set<TypeElement> componentsToGenerate,
                                     Map<TypeElement, Set<ExecutableElement>> propertyTargets,
-                                    Map<TypeElement, Set<ExecutableElement>> facetTargets) {
+                                    Map<TypeElement, Set<ExecutableElement>> facetTargets,
+                                    Map<TypeElement, List<BehaviorEventInfo>> behaviorEventTargets) {
         for (Element root : roundEnv.getRootElements()) {
             if (root.getKind() != ElementKind.CLASS) {
                 continue;
@@ -224,22 +280,26 @@ public class AnnotationProcessor extends AbstractProcessor {
                 continue;
             }
 
-            boolean shouldGenerate = inheritsAnnotations(candidate, annotatedPropertiesByType, annotatedFacetsByType);
+            boolean shouldGenerate = inheritsAnnotations(candidate, annotatedPropertiesByType, annotatedFacetsByType, annotatedBehaviorEventsByType);
 
             if (shouldGenerate) {
                 componentsToGenerate.add(candidate);
 
                 Set<ExecutableElement> allProperties = new LinkedHashSet<>();
                 Set<ExecutableElement> allFacets = new LinkedHashSet<>();
+                List<BehaviorEventInfo> allBehaviorEvents = new ArrayList<>();
 
                 scanHierarchyForAnnotations(candidate, annotatedPropertiesByType, annotatedFacetsByType,
-                        allProperties, allFacets);
+                        annotatedBehaviorEventsByType, allProperties, allFacets, allBehaviorEvents);
 
                 if (!allProperties.isEmpty()) {
                     propertyTargets.put(candidate, allProperties);
                 }
                 if (!allFacets.isEmpty()) {
                     facetTargets.put(candidate, allFacets);
+                }
+                if (!allBehaviorEvents.isEmpty()) {
+                    behaviorEventTargets.put(candidate, allBehaviorEvents);
                 }
             }
         }
@@ -250,7 +310,8 @@ public class AnnotationProcessor extends AbstractProcessor {
      */
     private boolean inheritsAnnotations(TypeElement candidate,
                                         Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
-                                        Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType) {
+                                        Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
+                                        Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType) {
         for (TypeElement owner : annotatedPropertiesByType.keySet()) {
             if (!candidate.equals(owner) && isSubtype(candidate, owner)) {
                 return true;
@@ -258,6 +319,12 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         for (TypeElement owner : annotatedFacetsByType.keySet()) {
+            if (!candidate.equals(owner) && isSubtype(candidate, owner)) {
+                return true;
+            }
+        }
+
+        for (TypeElement owner : annotatedBehaviorEventsByType.keySet()) {
             if (!candidate.equals(owner) && isSubtype(candidate, owner)) {
                 return true;
             }
@@ -273,7 +340,8 @@ public class AnnotationProcessor extends AbstractProcessor {
                                    Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
                                    Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
                                    Map<TypeElement, Set<ExecutableElement>> propertyTargets,
-                                   Map<TypeElement, Set<ExecutableElement>> facetTargets) {
+                                   Map<TypeElement, Set<ExecutableElement>> facetTargets,
+                                   Map<TypeElement, List<BehaviorEventInfo>> behaviorEventTargets) {
         Map<String, PropertyInfo> propsMap = new LinkedHashMap<>();
         Map<String, FacetInfo> facetsMap = new LinkedHashMap<>();
 
@@ -325,7 +393,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         boolean isBehavior = isBehaviorClass(classElement);
-        List<BehaviorEventInfo> behaviorEventInfos = extractBehaviorEvents(classElement);
+        List<BehaviorEventInfo> behaviorEventInfos = behaviorEventTargets.getOrDefault(classElement, new ArrayList<>());
 
         // Scan PrimeComponent interface for additional properties/facets
         if (!isBehavior) {
@@ -352,16 +420,18 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     /**
-     * Scans the class hierarchy and interfaces for {@code @Property} and {@code @Facet} annotations.
+     * Scans the class hierarchy and interfaces for {@code @Property}, {@code @Facet}, and behavior event annotations.
      */
     private void scanHierarchyForAnnotations(TypeElement element,
                                              Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
                                              Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
+                                             Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType,
                                              Set<ExecutableElement> allProperties,
-                                             Set<ExecutableElement> allFacets) {
+                                             Set<ExecutableElement> allFacets,
+                                             List<BehaviorEventInfo> allBehaviorEvents) {
         Set<TypeElement> visited = new HashSet<>();
         scanHierarchyRecursive(element, annotatedPropertiesByType, annotatedFacetsByType,
-                allProperties, allFacets, visited);
+                annotatedBehaviorEventsByType, allProperties, allFacets, allBehaviorEvents, visited);
     }
 
     /**
@@ -370,8 +440,10 @@ public class AnnotationProcessor extends AbstractProcessor {
     private void scanHierarchyRecursive(TypeElement element,
                                         Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
                                         Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
+                                        Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType,
                                         Set<ExecutableElement> allProperties,
                                         Set<ExecutableElement> allFacets,
+                                        List<BehaviorEventInfo> allBehaviorEvents,
                                         Set<TypeElement> visited) {
         if (!visited.add(element)) {
             return;
@@ -387,6 +459,23 @@ public class AnnotationProcessor extends AbstractProcessor {
             allFacets.addAll(facets);
         }
 
+        List<BehaviorEventInfo> behaviorEvents = annotatedBehaviorEventsByType.get(element);
+        if (behaviorEvents != null) {
+            // Add behavior events, avoiding duplicates by name
+            for (BehaviorEventInfo event : behaviorEvents) {
+                boolean exists = false;
+                for (BehaviorEventInfo existing : allBehaviorEvents) {
+                    if (existing.getName().equals(event.getName())) {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists) {
+                    allBehaviorEvents.add(event);
+                }
+            }
+        }
+
         // Scan superclass
         TypeMirror superclass = element.getSuperclass();
         if (superclass != null) {
@@ -394,7 +483,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             if (superElement instanceof TypeElement &&
                     !superElement.toString().equals("java.lang.Object")) {
                 scanHierarchyRecursive((TypeElement) superElement, annotatedPropertiesByType,
-                        annotatedFacetsByType, allProperties, allFacets, visited);
+                        annotatedFacetsByType, annotatedBehaviorEventsByType, allProperties, allFacets, allBehaviorEvents, visited);
             }
         }
 
@@ -403,7 +492,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             Element interfaceElement = processingEnv.getTypeUtils().asElement(interfaceType);
             if (interfaceElement instanceof TypeElement) {
                 scanHierarchyRecursive((TypeElement) interfaceElement, annotatedPropertiesByType,
-                        annotatedFacetsByType, allProperties, allFacets, visited);
+                        annotatedFacetsByType, annotatedBehaviorEventsByType, allProperties, allFacets, allBehaviorEvents, visited);
             }
         }
     }
@@ -1005,7 +1094,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             BehaviorEventInfo event = events.get(i);
             String description = event.getDescription().replace("\"", "\\\"");
             w.print("        " + escapeKeyword(event.getName()) + "(\"" + event.getName() + "\", " +
-                    event.getEventClass() + ".class, \"" + description + "\", " + event.isImplicit() + ")");
+                    event.getEventClass() + ".class, \"" + description + "\", " + event.isImplicit() + ", " + event.isDefaultEvent() + ")");
             w.println(i < events.size() - 1 ? "," : ";");
             if (event.isDefaultEvent()) {
                 defaultEvent = event;
@@ -1016,12 +1105,15 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("        private final Class<? extends BehaviorEvent> _type;");
         w.println("        private final String _description;");
         w.println("        private final boolean _implicit;");
+        w.println("        private final boolean _defaultEvent;");
         w.println();
-        w.println("        ClientBehaviorEventKeys(String name, Class<? extends BehaviorEvent> type, String description, boolean implicit) {");
+        w.println("        ClientBehaviorEventKeys(String name, Class<? extends BehaviorEvent> type, String description, boolean implicit, ");
+        w.println("            boolean defaultEvent) {");
         w.println("            this._name = name;");
         w.println("            this._type = type;");
         w.println("            this._description = description;");
         w.println("            this._implicit = implicit;");
+        w.println("            this._defaultEvent = defaultEvent;");
         w.println("        }");
         w.println();
         w.println("        @Override");
@@ -1042,6 +1134,11 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("        @Override");
         w.println("        public boolean isImplicit() {");
         w.println("            return _implicit;");
+        w.println("        }");
+        w.println();
+        w.println("        @Override");
+        w.println("        public boolean isDefaultEvent() {");
+        w.println("            return _defaultEvent;");
         w.println("        }");
         w.println("    }");
         w.println();
@@ -1132,21 +1229,23 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     /**
-     * Writes a property getter method with StateHelper access.
+     * Writes a property getter method with StateHelper access or super call.
      */
     private void writeGetter(PrintWriter w, PropertyInfo p) {
         if (p.getGetterElement() == null) return;
+        if (p.isCallSuper()) return;
 
         String type = p.getType();
         String methodName = p.getGetterElement().getSimpleName().toString();
+
+        w.println("    @Override");
+        w.println("    public " + type + " " + methodName + "() {");
 
         String defaultValue = p.getDefaultValue();
         if (defaultValue == null || defaultValue.isBlank()) {
             defaultValue = getDefaultValueForPrimitive(type);
         }
 
-        w.println("    @Override");
-        w.println("    public " + type + " " + methodName + "() {");
         if (defaultValue != null) {
             if (String.class.getName().equals(type)) {
                 w.println("        return (" + type + ") getStateHelper().eval(PropertyKeys." +
@@ -1188,10 +1287,13 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     /**
-     * Writes a property setter method with StateHelper access.
+     * Writes a property setter method with StateHelper access or super call.
      */
     private void writeSetter(PrintWriter w, PropertyInfo p) {
         if (!p.isGenerateSetter()) {
+            return;
+        }
+        if (p.isCallSuper()) {
             return;
         }
 

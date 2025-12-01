@@ -40,8 +40,9 @@ import lombok.Getter;
 @Getter
 public class ComponentDocumentationController {
 
-    private final Component panel = new Component(org.primefaces.component.panel.Panel.class);
     private final Component badge = new Component(org.primefaces.component.badge.Badge.class);
+    private final Component inputTextArea = new Component(org.primefaces.component.inputtextarea.InputTextarea.class);
+    private final Component panel = new Component(org.primefaces.component.panel.Panel.class);
 
     public String resolveDefaultValue(PrimePropertyKeys property) {
         if (LangUtils.isNotBlank(property.getImplicitDefaultValue())) {

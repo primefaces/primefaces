@@ -75,4 +75,11 @@ public interface PrimeClientBehaviorEventKeys {
      * @return true if implicit, false if explicit
      */
     boolean isImplicit();
+
+    /**
+     * Returns whether this is the default event.
+     *
+     * @return true if this is the default event, false otherwise
+     */
+    boolean isDefaultEvent();
 }
