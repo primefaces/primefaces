@@ -148,6 +148,18 @@ body {
               color: $menuitemTextHoverColor;
             }
           }
+          
+          &.ui-state-focus {
+            background: $menuitemHoverBg;
+
+            .ui-icon {
+              color: $menuitemHoverIconColor;
+            }
+
+            .ui-menuitem-text {
+              color: $menuitemTextHoverColor;
+            }
+          }
 
           .ui-menuitem-icon {
             margin-right: $inlineSpacing;
@@ -278,7 +290,7 @@ body {
 
     &.ui-slidemenu {
       .ui-slidemenu-backward {
-        padding: $submenuHeaderPadding;
+        padding: 0;
         color: $submenuHeaderTextColor;
         width: 100%;
         border: $submenuHeaderBorder;
@@ -286,11 +298,22 @@ body {
         margin-bottom: 0;
         border-radius: 0;
 
-        .ui-icon-triangle-1-w {
-          position: relative;
-          top: 2px;
-          @include icon-override("\e931");
-          margin-right: $inlineSpacing;
+        .ui-menuitem-link {
+            color: $submenuHeaderTextColor;
+            padding: $menuitemPadding;
+            width: 100%;
+            border: 0 none;
+            float: none;
+            border-radius: $menuitemBorderRadius;
+            transition: $transition;
+
+            .ui-icon-triangle-1-w:first-child {
+              position: relative;
+              top: 2px;
+              @include icon-override("\e931");
+              margin-right: $inlineSpacing;
+              margin-left: 0;
+            }
         }
       }
 

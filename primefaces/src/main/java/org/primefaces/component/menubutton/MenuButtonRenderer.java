@@ -152,7 +152,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
 
         if (button.getElementsCount() > 0) {
             List<MenuElement> elements = button.getElements();
-            encodeElements(context, button, elements);
+            encodeElements(context, button, elements, true);
         }
 
         writer.endElement("ul");

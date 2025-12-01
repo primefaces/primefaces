@@ -337,12 +337,10 @@ body .ui-menu .ui-divider.ui-divider-horizontal {
 
 .ui-slidemenu-backward {
     position: absolute;
-    bottom: 0;
     width: 95%;
     margin-bottom: 0.4em;
     padding: 0.2em;
     cursor: pointer;
-    display: none;
 }
 
 .ui-slidemenu-backward .ui-icon {
