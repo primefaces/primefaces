@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.signature;
 
-
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
@@ -34,23 +34,6 @@ public abstract class SignatureBase extends AbstractPrimeHtmlInputText implement
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SignatureRenderer";
 
-    public enum PropertyKeys {
-        ariaLabel,
-        backgroundColor,
-        base64Value,
-        color,
-        fontFamily,
-        fontSize,
-        guideline,
-        guidelineColor,
-        guidelineIndent,
-        guidelineOffset,
-        onchange,
-        thickness,
-        textValue,
-        widgetVar,
-    }
-
     public SignatureBase() {
         setRendererType(DEFAULT_RENDERER);
     }
@@ -60,107 +43,39 @@ public abstract class SignatureBase extends AbstractPrimeHtmlInputText implement
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Background color of the signature canvas.")
+    public abstract String getBackgroundColor();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Color of the signature stroke.")
+    public abstract String getColor();
 
-    public String getBackgroundColor() {
-        return (String) getStateHelper().eval(PropertyKeys.backgroundColor, null);
-    }
+    @Property(description = "Thickness of the signature stroke.", defaultValue = "2")
+    public abstract int getThickness();
 
-    public void setBackgroundColor(String backgroundColor) {
-        getStateHelper().put(PropertyKeys.backgroundColor, backgroundColor);
-    }
+    @Property(description = "When enabled, displays guideline for signature.", defaultValue = "false")
+    public abstract boolean isGuideline();
 
-    public String getColor() {
-        return (String) getStateHelper().eval(PropertyKeys.color, null);
-    }
+    @Property(description = "Color of the guideline.")
+    public abstract String getGuidelineColor();
 
-    public void setColor(String color) {
-        getStateHelper().put(PropertyKeys.color, color);
-    }
+    @Property(description = "Offset of the guideline from the top.", defaultValue = "25")
+    public abstract int getGuidelineOffset();
 
-    public int getThickness() {
-        return (Integer) getStateHelper().eval(PropertyKeys.thickness, 2);
-    }
+    @Property(description = "Indent of the guideline.", defaultValue = "10")
+    public abstract int getGuidelineIndent();
 
-    public void setThickness(int thickness) {
-        getStateHelper().put(PropertyKeys.thickness, thickness);
-    }
+    @Property(description = "Base64 encoded value of the signature.")
+    public abstract String getBase64Value();
 
-    public boolean isGuideline() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.guideline, false);
-    }
+    @Property(description = "Font family for text-based signatures.")
+    public abstract String getFontFamily();
 
-    public void setGuideline(boolean guideline) {
-        getStateHelper().put(PropertyKeys.guideline, guideline);
-    }
+    @Property(description = "Font size for text-based signatures.", defaultValue = "40")
+    public abstract int getFontSize();
 
-    public String getGuidelineColor() {
-        return (String) getStateHelper().eval(PropertyKeys.guidelineColor, null);
-    }
+    @Property(description = "ARIA label for accessibility.")
+    public abstract String getAriaLabel();
 
-    public void setGuidelineColor(String guidelineColor) {
-        getStateHelper().put(PropertyKeys.guidelineColor, guidelineColor);
-    }
-
-    public int getGuidelineOffset() {
-        return (Integer) getStateHelper().eval(PropertyKeys.guidelineOffset, 25);
-    }
-
-    public void setGuidelineOffset(int guidelineOffset) {
-        getStateHelper().put(PropertyKeys.guidelineOffset, guidelineOffset);
-    }
-
-    public int getGuidelineIndent() {
-        return (Integer) getStateHelper().eval(PropertyKeys.guidelineIndent, 10);
-    }
-
-    public void setGuidelineIndent(int guidelineIndent) {
-        getStateHelper().put(PropertyKeys.guidelineIndent, guidelineIndent);
-    }
-
-    public String getBase64Value() {
-        return (String) getStateHelper().eval(PropertyKeys.base64Value, null);
-    }
-
-    public void setBase64Value(String base64Value) {
-        getStateHelper().put(PropertyKeys.base64Value, base64Value);
-    }
-
-    public String getFontFamily() {
-        return (String) getStateHelper().eval(PropertyKeys.fontFamily, null);
-    }
-
-    public void setFontFamily(String fontFamily) {
-        getStateHelper().put(PropertyKeys.fontFamily, fontFamily);
-    }
-
-    public int getFontSize() {
-        return (Integer) getStateHelper().eval(PropertyKeys.fontSize, 40);
-    }
-
-    public void setFontSize(int fontSize) {
-        getStateHelper().put(PropertyKeys.fontSize, fontSize);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
-
-    public String getTextValue() {
-        return (String) getStateHelper().eval(PropertyKeys.textValue, null);
-    }
-
-    public void setTextValue(String textValue) {
-        getStateHelper().put(PropertyKeys.textValue, textValue);
-    }
+    @Property(description = "Text value for text-based signatures.")
+    public abstract String getTextValue();
 }

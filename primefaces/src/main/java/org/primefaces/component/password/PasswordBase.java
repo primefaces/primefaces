@@ -23,33 +23,15 @@
  */
 package org.primefaces.component.password;
 
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
-import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements Widget, RTLAware  {
+public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements Widget  {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PasswordRenderer";
-
-    public enum PropertyKeys {
-
-        placeholder,
-        widgetVar,
-        feedback,
-        inline,
-        promptLabel,
-        weakLabel,
-        goodLabel,
-        strongLabel,
-        redisplay,
-        match,
-        showEvent,
-        hideEvent,
-        ignoreLastPass,
-        toggleMask
-    }
 
     public PasswordBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -60,115 +42,39 @@ public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements
         return COMPONENT_FAMILY;
     }
 
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
+    @Property(description = "When enabled, displays strength indicator with feedback.", defaultValue = "false")
+    public abstract boolean isFeedback();
 
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
+    @Property(description = "When enabled, displays feedback inline.", defaultValue = "false")
+    public abstract boolean isInline();
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Label for prompt state.")
+    public abstract String getPromptLabel();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Label for weak password state.")
+    public abstract String getWeakLabel();
 
-    public boolean isFeedback() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.feedback, false);
-    }
+    @Property(description = "Label for good password state.")
+    public abstract String getGoodLabel();
 
-    public void setFeedback(boolean feedback) {
-        getStateHelper().put(PropertyKeys.feedback, feedback);
-    }
+    @Property(description = "Label for strong password state.")
+    public abstract String getStrongLabel();
 
-    public boolean isInline() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.inline, false);
-    }
+    @Property(description = "When enabled, redisplay the password value.", defaultValue = "false")
+    public abstract boolean isRedisplay();
 
-    public void setInline(boolean inline) {
-        getStateHelper().put(PropertyKeys.inline, inline);
-    }
+    @Property(description = "Search expression to match password with another password component.")
+    public abstract String getMatch();
 
-    public String getPromptLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.promptLabel, null);
-    }
+    @Property(description = "Event to show the password.")
+    public abstract String getShowEvent();
 
-    public void setPromptLabel(String promptLabel) {
-        getStateHelper().put(PropertyKeys.promptLabel, promptLabel);
-    }
+    @Property(description = "Event to hide the password.")
+    public abstract String getHideEvent();
 
-    public String getWeakLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.weakLabel, null);
-    }
+    @Property(description = "When enabled, ignores LastPass browser extension.", defaultValue = "false")
+    public abstract boolean isIgnoreLastPass();
 
-    public void setWeakLabel(String weakLabel) {
-        getStateHelper().put(PropertyKeys.weakLabel, weakLabel);
-    }
-
-    public String getGoodLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.goodLabel, null);
-    }
-
-    public void setGoodLabel(String goodLabel) {
-        getStateHelper().put(PropertyKeys.goodLabel, goodLabel);
-    }
-
-    public String getStrongLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.strongLabel, null);
-    }
-
-    public void setStrongLabel(String strongLabel) {
-        getStateHelper().put(PropertyKeys.strongLabel, strongLabel);
-    }
-
-    public boolean isRedisplay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.redisplay, false);
-    }
-
-    public void setRedisplay(boolean redisplay) {
-        getStateHelper().put(PropertyKeys.redisplay, redisplay);
-    }
-
-    public String getMatch() {
-        return (String) getStateHelper().eval(PropertyKeys.match, null);
-    }
-
-    public void setMatch(String match) {
-        getStateHelper().put(PropertyKeys.match, match);
-    }
-
-    public String getShowEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.showEvent, null);
-    }
-
-    public void setShowEvent(String showEvent) {
-        getStateHelper().put(PropertyKeys.showEvent, showEvent);
-    }
-
-    public String getHideEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.hideEvent, null);
-    }
-
-    public void setHideEvent(String hideEvent) {
-        getStateHelper().put(PropertyKeys.hideEvent, hideEvent);
-    }
-
-    public boolean isIgnoreLastPass() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreLastPass, false);
-    }
-
-    public void setIgnoreLastPass(boolean ignoreLastPass) {
-        getStateHelper().put(PropertyKeys.ignoreLastPass, ignoreLastPass);
-    }
-
-    public boolean isToggleMask() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.toggleMask, false);
-    }
-
-    public void setToggleMask(boolean toggleMask) {
-        getStateHelper().put(PropertyKeys.toggleMask, toggleMask);
-    }
+    @Property(description = "When enabled, shows toggle mask button.", defaultValue = "false")
+    public abstract boolean isToggleMask();
 }

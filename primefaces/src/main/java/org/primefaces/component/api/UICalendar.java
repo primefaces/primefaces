@@ -23,6 +23,11 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.ELUtils;
@@ -34,15 +39,20 @@ import java.time.Instant;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
-import java.time.format.ResolverStyle;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "dateSelect", event = AjaxBehaviorEvent.class, description = "Fires when a date is selected."),
+    @FacesBehaviorEvent(name = "viewChange", event = DateViewChangeEvent.class, description = "Fires when the view changes."),
+    @FacesBehaviorEvent(name = "close", event = AjaxBehaviorEvent.class, description = "Fires when the calendar is closed.")
+})
+@FacesComponentBase
 public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware {
 
     public static final String CONTAINER_CLASS = "ui-calendar";
@@ -54,141 +64,55 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     public static final String DATE_INVALID_RANGE_MESSAGE_ID = "primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID";
 
     protected static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
-    protected static final Collection<String> CALENDAR_EVENT_NAMES =  LangUtils.concat(AbstractPrimeHtmlInputText.EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
 
     protected String timeOnlyPattern;
 
     private boolean conversionFailed;
 
-    public enum PropertyKeys {
-        defaultHour,
-        defaultMillisecond,
-        defaultMinute,
-        defaultSecond,
-        inputStyle,
-        inputStyleClass,
-        locale,
-        mask,
-        maskAutoClear,
-        maskSlotChar,
-        maxdate,
-        mindate,
-        pattern,
-        rangeSeparator,
-        readonlyInput,
-        resolverStyle,
-        timeOnly,
-        timeZone,
-        touchable
-    }
+    @Property(description = "Locale for the calendar.")
+    public abstract Object getLocale();
 
-    public Object getLocale() {
-        return getStateHelper().eval(PropertyKeys.locale, null);
-    }
+    @Property(description = "Time zone for the calendar.")
+    public abstract Object getTimeZone();
 
-    public void setLocale(Object locale) {
-        getStateHelper().put(PropertyKeys.locale, locale);
-    }
+    @Property(description = "Date/time pattern for formatting.")
+    public abstract String getPattern();
 
-    public Object getTimeZone() {
-        return getStateHelper().eval(PropertyKeys.timeZone, null);
-    }
+    @Property(description = "Minimum selectable date.")
+    public abstract Object getMindate();
 
-    public void setTimeZone(Object timeZone) {
-        getStateHelper().put(PropertyKeys.timeZone, timeZone);
-    }
+    public abstract void setMindate(Object mindate);
 
-    public String getPattern() {
-        return (String) getStateHelper().eval(PropertyKeys.pattern, null);
-    }
+    @Property(description = "Maximum selectable date.")
+    public abstract Object getMaxdate();
 
-    public void setPattern(String pattern) {
-        getStateHelper().put(PropertyKeys.pattern, pattern);
-    }
+    public abstract void setMaxdate(Object maxdate);
 
-    public Object getMindate() {
-        return getStateHelper().eval(PropertyKeys.mindate, null);
-    }
+    @Property(description = "When enabled, shows only time picker.", defaultValue = "false")
+    public abstract boolean isTimeOnly();
 
-    public void setMindate(Object mindate) {
-        getStateHelper().put(PropertyKeys.mindate, mindate);
-    }
+    public abstract Boolean getTimeOnlyWithoutDefault();
 
-    public Object getMaxdate() {
-        return getStateHelper().eval(PropertyKeys.maxdate, null);
-    }
+    @Property(description = "When enabled, makes the input field readonly.", defaultValue = "false")
+    public abstract boolean isReadonlyInput();
 
-    public void setMaxdate(Object maxdate) {
-        getStateHelper().put(PropertyKeys.maxdate, maxdate);
-    }
+    @Property(description = "Inline style for the input element.")
+    public abstract String getInputStyle();
 
-    public boolean isTimeOnly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly, false);
-    }
+    @Property(description = "CSS class for the input element.")
+    public abstract String getInputStyleClass();
 
-    public Boolean isTimeOnlyWithoutDefault() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly);
-    }
+    @Property(description = "Default hour value.", defaultValue = "0")
+    public abstract int getDefaultHour();
 
-    public void setTimeOnly(boolean timeOnly) {
-        getStateHelper().put(PropertyKeys.timeOnly, timeOnly);
-    }
+    @Property(description = "Default minute value.", defaultValue = "0")
+    public abstract int getDefaultMinute();
 
-    public boolean isReadonlyInput() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.readonlyInput, false);
-    }
+    @Property(description = "Default second value.", defaultValue = "0")
+    public abstract int getDefaultSecond();
 
-    public void setReadonlyInput(boolean readonlyInput) {
-        getStateHelper().put(PropertyKeys.readonlyInput, readonlyInput);
-    }
-
-    public String getInputStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
-    }
-
-    public void setInputStyle(String inputStyle) {
-        getStateHelper().put(PropertyKeys.inputStyle, inputStyle);
-    }
-
-    public String getInputStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
-    }
-
-    public void setInputStyleClass(String inputStyleClass) {
-        getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
-    }
-
-    public int getDefaultHour() {
-        return (Integer) getStateHelper().eval(PropertyKeys.defaultHour, 0);
-    }
-
-    public void setDefaultHour(int defaultHour) {
-        getStateHelper().put(PropertyKeys.defaultHour, defaultHour);
-    }
-
-    public int getDefaultMinute() {
-        return (Integer) getStateHelper().eval(PropertyKeys.defaultMinute, 0);
-    }
-
-    public void setDefaultMinute(int defaultMinute) {
-        getStateHelper().put(PropertyKeys.defaultMinute, defaultMinute);
-    }
-
-    public int getDefaultSecond() {
-        return (Integer) getStateHelper().eval(PropertyKeys.defaultSecond, 0);
-    }
-
-    public void setDefaultSecond(int defaultSecond) {
-        getStateHelper().put(PropertyKeys.defaultSecond, defaultSecond);
-    }
-
-    public int getDefaultMillisecond() {
-        return (Integer) getStateHelper().eval(PropertyKeys.defaultMillisecond, 0);
-    }
-
-    public void setDefaultMillisecond(int defaultMillisecond) {
-        getStateHelper().put(PropertyKeys.defaultMillisecond, defaultMillisecond);
-    }
+    @Property(description = "Default millisecond value.", defaultValue = "0")
+    public abstract int getDefaultMillisecond();
 
     public String getSelectionMode() {
         return null;
@@ -309,54 +233,20 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
         getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
     }
 
-    public String getRangeSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.rangeSeparator, "-");
-    }
+    @Property(description = "Separator character for date ranges.", defaultValue = "-")
+    public abstract String getRangeSeparator();
 
-    public void setRangeSeparator(java.lang.String _rangeSeparator) {
-        getStateHelper().put(PropertyKeys.rangeSeparator, _rangeSeparator);
-    }
+    @Property(description = "Resolver style for date parsing. Options: 'STRICT', 'SMART', 'LENIENT'.", defaultValue = "SMART")
+    public abstract String getResolverStyle();
 
-    public String getResolverStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.resolverStyle, ResolverStyle.SMART.name());
-    }
+    @Property(description = "Input mask pattern. Set to 'false' to disable.", defaultValue = "false")
+    public abstract String getMask();
 
-    public void setResolverStyle(String resolverStyle) {
-        getStateHelper().put(PropertyKeys.resolverStyle, resolverStyle);
-    }
+    @Property(description = "Character to display in empty mask slots.", defaultValue = "_")
+    public abstract String getMaskSlotChar();
 
-    @Override
-    public Boolean getTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
-    }
-
-    public void setTouchable(boolean touchable) {
-        getStateHelper().put(PropertyKeys.touchable, touchable);
-    }
-
-    public String getMask() {
-        return (String) getStateHelper().eval(PropertyKeys.mask, "false");
-    }
-
-    public void setMask(String mask) {
-        getStateHelper().put(PropertyKeys.mask, mask);
-    }
-
-    public String getMaskSlotChar() {
-        return (String) getStateHelper().eval(PropertyKeys.maskSlotChar, "_");
-    }
-
-    public void setMaskSlotChar(String maskSlotChar) {
-        getStateHelper().put(PropertyKeys.maskSlotChar, maskSlotChar);
-    }
-
-    public boolean isMaskAutoClear() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.maskAutoClear, true);
-    }
-
-    public void setMaskAutoClear(boolean maskAutoClear) {
-        getStateHelper().put(PropertyKeys.maskAutoClear, maskAutoClear);
-    }
+    @Property(description = "When enabled, clears the input when it doesn't match the mask.", defaultValue = "true")
+    public abstract boolean isMaskAutoClear();
 
     public enum ValidationResult {
         OK, INVALID_DISABLED_DATE, INVALID_RANGE_DATES_SEQUENTIAL, INVALID_MIN_DATE, INVALID_MAX_DATE, INVALID_OUT_OF_RANGE
@@ -400,8 +290,8 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     }
 
     public void validateMinMax(FacesContext context) {
-        Instant minDate = CalendarUtils.getObjectAsInstant(context, this, getMindate(), PropertyKeys.mindate.name());
-        Instant maxDate = CalendarUtils.getObjectAsInstant(context, this, getMaxdate(), PropertyKeys.maxdate.name());
+        Instant minDate = CalendarUtils.getObjectAsInstant(context, this, getMindate(), "mindate");
+        Instant maxDate = CalendarUtils.getObjectAsInstant(context, this, getMaxdate(), "maxdate");
         if (minDate != null && maxDate != null && maxDate.compareTo(minDate) < 0) {
             String id = getClientId(context);
             String component = this.getClass().getSimpleName();

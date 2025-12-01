@@ -23,17 +23,20 @@
  */
 package org.primefaces.component.keyboard;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Keyboard.COMPONENT_TYPE, namespace = Keyboard.COMPONENT_FAMILY)
+@FacesComponentDescription("Keyboard is an input component that uses a virtual keyboard to provide the input.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "keyboard/keyboard.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "keyboard/keyboard.js")
-public class Keyboard extends KeyboardBase {
+public class Keyboard extends KeyboardBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Keyboard";
 

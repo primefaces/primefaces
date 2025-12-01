@@ -23,16 +23,19 @@
  */
 package org.primefaces.component.inputmask;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = InputMask.COMPONENT_TYPE, namespace = InputMask.COMPONENT_FAMILY)
+@FacesComponentDescription("InputMask forces an input to fit in a defined mask template.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "inputmask/inputmask.js")
-public class InputMask extends InputMaskBase {
+public class InputMask extends InputMaskBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputMask";
 

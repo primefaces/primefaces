@@ -23,58 +23,16 @@
  */
 package org.primefaces.component.calendar;
 
-import org.primefaces.component.api.InputHolder;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
 
-public abstract class CalendarBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class CalendarBase extends UICalendar implements Widget, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CalendarRenderer";
-
-    public enum PropertyKeys {
-
-        beforeShow,
-        beforeShowDay,
-        buttonTabindex,
-        disabledWeekends,
-        effect,
-        effectDuration,
-        focusOnSelect,
-        maxHour,
-        maxMinute,
-        maxSecond,
-        minHour,
-        minMinute,
-        minSecond,
-        mode,
-        navigator,
-        oneLine,
-        pagedate,
-        pages,
-        placeholder,
-        selectOtherMonths,
-        shortYearCutoff,
-        showButtonPanel,
-        showHour,
-        showMillisec,
-        showMinute,
-        showOn,
-        showOtherMonths,
-        showSecond,
-        showTodayButton,
-        showWeek,
-        stepHour,
-        stepMinute,
-        stepSecond,
-        timeControlObject,
-        timeControlType,
-        timeInput,
-        widgetVar,
-        yearRange
-    }
 
     public CalendarBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -85,310 +43,113 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
         return COMPONENT_FAMILY;
     }
 
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public int getPages() {
-        return (Integer) getStateHelper().eval(PropertyKeys.pages, 1);
-    }
-
-    public void setPages(int pages) {
-        getStateHelper().put(PropertyKeys.pages, pages);
-    }
-
-    public String getMode() {
-        return (String) getStateHelper().eval(PropertyKeys.mode, "popup");
-    }
-
-    public void setMode(String mode) {
-        getStateHelper().put(PropertyKeys.mode, mode);
-    }
-
-    public boolean isNavigator() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.navigator, false);
-    }
-
-    public void setNavigator(boolean navigator) {
-        getStateHelper().put(PropertyKeys.navigator, navigator);
-    }
-
-    public boolean isShowButtonPanel() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showButtonPanel, false);
-    }
-
-    public void setShowButtonPanel(boolean showButtonPanel) {
-        getStateHelper().put(PropertyKeys.showButtonPanel, showButtonPanel);
-    }
-
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, null);
-    }
-
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
-
-    public String getEffectDuration() {
-        return (String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
-    }
-
-    public void setEffectDuration(String effectDuration) {
-        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
-    }
-
-    public String getShowOn() {
-        return (String) getStateHelper().eval(PropertyKeys.showOn, "focus");
-    }
-
-    public void setShowOn(String showOn) {
-        getStateHelper().put(PropertyKeys.showOn, showOn);
-    }
-
-    public boolean isShowWeek() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showWeek, false);
-    }
-
-    public void setShowWeek(boolean showWeek) {
-        getStateHelper().put(PropertyKeys.showWeek, showWeek);
-    }
-
-    public boolean isDisabledWeekends() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabledWeekends, false);
-    }
-
-    public void setDisabledWeekends(boolean disabledWeekends) {
-        getStateHelper().put(PropertyKeys.disabledWeekends, disabledWeekends);
-    }
-
-    public boolean isShowOtherMonths() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showOtherMonths, false);
-    }
-
-    public void setShowOtherMonths(boolean showOtherMonths) {
-        getStateHelper().put(PropertyKeys.showOtherMonths, showOtherMonths);
-    }
-
-    public boolean isSelectOtherMonths() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.selectOtherMonths, false);
-    }
-
-    public void setSelectOtherMonths(boolean selectOtherMonths) {
-        getStateHelper().put(PropertyKeys.selectOtherMonths, selectOtherMonths);
-    }
-
-    public String getYearRange() {
-        return (String) getStateHelper().eval(PropertyKeys.yearRange, null);
-    }
-
-    public void setYearRange(String yearRange) {
-        getStateHelper().put(PropertyKeys.yearRange, yearRange);
-    }
-
-    public int getStepHour() {
-        return (Integer) getStateHelper().eval(PropertyKeys.stepHour, 1);
-    }
-
-    public void setStepHour(int stepHour) {
-        getStateHelper().put(PropertyKeys.stepHour, stepHour);
-    }
+    @Property(description = "Number of months to display.", defaultValue = "1")
+    public abstract int getPages();
 
-    public int getStepMinute() {
-        return (Integer) getStateHelper().eval(PropertyKeys.stepMinute, 1);
-    }
+    @Property(description = "Display mode. Options: 'popup', 'inline'.", defaultValue = "popup")
+    public abstract String getMode();
 
-    public void setStepMinute(int stepMinute) {
-        getStateHelper().put(PropertyKeys.stepMinute, stepMinute);
-    }
+    @Property(description = "When enabled, shows month/year navigator.", defaultValue = "false")
+    public abstract boolean isNavigator();
 
-    public int getStepSecond() {
-        return (Integer) getStateHelper().eval(PropertyKeys.stepSecond, 1);
-    }
+    @Property(description = "When enabled, shows button panel.", defaultValue = "false")
+    public abstract boolean isShowButtonPanel();
 
-    public void setStepSecond(int stepSecond) {
-        getStateHelper().put(PropertyKeys.stepSecond, stepSecond);
-    }
+    @Property(description = "Animation effect for showing/hiding calendar.")
+    public abstract String getEffect();
 
-    public int getMinHour() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minHour, 0);
-    }
+    @Property(description = "Duration of animation effect.", defaultValue = "normal")
+    public abstract String getEffectDuration();
 
-    public void setMinHour(int minHour) {
-        getStateHelper().put(PropertyKeys.minHour, minHour);
-    }
+    @Property(description = "Event that triggers calendar display. Options: 'focus', 'button', 'both'.", defaultValue = "focus")
+    public abstract String getShowOn();
 
-    public int getMaxHour() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxHour, 23);
-    }
+    @Property(description = "When enabled, shows week numbers.", defaultValue = "false")
+    public abstract boolean isShowWeek();
 
-    public void setMaxHour(int maxHour) {
-        getStateHelper().put(PropertyKeys.maxHour, maxHour);
-    }
+    @Property(description = "When enabled, disables weekends.", defaultValue = "false")
+    public abstract boolean isDisabledWeekends();
 
-    public int getMinMinute() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minMinute, 0);
-    }
+    @Property(description = "When enabled, shows dates from other months.", defaultValue = "false")
+    public abstract boolean isShowOtherMonths();
 
-    public void setMinMinute(int minMinute) {
-        getStateHelper().put(PropertyKeys.minMinute, minMinute);
-    }
+    @Property(description = "When enabled, allows selecting dates from other months.", defaultValue = "false")
+    public abstract boolean isSelectOtherMonths();
 
-    public int getMaxMinute() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxMinute, 59);
-    }
+    @Property(description = "Year range for navigation. Format: 'start:end'.")
+    public abstract String getYearRange();
 
-    public void setMaxMinute(int maxMinute) {
-        getStateHelper().put(PropertyKeys.maxMinute, maxMinute);
-    }
+    @Property(description = "Step value for hour spinner.", defaultValue = "1")
+    public abstract int getStepHour();
 
-    public int getMinSecond() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minSecond, 0);
-    }
+    @Property(description = "Step value for minute spinner.", defaultValue = "1")
+    public abstract int getStepMinute();
 
-    public void setMinSecond(int minSecond) {
-        getStateHelper().put(PropertyKeys.minSecond, minSecond);
-    }
+    @Property(description = "Step value for second spinner.", defaultValue = "1")
+    public abstract int getStepSecond();
 
-    public int getMaxSecond() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxSecond, 59);
-    }
+    @Property(description = "Minimum hour value.", defaultValue = "0")
+    public abstract int getMinHour();
 
-    public void setMaxSecond(int maxSecond) {
-        getStateHelper().put(PropertyKeys.maxSecond, maxSecond);
-    }
+    @Property(description = "Maximum hour value.", defaultValue = "23")
+    public abstract int getMaxHour();
 
-    public Object getPagedate() {
-        return getStateHelper().eval(PropertyKeys.pagedate, null);
-    }
+    @Property(description = "Minimum minute value.", defaultValue = "0")
+    public abstract int getMinMinute();
 
-    public void setPagedate(Object pagedate) {
-        getStateHelper().put(PropertyKeys.pagedate, pagedate);
-    }
+    @Property(description = "Maximum minute value.", defaultValue = "59")
+    public abstract int getMaxMinute();
 
-    public String getBeforeShowDay() {
-        return (String) getStateHelper().eval(PropertyKeys.beforeShowDay, null);
-    }
+    @Property(description = "Minimum second value.", defaultValue = "0")
+    public abstract int getMinSecond();
 
-    public void setBeforeShowDay(String beforeShowDay) {
-        getStateHelper().put(PropertyKeys.beforeShowDay, beforeShowDay);
-    }
+    @Property(description = "Maximum second value.", defaultValue = "59")
+    public abstract int getMaxSecond();
 
-    public String getTimeControlType() {
-        return (String) getStateHelper().eval(PropertyKeys.timeControlType, "slider");
-    }
+    @Property(description = "Initial page date for the calendar.")
+    public abstract Object getPagedate();
 
-    public void setTimeControlType(String timeControlType) {
-        getStateHelper().put(PropertyKeys.timeControlType, timeControlType);
-    }
+    @Property(description = "JavaScript callback to execute before showing each day.")
+    public abstract String getBeforeShowDay();
 
-    public String getBeforeShow() {
-        return (String) getStateHelper().eval(PropertyKeys.beforeShow, null);
-    }
+    @Property(description = "Time control type. Options: 'slider', 'select'.", defaultValue = "slider")
+    public abstract String getTimeControlType();
 
-    public void setBeforeShow(String beforeShow) {
-        getStateHelper().put(PropertyKeys.beforeShow, beforeShow);
-    }
+    @Property(description = "JavaScript callback to execute before showing the calendar.")
+    public abstract String getBeforeShow();
 
+    @Property(description = "JavaScript object for custom time control.")
+    public abstract String getTimeControlObject();
 
-    public String getTimeControlObject() {
-        return (String) getStateHelper().eval(PropertyKeys.timeControlObject, null);
-    }
+    @Property(description = "When enabled, uses time input field instead of spinner.", defaultValue = "false")
+    public abstract boolean isTimeInput();
 
-    public void setTimeControlObject(String timeControlObject) {
-        getStateHelper().put(PropertyKeys.timeControlObject, timeControlObject);
-    }
+    @Property(description = "Show hour control. Options: 'true', 'false', 'auto'.")
+    public abstract String getShowHour();
 
-    public boolean isTimeInput() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.timeInput, false);
-    }
+    @Property(description = "Show minute control. Options: 'true', 'false', 'auto'.")
+    public abstract String getShowMinute();
 
-    public void setTimeInput(boolean timeInput) {
-        getStateHelper().put(PropertyKeys.timeInput, timeInput);
-    }
+    @Property(description = "Show second control. Options: 'true', 'false', 'auto'.")
+    public abstract String getShowSecond();
 
-    public String getShowHour() {
-        return (String) getStateHelper().eval(PropertyKeys.showHour, null);
-    }
+    @Property(description = "Show millisecond control. Options: 'true', 'false', 'auto'.")
+    public abstract String getShowMillisec();
 
-    public void setShowHour(String showHour) {
-        getStateHelper().put(PropertyKeys.showHour, showHour);
-    }
+    @Property(description = "When enabled, shows today button.", defaultValue = "true")
+    public abstract boolean isShowTodayButton();
 
-    public String getShowMinute() {
-        return (String) getStateHelper().eval(PropertyKeys.showMinute, null);
-    }
+    @Property(description = "Tabindex for the trigger button.")
+    public abstract String getButtonTabindex();
 
-    public void setShowMinute(String showMinute) {
-        getStateHelper().put(PropertyKeys.showMinute, showMinute);
-    }
+    @Property(description = "When enabled, focuses input after selection.", defaultValue = "false")
+    public abstract boolean isFocusOnSelect();
 
-    public String getShowSecond() {
-        return (String) getStateHelper().eval(PropertyKeys.showSecond, null);
-    }
+    @Property(description = "When enabled, displays calendar in one line.", defaultValue = "false")
+    public abstract boolean isOneLine();
 
-    public void setShowSecond(String showSecond) {
-        getStateHelper().put(PropertyKeys.showSecond, showSecond);
-    }
-
-    public String getShowMillisec() {
-        return (String) getStateHelper().eval(PropertyKeys.showMillisec, null);
-    }
-
-    public void setShowMillisec(String showMillisec) {
-        getStateHelper().put(PropertyKeys.showMillisec, showMillisec);
-    }
-
-    public boolean isShowTodayButton() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showTodayButton, true);
-    }
-
-    public void setShowTodayButton(boolean showTodayButton) {
-        getStateHelper().put(PropertyKeys.showTodayButton, showTodayButton);
-    }
-
-    public String getButtonTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.buttonTabindex, null);
-    }
-
-    public void setButtonTabindex(String buttonTabindex) {
-        getStateHelper().put(PropertyKeys.buttonTabindex, buttonTabindex);
-    }
-
-    public boolean isFocusOnSelect() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnSelect, false);
-    }
-
-    public void setFocusOnSelect(boolean focusOnSelect) {
-        getStateHelper().put(PropertyKeys.focusOnSelect, focusOnSelect);
-    }
-
-    public boolean isOneLine() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.oneLine, false);
-    }
-
-    public void setOneLine(boolean oneLine) {
-        getStateHelper().put(PropertyKeys.oneLine, oneLine);
-    }
-
-    public String getShortYearCutoff() {
-        return (String) getStateHelper().eval(PropertyKeys.shortYearCutoff, null);
-    }
-
-    public void setShortYearCutoff(String shortYearCutoff) {
-        getStateHelper().put(PropertyKeys.shortYearCutoff, shortYearCutoff);
-    }
+    @Property(description = "Cutoff year for two-digit year interpretation.")
+    public abstract String getShortYearCutoff();
 
     @Override
     public String calculateWidgetPattern() {
