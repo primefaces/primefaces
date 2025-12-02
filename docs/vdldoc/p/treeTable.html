@@ -277,7 +277,15 @@
                 Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.
             </td>
                         </tr>
-                        <tr id="first" class="altColor">
+                        <tr id="filterPrune" class="altColor">
+                            <td class="colFirst"><a href="#filterPrune"><code>filterPrune</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                Controls pruning during filtering. "none" keeps children of matching nodes; "descendants" prunes non-matching children unless they or their descendants match. Default is none.
+            </td>
+                        </tr>
+                        <tr id="first" class="rowColor">
                             <td class="colFirst"><a href="#first"><code>first</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -285,7 +293,7 @@
                 Index of the first data to display.
             </td>
                         </tr>
-                        <tr id="globalFilter" class="rowColor">
+                        <tr id="globalFilter" class="altColor">
                             <td class="colFirst"><a href="#globalFilter"><code>globalFilter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -293,7 +301,7 @@
                 Value of the global filter to use when filtering by default.
             </td>
                         </tr>
-                        <tr id="globalFilterFunction" class="altColor">
+                        <tr id="globalFilterFunction" class="rowColor">
                             <td class="colFirst"><a href="#globalFilterFunction"><code>globalFilterFunction</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.el.MethodExpression</code>)
@@ -301,7 +309,7 @@
                 Custom implementation to globally filter a value against a constraint.
             </td>
                         </tr>
-                        <tr id="globalFilterOnly" class="rowColor">
+                        <tr id="globalFilterOnly" class="altColor">
                             <td class="colFirst"><a href="#globalFilterOnly"><code>globalFilterOnly</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -309,7 +317,7 @@
                 When true this will hide all column filters and allow all columns to be filtered by global filter only, defaults to false.
             </td>
                         </tr>
-                        <tr id="id" class="altColor">
+                        <tr id="id" class="rowColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -317,7 +325,7 @@
                 Unique identifier of the component in a namingContainer.
             </td>
                         </tr>
-                        <tr id="liveResize" class="rowColor">
+                        <tr id="liveResize" class="altColor">
                             <td class="colFirst"><a href="#liveResize"><code>liveResize</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -325,7 +333,7 @@
                 Columns are resized live in this mode without using a resize helper.
             </td>
                         </tr>
-                        <tr id="multiViewState" class="altColor">
+                        <tr id="multiViewState" class="rowColor">
                             <td class="colFirst"><a href="#multiViewState"><code>multiViewState</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -333,7 +341,7 @@
                 Whether to keep TreeTable state across views, defaults to false.
             </td>
                         </tr>
-                        <tr id="nativeElements" class="rowColor">
+                        <tr id="nativeElements" class="altColor">
                             <td class="colFirst"><a href="#nativeElements"><code>nativeElements</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -341,7 +349,7 @@
                 In native mode, treetable uses native checkboxes.
             </td>
                         </tr>
-                        <tr id="nodeVar" class="altColor">
+                        <tr id="nodeVar" class="rowColor">
                             <td class="colFirst"><a href="#nodeVar"><code>nodeVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -349,7 +357,7 @@
                 Name of the request-scoped variable that'll be used to refer current treenode using EL.
             </td>
                         </tr>
-                        <tr id="pageLinks" class="rowColor">
+                        <tr id="pageLinks" class="altColor">
                             <td class="colFirst"><a href="#pageLinks"><code>pageLinks</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -357,7 +365,7 @@
                 Maximum number of page links to display. Default is 10.
             </td>
                         </tr>
-                        <tr id="paginator" class="altColor">
+                        <tr id="paginator" class="rowColor">
                             <td class="colFirst"><a href="#paginator"><code>paginator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -365,7 +373,7 @@
                 Enables pagination. Default is false.
             </td>
                         </tr>
-                        <tr id="paginatorAlwaysVisible" class="rowColor">
+                        <tr id="paginatorAlwaysVisible" class="altColor">
                             <td class="colFirst"><a href="#paginatorAlwaysVisible"><code>paginatorAlwaysVisible</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -373,7 +381,7 @@
                 Defines if paginator should be hidden if total data count is less than number of rows per page. Default is true.
             </td>
                         </tr>
-                        <tr id="paginatorPosition" class="altColor">
+                        <tr id="paginatorPosition" class="rowColor">
                             <td class="colFirst"><a href="#paginatorPosition"><code>paginatorPosition</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -381,7 +389,7 @@
                 Position of the paginator. Default is both.
             </td>
                         </tr>
-                        <tr id="paginatorTemplate" class="rowColor">
+                        <tr id="paginatorTemplate" class="altColor">
                             <td class="colFirst"><a href="#paginatorTemplate"><code>paginatorTemplate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -389,7 +397,7 @@
                 Template of the paginator.
             </td>
                         </tr>
-                        <tr id="propagateSelectionDown" class="altColor">
+                        <tr id="propagateSelectionDown" class="rowColor">
                             <td class="colFirst"><a href="#propagateSelectionDown"><code>propagateSelectionDown</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -397,7 +405,7 @@
                 Defines upwards selection propagation for checkbox mode, default is true.
             </td>
                         </tr>
-                        <tr id="propagateSelectionUp" class="rowColor">
+                        <tr id="propagateSelectionUp" class="altColor">
                             <td class="colFirst"><a href="#propagateSelectionUp"><code>propagateSelectionUp</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -405,7 +413,7 @@
                 Defines upwards selection propagation for checkbox mode, default is true.
             </td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -413,7 +421,7 @@
                 Boolean value to specify the rendering of the component, when set to false component will not be rendered.
             </td>
                         </tr>
-                        <tr id="required" class="rowColor">
+                        <tr id="required" class="altColor">
                             <td class="colFirst"><a href="#required"><code>required</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -421,7 +429,7 @@
                 Validation constraint for selection.
             </td>
                         </tr>
-                        <tr id="requiredMessage" class="altColor">
+                        <tr id="requiredMessage" class="rowColor">
                             <td class="colFirst"><a href="#requiredMessage"><code>requiredMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -429,7 +437,7 @@
                 Message for required selection validation.
             </td>
                         </tr>
-                        <tr id="resizableColumns" class="rowColor">
+                        <tr id="resizableColumns" class="altColor">
                             <td class="colFirst"><a href="#resizableColumns"><code>resizableColumns</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -437,7 +445,7 @@
                 Defines if columns can be resized or not.
             </td>
                         </tr>
-                        <tr id="resizeMode" class="altColor">
+                        <tr id="resizeMode" class="rowColor">
                             <td class="colFirst"><a href="#resizeMode"><code>resizeMode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -445,7 +453,7 @@
                 Defines the resize behavior, valid values are "fit" (default) and expand.
             </td>
                         </tr>
-                        <tr id="rows" class="rowColor">
+                        <tr id="rows" class="altColor">
                             <td class="colFirst"><a href="#rows"><code>rows</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -453,7 +461,7 @@
                 Number of rows to display per page. Default value is 0 meaning to display all data available.
             </td>
                         </tr>
-                        <tr id="rowsPerPageTemplate" class="altColor">
+                        <tr id="rowsPerPageTemplate" class="rowColor">
                             <td class="colFirst"><a href="#rowsPerPageTemplate"><code>rowsPerPageTemplate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -461,7 +469,7 @@
                 Template of the rowsPerPage dropdown.
             </td>
                         </tr>
-                        <tr id="rowStyleClass" class="rowColor">
+                        <tr id="rowStyleClass" class="altColor">
                             <td class="colFirst"><a href="#rowStyleClass"><code>rowStyleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -469,7 +477,7 @@
                 Style class for each row.
             </td>
                         </tr>
-                        <tr id="saveOnCellBlur" class="altColor">
+                        <tr id="saveOnCellBlur" class="rowColor">
                             <td class="colFirst"><a href="#saveOnCellBlur"><code>saveOnCellBlur</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -477,7 +485,7 @@
                 Saves the changes in cell editing on blur, when set to false changes are discarded.
             </td>
                         </tr>
-                        <tr id="scrollable" class="rowColor">
+                        <tr id="scrollable" class="altColor">
                             <td class="colFirst"><a href="#scrollable"><code>scrollable</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -485,7 +493,7 @@
                 Makes data scrollable with fixed header. Default is false.
             </td>
                         </tr>
-                        <tr id="scrollHeight" class="altColor">
+                        <tr id="scrollHeight" class="rowColor">
                             <td class="colFirst"><a href="#scrollHeight"><code>scrollHeight</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -493,7 +501,7 @@
                 Height for scrollable data.
             </td>
                         </tr>
-                        <tr id="scrollWidth" class="rowColor">
+                        <tr id="scrollWidth" class="altColor">
                             <td class="colFirst"><a href="#scrollWidth"><code>scrollWidth</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -501,7 +509,7 @@
                 Width for scrollable data.
             </td>
                         </tr>
-                        <tr id="selection" class="altColor">
+                        <tr id="selection" class="rowColor">
                             <td class="colFirst"><a href="#selection"><code>selection</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
@@ -509,7 +517,7 @@
                 TreeNode array to reference the selections.
             </td>
                         </tr>
-                        <tr id="selectionMode" class="rowColor">
+                        <tr id="selectionMode" class="altColor">
                             <td class="colFirst"><a href="#selectionMode"><code>selectionMode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -517,7 +525,7 @@
                 Defines the selectionMode, valid values are "single", "multiple" and "checkbox".
             </td>
                         </tr>
-                        <tr id="showGridlines" class="altColor">
+                        <tr id="showGridlines" class="rowColor">
                             <td class="colFirst"><a href="#showGridlines"><code>showGridlines</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -525,7 +533,7 @@
                 When enables, cell borders are displayed. Default is false.
             </td>
                         </tr>
-                        <tr id="showUnselectableCheckbox" class="rowColor">
+                        <tr id="showUnselectableCheckbox" class="altColor">
                             <td class="colFirst"><a href="#showUnselectableCheckbox"><code>showUnselectableCheckbox</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -533,7 +541,7 @@
                 Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node. Default is false.
             </td>
                         </tr>
-                        <tr id="size" class="altColor">
+                        <tr id="size" class="rowColor">
                             <td class="colFirst"><a href="#size"><code>size</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -541,7 +549,7 @@
                 Size of the table content, valid values are "small" and "large". Leave empty for regular size.
             </td>
                         </tr>
-                        <tr id="skipChildren" class="rowColor">
+                        <tr id="skipChildren" class="altColor">
                             <td class="colFirst"><a href="#skipChildren"><code>skipChildren</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -549,7 +557,7 @@
                 Ignores processing of children during lifecycle, improves performance if table only has output components, default is false.
             </td>
                         </tr>
-                        <tr id="sortBy" class="altColor">
+                        <tr id="sortBy" class="rowColor">
                             <td class="colFirst"><a href="#sortBy"><code>sortBy</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
@@ -557,7 +565,7 @@
                 Property to be used for default sorting. Expects a single or a collection of SortMeta.
             </td>
                         </tr>
-                        <tr id="sortMode" class="rowColor">
+                        <tr id="sortMode" class="altColor">
                             <td class="colFirst"><a href="#sortMode"><code>sortMode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -565,7 +573,7 @@
                 Defines sorting mode, valid values are "single" and "multiple" (default).
             </td>
                         </tr>
-                        <tr id="stickyHeader" class="altColor">
+                        <tr id="stickyHeader" class="rowColor">
                             <td class="colFirst"><a href="#stickyHeader"><code>stickyHeader</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -573,7 +581,7 @@
                 Sticky header stays in window viewport during scrolling.
             </td>
                         </tr>
-                        <tr id="style" class="rowColor">
+                        <tr id="style" class="altColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -581,7 +589,7 @@
                 Inline style of the container element.
             </td>
                         </tr>
-                        <tr id="styleClass" class="altColor">
+                        <tr id="styleClass" class="rowColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -589,7 +597,7 @@
                 Style class of the container element.
             </td>
                         </tr>
-                        <tr id="tableStyle" class="rowColor">
+                        <tr id="tableStyle" class="altColor">
                             <td class="colFirst"><a href="#tableStyle"><code>tableStyle</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -597,7 +605,7 @@
                 Inline style of the table element.
             </td>
                         </tr>
-                        <tr id="tableStyleClass" class="altColor">
+                        <tr id="tableStyleClass" class="rowColor">
                             <td class="colFirst"><a href="#tableStyleClass"><code>tableStyleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -605,7 +613,7 @@
                 Style class of the table element.
             </td>
                         </tr>
-                        <tr id="touchable" class="rowColor">
+                        <tr id="touchable" class="altColor">
                             <td class="colFirst"><a href="#touchable"><code>touchable</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -613,7 +621,7 @@
                 Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
             </td>
                         </tr>
-                        <tr id="value" class="altColor">
+                        <tr id="value" class="rowColor">
                             <td class="colFirst"><a href="#value"><code>value</code></a></td><td class="colOne"><code>true</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>org.primefaces.model.TreeNode</code>)
@@ -621,12 +629,12 @@
                 Root node of the tree table.
             </td>
                         </tr>
-                        <tr id="var" class="rowColor">
+                        <tr id="var" class="altColor">
                             <td class="colFirst"><a href="#var"><code>var</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>java.lang.String</code></td><td class="colLast">
                 Name of the iterator variable that references each element in the data set.
             </td>
                         </tr>
-                        <tr id="widgetVar" class="altColor">
+                        <tr id="widgetVar" class="rowColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
