@@ -68,7 +68,7 @@ You manually have to remove PrimeFlex 2 - CSS - file from your project and add P
 
 ## Grid CSS → PrimeFlex 2 migration
 
-This tool replaces legacy Grid CSS classes (e.g. ui-g, see https://www.primefaces.org/showcase-v8/ui/panel/grid.xhtml) with PrimeFlex 2 - CSS - classes (e.g. p-grid, see https://github.com/primefaces/primeflex/tree/2.0.0).
+This tool replaces legacy Grid CSS classes (e.g. ui-g, see https://primefaces.github.io/primefaces/8_0/#/components/gridcss) with PrimeFlex 2 - CSS - classes (e.g. p-grid, see https://github.com/primefaces/primeflex/tree/2.0.0).
 
 ### Start CLI and show help
 
