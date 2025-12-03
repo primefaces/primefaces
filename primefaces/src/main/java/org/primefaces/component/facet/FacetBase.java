@@ -21,15 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.api.facet;
+package org.primefaces.component.facet;
 
-import java.io.IOException;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.api.facet.PrimeFacet;
 
-import jakarta.faces.context.FacesContext;
+import jakarta.faces.component.UIComponentBase;
 
-public interface PrimeFacet {
+public abstract class FacetBase extends UIComponentBase implements PrimeFacet {
 
-    String getName();
-
-    void encodeExplicitly(FacesContext context) throws IOException;
+    @Property(description = "The facet name.", required = true)
+    public abstract String getName();
 }

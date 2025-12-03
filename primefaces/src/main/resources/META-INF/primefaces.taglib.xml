@@ -34464,4 +34464,33 @@
             <type>java.lang.Object</type>
         </attribute>
     </tag>
+    <tag>
+        <tag-name>facet</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Facet</component-type>
+        </component>
+        <attribute>
+            <description><![CDATA[Unique identifier of the component in a namingContainer.]]></description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]></description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]></description>
+            <name>binding</name>
+            <required>false</required>
+            <type>jakarta.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
 </facelet-taglib>

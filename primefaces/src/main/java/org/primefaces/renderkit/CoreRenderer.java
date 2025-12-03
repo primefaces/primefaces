@@ -23,6 +23,7 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.cdk.api.facet.PrimeFacet;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
@@ -93,6 +94,15 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         }
     }
 
+    protected void renderFacet(FacesContext context, UIComponent facet) throws IOException {
+        if (facet instanceof PrimeFacet) {
+            ((PrimeFacet) facet).encodeExplicitly(context);
+        }
+        else {
+            renderChild(context, facet);
+        }
+    }
+
     protected UIComponent renderChild(FacesContext context, UIComponent child) throws IOException {
         if (!child.isRendered()) {
             return child;
@@ -133,6 +143,9 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
 
     @SafeVarargs
     protected final void renderPassThruAttributes(FacesContext context, UIComponent component, List<String>... attrs) throws IOException {
+        if (component == null) {
+            return;
+        }
         if (attrs == null || attrs.length == 0) {
             renderDynamicPassThruAttributes(context, component);
             return;
