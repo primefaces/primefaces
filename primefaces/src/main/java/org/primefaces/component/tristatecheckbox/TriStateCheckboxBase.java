@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.tristatecheckbox;
 
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.Widget;
 
@@ -31,19 +32,6 @@ public abstract class TriStateCheckboxBase extends AbstractPrimeHtmlInputText im
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TriStateCheckboxRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        stateOneIcon,
-        stateTwoIcon,
-        stateThreeIcon,
-        itemLabel,
-        escape,
-        stateOneTitle,
-        stateTwoTitle,
-        stateThreeTitle;
-    }
 
     public TriStateCheckboxBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -54,75 +42,27 @@ public abstract class TriStateCheckboxBase extends AbstractPrimeHtmlInputText im
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Icon for state one.")
+    public abstract String getStateOneIcon();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Icon for state two.")
+    public abstract String getStateTwoIcon();
 
-    public String getStateOneIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.stateOneIcon, null);
-    }
+    @Property(description = "Icon for state three.")
+    public abstract String getStateThreeIcon();
 
-    public void setStateOneIcon(String stateOneIcon) {
-        getStateHelper().put(PropertyKeys.stateOneIcon, stateOneIcon);
-    }
+    @Property(description = "Label for the checkbox item.")
+    public abstract String getItemLabel();
 
-    public String getStateTwoIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.stateTwoIcon, null);
-    }
+    @Property(description = "Whether to escape HTML in the label.", defaultValue = "true")
+    public abstract boolean isEscape();
 
-    public void setStateTwoIcon(String stateTwoIcon) {
-        getStateHelper().put(PropertyKeys.stateTwoIcon, stateTwoIcon);
-    }
+    @Property(description = "Title/tooltip for state one.")
+    public abstract String getStateOneTitle();
 
-    public String getStateThreeIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.stateThreeIcon, null);
-    }
+    @Property(description = "Title/tooltip for state two.")
+    public abstract String getStateTwoTitle();
 
-    public void setStateThreeIcon(String stateThreeIcon) {
-        getStateHelper().put(PropertyKeys.stateThreeIcon, stateThreeIcon);
-    }
-
-    public String getItemLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
-    }
-
-    public void setItemLabel(String itemLabel) {
-        getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    public String getStateOneTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.stateOneTitle, null);
-    }
-
-    public void setStateOneTitle(String stateOneTitle) {
-        getStateHelper().put(PropertyKeys.stateOneTitle, stateOneTitle);
-    }
-
-    public String getStateTwoTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.stateTwoTitle, null);
-    }
-
-    public void setStateTwoTitle(String stateTwoTitle) {
-        getStateHelper().put(PropertyKeys.stateTwoTitle, stateTwoTitle);
-    }
-
-    public String getStateThreeTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.stateThreeTitle, null);
-    }
-
-    public void setStateThreeTitle(String stateThreeTitle) {
-        getStateHelper().put(PropertyKeys.stateThreeTitle, stateThreeTitle);
-    }
+    @Property(description = "Title/tooltip for state three.")
+    public abstract String getStateThreeTitle();
 }

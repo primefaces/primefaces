@@ -23,8 +23,8 @@
  */
 package org.primefaces.component.datepicker;
 
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
-import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
@@ -39,7 +39,7 @@ import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
 
-public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder, FlexAware {
+public abstract class DatePickerBase extends UICalendar implements Widget, MixedClientBehaviorHolder, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -53,62 +53,6 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     protected String timeSeparator;
     protected String fractionSeparator;
 
-    public enum PropertyKeys {
-
-        appendTo,
-        autoDetectDisplay,
-        autoMonthFormat,
-        beforeShow,
-        buttonTabindex,
-        dateTemplate,
-        disabledDates,
-        disabledDays,
-        enabledDates,
-        flex,
-        focusOnSelect,
-        hideOnDateTimeSelect,
-        hideOnRangeSelection,
-        hourFormat,
-        inline,
-        keepInvalid,
-        maxDateCount,
-        model,
-        monthNavigator,
-        numberOfMonths,
-        onMonthChange,
-        onYearChange,
-        panelStyle,
-        panelStyleClass,
-        placeholder,
-        responsiveBreakpoint,
-        selectOtherMonths,
-        selectionMode,
-        shortYearCutoff,
-        showButtonBar,
-        showIcon,
-        showMilliseconds,
-        showMinMaxRange,
-        showOnFocus,
-        showOtherMonths,
-        showLongMonthNames,
-        showSeconds,
-        showTime,
-        showWeek,
-        stepHour,
-        stepMillisecond,
-        stepMinute,
-        stepSecond,
-        timeInput,
-        timeOnly,
-        touchUI,
-        triggerButtonIcon,
-        view,
-        weekCalculator,
-        widgetVar,
-        yearNavigator,
-        yearRange
-    }
-
     public DatePickerBase() {
         setRendererType(DEFAULT_RENDERER);
     }
@@ -118,429 +62,152 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         return COMPONENT_FAMILY;
     }
 
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public boolean isInline() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.inline, false);
-    }
-
-    public void setInline(boolean inline) {
-        getStateHelper().put(PropertyKeys.inline, inline);
-    }
-
-    public String getButtonTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.buttonTabindex, null);
-    }
-
-    public void setButtonTabindex(String buttonTabindex) {
-        getStateHelper().put(PropertyKeys.buttonTabindex, buttonTabindex);
-    }
-
-    public boolean isShowIcon() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showIcon, false);
-    }
-
-    public void setShowIcon(boolean showIcon) {
-        getStateHelper().put(PropertyKeys.showIcon, showIcon);
-    }
-
-    public String getBeforeShow() {
-        return (String) getStateHelper().eval(PropertyKeys.beforeShow, null);
-    }
-
-    public void setBeforeShow(String beforeShow) {
-        getStateHelper().put(PropertyKeys.beforeShow, beforeShow);
-    }
-
-    public boolean isFocusOnSelect() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnSelect, false);
-    }
-
-    public void setFocusOnSelect(boolean focusOnSelect) {
-        getStateHelper().put(PropertyKeys.focusOnSelect, focusOnSelect);
-    }
-
-    public String getYearRange() {
-        return (String) getStateHelper().eval(PropertyKeys.yearRange, null);
-    }
-
-    public void setYearRange(String yearRange) {
-        getStateHelper().put(PropertyKeys.yearRange, yearRange);
-    }
-
-    @Override
-    public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode,
-                () -> "week".equals(getView()) ? "range" : "single");
-    }
-
-    public void setSelectionMode(String selectionMode) {
-        getStateHelper().put(PropertyKeys.selectionMode, selectionMode);
-    }
-
-    public boolean isShowOtherMonths() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showOtherMonths, false);
-    }
-
-    public void setShowOtherMonths(boolean showOtherMonths) {
-        getStateHelper().put(PropertyKeys.showOtherMonths, showOtherMonths);
-    }
-
-    public boolean isSelectOtherMonths() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.selectOtherMonths, false);
-    }
-
-    public void setSelectOtherMonths(boolean selectOtherMonths) {
-        getStateHelper().put(PropertyKeys.selectOtherMonths, selectOtherMonths);
-    }
-
-    public boolean isShowOnFocus() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showOnFocus, true);
-    }
-
-    public void setShowOnFocus(boolean showOnFocus) {
-        getStateHelper().put(PropertyKeys.showOnFocus, showOnFocus);
-    }
-
-    public String getShortYearCutoff() {
-        return (String) getStateHelper().eval(PropertyKeys.shortYearCutoff, null);
-    }
-
-    public void setShortYearCutoff(String shortYearCutoff) {
-        getStateHelper().put(PropertyKeys.shortYearCutoff, shortYearCutoff);
-    }
-
-    public boolean isMonthNavigator() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.monthNavigator, false);
-    }
-
-    public void setMonthNavigator(boolean monthNavigator) {
-        getStateHelper().put(PropertyKeys.monthNavigator, monthNavigator);
-    }
-
-    public String getYearNavigator() {
-        return (String) getStateHelper().eval(PropertyKeys.yearNavigator, "false");
-    }
-
-    public void setYearNavigator(String yearNavigator) {
-        getStateHelper().put(PropertyKeys.yearNavigator, yearNavigator);
-    }
-
-    public boolean isShowTime() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showTime, false);
-    }
-
-    public Boolean isShowTimeWithoutDefault() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showTime);
-    }
-
-    public void setShowTime(boolean showTime) {
-        getStateHelper().put(PropertyKeys.showTime, showTime);
-    }
-
-    public String getHourFormat() {
-        return (String) getStateHelper().eval(PropertyKeys.hourFormat, null);
-    }
-
-    public void setHourFormat(String hourFormat) {
-        getStateHelper().put(PropertyKeys.hourFormat, hourFormat);
-    }
-
-    public boolean isShowSeconds() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showSeconds, false);
-    }
-
-    public Boolean isShowSecondsWithoutDefault() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showSeconds);
-    }
-
-    public void setShowSeconds(boolean showSeconds) {
-        getStateHelper().put(PropertyKeys.showSeconds, showSeconds);
-    }
-
-    public boolean isShowMilliseconds() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showMilliseconds, false);
-    }
-
-    public Boolean isShowMillisecondsWithoutDefault() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showMilliseconds);
-    }
-
-    public void setShowMilliseconds(boolean showMilliseconds) {
-        getStateHelper().put(PropertyKeys.showMilliseconds, showMilliseconds);
-    }
-
-    public int getStepHour() {
-        return (Integer) getStateHelper().eval(PropertyKeys.stepHour, 1);
-    }
-
-    public void setStepHour(int stepHour) {
-        getStateHelper().put(PropertyKeys.stepHour, stepHour);
-    }
-
-    public int getStepMinute() {
-        return (Integer) getStateHelper().eval(PropertyKeys.stepMinute, 1);
-    }
-
-    public void setStepMinute(int stepMinute) {
-        getStateHelper().put(PropertyKeys.stepMinute, stepMinute);
-    }
-
-    public int getStepSecond() {
-        return (Integer) getStateHelper().eval(PropertyKeys.stepSecond, 1);
-    }
-
-    public void setStepSecond(int stepSecond) {
-        getStateHelper().put(PropertyKeys.stepSecond, stepSecond);
-    }
-
-    public int getStepMillisecond() {
-        return (Integer) getStateHelper().eval(PropertyKeys.stepMillisecond, 1);
-    }
-
-    public void setStepMillisecond(int stepMillisecond) {
-        getStateHelper().put(PropertyKeys.stepMillisecond, stepMillisecond);
-    }
-
-    public boolean isShowButtonBar() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showButtonBar, false);
-    }
-
-    public void setShowButtonBar(boolean showButtonBar) {
-        getStateHelper().put(PropertyKeys.showButtonBar, showButtonBar);
-    }
-
-    public String getPanelStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
-    }
-
-    public void setPanelStyleClass(String panelStyleClass) {
-        getStateHelper().put(PropertyKeys.panelStyleClass, panelStyleClass);
-    }
-
-    public String getPanelStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.panelStyle, null);
-    }
-
-    public void setPanelStyle(String panelStyle) {
-        getStateHelper().put(PropertyKeys.panelStyle, panelStyle);
-    }
-
-    public boolean isKeepInvalid() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.keepInvalid, false);
-    }
-
-    public void setKeepInvalid(boolean keepInvalid) {
-        getStateHelper().put(PropertyKeys.keepInvalid, keepInvalid);
-    }
-
-    public boolean isHideOnDateTimeSelect() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.hideOnDateTimeSelect, false);
-    }
-
-    public void setHideOnDateTimeSelect(boolean hideOnDateTimeSelect) {
-        getStateHelper().put(PropertyKeys.hideOnDateTimeSelect, hideOnDateTimeSelect);
-    }
-
-    public boolean isHideOnRangeSelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.hideOnRangeSelection, false);
-    }
-
-    public void setHideOnRangeSelection(boolean hideOnRangeSelection) {
-        getStateHelper().put(PropertyKeys.hideOnRangeSelection, hideOnRangeSelection);
-    }
-
-    public int getMaxDateCount() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxDateCount, Integer.MAX_VALUE);
-    }
-
-    public void setMaxDateCount(int maxDateCount) {
-        getStateHelper().put(PropertyKeys.maxDateCount, maxDateCount);
-    }
-
-    public int getNumberOfMonths() {
-        return (Integer) getStateHelper().eval(PropertyKeys.numberOfMonths, 1);
-    }
-
-    public void setNumberOfMonths(int numberOfMonths) {
-        getStateHelper().put(PropertyKeys.numberOfMonths, numberOfMonths);
-    }
-
-    public String getView() {
-        return (String) getStateHelper().eval(PropertyKeys.view, null);
-    }
-
-    public void setView(String view) {
-        getStateHelper().put(PropertyKeys.view, view);
-    }
-
-    public boolean isAutoDetectDisplay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoDetectDisplay, true);
-    }
-
-    public void setAutoDetectDisplay(boolean autoDetectDisplay) {
-        getStateHelper().put(PropertyKeys.autoDetectDisplay, autoDetectDisplay);
-    }
-
-    public boolean isTouchUI() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchUI, false);
-    }
-
-    public void setTouchUI(boolean touchUI) {
-        getStateHelper().put(PropertyKeys.touchUI, touchUI);
-    }
-
-    public String getDateTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.dateTemplate, null);
-    }
-
-    public void setDateTemplate(String dateTemplate) {
-        getStateHelper().put(PropertyKeys.dateTemplate, dateTemplate);
-    }
-
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
-    }
-
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    public String getTriggerButtonIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.triggerButtonIcon, null);
-    }
-
-    public void setTriggerButtonIcon(String triggerButtonIcon) {
-        getStateHelper().put(PropertyKeys.triggerButtonIcon, triggerButtonIcon);
-    }
-
-    public List getDisabledDates() {
-        return (List) getStateHelper().eval(PropertyKeys.disabledDates, null);
-    }
-
-    public void setDisabledDates(List disabledDates) {
-        getStateHelper().put(PropertyKeys.disabledDates, disabledDates);
-    }
-
-    public List getEnabledDates() {
-        return (List) getStateHelper().eval(PropertyKeys.enabledDates, null);
-    }
-
-    public void setEnabledDates(List enabledDates) {
-        getStateHelper().put(PropertyKeys.enabledDates, enabledDates);
-    }
-
-    public List<Integer> getDisabledDays() {
-        return (List<Integer>) getStateHelper().eval(PropertyKeys.disabledDays, null);
-    }
-
-    public void setDisabledDays(List<Integer> disabledDays) {
-        getStateHelper().put(PropertyKeys.disabledDays, disabledDays);
-    }
-
-    public String getOnMonthChange() {
-        return (String) getStateHelper().eval(PropertyKeys.onMonthChange, null);
-    }
-
-    public void setOnMonthChange(String onMonthChange) {
-        getStateHelper().put(PropertyKeys.onMonthChange, onMonthChange);
-    }
-
-    public String getOnYearChange() {
-        return (String) getStateHelper().eval(PropertyKeys.onYearChange, null);
-    }
-
-    public void setOnYearChange(String onYearChange) {
-        getStateHelper().put(PropertyKeys.onYearChange, onYearChange);
-    }
-
-    public boolean isTimeInput() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.timeInput, false);
-    }
-
-    public void setTimeInput(boolean timeInput) {
-        getStateHelper().put(PropertyKeys.timeInput, timeInput);
-    }
-
-    public boolean isShowWeek() {
-        return (boolean) getStateHelper().eval(PropertyKeys.showWeek,
-                () -> "week".equals(getView()));
-    }
-
-    public void setShowWeek(boolean showWeek) {
-        getStateHelper().put(PropertyKeys.showWeek, showWeek);
-    }
-
-    public String getWeekCalculator() {
-        return (String) getStateHelper().eval(PropertyKeys.weekCalculator, null);
-    }
-
-    public void setWeekCalculator(String weekCalculator) {
-        getStateHelper().put(PropertyKeys.weekCalculator, weekCalculator);
-    }
-
-    public DateMetadataModel getModel() {
-        return (DateMetadataModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(DateMetadataModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public void setResponsiveBreakpoint(int responsiveBreakpoint) {
-        getStateHelper().put(PropertyKeys.responsiveBreakpoint, responsiveBreakpoint);
-    }
-
-    public int getResponsiveBreakpoint() {
-        return (Integer) getStateHelper().eval(PropertyKeys.responsiveBreakpoint, RESPONSIVE_BREAKPOINT_SMALL);
-    }
-
-    public boolean isShowMinMaxRange() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showMinMaxRange, true);
-    }
-
-    public void setShowMinMaxRange(boolean showMinMaxRange) {
-        getStateHelper().put(PropertyKeys.showMinMaxRange, showMinMaxRange);
-    }
-
-    public boolean isAutoMonthFormat() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoMonthFormat, true);
-    }
-
-    public void setAutoMonthFormat(boolean autoMonthFormat) {
-        getStateHelper().put(PropertyKeys.autoMonthFormat, autoMonthFormat);
-    }
-
-    public boolean isShowLongMonthNames() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showLongMonthNames, false);
-    }
-
-    public void setShowLongMonthNames(boolean showLongMonthNames) {
-        getStateHelper().put(PropertyKeys.showLongMonthNames, showLongMonthNames);
-    }
-
-    @Override
-    public Boolean getFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
-    }
-
-    public void setFlex(Boolean flex) {
-        getStateHelper().put(PropertyKeys.flex, flex);
-    }
+    @Property(description = "When enabled, displays calendar inline.", defaultValue = "false")
+    public abstract boolean isInline();
+
+    @Property(description = "Tabindex for the trigger button.")
+    public abstract String getButtonTabindex();
+
+    @Property(description = "When enabled, shows calendar icon.", defaultValue = "false")
+    public abstract boolean isShowIcon();
+
+    @Property(description = "JavaScript callback to execute before showing the calendar.")
+    public abstract String getBeforeShow();
+
+    @Property(description = "When enabled, focuses input after selection.", defaultValue = "false")
+    public abstract boolean isFocusOnSelect();
+
+    @Property(description = "Year range for navigation. Format: 'start:end'.")
+    public abstract String getYearRange();
+
+    @Property(description = "Selection mode. Options: 'single', 'multiple', 'range'. Defaults to 'range' when view is 'week', otherwise 'single'.")
+    public abstract String getSelectionMode();
+
+    @Property(description = "When enabled, shows dates from other months.", defaultValue = "false")
+    public abstract boolean isShowOtherMonths();
+
+    @Property(description = "When enabled, allows selecting dates from other months.", defaultValue = "false")
+    public abstract boolean isSelectOtherMonths();
+
+    @Property(description = "When enabled, shows calendar on input focus.", defaultValue = "true")
+    public abstract boolean isShowOnFocus();
+
+    @Property(description = "Cutoff year for two-digit year interpretation.")
+    public abstract String getShortYearCutoff();
+
+    @Property(description = "When enabled, shows month navigator.", defaultValue = "false")
+    public abstract boolean isMonthNavigator();
+
+    @Property(description = "Year navigator mode. Options: 'false', 'true', 'dropdown'.", defaultValue = "false")
+    public abstract String getYearNavigator();
+
+    @Property(description = "When enabled, shows time picker.", defaultValue = "false")
+    public abstract boolean isShowTime();
+
+    @Property(description = "Hour format. Options: '12' for 12-hour, '24' for 24-hour.")
+    public abstract String getHourFormat();
+
+    @Property(description = "When enabled, shows seconds in time picker.", defaultValue = "false")
+    public abstract boolean isShowSeconds();
+
+    @Property(description = "When enabled, shows milliseconds in time picker.", defaultValue = "false")
+    public abstract boolean isShowMilliseconds();
+
+    @Property(description = "Step value for hour spinner.", defaultValue = "1")
+    public abstract int getStepHour();
+
+    @Property(description = "Step value for minute spinner.", defaultValue = "1")
+    public abstract int getStepMinute();
+
+    @Property(description = "Step value for second spinner.", defaultValue = "1")
+    public abstract int getStepSecond();
+
+    @Property(description = "Step value for millisecond spinner.", defaultValue = "1")
+    public abstract int getStepMillisecond();
+
+    @Property(description = "When enabled, shows button bar with today/clear buttons.", defaultValue = "false")
+    public abstract boolean isShowButtonBar();
+
+    @Property(description = "CSS class for the calendar panel.")
+    public abstract String getPanelStyleClass();
+
+    @Property(description = "Inline style for the calendar panel.")
+    public abstract String getPanelStyle();
+
+    @Property(description = "When enabled, keeps invalid input value.", defaultValue = "false")
+    public abstract boolean isKeepInvalid();
+
+    @Property(description = "When enabled, hides calendar after date/time selection.", defaultValue = "false")
+    public abstract boolean isHideOnDateTimeSelect();
+
+    @Property(description = "When enabled, hides calendar after range selection.", defaultValue = "false")
+    public abstract boolean isHideOnRangeSelection();
+
+    @Property(description = "Maximum number of dates that can be selected.", defaultValue = "2147483647")
+    public abstract int getMaxDateCount();
+
+    @Property(description = "Number of months to display.", defaultValue = "1")
+    public abstract int getNumberOfMonths();
+
+    @Property(description = "View mode. Options: 'date', 'month', 'year', 'week'.")
+    public abstract String getView();
+
+    @Property(description = "When enabled, automatically detects display mode.", defaultValue = "true")
+    public abstract boolean isAutoDetectDisplay();
+
+    @Property(description = "When enabled, uses touch-optimized UI.", defaultValue = "false")
+    public abstract boolean isTouchUI();
+
+    @Property(description = "Template for custom date rendering.")
+    public abstract String getDateTemplate();
+
+    @Property(description = "Search expression to append the calendar panel to.", defaultValue = "@(body)")
+    public abstract String getAppendTo();
+
+    @Property(description = "Icon for the trigger button.")
+    public abstract String getTriggerButtonIcon();
+
+    @Property(description = "List of disabled dates.")
+    public abstract List<Object> getDisabledDates();
+
+    @Property(description = "List of enabled dates.")
+    public abstract List<Object> getEnabledDates();
+
+    @Property(description = "List of disabled days of week (0=Sunday, 6=Saturday).")
+    public abstract List<Integer> getDisabledDays();
+
+    @Property(description = "JavaScript callback for month change event.")
+    public abstract String getOnMonthChange();
+
+    @Property(description = "JavaScript callback for year change event.")
+    public abstract String getOnYearChange();
+
+    @Property(description = "When enabled, uses time input field instead of spinner.", defaultValue = "false")
+    public abstract boolean isTimeInput();
+
+    @Property(description = "When enabled, shows week numbers. Defaults to true when view is 'week'.")
+    public abstract boolean isShowWeek();
+
+    @Property(description = "Week calculator algorithm. Options: 'ISO', 'US'.")
+    public abstract String getWeekCalculator();
+
+    @Property(description = "DateMetadataModel for advanced date metadata.")
+    public abstract DateMetadataModel getModel();
+
+    @Property(description = "Responsive breakpoint in pixels for auto-switching to touch mode.", defaultValue = "576")
+    public abstract int getResponsiveBreakpoint();
+
+    @Property(description = "When enabled, shows min/max range indicators.", defaultValue = "true")
+    public abstract boolean isShowMinMaxRange();
+
+    @Property(description = "When enabled, automatically formats month display.", defaultValue = "true")
+    public abstract boolean isAutoMonthFormat();
+
+    @Property(description = "When enabled, shows long month names.", defaultValue = "false")
+    public abstract boolean isShowLongMonthNames();
+
+    @Property(description = "Flex layout configuration.")
+    public abstract Boolean getFlex();
 
     @Override
     public boolean hasTime() {
@@ -602,12 +269,6 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
             fractionSeparator = Character.toString(ds);
         }
         return fractionSeparator;
-    }
-
-    @Override
-    public boolean isReadonlyInput() {
-        return (boolean) getStateHelper().eval(UICalendar.PropertyKeys.readonlyInput,
-                () -> "week".equals(getView()) ? true : false);
     }
 
 }

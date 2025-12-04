@@ -110,7 +110,7 @@ public abstract class BaseCalendarRenderer<T extends UICalendar> extends InputRe
         boolean disabled = false;
 
         if (popup) {
-            String inputStyleClass = createStyleClass(component, UICalendar.PropertyKeys.inputStyleClass.name(), UICalendar.INPUT_STYLE_CLASS);
+            String inputStyleClass = createStyleClass(component, "inputStyleClass", UICalendar.INPUT_STYLE_CLASS);
             readonly = component.isReadonly() || component.isReadonlyInput();
             disabled = component.isDisabled();
 

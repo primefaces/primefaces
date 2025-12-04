@@ -523,7 +523,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
     }
 
     protected void encodeFooter(FacesContext context, AutoComplete component) throws IOException {
-        UIComponent footer = component.getFacet("footer");
+        UIComponent footer = component.getFooterFacet();
         if (FacetUtils.shouldRenderFacet(footer)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
@@ -665,7 +665,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
             boolean pojo, String var, String key, int rowNumber) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        UIComponent itemtip = component.getFacet("itemtip");
+        UIComponent itemtip = component.getItemtipFacet();
         boolean hasGroupByTooltip = (component.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         writer.startElement("li", null);
@@ -730,7 +730,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        UIComponent itemtip = component.getFacet("itemtip");
+        UIComponent itemtip = component.getItemtipFacet();
         boolean hasGroupByTooltip = (component.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         writer.startElement("tr", null);

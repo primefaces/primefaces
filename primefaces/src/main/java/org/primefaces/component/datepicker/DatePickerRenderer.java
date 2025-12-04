@@ -100,7 +100,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer<DatePicker> {
             }
         }
 
-        if (datePicker.isTimeOnlyWithoutDefault() == null) {
+        if (datePicker.getTimeOnlyWithoutDefault() == null) {
             Class<?> type = datePicker.getValueType();
 
             if (type != null) {

@@ -23,15 +23,18 @@
  */
 package org.primefaces.component.inputtext;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = InputText.COMPONENT_TYPE, namespace = InputText.COMPONENT_FAMILY)
+@FacesComponentDescription("InputText is an extension to standard inputText with skinning capabilities.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class InputText extends InputTextBase {
+public class InputText extends InputTextBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputText";
 

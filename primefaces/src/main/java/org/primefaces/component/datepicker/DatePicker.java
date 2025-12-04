@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.datepicker;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.datepicker.DateMetadata;
@@ -54,6 +55,7 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 
 @FacesComponent(value = DatePicker.COMPONENT_TYPE, namespace = DatePicker.COMPONENT_FAMILY)
+@FacesComponentDescription("DatePicker is an input component used to select a date.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -61,7 +63,7 @@ import jakarta.faces.event.PhaseId;
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "inputmask/inputmask.js")
 @ResourceDependency(library = "primefaces", name = "datepicker/datepicker.js")
-public class DatePicker extends DatePickerBase {
+public class DatePicker extends DatePickerBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DatePicker";
     public static final String CONTAINER_EXTENSION_CLASS = "p-datepicker";
@@ -69,39 +71,67 @@ public class DatePicker extends DatePickerBase {
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     @Override
-    public Collection<String> getEventNames() {
-        return CALENDAR_EVENT_NAMES;
+    public Collection<String> getUnobstrusiveEventNames() {
+        return UNOBSTRUSIVE_EVENT_NAMES;
     }
 
     @Override
-    public Collection<String> getUnobstrusiveEventNames() {
-        return UNOBSTRUSIVE_EVENT_NAMES;
+    public String getSelectionMode() {
+        return (String) getStateHelper().eval(PropertyKeys.selectionMode,
+                () -> "week".equals(getView()) ? "range" : "single");
+    }
+
+    @Override
+    public boolean isShowWeek() {
+        return (boolean) getStateHelper().eval(PropertyKeys.showWeek,
+                () -> "week".equals(getView()));
+    }
+
+    @Override
+    public boolean isReadonlyInput() {
+        return (boolean) getStateHelper().eval(PropertyKeys.readonlyInput,
+                () -> "week".equals(getView()) ? true : false);
+    }
+
+    public Boolean isShowTimeWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showTime);
+    }
+
+    public Boolean isShowSecondsWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSeconds);
+    }
+
+    public Boolean isShowMillisecondsWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showMilliseconds);
+    }
+
+    @Override
+    public Boolean getTimeOnlyWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly);
     }
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
+        if (isAjaxBehaviorEventSource(event)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName != null) {
-                if ("dateSelect".equals(eventName) || "close".equals(eventName)) {
-                    customEvents.put(eventName, (AjaxBehaviorEvent) event);
-                }
-                else if ("viewChange".equals(eventName)) {
-                    int month = Integer.parseInt(params.get(clientId + "_month"));
-                    int year = Integer.parseInt(params.get(clientId + "_year"));
-                    DateViewChangeEvent dateViewChangeEvent = new DateViewChangeEvent(this, behaviorEvent.getBehavior(), month, year);
-                    dateViewChangeEvent.setPhaseId(behaviorEvent.getPhaseId());
-                    super.queueEvent(dateViewChangeEvent);
-                }
-                else {
-                    super.queueEvent(event);        //regular events like change, click, blur
-                }
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.dateSelect) || isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.close)) {
+                customEvents.put(eventName, (AjaxBehaviorEvent) event);
+            }
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.viewChange)) {
+                int month = Integer.parseInt(params.get(clientId + "_month"));
+                int year = Integer.parseInt(params.get(clientId + "_year"));
+                DateViewChangeEvent dateViewChangeEvent = new DateViewChangeEvent(this, behaviorEvent.getBehavior(), month, year);
+                dateViewChangeEvent.setPhaseId(behaviorEvent.getPhaseId());
+                super.queueEvent(dateViewChangeEvent);
+            }
+            else {
+                super.queueEvent(event);        //regular events like change, click, blur
             }
         }
         else {

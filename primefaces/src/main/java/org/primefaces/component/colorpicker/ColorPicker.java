@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.colorpicker;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
 
@@ -36,6 +37,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.BehaviorEvent;
 
 @FacesComponent(value = ColorPicker.COMPONENT_TYPE, namespace = ColorPicker.COMPONENT_FAMILY)
+@FacesComponentDescription("ColorPicker is an input component with a color palette.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "colorpicker/colorpicker.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -43,7 +45,7 @@ import jakarta.faces.event.BehaviorEvent;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "colorpicker/colorpicker.js")
-public class ColorPicker extends ColorPickerBase {
+public class ColorPicker extends ColorPickerBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColorPicker";
 
