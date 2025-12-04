@@ -24,6 +24,7 @@
 package org.primefaces.component.panel;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.CloseEvent;
@@ -43,6 +44,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Panel.COMPONENT_TYPE, namespace = Panel.COMPONENT_FAMILY)
+@FacesComponentDescription("Panel is a grouping component for other components, notable features are toggling, closing and built-in popup menu.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

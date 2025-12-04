@@ -29,13 +29,16 @@ import java.util.List;
 public class ComponentInfo {
 
     private final Class<?> componentClass;
+    private String description;
     private String componentType;
     private String rendererType;
     private String tagName;
     private List<PropertyInfo> properties;
 
-    public ComponentInfo(Class<?> componentClass, String componentType, String rendererType, String tagName) {
+    public ComponentInfo(Class<?> componentClass, String description, String componentType, String rendererType,
+                         String tagName) {
         this.componentClass = componentClass;
+        this.description = description;
         this.componentType = componentType;
         this.rendererType = rendererType;
         this.tagName = tagName;
@@ -44,6 +47,10 @@ public class ComponentInfo {
 
     public Class<?> getComponentClass() {
         return componentClass;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getComponentType() {
@@ -82,6 +89,7 @@ public class ComponentInfo {
     public String toString() {
         return "ComponentInfo{" +
                 "componentClass='" + componentClass + '\'' +
+                ", description='" + description + '\'' +
                 ", componentType='" + componentType + '\'' +
                 ", rendererType='" + rendererType + '\'' +
                 ", tagName='" + tagName + '\'' +

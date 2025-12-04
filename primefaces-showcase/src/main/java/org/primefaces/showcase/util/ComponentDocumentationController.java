@@ -23,6 +23,7 @@
  */
 package org.primefaces.showcase.util;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.cdk.api.PrimeFacetKeys;
 import org.primefaces.cdk.api.PrimePropertyKeys;
@@ -54,6 +55,7 @@ public class ComponentDocumentationController {
     public static class Component {
         private final Class<? extends PrimeComponent> clazz;
         private final PrimeComponent instance;
+        private final FacesComponentDescription description;
 
         public Component(Class<? extends PrimeComponent> clazz) {
             this.clazz = clazz;
@@ -63,6 +65,11 @@ public class ComponentDocumentationController {
             catch (Exception e) {
                 throw new RuntimeException(e);
             }
+            this.description = clazz.getAnnotation(FacesComponentDescription.class);
+        }
+
+        public String getDescription() {
+            return description == null ? null : description.value();
         }
 
         public PrimePropertyKeys[] getProperties() {

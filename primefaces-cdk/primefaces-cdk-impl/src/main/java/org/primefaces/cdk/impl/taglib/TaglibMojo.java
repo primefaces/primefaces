@@ -254,6 +254,9 @@ public class TaglibMojo extends AbstractMojo {
         // Add a tag for each component
         for (ComponentInfo componentInfo : componentInfos) {
             Element tag = faceletTaglib.addElement("tag");
+            if (componentInfo.getDescription() != null) {
+                tag.addElement("description").addCDATA(componentInfo.getDescription());
+            }
             tag.addElement("tag-name").addText(componentInfo.getTagName());
             Element component = tag.addElement("component");
             component.addElement("component-type").addText(componentInfo.getComponentType());
