@@ -776,12 +776,21 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     bindClearFilterEvent(filter) {
         var $this = this;
 
-        filter.off('search').on('search', function(e) {
+        filter.off('search.filterClear').on('search.filterClear', function(e) {
             // only care when 'X'' is clicked
             if ($(this).val() == "") {
                 $this.filter();
             }
         });
+
+        // #13122 Safari does not trigger 'search' event on clear button
+        if (PrimeFaces.env.browser.safari) {
+            filter.off('input.filterClear').on('input.filterClear', function(e) {
+                if (this.value === "") {
+                    $this.filter();
+                }
+            });
+        }
     }
 
     /**
