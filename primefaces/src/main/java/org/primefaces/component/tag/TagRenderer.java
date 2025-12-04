@@ -46,6 +46,8 @@ public class TagRenderer extends CoreRenderer<Tag> {
                     .add("success".equals(severity), Tag.SEVERITY_SUCCESS_CLASS)
                     .add("warning".equals(severity), Tag.SEVERITY_WARNING_CLASS)
                     .add("danger".equals(severity), Tag.SEVERITY_DANGER_CLASS)
+                    .add("secondary".equals(severity), Tag.SEVERITY_SECONDARY_CLASS)
+                    .add("help".equals(severity), Tag.SEVERITY_HELP_CLASS)
                     .add(component.isRounded(), Tag.ROUNDED_CLASS)
                     .build();
 

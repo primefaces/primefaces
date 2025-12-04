@@ -49,6 +49,8 @@ Different color options are available as severity levels.
 * info
 * warning
 * danger
+* secondary
+* help
 
 ## Templating
 Content can easily be customized with the default slot instead of using the built-in display.

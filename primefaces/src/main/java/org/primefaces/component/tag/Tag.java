@@ -36,6 +36,8 @@ public class Tag extends TagBaseImpl {
     public static final String SEVERITY_SUCCESS_CLASS = "ui-tag-success";
     public static final String SEVERITY_WARNING_CLASS = "ui-tag-warning";
     public static final String SEVERITY_DANGER_CLASS = "ui-tag-danger";
+    public static final String SEVERITY_SECONDARY_CLASS = "ui-tag-secondary";
+    public static final String SEVERITY_HELP_CLASS = "ui-tag-help";
     public static final String ROUNDED_CLASS = "ui-tag-rounded";
     public static final String ICON_CLASS = "ui-tag-icon";
     public static final String VALUE_CLASS = "ui-tag-value";

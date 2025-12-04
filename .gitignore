@@ -68,3 +68,4 @@ node_modules/
 /primefaces-theme/*.css
 /primefaces-theme/target/
 /primefaces-coverage/target/
+/primefaces-cdk/target/
