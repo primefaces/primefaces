@@ -37,6 +37,14 @@
                     <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
                 </p:splitButton>
 
+                <h5>Dynamic</h5>
+                <p:splitButton value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save" dynamic="true">
+                    <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:divider />
+                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                </p:splitButton>
+
                 <h5>Programmatic Menu</h5>
                 <p:splitButton value="Save" model="#{buttonView.model}" action="#{buttonView.save}"
                                    update="messages" icon="pi pi-save"/>

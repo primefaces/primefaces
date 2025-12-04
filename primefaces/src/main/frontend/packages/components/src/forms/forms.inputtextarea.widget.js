@@ -37,6 +37,7 @@ PrimeFaces.widget.InputTextarea = class InputTextarea extends PrimeFaces.widget.
      */
     init(cfg) {
         super.init(cfg);
+        this.items = $();
 
         if(this.cfg.autoResize)
             this.renderDeferred();

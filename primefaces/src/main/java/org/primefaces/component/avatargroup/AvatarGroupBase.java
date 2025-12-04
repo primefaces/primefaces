@@ -23,18 +23,15 @@
  */
 package org.primefaces.component.avatargroup;
 
+import org.primefaces.component.api.StyleAware;
+
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class AvatarGroupBase extends UIComponentBase {
+public abstract class AvatarGroupBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AvatarGroupRenderer";
-
-    public enum PropertyKeys {
-        style,
-        styleClass
-    }
 
     public AvatarGroupBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -43,22 +40,6 @@ public abstract class AvatarGroupBase extends UIComponentBase {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
 }

@@ -45,7 +45,8 @@ public abstract class CaptchaBase extends UIInput implements Widget {
         size,
         executor,
         sourceUrl,
-        verifyUrl
+        verifyUrl,
+        widgetVar
     }
 
     public CaptchaBase() {
@@ -119,6 +120,15 @@ public abstract class CaptchaBase extends UIInput implements Widget {
 
     public void setType(String type) {
         getStateHelper().put(PropertyKeys.type, type);
+    }
+
+    @Override
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
+    }
+
+    public void setWidgetVar(java.lang.String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public String getExecutor() {

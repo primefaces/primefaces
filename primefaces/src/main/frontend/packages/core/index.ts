@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-import { core, PF as _PF, type Core } from "./src/core/core.js";
+import { PF as _PF, core, type Core } from "./src/core/core.js";
 import { globalAjaxSetup } from "./src/core/core.ajax.js";
 import { globalUtilsSetup } from "./src/core/core.utils.js";
 
@@ -1725,6 +1725,8 @@ declare global {
             "lastPageLabel"?: string;
             "listLabel"?: string;
             "listView"?: string;
+            "maximizeLabel"?: string;
+            "minimizeLabel"?: string;
             "moveAllToSource"?: string;
             "moveAllToTarget"?: string;
             "moveBottom"?: string;
@@ -1748,6 +1750,7 @@ declare global {
             "rowsPerPageLabel"?: string;
             "saveEdit"?: string;
             "scrollTop"?: string;
+            "selectColor"?: string;
             "selectAll"?: string;
             "selectLabel"?: string;
             "selectRow"?: string;

@@ -55,7 +55,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.36.0</version>
+            <version>4.38.0</version>
         </dependency>
 
         <!-- org.seleniumhq.selenium and com.googlecode.owasp-java-html-sanitizer need guava; resolved version-conflicts -->
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>6.3.2</version>
+            <version>6.3.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.github.docker-java</groupId>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.17.7</version>
+            <version>1.18.2</version>
         </dependency>
     </dependencies>
 </project>

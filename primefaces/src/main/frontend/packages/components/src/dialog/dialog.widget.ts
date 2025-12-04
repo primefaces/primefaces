@@ -233,7 +233,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         this.content = this.box.children('.ui-dialog-content');
         this.titlebar = this.box.children('.ui-dialog-titlebar');
         this.footer = this.box.find('.ui-dialog-footer');
-        this.icons = this.titlebar.children('.ui-dialog-titlebar-icon');
+		this.icons = this.titlebar.find('.ui-dialog-titlebar-icon');
         this.closeIcon = this.titlebar.children('.ui-dialog-titlebar-close');
         this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
         this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
@@ -382,6 +382,9 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     show(duration?: number | string): void {
         if(this.isVisible()) {
+			if(this.minimized) {
+				this.toggleMinimize();
+			}
             return;
         }
 
@@ -481,6 +484,10 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             return;
         }
 
+		if(this.minimized) {
+			this.toggleMinimize();
+		}
+
         this.lastOffset = [ this.box.css('top'), this.box.css('left') ];
 
         if (this.cfg.hideEffect) {
@@ -563,11 +570,13 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             e.preventDefault();
         });
 
+        this.maximizeIcon.attr('aria-label', this.getAriaLabel('maximizeLabel'));
         this.maximizeIcon.on("click", function(e) {
             $this.toggleMaximize();
             e.preventDefault();
         });
 
+        this.minimizeIcon.attr('aria-label', this.getAriaLabel('minimizeLabel'));
         this.minimizeIcon.on("click", function(e) {
             $this.toggleMinimize();
             e.preventDefault();

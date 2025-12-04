@@ -22,7 +22,7 @@ TriStateCheckbox adds a new state to a checkbox value.
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component referring to a List.
+value | null | Boolean | Boolean value of the component (null, true, false).
 converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 required | false | Boolean | Marks component as required
@@ -49,18 +49,31 @@ label | null | String | A localized user presentable name.
 escape | true | Boolean | Defines whether HTML in label would be escaped or not.
 
 ## Getting started with TriStateCheckbox
-TriStateCheckbox passes values “0”, “1”, “2” by default for each state and this can be customized
-using a converter.
+TriStateCheckbox supports three states: null (unchecked), true (checked), and false (indeterminate).
+
+### Using Boolean values
 
 ```xhtml
-<p:triStateCheckbox value="#{bean.value}"/>
+<p:triStateCheckbox value="#{bean.booleanValue}"/>
 ```
+
 ```java
 public class Bean {
-    private String value;
+    private Boolean booleanValue; // Can be true, false, or null
     //getter-setter
 }
 ```
+
+## Value Handling
+The TriStateCheckbox component automatically handles conversion between String and Boolean values:
+
+- **Boolean values**: Used directly as `Boolean.TRUE`, `Boolean.FALSE`, or `null`
+- **Three states**: 
+  - `null` - Unchecked state (state one)
+  - `true` - Checked state (state two) 
+  - `false` - Indeterminate state (state three)
+
+
 ## Client Side API
 Widget: _PrimeFaces.widget.TriStateCheckbox_
 

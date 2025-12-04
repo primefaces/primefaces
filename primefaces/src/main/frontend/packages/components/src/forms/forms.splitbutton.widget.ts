@@ -41,6 +41,12 @@ export interface SplitButtonCfg extends PrimeType.widget.BaseWidgetCfg {
      * Defines if filtering would be done using normalized values.
      */
     filterNormalize: boolean;
+
+    /**
+     * Defines if dynamic loading is enabled for the element's menu. If the value is `true`,
+     * the menu is not rendered on page load to improve performance.
+     */
+    dynamic: boolean;
 }
 
 /**
@@ -118,21 +124,30 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
      */
     transition?: PrimeType.CssTransitionHandler | null;
 
+    /**
+     * If dynamic loading is enabled, whether the menu content was loaded already.
+     */
+    isDynamicLoaded: boolean = false;
+
     override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
          super.init(cfg);
         this.button = $(this.jqId + '_button');
         this.menuButton = $(this.jqId + '_menuButton');
         this.menuId = this.jqId + '_menu';
         this.menu = $(this.menuId);
-        this.menuitemContainer = this.menu.find('.ui-menu-list');
-        this.menuitems = this.menuitemContainer.children('.ui-menuitem:not(.ui-state-disabled)');
         this.cfg.disabled = this.button.is(':disabled');
         this.cfg.filterInputAutoFocus = (this.cfg.filterInputAutoFocus === undefined) ? true : this.cfg.filterInputAutoFocus;
+        this.cfg.dynamic = this.cfg.dynamic || false;
+        this.isDynamicLoaded = !this.cfg.dynamic;
+
+        if (this.menu.length > 0) {
+            this.menuitemContainer = this.menu.find('.ui-menu-list');
+            this.menuitems = this.menuitemContainer.children('.ui-menuitem:not(.ui-state-disabled)');
+            PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
+            this.transition = PrimeFaces.utils.registerCSSTransition(this.menu, 'ui-connected-overlay');
+        }
 
         this.bindEvents();
-
-        PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
-        this.transition = PrimeFaces.utils.registerCSSTransition(this.menu, 'ui-connected-overlay');
 
         //pfs metadata
         this.button.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -141,7 +156,9 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
 
     override refresh(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
         this.menuButton.off('click.splitbutton');
-        this.menuitems.off('mouseover.splitbutton mouseout.splitbutton click.splitbutton');
+        if (this.menuitems.length > 0) {
+            this.menuitems.off('mouseover.splitbutton mouseout.splitbutton click.splitbutton');
+        }
         this.menuButton.off('keydown.splitbutton keyup.splitbutton');
         $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
 
@@ -179,25 +196,27 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
         // toggle menu
         this.menuButton.attr('aria-label', this.getAriaLabel('listLabel'));
         this.menuButton.on('click.splitbutton', () => {
-            if(!this.cfg.disabled && this.menu.is(':hidden'))
+            if(!this.cfg.disabled && (this.menu.length === 0 || this.menu.is(':hidden')))
                 this.show();
             else
                 this.hide();
         });
 
         //menuitem visuals
-        this.menuitems.on('mouseover.splitbutton', function() {
-            var menuitem = $(this),
-            menuitemLink = menuitem.children('.ui-menuitem-link');
+        if (this.menuitems.length > 0) {
+            this.menuitems.on('mouseover.splitbutton', function() {
+                var menuitem = $(this),
+                menuitemLink = menuitem.children('.ui-menuitem-link');
 
-            if(!menuitemLink.hasClass('ui-state-disabled')) {
-                menuitem.addClass('ui-state-hover');
-            }
-        }).on('mouseout.splitbutton', function() {
-            $(this).removeClass('ui-state-hover');
-        }).on('click.splitbutton', () => {
-            this.hide();
-        });
+                if(!menuitemLink.hasClass('ui-state-disabled')) {
+                    menuitem.addClass('ui-state-hover');
+                }
+            }).on('mouseout.splitbutton', function() {
+                $(this).removeClass('ui-state-hover');
+            }).on('click.splitbutton', () => {
+                this.hide();
+            });
+        }
 
         //keyboard support
         this.menuButton.on('keydown.splitbutton', (e) => {
@@ -536,6 +555,11 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
            return;
         }
 
+        if (this.cfg.dynamic && !this.isDynamicLoaded) {
+            this.loadDynamicMenu();
+            return;
+        }
+
         if (this.transition) {
             this.transition.show({
                 onEnter: () => {
@@ -556,6 +580,80 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                 }
             });
         }
+    }
+
+    /**
+     * Loads the menu content dynamically via AJAX when dynamic mode is enabled.
+     * @private
+     */
+    private loadDynamicMenu(): void {
+        const $this = this;
+        const options: PrimeFaces.ajax.Configuration = {
+            source: this.id,
+            update: this.id,
+            process: this.id,
+            params: [
+                { name: this.id + '_dynamicload', value: true }
+            ],
+            onsuccess: function(responseXML: XMLDocument, status: string, xhr: JQueryXHR) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content: string) {
+                        // The response contains the menu element
+                        const tempContainer = $('<div>').html(content);
+                        const menuElement = tempContainer.find($this.menuId);
+                        
+                        if (menuElement.length > 0) {
+                            // Append menu to the splitbutton container if it doesn't exist
+                            if ($this.menu.length === 0) {
+                                $this.jq.append(menuElement);
+                            } else {
+                                // Replace existing menu
+                                $this.menu.replaceWith(menuElement);
+                            }
+                            
+                            $this.menu = menuElement;
+                            $this.menuitemContainer = $this.menu.find('.ui-menu-list');
+                            $this.menuitems = $this.menuitemContainer.children('.ui-menuitem:not(.ui-state-disabled)');
+                            
+                            // Re-register dynamic overlay
+                            PrimeFaces.utils.registerDynamicOverlay($this, $this.menu, $this.id + '_menu');
+                            $this.transition = PrimeFaces.utils.registerCSSTransition($this.menu, 'ui-connected-overlay');
+                            
+                            // Re-bind filter events if filter is enabled
+                            if ($this.cfg.filter) {
+                                $this.setupFilterMatcher();
+                                $this.filterInput = $this.menu.find('> div.ui-splitbuttonmenu-filter-container > input.ui-splitbuttonmenu-filter');
+                                PrimeFaces.skinInput($this.filterInput);
+                                $this.bindFilterEvents();
+                            }
+                            
+                            // Re-bind menu item events
+                            $this.menuitems.on('mouseover.splitbutton', function() {
+                                const menuitem = $(this);
+                                const menuitemLink = menuitem.children('.ui-menuitem-link');
+                                if(!menuitemLink.hasClass('ui-state-disabled')) {
+                                    menuitem.addClass('ui-state-hover');
+                                }
+                            }).on('mouseout.splitbutton', function() {
+                                $(this).removeClass('ui-state-hover');
+                            }).on('click.splitbutton', () => {
+                                $this.hide();
+                            });
+                            
+                            $this.isDynamicLoaded = true;
+                            $this.cfg.disabled = false;
+                            
+                            // Now show the menu
+                            $this.show();
+                        }
+                    }
+                });
+                return true;
+            }
+        };
+        
+        PrimeFaces.ajax.Request.handle(options);
     }
 
     /**

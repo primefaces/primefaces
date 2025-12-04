@@ -72,9 +72,9 @@
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
         <junit.version>5.13.4</junit.version>
-        <poi.version>5.4.1</poi.version>
-        <jacoco.version>0.8.13</jacoco.version>
-        <tomcat.version>10.1.44</tomcat.version>
+        <poi.version>5.5.1</poi.version>
+        <jacoco.version>0.8.14</jacoco.version>
+        <tomcat.version>10.1.48</tomcat.version>
         <slf4j.version>2.0.17</slf4j.version>
 
         <sonar.skip>true</sonar.skip>
@@ -88,6 +88,7 @@
 
     <modules>
         <module>primefaces-themes</module>
+        <module>primefaces-cdk</module>
         <module>primefaces</module>
         <module>primefaces-showcase</module>
         <module>primefaces-selenium</module>
@@ -123,12 +124,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.3.1</version>
+                    <version>3.4.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.4.2</version>
+                    <version>3.5.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -143,7 +144,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
-                    <version>3.4.0</version>
+                    <version>3.5.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -199,7 +200,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.4.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <propertiesEncoding>${project.build.sourceEncoding}</propertiesEncoding>
@@ -289,7 +290,7 @@
             <plugin>
                 <groupId>org.jreleaser</groupId>
                 <artifactId>jreleaser-maven-plugin</artifactId>
-                <version>1.20.0</version>
+                <version>1.21.0</version>
                 <inherited>false</inherited>
                 <configuration>
                     <jreleaser>
@@ -364,22 +365,13 @@
             </build>
         </profile>
         <profile>
-            <id>vscode-ide</id>
-            <activation>
-                <property><name>m2e.version</name></property>
-            </activation>
-            <properties>
-                <build.output>target-ide</build.output>
-            </properties>
-        </profile>
-        <profile>
             <id>coverage</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.13</version>
+                        <version>0.8.14</version>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
@@ -447,7 +439,7 @@
             <dependency>
                 <groupId>com.apptasticsoftware</groupId>
                 <artifactId>rssreader</artifactId>
-                <version>3.10.0</version>
+                <version>3.12.0</version>
             </dependency>
 
             <!-- File Upload -->

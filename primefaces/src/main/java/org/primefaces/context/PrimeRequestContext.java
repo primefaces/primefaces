@@ -36,9 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.el.ELContext;
-import jakarta.el.ExpressionFactory;
-import jakarta.el.ValueExpression;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -285,10 +282,7 @@ public class PrimeRequestContext {
                 rtl = false;
             }
             else {
-                ELContext elContext = context.getELContext();
-                ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
-                ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
-                String expressionValue = expression.getValue(elContext);
+                String expressionValue = context.getApplication().evaluateExpressionGet(context, param, String.class);
 
                 rtl = "rtl".equalsIgnoreCase(expressionValue);
             }
@@ -327,10 +321,7 @@ public class PrimeRequestContext {
             return defaultValueIfNull;
         }
         else {
-            ELContext elContext = context.getELContext();
-            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
-            ValueExpression expression = expressionFactory.createValueExpression(elContext, paramValue, String.class);
-            String expressionValue = expression.getValue(elContext);
+            String expressionValue = context.getApplication().evaluateExpressionGet(context, paramValue, String.class);
             return expressionValue == null || Boolean.parseBoolean(expressionValue);
         }
     }

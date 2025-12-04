@@ -77,7 +77,7 @@ public class CoreHead001Test extends AbstractPrimePageTest {
         // <f:facet name="last">
         WebElement webMeta = headElements.get(5);
         assertEquals(webMeta.getTagName(), "meta");
-        assertEquals(webMeta.getDomAttribute("name"), "apple-mobile-web-app-capable");
+        assertEquals(webMeta.getDomAttribute("name"), "mobile-web-app-capable");
         assertEquals(webMeta.getDomAttribute("content"), "yes");
 
         // Scripts in order

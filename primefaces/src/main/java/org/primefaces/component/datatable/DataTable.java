@@ -293,6 +293,15 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
+    protected void preEncode(FacesContext context) {
+        super.preEncode(context);
+
+        if (isSelectAll() && ((List<?>) getSelection()).isEmpty()) {
+            setSelectAll(false);
+        }
+    }
+
+    @Override
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         super.processEvent(event);
 

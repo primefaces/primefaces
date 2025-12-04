@@ -64,7 +64,7 @@ public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
             // #5381: normalize new lines to match JavaScript
             submittedValue = NEWLINE_NORMALIZE_PATTERN.matcher(submittedValue).replaceAll("\n");
             int maxlength = component.getMaxlength();
-            if (submittedValue.length() > maxlength) {
+            if (maxlength > 0 && submittedValue.length() > maxlength) {
                 submittedValue = LangUtils.substring(submittedValue, 0, maxlength);
             }
         }
@@ -121,7 +121,7 @@ public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("InputTextarea", component)
                 .attr("autoResize", autoResize)
-                .attr("maxlength", component.getMaxlength(), Integer.MAX_VALUE);
+                .attr("maxlength", component.getMaxlength(), Integer.MIN_VALUE);
 
         if (counter != null) {
             UIComponent counterComponent = SearchExpressionUtils.contextlessResolveComponent(context, component, counter);

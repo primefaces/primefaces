@@ -28,7 +28,7 @@ import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Tag.COMPONENT_TYPE, namespace = Tag.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Tag extends TagBase {
+public class Tag extends TagBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tag";
 
     public static final String STYLE_CLASS = "ui-tag ui-widget";

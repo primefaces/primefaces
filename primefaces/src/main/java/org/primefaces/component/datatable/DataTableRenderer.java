@@ -566,7 +566,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
         if (LangUtils.isNotBlank(scrollHeight)) {
-            if (!endsWithLenghtUnit(scrollHeight)) {
+            if (!endsWithLengthUnit(scrollHeight)) {
                 scrollHeight = scrollHeight + "px";
             }
             // % handle specially in the JS code
@@ -728,7 +728,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         if (width != null) {
-            String unit = endsWithLenghtUnit(width) ? Constants.EMPTY_STRING : "px";
+            String unit = endsWithLengthUnit(width) ? Constants.EMPTY_STRING : "px";
             if (style != null) {
                 style = style + ";width:" + width + unit;
             }

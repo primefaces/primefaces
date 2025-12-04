@@ -40,6 +40,7 @@ public abstract class SelectManyButtonBase extends UISelectMany implements Widge
         widgetVar,
         disabled,
         label,
+        layout,
         onchange,
         style,
         styleClass,
@@ -109,5 +110,13 @@ public abstract class SelectManyButtonBase extends UISelectMany implements Widge
 
     public void setTabindex(String tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+    public String getLayout() {
+        return (String) getStateHelper().eval(PropertyKeys.layout, null);
+    }
+
+    public void setLayout(String layout) {
+        getStateHelper().put(PropertyKeys.layout, layout);
     }
 }

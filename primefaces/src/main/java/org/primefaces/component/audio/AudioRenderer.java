@@ -70,7 +70,7 @@ public class AudioRenderer extends CoreRenderer<Audio> {
 
         AudioType player = resolvePlayer(context, component);
         writer.startElement("source", null);
-        writer.writeAttribute("src", component.resolveSource(context, component), null);
+        writer.writeAttribute("src", component.resolveSource(context), null);
         writer.writeAttribute("type", player.getMediaType(), null);
         writer.endElement("source");
 

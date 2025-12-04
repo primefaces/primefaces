@@ -219,11 +219,6 @@ public class PickListRenderer extends InputRenderer<PickList> {
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.LIST_WRAPPER_CLASS, null);
 
-        // only render required on target list
-        if (!isSource) {
-            renderARIARequired(context, component);
-        }
-
         if (filter) {
             encodeFilter(context, component, listId + "_filter", isSource);
         }

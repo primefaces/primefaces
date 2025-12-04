@@ -71,6 +71,7 @@ public class ColumnTogglerRenderer extends CoreRenderer<ColumnToggler> {
         wb.init("ColumnToggler", component);
         wb.attr("trigger", SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, component, component.getTrigger()));
         wb.attr("datasource", SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, component, component.getDatasource()));
+        wb.attr("showSelectAll", component.isShowSelectAll(), true);
 
         encodeClientBehaviors(context, component);
 

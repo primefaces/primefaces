@@ -31,7 +31,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Tab.COMPONENT_TYPE, namespace = Tab.COMPONENT_FAMILY)
-public class Tab extends TabBase {
+public class Tab extends TabBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tab";
 
@@ -86,7 +86,7 @@ public class Tab extends TabBase {
     }
 
     public Menu getOptionsMenu() {
-        UIComponent optionsFacet = getFacet("options");
+        UIComponent optionsFacet = getOptionsFacet();
         if (FacetUtils.shouldRenderFacet(optionsFacet)) {
             if (optionsFacet instanceof Menu) {
                 return (Menu) optionsFacet;

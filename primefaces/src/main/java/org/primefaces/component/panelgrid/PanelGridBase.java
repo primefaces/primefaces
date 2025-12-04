@@ -35,6 +35,7 @@ public abstract class PanelGridBase extends UIPanel {
     public static final String LAYOUT_TABULAR = "tabular";
     public static final String LAYOUT_GRID = "grid";
     public static final String LAYOUT_FLEX = "flex";
+    public static final String LAYOUT_TAILWIND = "tailwind";
 
     public enum PropertyKeys {
 

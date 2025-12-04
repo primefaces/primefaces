@@ -42,7 +42,7 @@
 
                         <div>
                             <p:commandButton id="toggler" type="button" value="Columns" icon="pi pi-align-justify"/>
-                            <p:columnToggler datasource="products" trigger="toggler">
+                            <p:columnToggler datasource="products" trigger="toggler" showSelectAll="true">
                                 <p:ajax event="toggle" listener="#{dtBasicView.onToggle}"/>
                             </p:columnToggler>
                         </div>

@@ -24,7 +24,6 @@
 package org.primefaces.component.inputtextarea;
 
 import org.primefaces.event.SelectEvent;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 import java.util.ArrayList;
@@ -44,20 +43,13 @@ import jakarta.faces.event.FacesEvent;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class InputTextarea extends InputTextareaBase {
+public class InputTextarea extends InputTextareaBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputTextarea";
     public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default";
-
     private static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "query");
-    private static final Collection<String> EVENT_NAMES_COMBINED = LangUtils.concat(EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
 
     private List suggestions;
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES_COMBINED;
-    }
 
     @Override
     public Collection<String> getUnobstrusiveEventNames() {
@@ -82,12 +74,11 @@ public class InputTextarea extends InputTextareaBase {
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if (eventName != null && event instanceof AjaxBehaviorEvent) {
+        if (isAjaxBehaviorEventSource(event)) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
-            if ("itemSelect".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.itemSelect)) {
                 String selectedItemValue = params.get(getClientId(context) + "_itemSelect");
                 SelectEvent<?> selectEvent = new SelectEvent<>(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
@@ -115,7 +106,7 @@ public class InputTextarea extends InputTextareaBase {
             suggestions = (List) me.invoke(facesContext.getELContext(), new Object[]{((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
 
             if (suggestions == null) {
-                suggestions = new ArrayList();
+                suggestions = new ArrayList<>();
             }
 
             facesContext.renderResponse();

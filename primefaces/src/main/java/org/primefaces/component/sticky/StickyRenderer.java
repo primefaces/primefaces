@@ -55,6 +55,7 @@ public class StickyRenderer extends CoreRenderer<Sticky> {
         wb.init("Sticky", component)
             .attr("target", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, target))
             .attr("margin", component.getMargin(), 0)
+            .attr("stickyTopAt", component.getStickyTopAt(), null)
             .finish();
     }
 }

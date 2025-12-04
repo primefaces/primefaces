@@ -40,7 +40,8 @@ public abstract class ClockBase extends UIOutput implements Widget {
         autoSync,
         syncInterval,
         timeZone,
-        displayMode
+        displayMode,
+        widgetVar;
     }
 
     public ClockBase() {
@@ -98,5 +99,14 @@ public abstract class ClockBase extends UIOutput implements Widget {
 
     public void setDisplayMode(String displayMode) {
         getStateHelper().put(PropertyKeys.displayMode, displayMode);
+    }
+
+    @Override
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
+    }
+
+    public void setWidgetVar(java.lang.String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 }

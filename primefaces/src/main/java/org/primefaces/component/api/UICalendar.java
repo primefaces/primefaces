@@ -299,6 +299,16 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
         getStateHelper().put("labelledby", labelledBy);
     }
 
+    @Override
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().get("ariaDescribedBy");
+    }
+
+    @Override
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
+    }
+
     public String getRangeSeparator() {
         return (String) getStateHelper().eval(PropertyKeys.rangeSeparator, "-");
     }
@@ -316,12 +326,11 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     }
 
     @Override
-    public Boolean isTouchable() {
+    public Boolean getTouchable() {
         return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
     }
 
-    @Override
-    public void setTouchable(Boolean touchable) {
+    public void setTouchable(boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 

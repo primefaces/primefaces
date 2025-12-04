@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
 import org.primefaces.util.LangUtils;
 
 import java.util.regex.Pattern;
@@ -40,6 +41,9 @@ public interface Widget {
 
     String ATTR_WIDGET_VAR_PATTERN = Widget.class.getName() + ".ATTR_WIDGET_VAR_PATTERN";
 
+    @Property(description = "Name of the client side widget.")
+    String getWidgetVar();
+
     // backwards compatibility
     default String resolveWidgetVar() {
         return resolveWidgetVar(FacesContext.getCurrentInstance());
@@ -54,7 +58,7 @@ public interface Widget {
         UIComponent component = (UIComponent) this;
 
         // Check if a custom widget variable name is set
-        String userWidgetVar = (String) component.getAttributes().get("widgetVar");
+        String userWidgetVar = getWidgetVar();
         if (LangUtils.isNotBlank(userWidgetVar)) {
             return userWidgetVar;
         }

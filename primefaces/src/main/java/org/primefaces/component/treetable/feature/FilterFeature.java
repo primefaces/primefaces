@@ -109,7 +109,7 @@ public class FilterFeature implements TreeTableFeature {
 
         // recreate tree node
         TreeNode filteredValue = cloneTreeNode(root, root.getParent());
-        createFilteredValueFromRowKeys(tt, root, filteredValue, filteredRowKeys);
+        createFilteredValueFromRowKeys(tt, root, filteredValue, filteredRowKeys, tt.isFilterPruneDescendants());
 
         tt.updateFilteredValue(context, filteredValue);
         tt.setValue(filteredValue);
@@ -189,20 +189,22 @@ public class FilterFeature implements TreeTableFeature {
         }
     }
 
-    private void createFilteredValueFromRowKeys(TreeTable tt, TreeNode<?> node, TreeNode<?> filteredNode, List<String> filteredRowKeys) {
+    protected void createFilteredValueFromRowKeys(TreeTable tt, TreeNode<?> node, TreeNode<?> filteredNode,
+            List<String> filteredRowKeys, boolean pruneDescendants) {
         int childCount = node.getChildCount();
         for (int i = 0; i < childCount; i++) {
             TreeNode childNode = node.getChildren().get(i);
             String rowKeyOfChildNode = childNode.getRowKey();
 
             for (String rk : filteredRowKeys) {
-                if (rk.equals(rowKeyOfChildNode) || rk.startsWith(rowKeyOfChildNode + "_") || rowKeyOfChildNode.startsWith(rk + "_")) {
+                if (rk.equals(rowKeyOfChildNode) || rk.startsWith(rowKeyOfChildNode + "_")
+                        || (!pruneDescendants && rowKeyOfChildNode.startsWith(rk + "_"))) {
                     TreeNode newNode = cloneTreeNode(childNode, filteredNode);
                     if (rk.startsWith(rowKeyOfChildNode + "_")) {
                         newNode.setExpanded(true);
                     }
 
-                    createFilteredValueFromRowKeys(tt, childNode, newNode, filteredRowKeys);
+                    createFilteredValueFromRowKeys(tt, childNode, newNode, filteredRowKeys, pruneDescendants);
                     break;
                 }
             }

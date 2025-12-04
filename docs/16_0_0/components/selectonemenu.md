@@ -28,6 +28,7 @@ immediate | false | Boolean | When set true, process validations logic is execut
 required | false | Boolean | Marks component as required
 alwaysDisplayLabel | false | Boolean | Always display the `label` value instead of the selected item label.
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 autocomplete | null | String | Controls browser autocomplete behavior for editable input field
 autoWidth | auto | String | Calculates a fixed width based on the width of the maximum option label. If the value is "auto", it's only calculated when its not placed inside a ui-fluid and no width was specified on the component. "false" = never calculate, "true" = always calculate.
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.

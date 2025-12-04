@@ -50,6 +50,7 @@ filterNormalize | false | Boolean | Defines if filtering would be done using nor
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 scrollHeight | null | Integer | Defines the height of the scrollable area.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 
 ## Getting started with SelectOneListbox
 SelectOneListbox usage is same as the standard one.

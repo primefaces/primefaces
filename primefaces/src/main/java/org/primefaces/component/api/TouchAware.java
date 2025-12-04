@@ -23,24 +23,14 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
+
 /**
  * Even though touch support is detected in the browser a developer may wish
  * to turn it off globally or per component that supports touch.
  */
 public interface TouchAware {
 
-    /**
-     * Is this component touch enabled?
-     *
-     * @return false to disable
-     */
-    Boolean isTouchable();
-
-    /**
-     * Enable/disable touch support for this component.
-     *
-     * @param touchable true for touch support
-     */
-    void setTouchable(Boolean touchable);
-
+    @Property(description = "Enable touch if supported by device. NULL uses global default or primefaces.TOUCHABLE. Default: globally enabled.")
+    Boolean getTouchable();
 }

@@ -41,9 +41,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import jakarta.el.ELContext;
-import jakarta.el.ExpressionFactory;
-import jakarta.el.ValueExpression;
 import jakarta.faces.FacesException;
 import jakarta.faces.application.ProjectStage;
 import jakarta.faces.component.UIComponent;
@@ -102,11 +99,7 @@ public class HeadRenderer extends Renderer<UIComponent> {
         String themeParamValue = applicationContext.getConfig().getTheme();
 
         if (themeParamValue != null) {
-            ELContext elContext = context.getELContext();
-            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
-            ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
-
-            theme = ve.getValue(elContext);
+            theme = context.getApplication().evaluateExpressionGet(context, themeParamValue, String.class);
         }
         else {
             theme = "saga-blue";     //default

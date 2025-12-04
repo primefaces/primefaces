@@ -178,6 +178,15 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
             encodeIcon(context, Dialog.TITLE_BAR_MINIMIZE_CLASS, Dialog.MINIMIZE_ICON_CLASS, null);
         }
 
+        //Actions
+        UIComponent actionsFacet = component.getFacet("actions");
+        if (FacetUtils.shouldRenderFacet(actionsFacet)) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", Dialog.DIALOG_ACTIONS_CLASS, null);
+            actionsFacet.encodeAll(context);
+            writer.endElement("div");
+        }
+
         writer.endElement("div");
     }
 

@@ -1799,7 +1799,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Enables multiple selection mode.]]>
             </description>
             <name>multiple</name>
             <required>false</required>
@@ -3024,6 +3024,14 @@
                 <![CDATA[Alternate textual description of the input element.]]>
             </description>
             <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -4505,6 +4513,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Controls browser autocomplete behavior.]]>
             </description>
             <name>autocomplete</name>
@@ -5137,6 +5153,14 @@
                 <![CDATA[Alternate textual description of the input element.]]>
             </description>
             <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -6078,7 +6102,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Value of the component.]]>
             </description>
             <name>value</name>
             <required>false</required>
@@ -6510,6 +6534,14 @@
             <name>datasource</name>
             <required>true</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to show the select all checkbox. Defaults to true.]]>
+            </description>
+            <name>showSelectAll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -8725,7 +8757,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Number of rows to display in virtual scrolling mode.]]>
             </description>
             <name>scrollRows</name>
             <required>false</required>
@@ -9432,7 +9464,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Icon to display for grid layout toggle button.]]>
             </description>
             <name>gridIcon</name>
             <required>false</required>
@@ -9440,7 +9472,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Icon to display for list layout toggle button.]]>
             </description>
             <name>listIcon</name>
             <required>false</required>
@@ -9636,30 +9668,6 @@
             <component-type>org.primefaces.component.Diagram</component-type>
             <renderer-type>org.primefaces.component.DiagramRenderer</renderer-type>
         </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>jakarta.faces.component.UIComponent</type>
-        </attribute>
         <attribute>
             <description>
                 <![CDATA[Unique identifier of the component in a namingContainer.]]>
@@ -10182,7 +10190,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[When enabled, component can only be dragged but not dropped. Default is false.]]>
             </description>
             <name>dragOnly</name>
             <required>false</required>
@@ -11105,7 +11113,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Icon for the choose button as a css class.]]>
             </description>
             <name>chooseIcon</name>
             <required>false</required>
@@ -11113,7 +11121,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Icon for the upload button as a css class.]]>
             </description>
             <name>uploadIcon</name>
             <required>false</required>
@@ -11121,7 +11129,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Icon for the cancel button as a css class.]]>
             </description>
             <name>cancelIcon</name>
             <required>false</required>
@@ -11603,6 +11611,30 @@
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Google Maps API key. Required for asynchronous loading if Google Maps is not already loaded via script tag.]]>
+            </description>
+            <name>apiKey</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>    
+        <attribute>
+            <description>
+                <![CDATA[Google Maps API version. Valid values: 'weekly', 'beta', 'alpha', or a specific version number.]]>
+            </description>
+            <name>apiVersion</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Comma-separated list of additional Google Maps libraries to load (e.g., 'places,geometry').]]>
+            </description>
+            <name>libraries</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -13244,6 +13276,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Controls browser autocomplete behavior.]]>
             </description>
             <name>autocomplete</name>
@@ -13778,6 +13818,14 @@
                 <![CDATA[Alternate textual description of the input element.]]>
             </description>
             <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -14442,6 +14490,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Alternate textual description of the input element.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Controls browser autocomplete behavior.]]>
             </description>
             <name>autocomplete</name>
@@ -14953,6 +15009,14 @@
                 <![CDATA[Access key to transfer focus to the input element.]]>
             </description>
             <name>accesskey</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -15516,6 +15580,14 @@
                 <![CDATA[Alternate textual description of the input element.]]>
             </description>
             <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -16302,7 +16374,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute on value change.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -17622,6 +17694,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Icon to display on the button instead of the label.]]>
+            </description>
+            <name>buttonIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Icon of the menu button.]]>
             </description>
             <name>icon</name>
@@ -18678,7 +18758,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Automatically displays the tooltip on page load. Default is false.]]>
             </description>
             <name>autoDisplay</name>
             <required>false</required>
@@ -20104,6 +20184,14 @@
                 <![CDATA[Alternate textual description of the input element.]]>
             </description>
             <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -22851,7 +22939,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -22859,7 +22947,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -22867,7 +22955,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Display mode of the scroll panel.]]>
             </description>
             <name>mode</name>
             <required>false</required>
@@ -23225,7 +23313,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Text to be used as the label for the component.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -23233,7 +23321,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute on state change.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -23241,7 +23329,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -23249,7 +23337,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -23308,6 +23396,14 @@
                 <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
             </description>
             <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -23439,6 +23535,14 @@
                 <![CDATA[User presentable name of the component.]]>
             </description>
             <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -23595,7 +23699,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Enables multiple selection mode.]]>
             </description>
             <name>multiple</name>
             <required>false</required>
@@ -23788,7 +23892,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Flag indicating whether the component should be disabled.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -23796,7 +23900,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[User presentable name.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -23804,7 +23908,23 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Layout of the buttons, valid values are custom or default.]]>
+            </description>
+            <name>layout</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute on state change.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -23812,7 +23932,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -23820,7 +23940,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -23973,6 +24093,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+         <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
         <attribute>
             <description>
                 <![CDATA[Layout of the checkboxes, valid values are lineDirection, pageDirection, responsive and custom.]]>
@@ -23999,7 +24127,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute on state change.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -24007,7 +24135,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -24015,7 +24143,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -24023,7 +24151,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Position of the element in the tabbing order.]]>
             </description>
             <name>tabindex</name>
             <required>false</required>
@@ -24167,7 +24295,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Flag indicating whether the component should be disabled.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -24175,15 +24303,23 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[User presentable name.]]>
             </description>
             <name>label</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+         <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute on state change.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -24191,7 +24327,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when input element is clicked.]]>
             </description>
             <name>onclick</name>
             <required>false</required>
@@ -24199,7 +24335,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when input element is double clicked.]]>
             </description>
             <name>ondblclick</name>
             <required>false</required>
@@ -24207,7 +24343,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -24215,7 +24351,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -24438,7 +24574,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables or enables the component.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -24446,7 +24582,15 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Layout of the selectOneButton, valid values are 'custom' or 'default'.]]>
+            </description>
+            <name>layout</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Label of the button.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -24454,7 +24598,15 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Javascript to execute when the value of the button changes.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -24462,7 +24614,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the button element.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -24470,7 +24622,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the button element.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -24633,7 +24785,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[User presentable name.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -24641,7 +24793,15 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute on state change.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -24649,7 +24809,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when input element is clicked.]]>
             </description>
             <name>onclick</name>
             <required>false</required>
@@ -24657,7 +24817,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when input element is double clicked.]]>
             </description>
             <name>ondblclick</name>
             <required>false</required>
@@ -24665,7 +24825,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -24673,7 +24833,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -24862,6 +25022,14 @@
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -25310,7 +25478,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute on state change.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -25318,7 +25486,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when input element is clicked.]]>
             </description>
             <name>onclick</name>
             <required>false</required>
@@ -25326,7 +25494,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -25334,7 +25502,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -25464,7 +25632,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[When enabled, sidebar is displayed in full screen mode. Default is false.]]>
             </description>
             <name>fullScreen</name>
             <required>false</required>
@@ -25756,17 +25924,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Position of the element in the tabbing order.]]>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
             </description>
-            <name>tabindex</name>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
             </description>
-            <name>ariaLabel</name>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -26273,6 +26441,14 @@
                 <![CDATA[Alternate textual description of the input element.]]>
             </description>
             <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -27294,6 +27470,23 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if dynamic loading is enabled for the element's panel.
+                If the value is "true", the overlay is not rendered on page load to improve performance. Default is false.]]>
+            </description>
+            <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -27436,7 +27629,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Whether the stack is expanded by default. Default is false.]]>
             </description>
             <name>expanded</name>
             <required>false</required>
@@ -28327,7 +28520,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Data model for the tag cloud component.]]>
             </description>
             <name>model</name>
             <required>true</required>
@@ -28335,7 +28528,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -28343,7 +28536,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -29506,6 +29699,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Disables or enables the switch.]]>
             </description>
             <name>disabled</name>
@@ -29904,7 +30105,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[When enabled, event delegation is used for better performance. Default is false.]]>
             </description>
             <name>delegate</name>
             <required>false</required>
@@ -30315,7 +30516,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Icon of the tree node as a css class.]]>
             </description>
             <name>icon</name>
             <required>false</required>
@@ -30323,7 +30524,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Icon to display when the node is expanded as a css class.]]>
             </description>
             <name>expandedIcon</name>
             <required>false</required>
@@ -30331,7 +30532,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Icon to display when the node is collapsed as a css class.]]>
             </description>
             <name>collapsedIcon</name>
             <required>false</required>
@@ -30398,7 +30599,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Root node of the tree table.]]>
             </description>
             <name>value</name>
             <required>true</required>
@@ -30757,6 +30958,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Controls pruning during filtering. "none" keeps children of matching nodes; "descendants" prunes non-matching children unless they or their descendants match. Default is none.]]>
+            </description>
+            <name>filterPrune</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the cell edit behavior, valid values are "eager" (default) and "lazy".]]>
             </description>
             <name>cellEditMode</name>
@@ -30925,7 +31134,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Value of the component.]]>
+                <![CDATA[Boolean value of the component (null, true, false).]]>
             </description>
             <name>value</name>
             <required>false</required>
@@ -31081,6 +31290,14 @@
                 <![CDATA[A localized user presentable name.]]>
             </description>
             <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -31681,6 +31898,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Controls browser autocomplete behavior.]]>
             </description>
             <name>autocomplete</name>
@@ -32121,14 +32346,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.]]>
-            </description>
-            <name>locale</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Position of the button in the tabbing order.]]>
             </description>
             <name>buttonTabindex</name>
@@ -32272,14 +32489,6 @@
             <name>hourFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Whether to display timepicker only. Default is false.]]>
-            </description>
-            <name>timeOnly</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -32576,22 +32785,6 @@
             <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Display the current calendar week infront of each row in the calendar panel.]]>
-            </description>
-            <name>showWeek</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[A javascript method that is used to calculate the calendar week. Default implementations are available if start of week is monday, sunday or saturday.]]>
-            </description>
-            <name>weekCalculator</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -33958,6 +34151,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The aria-describedby attribute is used to define a component id that describes the current element for accessibility.]]>
+            </description>
+            <name>ariaDescribedBy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Appends the overlay to the element defined by search expression. Defaults to document body.]]>
             </description>
             <name>appendTo</name>
@@ -34261,6 +34462,35 @@
             <name>badge</name>
             <required>false</required>
             <type>java.lang.Object</type>
+        </attribute>
+    </tag>
+    <tag>
+        <tag-name>facet</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Facet</component-type>
+        </component>
+        <attribute>
+            <description><![CDATA[Unique identifier of the component in a namingContainer.]]></description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]></description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]></description>
+            <name>binding</name>
+            <required>false</required>
+            <type>jakarta.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
 </facelet-taglib>

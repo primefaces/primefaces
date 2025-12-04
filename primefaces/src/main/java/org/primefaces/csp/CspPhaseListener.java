@@ -99,6 +99,9 @@ public class CspPhaseListener implements PhaseListener {
             externalContext.addResponseHeader("Content-Security-Policy-Report-Only", policy);
         }
         else {
+            if (customPolicy != null) {
+                customPolicy = context.getApplication().evaluateExpressionGet(context, customPolicy, String.class);
+            }
             String policy = LangUtils.isBlank(customPolicy) ? "script-src 'self'" : customPolicy;
             policy += " 'nonce-" + state.getNonce() + "';";
             externalContext.addResponseHeader("Content-Security-Policy", policy);

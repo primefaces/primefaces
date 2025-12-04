@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.messages;
 
-import org.primefaces.component.api.Widget;
-
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
@@ -33,7 +31,7 @@ import jakarta.faces.component.FacesComponent;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Messages extends MessagesBase implements Widget {
+public class Messages extends MessagesBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Messages";
 

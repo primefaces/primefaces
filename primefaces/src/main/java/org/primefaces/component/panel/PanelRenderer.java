@@ -171,17 +171,17 @@ public class PanelRenderer extends CoreRenderer<Panel> {
     }
 
     protected boolean shouldRenderHeader(FacesContext context, Panel component) throws IOException {
-        UIComponent header = component.getFacet("header");
+        UIComponent header = component.getHeaderFacet();
         String headerText = component.getHeader();
         return headerText != null || FacetUtils.shouldRenderFacet(header, component.isRenderEmptyFacets());
     }
 
     protected void encodeHeader(FacesContext context, Panel component, Menu optionsMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent header = component.getFacet("header");
+        UIComponent headerFacet = component.getHeaderFacet();
         String headerText = component.getHeader();
         String clientId = component.getClientId(context);
-        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(header, component.isRenderEmptyFacets());
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(headerFacet, component.isRenderEmptyFacets());
 
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context) + "_header", null);
@@ -191,13 +191,14 @@ public class PanelRenderer extends CoreRenderer<Panel> {
             writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(!component.isCollapsed()), null);
             writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_content", null);
         }
+        renderPassThruAttributes(context, headerFacet);
 
         //Title
         writer.startElement("span", null);
         writer.writeAttribute("class", Panel.PANEL_TITLE_CLASS, null);
 
         if (shouldRenderFacet) {
-            renderChild(context, header);
+            renderFacet(context, headerFacet);
         }
         else {
             writer.writeText(headerText, null);
@@ -220,7 +221,7 @@ public class PanelRenderer extends CoreRenderer<Panel> {
         }
 
         //Actions
-        UIComponent actionsFacet = component.getFacet("actions");
+        UIComponent actionsFacet = component.getActionsFacet();
         if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);
@@ -248,7 +249,7 @@ public class PanelRenderer extends CoreRenderer<Panel> {
 
     protected void encodeFooter(FacesContext context, Panel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent footer = component.getFacet("footer");
+        UIComponent footer = component.getFooterFacet();
         String footerText = component.getFooter();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(footer, component.isRenderEmptyFacets());
 

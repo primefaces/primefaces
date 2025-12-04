@@ -27,6 +27,24 @@ Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/prime
 ```bash
 wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/14.0.0/primefaces-cli-14.0.0.jar
 ```
+## PrimeFlex → Tailwind migration
+
+This tool replaces PrimeFlex - CSS - classes in your HTML, XHTML, ... - files with Tailwind - CSS - classes.
+
+### Start CLI and show help
+
+```shell
+java -cp "pfcli.jar" org.primefaces.cli.migration.tailwind.PrimeFlexMigration --help
+```
+
+### Migrate all XHTML and HTML - files in one directory (including subdirectories)
+
+```shell
+java -cp "pfcli.jar" org.primefaces.cli.migration.tailwind.PrimeFlexMigration c:\projects\myapp -e="html,xhtml"
+```
+
+You manually have to remove PrimeFlex - CSS - file from your project and add Tailwind - CSS - file.
+
 
 ## PrimeFlex 2 → PrimeFlex 3 migration
 
@@ -50,7 +68,7 @@ You manually have to remove PrimeFlex 2 - CSS - file from your project and add P
 
 ## Grid CSS → PrimeFlex 2 migration
 
-This tool replaces legacy Grid CSS classes (e.g. ui-g, see https://www.primefaces.org/showcase-v8/ui/panel/grid.xhtml) with PrimeFlex 2 - CSS - classes (e.g. p-grid, see https://github.com/primefaces/primeflex/tree/2.0.0).
+This tool replaces legacy Grid CSS classes (e.g. ui-g, see https://primefaces.github.io/primefaces/8_0/#/components/gridcss) with PrimeFlex 2 - CSS - classes (e.g. p-grid, see https://github.com/primefaces/primeflex/tree/2.0.0).
 
 ### Start CLI and show help
 

@@ -21,20 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.behavior.base;
+package org.primefaces.cdk.api.behavior;
 
-import org.primefaces.el.ValueExpressionStateHelper;
+import org.primefaces.cdk.api.PrimePropertyKeys;
 
 import jakarta.el.ValueExpression;
 import jakarta.faces.component.StateHelper;
 import jakarta.faces.component.behavior.ClientBehaviorBase;
 import jakarta.faces.context.FacesContext;
 
-public abstract class AbstractBehavior extends ClientBehaviorBase {
+public abstract class PrimeClientBehavior extends ClientBehaviorBase {
 
     private StateHelper stateHelper;
 
-    public AbstractBehavior() {
+    public PrimeClientBehavior() {
         super();
     }
 
@@ -110,6 +110,5 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         }
     }
 
-
-    protected abstract BehaviorAttribute[] getAllAttributes();
+    public abstract PrimePropertyKeys[] getPropertyKeys();
 }

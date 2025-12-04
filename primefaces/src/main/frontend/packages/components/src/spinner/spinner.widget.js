@@ -116,14 +116,7 @@ PrimeFaces.widget.Spinner = class Spinner extends PrimeFaces.widget.BaseWidget {
 
                 element.removeClass('ui-state-hover').addClass('ui-state-active');
 
-                if($this.input.is(':not(:focus)')) {
-                    $this.input.trigger('focus');
-                }
-
                 $this.repeat(null, dir);
-
-                //keep focused
-                e.preventDefault();
         });
 
         this.input.on('keydown.spinner', function (e) {

@@ -28,7 +28,7 @@ import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = AvatarGroup.COMPONENT_TYPE, namespace = AvatarGroup.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class AvatarGroup extends AvatarGroupBase {
+public class AvatarGroup extends AvatarGroupBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.AvatarGroup";
 
     public static final String STYLE_CLASS = "ui-avatar-group ui-widget";

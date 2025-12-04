@@ -23,6 +23,7 @@
  */
 package org.primefaces.expression;
 
+import org.primefaces.cdk.api.Function;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
@@ -201,6 +202,7 @@ public class SearchExpressionUtils {
     }
 
     // used by p:resolveWidgetVar
+    @Function(description = "Returns the widgetVar of the resolved component for the given expression.")
     public static String resolveWidgetVar(String expression, UIComponent component) {
         FacesContext context = FacesContext.getCurrentInstance();
         UIComponent resolvedComponent = contextlessResolveComponent(FacesContext.getCurrentInstance(), component, expression);

@@ -10,7 +10,7 @@ to your page to begin using the components. Here is a simple page like `test.xht
       xmlns:f="jakarta.faces.core"
       xmlns:jsf="jakarta.faces"
       xmlns:ui="jakarta.faces.facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="primefaces">
 
     <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
         <h:head>

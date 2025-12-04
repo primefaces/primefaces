@@ -45,6 +45,15 @@
                     <p:menuitem value="Update" action="#{menuView.sleepAndUpdate}" update="messages" icon="pi pi-refresh"/>
                     <p:menuitem value="Delete" action="#{menuView.sleepAndDelete}" update="messages" icon="pi pi-times"/>
                 </p:menuButton>
+
+                <h5>Button Icon</h5>
+                <p:menuButton buttonIcon="pi pi-save" title="Options">
+                    <p:menuitem value="Save (Non-Ajax)" action="#{menuView.save}" ajax="false" update="messages" icon="pi pi-save"/>
+                    <p:menuitem value="Update" action="#{menuView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{menuView.delete}" update="messages" icon="pi pi-times"/>
+                    <p:divider/>
+                    <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
+                </p:menuButton>
             </h:form>
         </div>
     </ui:define>

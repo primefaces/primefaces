@@ -97,7 +97,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
         encodeFacet(context, menu, "start", Menu.START_CLASS);
 
         if (menu.getElementsCount() > 0) {
-            encodeElements(context, menu, menu.getElements());
+            encodeElements(context, menu, menu.getElements(), true);
         }
 
         encodeFacet(context, menu, "options", Menu.OPTIONS_CLASS);
@@ -108,13 +108,11 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
         writer.endElement("div");
     }
 
-
-
-    protected void encodeElements(FacesContext context, AbstractMenu menu, List<MenuElement> elements) throws IOException {
+    protected void encodeElements(FacesContext context, AbstractMenu menu, List<MenuElement> elements, boolean mainMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         for (MenuElement element : elements) {
-            if ( element.isRendered()) {
+            if (element.isRendered()) {
                 if (element instanceof MenuItem) {
                     MenuItem menuItem = (MenuItem) element;
                     String containerStyle = menuItem.getContainerStyle();
@@ -133,7 +131,12 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
                     if (menuItem.getBadge() != null) {
                         BadgeRenderer.encode(context, menuItem.getBadge());
                     }
-                    encodeMenuItem(context, menu, menuItem, "-1");
+                    if (mainMenu) {
+                        encodeMenuItem(context, menu, menuItem, "0");
+                    }
+                    else {
+                        encodeMenuItem(context, menu, menuItem, "-1");
+                    }
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu && shouldBeRendered(context, element)) {
@@ -174,7 +177,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
         writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute("tabindex", "0", null);
 
         String styleClass = getStyleClassBuilder(context)
                 .add(Menu.SUBMENU_LINK_CLASS)
@@ -206,7 +209,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
                 writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
                 writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
                 writer.writeAttribute(HTML.ARIA_LABEL, submenu.getLabel(), null);
-                encodeElements(context, menu, submenu.getElements());
+                encodeElements(context, menu, submenu.getElements(), false);
                 writer.endElement("ul");
             }
         }

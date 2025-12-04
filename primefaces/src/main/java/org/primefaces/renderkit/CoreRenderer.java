@@ -23,6 +23,7 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.cdk.api.facet.PrimeFacet;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
@@ -93,6 +94,15 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         }
     }
 
+    protected void renderFacet(FacesContext context, UIComponent facet) throws IOException {
+        if (facet instanceof PrimeFacet) {
+            ((PrimeFacet) facet).encodeExplicitly(context);
+        }
+        else {
+            renderChild(context, facet);
+        }
+    }
+
     protected UIComponent renderChild(FacesContext context, UIComponent child) throws IOException {
         if (!child.isRendered()) {
             return child;
@@ -121,14 +131,10 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
     protected void renderPassThruAttributes(FacesContext context, UIComponent component, List<String> attrs) throws IOException {
         //pre-defined attributes
         if (attrs != null && !attrs.isEmpty()) {
-            ResponseWriter writer = context.getResponseWriter();
-
             for (int i = 0; i < attrs.size(); i++) {
                 String attribute = attrs.get(i);
                 Object value = component.getAttributes().get(attribute);
-                if (shouldRenderAttribute(value)) {
-                    writer.writeAttribute(attribute, value.toString(), attribute);
-                }
+                renderAttribute(context, component, attribute, value);
             }
         }
 
@@ -137,6 +143,9 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
 
     @SafeVarargs
     protected final void renderPassThruAttributes(FacesContext context, UIComponent component, List<String>... attrs) throws IOException {
+        if (component == null) {
+            return;
+        }
         if (attrs == null || attrs.length == 0) {
             renderDynamicPassThruAttributes(context, component);
             return;
@@ -260,13 +269,22 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         renderPassThroughAttributes(context, component);
     }
 
+    /**
+     * Renders a single attribute on the given UIComponent if the value should be rendered.
+     *
+     * @param context   the current FacesContext instance
+     * @param component the component on which to render the attribute
+     * @param attribute the name of the attribute to render
+     * @param value     the value of the attribute
+     * @throws IOException if an input/output error occurs during rendering
+     */
     protected void renderAttribute(FacesContext context, UIComponent component, String attribute, Object value)
                 throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         if (shouldRenderAttribute(value)) {
             String stringValue = value.toString();
-            if (Boolean.parseBoolean(stringValue)) {
+            if ("true".equalsIgnoreCase(stringValue)) {
                 writer.writeAttribute(attribute, true, attribute);
             }
             else {
@@ -439,6 +457,30 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         return false;
     }
 
+    /**
+     * Determines whether the provided value should be rendered as an attribute on a UI component.
+     * <p>
+     * This method checks the value against its most relevant type:
+     * <ul>
+     *   <li><b>null</b>: returns {@code false} (do not render).</li>
+     *   <li><b>Boolean</b>: returns its value (only render if {@code true}).</li>
+     *   <li><b>String</b>: returns {@code true} if the string is not "false" (case-insensitive).</li>
+     *   <li><b>Number</b> (subclasses):
+     *     <ul>
+     *       <li>{@link Integer}: do not render if equal to {@link Integer#MIN_VALUE}.</li>
+     *       <li>{@link Double}: do not render if equal to {@link Double#MIN_VALUE}.</li>
+     *       <li>{@link Long}: do not render if equal to {@link Long#MIN_VALUE}.</li>
+     *       <li>{@link Byte}: do not render if equal to {@link Byte#MIN_VALUE}.</li>
+     *       <li>{@link Float}: do not render if equal to {@link Float#MIN_VALUE}.</li>
+     *       <li>{@link Short}: do not render if equal to {@link Short#MIN_VALUE}.</li>
+     *     </ul>
+     *   </li>
+     *   <li>All other types: always render (returns {@code true}).</li>
+     * </ul>
+     *
+     * @param value the value to check for rendering suitability
+     * @return {@code true} if the value should be rendered, {@code false} otherwise
+     */
     protected boolean shouldRenderAttribute(Object value) {
         if (value == null) {
             return false;
@@ -468,6 +510,10 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
             else if (value instanceof Short) {
                 return number.shortValue() != Short.MIN_VALUE;
             }
+        }
+        else if (value instanceof String) {
+            // #14390: passthrough attribute with "false" should be treated like boolean false
+            return !"false".equalsIgnoreCase((String) value);
         }
 
         return true;
@@ -911,13 +957,37 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         ComponentUtils.encodeIndexedId(context, component, index);
     }
 
-    protected boolean endsWithLenghtUnit(String val) {
-        return val.endsWith("px") || val.endsWith("%") // most common first
-                || val.endsWith("cm") || val.endsWith("mm") || val.endsWith("in")
-                || val.endsWith("pt") || val.endsWith("pc")
-                || val.endsWith("em") || val.endsWith("ex") || val.endsWith("ch") || val.endsWith("rem")
-                || val.endsWith("vw") || val.endsWith("vh")
-                || val.endsWith("vmin") || val.endsWith("vmax");
+    /**
+     * Determines if the given CSS value ends with a valid CSS length unit.
+     * Handles the common units and basic "calc()" function (removes a single trailing ')').
+     *
+     * @param val a CSS value string, possibly with a unit, or ending with ')'
+     * @return true if the value ends with a recognized CSS length unit, false otherwise
+     */
+    protected boolean endsWithLengthUnit(String val) {
+        if (LangUtils.isBlank(val)) {
+            return false;
+        }
+        // #14395 support calc() CSS function by stripping a single trailing ')'
+        if (val.endsWith(")")) {
+            val = val.substring(0, val.length() - 1);
+        }
+        // Array of common CSS length units
+        final String[] units = {
+            "px", "%", // most common first
+            "cm", "mm", "in",
+            "pt", "pc",
+            "em", "ex", "ch", "rem",
+            "vw", "vh", "vmin", "vmax"
+        };
+
+        for (int i = 0; i < units.length; i++) {
+            String unit = units[i];
+            if (val.endsWith(unit)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

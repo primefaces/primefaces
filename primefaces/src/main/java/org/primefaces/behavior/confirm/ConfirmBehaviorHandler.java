@@ -23,11 +23,11 @@
  */
 package org.primefaces.behavior.confirm;
 
-import org.primefaces.behavior.base.AbstractBehaviorHandler;
+import org.primefaces.cdk.api.behavior.PrimeClientBehaviorHandler;
 
 import jakarta.faces.view.facelets.BehaviorConfig;
 
-public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehavior> {
+public class ConfirmBehaviorHandler extends PrimeClientBehaviorHandler<ConfirmBehavior> {
 
     public ConfirmBehaviorHandler(BehaviorConfig config) {
         super(config);

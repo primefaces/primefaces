@@ -40,7 +40,8 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
         style,
         styleClass,
         severity,
-        skipDetailIfEqualsSummary
+        skipDetailIfEqualsSummary,
+        widgetVar;
     }
 
     public MessageBase() {
@@ -100,5 +101,14 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
 
     public void setSeverity(String severity) {
         getStateHelper().put(PropertyKeys.severity, severity);
+    }
+
+    @Override
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
+    }
+
+    public void setWidgetVar(java.lang.String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 }

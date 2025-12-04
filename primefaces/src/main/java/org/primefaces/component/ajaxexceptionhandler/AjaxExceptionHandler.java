@@ -30,7 +30,7 @@ import jakarta.faces.component.FacesComponent;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
-public class AjaxExceptionHandler extends AjaxExceptionHandlerBase {
+public class AjaxExceptionHandler extends AjaxExceptionHandlerBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.AjaxExceptionHandler";
 }

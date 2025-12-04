@@ -51,7 +51,8 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
         delay,
         buttonStyle,
         buttonStyleClass,
-        disableOnAjax
+        disableOnAjax,
+        buttonIcon
     }
 
     public MenuButtonBase() {
@@ -206,5 +207,13 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
 
     public void setDisableOnAjax(boolean disableOnAjax) {
         getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
+    }
+
+    public String getButtonIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.buttonIcon, null);
+    }
+
+    public void setButtonIcon(String buttonIcon) {
+        getStateHelper().put(PropertyKeys.buttonIcon, buttonIcon);
     }
 }

@@ -23,21 +23,11 @@
  */
 package org.primefaces.component.media;
 
-import org.primefaces.util.LangUtils;
-
-import java.util.List;
-
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Media.COMPONENT_TYPE, namespace = Media.COMPONENT_FAMILY)
-public class Media extends MediaBase {
+public class Media extends MediaBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Media";
 
-    //StyleClass is omitted
-    public static final List<String> MEDIA_ATTRS = LangUtils.unmodifiableList(
-        "height",
-        "width",
-        "style"
-    );
 }

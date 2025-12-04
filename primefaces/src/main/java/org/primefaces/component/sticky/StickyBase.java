@@ -37,7 +37,8 @@ public abstract class StickyBase extends UIPanel implements Widget {
 
         widgetVar,
         target,
-        margin
+        margin,
+        stickyTopAt
     }
 
     public StickyBase() {
@@ -71,5 +72,13 @@ public abstract class StickyBase extends UIPanel implements Widget {
 
     public void setMargin(int margin) {
         getStateHelper().put(PropertyKeys.margin, margin);
+    }
+
+    public String getStickyTopAt() {
+        return (String) getStateHelper().eval(PropertyKeys.stickyTopAt, null);
+    }
+
+    public void setStickyTopAt(String stickyTopAt) {
+        getStateHelper().put(PropertyKeys.stickyTopAt, stickyTopAt);
     }
 }

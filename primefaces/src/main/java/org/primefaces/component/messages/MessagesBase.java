@@ -24,9 +24,10 @@
 package org.primefaces.component.messages;
 
 import org.primefaces.component.api.UINotifications;
+import org.primefaces.component.api.Widget;
 
 
-public abstract class MessagesBase extends UINotifications {
+public abstract class MessagesBase extends UINotifications implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -36,7 +37,8 @@ public abstract class MessagesBase extends UINotifications {
         closable,
         style,
         styleClass,
-        showIcon
+        showIcon,
+        widgetVar;
     }
 
     public MessagesBase() {
@@ -78,5 +80,14 @@ public abstract class MessagesBase extends UINotifications {
 
     public void setShowIcon(boolean showIcon) {
         getStateHelper().put(PropertyKeys.showIcon, showIcon);
+    }
+
+    @Override
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
+    }
+
+    public void setWidgetVar(java.lang.String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 }

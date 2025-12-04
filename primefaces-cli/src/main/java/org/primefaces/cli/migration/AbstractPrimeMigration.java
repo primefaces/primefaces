@@ -63,10 +63,19 @@ public abstract class AbstractPrimeMigration implements Runnable {
         initReplaceRegEx();
 
         try {
-            System.out.println("Start migrating " + directory + " and subdirectories; " +
-                    "fileextension: " + fileextensionsSet.stream().collect(Collectors.joining(",")) + "; " +
-                    "replaceExisting: " + replaceExisting);
-            migrateDirectory(Paths.get(directory), fileextensionsSet, replaceExisting);
+            Path target = Paths.get(directory);
+
+            if (target.toFile().isFile()) {
+                System.out.println("Start migrating " + directory + "; " +
+                        "replaceExisting: " + replaceExisting);
+                migrateFile(target, replaceExisting);
+            }
+            else {
+                System.out.println("Start migrating " + directory + " and subdirectories; " +
+                        "fileextension: " + fileextensionsSet.stream().collect(Collectors.joining(",")) + "; " +
+                        "replaceExisting: " + replaceExisting);
+                migrateDirectory(Paths.get(directory), fileextensionsSet, replaceExisting);
+            }
             System.out.println("Finished migration!");
         }
         catch (Exception ex) {

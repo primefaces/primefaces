@@ -23,7 +23,10 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
+import org.primefaces.component.api.AbstractPrimeHtmlInputTextArea;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
@@ -145,6 +148,23 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
             if (LangUtils.isNotBlank(labelledBy)) {
                 writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
             }
+            String ariaDescribedBy = inputHolder.getAriaDescribedBy();
+            if (LangUtils.isNotBlank(ariaDescribedBy)) {
+                String target = SearchExpressionUtils.resolveClientIds(ariaDescribedBy, component);
+                writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target, null);
+            }
+        }
+
+        String ariaDescribedBy = null;
+        if (component instanceof AbstractPrimeHtmlInputText) {
+            ariaDescribedBy = ((AbstractPrimeHtmlInputText) component).getAriaDescribedBy();
+        }
+        else if (component instanceof AbstractPrimeHtmlInputTextArea) {
+            ariaDescribedBy = ((AbstractPrimeHtmlInputTextArea) component).getAriaDescribedBy();
+        }
+        if (LangUtils.isNotBlank(ariaDescribedBy)) {
+            String target = SearchExpressionUtils.resolveClientIds(ariaDescribedBy, component);
+            writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target, null);
         }
 
         if (disabled) {

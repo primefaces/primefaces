@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
+import jakarta.el.ELException;
 import jakarta.el.ExpressionFactory;
 import jakarta.faces.FacesException;
 import jakarta.faces.application.Application;
@@ -199,6 +200,11 @@ public class ApplicationMock extends Application {
     @Override
     public ExpressionFactory getExpressionFactory() {
         return expressionFactory;
+    }
+
+    @Override
+    public <T> T evaluateExpressionGet(FacesContext context, String expression, Class<? extends T> expectedType) throws ELException {
+        return expressionFactory.createValueExpression(expression, expectedType).getValue(context.getELContext());
     }
 
     @Override

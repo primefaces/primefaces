@@ -49,4 +49,14 @@ public interface InputHolder {
      * @param id the id
      */
     void setLabelledBy(String id);
+
+    /**
+     * @return The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
+     */
+    String getAriaDescribedBy();
+
+    /**
+     * @param ariaDescribedBy The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
+     */
+    void setAriaDescribedBy(String ariaDescribedBy);
 }

@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.gmap;
 
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = GMapInfoWindow.COMPONENT_TYPE, namespace = GMapInfoWindow.COMPONENT_FAMILY)
 public class GMapInfoWindow extends GMapInfoWindowBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.GMapInfoWindow";

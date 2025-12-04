@@ -251,6 +251,16 @@ public class AutoComplete extends AutoCompleteBase {
     }
 
     @Override
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().get("ariaDescribedBy");
+    }
+
+    @Override
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
+    }
+
+    @Override
     public Object saveState(FacesContext context) {
         // reset component for MyFaces view pooling
         suggestions = null;

@@ -2,6 +2,7 @@
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
+                xmlns:mycomposites="jakarta.faces.composite/composite"
                 xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
@@ -18,14 +19,18 @@
 
     <ui:define name="implementation">
 
+        <mycomposites:componentDocumentation value="#{componentDocumentationController.inputTextArea}" rendered="false" />
+
         <p:growl id="growl" showSummary="true" showDetail="true" keepAlive="true" life="3000">
             <p:autoUpdate/>
         </p:growl>
 
         <div class="card">
             <h:form>
-                <h5>AutoResize</h5>
-                <p:inputTextarea rows="6" cols="33"/>
+                <h5>AutoResize + AJAX Events</h5>
+                <p:inputTextarea rows="6" cols="33" value="#{inputTextareaView.value}">
+                    <p:ajax listener="#{inputTextareaView.onChange}"/>
+                </p:inputTextarea>
 
                 <h5>Remaining Chars</h5>
                 <p:inputTextarea rows="5" cols="30" counter="display" maxlength="10"

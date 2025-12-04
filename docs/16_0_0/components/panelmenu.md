@@ -62,7 +62,57 @@ submenu as expanded.
 ## Stateful
 If you use `stateful="true"` to keep the state of the menu by default it is per page.  This means the state is
 not remembered across page navigations.  If you would like it to be global and remembered across pages then set
-the `statefulGlobal="true"` attribute to enable it..
+the `statefulGlobal="true"` attribute to enable it.
+
+### Client-side Widget Methods
+
+PanelMenu provides client-side JavaScript methods via its widget API. Use the `widgetVar` to access the widget instance.
+
+#### `expandAll()`
+
+Expands all menu panels and submenus.
+
+```javascript
+PF('myPanelMenu').expandAll();
+```
+
+#### `collapseAll()`
+
+Collapses all expanded menu panels and submenus.
+
+```javascript
+PF('myPanelMenu').collapseAll();
+```
+
+#### `clearState()`
+
+Clears the UI state of the panel menu stored in `localStorage`.
+
+```javascript
+PF('myPanelMenu').clearState();
+```
+
+#### Example
+
+```xhtml
+<p:panelMenu widgetVar="myPanelMenu">
+    ...
+</p:panelMenu>
+
+<script type="text/javascript">
+    // Expand all panels
+    PF('myPanelMenu').expandAll();
+
+    // Collapse all panels
+    PF('myPanelMenu').collapseAll();
+
+    // Clear any saved menu state
+    PF('myPanelMenu').clearState();
+</script>
+```
+
+For advanced usage, refer to the widget JavaScript API in the [PrimeFaces PanelMenu Widget documentation](https://primefaces.github.io/primefaces/15_0_0/#/components/panelmenu?id=widget).
+
 
 ## Skinning
 PanelMenu resides in a main container which _style_ and _styleClass_ attributes apply. Following is the

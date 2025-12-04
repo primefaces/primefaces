@@ -20,47 +20,61 @@ TriStateCheckbox adds a new state to a checkbox value.
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component referring to a List.
 converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-required | false | Boolean | Marks component as required
-validator | null | MethodExpr | A method expression that refers to a method validating the input
-valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
-requiredMessage | null | String | Message to be displayed when required field validation fails.
 converterMessage | null | String | Message to be displayed when conversion fails.
-validatorMessage | null | String | Message to be displayed when validation fields.
-widgetVar | null | String | Name of the client side widget.
 disabled | false | Boolean | Disables the component.
-readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
-stateOneIcon | null | String | Icon of the state one.
-stateTwoIcon | null | String | Icon of the state two.
-stateThreeIcon | null | String | Icon of the state three.
-stateOneTitle | null | String | Title for state one.
-stateTwoTitle | null | String | Title for state two
-stateThreeTitle | null | String | Title for state three.
+escape | true | Boolean | Defines whether HTML in label would be escaped or not.
+immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 itemLabel | null | String | Label displayed next to checkbox.
-tabindex | null | String | Specifies tab order for tab key navigation.
+label | null | String | A localized user presentable name.
 onchange | null | String | Client side callback to execute on state change.
+readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
+rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+required | false | Boolean | Marks component as required
+requiredMessage | null | String | Message to be displayed when required field validation fails.
+stateOneIcon | null | String | Icon of the state one.
+stateOneTitle | null | String | Title for state one.
+stateThreeIcon | null | String | Icon of the state three.
+stateThreeTitle | null | String | Title for state three.
+stateTwoIcon | null | String | Icon of the state two.
+stateTwoTitle | null | String | Title for state two
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
-label | null | String | A localized user presentable name.
-escape | true | Boolean | Defines whether HTML in label would be escaped or not.
+tabindex | null | String | Specifies tab order for tab key navigation.
+validator | null | MethodExpr | A method expression that refers to a method validating the input
+validatorMessage | null | String | Message to be displayed when validation fields.
+value | null | Boolean | Boolean value of the component (null, true, false).
+valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
+widgetVar | null | String | Name of the client side widget.
 
 ## Getting started with TriStateCheckbox
-TriStateCheckbox passes values “0”, “1”, “2” by default for each state and this can be customized
-using a converter.
+TriStateCheckbox supports three states: null (unchecked), true (checked), and false (indeterminate).
+
+### Using Boolean values
 
 ```xhtml
-<p:triStateCheckbox value="#{bean.value}"/>
+<p:triStateCheckbox value="#{bean.booleanValue}"/>
 ```
+
 ```java
 public class Bean {
-    private String value;
+    private Boolean booleanValue; // Can be true, false, or null
     //getter-setter
 }
 ```
+
+## Value Handling
+The TriStateCheckbox component automatically handles conversion between String and Boolean values:
+
+- **Boolean values**: Used directly as `Boolean.TRUE`, `Boolean.FALSE`, or `null`
+- **Three states**: 
+  - `null` - Unchecked state (state one)
+  - `true` - Checked state (state two) 
+  - `false` - Indeterminate state (state three)
+
+
 ## Client Side API
 Widget: _PrimeFaces.widget.TriStateCheckbox_
 
