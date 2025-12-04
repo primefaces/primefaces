@@ -26,9 +26,9 @@ package org.primefaces.component.tag;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.StyleAware;
 
-import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.component.UIOutput;
 
-public abstract class TagBase extends UIComponentBase implements StyleAware {
+public abstract class TagBase extends UIOutput implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -46,7 +46,7 @@ public abstract class TagBase extends UIComponentBase implements StyleAware {
     @Property(description = "Icon of the tag.")
     public abstract String getIcon();
 
-    @Property(description = "Severity of the tag, valid options are \"info\", \"success\", \"warning\", and \"danger\".")
+    @Property(description = "Severity of the tag, valid options are \"info\", \"success\", \"warning\", \"danger\", \"help\", and \"secondary\".")
     public abstract String getSeverity();
 
     @Property(defaultValue = "false", description = "Whether to display the tag with rounded corners.")
