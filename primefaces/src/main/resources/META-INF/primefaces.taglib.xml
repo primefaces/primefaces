@@ -21241,6 +21241,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies dragdrop based drag and drop transfers and reordering, default is true and works only on supported browsers.]]>
+            </description>
+            <name>dragDrop</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

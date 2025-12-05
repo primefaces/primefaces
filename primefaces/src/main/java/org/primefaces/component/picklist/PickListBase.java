@@ -68,7 +68,8 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         escapeValue,
         transferOnDblclick,
         transferOnCheckboxClick,
-        filterNormalize
+        filterNormalize,
+        dragDrop
     }
 
     public PickListBase() {
@@ -334,5 +335,13 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
 
     public void setFilterNormalize(boolean filterNormalize) {
         getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
+    }
+
+    public boolean isDragDrop() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.dragDrop, true);
+    }
+
+    public void setDragDrop(boolean dragDrop) {
+        getStateHelper().put(PropertyKeys.dragDrop, dragDrop);
     }
 }
