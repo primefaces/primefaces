@@ -781,6 +781,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.filter();
             }
         });
+
+        // #14480 Safari does not trigger 'search' event on clear button
+        if (PrimeFaces.env.browser.safari) {
+            filter.off('input.filterClear').on('input.filterClear', function(e) {
+                if (this.value === "") {
+                    $this.filter();
+                }
+            });
+        }
     },
 
     /**
