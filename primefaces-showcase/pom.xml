@@ -17,7 +17,7 @@
     <name>PrimeFaces Showcase</name>
 
     <properties>
-        <jetty.version>12.1.4</jetty.version>
+        <jetty.version>12.1.5</jetty.version>
         <faces.project.stage>Production</faces.project.stage>
         <sonar.skip>true</sonar.skip>
     </properties>
