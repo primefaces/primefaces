@@ -162,7 +162,7 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             // MS Edge spell check completion event
-            if (!e.relatedTarget && e.target === $this.editor.root) {
+            if (!PrimeFaces.env.browser.safari && !e.relatedTarget && e.target === $this.editor.root) {
                 return;
             }
 
