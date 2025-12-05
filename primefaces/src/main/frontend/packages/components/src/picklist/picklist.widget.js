@@ -157,11 +157,14 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         var $this = this,
             reordered = true;
 
+        // #13131 always disable drag and drop on touch devices
+        const dragDropDisabled = ($this.cfg.dragDrop === false) || PrimeFaces.env.isTouchable($this.cfg);
+
         //Sortable lists
         $(this.jqId + ' ul').sortable({
             cancel: '.ui-state-disabled,.ui-chkbox-box',
             connectWith: this.jqId + ' .ui-picklist-list',
-            disabled: PrimeFaces.env.isTouchable($this.cfg), // #13131 disable on touch devices
+            disabled: dragDropDisabled, 
             revert: 1,
             helper: 'clone',
             placeholder: "ui-picklist-item ui-state-highlight",

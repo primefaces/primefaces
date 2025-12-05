@@ -58,6 +58,7 @@ orientation | horizontal | String | Defines layout orientation, valid values are
 responsive | false | Boolean | In responsive mode, picklist adjusts itself based on screen width.
 escape | true | Boolean | Defines if labels of the component are escaped or not.
 tabindex | null | String | Position of the element in the tabbing order.
+dragDrop | true | Boolean | Specifies dragdrop based drag and drop transfers and reordering, default is true and works only on supported browsers.
 filterEvent | keyup | String | Client side event to invoke picklist filtering for input fields.
 filterDelay | 300 | Integer  | Delay to wait in milliseconds before sending each filter query.
 escapeValue | true | Boolean | Defines if values of the component are escaped or not.

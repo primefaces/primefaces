@@ -145,6 +145,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
                 .attr("effect", component.getEffect())
                 .attr("effectSpeed", component.getEffectSpeed())
                 .attr("escape", component.isEscape())
+                .attr("dragDrop", component.isDragDrop(), true)
                 .attr("showSourceControls", component.isShowSourceControls(), false)
                 .attr("showTargetControls", component.isShowTargetControls(), false)
                 .attr("disabled", component.isDisabled(), false)
