@@ -1,11 +1,11 @@
 /// <reference types="jquery" preserve="true" />
 
 import jQuery from "jquery";
-import type { Matchs } from "jquery.browser";
-import _jQBrowser from "jquery.browser";
+import { BrowserDetection } from "@melloware/jquery.browser";
+import _jQBrowser from "@melloware/jquery.browser";
 
 declare global {
-    const jQBrowser: Matchs;
+    const jQBrowser: BrowserDetection;
     interface Window {
         $: typeof jQuery;
         jQuery: typeof jQuery;

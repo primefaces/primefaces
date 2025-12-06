@@ -1,7 +1,7 @@
 import { core } from "./core.js";
 import type { BaseWidgetCfg } from "./core.widget.js";
 
-import type { Matchs } from "jquery.browser";
+import type { BrowserDetection } from "@melloware/jquery.browser";
 
 /**
  * The class with functionality related to the browser environment, such as information about the current browser.
@@ -27,7 +27,7 @@ export class Environment {
     /**
      * The current browser type.
      */
-    browser: Matchs | null = null;
+    browser: BrowserDetection | null = null;
     /**
      * `true` if the user's current OS setting prefers dark mode, `false` otherwise.
      */
@@ -49,8 +49,8 @@ export class Environment {
         this.browser = jQBrowser;
         this.mobile = this.browser.mobile ?? false;
         this.touch = 'ontouchstart' in window || window.navigator.maxTouchPoints > 0 || this.mobile === true;
-        this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent) || (/mac/i.test(window.navigator.userAgent) && this.touch);
-        this.android = /(android)/i.test(window.navigator.userAgent);
+        this.ios = this.browser.ipad || this.browser.iphone || this.browser.ipod || (this.browser.mac && this.touch);
+        this.android = this.browser.android;
         this.preferredColorSchemeDark = this.evaluateMediaQuery('(prefers-color-scheme: dark)');
         this.preferredColorSchemeLight = !this.preferredColorSchemeDark;
         this.prefersReducedMotion =  this.evaluateMediaQuery('(prefers-reduced-motion: reduce)');
