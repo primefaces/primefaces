@@ -319,7 +319,6 @@ __metadata:
     "@types/jquery-cropper": "npm:1.0.4"
     "@types/jquery-mousewheel": "npm:3.1.12"
     "@types/jquery-touchswipe": "npm:1.6.0"
-    "@types/jquery.browser": "npm:0.1.4"
     "@types/jqueryui": "npm:1.12.24"
     "@types/js-cookie": "npm:3.0.6"
     "@types/jscrollpane": "npm:2.0.35"
@@ -351,7 +350,6 @@ __metadata:
     jquery-touchswipe: "npm:1.6.19"
     jquery-ui: "npm:1.14.1"
     jquery-ui-timepicker-addon: "patch:jquery-ui-timepicker-addon@npm%3A1.6.3#~/.yarn/patches/jquery-ui-timepicker-addon-npm-1.6.3-b43c27b305.patch"
-    jquery.browser: "npm:0.1.0"
     js-cookie: "npm:3.0.5"
     jscrollpane: "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch"
     jsplumb: "npm:2.15.6"
@@ -436,15 +434,6 @@ __metadata:
   peerDependencies:
     "@types/jquery": "*"
   checksum: 10c0/6c58874ad73d77e3d4a95c3a6fd9a2810ed1c74388403d463b8c6ce9939dc5e2a1d4a38bf63bbda720a7d5aaf33f07e88d751de018cd060ff59d1c7f6f4abea4
-  languageName: node
-  linkType: hard
-
-"@types/jquery.browser@npm:0.1.4":
-  version: 0.1.4
-  resolution: "@types/jquery.browser@npm:0.1.4"
-  dependencies:
-    "@types/jquery": "npm:*"
-  checksum: 10c0/9452119503337453da2bbf590b4776fb676aa257e53c8dc46c7c412af8405a946aa06c9f80efd395624380fcc2e52522feabe8470c74b184bcf5d3583187b705
   languageName: node
   linkType: hard
 
@@ -893,13 +882,6 @@ __metadata:
   dependencies:
     jquery: "npm:>=1.12.0 <5.0.0"
   checksum: 10c0/cf7a3c0aac369e513d78bc5864bbafb6ddf85a43513ca5d00b11d65e2890a6618ff2ef5b8cb2925db9a6b7d0c2482d717fb10cc813e419024ae8bc457e18f51d
-  languageName: node
-  linkType: hard
-
-"jquery.browser@npm:0.1.0":
-  version: 0.1.0
-  resolution: "jquery.browser@npm:0.1.0"
-  checksum: 10c0/35198e92868964e64310a67a13bc9aa4e1455e0baecd6268cf9d594226dc852abeeb68bed099b85d573bbc17937d5881aa6b7aa8e130f6527bad8c94b62e338b
   languageName: node
   linkType: hard
 
