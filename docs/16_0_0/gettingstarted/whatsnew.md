@@ -30,6 +30,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
     * Added `dir="rtl"` right to left support.
 * Sticky
     * Added `stickyTopAt` attribute for elements fixed at the top of the page whose height should be considered when positioning the sticky element.
+* TabView
+    * Added new widget method `selectTabById(id, silent)` to select a tab by its client ID or expression at the JavaScript level, matching a tab panel by its DOM id. Returns true if the tab was found and selected, false otherwise.
+
 * TreeTable
     * Added `resizeMode` attribute to support column resizing using the "expand" mode.
     * Added `filterPrune="descendants"` to prune non-matching children unless they or their descendants match a filter.
