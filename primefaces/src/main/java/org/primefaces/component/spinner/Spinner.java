@@ -23,16 +23,20 @@
  */
 package org.primefaces.component.spinner;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.util.LocaleUtils;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Spinner.COMPONENT_TYPE, namespace = Spinner.COMPONENT_FAMILY)
+@FacesComponentDescription("Spinner is an input component to provide a numerical input via increment and decrement buttons.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Spinner extends SpinnerBase {
+public class Spinner extends SpinnerBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Spinner";
 
@@ -75,5 +79,17 @@ public class Spinner extends SpinnerBase {
     @Override
     public void setAriaDescribedBy(String ariaDescribedBy) {
         getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
+    }
+
+    @Override
+    public String getDecimalSeparator() {
+        return (String) getStateHelper().eval(PropertyKeys.decimalSeparator,
+            () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
+    }
+
+    @Override
+    public String getThousandSeparator() {
+        return (String) getStateHelper().eval(PropertyKeys.thousandSeparator,
+            () -> LocaleUtils.getThousandSeparator(getFacesContext()));
     }
 }

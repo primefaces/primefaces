@@ -24,23 +24,14 @@
 package org.primefaces.component.inputtext;
 
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
-import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.CountCharactersAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class InputTextBase extends AbstractPrimeHtmlInputText implements Widget, RTLAware {
+public abstract class InputTextBase extends AbstractPrimeHtmlInputText implements Widget, CountCharactersAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.InputTextRenderer";
-
-    public enum PropertyKeys {
-
-        placeholder,
-        widgetVar,
-        counter,
-        counterTemplate,
-        countBytesAsChars,
-    }
 
     public InputTextBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -49,45 +40,5 @@ public abstract class InputTextBase extends AbstractPrimeHtmlInputText implement
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getCounter() {
-        return (String) getStateHelper().eval(PropertyKeys.counter, null);
-    }
-
-    public void setCounter(String counter) {
-        getStateHelper().put(PropertyKeys.counter, counter);
-    }
-
-    public String getCounterTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
-    }
-
-    public void setCounterTemplate(String counterTemplate) {
-        getStateHelper().put(PropertyKeys.counterTemplate, counterTemplate);
-    }
-
-    public boolean getCountBytesAsChars() {
-        return (Boolean) this.getStateHelper().eval(PropertyKeys.countBytesAsChars, false);
-    }
-
-    public void setCountBytesAsChars(boolean countBytesAsChars) {
-        this.getStateHelper().put(PropertyKeys.countBytesAsChars, countBytesAsChars);
     }
 }

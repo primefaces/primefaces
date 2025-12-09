@@ -1096,7 +1096,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             w.print("        " + escapeKeyword(event.getName()) + "(\"" + event.getName() + "\", " +
                     event.getEventClass() + ".class, \"" + description + "\", " + event.isImplicit() + ", " + event.isDefaultEvent() + ")");
             w.println(i < events.size() - 1 ? "," : ";");
-            if (event.isDefaultEvent()) {
+            if (event.isDefaultEvent() && defaultEvent == null) {
                 defaultEvent = event;
             }
         }

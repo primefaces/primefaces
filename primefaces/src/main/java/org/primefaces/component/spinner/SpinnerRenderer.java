@@ -112,8 +112,8 @@ public class SpinnerRenderer extends InputRenderer<Spinner> {
                 .attr("rotate", component.isRotate(), false)
                 .attr("decimalPlaces", decimalPlaces, null)
                 .attr("modifyValueOnWheel", component.isModifyValueOnWheel(), true)
-                .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), component.getThousandSeparator())
-                .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), component.getDecimalSeparator());
+                .attr(Spinner.PropertyKeys.thousandSeparator.name(), component.getThousandSeparator())
+                .attr(Spinner.PropertyKeys.decimalSeparator.name(), component.getDecimalSeparator());
 
         wb.finish();
     }

@@ -23,68 +23,32 @@
  */
 package org.primefaces.component.autocomplete;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.MessageFactory;
 
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.event.AjaxBehaviorEvent;
+
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected."),
+    @FacesBehaviorEvent(name = "itemUnselect", event = UnselectEvent.class, description = "Fires when an item is unselected."),
+    @FacesBehaviorEvent(name = "moreTextSelect", event = AjaxBehaviorEvent.class, description = "Fires when a more text is selected."),
+    @FacesBehaviorEvent(name = "emptyMessageSelect", event = AjaxBehaviorEvent.class, description = "Fires when an empty message is selected."),
+    @FacesBehaviorEvent(name = "clear", event = AjaxBehaviorEvent.class, description = "Fires when the component is cleared."),
+})
 public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AutoCompleteRenderer";
-
-    public enum PropertyKeys {
-
-        active,
-        appendTo,
-        at,
-        autoHighlight,
-        autoSelection,
-        cache,
-        cacheTimeout,
-        completeEndpoint,
-        completeMethod,
-        dropdown,
-        dropdownMode,
-        dropdownTabindex,
-        dynamic,
-        emptyMessage,
-        escape,
-        forceSelection,
-        groupBy,
-        groupByTooltip,
-        highlightSelector,
-        inputStyle,
-        inputStyleClass,
-        itemLabel,
-        itemStyleClass,
-        itemtipAtPosition,
-        itemtipMyPosition,
-        itemValue,
-        lazyField,
-        lazyModel,
-        maxResults,
-        minQueryLength,
-        moreText,
-        multiple,
-        my,
-        panelStyle,
-        panelStyleClass,
-        placeholder,
-        queryDelay,
-        queryEvent,
-        queryMode,
-        scrollHeight,
-        selectLimit,
-        showEmptyMessage,
-        unique,
-        var,
-        widgetVar,
-    }
 
     public AutoCompleteBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -95,363 +59,138 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         return COMPONENT_FAMILY;
     }
 
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public jakarta.el.MethodExpression getCompleteMethod() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
-    }
-
-    public void setCompleteMethod(jakarta.el.MethodExpression completeMethod) {
-        getStateHelper().put(PropertyKeys.completeMethod, completeMethod);
-    }
-
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
-
-    public String getItemLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
-    }
-
-    public void setItemLabel(String itemLabel) {
-        getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
-    }
-
-    public Object getItemValue() {
-        return getStateHelper().eval(PropertyKeys.itemValue, null);
-    }
-
-    public void setItemValue(Object itemValue) {
-        getStateHelper().put(PropertyKeys.itemValue, itemValue);
-    }
-
-    public String getItemStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
-    }
-
-    public void setItemStyleClass(String itemStyleClass) {
-        getStateHelper().put(PropertyKeys.itemStyleClass, itemStyleClass);
-    }
-
-    public int getMaxResults() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxResults, Integer.MAX_VALUE);
-    }
-
-    public void setMaxResults(int maxResults) {
-        getStateHelper().put(PropertyKeys.maxResults, maxResults);
-    }
-
-    public int getMinQueryLength() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minQueryLength, 1);
-    }
-
-    public void setMinQueryLength(int minQueryLength) {
-        getStateHelper().put(PropertyKeys.minQueryLength, minQueryLength);
-    }
-
-    public int getQueryDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.queryDelay, 300);
-    }
-
-    public void setQueryDelay(int queryDelay) {
-        getStateHelper().put(PropertyKeys.queryDelay, queryDelay);
-    }
-
-    public boolean isForceSelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.forceSelection, false);
-    }
-
-    public void setForceSelection(boolean forceSelection) {
-        getStateHelper().put(PropertyKeys.forceSelection, forceSelection);
-    }
-
-    public int getScrollHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
-    }
-
-    public void setScrollHeight(int scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
-
-    public boolean isDropdown() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dropdown, false);
-    }
-
-    public void setDropdown(boolean dropdown) {
-        getStateHelper().put(PropertyKeys.dropdown, dropdown);
-    }
-
-    public String getPanelStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.panelStyle, null);
-    }
-
-    public void setPanelStyle(String panelStyle) {
-        getStateHelper().put(PropertyKeys.panelStyle, panelStyle);
-    }
-
-    public String getPanelStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
-    }
-
-    public void setPanelStyleClass(String panelStyleClass) {
-        getStateHelper().put(PropertyKeys.panelStyleClass, panelStyleClass);
-    }
-
-    public boolean isMultiple() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
-    }
-
-    public void setMultiple(boolean multiple) {
-        getStateHelper().put(PropertyKeys.multiple, multiple);
-    }
-
-    public String getItemtipMyPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.itemtipMyPosition, null);
-    }
-
-    public void setItemtipMyPosition(String itemtipMyPosition) {
-        getStateHelper().put(PropertyKeys.itemtipMyPosition, itemtipMyPosition);
-    }
-
-    public String getItemtipAtPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.itemtipAtPosition, null);
-    }
-
-    public void setItemtipAtPosition(String itemtipAtPosition) {
-        getStateHelper().put(PropertyKeys.itemtipAtPosition, itemtipAtPosition);
-    }
-
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, false);
-    }
-
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
-
-    public int getCacheTimeout() {
-        return (Integer) getStateHelper().eval(PropertyKeys.cacheTimeout, 300000);
-    }
-
-    public void setCacheTimeout(int cacheTimeout) {
-        getStateHelper().put(PropertyKeys.cacheTimeout, cacheTimeout);
-    }
-
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
-    }
-
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    public Object getGroupBy() {
-        return getStateHelper().eval(PropertyKeys.groupBy, null);
-    }
-
-    public void setGroupBy(Object groupBy) {
-        getStateHelper().put(PropertyKeys.groupBy, groupBy);
-    }
-
-    public String getQueryEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.queryEvent, null);
-    }
-
-    public void setQueryEvent(String queryEvent) {
-        getStateHelper().put(PropertyKeys.queryEvent, queryEvent);
-    }
-
-    public String getDropdownMode() {
-        return (String) getStateHelper().eval(PropertyKeys.dropdownMode, null);
-    }
-
-    public void setDropdownMode(String dropdownMode) {
-        getStateHelper().put(PropertyKeys.dropdownMode, dropdownMode);
-    }
-
-    public boolean isAutoHighlight() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoHighlight, true);
-    }
-
-    public void setAutoHighlight(boolean autoHighlight) {
-        getStateHelper().put(PropertyKeys.autoHighlight, autoHighlight);
-    }
-
-    public int getSelectLimit() {
-        return (Integer) getStateHelper().eval(PropertyKeys.selectLimit, Integer.MAX_VALUE);
-    }
-
-    public void setSelectLimit(int selectLimit) {
-        getStateHelper().put(PropertyKeys.selectLimit, selectLimit);
-    }
-
-    public String getInputStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
-    }
-
-    public void setInputStyle(String inputStyle) {
-        getStateHelper().put(PropertyKeys.inputStyle, inputStyle);
-    }
-
-    public String getInputStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
-    }
-
-    public void setInputStyleClass(String inputStyleClass) {
-        getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
-    }
-
-    public String getGroupByTooltip() {
-        return (String) getStateHelper().eval(PropertyKeys.groupByTooltip, null);
-    }
-
-    public void setGroupByTooltip(String groupByTooltip) {
-        getStateHelper().put(PropertyKeys.groupByTooltip, groupByTooltip);
-    }
-
-    public String getMy() {
-        return (String) getStateHelper().eval(PropertyKeys.my, null);
-    }
-
-    public void setMy(String my) {
-        getStateHelper().put(PropertyKeys.my, my);
-    }
-
-    public String getAt() {
-        return (String) getStateHelper().eval(PropertyKeys.at, null);
-    }
-
-    public void setAt(String at) {
-        getStateHelper().put(PropertyKeys.at, at);
-    }
-
-    public boolean isActive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.active, true);
-    }
-
-    public void setActive(boolean active) {
-        getStateHelper().put(PropertyKeys.active, active);
-    }
-
-    public String getMoreText() {
-        return (String) getStateHelper().eval(PropertyKeys.moreText, "...");
-    }
-
-    public void setMoreText(String moreText) {
-        getStateHelper().put(PropertyKeys.moreText, moreText);
-    }
-
-    public boolean isUnique() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.unique, false);
-    }
-
-    public void setUnique(boolean unique) {
-        getStateHelper().put(PropertyKeys.unique, unique);
-    }
-
-    public boolean isDynamic() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
-    }
-
-    public void setDynamic(boolean dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, dynamic);
-    }
-
-    public boolean isAutoSelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoSelection, true);
-    }
-
-    public void setAutoSelection(boolean autoSelection) {
-        getStateHelper().put(PropertyKeys.autoSelection, autoSelection);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    public String getQueryMode() {
-        return (String) getStateHelper().eval(PropertyKeys.queryMode, "server");
-    }
-
-    public void setQueryMode(String queryMode) {
-        getStateHelper().put(PropertyKeys.queryMode, queryMode);
-    }
-
-    public String getDropdownTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.dropdownTabindex, null);
-    }
-
-    public void setDropdownTabindex(String dropdownTabindex) {
-        getStateHelper().put(PropertyKeys.dropdownTabindex, dropdownTabindex);
-    }
-
-    public String getCompleteEndpoint() {
-        return (String) getStateHelper().eval(PropertyKeys.completeEndpoint, null);
-    }
-
-    public void setCompleteEndpoint(String completeEndpoint) {
-        getStateHelper().put(PropertyKeys.completeEndpoint, completeEndpoint);
-    }
-
-    public LazyDataModel<?> getLazyModel() {
-        return (LazyDataModel<?>) getStateHelper().eval(PropertyKeys.lazyModel, null);
-    }
-
-    public void setLazyModel(LazyDataModel<?> lazyModel) {
-        getStateHelper().put(PropertyKeys.lazyModel, lazyModel);
-    }
-
-    public String getLazyField() {
-        return (String) getStateHelper().eval(PropertyKeys.lazyField, null);
-    }
-
-    public void setLazyField(String lazyField) {
-        getStateHelper().put(PropertyKeys.lazyField, lazyField);
-    }
-
-    public boolean isShowEmptyMessage() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showEmptyMessage, true);
-    }
-
-    public void setShowEmptyMessage(boolean showEmptyMessage) {
-        getStateHelper().put(PropertyKeys.showEmptyMessage, showEmptyMessage);
-    }
-
-    public String getHighlightSelector() {
-        return (String) getStateHelper().eval(PropertyKeys.highlightSelector, null);
-    }
-
-    public void setHighlightSelector(String highlightSelector) {
-        getStateHelper().put(PropertyKeys.highlightSelector, highlightSelector);
-    }
-
-    public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(getFacesContext(), UIPageableData.EMPTY_MESSAGE));
-    }
-
-    public void setEmptyMessage(String emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
-    }
+    @Property(description = "Facet to render footer.")
+    public abstract UIComponent getFooterFacet();
+
+    @Property(description = "Facet to render item tip.")
+    public abstract UIComponent getItemtipFacet();
+
+    @Property(description = "MethodExpression to provide suggestions for autocomplete functionality.")
+    public abstract jakarta.el.MethodExpression getCompleteMethod();
+
+    @Property(description = "Name of the iterator variable used in itemLabel and itemValue.")
+    public abstract String getVar();
+
+    @Property(description = "Property to use for displaying items.")
+    public abstract String getItemLabel();
+
+    @Property(description = "Property to use for item value.")
+    public abstract Object getItemValue();
+
+    @Property(description = "CSS class for each item.")
+    public abstract String getItemStyleClass();
+
+    @Property(description = "Maximum number of results to display.", defaultValue = "2147483647")
+    public abstract int getMaxResults();
+
+    @Property(description = "Minimum number of characters to trigger autocomplete query.", defaultValue = "1")
+    public abstract int getMinQueryLength();
+
+    @Property(description = "Delay in milliseconds before triggering autocomplete query.", defaultValue = "300")
+    public abstract int getQueryDelay();
+
+    @Property(description = "When enabled, forces selection from suggestions.", defaultValue = "false")
+    public abstract boolean isForceSelection();
+
+    @Property(description = "Maximum height in pixels before scrolling is enabled.", defaultValue = "2147483647")
+    public abstract int getScrollHeight();
+
+    @Property(description = "When enabled, shows dropdown button.", defaultValue = "false")
+    public abstract boolean isDropdown();
+
+    @Property(description = "Inline style for the suggestions panel.")
+    public abstract String getPanelStyle();
+
+    @Property(description = "CSS class for the suggestions panel.")
+    public abstract String getPanelStyleClass();
+
+    @Property(description = "When enabled, allows multiple selections.", defaultValue = "false")
+    public abstract boolean isMultiple();
+
+    @Property(description = "Position of the item tooltip relative to the item.")
+    public abstract String getItemtipMyPosition();
+
+    @Property(description = "Position of the item tooltip relative to the target.")
+    public abstract String getItemtipAtPosition();
+
+    @Property(description = "When enabled, caches suggestions on client side.", defaultValue = "false")
+    public abstract boolean isCache();
+
+    @Property(description = "Timeout in milliseconds for cached suggestions.", defaultValue = "300000")
+    public abstract int getCacheTimeout();
+
+    @Property(description = "Search expression to append the panel to.", defaultValue = "@(body)")
+    public abstract String getAppendTo();
+
+    @Property(description = "Property to group suggestions by.")
+    public abstract Object getGroupBy();
+
+    @Property(description = "Event to trigger autocomplete query.")
+    public abstract String getQueryEvent();
+
+    @Property(description = "Dropdown mode. Options: 'current', 'blank'.")
+    public abstract String getDropdownMode();
+
+    @Property(description = "When enabled, automatically highlights first suggestion.", defaultValue = "true")
+    public abstract boolean isAutoHighlight();
+
+    @Property(description = "Maximum number of items that can be selected.", defaultValue = "2147483647")
+    public abstract int getSelectLimit();
+
+    @Property(description = "Inline style for the input element.")
+    public abstract String getInputStyle();
+
+    @Property(description = "CSS class for the input element.")
+    public abstract String getInputStyleClass();
+
+    @Property(description = "Tooltip text for group headers.")
+    public abstract String getGroupByTooltip();
+
+    @Property(description = "Position of the panel relative to the input.")
+    public abstract String getMy();
+
+    @Property(description = "Position of the panel relative to the target.")
+    public abstract String getAt();
+
+    @Property(description = "When enabled, component is active.", defaultValue = "true")
+    public abstract boolean isActive();
+
+    @Property(description = "Text to display when there are more results.", defaultValue = "...")
+    public abstract String getMoreText();
+
+    @Property(description = "When enabled, prevents duplicate selections.", defaultValue = "false")
+    public abstract boolean isUnique();
+
+    @Property(description = "When enabled, loads suggestions dynamically.", defaultValue = "false")
+    public abstract boolean isDynamic();
+
+    @Property(description = "When enabled, automatically selects highlighted suggestion.", defaultValue = "true")
+    public abstract boolean isAutoSelection();
+
+    @Property(description = "When enabled, escapes HTML in suggestions.", defaultValue = "true")
+    public abstract boolean isEscape();
+
+    @Property(description = "Query mode. Options: 'server', 'client', 'hybrid'.", defaultValue = "server")
+    public abstract String getQueryMode();
+
+    @Property(description = "Tabindex for the dropdown button.")
+    public abstract String getDropdownTabindex();
+
+    @Property(description = "Endpoint URL for REST-based autocomplete.")
+    public abstract String getCompleteEndpoint();
+
+    @Property(description = "LazyDataModel for lazy loading suggestions.")
+    public abstract LazyDataModel<?> getLazyModel();
+
+    @Property(description = "Field name for lazy model filtering.")
+    public abstract String getLazyField();
+
+    @Property(description = "When enabled, shows empty message when no suggestions.", defaultValue = "true")
+    public abstract boolean isShowEmptyMessage();
+
+    @Property(description = "CSS selector for highlighting matched text.")
+    public abstract String getHighlightSelector();
+
+    @Property(description = "Message to display when no suggestions are available.")
+    public abstract String getEmptyMessage();
 }
