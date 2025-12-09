@@ -597,7 +597,10 @@ export class Core {
      * @return A CSS ID selector for the given ID.
      */
     escapeClientId(id: string): string {
-        return "#" + id.replace(/[:|]/g,"\\$&");
+        // If the id already starts with '#', remove it to avoid double-escaping, but keep escaping all chars.
+        const rawId = id.startsWith("#") ? id.substring(1) : id;
+        // Escape ':' and '|' for jQuery usage.
+        return "#" + rawId.replace(/([:|])/g, "\\$1");
     }
 
     /**
