@@ -1,7 +1,6 @@
 {
   "name": "@primefaces/primefaces",
   "version": "16.0.0-SNAPSHOT",
-  "type": "module",
   "private": true,
   "description": "Client-side implementation for PrimeFaces",
   "main": "src/index.js",
@@ -36,7 +35,6 @@
     "@types/jquery-cropper": "1.0.4",
     "@types/jquery-mousewheel": "3.1.12",
     "@types/jquery-touchswipe": "1.6.0",
-    "@types/jquery.browser": "0.1.4",
     "@types/jqueryui": "1.12.24",
     "@types/js-cookie": "3.0.6",
     "@types/jscrollpane": "2.0.35",
@@ -80,7 +78,6 @@
     "jquery-touchswipe": "1.6.19",
     "jquery-ui": "1.14.1",
     "jquery-ui-timepicker-addon": "patch:jquery-ui-timepicker-addon@npm%3A1.6.3#~/.yarn/patches/jquery-ui-timepicker-addon-npm-1.6.3-b43c27b305.patch",
-    "jquery.browser": "0.1.0",
     "js-cookie": "3.0.5",
     "jscrollpane": "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch",
     "moment-jdateformatparser": "1.2.1",
