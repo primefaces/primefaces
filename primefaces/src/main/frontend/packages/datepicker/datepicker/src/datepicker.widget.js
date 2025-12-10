@@ -489,6 +489,11 @@ PrimeFaces.widget.DatePicker = class DatePicker extends PrimeFaces.widget.BaseWi
      */
     setDate(date) {
         this.jq.datePicker('setDate', date);
+
+        // #14487 AJAX is not triggered on setDate(null). Specifically not done in the Prime Datepicker widget.
+        if (!date) {
+            this.fireDateSelectEvent();
+        }
     }
 
     /**
