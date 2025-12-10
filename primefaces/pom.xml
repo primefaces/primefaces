@@ -20,7 +20,7 @@
         <jakarta.jar.skip>false</jakarta.jar.skip>
         <cyclonedx.skip>true</cyclonedx.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
-        <mockito.version>5.20.0</mockito.version>
+        <mockito.version>5.21.0</mockito.version>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
         <node.version>v22.11.0</node.version>
         <yarn.version>v1.22.22</yarn.version>
