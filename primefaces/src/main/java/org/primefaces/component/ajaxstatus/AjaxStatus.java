@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.ajaxstatus;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = AjaxStatus.COMPONENT_TYPE, namespace = AjaxStatus.COMPONENT_FAMILY)
+@FacesComponentDescription("AjaxStatus is a global notifier for AJAX requests.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

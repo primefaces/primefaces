@@ -23,12 +23,14 @@
  */
 package org.primefaces.component.avatar;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.util.LangUtils;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Avatar.COMPONENT_TYPE, namespace = Avatar.COMPONENT_FAMILY)
+@FacesComponentDescription("Avatar is a visual representation of a user or entity.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Avatar extends AvatarBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Avatar";

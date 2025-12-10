@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.tag;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Tag.COMPONENT_TYPE, namespace = Tag.COMPONENT_FAMILY)
+@FacesComponentDescription("Tag component is used to categorize content.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Tag extends TagBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tag";

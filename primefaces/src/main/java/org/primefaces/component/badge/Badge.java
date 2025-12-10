@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.badge;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.model.badge.BadgeModel;
 import org.primefaces.model.badge.DefaultBadgeModel;
 
@@ -31,6 +32,7 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Badge.COMPONENT_TYPE, namespace = Badge.COMPONENT_FAMILY)
+@FacesComponentDescription("Badge is a small status indicator for another element like a button or a link.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Badge extends BadgeBaseImpl {
 

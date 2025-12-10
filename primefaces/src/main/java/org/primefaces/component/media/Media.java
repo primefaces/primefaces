@@ -23,9 +23,12 @@
  */
 package org.primefaces.component.media;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Media.COMPONENT_TYPE, namespace = Media.COMPONENT_FAMILY)
+@FacesComponentDescription("Media is a component that displays multimedia content such as PDF, videos and music.")
 public class Media extends MediaBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Media";

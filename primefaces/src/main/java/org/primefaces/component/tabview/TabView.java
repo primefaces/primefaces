@@ -24,6 +24,7 @@
 package org.primefaces.component.tabview;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
@@ -44,6 +45,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = TabView.COMPONENT_TYPE, namespace = TabView.COMPONENT_FAMILY)
+@FacesComponentDescription("TabView is a tabbed panel component featuring client side tabs, dynamic content loading with AJAX and transition effects.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
