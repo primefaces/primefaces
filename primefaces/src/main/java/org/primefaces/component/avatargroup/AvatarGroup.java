@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.avatargroup;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = AvatarGroup.COMPONENT_TYPE, namespace = AvatarGroup.COMPONENT_FAMILY)
+@FacesComponentDescription("AvatarGroup is a container component that displays a group of avatars.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class AvatarGroup extends AvatarGroupBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.AvatarGroup";

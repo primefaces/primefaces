@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.card;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Card.COMPONENT_TYPE, namespace = Card.COMPONENT_FAMILY)
+@FacesComponentDescription("Card is a flexible container component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Card extends CardBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Card";
