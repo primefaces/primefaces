@@ -381,7 +381,7 @@
                 <jdk>[17,)</jdk>
             </activation>
             <properties>
-                <resteasy.version>7.0.0.Final</resteasy.version>
+                <resteasy.version>7.0.1.Final</resteasy.version>
                 <hibernate-validator.version>9.0.1.Final</hibernate-validator.version>
                 <jakarta.version>11.0.0</jakarta.version>
                 <weld.version>6.0.3.Final</weld.version>
