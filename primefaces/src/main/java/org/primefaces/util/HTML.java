@@ -310,6 +310,7 @@ public class HTML {
     public static final String ARIA_ROLE_NONE = "none";
     public static final String ARIA_ROLE_OPTION = "option";
     public static final String ARIA_ROLE_SEPARATOR = "separator";
+    public static final String ARIA_ROLE_TEXTBOX = "textbox";
 
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
     public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-icon-only";
