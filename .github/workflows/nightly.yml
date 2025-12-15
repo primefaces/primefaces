@@ -64,7 +64,7 @@ jobs:
       - name: Integration Tests
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,${{ matrix.profile }}
       - name: Upload failure-screenshots
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.profile }}
