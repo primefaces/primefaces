@@ -2121,11 +2121,13 @@ export class Core {
     }
 
     /**
-     * Logs the current PrimeFaces and jQuery version to console.
+     * Returns the current PrimeFaces and jQuery version as a string and logs it to the console.
+     * @returns The current PrimeFaces and jQuery version as a string.
      */
-    version(): void {
+    version(): string {
         const version = 'PrimeFaces ' + this.VERSION + ' (jQuery ' + jQuery.fn.jquery + ' / UI ' + $.ui.version + ')';
         console.log(version);
+        return version;
     }
 
     /**
