@@ -1434,11 +1434,13 @@
         },
 
         /**
-         * Logs the current PrimeFaces and jQuery version to console.
+         * Returns the current PrimeFaces and jQuery version as a string and logs it to the console.
+         * @return {string} The current PrimeFaces and jQuery version as a string.
          */
         version: function() {
-            var version = 'PrimeFaces ' + PrimeFaces.VERSION + ' (jQuery ' + jQuery.fn.jquery + ' / UI ' + $.ui.version + ')';
+            var version = 'PrimeFaces ' + this.VERSION + ' (jQuery ' + jQuery.fn.jquery + ' / UI ' + $.ui.version + ')';
             console.log(version);
+            return version;
         },
 
         /**
