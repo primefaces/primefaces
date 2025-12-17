@@ -96,6 +96,9 @@
 .ql-editor ol {
   padding-left: 1.5em;
 }
+.ql-editor ol li[data-list="bullet"]::before {
+	content: none;
+}
 .ql-editor li {
   list-style-type: none;
   padding-left: 1.5em;
@@ -115,6 +118,7 @@
 }
 .ql-editor li[data-list="bullet"] > .ql-ui:before {
   content: "\2022";
+  text-align: center;
 }
 .ql-editor li[data-list="checked"] > .ql-ui:before {
   content: "\2611";
@@ -122,6 +126,7 @@
 .ql-editor li[data-list="unchecked"] > .ql-ui:before {
   content: "\2610";
 }
+
 @supports (counter-set: none) {
   .ql-editor li[data-list] {
     counter-set: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
