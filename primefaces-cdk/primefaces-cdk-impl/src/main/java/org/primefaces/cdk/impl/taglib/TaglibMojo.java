@@ -284,6 +284,9 @@ public class TaglibMojo extends AbstractMojo {
         // Add a tag for each behavior
         for (BehaviorInfo behaviorInfo : behaviorInfos) {
             Element tag = faceletTaglib.addElement("tag");
+            if (behaviorInfo.getDescription() != null) {
+                tag.addElement("description").addCDATA(behaviorInfo.getDescription());
+            }
             tag.addElement("tag-name").addText(behaviorInfo.getTagName());
             Element behavior = tag.addElement("behavior");
             behavior.addElement("behavior-id").addText(behaviorInfo.getBehaviorId());

@@ -31,14 +31,17 @@ import jakarta.faces.view.facelets.TagHandler;
 public class BehaviorInfo {
 
     private final Class<?> behaviorClass;
+    private String description;
     private String behaviorId;
     private String rendererType;
     private String tagName;
     private Class<? extends TagHandler> handlerClass;
     private List<PropertyInfo> properties = new ArrayList<>();
 
-    public BehaviorInfo(Class<?> behaviorClass, String behaviorId, String rendererType, String tagName, Class<? extends TagHandler> handlerClass) {
+    public BehaviorInfo(Class<?> behaviorClass, String description, String behaviorId, String rendererType,
+                        String tagName, Class<? extends TagHandler> handlerClass) {
         this.behaviorClass = behaviorClass;
+        this.description = description;
         this.behaviorId = behaviorId;
         this.rendererType = rendererType;
         this.tagName = tagName;
@@ -47,6 +50,10 @@ public class BehaviorInfo {
 
     public Class<?> getBehaviorClass() {
         return behaviorClass;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getBehaviorId() {
@@ -93,6 +100,7 @@ public class BehaviorInfo {
     public String toString() {
         return "BehaviorInfo{" +
                 "behaviorClass=" + behaviorClass +
+                ", description='" + description + '\'' +
                 ", behaviorId='" + behaviorId + '\'' +
                 ", rendererType='" + rendererType + '\'' +
                 ", tagName='" + tagName + '\'' +

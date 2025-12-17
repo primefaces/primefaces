@@ -23,6 +23,7 @@
  */
 package org.primefaces.cdk.impl.taglib;
 
+import org.primefaces.cdk.api.FacesBehaviorDescription;
 import org.primefaces.cdk.api.FacesBehaviorHandler;
 import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.cdk.api.Function;
@@ -76,6 +77,11 @@ public final class TaglibUtils {
 
     private static String getComponentDescription(Class<?> componentClass) {
         FacesComponentDescription annotation = componentClass.getAnnotation(FacesComponentDescription.class);
+        return annotation == null ? null : annotation.value();
+    }
+
+    private static String getBehaviorDescription(Class<?> behaviorClass) {
+        FacesBehaviorDescription annotation = behaviorClass.getAnnotation(FacesBehaviorDescription.class);
         return annotation == null ? null : annotation.value();
     }
 
@@ -146,6 +152,7 @@ public final class TaglibUtils {
 
     public static BehaviorInfo getBehaviorInfo(Class<?> behaviorClass) throws IllegalAccessException {
         BehaviorInfo info = new BehaviorInfo(behaviorClass,
+                getBehaviorDescription(behaviorClass),
                 getBehaviorId(behaviorClass),
                 getRendererType(behaviorClass),
                 getTagName(behaviorClass),
