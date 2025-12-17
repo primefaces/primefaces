@@ -117,12 +117,20 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         Set<TypeElement> componentsToGenerate = new HashSet<>();
+        Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType = new HashMap<>();
+        Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType = new HashMap<>();
+        Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType = new HashMap<>();
 
         // Collect base classes marked with @FacesComponentBase
         for (Element e : roundEnv.getElementsAnnotatedWith(FacesComponentBase.class)) {
             if (e.getKind() == ElementKind.CLASS && e.getModifiers().contains(Modifier.ABSTRACT)) {
                 TypeElement typeElement = (TypeElement) e;
                 componentsToGenerate.add(typeElement);
+
+                // Immediately scan the hierarchy for all annotations
+                // This ensures we find @Property on compiled interfaces from dependencies
+                scanHierarchyForAllAnnotations(typeElement, annotatedPropertiesByType,
+                        annotatedFacetsByType, annotatedBehaviorEventsByType);
             }
         }
 
@@ -131,20 +139,19 @@ public class AnnotationProcessor extends AbstractProcessor {
             if (e.getKind() == ElementKind.CLASS && e.getModifiers().contains(Modifier.ABSTRACT)) {
                 TypeElement typeElement = (TypeElement) e;
                 componentsToGenerate.add(typeElement);
+
+                // Immediately scan the hierarchy for all annotations
+                scanHierarchyForAllAnnotations(typeElement, annotatedPropertiesByType,
+                        annotatedFacetsByType, annotatedBehaviorEventsByType);
             }
         }
 
-
-        // Collect annotated properties and facets by their declaring type
-        Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType = new HashMap<>();
-        Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType = new HashMap<>();
-        Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType = new HashMap<>();
-
+        // Also collect from annotations found in current round (for interfaces/classes being compiled now)
         collectAnnotatedMethods(roundEnv, Property.class, annotatedPropertiesByType, componentsToGenerate);
         collectAnnotatedMethods(roundEnv, Facet.class, annotatedFacetsByType, componentsToGenerate);
         collectAnnotatedBehaviorEvents(roundEnv, annotatedBehaviorEventsByType, componentsToGenerate);
 
-        // Scan class hierarchies for inherited annotations
+        // Build property/facet/event targets for code generation
         Map<TypeElement, Set<ExecutableElement>> propertyTargets = new HashMap<>();
         Map<TypeElement, Set<ExecutableElement>> facetTargets = new HashMap<>();
         Map<TypeElement, List<BehaviorEventInfo>> behaviorEventTargets = new HashMap<>();
@@ -168,10 +175,6 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
         }
 
-        // Check for subclasses that inherit properties/facets/behavior events
-        discoverSubclasses(roundEnv, annotatedPropertiesByType, annotatedFacetsByType, annotatedBehaviorEventsByType,
-                componentsToGenerate, propertyTargets, facetTargets, behaviorEventTargets);
-
         // Generate implementation classes
         for (TypeElement classElement : componentsToGenerate) {
             generateComponent(classElement, annotatedPropertiesByType, annotatedFacetsByType,
@@ -179,6 +182,98 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         return true;
+    }
+
+    /**
+     * Scans entire class hierarchy (including compiled interfaces from dependencies)
+     * and populates the annotation maps. This is called immediately when we find a
+     * @FacesComponentBase/@FacesBehaviorBase class.
+     */
+    private void scanHierarchyForAllAnnotations(TypeElement element,
+                                                Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
+                                                Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
+                                                Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType) {
+        Set<TypeElement> visited = new HashSet<>();
+        scanHierarchyForAllAnnotationsRecursive(element, annotatedPropertiesByType,
+                annotatedFacetsByType, annotatedBehaviorEventsByType, visited);
+    }
+
+    /**
+     * Recursively scans the entire class hierarchy including:
+     * - Superclasses
+     * - Interfaces (including those from compiled dependencies)
+     * - Superinterfaces
+     */
+    private void scanHierarchyForAllAnnotationsRecursive(TypeElement element,
+                                                         Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
+                                                         Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
+                                                         Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType,
+                                                         Set<TypeElement> visited) {
+        if (!visited.add(element)) {
+            return;
+        }
+
+        // Scan all methods in the current element for @Property and @Facet
+        for (Element enclosed : element.getEnclosedElements()) {
+            if (enclosed.getKind() != ElementKind.METHOD) {
+                continue;
+            }
+
+            ExecutableElement method = (ExecutableElement) enclosed;
+            String methodName = method.getSimpleName().toString();
+
+            // Check for @Property
+            Property propertyAnnotation = method.getAnnotation(Property.class);
+            if (propertyAnnotation != null) {
+                if (isGetterName(methodName)) {
+                    annotatedPropertiesByType.computeIfAbsent(element, k -> new LinkedHashSet<>()).add(method);
+                }
+                else {
+                    messager.printMessage(Diagnostic.Kind.WARNING,
+                            "@Property found on non-getter method " + methodName + " in " + element.getQualifiedName());
+                }
+            }
+
+            // Check for @Facet
+            Facet facetAnnotation = method.getAnnotation(Facet.class);
+            if (facetAnnotation != null) {
+                if (isGetterName(methodName)) {
+                    annotatedFacetsByType.computeIfAbsent(element, k -> new LinkedHashSet<>()).add(method);
+                }
+                else {
+                    messager.printMessage(Diagnostic.Kind.WARNING,
+                            "@Facet found on non-getter method " + methodName + " in " + element.getQualifiedName());
+                }
+            }
+        }
+
+        // Check for behavior events on the type
+        List<BehaviorEventInfo> events = extractBehaviorEvents(element);
+        if (!events.isEmpty()) {
+            annotatedBehaviorEventsByType.put(element, events);
+        }
+
+        // Recursively scan superclass
+        TypeMirror superclass = element.getSuperclass();
+        if (superclass != null) {
+            Element superElement = processingEnv.getTypeUtils().asElement(superclass);
+            if (superElement instanceof TypeElement && !superElement.toString().equals("java.lang.Object")) {
+                scanHierarchyForAllAnnotationsRecursive((TypeElement) superElement,
+                        annotatedPropertiesByType, annotatedFacetsByType,
+                        annotatedBehaviorEventsByType, visited);
+            }
+        }
+
+        // Recursively scan interfaces - THIS IS THE KEY for cross-module compilation!
+        // Element.getAnnotation() works even for compiled classes from dependencies
+        for (TypeMirror interfaceType : element.getInterfaces()) {
+            Element interfaceElement = processingEnv.getTypeUtils().asElement(interfaceType);
+            if (interfaceElement instanceof TypeElement) {
+                scanHierarchyForAllAnnotationsRecursive((TypeElement) interfaceElement,
+                        annotatedPropertiesByType, annotatedFacetsByType,
+                        annotatedBehaviorEventsByType, visited);
+            }
+        }
     }
 
     /**
@@ -221,8 +316,8 @@ public class AnnotationProcessor extends AbstractProcessor {
      * Collects behavior events annotated with {@code @FacesBehaviorEvents} or {@code @FacesBehaviorEvent}.
      */
     private void collectAnnotatedBehaviorEvents(RoundEnvironment roundEnv,
-                                                 Map<TypeElement, List<BehaviorEventInfo>> behaviorEventsByType,
-                                                 Set<TypeElement> componentsToGenerate) {
+                                                Map<TypeElement, List<BehaviorEventInfo>> behaviorEventsByType,
+                                                Set<TypeElement> componentsToGenerate) {
         for (Element e : roundEnv.getElementsAnnotatedWith(FacesBehaviorEvents.class)) {
             if (e.getKind() != ElementKind.CLASS && e.getKind() != ElementKind.INTERFACE) {
                 continue;
@@ -260,86 +355,6 @@ public class AnnotationProcessor extends AbstractProcessor {
                 }
             }
         }
-    }
-
-    /**
-     * Discovers subclasses that should be generated based on inherited annotations.
-     */
-    private void discoverSubclasses(RoundEnvironment roundEnv,
-                                    Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
-                                    Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
-                                    Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType,
-                                    Set<TypeElement> componentsToGenerate,
-                                    Map<TypeElement, Set<ExecutableElement>> propertyTargets,
-                                    Map<TypeElement, Set<ExecutableElement>> facetTargets,
-                                    Map<TypeElement, List<BehaviorEventInfo>> behaviorEventTargets) {
-        for (Element root : roundEnv.getRootElements()) {
-            if (root.getKind() != ElementKind.CLASS) {
-                continue;
-            }
-            TypeElement candidate = (TypeElement) root;
-
-            if (!candidate.getModifiers().contains(Modifier.ABSTRACT)) continue;
-            // Check if it has @FacesComponentBase/@FacesBehaviorBase annotation
-            if (candidate.getAnnotation(FacesComponentBase.class) == null
-                && candidate.getAnnotation(FacesBehaviorBase.class) == null) {
-                continue;
-            }
-            if (componentsToGenerate.contains(candidate)) {
-                continue;
-            }
-
-            boolean shouldGenerate = inheritsAnnotations(candidate, annotatedPropertiesByType, annotatedFacetsByType, annotatedBehaviorEventsByType);
-
-            if (shouldGenerate) {
-                componentsToGenerate.add(candidate);
-
-                Set<ExecutableElement> allProperties = new LinkedHashSet<>();
-                Set<ExecutableElement> allFacets = new LinkedHashSet<>();
-                List<BehaviorEventInfo> allBehaviorEvents = new ArrayList<>();
-
-                scanHierarchyForAnnotations(candidate, annotatedPropertiesByType, annotatedFacetsByType,
-                        annotatedBehaviorEventsByType, allProperties, allFacets, allBehaviorEvents);
-
-                if (!allProperties.isEmpty()) {
-                    propertyTargets.put(candidate, allProperties);
-                }
-                if (!allFacets.isEmpty()) {
-                    facetTargets.put(candidate, allFacets);
-                }
-                if (!allBehaviorEvents.isEmpty()) {
-                    behaviorEventTargets.put(candidate, allBehaviorEvents);
-                }
-            }
-        }
-    }
-
-    /**
-     * Checks if a class inherits annotations from superclasses or interfaces.
-     */
-    private boolean inheritsAnnotations(TypeElement candidate,
-                                        Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
-                                        Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
-                                        Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType) {
-        for (TypeElement owner : annotatedPropertiesByType.keySet()) {
-            if (!candidate.equals(owner) && isSubtype(candidate, owner)) {
-                return true;
-            }
-        }
-
-        for (TypeElement owner : annotatedFacetsByType.keySet()) {
-            if (!candidate.equals(owner) && isSubtype(candidate, owner)) {
-                return true;
-            }
-        }
-
-        for (TypeElement owner : annotatedBehaviorEventsByType.keySet()) {
-            if (!candidate.equals(owner) && isSubtype(candidate, owner)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
