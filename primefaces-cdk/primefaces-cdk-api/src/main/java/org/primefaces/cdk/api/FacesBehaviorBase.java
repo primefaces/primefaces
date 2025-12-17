@@ -29,14 +29,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks an abstract component base class for implementation generation.
+ * Marks an abstract behavior base class for implementation generation.
  *
  * <p>Use this annotation on abstract classes to generate an implementation class.</p>
  *
  * <p>Example:</p>
  * <pre>{@code
- * @FacesComponentBase
- * public abstract class InputTextBase extends HtmlInputText {
+ * @FacesBehaviorBase
+ * public abstract class AjaxBehaviorBase extends PrimeClientBehavior {
  *
  * }
  * }</pre>
@@ -46,6 +46,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface FacesComponentBase {
+public @interface FacesBehaviorBase {
 
 }

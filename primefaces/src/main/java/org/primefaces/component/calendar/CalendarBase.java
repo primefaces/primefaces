@@ -23,11 +23,13 @@
  */
 package org.primefaces.component.calendar;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
 
+@FacesComponentBase
 public abstract class CalendarBase extends UICalendar implements Widget, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

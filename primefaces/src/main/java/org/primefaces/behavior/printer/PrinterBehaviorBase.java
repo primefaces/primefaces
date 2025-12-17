@@ -23,9 +23,11 @@
  */
 package org.primefaces.behavior.printer;
 
+import org.primefaces.cdk.api.FacesBehaviorBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.cdk.api.behavior.PrimeClientBehavior;
 
+@FacesBehaviorBase
 public abstract class PrinterBehaviorBase extends PrimeClientBehavior {
 
     @Property(description = "Target component to print.")

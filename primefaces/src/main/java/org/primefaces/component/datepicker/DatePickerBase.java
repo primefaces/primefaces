@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.datepicker;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
@@ -39,6 +40,7 @@ import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
 
+@FacesComponentBase
 public abstract class DatePickerBase extends UICalendar implements Widget, MixedClientBehaviorHolder, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

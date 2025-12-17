@@ -23,10 +23,12 @@
  */
 package org.primefaces.component.password;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.Widget;
 
+@FacesComponentBase
 public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements Widget  {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

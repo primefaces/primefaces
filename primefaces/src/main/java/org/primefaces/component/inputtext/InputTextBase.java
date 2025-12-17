@@ -23,10 +23,12 @@
  */
 package org.primefaces.component.inputtext;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.CountCharactersAware;
 import org.primefaces.component.api.Widget;
 
+@FacesComponentBase
 public abstract class InputTextBase extends AbstractPrimeHtmlInputText implements Widget, CountCharactersAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

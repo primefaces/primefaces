@@ -23,11 +23,13 @@
  */
 package org.primefaces.component.facet;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.cdk.api.facet.PrimeFacet;
 
 import jakarta.faces.component.UIComponentBase;
 
+@FacesComponentBase
 public abstract class FacetBase extends UIComponentBase implements PrimeFacet {
 
     @Property(description = "The facet name.", required = true)

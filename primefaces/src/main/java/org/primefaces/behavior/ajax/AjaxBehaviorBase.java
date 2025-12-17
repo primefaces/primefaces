@@ -23,11 +23,13 @@
  */
 package org.primefaces.behavior.ajax;
 
+import org.primefaces.cdk.api.FacesBehaviorBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.cdk.api.behavior.PrimeClientBehavior;
 
 import jakarta.el.MethodExpression;
 
+@FacesBehaviorBase
 public abstract class AjaxBehaviorBase extends PrimeClientBehavior {
 
     @Property(description = "Disables ajax behavior.")

@@ -23,9 +23,11 @@
  */
 package org.primefaces.behavior.validate;
 
+import org.primefaces.cdk.api.FacesBehaviorBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.cdk.api.behavior.PrimeClientBehavior;
 
+@FacesBehaviorBase
 public abstract class ClientValidatorBehaviorBase extends PrimeClientBehavior {
 
     @Property(description = "Event name to trigger validation.")

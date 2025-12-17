@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.Lazy;
@@ -35,6 +36,7 @@ import jakarta.faces.context.FacesContext;
 /**
  * Base class for HTML5 audio and video components.
  */
+@FacesComponentBase
 public abstract class UIMediaBase extends UIComponentBase implements StyleAware {
 
     public String resolveSource(FacesContext context) throws IOException {

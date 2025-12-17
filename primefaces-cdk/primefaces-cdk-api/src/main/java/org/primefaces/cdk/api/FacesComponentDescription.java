@@ -39,8 +39,8 @@ import java.lang.annotation.Target;
  * <pre>{@code
  * @FacesComponent(...)
  * @FacesComponentDescription("A text input component with enhanced features")
- * public abstract class InputTextBase extends HtmlInputText {
- *     // Component implementation
+ * public class InputText extends InputTextBaseImpl {
+ *
  * }
  * }</pre>
  */

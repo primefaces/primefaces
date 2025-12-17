@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.galleria;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import jakarta.faces.component.UIComponent;
 
+@FacesComponentBase
 public abstract class GalleriaBase extends UITabPanel implements Widget, PrimeClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

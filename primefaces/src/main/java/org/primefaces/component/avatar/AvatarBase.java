@@ -23,11 +23,13 @@
  */
 package org.primefaces.component.avatar;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.StyleAware;
 
 import jakarta.faces.component.UIComponentBase;
 
+@FacesComponentBase
 public abstract class AvatarBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

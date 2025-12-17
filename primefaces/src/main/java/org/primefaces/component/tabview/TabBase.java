@@ -23,12 +23,14 @@
  */
 package org.primefaces.component.tabview;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 
+@FacesComponentBase
 public abstract class TabBase extends UIPanel {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

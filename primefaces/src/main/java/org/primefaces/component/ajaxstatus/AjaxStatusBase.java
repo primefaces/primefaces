@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.ajaxstatus;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.StyleAware;
@@ -31,6 +32,7 @@ import org.primefaces.component.api.Widget;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
 
+@FacesComponentBase
 public abstract class AjaxStatusBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

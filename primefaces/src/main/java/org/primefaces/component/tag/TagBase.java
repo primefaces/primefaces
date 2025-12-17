@@ -23,11 +23,13 @@
  */
 package org.primefaces.component.tag;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.StyleAware;
 
 import jakarta.faces.component.UIOutput;
 
+@FacesComponentBase
 public abstract class TagBase extends UIOutput implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

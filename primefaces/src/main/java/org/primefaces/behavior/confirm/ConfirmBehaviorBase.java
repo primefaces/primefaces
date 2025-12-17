@@ -23,9 +23,11 @@
  */
 package org.primefaces.behavior.confirm;
 
+import org.primefaces.cdk.api.FacesBehaviorBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.cdk.api.behavior.PrimeClientBehavior;
 
+@FacesBehaviorBase
 public abstract class ConfirmBehaviorBase extends PrimeClientBehavior {
 
     @Property(description = "Source component to attach confirmation to.")

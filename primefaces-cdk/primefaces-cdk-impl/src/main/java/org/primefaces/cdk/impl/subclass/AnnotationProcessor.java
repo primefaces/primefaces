@@ -23,6 +23,7 @@
  */
 package org.primefaces.cdk.impl.subclass;
 
+import org.primefaces.cdk.api.FacesBehaviorBase;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
@@ -71,7 +72,7 @@ import javax.tools.JavaFileObject;
 /**
  * Generates implementation classes for JSF component and behavior base classes.
  *
- * <p>Processes abstract classes ending with "Base" that are annotated with {@code @FacesComponentBase}.
+ * <p>Processes abstract classes that are annotated with {@code @FacesComponentBase} or {@code @FacesBehaviorBase}.
  * Scans the class hierarchy and implemented interfaces for {@code @Property}, {@code @Facet},
  * and {@code @FacesBehaviorEvent} annotations.</p>
  *
@@ -91,9 +92,10 @@ import javax.tools.JavaFileObject;
 @SupportedAnnotationTypes({
     "org.primefaces.cdk.api.Property",
     "org.primefaces.cdk.api.Facet",
-    "org.primefaces.cdk.api.FacesComponentBase",
+    "org.primefaces.cdk.api.FacesBehaviorBase",
     "org.primefaces.cdk.api.FacesBehaviorEvent",
-    "org.primefaces.cdk.api.FacesBehaviorEvents"
+    "org.primefaces.cdk.api.FacesBehaviorEvents",
+    "org.primefaces.cdk.api.FacesComponentBase"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class AnnotationProcessor extends AbstractProcessor {
@@ -116,13 +118,22 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         Set<TypeElement> componentsToGenerate = new HashSet<>();
 
-        // Collect base classes marked with @FacesComponentBase OR ending with "Base"
+        // Collect base classes marked with @FacesComponentBase
         for (Element e : roundEnv.getElementsAnnotatedWith(FacesComponentBase.class)) {
             if (e.getKind() == ElementKind.CLASS && e.getModifiers().contains(Modifier.ABSTRACT)) {
                 TypeElement typeElement = (TypeElement) e;
                 componentsToGenerate.add(typeElement);
             }
         }
+
+        // Collect base classes marked with @FacesBehaviorBase
+        for (Element e : roundEnv.getElementsAnnotatedWith(FacesBehaviorBase.class)) {
+            if (e.getKind() == ElementKind.CLASS && e.getModifiers().contains(Modifier.ABSTRACT)) {
+                TypeElement typeElement = (TypeElement) e;
+                componentsToGenerate.add(typeElement);
+            }
+        }
+
 
         // Collect annotated properties and facets by their declaring type
         Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType = new HashMap<>();
@@ -196,11 +207,11 @@ public class AnnotationProcessor extends AbstractProcessor {
             TypeElement owner = (TypeElement) method.getEnclosingElement();
             methodsByType.computeIfAbsent(owner, k -> new LinkedHashSet<>()).add(method);
 
-            // Add to generation set if it's an abstract class ending with "Base" OR has @FacesComponentBase
+            // Add to generation set if it's an abstract class and has @FacesComponentBase/@FacesBehaviorBase
             if (owner.getKind() == ElementKind.CLASS &&
                     owner.getModifiers().contains(Modifier.ABSTRACT) &&
-                    (owner.getSimpleName().toString().endsWith("Base") ||
-                            owner.getAnnotation(FacesComponentBase.class) != null)) {
+                    (owner.getAnnotation(FacesComponentBase.class) != null
+                            || owner.getAnnotation(FacesBehaviorBase.class) != null)) {
                 componentsToGenerate.add(owner);
             }
         }
@@ -225,8 +236,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 
                 // Add to generation set if it's an abstract Base class
                 if (typeElement.getKind() == ElementKind.CLASS &&
-                        typeElement.getModifiers().contains(Modifier.ABSTRACT) &&
-                        typeElement.getSimpleName().toString().endsWith("Base")) {
+                        typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
                     componentsToGenerate.add(typeElement);
                 }
             }
@@ -245,8 +255,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 
                 // Add to generation set if it's an abstract Base class
                 if (typeElement.getKind() == ElementKind.CLASS &&
-                        typeElement.getModifiers().contains(Modifier.ABSTRACT) &&
-                        typeElement.getSimpleName().toString().endsWith("Base")) {
+                        typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
                     componentsToGenerate.add(typeElement);
                 }
             }
@@ -271,9 +280,9 @@ public class AnnotationProcessor extends AbstractProcessor {
             TypeElement candidate = (TypeElement) root;
 
             if (!candidate.getModifiers().contains(Modifier.ABSTRACT)) continue;
-            // Check if ends with "Base" OR has @FacesComponentBase annotation
-            if (!candidate.getSimpleName().toString().endsWith("Base") &&
-                    candidate.getAnnotation(FacesComponentBase.class) == null) {
+            // Check if it has @FacesComponentBase/@FacesBehaviorBase annotation
+            if (candidate.getAnnotation(FacesComponentBase.class) == null
+                && candidate.getAnnotation(FacesBehaviorBase.class) == null) {
                 continue;
             }
             if (componentsToGenerate.contains(candidate)) {

@@ -21,23 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.behavior.base;
+package org.primefaces.cdk.api;
 
-public interface BehaviorAttribute {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Provides a description for a Faces component.
+ *
+ * <p>Use this annotation to document the purpose and functionality of
+ * a behavior class. The description can be used for taglib, documentation
+ * or other metadata purposes.</p>
+ *
+ * <p>Example:</p>
+ * <pre>{@code
+ * @FacesBehavior(...)
+ * @FacesBehaviorDescription("...")
+ * public class AjaxBehavior extends AjaxBehaviorBaseImpl {
+ *
+ * }
+ * }</pre>
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+public @interface FacesBehaviorDescription {
 
     /**
-     * Holds the type which ought to be passed to
-     * {@link jakarta.faces.view.facelets.TagAttribute#getObject(jakarta.faces.view.facelets.FaceletContext, java.lang.Class) }
-     * when creating the behavior.
-     * @return the expectedType the expected object type
+     * The description text for the component.
+     *
+     * @return the component description
      */
-    Class<?> getExpectedType();
-
-    /**
-     * Gets name of tag attribute
-     * @return name of tag attribute
-     */
-    default String getName() {
-        return toString();
-    }
+    String value();
 }

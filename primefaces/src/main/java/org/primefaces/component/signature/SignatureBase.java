@@ -23,11 +23,13 @@
  */
 package org.primefaces.component.signature;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 
+@FacesComponentBase
 public abstract class SignatureBase extends AbstractPrimeHtmlInputText implements InputHolder, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
