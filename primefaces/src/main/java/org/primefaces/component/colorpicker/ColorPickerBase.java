@@ -43,9 +43,6 @@ public abstract class ColorPickerBase extends AbstractPrimeHtmlInputText impleme
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ColorPickerRenderer";
 
-    public static final String CLEAR_LABEL = "primefaces.colorpicker.CLEAR";
-    public static final String CLOSE_LABEL = "primefaces.colorpicker.CLOSE";
-
     public ColorPickerBase() {
         setRendererType(DEFAULT_RENDERER);
     }
