@@ -5042,6 +5042,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 //save order
                 $this.saveColumnOrder();
 
+                // update headers
+                $this.headers = $this.thead.find('> tr > th');
+
                 //fire colReorder event
                 if($this.hasBehavior('colReorder')) {
                     var ext = null;
