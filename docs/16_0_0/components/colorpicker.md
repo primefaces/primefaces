@@ -95,9 +95,9 @@ ColorPicker is an input component with a color palette based on [Coloris](https:
 | widgetVar | null | String | Name of the client side widget.
 | alpha | true | boolean | Enable or disable alpha support. When disabled, it will strip the alpha value from the existing color value in all formats. Default true.
 | clearButton | false | boolean | Show an optional clear button. Default false.
-| clearLabel | Clear | String | Set the label of the clear button. (defaults to Messages.properties primefaces.colorpicker.CLEAR)
+| clearLabel | Clear | String | Set the label of the clear button. 
 | closeButton | false | boolean | Show an optional close button. Default false.
-| closeLabel | Close | String | Set the label of the close button. (defaults to Messages.properties primefaces.colorpicker.CLOSE)
+| closeLabel | Close | String | Set the label of the close button.
 | focusInput | true | boolean | Focus the color value input when the color picker dialog is opened. Default true.
 | forceAlpha | false | boolean | Set to true to always include the alpha value in the color value even if the opacity is 100%. Default false.
 | format | hex | String | Set the preferred color string format: hex, rgb, hsl, auto, mixed.
