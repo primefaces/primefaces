@@ -23,12 +23,15 @@
  */
 package org.primefaces.component.toolbar;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Toolbar.COMPONENT_TYPE, namespace = Toolbar.COMPONENT_FAMILY)
+@FacesComponentDescription("Toolbar is a horizontal grouping component for commands and other content.")
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Toolbar extends ToolbarBase {
+public class Toolbar extends ToolbarBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Toolbar";
 
