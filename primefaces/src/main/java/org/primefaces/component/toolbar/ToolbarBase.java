@@ -24,12 +24,12 @@
 package org.primefaces.component.toolbar;
 
 import org.primefaces.cdk.api.FacesComponentBase;
-import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 
 import jakarta.faces.component.UIComponentBase;
 
 @FacesComponentBase
-public abstract class ToolbarBase extends UIComponentBase {
+public abstract class ToolbarBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -50,9 +50,4 @@ public abstract class ToolbarBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Inline style of the container element.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the container element.")
-    public abstract String getStyleClass();
 }
