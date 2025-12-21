@@ -23,37 +23,27 @@
  */
 package org.primefaces.component.wizard;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "next", event = AjaxBehaviorEvent.class, description = "When \"next\" is triggered."),
+    @FacesBehaviorEvent(name = "back", event = AjaxBehaviorEvent.class, description = "When \"back\" is triggered.")
+})
 public abstract class WizardBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.WizardRenderer";
-
-    public enum PropertyKeys {
-
-        backLabel,
-        disableOnAjax,
-        effect,
-        effectDuration,
-        flowListener,
-        highlightCompletedSteps,
-        nextLabel,
-        onback,
-        onnext,
-        showNavBar,
-        showStepStatus,
-        step,
-        style,
-        styleClass,
-        updateModelOnPrev,
-        widgetVar
-    }
 
     public WizardBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -64,131 +54,48 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Id of the current step in flow.")
+    public abstract String getStep();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Style of the main wizard container element.")
+    public abstract String getStyle();
 
-    public String getStep() {
-        return (String) getStateHelper().eval(PropertyKeys.step, null);
-    }
+    @Property(description = "Style class of the main wizard container element.")
+    public abstract String getStyleClass();
 
-    public void setStep(String step) {
-        getStateHelper().put(PropertyKeys.step, step);
-    }
+    @Property(description = "Server side listener to invoke when wizard attempts to go forward or back.")
+    public abstract jakarta.el.MethodExpression getFlowListener();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Specifies visibility of default navigator arrows.", defaultValue = "true")
+    public abstract boolean isShowNavBar();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Specifies visibility of default step title bar.", defaultValue = "true")
+    public abstract boolean isShowStepStatus();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(description = "Javascript event handler to be invoked when flow goes back.")
+    public abstract String getOnback();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Javascript event handler to be invoked when flow goes forward.")
+    public abstract String getOnnext();
 
-    public jakarta.el.MethodExpression getFlowListener() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.flowListener, null);
-    }
+    @Property(description = "Label of next navigation button.", defaultValue = "Next")
+    public abstract String getNextLabel();
 
-    public void setFlowListener(jakarta.el.MethodExpression flowListener) {
-        getStateHelper().put(PropertyKeys.flowListener, flowListener);
-    }
+    @Property(description = "Label of back navigation button.", defaultValue = "Back")
+    public abstract String getBackLabel();
 
-    public boolean isShowNavBar() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showNavBar, true);
-    }
+    @Property(description = "If yes, the model will be updated when the \"Back\" button is clicked.", defaultValue = "false")
+    public abstract boolean isUpdateModelOnPrev();
 
-    public void setShowNavBar(boolean showNavBar) {
-        getStateHelper().put(PropertyKeys.showNavBar, showNavBar);
-    }
+    @Property(description = "Animation effect to use when showing and hiding wizard panel.", implicitDefaultValue = "No animation")
+    public abstract String getEffect();
 
-    public boolean isShowStepStatus() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showStepStatus, true);
-    }
+    @Property(description = "Duration of the animation effect in milliseconds.", defaultValue = "400")
+    public abstract int getEffectDuration();
 
-    public void setShowStepStatus(boolean showStepStatus) {
-        getStateHelper().put(PropertyKeys.showStepStatus, showStepStatus);
-    }
+    @Property(description = "If true, next and back navigation buttons will be disabled during Ajax requests triggered by them.", defaultValue = "true")
+    public abstract boolean isDisableOnAjax();
 
-    public String getOnback() {
-        return (String) getStateHelper().eval(PropertyKeys.onback, null);
-    }
-
-    public void setOnback(String onback) {
-        getStateHelper().put(PropertyKeys.onback, onback);
-    }
-
-    public String getOnnext() {
-        return (String) getStateHelper().eval(PropertyKeys.onnext, null);
-    }
-
-    public void setOnnext(String onnext) {
-        getStateHelper().put(PropertyKeys.onnext, onnext);
-    }
-
-    public String getNextLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.nextLabel, "Next");
-    }
-
-    public void setNextLabel(String nextLabel) {
-        getStateHelper().put(PropertyKeys.nextLabel, nextLabel);
-    }
-
-    public String getBackLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.backLabel, "Back");
-    }
-
-    public void setBackLabel(String backLabel) {
-        getStateHelper().put(PropertyKeys.backLabel, backLabel);
-    }
-
-    public boolean isUpdateModelOnPrev() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.updateModelOnPrev, false);
-    }
-
-    public void setUpdateModelOnPrev(boolean updateModelOnPrev) {
-        getStateHelper().put(PropertyKeys.updateModelOnPrev, updateModelOnPrev);
-    }
-
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, null);
-    }
-
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
-
-    public int getEffectDuration() {
-        return (Integer) getStateHelper().eval(PropertyKeys.effectDuration, 400);
-    }
-
-    public void setEffectDuration(int effectDuration) {
-        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
-    }
-
-    public boolean isDisableOnAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, true);
-    }
-
-    public void setDisableOnAjax(boolean disableOnAjax) {
-        getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
-    }
-
-    public boolean isHighlightCompletedSteps() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.highlightCompletedSteps, false);
-    }
-
-    public void setHighlightCompletedSteps(boolean highlightCompletedSteps) {
-        getStateHelper().put(PropertyKeys.highlightCompletedSteps, highlightCompletedSteps);
-    }
+    @Property(description = "If true, all completed steps are highlighted. If false, only the current step is highlighted.", defaultValue = "false")
+    public abstract boolean isHighlightCompletedSteps();
 }

@@ -23,15 +23,12 @@
  */
 package org.primefaces.component.wizard;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
 
 import jakarta.el.ELContext;
 import jakarta.el.MethodExpression;
@@ -41,15 +38,16 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AbortProcessingException;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Wizard.COMPONENT_TYPE, namespace = Wizard.COMPONENT_FAMILY)
+@FacesComponentDescription("Wizard provides an enhanced UI to implement a workflow easily in a single page. "
+        + "Wizard consists of several child tab components where each tab represents a step in the process.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Wizard extends WizardBase {
+public class Wizard extends WizardBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Wizard";
 
@@ -58,23 +56,6 @@ public class Wizard extends WizardBase {
     public static final String ACTIVE_STEP_CLASS = "ui-wizard-step-title ui-state-default ui-state-highlight";
     public static final String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
     public static final String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("next", null)
-            .put("back", null)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     @Override
     public void processDecodes(FacesContext context) {
