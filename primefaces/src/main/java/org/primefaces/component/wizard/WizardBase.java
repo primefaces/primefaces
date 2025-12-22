@@ -28,6 +28,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
@@ -39,7 +40,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "next", event = AjaxBehaviorEvent.class, description = "When \"next\" is triggered."),
     @FacesBehaviorEvent(name = "back", event = AjaxBehaviorEvent.class, description = "When \"back\" is triggered.")
 })
-public abstract class WizardBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class WizardBase extends UIComponentBase implements Widget, StyleAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -56,12 +57,6 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
 
     @Property(description = "Id of the current step in flow.")
     public abstract String getStep();
-
-    @Property(description = "Style of the main wizard container element.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the main wizard container element.")
-    public abstract String getStyleClass();
 
     @Property(description = "Server side listener to invoke when wizard attempts to go forward or back.")
     public abstract jakarta.el.MethodExpression getFlowListener();

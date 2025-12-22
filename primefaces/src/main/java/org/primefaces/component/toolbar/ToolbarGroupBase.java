@@ -25,11 +25,12 @@ package org.primefaces.component.toolbar;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 
 import jakarta.faces.component.UIComponentBase;
 
 @FacesComponentBase
-public abstract class ToolbarGroupBase extends UIComponentBase {
+public abstract class ToolbarGroupBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -45,9 +46,4 @@ public abstract class ToolbarGroupBase extends UIComponentBase {
     @Property(description = "Defines the alignment within toolbar, valid values are left and right.", defaultValue = "left")
     public abstract String getAlign();
 
-    @Property(description = "Inline style of the container element.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the container element.")
-    public abstract String getStyleClass();
 }
