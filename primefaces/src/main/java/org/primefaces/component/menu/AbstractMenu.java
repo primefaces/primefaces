@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.menu;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.model.menu.MenuElement;
@@ -35,6 +37,7 @@ import jakarta.faces.component.UIPanel;
 import jakarta.faces.event.AbortProcessingException;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponentBase
 public abstract class AbstractMenu extends UIPanel implements MenuItemAware, RTLAware {
 
     public static final String LIST_CLASS = "ui-menu-list ui-helper-reset";
@@ -53,63 +56,22 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware, RTL
     public static final String START_CLASS = "ui-menuitem ui-menubar-start ui-widget";
     public static final String END_CLASS = "ui-menuitem ui-menubar-end ui-widget";
 
-    public enum PropertyKeys {
-        tabindex,
-        autoDisplay,
-        showDelay,
-        hideDelay,
-        toggleEvent,
-        dir;
-    }
+    @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")
+    public abstract String getTabindex();
 
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
+    @Property(defaultValue = "true", description = "Defines whether the first level of submenus will be displayed on mouseover or click event.")
+    public abstract boolean isAutoDisplay();
 
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
+    @Property(defaultValue = "0", description = "Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.")
+    public abstract int getShowDelay();
 
-    public boolean isAutoDisplay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
-    }
+    @Property(defaultValue = "0", description = "Delay in milliseconds before hiding the submenu, if 0 not hidden until document.click().")
+    public abstract int getHideDelay();
 
-    public void setAutoDisplay(boolean autoDisplay) {
-        getStateHelper().put(PropertyKeys.autoDisplay, autoDisplay);
-    }
+    @Property(description = "Event to toggle the submenus, valid values are \"hover\" and \"click\".")
+    public abstract String getToggleEvent();
 
-    public int getShowDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.showDelay, 0);
-    }
-
-    public void setShowDelay(int showDelay) {
-        getStateHelper().put(PropertyKeys.showDelay, showDelay);
-    }
-
-    public int getHideDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.hideDelay, 0);
-    }
-
-    public void setHideDelay(int hideDelay) {
-        getStateHelper().put(PropertyKeys.hideDelay, hideDelay);
-    }
-
-    public String getToggleEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.toggleEvent, null);
-    }
-
-    public void setToggleEvent(String toggleEvent) {
-        getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
-    }
-
-    @Override
-    public String getDir() {
-        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
-    }
-
-    public void setDir(String dir) {
-        getStateHelper().put(PropertyKeys.dir, dir);
-    }
+    public abstract MenuModel getModel();
 
     @Override
     public List<MenuElement> getElements() {
@@ -130,8 +92,6 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware, RTL
 
         return (elements == null) ? 0 : elements.size();
     }
-
-    public abstract MenuModel getModel();
 
     public boolean isDynamic() {
         return getValueExpression("model") != null;

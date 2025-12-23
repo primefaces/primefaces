@@ -23,27 +23,18 @@
  */
 package org.primefaces.component.breadcrumb;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
+@FacesComponentBase
+public abstract class BreadCrumbBase extends AbstractMenu implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.BreadCrumbRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        model,
-        style,
-        styleClass,
-        homeDisplay,
-        homeIcon,
-        tabindex,
-        lastItemDisabled,
-        seo;
-    }
 
     public BreadCrumbBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -54,78 +45,24 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Override
+    @Property(description = "MenuModel instance to create menus programmatically")
+    public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "icon", description = "Defines display mode of root link, valid values are \"icon\" default and \"text\".")
+    public abstract String getHomeDisplay();
+
+    @Property(defaultValue = "ui-icon ui-icon-home", description = "Defines home icon CSS class.")
+    public abstract String getHomeIcon();
 
     @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
+    @Property(defaultValue = "0", description = "Position of the items in the tabbing order. Default is 0.")
+    public abstract String getTabindex();
 
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(defaultValue = "false", description = "Boolean flag indicating whether the last item should be disabled.")
+    public abstract boolean isLastItemDisabled();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "false", description = "Used to produce an Advanced SEO structure on the page.")
+    public abstract boolean isSeo();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getHomeDisplay() {
-        return (String) getStateHelper().eval(PropertyKeys.homeDisplay, "icon");
-    }
-
-    public void setHomeDisplay(String homeDisplay) {
-        getStateHelper().put(PropertyKeys.homeDisplay, homeDisplay);
-    }
-
-    public String getHomeIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.homeIcon, "ui-icon ui-icon-home");
-    }
-
-    public void setHomeIcon(String homeIcon) {
-        getStateHelper().put(PropertyKeys.homeIcon, homeIcon);
-    }
-
-    @Override
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    @Override
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public boolean isLastItemDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.lastItemDisabled, false);
-    }
-
-    public void setLastItemDisabled(boolean lastItemDisabled) {
-        getStateHelper().put(PropertyKeys.lastItemDisabled, lastItemDisabled);
-    }
-
-    public boolean isSeo() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.seo, false);
-    }
-
-    public void setSeo(boolean seo) {
-        getStateHelper().put(PropertyKeys.seo, seo);
-    }
 }
