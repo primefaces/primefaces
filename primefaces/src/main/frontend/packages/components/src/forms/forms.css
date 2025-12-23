@@ -1167,17 +1167,25 @@ body .ui-cascadeselect-item-content .ui-cascadeselect-group-icon {
 }
 
 .ui-float-label > label {
+    color: #898989;
     font-weight: normal;
-    position: absolute;
-    pointer-events: none;
     left: .25em;
-    top: 50%;
+    line-height: 1;
     margin-top: -.5em;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
     transition: 0.3s ease all;
     -moz-transition: 0.3s ease all;
     -webkit-transition: 0.3s ease all;
-    color: #898989;
-    line-height: 1;
+}
+
+.ui-float-label .ui-outputlabel {
+    display: block;
+    max-width: 95%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .ui-float-label > label.ui-outputlabel-rtl {
