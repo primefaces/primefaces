@@ -25,6 +25,7 @@ package org.primefaces.component.colorpicker;
 
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
@@ -32,6 +33,7 @@ import org.primefaces.component.api.Widget;
 
 import jakarta.faces.event.AjaxBehaviorEvent;
 
+@FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fires when the color is changed.", defaultEvent = true),
     @FacesBehaviorEvent(name = "open", event = AjaxBehaviorEvent.class, description = "Fires when the color picker is opened."),
