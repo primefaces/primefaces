@@ -23,26 +23,19 @@
  */
 package org.primefaces.component.blockui;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIPanel;
 
-public abstract class BlockUIBase extends UIPanel implements Widget {
+@FacesComponentBase
+public abstract class BlockUIBase extends UIPanel implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.BlockUIRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        trigger,
-        block,
-        blocked,
-        animate,
-        styleClass,
-        delay
-    }
 
     public BlockUIBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -53,60 +46,19 @@ public abstract class BlockUIBase extends UIPanel implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Identifier of the component(s) to bind.")
+    public abstract String getTrigger();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Search expression for block targets.")
+    public abstract String getBlock();
 
-    public String getTrigger() {
-        return (String) getStateHelper().eval(PropertyKeys.trigger, null);
-    }
+    @Property(defaultValue = "false", description = "Blocks the UI by default when enabled.")
+    public abstract boolean isBlocked();
 
-    public void setTrigger(String trigger) {
-        getStateHelper().put(PropertyKeys.trigger, trigger);
-    }
+    @Property(defaultValue = "true", description = "When disabled, displays block without animation effect.")
+    public abstract boolean isAnimate();
 
-    public String getBlock() {
-        return (String) getStateHelper().eval(PropertyKeys.block, null);
-    }
-
-    public void setBlock(String block) {
-        getStateHelper().put(PropertyKeys.block, block);
-    }
-
-    public boolean isBlocked() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.blocked, false);
-    }
-
-    public void setBlocked(boolean blocked) {
-        getStateHelper().put(PropertyKeys.blocked, blocked);
-    }
-
-    public boolean isAnimate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.animate, true);
-    }
-
-    public void setAnimate(boolean animate) {
-        getStateHelper().put(PropertyKeys.animate, animate);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public int getDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
-    }
-
-    public void setDelay(int delay) {
-        getStateHelper().put(PropertyKeys.delay, delay);
-    }
+    @Property(defaultValue = "0", description = "Delay in milliseconds before displaying the ajax status. Default is 0 meaning immediate.")
+    public abstract int getDelay();
 
 }
