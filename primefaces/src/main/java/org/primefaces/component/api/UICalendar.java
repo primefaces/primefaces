@@ -39,8 +39,6 @@ import java.time.Instant;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
-import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
 
 import jakarta.faces.FacesException;
@@ -64,16 +62,9 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     public static final String DATE_INVALID_MESSAGE_ID = "primefaces.calendar.INVALID";
     public static final String DATE_INVALID_RANGE_MESSAGE_ID = "primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID";
 
-    protected static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
-
     protected String timeOnlyPattern;
 
     private boolean conversionFailed;
-
-    @Override
-    public Collection<String> getUnobstrusiveEventNames() {
-        return UNOBSTRUSIVE_EVENT_NAMES;
-    }
 
     @Property(description = "Locale for the calendar.")
     public abstract Object getLocale();

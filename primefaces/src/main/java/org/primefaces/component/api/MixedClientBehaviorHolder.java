@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
+
 import java.util.Collection;
 
 /**
@@ -38,10 +40,5 @@ import java.util.Collection;
  */
 public interface MixedClientBehaviorHolder {
 
-    /**
-     * Gets the collection of unobtrusive event names.
-     *
-     * @return the collection of unobtrusive event names.
-     */
-    Collection<String> getUnobstrusiveEventNames();
+    Collection<PrimeClientBehaviorEventKeys> getUnobstrusiveClientBehaviorEventKeys();
 }

@@ -24,6 +24,7 @@
 package org.primefaces.component.autocomplete;
 
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.column.Column;
 import org.primefaces.event.SelectEvent;
@@ -85,16 +86,18 @@ public class AutoComplete extends AutoCompleteBaseImpl {
     public static final String MORE_TEXT_LIST_CLASS = "ui-autocomplete-item ui-autocomplete-moretext";
     public static final String MORE_TEXT_TABLE_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-widget-content";
 
-    protected static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "itemUnselect", "query",
-            "moreTextSelect", "emptyMessageSelect", "clear");
+    protected static final List<PrimeClientBehaviorEventKeys> UNOBSTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
+            ClientBehaviorEventKeys.itemSelect, ClientBehaviorEventKeys.itemUnselect,
+            ClientBehaviorEventKeys.query, ClientBehaviorEventKeys.moreTextSelect,
+            ClientBehaviorEventKeys.emptyMessageSelect, ClientBehaviorEventKeys.clear);
 
     private Object suggestions;
 
     private Integer suggestionsCount;
 
     @Override
-    public Collection<String> getUnobstrusiveEventNames() {
-        return UNOBSTRUSIVE_EVENT_NAMES;
+    public Collection<PrimeClientBehaviorEventKeys> getUnobstrusiveClientBehaviorEventKeys() {
+        return UNOBSTRUSIVE_EVENT_KEYS;
     }
 
     public boolean isMoreTextRequest(FacesContext context) {

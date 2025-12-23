@@ -24,6 +24,7 @@
 package org.primefaces.component.inputtextarea;
 
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.LangUtils;
 
@@ -49,13 +50,14 @@ public class InputTextarea extends InputTextareaBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputTextarea";
     public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default";
-    private static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "query");
+    private static final List<PrimeClientBehaviorEventKeys> UNOBSTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
+            ClientBehaviorEventKeys.itemSelect, ClientBehaviorEventKeys.query);
 
     private List suggestions;
 
     @Override
-    public Collection<String> getUnobstrusiveEventNames() {
-        return UNOBSTRUSIVE_EVENT_NAMES;
+    public Collection<PrimeClientBehaviorEventKeys> getUnobstrusiveClientBehaviorEventKeys() {
+        return UNOBSTRUSIVE_EVENT_KEYS;
     }
 
     @Override

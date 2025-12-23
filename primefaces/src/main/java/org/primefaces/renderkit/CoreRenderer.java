@@ -643,8 +643,16 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
 
         if (clientBehaviors != null && !clientBehaviors.isEmpty()) {
             boolean written = false;
-            Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
-                    ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
+            Collection<String> eventNames;
+            if (component instanceof MixedClientBehaviorHolder) {
+                eventNames = ((MixedClientBehaviorHolder) component).getUnobstrusiveClientBehaviorEventKeys().stream()
+                        .map(k -> k.getName())
+                        .collect(Collectors.toList());
+            }
+            else {
+                eventNames = clientBehaviors.keySet();
+            }
+
             String clientId = ((UIComponent) component).getClientId(context);
             List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
             params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));

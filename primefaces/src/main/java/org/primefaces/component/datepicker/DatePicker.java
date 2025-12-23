@@ -24,6 +24,7 @@
 package org.primefaces.component.datepicker;
 
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.datepicker.DateMetadata;
@@ -31,6 +32,7 @@ import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,6 +41,7 @@ import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +70,15 @@ public class DatePicker extends DatePickerBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.DatePicker";
     public static final String CONTAINER_EXTENSION_CLASS = "p-datepicker";
 
+    protected static final List<PrimeClientBehaviorEventKeys> UNOBSTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
+            ClientBehaviorEventKeys.dateSelect, ClientBehaviorEventKeys.viewChange, ClientBehaviorEventKeys.close);
+
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
+
+    @Override
+    public Collection<PrimeClientBehaviorEventKeys> getUnobstrusiveClientBehaviorEventKeys() {
+        return UNOBSTRUSIVE_EVENT_KEYS;
+    }
 
     @Override
     public String getSelectionMode() {

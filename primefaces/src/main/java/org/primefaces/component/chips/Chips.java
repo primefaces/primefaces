@@ -24,6 +24,7 @@
 package org.primefaces.component.chips;
 
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
@@ -56,7 +57,8 @@ public class Chips extends ChipsBaseImpl {
     public static final String TOKEN_CLOSE_ICON_CLASS = "ui-chips-token-icon ui-icon ui-icon-close";
     public static final String TOKEN_INPUT_CLASS = "ui-chips-input-token";
 
-    private static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "itemUnselect");
+    private static final List<PrimeClientBehaviorEventKeys> UNOBSTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
+            ClientBehaviorEventKeys.itemSelect, ClientBehaviorEventKeys.itemUnselect);
 
     @Override
     public String getInputClientId() {
@@ -89,8 +91,8 @@ public class Chips extends ChipsBaseImpl {
     }
 
     @Override
-    public Collection<String> getUnobstrusiveEventNames() {
-        return UNOBSTRUSIVE_EVENT_NAMES;
+    public Collection<PrimeClientBehaviorEventKeys> getUnobstrusiveClientBehaviorEventKeys() {
+        return UNOBSTRUSIVE_EVENT_KEYS;
     }
 
     @Override
