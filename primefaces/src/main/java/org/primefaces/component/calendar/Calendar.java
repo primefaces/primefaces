@@ -33,7 +33,6 @@ import org.primefaces.util.Constants;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,11 +66,6 @@ public class Calendar extends CalendarBaseImpl {
 
     public boolean isPopup() {
         return "popup".equalsIgnoreCase(getMode());
-    }
-
-    @Override
-    public Collection<String> getUnobstrusiveEventNames() {
-        return UNOBSTRUSIVE_EVENT_NAMES;
     }
 
     @Override

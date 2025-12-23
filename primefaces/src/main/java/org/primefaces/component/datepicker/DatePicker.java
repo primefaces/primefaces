@@ -39,7 +39,6 @@ import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -69,11 +68,6 @@ public class DatePicker extends DatePickerBaseImpl {
     public static final String CONTAINER_EXTENSION_CLASS = "p-datepicker";
 
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
-
-    @Override
-    public Collection<String> getUnobstrusiveEventNames() {
-        return UNOBSTRUSIVE_EVENT_NAMES;
-    }
 
     @Override
     public String getSelectionMode() {

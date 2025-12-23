@@ -39,6 +39,7 @@ import java.time.Instant;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -53,7 +54,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "close", event = AjaxBehaviorEvent.class, description = "Fires when the calendar is closed.")
 })
 @FacesComponentBase
-public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware {
+public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware, MixedClientBehaviorHolder {
 
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default";
@@ -68,6 +69,11 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     protected String timeOnlyPattern;
 
     private boolean conversionFailed;
+
+    @Override
+    public Collection<String> getUnobstrusiveEventNames() {
+        return UNOBSTRUSIVE_EVENT_NAMES;
+    }
 
     @Property(description = "Locale for the calendar.")
     public abstract Object getLocale();

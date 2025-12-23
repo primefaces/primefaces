@@ -33,9 +33,11 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
 
 import jakarta.el.MethodExpression;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesBehaviorEvents({
-    @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected.")
+    @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected."),
+    @FacesBehaviorEvent(name = "query", event = AjaxBehaviorEvent.class, description = "Fires when a search query is triggered.")
 })
 public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea implements Widget, CountCharactersAware, MixedClientBehaviorHolder {
 

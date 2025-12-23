@@ -25,6 +25,7 @@ package org.primefaces.component.autocomplete;
 
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
@@ -43,6 +44,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "moreTextSelect", event = AjaxBehaviorEvent.class, description = "Fires when a more text is selected."),
     @FacesBehaviorEvent(name = "emptyMessageSelect", event = AjaxBehaviorEvent.class, description = "Fires when an empty message is selected."),
     @FacesBehaviorEvent(name = "clear", event = AjaxBehaviorEvent.class, description = "Fires when the component is cleared."),
+    @FacesBehaviorEvent(name = "query", event = AjaxBehaviorEvent.class, description = "Fires when a search query is triggered."),
 })
 public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -59,10 +61,10 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Facet to render footer.")
+    @Facet(description = "Facet to render footer.")
     public abstract UIComponent getFooterFacet();
 
-    @Property(description = "Facet to render item tip.")
+    @Facet(description = "Facet to render item tip.")
     public abstract UIComponent getItemtipFacet();
 
     @Property(description = "MethodExpression to provide suggestions for autocomplete functionality.")
