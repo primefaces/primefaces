@@ -33197,7 +33197,7 @@
             <description>
                 <![CDATA[Icon of the remove element.]]>
             </description>
-            <name>removeIconClass</name>
+            <name>removeIcon</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

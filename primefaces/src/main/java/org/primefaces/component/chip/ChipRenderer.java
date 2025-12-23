@@ -97,7 +97,7 @@ public class ChipRenderer extends CoreRenderer<Chip> {
             writer.endElement("div");
         }
 
-        if (component.getRemovable()) {
+        if (component.isRemovable()) {
             String removeIconStyleClass = getStyleClassBuilder(context)
                     .add(Chip.REMOVE_ICON_CLASS)
                     .add(component.getRemoveIcon())

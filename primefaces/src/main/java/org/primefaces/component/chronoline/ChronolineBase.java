@@ -23,20 +23,17 @@
  */
 package org.primefaces.component.chronoline;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeUIData;
+import org.primefaces.component.api.StyleAware;
 
-public abstract class ChronolineBase extends PrimeUIData {
+@FacesComponentBase
+public abstract class ChronolineBase extends PrimeUIData implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ChronolineRenderer";
-
-    public enum PropertyKeys {
-        align,
-        layout,
-        style,
-        styleClass
-    }
 
     public ChronolineBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -47,35 +44,11 @@ public abstract class ChronolineBase extends PrimeUIData {
         return COMPONENT_FAMILY;
     }
 
-    public String getAlign() {
-        return (String) getStateHelper().eval(PropertyKeys.align, "left");
-    }
+    @Property(description = "Position of the chronoline bar relative to the content. Valid values are \"left\", \"right\" for vertical layout and \"top\", "
+            + "\"bottom\" for horizontal layout.", defaultValue = "left")
+    public abstract String getAlign();
 
-    public void setAlign(String align) {
-        getStateHelper().put(PropertyKeys.align, align);
-    }
+    @Property(description = "Orientation of the chronoline, valid values are \"vertical\" and \"horizontal\".", defaultValue = "vertical")
+    public abstract String getLayout();
 
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "vertical");
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
 }

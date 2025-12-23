@@ -23,28 +23,28 @@
  */
 package org.primefaces.component.chip;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class ChipBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "select", event = AjaxBehaviorEvent.class, description = "Fires when the chip gets selected.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "close", event = AjaxBehaviorEvent.class, description = "Fires when the chip gets closed."),
+})
+public abstract class ChipBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ChipRenderer";
-
-    public enum PropertyKeys {
-        widgetVar,
-        label,
-        icon,
-        image,
-        removable,
-        removeIcon,
-        style,
-        styleClass;
-    }
 
     public ChipBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -55,68 +55,18 @@ public abstract class ChipBase extends UIComponentBase implements Widget, Client
         return COMPONENT_FAMILY;
     }
 
-    public String getLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.label, null);
-    }
+    @Property(description = "Defines the text to display.")
+    public abstract String getLabel();
 
-    public void setLabel(String label) {
-        getStateHelper().put(PropertyKeys.label, label);
-    }
+    @Property(description = "Defines the icon to display.")
+    public abstract String getIcon();
 
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
+    @Property(description = "Defines the image to display.")
+    public abstract String getImage();
 
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
+    @Property(description = "Whether to display a remove icon.", defaultValue = "false")
+    public abstract boolean isRemovable();
 
-    public String getImage() {
-        return (String) getStateHelper().eval(PropertyKeys.image, null);
-    }
-
-    public void setImage(String image) {
-        getStateHelper().put(PropertyKeys.image, image);
-    }
-
-    public boolean getRemovable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.removable, false);
-    }
-
-    public void setRemovable(boolean removable) {
-        getStateHelper().put(PropertyKeys.removable, removable);
-    }
-
-    public String getRemoveIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.removeIcon, "pi pi-times-circle");
-    }
-
-    public void setRemoveIcon(String removeIcon) {
-        getStateHelper().put(PropertyKeys.removeIcon, removeIcon);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    @Override
-    public java.lang.String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
-    }
-
-    public void setWidgetVar(java.lang.String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Icon of the remove element.", defaultValue = "pi pi-times-circle")
+    public abstract String getRemoveIcon();
 }
