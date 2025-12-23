@@ -23,26 +23,17 @@
  */
 package org.primefaces.component.dock;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
+@FacesComponentBase
 public abstract class DockBase extends AbstractMenu implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DockRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        model,
-        position,
-        halign,
-        blockScroll,
-        animate,
-        animationDuration,
-        dir
-    }
 
     public DockBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -53,60 +44,23 @@ public abstract class DockBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
     @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
+    @Property(description = "MenuModel instance to create menus programmatically")
+    public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(defaultValue = "bottom", description = "Position of the dock, bottom or top.")
+    public abstract String getPosition();
 
-    public String getPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.position, "bottom");
-    }
+    @Property(defaultValue = "center", description = "Horizontal alignment. left, center, or right")
+    public abstract String getHalign();
 
-    public void setPosition(String position) {
-        getStateHelper().put(PropertyKeys.position, position);
-    }
+    @Property(defaultValue = "false", description = "Whether to block scrolling of the document.")
+    public abstract boolean isBlockScroll();
 
-    public String getHalign() {
-        return (String) getStateHelper().eval(PropertyKeys.halign, "center");
-    }
+    @Property(defaultValue = "true", description = "Whether to animate the OSX bounce effect when clicking an item.")
+    public abstract boolean isAnimate();
 
-    public void setHalign(String halign) {
-        getStateHelper().put(PropertyKeys.halign, halign);
-    }
+    @Property(defaultValue = "1600", description = "How long in milliseconds to animate the bounce effect.")
+    public abstract int getAnimationDuration();
 
-    public boolean isBlockScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
-    }
-
-    public void setBlockScroll(boolean blockScroll) {
-        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
-    }
-
-    public boolean isAnimate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.animate, true);
-    }
-
-    public void setAnimate(boolean animate) {
-        getStateHelper().put(PropertyKeys.animate, animate);
-    }
-
-    public int getAnimationDuration() {
-        return (Integer) getStateHelper().eval(PropertyKeys.animationDuration, 1600);
-    }
-
-    public void setAnimationDuration(int animationDuration) {
-        getStateHelper().put(PropertyKeys.animationDuration, animationDuration);
-    }
 }

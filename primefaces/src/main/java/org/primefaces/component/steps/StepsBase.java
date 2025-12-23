@@ -23,25 +23,18 @@
  */
 package org.primefaces.component.steps;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class StepsBase extends AbstractMenu implements Widget {
+@FacesComponentBase
+public abstract class StepsBase extends AbstractMenu implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.StepsRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        model,
-        style,
-        styleClass,
-        activeIndex,
-        readonly,
-        activeStepExecutable
-    }
 
     public StepsBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -52,60 +45,17 @@ public abstract class StepsBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
     @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
+    @Property(description = "MenuModel instance to build menu dynamically.")
+    public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(defaultValue = "0", description = "Index of the active tab.")
+    public abstract int getActiveIndex();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "true", description = "Defines whether items would be clickable or not.")
+    public abstract boolean isReadonly();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "false", description = "Allows the active index menu to remain executable. Default is false.")
+    public abstract boolean isActiveStepExecutable();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public int getActiveIndex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
-    }
-
-    public void setActiveIndex(int activeIndex) {
-        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
-    }
-
-    public boolean isReadonly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, true);
-    }
-
-    public void setReadonly(boolean readonly) {
-        getStateHelper().put(PropertyKeys.readonly, readonly);
-    }
-
-    public boolean isActiveStepExecutable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.activeStepExecutable, false);
-    }
-
-    public void setActiveStepExecutable(boolean activeStepExecutable) {
-        getStateHelper().put(PropertyKeys.activeStepExecutable, activeStepExecutable);
-    }
 }

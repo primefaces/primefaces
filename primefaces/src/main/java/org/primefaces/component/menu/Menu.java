@@ -23,16 +23,19 @@
  */
 package org.primefaces.component.menu;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Menu.COMPONENT_TYPE, namespace = Menu.COMPONENT_FAMILY)
+@FacesComponentDescription("Menu is a navigation component with submenus and menuitems.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Menu extends MenuBase {
+public class Menu extends MenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Menu";
 

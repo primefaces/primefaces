@@ -23,17 +23,20 @@
  */
 package org.primefaces.component.menubutton;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = MenuButton.COMPONENT_TYPE, namespace = MenuButton.COMPONENT_FAMILY)
+@FacesComponentDescription("MenuButton displays different commands in a popup menu.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class MenuButton extends MenuButtonBase {
+public class MenuButton extends MenuButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.MenuButton";
 

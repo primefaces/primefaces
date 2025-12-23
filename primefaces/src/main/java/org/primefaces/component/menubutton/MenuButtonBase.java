@@ -23,37 +23,18 @@
  */
 package org.primefaces.component.menubutton;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class MenuButtonBase extends AbstractMenu implements Widget {
+@FacesComponentBase
+public abstract class MenuButtonBase extends AbstractMenu implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MenuButtonRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        model,
-        value,
-        style,
-        styleClass,
-        disabled,
-        icon,
-        iconPos,
-        appendTo,
-        menuStyleClass,
-        title,
-        ariaLabel,
-        collision,
-        maxHeight,
-        delay,
-        buttonStyle,
-        buttonStyleClass,
-        disableOnAjax,
-        buttonIcon
-    }
 
     public MenuButtonBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -64,156 +45,58 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
     @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
+    @Property(description = "MenuModel instance to create menus programmatically")
+    public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(description = "Label of the button")
+    public abstract String getValue();
 
-    public String getValue() {
-        return (String) getStateHelper().eval(PropertyKeys.value, null);
-    }
+    @Property(defaultValue = "false", description = "Disables or enables the button.")
+    public abstract boolean isDisabled();
 
-    public void setValue(String value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
+    @Property(description = "Icon of the menu button.")
+    public abstract String getIcon();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "left", description = "Position of the icon, valid values are left and right.")
+    public abstract String getIconPos();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "@(body)", description = "Appends the overlay to the element defined by search expression. Defaults to document body.")
+    public abstract String getAppendTo();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(description = "Style class of the overlay menu element.")
+    public abstract String getMenuStyleClass();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Advisory tooltip information.")
+    public abstract String getTitle();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
+    public abstract String getAriaLabel();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(defaultValue = "flip",
+        description = "Applied only when overlay is set to true. When the overlay menu overflows the window in some direction, move it to " +
+        "an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details." +
+        " Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.")
+    public abstract String getCollision();
 
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
+    @Property(description = "The maximum height of the menu. May be either a number (such as 200), which is interpreted as a height in pixels. " +
+        "Alternatively, may also be a CSS length such as 90vh or 10em. Often used when overlay is set to true, but also works when it is set " +
+        " to false. Useful in case the body of your layout does not scroll, especially in combination with the collision property.")
+    public abstract String getMaxHeight();
 
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
+    @Property(defaultValue = "0", description = "Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.")
+    public abstract int getDelay();
 
-    public String getIconPos() {
-        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
-    }
+    @Property(description = "Style of the button")
+    public abstract String getButtonStyle();
 
-    public void setIconPos(String iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, iconPos);
-    }
+    @Property(description = "Style class of the button")
+    public abstract String getButtonStyleClass();
 
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
-    }
+    @Property(defaultValue = "true", description = "If true, the button will be disabled during Ajax requests triggered by its menu items.")
+    public abstract boolean isDisableOnAjax();
 
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
+    @Property(description = "Icon class to display in place of the button label. If specified, the icon will be shown instead of the value (label).")
+    public abstract String getButtonIcon();
 
-    public String getMenuStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.menuStyleClass, null);
-    }
-
-    public void setMenuStyleClass(String menuStyleClass) {
-        getStateHelper().put(PropertyKeys.menuStyleClass, menuStyleClass);
-    }
-
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
-
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
-
-    public String getCollision() {
-        return (String) getStateHelper().eval(PropertyKeys.collision, "flip");
-    }
-
-    public void setCollision(String collision) {
-        getStateHelper().put(PropertyKeys.collision, collision);
-    }
-
-    public String getMaxHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.maxHeight, null);
-    }
-
-    public void setMaxHeight(String maxHeight) {
-        getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
-    }
-
-    public int getDelay() {
-        return (int) getStateHelper().eval(PropertyKeys.delay, 0);
-    }
-
-    public void setDelay(int delay) {
-        getStateHelper().put(PropertyKeys.delay, delay);
-    }
-
-    public String getButtonStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.buttonStyle, null);
-    }
-
-    public void setButtonStyle(String buttonStyle) {
-        getStateHelper().put(PropertyKeys.buttonStyle, buttonStyle);
-    }
-
-    public String getButtonStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.buttonStyleClass, null);
-    }
-
-    public void setButtonStyleClass(String buttonStyleClass) {
-        getStateHelper().put(PropertyKeys.buttonStyleClass, buttonStyleClass);
-    }
-
-    public boolean isDisableOnAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, true);
-    }
-
-    public void setDisableOnAjax(boolean disableOnAjax) {
-        getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
-    }
-
-    public String getButtonIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.buttonIcon, null);
-    }
-
-    public void setButtonIcon(String buttonIcon) {
-        getStateHelper().put(PropertyKeys.buttonIcon, buttonIcon);
-    }
 }

@@ -24,10 +24,13 @@
 package org.primefaces.component.breadcrumb;
 
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
+
+import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
 public abstract class BreadCrumbBase extends AbstractMenu implements Widget, StyleAware {
@@ -44,6 +47,9 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget, Sty
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Built-in support to display a fully customizable popup menu.")
+    public abstract UIComponent getOptionsFacet();
 
     @Override
     @Property(description = "MenuModel instance to create menus programmatically")

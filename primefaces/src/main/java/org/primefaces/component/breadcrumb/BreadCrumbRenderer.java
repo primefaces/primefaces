@@ -123,7 +123,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer<BreadCrumb> {
                 }
             }
 
-            UIComponent optionsFacet = component.getFacet("options");
+            UIComponent optionsFacet = component.getOptionsFacet();
             if (FacetUtils.shouldRenderFacet(optionsFacet)) {
                 writer.startElement("li", null);
                 writer.writeAttribute("class", BreadCrumb.OPTIONS_CLASS, null);
