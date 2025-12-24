@@ -23,15 +23,18 @@
  */
 package org.primefaces.component.messages;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Messages.COMPONENT_TYPE, namespace = Messages.COMPONENT_FAMILY)
+@FacesComponentDescription("Messages is a pre-skinned extended version of the standard Faces messages component with extensions.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Messages extends MessagesBase {
+public class Messages extends MessagesBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Messages";
 

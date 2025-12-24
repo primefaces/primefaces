@@ -23,23 +23,18 @@
  */
 package org.primefaces.component.messages;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UINotifications;
 import org.primefaces.component.api.Widget;
 
-
-public abstract class MessagesBase extends UINotifications implements Widget {
+@FacesComponentBase
+public abstract class MessagesBase extends UINotifications implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MessagesRenderer";
-
-    public enum PropertyKeys {
-        closable,
-        style,
-        styleClass,
-        showIcon,
-        widgetVar;
-    }
 
     public MessagesBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -50,44 +45,9 @@ public abstract class MessagesBase extends UINotifications implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public boolean isClosable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.closable, false);
-    }
+    @Property(defaultValue = "false", description = "Adds a close icon to hide the messages.")
+    public abstract boolean isClosable();
 
-    public void setClosable(boolean closable) {
-        getStateHelper().put(PropertyKeys.closable, closable);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isShowIcon() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showIcon, true);
-    }
-
-    public void setShowIcon(boolean showIcon) {
-        getStateHelper().put(PropertyKeys.showIcon, showIcon);
-    }
-
-    @Override
-    public java.lang.String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
-    }
-
-    public void setWidgetVar(java.lang.String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "true", description = "Defines if severity icons would be displayed.")
+    public abstract boolean isShowIcon();
 }

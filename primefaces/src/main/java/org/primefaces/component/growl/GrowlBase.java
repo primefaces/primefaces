@@ -23,22 +23,17 @@
  */
 package org.primefaces.component.growl;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.UINotifications;
 import org.primefaces.component.api.Widget;
 
+@FacesComponentBase
 public abstract class GrowlBase extends UINotifications implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.GrowlRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        sticky,
-        life,
-        keepAlive,
-    }
 
     public GrowlBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -49,36 +44,12 @@ public abstract class GrowlBase extends UINotifications implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "false", description = "Specifies if the message should stay instead of hidden automatically.")
+    public abstract boolean isSticky();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "6000", description = "Duration in milliseconds to display non-sticky messages.")
+    public abstract int getLife();
 
-    public boolean isSticky() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.sticky, false);
-    }
-
-    public void setSticky(boolean sticky) {
-        getStateHelper().put(PropertyKeys.sticky, sticky);
-    }
-
-    public int getLife() {
-        return (Integer) getStateHelper().eval(PropertyKeys.life, 6000);
-    }
-
-    public void setLife(int life) {
-        getStateHelper().put(PropertyKeys.life, life);
-    }
-
-    public boolean isKeepAlive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.keepAlive, false);
-    }
-
-    public void setKeepAlive(boolean keepAlive) {
-        getStateHelper().put(PropertyKeys.keepAlive, keepAlive);
-    }
-
+    @Property(defaultValue = "false", description = "Defines if previous messages should be kept on a new message is shown.")
+    public abstract boolean isKeepAlive();
 }

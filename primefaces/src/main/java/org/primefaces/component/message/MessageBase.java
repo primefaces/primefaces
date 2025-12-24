@@ -23,26 +23,20 @@
  */
 package org.primefaces.component.message;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIMessage;
 
-public abstract class MessageBase extends UIMessage implements UINotification, Widget {
+@FacesComponentBase
+public abstract class MessageBase extends UIMessage implements UINotification, Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MessageRenderer";
-
-    public enum PropertyKeys {
-        escape,
-        display,
-        style,
-        styleClass,
-        severity,
-        skipDetailIfEqualsSummary,
-        widgetVar;
-    }
 
     public MessageBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -53,62 +47,27 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
         return COMPONENT_FAMILY;
     }
 
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
+    @Property(defaultValue = "both", description = "Defines display mode. Valid values are \"text\", \"icon\" and \"both\".")
+    public abstract String getDisplay();
 
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
+    @Property(defaultValue = "true", description = "Defines whether html would be escaped or not.")
+    public abstract boolean isEscape();
 
-    public String getDisplay() {
-        return (String) getStateHelper().eval(PropertyKeys.display, "both");
-    }
+    @Property(description = "Type of the \"for\" attribute. Valid values are \"key\" and \"expression\".")
+    public abstract String getForType();
 
-    public void setDisplay(String display) {
-        getStateHelper().put(PropertyKeys.display, display);
-    }
+    @Property(description = "Defines a list of keys and clientIds, which should NOT be rendered by this component. Separated by space or comma.")
+    public abstract String getForIgnores();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
+    @Property(defaultValue = "true", description = "Specifies if the summary of the FacesMessage should be displayed.")
     @Override
-    public boolean isSkipDetailIfEqualsSummary() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
-    }
+    public abstract boolean isShowSummary();
 
-    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
-        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
-    }
-
+    @Property(defaultValue = "false", description = "Specifies if the detail of the FacesMessage should be displayed.")
     @Override
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
-    }
+    public abstract boolean isShowDetail();
 
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
-    }
-
+    @Property(description = "Identifier of the component whose messages to display only, takes precendence when used with globalOnly.")
     @Override
-    public java.lang.String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
-    }
-
-    public void setWidgetVar(java.lang.String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    public abstract String getFor();
 }

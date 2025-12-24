@@ -23,11 +23,16 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
+
 public interface UINotification {
 
+    @Property(defaultValue = "true", description = "Defines if already rendered messages should be displayed.")
     boolean isRedisplay();
 
+    @Property(description = "Comma separated list of severities to display only.")
     String getSeverity();
 
+    @Property(defaultValue = "false", description = "Defines if rendering of the detail text should be skipped, if the detail and summary are equals.")
     boolean isSkipDetailIfEqualsSummary();
 }
