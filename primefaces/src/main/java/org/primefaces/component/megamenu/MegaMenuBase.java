@@ -61,7 +61,7 @@ public abstract class MegaMenuBase extends AbstractMenu implements Widget, Style
     @Property(description = "MenuModel instance to create menus programmatically")
     public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    @Property(defaultValue = "0", description = "Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.")
+    @Property(defaultValue = "0", description = "Delay in milliseconds before displaying the submenu.")
     public abstract int getDelay();
 
     @Property(description = "Index of the active root menu to display as highlighted. By default no root is highlighted.")

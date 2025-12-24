@@ -54,8 +54,7 @@ public abstract class SlideMenuBase extends AbstractMenu implements Widget, Over
     public abstract String getBackLabel();
 
     @Property(defaultValue = "false",
-        description = "Defines positioning, when enabled menu is displayed with absolute position relative to the trigger. " +
-        "Default is false, meaning static positioning.")
+        description = "Defines positioning, when enabled menu is displayed with absolute position relative to the trigger.")
     public abstract boolean isOverlay();
 
 }

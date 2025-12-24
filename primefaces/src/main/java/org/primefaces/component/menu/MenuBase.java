@@ -77,7 +77,7 @@ public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMe
     @Property(defaultValue = "flip",
         description = "Applied only when overlay is set to true. When the overlay menu overflows the window in some direction, move it to " +
         "an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details." +
-        " Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.")
+        " When the the body of your layout does not scroll, you may also want to set the option maxHeight.")
     public abstract String getCollision();
 
     @Property(description = "The maximum height of the menu. May be either a number (such as 200), which is interpreted as a height in pixels. " +

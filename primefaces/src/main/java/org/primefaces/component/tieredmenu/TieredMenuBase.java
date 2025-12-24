@@ -63,8 +63,7 @@ public abstract class TieredMenuBase extends AbstractMenu implements Widget, Ove
     public abstract org.primefaces.model.menu.MenuModel getModel();
 
     @Property(defaultValue = "false",
-        description = "Defines positioning, when enabled menu is displayed with absolute position relative to the trigger." +
-        " Default is false, meaning static positioning.")
+        description = "Defines positioning, when enabled menu is displayed with absolute position relative to the trigger.")
     public abstract boolean isOverlay();
 
 }

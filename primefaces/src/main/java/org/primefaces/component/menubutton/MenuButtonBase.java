@@ -61,7 +61,7 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget, Sty
     @Property(defaultValue = "left", description = "Position of the icon, valid values are left and right.")
     public abstract String getIconPos();
 
-    @Property(defaultValue = "@(body)", description = "Appends the overlay to the element defined by search expression. Defaults to document body.")
+    @Property(defaultValue = "@(body)", description = "Appends the overlay to the element defined by search expression.")
     public abstract String getAppendTo();
 
     @Property(description = "Style class of the overlay menu element.")
@@ -76,7 +76,7 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget, Sty
     @Property(defaultValue = "flip",
         description = "Applied only when overlay is set to true. When the overlay menu overflows the window in some direction, move it to " +
         "an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details." +
-        " Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.")
+        " When the body of your layout does not scroll, you may also want to set the option maxHeight.")
     public abstract String getCollision();
 
     @Property(description = "The maximum height of the menu. May be either a number (such as 200), which is interpreted as a height in pixels. " +
@@ -84,7 +84,7 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget, Sty
         " to false. Useful in case the body of your layout does not scroll, especially in combination with the collision property.")
     public abstract String getMaxHeight();
 
-    @Property(defaultValue = "0", description = "Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.")
+    @Property(defaultValue = "0", description = "Delay in milliseconds before displaying the submenu.")
     public abstract int getDelay();
 
     @Property(description = "Style of the button")

@@ -55,14 +55,14 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget, Sty
     @Property(description = "MenuModel instance to create menus programmatically")
     public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    @Property(defaultValue = "icon", description = "Defines display mode of root link, valid values are \"icon\" default and \"text\".")
+    @Property(defaultValue = "icon", description = "Defines display mode of root link, valid values are \"icon\" and \"text\".")
     public abstract String getHomeDisplay();
 
     @Property(defaultValue = "ui-icon ui-icon-home", description = "Defines home icon CSS class.")
     public abstract String getHomeIcon();
 
     @Override
-    @Property(defaultValue = "0", description = "Position of the items in the tabbing order. Default is 0.")
+    @Property(defaultValue = "0", description = "Position of the items in the tabbing order.")
     public abstract String getTabindex();
 
     @Property(defaultValue = "false", description = "Boolean flag indicating whether the last item should be disabled.")

@@ -55,7 +55,7 @@ public abstract class StepsBase extends AbstractMenu implements Widget, StyleAwa
     @Property(defaultValue = "true", description = "Defines whether items would be clickable or not.")
     public abstract boolean isReadonly();
 
-    @Property(defaultValue = "false", description = "Allows the active index menu to remain executable. Default is false.")
+    @Property(defaultValue = "false", description = "Allows the active index menu to remain executable.")
     public abstract boolean isActiveStepExecutable();
 
 }

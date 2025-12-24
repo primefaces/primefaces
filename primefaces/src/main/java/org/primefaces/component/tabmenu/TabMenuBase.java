@@ -54,7 +54,7 @@ public abstract class TabMenuBase extends AbstractMenu implements Widget, StyleA
 
     @Property(defaultValue = "top",
         description = "Orientation of the tab items relative to where you want to put the content, " +
-        "valid values are \"top\" (default), \"left\", \"right\" and \"bottom\".")
+        "valid values are \"top\", \"left\", \"right\" and \"bottom\".")
     public abstract String getOrientation();
 
 }
