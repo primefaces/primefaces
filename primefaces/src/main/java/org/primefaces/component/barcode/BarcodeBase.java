@@ -51,14 +51,14 @@ public abstract class BarcodeBase extends HtmlGraphicImage implements StyleAware
     @Property(defaultValue = "true", description = "Controls browser caching mode of the resources.")
     public abstract boolean isCache();
 
-    @Property(defaultValue = "svg", description = "Format of the generated barcode, valid values are \"svg\" (default) and \"png\".")
+    @Property(defaultValue = "svg", description = "Format of the generated barcode, valid values are \"svg\" and \"png\".")
     public abstract String getFormat();
 
     @Property(defaultValue = "0", description = "Orientation in terms of angle. (0, 90, 180, 270)")
     public abstract int getOrientation();
 
     @Property(defaultValue = "L",
-        description = "The QR Code error correction level. L (default) - up to 7% damage. M - up to 15% damage. Q - up to 25% damage. H - up to 30% damage")
+        description = "The QR Code error correction level. L - up to 7% damage. M - up to 15% damage. Q - up to 25% damage. H - up to 30% damage")
     public abstract String getQrErrorCorrection();
 
     @Property(defaultValue = "bottom", description = "The barcode human readable placement of text either \"none\", \"top\", or \"bottom\".")
