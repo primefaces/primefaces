@@ -58,7 +58,7 @@ public abstract class BlockUIBase extends UIPanel implements Widget, StyleAware 
     @Property(defaultValue = "true", description = "When disabled, displays block without animation effect.")
     public abstract boolean isAnimate();
 
-    @Property(defaultValue = "0", description = "Delay in milliseconds before displaying the ajax status. Default is 0 meaning immediate.")
+    @Property(defaultValue = "0", description = "Delay in milliseconds before displaying the ajax status.")
     public abstract int getDelay();
 
 }
