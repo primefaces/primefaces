@@ -63,7 +63,7 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
     @Override
     public abstract boolean isShowSummary();
 
-    @Property(defaultValue = "false", description = "Specifies if the detail of the FacesMessage should be displayed.")
+    @Property(defaultValue = "true", description = "Specifies if the detail of the FacesMessage should be displayed.")
     @Override
     public abstract boolean isShowDetail();
 
