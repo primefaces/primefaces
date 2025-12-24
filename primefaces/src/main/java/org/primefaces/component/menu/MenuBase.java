@@ -23,31 +23,17 @@
  */
 package org.primefaces.component.menu;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu {
+@FacesComponentBase
+public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MenuRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        model,
-        trigger,
-        my,
-        at,
-        overlay,
-        style,
-        styleClass,
-        triggerEvent,
-        toggleable,
-        statefulGlobal,
-        collision,
-        maxHeight,
-        appendTo
-    }
 
     public MenuBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -58,120 +44,48 @@ public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMe
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Override
+    @Property(description = "A menu model instance to create menu programmatically.")
+    public abstract org.primefaces.model.menu.MenuModel getModel();
 
     @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(description = "Target component to attach the overlay menu.")
+    public abstract String getTrigger();
 
     @Override
-    public String getTrigger() {
-        return (String) getStateHelper().eval(PropertyKeys.trigger, null);
-    }
-
-    public void setTrigger(String trigger) {
-        getStateHelper().put(PropertyKeys.trigger, trigger);
-    }
+    @Property(description = "Corner of menu to align with trigger element.")
+    public abstract String getMy();
 
     @Override
-    public String getMy() {
-        return (String) getStateHelper().eval(PropertyKeys.my, null);
-    }
+    @Property(description = "Corner of trigger to align with menu element.")
+    public abstract String getAt();
 
-    public void setMy(String my) {
-        getStateHelper().put(PropertyKeys.my, my);
-    }
+    @Property(defaultValue = "false", description = "Defines positioning type of menu, either static or overlay.")
+    public abstract boolean isOverlay();
 
     @Override
-    public String getAt() {
-        return (String) getStateHelper().eval(PropertyKeys.at, null);
-    }
+    @Property(defaultValue = "click", description = "Event to show the dynamic positioned menu.")
+    public abstract String getTriggerEvent();
 
-    public void setAt(String at) {
-        getStateHelper().put(PropertyKeys.at, at);
-    }
+    @Property(defaultValue = "false", description = "Defines whether clicking the header of a submenu toggles the visibility of children menuitems.")
+    public abstract boolean isToggleable();
 
-    public boolean isOverlay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.overlay, false);
-    }
+    @Property(defaultValue = "false",
+        description = "When enabled, menu toggleable state is saved globally across pages. If disabled then state is stored per view/page.")
+    public abstract boolean isStatefulGlobal();
 
-    public void setOverlay(boolean overlay) {
-        getStateHelper().put(PropertyKeys.overlay, overlay);
-    }
+    @Property(defaultValue = "flip",
+        description = "Applied only when overlay is set to true. When the overlay menu overflows the window in some direction, move it to " +
+        "an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details." +
+        " When the the body of your layout does not scroll, you may also want to set the option maxHeight.")
+    public abstract String getCollision();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "The maximum height of the menu. May be either a number (such as 200), which is interpreted as a height in pixels. " +
+        "Alternatively, may also be a CSS length such as 90vh or 10em. Often used when overlay is set to true, but also works when it is set " +
+        " to false. Useful in case the body of your layout does not scroll, especially in combination with the collision property.")
+    public abstract String getMaxHeight();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "@(body)", description = "Search expression for the element to which the menu overlay is appended.")
+    public abstract String getAppendTo();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    @Override
-    public String getTriggerEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.triggerEvent, "click");
-    }
-
-    public void setTriggerEvent(String triggerEvent) {
-        getStateHelper().put(PropertyKeys.triggerEvent, triggerEvent);
-    }
-
-    public boolean isToggleable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
-    }
-
-    public void setToggleable(boolean toggleable) {
-        getStateHelper().put(PropertyKeys.toggleable, toggleable);
-    }
-
-    public String getCollision() {
-        return (String) getStateHelper().eval(PropertyKeys.collision, "flip");
-    }
-
-    public void setCollision(String collision) {
-        getStateHelper().put(PropertyKeys.collision, collision);
-    }
-
-    public String getMaxHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.maxHeight, null);
-    }
-
-    public void setMaxHeight(String maxHeight) {
-        getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
-    }
-
-    public boolean isStatefulGlobal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.statefulGlobal, false);
-    }
-
-    public void setStatefulGlobal(boolean statefulGlobal) {
-        getStateHelper().put(PropertyKeys.statefulGlobal, statefulGlobal);
-    }
-
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
-    }
-
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
 }

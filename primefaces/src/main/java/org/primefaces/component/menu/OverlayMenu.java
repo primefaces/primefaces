@@ -23,13 +23,19 @@
  */
 package org.primefaces.component.menu;
 
+import org.primefaces.cdk.api.Property;
+
 public interface OverlayMenu {
 
+    @Property(description = "Target component to attach the overlay menu.")
     String getTrigger();
 
+    @Property(description = "Corner of menu to align with trigger element.")
     String getMy();
 
+    @Property(description = "Corner of trigger to align with menu element.")
     String getAt();
 
+    @Property(defaultValue = "click", description = "Event to show the dynamic positioned menu.")
     String getTriggerEvent();
 }

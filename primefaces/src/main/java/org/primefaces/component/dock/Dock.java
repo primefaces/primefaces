@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.dock;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Dock.COMPONENT_TYPE, namespace = Dock.COMPONENT_FAMILY)
+@FacesComponentDescription("Dock component mimics the well known dock interface of Mac OS X.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "dock/dock.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -34,7 +37,7 @@ import jakarta.faces.component.FacesComponent;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "dock/dock.js")
-public class Dock extends DockBase {
+public class Dock extends DockBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Dock";
 }

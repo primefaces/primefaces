@@ -23,28 +23,22 @@
  */
 package org.primefaces.component.tieredmenu;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.OverlayMenu;
 
-public abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMenu {
+import jakarta.faces.component.UIComponent;
+
+@FacesComponentBase
+public abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMenu, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TieredMenuRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        model,
-        style,
-        styleClass,
-        trigger,
-        my,
-        at,
-        overlay,
-        triggerEvent;
-    }
 
     public TieredMenuBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -55,80 +49,21 @@ public abstract class TieredMenuBase extends AbstractMenu implements Widget, Ove
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Facet(description = "Allows to place HTML in the start of the menu.")
+    public abstract UIComponent getStartFacet();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Facet(description = "Allows to place HTML in the end of the menu.")
+    public abstract UIComponent getEndFacet();
 
-    @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Facet(description = "Allows to place HTML in the options of the menu.")
+    public abstract UIComponent getOptionsFacet();
 
     @Override
-    public String getTrigger() {
-        return (String) getStateHelper().eval(PropertyKeys.trigger, null);
-    }
+    @Property(description = "MenuModel instance for programmatic menu.")
+    public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    public void setTrigger(String trigger) {
-        getStateHelper().put(PropertyKeys.trigger, trigger);
-    }
+    @Property(defaultValue = "false",
+        description = "Defines positioning, when enabled menu is displayed with absolute position relative to the trigger.")
+    public abstract boolean isOverlay();
 
-    @Override
-    public String getMy() {
-        return (String) getStateHelper().eval(PropertyKeys.my, null);
-    }
-
-    public void setMy(String my) {
-        getStateHelper().put(PropertyKeys.my, my);
-    }
-
-    @Override
-    public String getAt() {
-        return (String) getStateHelper().eval(PropertyKeys.at, null);
-    }
-
-    public void setAt(String at) {
-        getStateHelper().put(PropertyKeys.at, at);
-    }
-
-    public boolean isOverlay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.overlay, false);
-    }
-
-    public void setOverlay(boolean overlay) {
-        getStateHelper().put(PropertyKeys.overlay, overlay);
-    }
-
-    @Override
-    public String getTriggerEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.triggerEvent, "click");
-    }
-
-    public void setTriggerEvent(String triggerEvent) {
-        getStateHelper().put(PropertyKeys.triggerEvent, triggerEvent);
-    }
 }

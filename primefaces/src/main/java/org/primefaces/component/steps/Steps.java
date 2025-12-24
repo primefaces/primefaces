@@ -23,16 +23,19 @@
  */
 package org.primefaces.component.steps;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Steps.COMPONENT_TYPE, namespace = Steps.COMPONENT_FAMILY)
+@FacesComponentDescription("Steps components is an indicator for the steps in a workflow. Layout of steps component is optimized for responsive design.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Steps extends StepsBase {
+public class Steps extends StepsBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Steps";
 
