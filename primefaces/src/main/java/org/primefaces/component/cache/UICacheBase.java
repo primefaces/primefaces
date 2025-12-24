@@ -23,22 +23,17 @@
  */
 package org.primefaces.component.cache;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIPanel;
 
-
+@FacesComponentBase
 public abstract class UICacheBase extends UIPanel {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.UICacheRenderer";
-
-    public enum PropertyKeys {
-
-        disabled,
-        region,
-        key,
-        processEvents
-    }
 
     public UICacheBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -49,36 +44,16 @@ public abstract class UICacheBase extends UIPanel {
         return COMPONENT_FAMILY;
     }
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(description = "Disables caching.")
+    public abstract boolean isDisabled();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(description = "Unique id of the cache region.", implicitDefaultValue = "View Id")
+    public abstract String getRegion();
 
-    public String getRegion() {
-        return (String) getStateHelper().eval(PropertyKeys.region, null);
-    }
+    @Property(description = "Unique id of the cache entry in region.", implicitDefaultValue = "Client Id")
+    public abstract String getKey();
 
-    public void setRegion(String region) {
-        getStateHelper().put(PropertyKeys.region, region);
-    }
-
-    public String getKey() {
-        return (String) getStateHelper().eval(PropertyKeys.key, null);
-    }
-
-    public void setKey(String key) {
-        getStateHelper().put(PropertyKeys.key, key);
-    }
-
-    public boolean isProcessEvents() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.processEvents, false);
-    }
-
-    public void setProcessEvents(boolean processEvents) {
-        getStateHelper().put(PropertyKeys.processEvents, processEvents);
-    }
+    @Property(defaultValue = "false", description = "When enabled, lifecycle events such as button actions are executed.")
+    public abstract boolean isProcessEvents();
 
 }
