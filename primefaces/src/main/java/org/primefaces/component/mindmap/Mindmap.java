@@ -23,52 +23,34 @@
  */
 package org.primefaces.component.mindmap;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.mindmap.MindmapNode;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Mindmap.COMPONENT_TYPE, namespace = Mindmap.COMPONENT_FAMILY)
+@FacesComponentDescription("MindMap is an interactive mindmapping component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "raphael/raphael.js")
 @ResourceDependency(library = "primefaces", name = "mindmap/mindmap.js")
-public class Mindmap extends MindmapBase {
+public class Mindmap extends MindmapBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Mindmap";
 
     public static final String STYLE_CLASS = "ui-mindmap ui-widget ui-widget-content";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("select", SelectEvent.class)
-            .put("dblselect", SelectEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private MindmapNode selectedNode;
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     public MindmapNode getSelectedNode() {
         return selectedNode;
@@ -80,18 +62,19 @@ public class Mindmap extends MindmapBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = getClientId(context);
-        AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        if (isAjaxBehaviorEventSource(event)) {
+            FacesContext context = getFacesContext();
+            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+            String clientId = getClientId(context);
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if ("select".equals(eventName) || "dblselect".equals(eventName)) {
-            String nodeKey = params.get(clientId + "_nodeKey");
-            MindmapNode node = "root".equals(nodeKey) ? getValue() : findNode(getValue(), nodeKey);
-            selectedNode = node;
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.select, ClientBehaviorEventKeys.dblselect)) {
+                String nodeKey = params.get(clientId + "_nodeKey");
+                MindmapNode node = "root".equals(nodeKey) ? getValue() : findNode(getValue(), nodeKey);
+                selectedNode = node;
 
-            super.queueEvent(new SelectEvent<>(this, behaviorEvent.getBehavior(), node));
+                super.queueEvent(new SelectEvent<>(this, behaviorEvent.getBehavior(), node));
+            }
         }
     }
 
@@ -116,7 +99,7 @@ public class Mindmap extends MindmapBase {
     }
 
     public boolean isNodeSelectRequest(FacesContext context) {
-        if (!ComponentUtils.isRequestSource(this, context)) {
+        if (!isAjaxRequestSource(context)) {
             return false;
         }
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();

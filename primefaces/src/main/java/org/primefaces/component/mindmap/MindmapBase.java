@@ -23,26 +23,26 @@
  */
 package org.primefaces.component.mindmap;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SelectEvent;
 
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class MindmapBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "select", event = SelectEvent.class),
+    @FacesBehaviorEvent(name = "dblselect", event = SelectEvent.class)
+})
+public abstract class MindmapBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MindmapRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        value,
-        style,
-        styleClass,
-        effectSpeed
-    }
 
     public MindmapBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -53,43 +53,9 @@ public abstract class MindmapBase extends UIComponentBase implements Widget, Cli
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "The root node.")
+    public abstract org.primefaces.model.mindmap.MindmapNode getValue();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public org.primefaces.model.mindmap.MindmapNode getValue() {
-        return (org.primefaces.model.mindmap.MindmapNode) getStateHelper().eval(PropertyKeys.value, null);
-    }
-
-    public void setValue(org.primefaces.model.mindmap.MindmapNode value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public int getEffectSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 300);
-    }
-
-    public void setEffectSpeed(int effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
-    }
+    @Property(description = "Speed of the animations in ms.", defaultValue = "300")
+    public abstract int getEffectSpeed();
 }

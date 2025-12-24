@@ -23,20 +23,17 @@
  */
 package org.primefaces.component.log;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
+@FacesComponentBase
 public abstract class LogBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.LogRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar
-    }
 
     public LogBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -47,11 +44,4 @@ public abstract class LogBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
 }
