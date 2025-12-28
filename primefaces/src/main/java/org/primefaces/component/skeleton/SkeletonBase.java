@@ -23,24 +23,18 @@
  */
 package org.primefaces.component.skeleton;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
+
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class SkeletonBase extends UIComponentBase {
+@FacesComponentBase
+public abstract class SkeletonBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SkeletonRenderer";
-
-    public enum PropertyKeys {
-        shape,
-        size,
-        width,
-        height,
-        borderRadius,
-        animation,
-        style,
-        styleClass
-    }
 
     public SkeletonBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -51,67 +45,21 @@ public abstract class SkeletonBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getShape() {
-        return (String) getStateHelper().eval(PropertyKeys.shape, "rectangle");
-    }
+    @Property(defaultValue = "rectangle", description = "Shape of the element, options are \"rectangle\" and \"circle\".")
+    public abstract String getShape();
 
-    public void setShape(String shape) {
-        getStateHelper().put(PropertyKeys.shape, shape);
-    }
+    @Property(description = "Size of the Circle or Square.")
+    public abstract String getSize();
 
-    public String getSize() {
-        return (String) getStateHelper().eval(PropertyKeys.size, null);
-    }
+    @Property(defaultValue = "100%", description = "Width of the element.")
+    public abstract String getWidth();
 
-    public void setSize(String size) {
-        getStateHelper().put(PropertyKeys.size, size);
-    }
+    @Property(defaultValue = "1rem", description = "Height of the element.")
+    public abstract String getHeight();
 
-    public String getWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.width, "100%");
-    }
+    @Property(description = "Border radius of the element.", implicitDefaultValue = "Value from theme.")
+    public abstract String getBorderRadius();
 
-    public void setWidth(String width) {
-        getStateHelper().put(PropertyKeys.width, width);
-    }
-
-    public String getHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.height, "1rem");
-    }
-
-    public void setHeight(String height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
-
-    public String getBorderRadius() {
-        return (String) getStateHelper().eval(PropertyKeys.borderRadius, null);
-    }
-
-    public void setBorderRadius(String borderRadius) {
-        getStateHelper().put(PropertyKeys.borderRadius, borderRadius);
-    }
-
-    public String getAnimation() {
-        return (String) getStateHelper().eval(PropertyKeys.animation, "wave");
-    }
-
-    public void setAnimation(String animation) {
-        getStateHelper().put(PropertyKeys.animation, animation);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "wave", description = "Animation type, valid options are \"wave\" and \"none\".")
+    public abstract String getAnimation();
 }

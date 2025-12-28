@@ -23,12 +23,15 @@
  */
 package org.primefaces.component.divider;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Divider.COMPONENT_TYPE, namespace = Divider.COMPONENT_FAMILY)
+@FacesComponentDescription("Divider is used to separate contents.")
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Divider extends DividerBase {
+public class Divider extends DividerBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Divider";
 
     public static final String STYLE_CLASS = "ui-divider ui-widget";

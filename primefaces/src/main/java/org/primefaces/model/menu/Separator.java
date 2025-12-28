@@ -23,11 +23,11 @@
  */
 package org.primefaces.model.menu;
 
-public interface Separator extends MenuElement {
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 
+public interface Separator extends MenuElement, StyleAware {
+
+    @Property(description = "Advisory tooltip information.")
     String getTitle();
-
-    String getStyle();
-
-    String getStyleClass();
 }
