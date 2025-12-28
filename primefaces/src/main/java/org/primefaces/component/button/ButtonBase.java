@@ -23,31 +23,19 @@
  */
 package org.primefaces.component.button;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.html.HtmlOutcomeTargetButton;
 
+@FacesComponentBase
 public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIOutcomeTarget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ButtonRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        fragment,
-        disabled,
-        icon,
-        iconPos,
-        href,
-        target,
-        escape,
-        inline,
-        ariaLabel,
-        disableClientWindow
-    }
 
     public ButtonBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -58,97 +46,25 @@ public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widg
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
+    @Property(defaultValue = "false", description = "Disables button.")
     @Override
-    public String getFragment() {
-        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
-    }
+    public abstract boolean isDisabled();
 
-    public void setFragment(String fragment) {
-        getStateHelper().put(PropertyKeys.fragment, fragment);
-    }
+    @Property(description = "Icon of the button.")
+    public abstract String getIcon();
 
-    @Override
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(defaultValue = "left", description = "Position of the icon.")
+    public abstract String getIconPos();
 
-    @Override
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(defaultValue = "_self", description = "The window target.")
+    public abstract String getTarget();
 
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
+    @Property(defaultValue = "true", description = "Defines if label of the component is escaped or not.")
+    public abstract boolean isEscape();
 
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
+    @Property(defaultValue = "false", description = "Displays button inline instead of fitting the content width, only used by mobile.")
+    public abstract boolean isInline();
 
-    public String getIconPos() {
-        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
-    }
-
-    public void setIconPos(String iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, iconPos);
-    }
-
-    @Override
-    public String getHref() {
-        return (String) getStateHelper().eval(PropertyKeys.href, null);
-    }
-
-    public void setHref(String href) {
-        getStateHelper().put(PropertyKeys.href, href);
-    }
-
-    public String getTarget() {
-        return (String) getStateHelper().eval(PropertyKeys.target, "_self");
-    }
-
-    public void setTarget(String target) {
-        getStateHelper().put(PropertyKeys.target, target);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    public boolean isInline() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.inline, false);
-    }
-
-    public void setInline(boolean inline) {
-        getStateHelper().put(PropertyKeys.inline, inline);
-    }
-
-    @Override
-    public boolean isDisableClientWindow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
-    }
-
-    @Override
-    public void setDisableClientWindow(boolean disableClientWindow) {
-        getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
+    @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
+    public abstract String getAriaLabel();
 }

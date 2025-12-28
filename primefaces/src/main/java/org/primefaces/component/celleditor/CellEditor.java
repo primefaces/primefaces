@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.celleditor;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 
@@ -31,7 +32,8 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = CellEditor.COMPONENT_TYPE, namespace = CellEditor.COMPONENT_FAMILY)
-public class CellEditor extends CellEditorBase {
+@FacesComponentDescription("CellEditor is a helper component of datatable used for incell editing.")
+public class CellEditor extends CellEditorBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CellEditor";
 

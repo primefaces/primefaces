@@ -386,7 +386,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
         }
 
-        List<String> ignores = Arrays.asList("attributes", "behaviors", "rendererType", "bindings", "passThroughAttributes", "systemEventListeners");
+        List<String> ignores = Arrays.asList("attributes", "behaviors", "rendererType", "bindings", "passThroughAttributes", "systemEventListeners", "valid");
         Set<PropertyInfo> inheritedPropertyKeys = collectInheritedPropertyKeys(classElement);
 
         // Add inherited property keys that aren't already defined
@@ -877,17 +877,8 @@ public class AnnotationProcessor extends AbstractProcessor {
                             String returnType = findPropertyReturnType(clazz, typeElement, keyName);
 
                             // Create PropertyInfo with null getter/setter (inherited, no implementation needed)
-                            String description = "";
-                            String defaultValue = "";
-                            switch (keyName) {
-                                case "rendered":
-                                    description = "Boolean value to specify the rendering of the component, when set to false component will not be rendered.";
-                                    defaultValue = "true";
-                                    break;
-                                case "binding":
-                                    description = "An el expression referring to a server side UIComponent instance in a backing bean.";
-                                    break;
-                            }
+                            String description = getDefaultPropertyDescription(keyName);
+                            String defaultValue = getDefaultPropertyValue(keyName);
 
                             PropertyInfo info = new PropertyInfo(keyName, returnType, null, null, description, defaultValue, "", false);
                             propertyInfos.add(info);
@@ -1379,5 +1370,175 @@ public class AnnotationProcessor extends AbstractProcessor {
             "true", "false", "null"
         };
         return Arrays.asList(javaKeywords).contains(name) ? "_" + name : name;
+    }
+
+    private String getDefaultPropertyValue(String propertyName) {
+        switch (propertyName) {
+            case "rendered":
+                return "true";
+        }
+
+        return "";
+    }
+
+    private String getDefaultPropertyDescription(String propertyName) {
+        switch (propertyName) {
+            // PF / Faces
+            case "id":
+                return "Defines a string value that labels an interactive element.";
+            case "rendered":
+                return "Boolean value to specify the rendering of the component, when set to false component will not be rendered.";
+            case "binding":
+                return "An EL expression referring to a server side UIComponent instance in a backing bean.";
+            case "ariaLabel":
+                return "The aria-label attribute is used to define a string that labels the current element for accessibility.";
+            case "disableClientWindow":
+                return "Disable appending the on the rendering of this element.";
+            case "accessKey":
+                return "Access key to transfer focus to the input element.";
+            case "dir":
+                return "Direction indication for text that does not inherit directionality.";
+            case "converter":
+                return "An EL expression or a literal text that defines a converter for the component. "
+                        + " When it's an EL expression, it's resolved to a converter instance."
+                        + " In case it's a static text, it must refer to a converter id.";
+            case "immediate":
+                return "When set true, process validations logic is executed at apply request values phase for this component.";
+            case "required":
+                return "Marks component as required.";
+            case "validator":
+                return "An EL expression or a literal text that defines a validator for the component. "
+                        + " When it's an EL expression, it's resolved to a validator instance."
+                        + " In case it's a static text, it must refer to a validator id.";
+            case "requiredMessage":
+                return "Message to display when required field validation fails.";
+            case "converterMessage":
+                return "Message to display when conversion fails.";
+            case "validatorMessage":
+                return "Message to display when validation fails.";
+
+            // Event Handlers
+            case "onclick":
+                return "Fires when a mouse click on the element.";
+            case "ondblclick":
+                return "Fires when a mouse double-click on the element.";
+            case "onmousedown":
+                return "Fires when a mouse button is pressed down on an element.";
+            case "onmouseup":
+                return "Fires when a mouse button is released over an element.";
+            case "onmouseover":
+                return "Fires when the mouse pointer moves onto an element.";
+            case "onmouseout":
+                return "Fires when the mouse pointer moves out of an element.";
+            case "onmousemove":
+                return "Fires when the mouse pointer is moving while it is over an element.";
+            case "onkeydown":
+                return "Fires when a user is pressing a key.";
+            case "onkeyup":
+                return "Fires when a user releases a key.";
+            case "onkeypress":
+                return "Fires when a user presses a key.";
+            case "onfocus":
+                return "Fires when an element gets focus.";
+            case "onblur":
+                return "Fires when an element loses focus.";
+            case "onchange":
+                return "Fires when the value of an element has been changed.";
+            case "onsubmit":
+                return "Fires when a form is submitted.";
+            case "onload":
+                return "Fires after the page is finished loading.";
+            case "onunload":
+                return "Fires once a page has unloaded.";
+            case "onresize":
+                return "Fires when the browser window is resized.";
+            case "onscroll":
+                return "Fires when an element's scrollbar is being scrolled.";
+
+            // Common HTML Attributes
+            case "class":
+                return "Specifies one or more classnames for an element.";
+            case "style":
+                return "Specifies an inline CSS style for an element.";
+            case "title":
+                return "Specifies extra information about an element (displayed as a tooltip).";
+            case "alt":
+                return "Specifies an alternate text for an image, if the image cannot be displayed.";
+            case "href":
+                return "Specifies the URL of the page the link goes to.";
+            case "src":
+                return "Specifies the URL of the media file.";
+            case "width":
+                return "Specifies the width of an element.";
+            case "height":
+                return "Specifies the height of an element.";
+            case "type":
+                return "Specifies the type of element.";
+            case "name":
+                return "Specifies the name of an element.";
+            case "value":
+                return "Specifies the value of an element.";
+            case "placeholder":
+                return "Specifies a short hint that describes the expected value.";
+            case "disabled":
+                return "Specifies that an element should be disabled.";
+            case "readonly":
+                return "Specifies that an input field is read-only.";
+            case "checked":
+                return "Specifies that an input element should be pre-selected.";
+            case "selected":
+                return "Specifies that an option should be pre-selected.";
+            case "maxlength":
+                return "Specifies the maximum number of characters allowed.";
+            case "min":
+                return "Specifies a minimum value.";
+            case "max":
+                return "Specifies a maximum value.";
+            case "step":
+                return "Specifies the legal number intervals.";
+            case "pattern":
+                return "Specifies a regular expression for validation.";
+
+            // Accessibility Attributes
+            case "tabindex":
+                return "Specifies the tab order of an element.";
+            case "role":
+                return "Defines the role of an element for accessibility.";
+            case "aria-label":
+                return "Defines a string value that labels an interactive element.";
+            case "aria-hidden":
+                return "Indicates whether the element is exposed to accessibility APIs.";
+            case "aria-describedby":
+                return "Identifies the element that describes the object.";
+            case "aria-labelledby":
+                return "Identifies the element that labels the current element.";
+
+            // Link/Form Attributes
+            case "target":
+                return "Specifies where to open the linked document.";
+            case "rel":
+                return "Specifies the relationship between the current and linked document.";
+            case "action":
+                return "Specifies where to send the form-data when submitted.";
+            case "method":
+                return "Specifies the HTTP method to use when sending form-data.";
+            case "enctype":
+                return "Specifies how the form-data should be encoded.";
+
+            // Media Attributes
+            case "autoplay":
+                return "Specifies that audio/video should start playing automatically.";
+            case "controls":
+                return "Specifies that audio/video controls should be displayed.";
+            case "loop":
+                return "Specifies that audio/video will start over when finished.";
+            case "muted":
+                return "Specifies that audio/video output should be muted.";
+            case "poster":
+                return "Specifies an image to be shown while video is downloading.";
+
+            default:
+                return "";
+        }
     }
 }

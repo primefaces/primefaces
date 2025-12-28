@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
+
 /**
  * InputHolder is implemented by input components who has an input field along with complex markup like spinner, autocomplete.
  */
@@ -53,6 +55,7 @@ public interface InputHolder {
     /**
      * @return The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
      */
+    @Property(description = "The aria-describedby attribute is used to define a component id that describes the current element for accessibility.")
     String getAriaDescribedBy();
 
     /**

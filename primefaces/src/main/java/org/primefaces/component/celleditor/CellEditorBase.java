@@ -23,19 +23,17 @@
  */
 package org.primefaces.component.celleditor;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIComponentBase;
 
-
+@FacesComponentBase
 public abstract class CellEditorBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CellEditorRenderer";
-
-    public enum PropertyKeys {
-
-        disabled
-    }
 
     public CellEditorBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -46,12 +44,6 @@ public abstract class CellEditorBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
+    @Property(description = "Prevents hidden content to be shown.")
+    public abstract boolean isDisabled();
 }
