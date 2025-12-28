@@ -23,16 +23,19 @@
  */
 package org.primefaces.component.spotlight;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Spotlight.COMPONENT_TYPE, namespace = Spotlight.COMPONENT_FAMILY)
+@FacesComponentDescription("Spotlight highlights a certain component on page.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Spotlight extends SpotlightBase {
+public class Spotlight extends SpotlightBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Spotlight";
 }

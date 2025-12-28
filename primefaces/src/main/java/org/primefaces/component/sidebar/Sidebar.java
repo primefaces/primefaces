@@ -23,26 +23,23 @@
  */
 package org.primefaces.component.sidebar;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 import jakarta.faces.context.FacesContext;
-import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Sidebar.COMPONENT_TYPE, namespace = Sidebar.COMPONENT_FAMILY)
+@FacesComponentDescription("Sidebar is a panel component displayed as an overlay.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Sidebar extends SidebarBase implements ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public class Sidebar extends SidebarBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Sidebar";
 
@@ -52,28 +49,22 @@ public class Sidebar extends SidebarBase implements ClientBehaviorHolder, PrimeC
     public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";
     public static final String FULL_BAR_CLASS = "ui-sidebar-full";
 
-    private static final String DEFAULT_EVENT = "close";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("close", CloseEvent.class)
-            .put("open", null)
-            .put("loadContent", null)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
     @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
+    public void queueEvent(FacesEvent event) {
+        if (isAjaxBehaviorEventSource(event)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.close)) {
+                AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+                CloseEvent eventToQueue = new CloseEvent(this, behaviorEvent.getBehavior());
+                eventToQueue.setPhaseId(behaviorEvent.getPhaseId());
+                super.queueEvent(eventToQueue);
+            }
+            else {
+                super.queueEvent(event);
+            }
+        }
+        else {
+            super.queueEvent(event);
+        }
     }
 
     @Override

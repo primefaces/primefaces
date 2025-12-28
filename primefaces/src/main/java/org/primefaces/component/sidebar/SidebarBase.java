@@ -23,33 +23,29 @@
  */
 package org.primefaces.component.sidebar;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.CloseEvent;
 
 import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class SidebarBase extends UIComponentBase implements Widget {
+
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "close", event = CloseEvent.class, defaultEvent = true, description = "Fires when the sidebar is closed."),
+    @FacesBehaviorEvent(name = "open", event = AjaxBehaviorEvent.class, description = "Fires when the sidebar is opened."),
+    @FacesBehaviorEvent(name = "loadContent", event = AjaxBehaviorEvent.class, description = "Fires when the content of the sidebar is loaded."),
+})
+public abstract class SidebarBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SidebarRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        style,
-        styleClass,
-        visible,
-        position,
-        fullScreen,
-        blockScroll,
-        baseZIndex,
-        appendTo,
-        dynamic,
-        onShow,
-        onHide,
-        modal,
-        showCloseIcon
-    }
 
     public SidebarBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -60,115 +56,40 @@ public abstract class SidebarBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Specifies the visibility of the sidebar.")
+    public abstract boolean isVisible();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "left", description = "Position of the sidebar.")
+    public abstract String getPosition();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "When enabled, sidebar is displayed in full screen mode.")
+    public abstract boolean isFullScreen();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Whether to block scrolling of the document when sidebar is active.")
+    public abstract boolean isBlockScroll();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "0", description = "Base zIndex value to use in layering. "
+            + "Only use this attribute if you are having issues with your sidebar displaying as "
+            + "this may cause issues with overlay components inside the sidebar.")
+    public abstract int getBaseZIndex();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Appends the sidebar to the given search expression.")
+    public abstract String getAppendTo();
 
-    public boolean isVisible() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.visible, false);
-    }
+    @Property(description = "Defines if dynamic loading is enabled for the element's panel. "
+            + "If the value is \"true\", the overlay is not rendered on page load to improve performance.")
+    public abstract boolean isDynamic();
 
-    public void setVisible(boolean visible) {
-        getStateHelper().put(PropertyKeys.visible, visible);
-    }
+    @Property(description = "Client side callback to execute when sidebar is displayed.")
+    public abstract String getOnShow();
 
-    public String getPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.position, "left");
-    }
+    @Property(description = "Client side callback to execute when sidebar is hidden.")
+    public abstract String getOnHide();
 
-    public void setPosition(String position) {
-        getStateHelper().put(PropertyKeys.position, position);
-    }
+    @Property(defaultValue = "true", description = "Boolean value that specifies whether the document should be shielded "
+            + "with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document.")
+    public abstract boolean isModal();
 
-    public boolean isFullScreen() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.fullScreen, false);
-    }
-
-    public void setFullScreen(boolean fullScreen) {
-        getStateHelper().put(PropertyKeys.fullScreen, fullScreen);
-    }
-
-    public boolean isBlockScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
-    }
-
-    public void setBlockScroll(boolean blockScroll) {
-        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
-    }
-
-    public int getBaseZIndex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.baseZIndex, 0);
-    }
-
-    public void setBaseZIndex(int baseZIndex) {
-        getStateHelper().put(PropertyKeys.baseZIndex, baseZIndex);
-    }
-
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
-    }
-
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    public boolean isDynamic() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
-    }
-
-    public void setDynamic(boolean dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, dynamic);
-    }
-
-    public String getOnShow() {
-        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
-    }
-
-    public void setOnShow(String onShow) {
-        getStateHelper().put(PropertyKeys.onShow, onShow);
-    }
-
-    public String getOnHide() {
-        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
-    }
-
-    public void setOnHide(String onHide) {
-        getStateHelper().put(PropertyKeys.onHide, onHide);
-    }
-
-    public boolean isModal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.modal, true);
-    }
-
-    public void setModal(boolean modal) {
-        getStateHelper().put(PropertyKeys.modal, modal);
-    }
-
-    public boolean isShowCloseIcon() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showCloseIcon, true);
-    }
-
-    public void setShowCloseIcon(boolean showCloseIcon) {
-        getStateHelper().put(PropertyKeys.showCloseIcon, showCloseIcon);
-    }
+    @Property(defaultValue = "true", description = "Displays a close icon to hide the overlay.")
+    public abstract boolean isShowCloseIcon();
 }
