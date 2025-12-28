@@ -23,41 +23,19 @@
  */
 package org.primefaces.component.checkbox;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class CheckboxBase extends UIComponentBase implements Widget {
+@FacesComponentBase
+public abstract class CheckboxBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CheckboxRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        disabled,
-        itemIndex,
-        onchange,
-        forValue("for"),
-        style,
-        styleClass,
-        tabindex;
-
-        private String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
-    }
 
     public CheckboxBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -68,67 +46,18 @@ public abstract class CheckboxBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Disables the component.")
+    public abstract boolean isDisabled();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "0", description = "Index of the selectItem of the SelectManyCheckbox.")
+    public abstract int getItemIndex();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(description = "Client side callback to execute on state change.")
+    public abstract String getOnchange();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(description = "Id of the SelectManyCheckbox component to attach to.")
+    public abstract String getFor();
 
-    public int getItemIndex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.itemIndex, 0);
-    }
-
-    public void setItemIndex(int itemIndex) {
-        getStateHelper().put(PropertyKeys.itemIndex, itemIndex);
-    }
-
-    public String getOnchange() {
-        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
-    }
-
-    public void setOnchange(String onchange) {
-        getStateHelper().put(PropertyKeys.onchange, onchange);
-    }
-
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
-
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
+    @Property(description = "The tabindex attribute specifies the tab order of an element when the \"tab\" button is used for navigating.")
+    public abstract String getTabindex();
 }

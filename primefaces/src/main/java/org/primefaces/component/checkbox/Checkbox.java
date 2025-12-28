@@ -23,15 +23,18 @@
  */
 package org.primefaces.component.checkbox;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Checkbox.COMPONENT_TYPE, namespace = Checkbox.COMPONENT_FAMILY)
+@FacesComponentDescription("Checkbox is a helper component of SelectManyCheckbox to implement custom layouts.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Checkbox extends CheckboxBase {
+public class Checkbox extends CheckboxBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Checkbox";
 }

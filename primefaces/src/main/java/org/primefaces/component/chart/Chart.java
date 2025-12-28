@@ -23,10 +23,9 @@
  */
 package org.primefaces.component.chart;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.ItemSelectEvent;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
@@ -36,40 +35,19 @@ import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Chart.COMPONENT_TYPE, namespace = Chart.COMPONENT_FAMILY)
+@FacesComponentDescription("Chart.js component using raw JSON or XDev model.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "moment/moment.js")
 @ResourceDependency(library = "primefaces", name = "chart/chart.js")
-public class Chart extends ChartBase {
+public class Chart extends ChartBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chart";
-    private static final String DEFAULT_EVENT = "itemSelect";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("itemSelect", ItemSelectEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
 
     @Override
     public void queueEvent(FacesEvent event) {
-        if (event instanceof AjaxBehaviorEvent) {
+        if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.itemSelect)) {
             BehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             Map<String, String> map = getFacesContext().getExternalContext().getRequestParameterMap();
             int itemIndex = Integer.parseInt(map.get("itemIndex"));

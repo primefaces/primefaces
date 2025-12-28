@@ -23,25 +23,27 @@
  */
 package org.primefaces.component.tagcloud;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SelectEvent;
 
 import jakarta.faces.component.UIOutput;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class TagCloudBase extends UIOutput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "select", event = SelectEvent.class, description = "Fires when a tag is selected.", defaultEvent = true)
+})
+public abstract class TagCloudBase extends UIOutput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TagCloudRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        model,
-        style,
-        styleClass
-    }
 
     public TagCloudBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -52,35 +54,6 @@ public abstract class TagCloudBase extends UIOutput implements Widget, ClientBeh
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public org.primefaces.model.tagcloud.TagCloudModel getModel() {
-        return (org.primefaces.model.tagcloud.TagCloudModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(org.primefaces.model.tagcloud.TagCloudModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Data model for the tag cloud component.")
+    public abstract org.primefaces.model.tagcloud.TagCloudModel getModel();
 }

@@ -23,29 +23,27 @@
  */
 package org.primefaces.component.terminal;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class TerminalBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "command", event = AjaxBehaviorEvent.class, description = "", defaultEvent = true)
+})
+public abstract class TerminalBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TerminalRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        style,
-        styleClass,
-        welcomeMessage,
-        prompt,
-        commandHandler,
-        autoCompleteModel,
-        escape
-    }
 
     public TerminalBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -56,67 +54,18 @@ public abstract class TerminalBase extends UIPanel implements Widget, ClientBeha
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Welcome message to be displayed on initial load.")
+    public abstract String getWelcomeMessage();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Primary prompt text.", defaultValue = "prime $")
+    public abstract String getPrompt();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Method to execute by passing command and the arguments.")
+    public abstract jakarta.el.MethodExpression getCommandHandler();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "TerminalAutoCompleteModel instance that represents the commands and arguments used for autocompletion.")
+    public abstract org.primefaces.model.terminal.TerminalAutoCompleteModel getAutoCompleteModel();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getWelcomeMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.welcomeMessage, null);
-    }
-
-    public void setWelcomeMessage(String welcomeMessage) {
-        getStateHelper().put(PropertyKeys.welcomeMessage, welcomeMessage);
-    }
-
-    public String getPrompt() {
-        return (String) getStateHelper().eval(PropertyKeys.prompt, "prime $");
-    }
-
-    public void setPrompt(String prompt) {
-        getStateHelper().put(PropertyKeys.prompt, prompt);
-    }
-
-    public jakarta.el.MethodExpression getCommandHandler() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.commandHandler, null);
-    }
-
-    public void setCommandHandler(jakarta.el.MethodExpression commandHandler) {
-        getStateHelper().put(PropertyKeys.commandHandler, commandHandler);
-    }
-
-    public org.primefaces.model.terminal.TerminalAutoCompleteModel getAutoCompleteModel() {
-        return (org.primefaces.model.terminal.TerminalAutoCompleteModel) getStateHelper().eval(PropertyKeys.autoCompleteModel, null);
-    }
-
-    public void setAutoCompleteModel(org.primefaces.model.terminal.TerminalAutoCompleteModel autoCompleteModel) {
-        getStateHelper().put(PropertyKeys.autoCompleteModel, autoCompleteModel);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
+    @Property(description = "Defines if the terminal is escaped or not.", defaultValue = "true")
+    public abstract boolean isEscape();
 }
