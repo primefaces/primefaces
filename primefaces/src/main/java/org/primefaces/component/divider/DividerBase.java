@@ -23,23 +23,17 @@
  */
 package org.primefaces.component.divider;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.model.menu.Separator;
 
 import jakarta.faces.component.UIComponentBase;
 
+@FacesComponentBase
 public abstract class DividerBase extends UIComponentBase implements Separator {
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DividerRenderer";
-
-    public enum PropertyKeys {
-        align,
-        layout,
-        type,
-        title,
-        style,
-        styleClass
-    }
 
     public DividerBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -50,54 +44,12 @@ public abstract class DividerBase extends UIComponentBase implements Separator {
         return COMPONENT_FAMILY;
     }
 
-    public String getAlign() {
-        return (String) getStateHelper().eval(PropertyKeys.align, null);
-    }
+    @Property(description = "Alignment of the content, options are 'left', 'center', 'right' for horizontal and 'top', 'center', 'bottom' for vertical.")
+    public abstract String getAlign();
 
-    public void setAlign(String align) {
-        getStateHelper().put(PropertyKeys.align, align);
-    }
+    @Property(defaultValue = "horizontal", description = "Specifies the orientation, valid values are \"horizontal\" and \"vertical\".")
+    public abstract String getLayout();
 
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "horizontal");
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "solid");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    @Override
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    @Override
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    @Override
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
-
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
+    @Property(defaultValue = "solid", description = "Border style type, \"solid\", \"dashed\" and \"dotted\".")
+    public abstract String getType();
 }
