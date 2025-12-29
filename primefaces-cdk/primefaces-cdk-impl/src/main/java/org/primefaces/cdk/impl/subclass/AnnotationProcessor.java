@@ -1394,7 +1394,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                 return "The aria-label attribute is used to define a string that labels the current element for accessibility.";
             case "disableClientWindow":
                 return "Disable appending the on the rendering of this element.";
-            case "accessKey":
+            case "accesskey":
                 return "Access key to transfer focus to the input element.";
             case "dir":
                 return "Direction indication for text that does not inherit directionality.";
@@ -1416,6 +1416,14 @@ public class AnnotationProcessor extends AbstractProcessor {
                 return "Message to display when conversion fails.";
             case "validatorMessage":
                 return "Message to display when validation fails.";
+            case "action":
+                return "A method expression or a string outcome to process when command is executed.";
+            case "actionListener":
+                return "An actionlistener to process when command is executed.";
+            case "lang":
+                return "Code describing the language used in the generated markup.";
+            case "label":
+                return "A localized user presentable name.";
 
             // Event Handlers
             case "onclick":
@@ -1518,8 +1526,6 @@ public class AnnotationProcessor extends AbstractProcessor {
                 return "Specifies where to open the linked document.";
             case "rel":
                 return "Specifies the relationship between the current and linked document.";
-            case "action":
-                return "Specifies where to send the form-data when submitted.";
             case "method":
                 return "Specifies the HTTP method to use when sending form-data.";
             case "enctype":

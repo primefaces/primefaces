@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.splitbutton;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuModel;
@@ -41,12 +42,13 @@ import jakarta.faces.event.AbortProcessingException;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = SplitButton.COMPONENT_TYPE, namespace = SplitButton.COMPONENT_FAMILY)
+@FacesComponentDescription("SplitButton displays a default command and additional ones in an overlay.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class SplitButton extends SplitButtonBase {
+public class SplitButton extends SplitButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SplitButton";
 

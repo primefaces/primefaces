@@ -23,56 +23,23 @@
  */
 package org.primefaces.component.splitbutton;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.MenuItemAware;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.menu.MenuModel;
 
 import jakarta.faces.component.html.HtmlCommandButton;
 
-public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Confirmable, Widget, MenuItemAware {
+@FacesComponentBase
+public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Confirmable, Widget, MenuItemAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SplitButtonRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        ajax,
-        async,
-        process,
-        update,
-        onstart,
-        oncomplete,
-        onerror,
-        onsuccess,
-        global,
-        delay,
-        timeout,
-        icon,
-        iconPos,
-        inline,
-        partialSubmit,
-        resetValues,
-        ignoreAutoUpdate,
-        appendTo,
-        partialSubmitFilter,
-        menuStyleClass,
-        form,
-        model,
-        filter,
-        filterMatchMode,
-        filterFunction,
-        filterPlaceholder,
-        ignoreComponentNotFound,
-        disableOnAjax,
-        filterNormalize,
-        filterInputAutoFocus,
-        ariaLabel,
-        dynamic
-    }
 
     public SplitButtonBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -83,283 +50,52 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "true", description = "Icon of the button.")
+    public abstract boolean isAjax();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Icon of the button.")
+    public abstract String getIcon();
 
-    public boolean isAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ajax, true);
-    }
+    @Property(defaultValue = "left", description = "Position of the icon.")
+    public abstract String getIconPos();
 
-    public void setAjax(boolean ajax) {
-        getStateHelper().put(PropertyKeys.ajax, ajax);
-    }
+    @Property(description = "Displays button inline instead of fitting the content width, only used by mobile.")
+    public abstract boolean isInline();
 
-    @Override
-    public boolean isAsync() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.async, false);
-    }
+    @Property(defaultValue = "@(body)", description = "Appends the overlay to the element defined by search expression.")
+    public abstract String getAppendTo();
 
-    public void setAsync(boolean async) {
-        getStateHelper().put(PropertyKeys.async, async);
-    }
+    @Property(description = "Style class of the overlay menu element.")
+    public abstract String getMenuStyleClass();
 
-    @Override
-    public String getProcess() {
-        return (String) getStateHelper().eval(PropertyKeys.process, null);
-    }
+    @Property(description = "A menu model instance to create the items of splitButton programmatically.")
+    public abstract MenuModel getModel();
 
-    public void setProcess(String process) {
-        getStateHelper().put(PropertyKeys.process, process);
-    }
+    @Property(description = "Displays an input filter for the list.")
+    public abstract boolean isFilter();
 
-    @Override
-    public String getUpdate() {
-        return (String) getStateHelper().eval(PropertyKeys.update, null);
-    }
+    @Property(description = "Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.")
+    public abstract String getFilterMatchMode();
 
-    public void setUpdate(String update) {
-        getStateHelper().put(PropertyKeys.update, update);
-    }
+    @Property(description = "Client side function to use in custom filterMatchMode.")
+    public abstract String getFilterFunction();
 
-    @Override
-    public String getOnstart() {
-        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
-    }
+    @Property(description = "Watermark displayed in the filter input field before the user enters a value in an browser.")
+    public abstract String getFilterPlaceholder();
 
-    public void setOnstart(String onstart) {
-        getStateHelper().put(PropertyKeys.onstart, onstart);
-    }
+    @Property(defaultValue = "true", description = "If true, the button will be disabled during Ajax requests triggered by the button or its menu items.")
+    public abstract boolean isDisableOnAjax();
 
-    @Override
-    public String getOncomplete() {
-        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
-    }
+    @Property(defaultValue = "false", description = "Defines if filtering would be done using normalized values (accents will be removed from characters).")
+    public abstract boolean isFilterNormalize();
 
-    public void setOncomplete(String oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
-    }
+    @Property(defaultValue = "true", description = "Defines if filter input should receive focus when overlay popup is displayed.")
+    public abstract boolean isFilterInputAutoFocus();
 
-    @Override
-    public String getOnerror() {
-        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
-    }
+    @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
+    public abstract String getAriaLabel();
 
-    public void setOnerror(String onerror) {
-        getStateHelper().put(PropertyKeys.onerror, onerror);
-    }
-
-    @Override
-    public String getOnsuccess() {
-        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
-    }
-
-    public void setOnsuccess(String onsuccess) {
-        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
-    }
-
-    @Override
-    public boolean isGlobal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
-    }
-
-    public void setGlobal(boolean global) {
-        getStateHelper().put(PropertyKeys.global, global);
-    }
-
-    @Override
-    public String getDelay() {
-        return (String) getStateHelper().eval(PropertyKeys.delay, null);
-    }
-
-    public void setDelay(String delay) {
-        getStateHelper().put(PropertyKeys.delay, delay);
-    }
-
-    @Override
-    public int getTimeout() {
-        return (Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
-    }
-
-    public void setTimeout(int timeout) {
-        getStateHelper().put(PropertyKeys.timeout, timeout);
-    }
-
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
-
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
-    public String getIconPos() {
-        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
-    }
-
-    public void setIconPos(String iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, iconPos);
-    }
-
-    public boolean isInline() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.inline, false);
-    }
-
-    public void setInline(boolean inline) {
-        getStateHelper().put(PropertyKeys.inline, inline);
-    }
-
-    @Override
-    public boolean isPartialSubmit() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
-    }
-
-    public void setPartialSubmit(boolean partialSubmit) {
-        getStateHelper().put(PropertyKeys.partialSubmit, partialSubmit);
-    }
-
-    @Override
-    public boolean isResetValues() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
-    }
-
-    public void setResetValues(boolean resetValues) {
-        getStateHelper().put(PropertyKeys.resetValues, resetValues);
-    }
-
-    @Override
-    public boolean isIgnoreAutoUpdate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
-    }
-
-    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
-        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
-    }
-
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
-    }
-
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    @Override
-    public String getPartialSubmitFilter() {
-        return (String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
-    }
-
-    public void setPartialSubmitFilter(String partialSubmitFilter) {
-        getStateHelper().put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
-    }
-
-    public String getMenuStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.menuStyleClass, null);
-    }
-
-    public void setMenuStyleClass(String menuStyleClass) {
-        getStateHelper().put(PropertyKeys.menuStyleClass, menuStyleClass);
-    }
-
-    @Override
-    public String getForm() {
-        return (String) getStateHelper().eval(PropertyKeys.form, null);
-    }
-
-    public void setForm(String form) {
-        getStateHelper().put(PropertyKeys.form, form);
-    }
-
-    public MenuModel getModel() {
-        return (MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public boolean isFilter() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
-    }
-
-    public void setFilter(boolean filter) {
-        getStateHelper().put(PropertyKeys.filter, filter);
-    }
-
-    public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
-    }
-
-    public void setFilterMatchMode(String filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
-    }
-
-    public String getFilterFunction() {
-        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
-    }
-
-    public void setFilterFunction(String filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
-    }
-
-    public String getFilterPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
-    }
-
-    public void setFilterPlaceholder(String filterPlaceholder) {
-        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
-    }
-
-    @Override
-    public boolean isIgnoreComponentNotFound() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
-    }
-
-    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
-        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
-    }
-
-    public boolean isDisableOnAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, true);
-    }
-
-    public void setDisableOnAjax(boolean disableOnAjax) {
-        getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
-    }
-
-    public boolean isFilterNormalize() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
-    }
-
-    public void setFilterNormalize(boolean filterNormalize) {
-        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
-    }
-
-    public boolean isFilterInputAutoFocus() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filterInputAutoFocus, true);
-    }
-
-    public void setFilterInputAutoFocus(boolean filterInputAutoFocus) {
-        getStateHelper().put(PropertyKeys.filterInputAutoFocus, filterInputAutoFocus);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
-
-    public boolean isDynamic() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
-    }
-
-    public void setDynamic(boolean dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, dynamic);
-    }
+    @Property(defaultValue = "false", description = "Defines if dynamic loading is enabled for the element's panel."
+            + " If the value is \"true\", the overlay is not rendered on page load to improve performance.")
+    public abstract boolean isDynamic();
 }

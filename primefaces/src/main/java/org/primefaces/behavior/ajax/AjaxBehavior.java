@@ -25,7 +25,6 @@ package org.primefaces.behavior.ajax;
 
 import org.primefaces.cdk.api.FacesBehaviorDescription;
 import org.primefaces.cdk.api.FacesBehaviorHandler;
-import org.primefaces.component.api.AjaxSource;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -42,7 +41,7 @@ import jakarta.faces.event.AjaxBehaviorListener;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
-public class AjaxBehavior extends AjaxBehaviorBaseImpl implements AjaxSource {
+public class AjaxBehavior extends AjaxBehaviorBaseImpl {
 
     public static final String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
 
