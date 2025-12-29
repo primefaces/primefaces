@@ -132,7 +132,7 @@ public class SplitterRenderer extends CoreRenderer<Splitter> {
         writer.writeAttribute(HTML.ARIA_ROLE, "presentation", null);
         writer.writeAttribute("data-size", component.getSize(), null);
         writer.writeAttribute("data-minsize", component.getMinSize(), null);
-        if (component.getStyle() != null) {
+        if (LangUtils.isNotBlank(component.getStyle())) {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
 

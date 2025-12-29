@@ -23,21 +23,16 @@
  */
 package org.primefaces.component.splitter;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
+
 import jakarta.faces.component.UIPanel;
 
-public abstract class SplitterPanelBase extends UIPanel {
+@FacesComponentBase
+public abstract class SplitterPanelBase extends UIPanel implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public enum PropertyKeys {
-        size,
-        minSize,
-        style,
-        styleClass,
-        tabindex,
-        ariaLabel,
-        ariaLabelledBy,
-    }
 
     public SplitterPanelBase() {
         setRendererType(null);
@@ -48,59 +43,18 @@ public abstract class SplitterPanelBase extends UIPanel {
         return COMPONENT_FAMILY;
     }
 
-    public Integer getSize() {
-        return (Integer) getStateHelper().eval(PropertyKeys.size, 0);
-    }
+    @Property(defaultValue = "0", description = "Size of the element relative to 100%.")
+    public abstract Integer getSize();
 
-    public void setSize(Integer size) {
-        getStateHelper().put(PropertyKeys.size, size);
-    }
+    @Property(defaultValue = "0", description = "Minimum size of the element relative to 100%.")
+    public abstract Integer getMinSize();
 
-    public Integer getMinSize() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minSize, 0);
-    }
+    @Property(description = "Splitter handle ARIA label for screenreader support.")
+    public abstract String getAriaLabel();
 
-    public void setMinSize(Integer minSize) {
-        getStateHelper().put(PropertyKeys.minSize, minSize);
-    }
+    @Property(description = "Establishes relationships between the splitter and panel label element IDs.")
+    public abstract String getAriaLabelledBy();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
-
-    public String getAriaLabelledBy() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabelledBy, null);
-    }
-
-    public void setAriaLabelledBy(String ariaLabelledBy) {
-        getStateHelper().put(PropertyKeys.ariaLabelledBy, ariaLabelledBy);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
+    @Property(defaultValue = "0", description = "Position in the tabbing order.")
+    public abstract String getTabindex();
 }

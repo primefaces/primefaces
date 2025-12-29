@@ -23,29 +23,25 @@
  */
 package org.primefaces.component.splitter;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SplitterResizeEvent;
 
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class SplitterBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "resizeEnd", event = SplitterResizeEvent.class, description = "Fires when the splitter is resized.", defaultEvent = true)
+})
+public abstract class SplitterBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SplitterRenderer";
-
-    public enum PropertyKeys {
-        widgetVar,
-        layout,
-        gutterSize,
-        stateKey,
-        stateStorage,
-        onResizeEnd,
-        style,
-        styleClass,
-        step;
-    }
 
     public SplitterBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -56,76 +52,22 @@ public abstract class SplitterBase extends UIComponentBase implements Widget, Cl
         return COMPONENT_FAMILY;
     }
 
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "horizontal");
-    }
+    @Property(defaultValue = "horizontal", description = "Orientation of the panels, valid values are \"horizontal\" and \"vertical\".")
+    public abstract String getLayout();
 
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
-    }
+    @Property(defaultValue = "4", description = "Size of the divider in pixels.")
+    public abstract Integer getGutterSize();
 
-    public Integer getGutterSize() {
-        return (Integer) getStateHelper().eval(PropertyKeys.gutterSize, 4);
-    }
+    @Property(description = "Storage identifier of a stateful Splitter.")
+    public abstract String getStateKey();
 
-    public void setGutterSize(Integer gutterSize) {
-        getStateHelper().put(PropertyKeys.gutterSize, gutterSize);
-    }
+    @Property(defaultValue = "session", description = "Defines where a stateful splitter keeps its state."
+            + " Valid values are \"session\" for sessionStorage and \"local\" for localStorage.")
+    public abstract String getStateStorage();
 
-    public String getStateKey() {
-        return (String) getStateHelper().eval(PropertyKeys.stateKey, null);
-    }
+    @Property(description = "Client-side callback to execute after resizing end.")
+    public abstract String getOnResizeEnd();
 
-    public void setStateKey(String stateKey) {
-        getStateHelper().put(PropertyKeys.stateKey, stateKey);
-    }
-
-    public String getStateStorage() {
-        return (String) getStateHelper().eval(PropertyKeys.stateStorage, "session");
-    }
-
-    public void setStateStorage(String stateStorage) {
-        getStateHelper().put(PropertyKeys.stateStorage, stateStorage);
-    }
-
-    public String getOnResizeEnd() {
-        return (String) getStateHelper().eval(PropertyKeys.onResizeEnd, null);
-    }
-
-    public void setOnResizeEnd(String onResizeEnd) {
-        getStateHelper().put(PropertyKeys.onResizeEnd, onResizeEnd);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public int getStep() {
-        return (Integer) getStateHelper().eval(PropertyKeys.step, 5);
-    }
-
-    public void setStep(int step) {
-        getStateHelper().put(PropertyKeys.step, step);
-    }
-
-    @Override
-    public java.lang.String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
-    }
-
-    public void setWidgetVar(java.lang.String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "5", description = "Step size when pressing arrow keys to resize panel.")
+    public abstract int getStep();
 }

@@ -23,11 +23,14 @@
  */
 package org.primefaces.component.splitter;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 
 @FacesComponent(value = SplitterPanel.COMPONENT_TYPE, namespace = SplitterPanel.COMPONENT_FAMILY)
-public class SplitterPanel extends SplitterPanelBase {
+@FacesComponentDescription("SplitterPanel is utilized by the Splitter component to separate content.")
+public class SplitterPanel extends SplitterPanelBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SplitterPanel";
 
     public static final String STYLE_CLASS = "ui-splitter-panel";
