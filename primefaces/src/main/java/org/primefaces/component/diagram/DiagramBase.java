@@ -23,24 +23,33 @@
  */
 package org.primefaces.component.diagram;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.PrimeUIData;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.diagram.ConnectEvent;
+import org.primefaces.event.diagram.ConnectionChangeEvent;
+import org.primefaces.event.diagram.DisconnectEvent;
+import org.primefaces.event.diagram.PositionChangeEvent;
 
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UIComponent;
 
-public abstract class DiagramBase extends PrimeUIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "connect", event = ConnectEvent.class, description = "Fires when elements are connected."),
+    @FacesBehaviorEvent(name = "disconnect", event = DisconnectEvent.class, description = "Fires when elements are disconnected."),
+    @FacesBehaviorEvent(name = "connectionChange", event = ConnectionChangeEvent.class, description = "Fires when a connection is changed."),
+    @FacesBehaviorEvent(name = "positionChange", event = PositionChangeEvent.class, description = "Fires when an element position is changed.")
+})
+public abstract class DiagramBase extends PrimeUIData implements Widget, PrimeClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DiagramRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        style,
-        styleClass
-    }
 
     public DiagramBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -51,27 +60,6 @@ public abstract class DiagramBase extends PrimeUIData implements Widget, ClientB
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Facet(description = "Allows customer rendering of HTML in the element.")
+    public abstract UIComponent getElementFacet();
 }
