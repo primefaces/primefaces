@@ -164,7 +164,7 @@ public class MenuItemAwareRenderer<T extends UIComponent> extends OutcomeTargetR
 
         if (menuitem instanceof DialogReturnAware) {
             List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>(1);
-            behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
+            behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBTRUSIVE));
             String dialogReturnBehavior = getEventBehaviors(context, (ClientBehaviorHolder) menuitem, DialogReturnAware.EVENT_DIALOG_RETURN,
                     behaviorParams);
             if (dialogReturnBehavior != null) {

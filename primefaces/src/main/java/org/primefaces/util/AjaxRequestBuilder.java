@@ -400,10 +400,10 @@ public class AjaxRequestBuilder {
     public String buildBehavior(ClientBehaviorRenderingMode mode) {
         addFragmentConfig();
 
-        if (mode == ClientBehaviorRenderingMode.UNOBSTRUSIVE) {
+        if (mode == ClientBehaviorRenderingMode.UNOBTRUSIVE) {
             buffer.append("},ext);");
         }
-        else if (mode == ClientBehaviorRenderingMode.OBSTRUSIVE) {
+        else if (mode == ClientBehaviorRenderingMode.OBTRUSIVE) {
             buffer.append("});");
         }
 
