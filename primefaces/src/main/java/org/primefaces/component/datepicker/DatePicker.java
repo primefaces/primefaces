@@ -70,14 +70,14 @@ public class DatePicker extends DatePickerBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.DatePicker";
     public static final String CONTAINER_EXTENSION_CLASS = "p-datepicker";
 
-    protected static final List<PrimeClientBehaviorEventKeys> UNOBSTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
+    protected static final List<PrimeClientBehaviorEventKeys> UNOBTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
             ClientBehaviorEventKeys.dateSelect, ClientBehaviorEventKeys.viewChange, ClientBehaviorEventKeys.close);
 
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     @Override
-    public Collection<PrimeClientBehaviorEventKeys> getUnobstrusiveClientBehaviorEventKeys() {
-        return UNOBSTRUSIVE_EVENT_KEYS;
+    public Collection<PrimeClientBehaviorEventKeys> getUnobtrusiveClientBehaviorEventKeys() {
+        return UNOBTRUSIVE_EVENT_KEYS;
     }
 
     @Override

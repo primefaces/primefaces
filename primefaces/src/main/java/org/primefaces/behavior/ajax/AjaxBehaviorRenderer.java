@@ -70,7 +70,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
         UIComponent component = behaviorContext.getComponent();
 
-        ClientBehaviorRenderingMode renderingMode = ClientBehaviorRenderingMode.OBSTRUSIVE;
+        ClientBehaviorRenderingMode renderingMode = ClientBehaviorRenderingMode.OBTRUSIVE;
 
         Collection<ClientBehaviorContext.Parameter> behaviorParameters = behaviorContext.getParameters();
         if (behaviorParameters != null && !behaviorParameters.isEmpty()) {

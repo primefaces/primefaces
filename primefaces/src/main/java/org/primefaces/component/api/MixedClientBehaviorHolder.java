@@ -40,5 +40,5 @@ import java.util.Collection;
  */
 public interface MixedClientBehaviorHolder {
 
-    Collection<PrimeClientBehaviorEventKeys> getUnobstrusiveClientBehaviorEventKeys();
+    Collection<PrimeClientBehaviorEventKeys> getUnobtrusiveClientBehaviorEventKeys();
 }

@@ -24,6 +24,6 @@
 package org.primefaces.component.api;
 
 public enum ClientBehaviorRenderingMode {
-    OBSTRUSIVE,
-    UNOBSTRUSIVE
+    OBTRUSIVE,
+    UNOBTRUSIVE
 }

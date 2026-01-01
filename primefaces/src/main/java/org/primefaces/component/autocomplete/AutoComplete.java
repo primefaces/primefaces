@@ -86,7 +86,7 @@ public class AutoComplete extends AutoCompleteBaseImpl {
     public static final String MORE_TEXT_LIST_CLASS = "ui-autocomplete-item ui-autocomplete-moretext";
     public static final String MORE_TEXT_TABLE_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-widget-content";
 
-    protected static final List<PrimeClientBehaviorEventKeys> UNOBSTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
+    protected static final List<PrimeClientBehaviorEventKeys> UNOBTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
             ClientBehaviorEventKeys.itemSelect, ClientBehaviorEventKeys.itemUnselect,
             ClientBehaviorEventKeys.query, ClientBehaviorEventKeys.moreTextSelect,
             ClientBehaviorEventKeys.emptyMessageSelect, ClientBehaviorEventKeys.clear);
@@ -96,8 +96,8 @@ public class AutoComplete extends AutoCompleteBaseImpl {
     private Integer suggestionsCount;
 
     @Override
-    public Collection<PrimeClientBehaviorEventKeys> getUnobstrusiveClientBehaviorEventKeys() {
-        return UNOBSTRUSIVE_EVENT_KEYS;
+    public Collection<PrimeClientBehaviorEventKeys> getUnobtrusiveClientBehaviorEventKeys() {
+        return UNOBTRUSIVE_EVENT_KEYS;
     }
 
     public boolean isMoreTextRequest(FacesContext context) {

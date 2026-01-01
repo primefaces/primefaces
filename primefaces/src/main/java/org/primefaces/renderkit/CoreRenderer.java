@@ -204,7 +204,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
 
                     List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
                     params.add(new ClientBehaviorContext.Parameter(
-                            Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
+                            Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBTRUSIVE));
 
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
                             context, component, behaviorEvent, clientId, params);
@@ -645,7 +645,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
             boolean written = false;
             Collection<String> eventNames;
             if (component instanceof MixedClientBehaviorHolder) {
-                eventNames = ((MixedClientBehaviorHolder) component).getUnobstrusiveClientBehaviorEventKeys().stream()
+                eventNames = ((MixedClientBehaviorHolder) component).getUnobtrusiveClientBehaviorEventKeys().stream()
                         .map(k -> k.getName())
                         .collect(Collectors.toList());
             }
@@ -655,7 +655,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
 
             String clientId = ((UIComponent) component).getClientId(context);
             List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
-            params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
+            params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBTRUSIVE));
 
             writer.write(",behaviors:{");
             for (Iterator<String> eventNameIterator = eventNames.iterator(); eventNameIterator.hasNext();) {
