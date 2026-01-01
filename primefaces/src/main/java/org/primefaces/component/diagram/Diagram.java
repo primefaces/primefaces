@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.diagram;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
@@ -30,53 +31,30 @@ import org.primefaces.event.diagram.PositionChangeEvent;
 import org.primefaces.model.diagram.DiagramModel;
 import org.primefaces.model.diagram.Element;
 import org.primefaces.model.diagram.endpoint.EndPoint;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Map;
 
-import jakarta.faces.FacesException;
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Diagram.COMPONENT_TYPE, namespace = Diagram.COMPONENT_FAMILY)
+@FacesComponentDescription("Diagram is a component to create visual elements and connect them on a web page.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "diagram/diagram.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "diagram/diagram.js")
-public class Diagram extends DiagramBase {
+public class Diagram extends DiagramBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Diagram";
 
     public static final String CONTAINER_CLASS = "ui-diagram ui-widget";
     public static final String ELEMENT_CLASS = "ui-diagram-element";
     public static final String DRAGGABLE_ELEMENT_CLASS = "ui-diagram-draggable";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("connect", ConnectEvent.class)
-            .put("disconnect", DisconnectEvent.class)
-            .put("connectionChange", ConnectionChangeEvent.class)
-            .put("positionChange", PositionChangeEvent.class)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     public boolean isConnectRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_connect");
@@ -96,38 +74,38 @@ public class Diagram extends DiagramBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
+        FacesContext context = event.getFacesContext();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
 
-        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = getClientId(context);
+        if (isAjaxBehaviorEventSource(event)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             DiagramModel model = (DiagramModel) getValue();
 
             if (model != null) {
-                if ("connect".equals(eventName) || "disconnect".equals(eventName)) {
-                    FacesEvent wrapperEvent = null;
+                if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.connect)) {
                     Element sourceElement = model.findElement(params.get(clientId + "_sourceId"));
                     Element targetElement = model.findElement(params.get(clientId + "_targetId"));
                     EndPoint sourceEndPoint = model.findEndPoint(sourceElement, params.get(clientId + "_sourceEndPointId"));
                     EndPoint targetEndPoint = model.findEndPoint(targetElement, params.get(clientId + "_targetEndPointId"));
 
-                    if ("connect".equals(eventName)) {
-                        wrapperEvent = new ConnectEvent(this, behaviorEvent.getBehavior(), sourceElement, targetElement, sourceEndPoint, targetEndPoint);
-                    }
-                    else if ("disconnect".equals(eventName)) {
-                        wrapperEvent = new DisconnectEvent(this, behaviorEvent.getBehavior(), sourceElement, targetElement, sourceEndPoint, targetEndPoint);
-                    }
-
-                    if (wrapperEvent == null) {
-                        throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
-                    }
-
-                    wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
-                    super.queueEvent(wrapperEvent);
+                    ConnectEvent connectEvent =
+                        new ConnectEvent(this, behaviorEvent.getBehavior(), sourceElement, targetElement, sourceEndPoint, targetEndPoint);
+                    connectEvent.setPhaseId(behaviorEvent.getPhaseId());
+                    super.queueEvent(connectEvent);
                 }
-                else if ("connectionChange".equals(eventName)) {
+                else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.disconnect)) {
+                    Element sourceElement = model.findElement(params.get(clientId + "_sourceId"));
+                    Element targetElement = model.findElement(params.get(clientId + "_targetId"));
+                    EndPoint sourceEndPoint = model.findEndPoint(sourceElement, params.get(clientId + "_sourceEndPointId"));
+                    EndPoint targetEndPoint = model.findEndPoint(targetElement, params.get(clientId + "_targetEndPointId"));
+
+                    DisconnectEvent disconnectEvent =
+                        new DisconnectEvent(this, behaviorEvent.getBehavior(), sourceElement, targetElement, sourceEndPoint, targetEndPoint);
+                    disconnectEvent.setPhaseId(behaviorEvent.getPhaseId());
+                    super.queueEvent(disconnectEvent);
+                }
+                else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.connectionChange)) {
                     Element originalSourceElement = model.findElement(params.get(clientId + "_originalSourceId"));
                     Element newSourceElement = model.findElement(params.get(clientId + "_newSourceId"));
                     Element originalTargetElement = model.findElement(params.get(clientId + "_originalTargetId"));
@@ -144,7 +122,7 @@ public class Diagram extends DiagramBase {
                     connectionChangeEvent.setPhaseId(behaviorEvent.getPhaseId());
                     super.queueEvent(connectionChangeEvent);
                 }
-                else if ("positionChange".equals(eventName)) {
+                else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.positionChange)) {
                     Element element = model.findElement(params.get(clientId + "_elementId"));
                     String[] position = params.get(clientId + "_position").split(",");
 

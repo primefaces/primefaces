@@ -383,7 +383,7 @@ public class DiagramRenderer extends CoreRenderer<Diagram> {
         String style = component.getStyle();
         String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? Diagram.CONTAINER_CLASS : Diagram.CONTAINER_CLASS + " " + styleClass;
-        UIComponent elementFacet = component.getFacet("element");
+        UIComponent elementFacet = component.getElementFacet();
 
         writer.startElement("div", component);
         writer.writeAttribute("id", component.getClientId(context), null);
