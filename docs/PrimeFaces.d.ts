@@ -697,7 +697,7 @@ declare namespace PrimeFaces.ajax {
          *           <span id="content:msgs" class="ui-growl-pl">...</span>
          *           <script id="content:msgs_s" type="text/javascript">...</script>
          *       ]]></update>
-         *       <update id="content:javax.faces.ViewState:0"><![CDATA[3644438980748093603:2519460806875181703]]></update>
+         *       <update id="content:jakarta.faces.ViewState:0"><![CDATA[3644438980748093603:2519460806875181703]]></update>
          *    </changes>
          * </partial-response>
          * ```
@@ -1257,8 +1257,8 @@ declare namespace jsf {
      * }
      * ```
      * @return A string representing the current state of the running application in a typical product development
-     * life cycle. Refer to `javax.faces.application.Application.getProjectStage` and
-     * `javax.faces.application.ProjectStage`.
+     * life cycle. Refer to `jakarta.faces.application.Application.getProjectStage` and
+     * `jakarta.faces.application.ProjectStage`.
      */
     export function getProjectStage(): string;
     /**
@@ -1412,7 +1412,7 @@ declare namespace jsf.ajax {
          */
         delay: number;
         /**
-         * If true, ensure a post data argument with the name `javax.faces.partial.resetValues` and the value true is
+         * If true, ensure a post data argument with the name `jakarta.faces.partial.resetValues` and the value true is
          * sent in addition to the other post data arguments. This will cause `UIViewRoot.resetValues()` to be called,
          * passing the value of the "render" attribute. Note: do not use any of the `@` keywords such as `@form` or
          * `@this` with this option because `UIViewRoot.resetValues()` does not descend into the children of the listed
@@ -1493,37 +1493,37 @@ declare namespace jsf.ajax {
      * - Get the form view state by calling {@link jsf.getViewState} passing the form element as the argument.
      * - Collect post data arguments for the Ajax request.
      *     - The following name/value pairs are required post data arguments:
-     *         - `javax.faces.ViewState` - Contents of `javax.faces.ViewState` hidden field. This is included when
+     *         - `jakarta.faces.ViewState` - Contents of `jakarta.faces.ViewState` hidden field. This is included when
      *           {@link jsf.getViewState} is used.
-     *         - `javax.faces.partial.ajax` - `true`
-     *         - `javax.faces.source` - The identifier of the element that triggered this request.
-     *         - `javax.faces.ClientWindow` - Call {@link jsf.getClientWindow}, passing the current form. If the return
+     *         - `jakarta.faces.partial.ajax` - `true`
+     *         - `jakarta.faces.source` - The identifier of the element that triggered this request.
+     *         - `jakarta.faces.ClientWindow` - Call {@link jsf.getClientWindow}, passing the current form. If the return
      *           is non-null, it must be set as the value of this name/value pair, otherwise, a name/value pair for
      *           client window must not be sent.
      * - Collect optional post data arguments for the Ajax request.
      *     - Determine additional arguments (if any) from the `options` argument. If `options.execute` exists:
      *         - If the keyword `@none` is present, do not create and send the post data argument
-     *           `javax.faces.partial.execute`.
+     *           `jakarta.faces.partial.execute`.
      *         - If the keyword `@all` is present, create the post data argument with the name
-     *           `javax.faces.partial.execute` and the value `@all`.
+     *           `jakarta.faces.partial.execute` and the value `@all`.
      *         - Otherwise, there are specific identifiers that need to be sent. Create the post data argument with the
-     *           name `javax.faces.partial.execute` and the value as a space delimited string of client identifiers.
+     *           name `jakarta.faces.partial.execute` and the value as a space delimited string of client identifiers.
      *     - If `options.execute` does not exist, create the post data argument with the name
-     *       `javax.faces.partial.execute` and the value as the identifier of the element that caused this request.
+     *       `jakarta.faces.partial.execute` and the value as the identifier of the element that caused this request.
      *     - If `options.render` exists:
      *         - If the keyword `@none` is present, do not create and send the post data argument
-     *           `javax.faces.partial.render`.
+     *           `jakarta.faces.partial.render`.
      *         - If the keyword `@all` is present, create the post data argument with the name
-     *           `javax.faces.partial.render` and the value `@all`.
+     *           `jakarta.faces.partial.render` and the value `@all`.
      *         - Otherwise, there are specific identifiers that need to be sent. Create the post data argument with the
-     *           name `javax.faces.partial.render` and the value as a space delimited string of client identifiers.
+     *           name `jakarta.faces.partial.render` and the value as a space delimited string of client identifiers.
      *     - If `options.render` does not exist do not create and send the post data argument
-     *       `javax.faces.partial.render`.
+     *       `jakarta.faces.partial.render`.
      *     - If `options.delay` exists let it be the value delay, for this discussion. If options.delay does not exist,
      *       or is the literal string 'none', without the quotes, no delay is used. If less than delay milliseconds
      *       elapses between calls to `request()` only the most recent one is sent and all other requests are discarded.
      *     - If `options.resetValues` exists and its value is true, ensure a post data argument with the name
-     *       `javax.faces.partial.resetValues` and the value true is sent in addition to the other post data arguments.
+     *       `jakarta.faces.partial.resetValues` and the value true is sent in addition to the other post data arguments.
      *       This will cause `UIViewRoot.resetValues()` to be called, passing the value of the `render` attribute. Note:
      *       do not use any of the `@` keywords such as `@form` or `@this` with this option because
      *       `UIViewRoot.resetValues()` does not descend into the children of the listed components.
@@ -1550,7 +1550,7 @@ declare namespace jsf.ajax {
      * - Send a begin event following the procedure as outlined in the Chapter 13 `Sending Events` section of the Java
      *   Server Faces spec.
      * - Set the request header with the name: `Faces-Request` and the value: `partial/ajax`.
-     * - Determine the `posting URL` as follows: If the hidden field `javax.faces.encodedURL` is present in the
+     * - Determine the `posting URL` as follows: If the hidden field `jakarta.faces.encodedURL` is present in the
      *   submitting form, use its value as the posting URL. Otherwise, use the action property of the form element as
      *   the URL.
      * - Determine whether or not the submitting form is using `multipart/form-data` as its enctype attribute. If not,
@@ -1611,10 +1611,10 @@ declare namespace jsf.ajax {
      * the DOM element that will be updated. The contents of the `CDATA` section is the data that will be used when
      * updating the contents of the DOM element as specified by the `<update>` element identifier.
      *
-     * - If an `<update>` element is found in the response with the identifier `javax.faces.ViewRoot`:
+     * - If an `<update>` element is found in the response with the identifier `jakarta.faces.ViewRoot`:
      *
      *   ```xml
-     *   <update id="javax.faces.ViewRoot">
+     *   <update id="jakarta.faces.ViewRoot">
      *       <![CDATA[...]]>
      *   </update>
      *   ```
@@ -1622,52 +1622,52 @@ declare namespace jsf.ajax {
      *   Update the entire DOM replacing the appropriate `head` and/or `body` sections with the content from the
      *   response.
      *
-     * - If an `<update>` element is found in the response with an identifier containing `javax.faces.ViewState`:
+     * - If an `<update>` element is found in the response with an identifier containing `jakarta.faces.ViewState`:
      *
      *   ```xml
-     *   <update id="<VIEW_ROOT_CONTAINER_CLIENT_ID><SEP>javax.faces.ViewState<SEP><UNIQUE_PER_VIEW_NUMBER>">
+     *   <update id="<VIEW_ROOT_CONTAINER_CLIENT_ID><SEP>jakarta.faces.ViewState<SEP><UNIQUE_PER_VIEW_NUMBER>">
      *       <![CDATA[...]]>
      *   </update>
      *   ```
      *
-     *   locate and update the submitting form's `javax.faces.ViewState` value with the `CDATA` contents from the
+     *   locate and update the submitting form's `jakarta.faces.ViewState` value with the `CDATA` contents from the
      *   response. `<SEP>`: is the currently configured `UINamingContainer.getSeparatorChar()`.
      *   `<VIEW_ROOT_CONTAINER_CLIENT_ID>` is the return from `UIViewRoot.getContainerClientId()` on the view from
      *   whence this state originated. `<UNIQUE_PER_VIEW_NUMBER>` is a number that must be unique within this view, but
      *   must not be included in the view state. This requirement is simply to satisfy XML correctness in parity with
-     *   what is done in the corresponding non-partial JSF view. Locate and update the `javax.faces.ViewState` value for
+     *   what is done in the corresponding non-partial JSF view. Locate and update the `jakarta.faces.ViewState` value for
      *   all forms specified in the render target list.
      *
-     * - If an update element is found in the response with an identifier containing `javax.faces.ClientWindow`:
+     * - If an update element is found in the response with an identifier containing `jakarta.faces.ClientWindow`:
      *
      *   ```xml
-     *   <update id="<VIEW_ROOT_CONTAINER_CLIENT_ID><SEP>javax.faces.ClientWindow<SEP><UNIQUE_PER_VIEW_NUMBER>">
+     *   <update id="<VIEW_ROOT_CONTAINER_CLIENT_ID><SEP>jakarta.faces.ClientWindow<SEP><UNIQUE_PER_VIEW_NUMBER>">
      *       <![CDATA[...]]>
      *   </update>
      *   ```
      *
-     *   locate and update the submitting form's `javax.faces.ClientWindow` value with the `CDATA` contents from the
+     *   locate and update the submitting form's `jakarta.faces.ClientWindow` value with the `CDATA` contents from the
      *   response. `<SEP>`: is the currently configured `UINamingContainer.getSeparatorChar()`.
      *   `<VIEW_ROOT_CONTAINER_CLIENT_ID>` is the return from `UIViewRoot.getContainerClientId()` on the view from
      *   whence this state originated. `<UNIQUE_PER_VIEW_NUMBER>` is a number that must be unique within this view, but
      *   must not be included in the view state. This requirement is simply to satisfy XML correctness in parity with
-     *   what is done in the corresponding non-partial JSF view. Locate and update the `javax.faces.ClientWindow` value
+     *   what is done in the corresponding non-partial JSF view. Locate and update the `jakarta.faces.ClientWindow` value
      *   for all forms specified in the render target list.
      *
-     * - If an update element is found in the response with the identifier `javax.faces.ViewHead`:
+     * - If an update element is found in the response with the identifier `jakarta.faces.ViewHead`:
      *
      *   ```xml
-     *   <update id="javax.faces.ViewHead">
+     *   <update id="jakarta.faces.ViewHead">
      *       <![CDATA[...]]>
      *   </update>
      *   ```
      *
      *   update the document's `head` section with the `CDATA` contents from the response.
      *
-     * - If an update element is found in the response with the identifier `javax.faces.ViewBody`:
+     * - If an update element is found in the response with the identifier `jakarta.faces.ViewBody`:
      *
      *   ```xml
-     *   <update id="javax.faces.ViewBody">
+     *   <update id="jakarta.faces.ViewBody">
      *       <![CDATA[...]]>
      *   </update>
      *   ```
@@ -1877,7 +1877,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -2049,7 +2049,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -2203,7 +2203,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -2641,7 +2641,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -2997,7 +2997,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -3893,7 +3893,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -4184,7 +4184,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: TCfg): void;
@@ -4427,7 +4427,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -4647,7 +4647,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -4736,7 +4736,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -4821,7 +4821,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -4972,7 +4972,7 @@ declare namespace PrimeFaces.widget {
          * was created. You can use this method to perform any initialization that is required. For widgets that need to create
          * custom HTML on the client-side this is also the place where you should call your render method.
          * @param cfg The widget configuration to be used for this widget instance. This widget
-         * configuration is usually created on the server by the `javax.faces.render.Renderer` for this component.
+         * configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this component.
          */
         init(cfg: Partial<TCfg>): void;
         /**
@@ -5137,7 +5137,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -5415,7 +5415,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -5645,7 +5645,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -5829,7 +5829,7 @@ declare namespace PrimeFaces.widget {
          * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -6888,7 +6888,7 @@ declare namespace PrimeFaces {
      */
     export const RESET_VALUES_PARAM: string;
     /**
-     * Name of the faces resource servlet, eg. `javax.faces.resource`.
+     * Name of the faces resource servlet, eg. `jakarta.faces.resource`.
      */
     export const RESOURCE_IDENTIFIER: string;
     /**
@@ -7563,7 +7563,7 @@ declare namespace PrimeFaces.resources {
      * Builds a JSF resource URL for given resource.
      *
      * ```javascript
-     * getFacesResource("main.css", "pf", "4.2.0") // => "https://www.primefaces.org/showcase/javax.faces.resource/main.css.xhtml?ln=pf&v=4.2.0"
+     * getFacesResource("main.css", "pf", "4.2.0") // => "https://www.primefaces.org/showcase/jakarta.faces.resource/main.css.xhtml?ln=pf&v=4.2.0"
      * ```
      * @param name The name of the resource, such as `primefaces.js`.
      * @param library The library of the resource, such as `primefaces`.
@@ -8195,7 +8195,7 @@ declare namespace PrimeFaces.widget {
          * constructor. Instead, override the {@link init} method, which is called at the end of the constructor once the
          * instance is created.
          * @param cfg The widget configuration to be used for this widget
-         * instance. This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for
+         * instance. This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for
          * this component.
          */
         constructor(cfg: PrimeFaces.PartialWidgetCfg<TCfg>);
@@ -8391,7 +8391,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -8558,7 +8558,7 @@ declare namespace PrimeFaces.widget {
          * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          * @param overlay The DOM element for the overlay.
          * @param overlayId The ID of the overlay, usually the widget ID.
@@ -8747,7 +8747,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -8827,7 +8827,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -8902,7 +8902,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -9023,7 +9023,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -10278,7 +10278,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -11110,7 +11110,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -12788,7 +12788,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -12958,7 +12958,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -13292,7 +13292,7 @@ declare namespace PrimeFaces.widget {
          * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -13619,7 +13619,7 @@ declare namespace PrimeFaces.widget {
          * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -13758,7 +13758,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -13840,7 +13840,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -13914,7 +13914,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -13991,7 +13991,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -14069,7 +14069,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -15889,7 +15889,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -16111,7 +16111,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -16195,7 +16195,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -16335,7 +16335,7 @@ declare namespace PrimeFaces.widget {
          * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -16414,7 +16414,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -16508,7 +16508,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -16581,7 +16581,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -16649,7 +16649,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -16774,7 +16774,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -16915,7 +16915,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -16981,7 +16981,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -17102,7 +17102,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -17250,7 +17250,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -17356,7 +17356,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -17723,7 +17723,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -18078,7 +18078,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -18194,7 +18194,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -18303,7 +18303,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -18396,7 +18396,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -18514,7 +18514,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -18980,7 +18980,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -19275,7 +19275,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -19517,7 +19517,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -19649,7 +19649,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -19943,7 +19943,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -20075,7 +20075,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -20555,7 +20555,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -20815,7 +20815,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -21066,7 +21066,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -21515,7 +21515,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -21631,7 +21631,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -21761,7 +21761,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -21888,7 +21888,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -23098,7 +23098,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -23382,7 +23382,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -23680,7 +23680,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -23963,7 +23963,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -24089,7 +24089,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -24205,7 +24205,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -24315,7 +24315,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -24457,7 +24457,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -24670,7 +24670,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -24835,7 +24835,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -25021,7 +25021,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -25159,7 +25159,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -25286,7 +25286,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -25364,7 +25364,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -25418,7 +25418,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -25561,7 +25561,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -25636,7 +25636,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -25700,7 +25700,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -25812,7 +25812,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -25997,7 +25997,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -26117,7 +26117,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -26264,7 +26264,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -26360,7 +26360,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -26576,7 +26576,7 @@ declare namespace PrimeFaces.widget {
          * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -26861,7 +26861,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -27078,7 +27078,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -27560,7 +27560,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -27897,7 +27897,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -28178,7 +28178,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -28388,7 +28388,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -28526,7 +28526,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -28666,7 +28666,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -28806,7 +28806,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -29373,7 +29373,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -29443,7 +29443,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -29556,7 +29556,7 @@ declare namespace PrimeFaces.widget {
          * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -30076,7 +30076,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -30202,7 +30202,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -30459,7 +30459,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -30627,7 +30627,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -30865,7 +30865,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -31027,7 +31027,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -31095,7 +31095,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -31159,7 +31159,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -31228,7 +31228,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -31476,7 +31476,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -31653,7 +31653,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -31736,7 +31736,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -32010,7 +32010,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -32325,7 +32325,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -32503,7 +32503,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -33296,7 +33296,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -33585,7 +33585,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -33799,7 +33799,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -34548,7 +34548,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -35007,7 +35007,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
@@ -35193,8 +35193,8 @@ declare namespace PrimeFaces.validation.ValidationContext {
     export function getLabel(element: JQuery): string;
     /**
      * Shortcut for PrimeFaces.validation.Utils.getMessage.
-     * @param key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
-     * `javax.faces.validator.LengthValidator.MINIMUM`.
+     * @param key The i18n key of a message, such as `jakarta.faces.component.UIInput.REQUIRED` or
+     * `jakarta.faces.validator.LengthValidator.MINIMUM`.
      * @return The localized faces message for the given key, or `null` if no
      * translation was found for the key.
      */
@@ -35264,8 +35264,8 @@ declare namespace PrimeFaces.validation.Utils {
     /**
      * Finds the localized text of the given message key. When the current locale does not contain a translation,
      * falls back to the default English locale.
-     * @param key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
-     * `javax.faces.validator.LengthValidator.MINIMUM`.
+     * @param key The i18n key of a message, such as `jakarta.faces.component.UIInput.REQUIRED` or
+     * `jakarta.faces.validator.LengthValidator.MINIMUM`.
      * @param params A list of parameters for the placeholders.
      * @return The localized faces message for the given key, or `null` if no
      * translation was found for the key.
@@ -35435,7 +35435,7 @@ declare namespace PrimeFaces.widget {
          * ```
          * @override
          * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
