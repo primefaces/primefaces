@@ -32,7 +32,7 @@ What does that mean?
 - The most contributors here on GitHub are working on PrimeFaces in their spare time.
 - PrimeTek pushes fixes and new features from their closed source LTS and Pro repositories to the community edition.
 - We, the community on GitHub, only provide support for issues, which are reproducible with the current major release or SNAPSHOT.
-- We are NOT able to port bugfixes to elite releases. This is up to PrimeTek and can e.g. be triggered with [PrimeFaces PRO](https://www.primefaces.org/support/).
+- We are NOT able to port bugfixes to LTS releases. This is up to PrimeTek and can e.g. be triggered with [PrimeFaces PRO](https://www.primefaces.org/support/). You can also ask questions in the [LTS Discussions](https://github.com/orgs/primefaces/discussions/categories/primefaces-lts).
 
 ### Versions
 ***
