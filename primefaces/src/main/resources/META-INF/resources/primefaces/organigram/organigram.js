@@ -509,7 +509,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
                     leafTable.append($("<tr><td><div class='line down' style='height:" + this.cfg.leafNodeConnectorHeight + "px'></div></td></tr>"));
                 }
 
-                var leafRow = $("<<tr></tr>").appendTo(leafTable);
+                var leafRow = $("<tr></tr>").appendTo(leafTable);
                 var leafCell = $("<td></td>").appendTo(leafRow);
 
                 var childNode = $(leafChildNodes[j]);
