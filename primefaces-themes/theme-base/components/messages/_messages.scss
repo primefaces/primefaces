@@ -99,7 +99,7 @@ body {
       color: $errorMessageTextColor;
 
       .ui-messages-error-icon,
-      .ui-messages-fatal {
+      .ui-messages-fatal-icon {
         @include icon-override("\e90c");
         font-size: $messagesIconFontSize;
         margin: 0 $inlineSpacing 0 0;
