@@ -41,7 +41,7 @@ public abstract class AbstractPrimeHtmlInputText extends HtmlInputText implement
     @Property(description = "Controls browser autocomplete behavior. Possible values are 'on', 'off', and 'new-password'.")
     public abstract String getAutocomplete();
 
-    @Property(description = "Number of characters used to determine the width of the input element.", defaultValue = "-2147483648")
+    @Property(description = "Number of characters used to determine the width of the input element.", defaultValue = "Integer.MIN_VALUE")
     public abstract int getSize();
 
     @Property(description = "Input field type.", defaultValue = "text")

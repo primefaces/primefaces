@@ -99,10 +99,10 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, St
     @Property(description = "Height of the dialog.")
     public abstract String getHeight();
 
-    @Property(defaultValue = "-2147483648", description = "Minimum width in pixels.")
+    @Property(defaultValue = "Integer.MIN_VALUE", description = "Minimum width in pixels.")
     public abstract int getMinWidth();
 
-    @Property(defaultValue = "-2147483648", description = "Minimum height in pixels.")
+    @Property(defaultValue = "Integer.MIN_VALUE", description = "Minimum height in pixels.")
     public abstract int getMinHeight();
 
     @Property(description = "Show effect to be used when displaying dialog.")
