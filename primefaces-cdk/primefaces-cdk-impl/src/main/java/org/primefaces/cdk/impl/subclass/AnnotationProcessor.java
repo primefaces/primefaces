@@ -386,7 +386,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
         }
 
-        List<String> ignores = Arrays.asList("attributes", "behaviors", "rendererType", "bindings", "passThroughAttributes", "systemEventListeners", "valid");
+        List<String> ignores = getPropertiesToIgnore();
         Set<PropertyInfo> inheritedPropertyKeys = collectInheritedPropertyKeys(classElement);
 
         // Add inherited property keys that aren't already defined
@@ -1546,5 +1546,10 @@ public class AnnotationProcessor extends AbstractProcessor {
             default:
                 return "";
         }
+    }
+
+    protected List<String> getPropertiesToIgnore() {
+        return Arrays.asList("attributes", "behaviors", "rendererType", "bindings", "passThroughAttributes", "systemEventListeners", "valid",
+                "methodBindingActionListener");
     }
 }

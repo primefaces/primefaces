@@ -32,7 +32,9 @@ import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.menu.MenuModel;
 
+import jakarta.el.MethodExpression;
 import jakarta.faces.component.html.HtmlCommandButton;
+import jakarta.faces.event.ActionListener;
 
 @FacesComponentBase
 public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Confirmable, Widget, MenuItemAware, StyleAware {
@@ -48,6 +50,16 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    @Property(description = "A method expression or a string outcome to process when command is executed.", callSuper = true)
+    public MethodExpression getAction() {
+        return super.getActionExpression();
+    }
+
+    @Property(description = "An action listener to process when command is executed.", callSuper = true)
+    public ActionListener getActionListener() {
+        return super.getActionListeners()[0];
     }
 
     @Property(defaultValue = "true", description = "Icon of the button.")
