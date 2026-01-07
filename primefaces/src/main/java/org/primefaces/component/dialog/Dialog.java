@@ -23,15 +23,12 @@
  */
 package org.primefaces.component.dialog;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.MoveEvent;
 import org.primefaces.event.ResizeEvent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Map;
 
 import jakarta.el.ELContext;
@@ -40,16 +37,16 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Dialog.COMPONENT_TYPE, namespace = Dialog.COMPONENT_FAMILY)
+@FacesComponentDescription("Dialog is a container component to display content in an overlay window.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Dialog extends DialogBase {
+public class Dialog extends DialogBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Dialog";
 
@@ -67,69 +64,38 @@ public class Dialog extends DialogBase {
     public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-content";
     public static final String DIALOG_ACTIONS_CLASS = "ui-dialog-actions";
 
-    private static final String DEFAULT_EVENT = "close";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("close", CloseEvent.class)
-            .put("minimize", null)
-            .put("maximize", null)
-            .put("move", MoveEvent.class)
-            .put("restoreMinimize", null)
-            .put("restoreMaximize", null)
-            .put("open", null)
-            .put("loadContent", null)
-            .put("resizeStart", ResizeEvent.class)
-            .put("resizeStop", ResizeEvent.class)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
-
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
+        FacesContext context = event.getFacesContext();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
 
-        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
-            String clientId = getClientId(context);
+        if (isAjaxBehaviorEventSource(event)) {
+            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if ("close".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.close)) {
                 setVisible(false);
-                CloseEvent closeEvent = new CloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
-                closeEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
-                super.queueEvent(closeEvent);
+                CloseEvent eventToQueue = new CloseEvent(this, behaviorEvent.getBehavior());
+                eventToQueue.setPhaseId(behaviorEvent.getPhaseId());
+                super.queueEvent(eventToQueue);
             }
-            else if ("move".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.move)) {
                 int top = Double.valueOf(params.get(clientId + "_top")).intValue();
                 int left = Double.valueOf(params.get(clientId + "_left")).intValue();
-                MoveEvent moveEvent = new MoveEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), top, left);
-                moveEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
-                super.queueEvent(moveEvent);
+                MoveEvent eventToQueue = new MoveEvent(this, behaviorEvent.getBehavior(), top, left);
+                eventToQueue.setPhaseId(behaviorEvent.getPhaseId());
+                super.queueEvent(eventToQueue);
             }
-            else if ("resizeStart".equals(eventName) || "resizeStop".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.resizeStart) ||
+                     isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.resizeStop)) {
                 int width = Double.valueOf(params.get(clientId + "_width")).intValue();
                 int height = Double.valueOf(params.get(clientId + "_height")).intValue();
-                ResizeEvent resizeEvent = new ResizeEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), width, height);
-                resizeEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
-                super.queueEvent(resizeEvent);
+                ResizeEvent eventToQueue = new ResizeEvent(this, behaviorEvent.getBehavior(), width, height);
+                eventToQueue.setPhaseId(behaviorEvent.getPhaseId());
+                super.queueEvent(eventToQueue);
             }
             else {
-                //minimize and maximize
+                // minimize, maximize, restoreMinimize, restoreMaximize, open, loadContent
                 super.queueEvent(event);
             }
         }
@@ -140,7 +106,7 @@ public class Dialog extends DialogBase {
 
     @Override
     public void processDecodes(FacesContext context) {
-        if (ComponentUtils.isRequestSource(this, context)) {
+        if (isAjaxRequestSource(context)) {
             decode(context);
         }
         else {
@@ -150,20 +116,20 @@ public class Dialog extends DialogBase {
 
     @Override
     public void processValidators(FacesContext context) {
-        if (!ComponentUtils.isRequestSource(this, context)) {
+        if (!isAjaxRequestSource(context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if (!ComponentUtils.isRequestSource(this, context)) {
+        if (!isAjaxRequestSource(context)) {
             super.processUpdates(context);
         }
         else {
             ELContext elContext = context.getELContext();
             ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
-                    getValueExpression(PropertyKeys.visible.toString()), true);
+                    getValueExpression(PropertyKeys.visible), true);
             if (expr != null) {
                 if (!expr.isReadOnly(elContext)) {
                     expr.setValue(elContext, isVisible());
@@ -172,7 +138,6 @@ public class Dialog extends DialogBase {
             }
         }
     }
-
 
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");

@@ -106,7 +106,7 @@ public interface InputAware extends StyleAware, RTLAware {
     @Property(description = "Specifies the language of the element's content.", callSuper = true)
     String getLang();
 
-    @Property(description = "Defines the maximum number of characters allowed in the input.", defaultValue = "-2147483648")
+    @Property(description = "Defines the maximum number of characters allowed in the input.", defaultValue = "Integer.MIN_VALUE")
     int getMaxlength();
 
     @Property(description = "Script to execute when the element is double-clicked.")

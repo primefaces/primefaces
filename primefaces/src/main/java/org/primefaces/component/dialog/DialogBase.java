@@ -23,55 +23,39 @@
  */
 package org.primefaces.component.dialog;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.CloseEvent;
+import org.primefaces.event.MoveEvent;
+import org.primefaces.event.ResizeEvent;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "close", event = CloseEvent.class, description = "Fires when dialog is closed.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "minimize", event = AjaxBehaviorEvent.class, description = "Fires when dialog is minimized."),
+    @FacesBehaviorEvent(name = "maximize", event = AjaxBehaviorEvent.class, description = "Fires when dialog is maximized."),
+    @FacesBehaviorEvent(name = "move", event = MoveEvent.class, description = "Fires when dialog is moved."),
+    @FacesBehaviorEvent(name = "restoreMinimize", event = AjaxBehaviorEvent.class, description = "Fires when dialog is restored from minimized state."),
+    @FacesBehaviorEvent(name = "restoreMaximize", event = AjaxBehaviorEvent.class, description = "Fires when dialog is restored from maximized state."),
+    @FacesBehaviorEvent(name = "open", event = AjaxBehaviorEvent.class, description = "Fires when dialog is opened."),
+    @FacesBehaviorEvent(name = "loadContent", event = AjaxBehaviorEvent.class, description = "Fires when dialog content is loaded."),
+    @FacesBehaviorEvent(name = "resizeStart", event = ResizeEvent.class, description = "Fires when dialog resize starts."),
+    @FacesBehaviorEvent(name = "resizeStop", event = ResizeEvent.class, description = "Fires when dialog resize stops.")
+})
+public abstract class DialogBase extends UIPanel implements Widget, RTLAware, StyleAware, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DialogRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        header,
-        draggable,
-        resizable,
-        modal,
-        blockScroll,
-        visible,
-        width,
-        height,
-        minWidth,
-        minHeight,
-        style,
-        styleClass,
-        showEffect,
-        hideEffect,
-        my,
-        position,
-        closable,
-        onShow,
-        onHide,
-        appendTo,
-        showHeader,
-        footer,
-        dynamic,
-        minimizable,
-        maximizable,
-        closeOnEscape,
-        dir,
-        focus,
-        fitViewport,
-        positionType,
-        responsive,
-        cache
-    }
 
     public DialogBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -82,270 +66,99 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, Cl
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getHeader() {
-        return (String) getStateHelper().eval(PropertyKeys.header, null);
-    }
-
-    public void setHeader(String header) {
-        getStateHelper().put(PropertyKeys.header, header);
-    }
-
-    public boolean isDraggable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
-    }
-
-    public void setDraggable(boolean draggable) {
-        getStateHelper().put(PropertyKeys.draggable, draggable);
-    }
-
-    public boolean isResizable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.resizable, true);
-    }
-
-    public void setResizable(boolean resizable) {
-        getStateHelper().put(PropertyKeys.resizable, resizable);
-    }
-
-    public boolean isModal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.modal, false);
-    }
-
-    public void setModal(boolean modal) {
-        getStateHelper().put(PropertyKeys.modal, modal);
-    }
-
-    public boolean isBlockScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
-    }
-
-    public void setBlockScroll(boolean blockScroll) {
-        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
-    }
-
-    public boolean isVisible() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.visible, false);
-    }
-
-    public void setVisible(boolean visible) {
-        getStateHelper().put(PropertyKeys.visible, visible);
-    }
-
-    public String getWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.width, null);
-    }
-
-    public void setWidth(String width) {
-        getStateHelper().put(PropertyKeys.width, width);
-    }
-
-    public String getHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.height, null);
-    }
-
-    public void setHeight(String height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
-
-    public int getMinWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minWidth, Integer.MIN_VALUE);
-    }
-
-    public void setMinWidth(int minWidth) {
-        getStateHelper().put(PropertyKeys.minWidth, minWidth);
-    }
-
-    public int getMinHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minHeight, Integer.MIN_VALUE);
-    }
-
-    public void setMinHeight(int minHeight) {
-        getStateHelper().put(PropertyKeys.minHeight, minHeight);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getShowEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.showEffect, null);
-    }
-
-    public void setShowEffect(String showEffect) {
-        getStateHelper().put(PropertyKeys.showEffect, showEffect);
-    }
-
-    public String getHideEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.hideEffect, null);
-    }
-
-    public void setHideEffect(String hideEffect) {
-        getStateHelper().put(PropertyKeys.hideEffect, hideEffect);
-    }
-
-    public String getMy() {
-        return (String) getStateHelper().eval(PropertyKeys.my, null);
-    }
-
-    public void setMy(String my) {
-        getStateHelper().put(PropertyKeys.my, my);
-    }
-
-    public String getPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.position, null);
-    }
-
-    public void setPosition(String position) {
-        getStateHelper().put(PropertyKeys.position, position);
-    }
-
-    public boolean isClosable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.closable, true);
-    }
-
-    public void setClosable(boolean closable) {
-        getStateHelper().put(PropertyKeys.closable, closable);
-    }
-
-    public String getOnShow() {
-        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
-    }
-
-    public void setOnShow(String onShow) {
-        getStateHelper().put(PropertyKeys.onShow, onShow);
-    }
-
-    public String getOnHide() {
-        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
-    }
-
-    public void setOnHide(String onHide) {
-        getStateHelper().put(PropertyKeys.onHide, onHide);
-    }
-
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
-    }
-
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
+    @Facet(description = "Allows to place HTML in the header. Alternative to header.")
+    public abstract UIComponent getHeaderFacet();
 
-    public boolean isShowHeader() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showHeader, true);
-    }
+    @Facet(description = "Allows to place HTML in the footer. Alternative to footer.")
+    public abstract UIComponent getFooterFacet();
 
-    public void setShowHeader(boolean showHeader) {
-        getStateHelper().put(PropertyKeys.showHeader, showHeader);
-    }
+    @Facet(description = "Allows to add custom action to the titlebar.")
+    public abstract UIComponent getActionsFacet();
 
-    public String getFooter() {
-        return (String) getStateHelper().eval(PropertyKeys.footer, null);
-    }
+    @Property(description = "Header text.")
+    public abstract String getHeader();
 
-    public void setFooter(String footer) {
-        getStateHelper().put(PropertyKeys.footer, footer);
-    }
+    @Property(defaultValue = "true", description = "Makes dialog draggable.")
+    public abstract boolean isDraggable();
 
-    public boolean isDynamic() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
-    }
+    @Property(defaultValue = "true", description = "Makes dialog resizable.")
+    public abstract boolean isResizable();
 
-    public void setDynamic(boolean dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, dynamic);
-    }
+    @Property(defaultValue = "false", description = "Makes dialog modal.")
+    public abstract boolean isModal();
 
-    public boolean isMinimizable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.minimizable, false);
-    }
+    @Property(defaultValue = "false", description = "Blocks scrolling of the document when dialog is modal.")
+    public abstract boolean isBlockScroll();
 
-    public void setMinimizable(boolean minimizable) {
-        getStateHelper().put(PropertyKeys.minimizable, minimizable);
-    }
+    @Property(defaultValue = "false", description = "Renders dialog as visible.")
+    public abstract boolean isVisible();
 
-    public boolean isMaximizable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.maximizable, false);
-    }
+    @Property(description = "Width of the dialog.")
+    public abstract String getWidth();
 
-    public void setMaximizable(boolean maximizable) {
-        getStateHelper().put(PropertyKeys.maximizable, maximizable);
-    }
+    @Property(description = "Height of the dialog.")
+    public abstract String getHeight();
 
-    public boolean isCloseOnEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.closeOnEscape, false);
-    }
+    @Property(defaultValue = "Integer.MIN_VALUE", description = "Minimum width in pixels.")
+    public abstract int getMinWidth();
 
-    public void setCloseOnEscape(boolean closeOnEscape) {
-        getStateHelper().put(PropertyKeys.closeOnEscape, closeOnEscape);
-    }
+    @Property(defaultValue = "Integer.MIN_VALUE", description = "Minimum height in pixels.")
+    public abstract int getMinHeight();
 
-    @Override
-    public String getDir() {
-        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
-    }
+    @Property(description = "Show effect to be used when displaying dialog.")
+    public abstract String getShowEffect();
 
-    public void setDir(String dir) {
-        getStateHelper().put(PropertyKeys.dir, dir);
-    }
+    @Property(description = "Hide effect to be used when hiding dialog.")
+    public abstract String getHideEffect();
 
-    public String getFocus() {
-        return (String) getStateHelper().eval(PropertyKeys.focus, null);
-    }
+    @Property(description = "Position of the dialog relative to the target element.")
+    public abstract String getMy();
 
-    public void setFocus(String focus) {
-        getStateHelper().put(PropertyKeys.focus, focus);
-    }
+    @Property(description = "Position of the target element relative to the dialog.")
+    public abstract String getPosition();
 
-    public boolean isFitViewport() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.fitViewport, false);
-    }
+    @Property(defaultValue = "true", description = "Makes dialog closable.")
+    public abstract boolean isClosable();
 
-    public void setFitViewport(boolean fitViewport) {
-        getStateHelper().put(PropertyKeys.fitViewport, fitViewport);
-    }
+    @Property(description = "Client-side callback to execute when dialog is hidden.")
+    public abstract String getOnHide();
 
-    public String getPositionType() {
-        return (String) getStateHelper().eval(PropertyKeys.positionType, "fixed");
-    }
+    @Property(description = "Client-side callback to execute when dialog is shown.")
+    public abstract String getOnShow();
 
-    public void setPositionType(String positionType) {
-        getStateHelper().put(PropertyKeys.positionType, positionType);
-    }
+    @Property(description = "Append dialog to the element with the given identifier.")
+    public abstract String getAppendTo();
 
-    public boolean isResponsive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, true);
-    }
+    @Property(defaultValue = "true", description = "Renders dialog header.")
+    public abstract boolean isShowHeader();
 
-    public void setResponsive(boolean responsive) {
-        getStateHelper().put(PropertyKeys.responsive, responsive);
-    }
+    @Property(description = "Footer text.")
+    public abstract String getFooter();
 
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
-    }
+    @Property(defaultValue = "false", description = "Enables lazy loading of dialog content.")
+    public abstract boolean isDynamic();
 
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
+    @Property(defaultValue = "false", description = "Makes dialog minimizable.")
+    public abstract boolean isMinimizable();
 
+    @Property(defaultValue = "false", description = "Makes dialog maximizable.")
+    public abstract boolean isMaximizable();
 
+    @Property(defaultValue = "false", description = "Closes dialog when escape key is pressed.")
+    public abstract boolean isCloseOnEscape();
+
+    @Property(description = "Component to receive focus when dialog is opened.")
+    public abstract String getFocus();
+
+    @Property(defaultValue = "false", description = "Fits dialog in the viewport.")
+    public abstract boolean isFitViewport();
+
+    @Property(defaultValue = "fixed", description = "Position type of the dialog, valid values are 'fixed' and 'absolute'.")
+    public abstract String getPositionType();
+
+    @Property(defaultValue = "true", description = "In responsive mode, dialog adjusts itself based on screen width.")
+    public abstract boolean isResponsive();
+
+    @Property(defaultValue = "true", description = "Caches the content when dynamic loading is enabled.")
+    public abstract boolean isCache();
 }
