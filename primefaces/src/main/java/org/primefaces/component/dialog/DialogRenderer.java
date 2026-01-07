@@ -147,7 +147,7 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
     protected void encodeHeader(FacesContext context, Dialog component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String header = component.getHeader();
-        UIComponent headerFacet = component.getFacet("header");
+        UIComponent headerFacet = component.getHeaderFacet();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.TITLE_BAR_CLASS, null);
@@ -179,7 +179,7 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
         }
 
         //Actions
-        UIComponent actionsFacet = component.getFacet("actions");
+        UIComponent actionsFacet = component.getActionsFacet();
         if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Dialog.DIALOG_ACTIONS_CLASS, null);
@@ -193,7 +193,7 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
     protected void encodeFooter(FacesContext context, Dialog component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String footer = component.getFooter();
-        UIComponent footerFacet = component.getFacet("footer");
+        UIComponent footerFacet = component.getFooterFacet();
 
         if (footer == null && (footerFacet == null || !footerFacet.isRendered())) {
             return;
