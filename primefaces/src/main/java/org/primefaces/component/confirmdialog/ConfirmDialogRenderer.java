@@ -97,7 +97,7 @@ public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
     protected void encodeHeader(FacesContext context, ConfirmDialog component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String header = component.getHeader();
-        UIComponent headerFacet = component.getFacet("header");
+        UIComponent headerFacet = component.getHeaderFacet();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.TITLE_BAR_CLASS, null);
@@ -134,7 +134,7 @@ public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
     protected void encodeContent(FacesContext context, ConfirmDialog component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String messageText = component.getMessage();
-        UIComponent messageFacet = component.getFacet("message");
+        UIComponent messageFacet = component.getMessageFacet();
         String defaultIcon = "ui-icon ui-icon-" + component.getSeverity();
         String severityIcon = defaultIcon + " " + ConfirmDialog.SEVERITY_ICON_CLASS;
 
