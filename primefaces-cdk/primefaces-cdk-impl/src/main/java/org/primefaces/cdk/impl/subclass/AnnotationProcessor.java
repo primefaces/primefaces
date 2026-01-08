@@ -1550,6 +1550,6 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     protected List<String> getPropertiesToIgnore() {
         return Arrays.asList("attributes", "behaviors", "rendererType", "bindings", "passThroughAttributes", "systemEventListeners", "valid",
-                "methodBindingActionListener");
+                "actionExpression", "methodBindingActionListener");
     }
 }

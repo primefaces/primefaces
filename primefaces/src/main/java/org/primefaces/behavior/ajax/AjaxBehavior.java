@@ -58,17 +58,17 @@ public class AjaxBehavior extends AjaxBehaviorBaseImpl {
     }
 
     public boolean isImmediateSet() {
-        return getStateHelper().eval(PropertyKeys.immediate, null) != null;
+        return getStateHelper().eval(PropertyKeys.immediate, null) != null || (getValueExpression(PropertyKeys.immediate.toString()) != null);
     }
 
     @Override
     public boolean isPartialSubmitSet() {
-        return getStateHelper().eval(PropertyKeys.partialSubmit, null) != null;
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
 
     @Override
     public boolean isResetValuesSet() {
-        return getStateHelper().eval(PropertyKeys.resetValues, null) != null;
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
 
     @Override

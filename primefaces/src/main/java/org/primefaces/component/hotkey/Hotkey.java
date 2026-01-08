@@ -23,26 +23,29 @@
  */
 package org.primefaces.component.hotkey;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Hotkey.COMPONENT_TYPE, namespace = Hotkey.COMPONENT_FAMILY)
+@FacesComponentDescription("HotKey is a generic key binding component that can bind any formation of keys to javascript event handlers or ajax calls")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "hotkey/hotkey.js")
-public class Hotkey extends HotkeyBase {
+public class Hotkey extends HotkeyBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Hotkey";
 
     @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit) != null);
     }
 
     @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues) != null);
     }
 
     @Override

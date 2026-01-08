@@ -23,53 +23,28 @@
  */
 package org.primefaces.component.commandlink;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.component.api.DialogReturnAware;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = CommandLink.COMPONENT_TYPE, namespace = CommandLink.COMPONENT_FAMILY)
+@FacesComponentDescription("CommandLink extends standard Faces commandLink with extra PrimeFaces capabilities.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class CommandLink extends CommandLinkBase implements DialogReturnAware {
+public class CommandLink extends CommandLinkBaseImpl implements DialogReturnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CommandLink";
 
     public static final String STYLE_CLASS = "ui-commandlink ui-widget";
     public static final String DISABLED_STYLE_CLASS = "ui-commandlink ui-widget ui-state-disabled";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("click", null)
-            .put(EVENT_DIALOG_RETURN, SelectEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private String confirmationScript;
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return "click";
-    }
 
     @Override
     public void queueEvent(FacesEvent event) {
@@ -84,12 +59,12 @@ public class CommandLink extends CommandLinkBase implements DialogReturnAware {
 
     @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit) != null);
     }
 
     @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues) != null);
     }
 
     @Override

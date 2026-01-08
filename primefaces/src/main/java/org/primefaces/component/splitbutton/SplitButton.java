@@ -109,12 +109,12 @@ public class SplitButton extends SplitButtonBaseImpl {
 
     @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit) != null);
     }
 
     @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues) != null);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class SplitButton extends SplitButtonBaseImpl {
     }
 
     public int getElementsCount() {
-        List elements = getElements();
+        List<MenuElement> elements = getElements();
 
         return (elements == null) ? 0 : elements.size();
     }

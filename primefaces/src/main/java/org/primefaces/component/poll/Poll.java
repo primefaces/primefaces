@@ -24,6 +24,7 @@
 package org.primefaces.component.poll;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
 import jakarta.el.MethodExpression;
 import jakarta.el.ValueExpression;
@@ -32,10 +33,11 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Poll.COMPONENT_TYPE, namespace = Poll.COMPONENT_FAMILY)
+@FacesComponentDescription("Poll is an AJAX component that has the ability to send periodical AJAX requests and execute listeners on Faces backing beans.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
-public class Poll extends PollBase {
+public class Poll extends PollBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Poll";
 
@@ -50,7 +52,7 @@ public class Poll extends PollBase {
             me.invoke(facesContext.getELContext(), new Object[]{});
         }
 
-        ValueExpression expr = getValueExpression(PropertyKeys.stop.toString());
+        ValueExpression expr = getValueExpression(PropertyKeys.stop);
         if (expr != null) {
             Boolean stop = expr.getValue(facesContext.getELContext());
 
@@ -63,12 +65,12 @@ public class Poll extends PollBase {
 
     @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit) != null);
     }
 
     @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues) != null);
     }
 
     @Override
