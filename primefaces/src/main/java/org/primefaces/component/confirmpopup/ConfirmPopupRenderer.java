@@ -70,7 +70,7 @@ public class ConfirmPopupRenderer extends CoreRenderer<ConfirmPopup> {
     protected void encodeContent(FacesContext context, ConfirmPopup component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String messageText = component.getMessage();
-        UIComponent messageFacet = component.getFacet("message");
+        UIComponent messageFacet = component.getMessageFacet();
         String iconStyleClass = getStyleClassBuilder(context)
                 .add(ConfirmPopup.ICON_CLASS)
                 .add(component.getIcon())
