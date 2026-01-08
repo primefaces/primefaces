@@ -23,16 +23,19 @@
  */
 package org.primefaces.component.confirmdialog;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ConfirmDialog.COMPONENT_TYPE, namespace = ConfirmDialog.COMPONENT_FAMILY)
+@FacesComponentDescription("ConfirmDialog is a dialog component used to display confirmation messages.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class ConfirmDialog extends ConfirmDialogBase {
+public class ConfirmDialog extends ConfirmDialogBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ConfirmDialog";
 
@@ -41,4 +44,5 @@ public class ConfirmDialog extends ConfirmDialogBase {
     public static final String BUTTONPANE_CLASS = "ui-dialog-buttonpane ui-dialog-footer ui-widget-content ui-helper-clearfix";
     public static final String SEVERITY_ICON_CLASS = "ui-confirm-dialog-severity";
     public static final String MESSAGE_CLASS = "ui-confirm-dialog-message";
+
 }

@@ -126,7 +126,7 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, St
     @Property(description = "Client-side callback to execute when dialog is shown.")
     public abstract String getOnShow();
 
-    @Property(description = "Append dialog to the element with the given identifier.")
+    @Property(implicitDefaultValue = "@(body)", description = "Append dialog to the element with the given identifier.")
     public abstract String getAppendTo();
 
     @Property(defaultValue = "true", description = "Renders dialog header.")
