@@ -23,9 +23,11 @@
  */
 package org.primefaces.component.dataview;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+
 import jakarta.faces.component.UIComponentBase;
 
-
+@FacesComponentBase
 public abstract class DataViewListItemBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

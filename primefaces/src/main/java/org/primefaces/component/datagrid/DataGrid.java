@@ -24,14 +24,13 @@
 package org.primefaces.component.datagrid;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -40,18 +39,20 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.model.DataModel;
 
 @FacesComponent(value = DataGrid.COMPONENT_TYPE, namespace = DataGrid.COMPONENT_FAMILY)
+@FacesComponentDescription("DataGrid displays a collection of data in grid layout. "
+        + " AJAX Pagination is a built-in feature and paginator UI is fully customizable via various options"
+        + " like paginatorTemplate, rowPerPageOptions, pageLinks and more.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
-public class DataGrid extends DataGridBase {
+public class DataGrid extends DataGridBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataGrid";
 
@@ -63,22 +64,6 @@ public class DataGrid extends DataGridBase {
     public static final String TABLE_ROW_CLASS = "ui-datagrid-row";
     public static final String GRID_CONTENT_CLASS = "ui-datagrid-content ui-widget-content";
     public static final String COLUMN_CLASS = "ui-datagrid-column";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("page", PageEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     public void loadLazyData() {
         // duplicate of DataView#loadLazyData
@@ -107,12 +92,11 @@ public class DataGrid extends DataGridBase {
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
+        if (isAjaxBehaviorEventSource(event)) {
             setRowIndex(-1);
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if ("page".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.page)) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();

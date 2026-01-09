@@ -23,17 +23,15 @@
  */
 package org.primefaces.component.dataview;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIComponentBase;
 
-
+@FacesComponentBase
 public abstract class DataViewGridItemBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public enum PropertyKeys {
-
-        columns
-    }
 
     public DataViewGridItemBase() {
         setRendererType(null);
@@ -44,12 +42,6 @@ public abstract class DataViewGridItemBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 3);
-    }
-
-    public void setColumns(int columns) {
-        getStateHelper().put(PropertyKeys.columns, columns);
-    }
-
+    @Property(defaultValue = "3", description = "Number of columns of grid.")
+    public abstract int getColumns();
 }

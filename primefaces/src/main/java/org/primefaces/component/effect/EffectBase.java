@@ -23,40 +23,18 @@
  */
 package org.primefaces.component.effect;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
+@FacesComponentBase
 public abstract class EffectBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.EffectRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        event,
-        type,
-        forValue("for"),
-        speed,
-        delay,
-        queue;
-
-        private String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
-    }
 
     public EffectBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -67,59 +45,21 @@ public abstract class EffectBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Dom event to attach the event that executes the animation.", required = true)
+    public abstract String getEvent();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Specifies the name of the animation.", required = true)
+    public abstract String getType();
 
-    public String getEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.event, null);
-    }
+    @Property(description = "Component that is animated.")
+    public abstract String getFor();
 
-    public void setEvent(String event) {
-        getStateHelper().put(PropertyKeys.event, event);
-    }
+    @Property(defaultValue = "1000", description = "Speed of the animation in ms.")
+    public abstract int getSpeed();
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
-    }
+    @Property(defaultValue = "0", description = "Startup delay on firing animation.")
+    public abstract int getDelay();
 
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
-
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
-
-    public int getSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.speed, 1000);
-    }
-
-    public void setSpeed(int speed) {
-        getStateHelper().put(PropertyKeys.speed, speed);
-    }
-
-    public int getDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
-    }
-
-    public void setDelay(int delay) {
-        getStateHelper().put(PropertyKeys.delay, delay);
-    }
-
-    public boolean isQueue() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.queue, true);
-    }
-
-    public void setQueue(boolean queue) {
-        getStateHelper().put(PropertyKeys.queue, queue);
-    }
+    @Property(defaultValue = "true", description = "Specifies if effects should be queued.")
+    public abstract boolean isQueue();
 }

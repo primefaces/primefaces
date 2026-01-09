@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.dataview;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = DataViewListItem.COMPONENT_TYPE, namespace = DataViewListItem.COMPONENT_FAMILY)
-public class DataViewListItem extends DataViewListItemBase {
+@FacesComponentDescription("dataViewListItem is a helper component for DataView to add list items.")
+public class DataViewListItem extends DataViewListItemBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataViewListItem";
 }

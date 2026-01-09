@@ -24,6 +24,7 @@
 package org.primefaces.component.datalist;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.component.api.IterationStatus;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.data.PageEvent;
@@ -32,9 +33,7 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -46,19 +45,20 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 import jakarta.faces.model.DataModel;
 
 @FacesComponent(value = DataList.COMPONENT_TYPE, namespace = DataList.COMPONENT_FAMILY)
+@FacesComponentDescription("DataList presents a collection of data in list layout with several display types. AJAX Pagination is a built-in feature "
+        + "and paginator UI is fully customizable via various options like paginatorTemplate, rowsPerPageOptions, pageLinks and more.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
-public class DataList extends DataListBase {
+public class DataList extends DataListBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataList";
 
@@ -70,24 +70,6 @@ public class DataList extends DataListBase {
     public static final String HEADER_CLASS = "ui-datalist-header ui-widget-header";
     public static final String FOOTER_CLASS = "ui-datalist-footer ui-widget-header";
     public static final String DATALIST_EMPTY_MESSAGE_CLASS = "ui-datalist-empty-message";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("page", PageEvent.class)
-            .put("tap", SelectEvent.class)
-            .put("taphold", SelectEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     public String getListTag() {
         String type = getType();
@@ -140,13 +122,12 @@ public class DataList extends DataListBase {
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
+        if (isAjaxBehaviorEventSource(event)) {
             setRowIndex(-1);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if ("page".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.page)) {
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
@@ -159,7 +140,7 @@ public class DataList extends DataListBase {
 
                 super.queueEvent(pageEvent);
             }
-            else if ("tap".equals(eventName) || "taphold".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.tap, ClientBehaviorEventKeys.taphold)) {
                 String clientId = getClientId(context);
                 int index = Integer.parseInt(params.get(clientId + "_item"));
                 setRowIndex(index);
