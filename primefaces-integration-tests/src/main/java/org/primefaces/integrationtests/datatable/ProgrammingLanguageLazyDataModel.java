@@ -113,12 +113,6 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
     }
 
     @Override
-    public ProgrammingLanguage getRowData(String rowKey) {
-        int rowKeyNumeric = Integer.parseInt(rowKey);
-        return langs.stream().filter(lang -> lang.getId() == rowKeyNumeric).findFirst().get();
-    }
-
-    @Override
     public String getRowKey(ProgrammingLanguage object) {
         return object.getId().toString();
     }
