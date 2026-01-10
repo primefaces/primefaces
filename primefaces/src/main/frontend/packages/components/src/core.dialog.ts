@@ -251,6 +251,7 @@ export class DialogHandler {
                     headerElement: cfg.options.headerElement,
                     responsive: cfg.options.responsive,
                     closeOnEscape: cfg.options.closeOnEscape,
+                    dismissibleMask: cfg.options.dismissibleMask,
                     fitViewport: cfg.options.fitViewport,
                     resizeObserver: cfg.options.resizeObserver,
                     resizeObserverCenter: cfg.options.resizeObserverCenter

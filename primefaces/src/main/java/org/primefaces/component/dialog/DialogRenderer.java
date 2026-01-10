@@ -76,6 +76,7 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
                 .attr("my", component.getMy(), null)
                 .attr("position", component.getPosition(), null)
                 .attr("closeOnEscape", component.isCloseOnEscape(), false)
+                .attr("dismissibleMask", component.isDismissibleMask(), false)
                 .attr("fitViewport", component.isFitViewport(), false)
                 .attr("responsive", component.isResponsive(), true)
                 .attr("cache", component.isCache(), true)
