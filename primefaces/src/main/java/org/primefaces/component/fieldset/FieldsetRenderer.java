@@ -139,7 +139,7 @@ public class FieldsetRenderer extends CoreRenderer<Fieldset> {
     protected void encodeLegend(FacesContext context, Fieldset component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String legendText = component.getLegend();
-        UIComponent legend = component.getFacet("legend");
+        UIComponent legend = component.getLegendFacet();
         boolean renderFacet = FacetUtils.shouldRenderFacet(legend);
 
         if (renderFacet || legendText != null) {
