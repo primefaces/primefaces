@@ -331,7 +331,7 @@
             <properties>
                 <resteasy.version>7.0.1.Final</resteasy.version>
                 <jakarta.version>11.0.0</jakarta.version>
-                <weld.version>6.0.3.Final</weld.version>
+                <weld.version>6.0.4.Final</weld.version>
             </properties>
         </profile>
         <profile>
