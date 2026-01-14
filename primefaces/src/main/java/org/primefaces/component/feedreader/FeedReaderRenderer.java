@@ -57,7 +57,7 @@ public class FeedReaderRenderer extends CoreRenderer<FeedReader> {
         }
         catch (Exception e) {
             logDevelopmentWarning(context, this, String.format("Unexpected RSS error: %s", e.getMessage()));
-            UIComponent errorFacet = component.getFacet("error");
+            UIComponent errorFacet = component.getErrorFacet();
             if (FacetUtils.shouldRenderFacet(errorFacet)) {
                 errorFacet.encodeAll(context);
             }
