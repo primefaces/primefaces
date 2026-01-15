@@ -159,7 +159,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         PrimeFaces.skinSelect(this.jtpSelect);
         this.jtpSelect.on('change', function(e) {
             if(!$(this).hasClass("ui-state-disabled")){
-                $this.setPage(parseInt($(this).val()));
+                $this.setPage($this.parseLocalizedInt($(this).val()));
             }
         });
 
@@ -167,7 +167,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         PrimeFaces.skinInput(this.jtpInput);
         this.jtpInput.on('change', function(e) {
             if(!$(this).hasClass("ui-state-disabled")){
-                var page = parseInt($(this).val());
+                var page = $this.parseLocalizedInt($(this).val());
                 if (isNaN(page) || page > $this.cfg.pageCount || page < 1) {
                     // restore old value if invalid
                     $(this).val($this.cfg.page + 1);
@@ -233,7 +233,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
 
         pageLinks.each(function() {
             var link = $(this),
-            pageNumber = parseInt(link.text());
+            pageNumber = $this.parseLocalizedInt(link.text());
 
             link.attr('aria-label', $this.ariaPageLabel.replace('{page}', (pageNumber)));
             if (link.hasClass('ui-state-active')) {
@@ -243,7 +243,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
 
         pageLinks.on('click.paginator', function(e) {
             var link = $(this),
-            pageNumber = parseInt(link.text());
+            pageNumber = $this.parseLocalizedInt(link.text());
 
             if(!link.hasClass('ui-state-disabled')&&!link.hasClass('ui-state-active')) {
                 $this.setPage(pageNumber - 1);
@@ -475,8 +475,8 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         }
         else {
             var first = this.cfg.rows * this.cfg.page;
-            this.cfg.rows = parseInt(rpp);
-            var page = parseInt(first / this.cfg.rows);
+            this.cfg.rows = this.parseLocalizedInt(rpp);
+            var page = this.parseLocalizedInt(first / this.cfg.rows);
 
             this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
             this.cfg.page = -1;
@@ -582,5 +582,25 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
      */
     prev() {
         this.setPage(this.cfg.page - 1);
+    }
+
+    /**
+     * Parses a localized integer value from a string by removing all dots and commas,
+     * then parsing the result as a base-10 integer.
+     * Example: "1.000" -> 1000
+     * Example: "1,000" -> 1000
+     * Example: "1000" -> 1000
+     * @param {string | number} value The string representation of a localized integer (may contain dots or commas as grouping separators).
+     * @returns {number} The parsed integer.
+     * @private
+     */
+    parseLocalizedInt(value) {
+        if (value === null || value === undefined) {
+            return NaN;
+        }
+        if (typeof value === 'string') {
+           value = value.replace(/[.,]/g, '');
+        }
+        return parseInt(value, 10);
     }
 }
