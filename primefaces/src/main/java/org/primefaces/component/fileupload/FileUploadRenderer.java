@@ -179,7 +179,7 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
 
-        UIComponent emptyFacet = component.getFacet("empty");
+        UIComponent emptyFacet = component.getEmptyFacet();
         if (FacetUtils.shouldRenderFacet(emptyFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", FileUpload.EMPTY_CLASS, null);

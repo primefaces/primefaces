@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.fileupload;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FilesUploadEvent;
 import org.primefaces.model.file.UploadedFile;
@@ -43,6 +44,7 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.validator.ValidatorException;
 
 @FacesComponent(value = FileUpload.COMPONENT_TYPE, namespace = FileUpload.COMPONENT_FAMILY)
+@FacesComponentDescription("FileUpload provides an advanced file upload mechanism with drag drop support, multiple file selection, and progress tracking.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -50,7 +52,7 @@ import jakarta.faces.validator.ValidatorException;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.js")
-public class FileUpload extends FileUploadBase {
+public class FileUpload extends FileUploadBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.FileUpload";
     public static final String CONTAINER_CLASS = "ui-fileupload ui-widget ui-fileupload-responsive";
@@ -68,6 +70,11 @@ public class FileUpload extends FileUploadBase {
     public static final String CONTAINER_CLASS_SIMPLE = "ui-fileupload-simple ui-widget";
     public static final String FILENAME_CLASS = "ui-fileupload-filename";
     public static final String WITHDROPZONE_CLASS = "ui-fileupload-withdropzone";
+
+    @Override
+    public boolean isDisplayFilename() {
+        return (boolean) getStateHelper().eval(PropertyKeys.displayFilename, () -> !(getMode().equals("simple") && isAuto()));
+    }
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
