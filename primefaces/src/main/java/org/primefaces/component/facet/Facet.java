@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.facet;
 
-import java.io.IOException;
-
 import org.primefaces.cdk.api.FacesComponentDescription;
+
+import java.io.IOException;
 
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
