@@ -34471,6 +34471,9 @@
         </attribute>
     </tag>
     <tag>
+        <description>
+            <![CDATA[Facet replaces f:facet and allows custom passthrough attributes to be added to the facet.]]>
+        </description>
         <tag-name>facet</tag-name>
         <component>
             <component-type>org.primefaces.component.Facet</component-type>

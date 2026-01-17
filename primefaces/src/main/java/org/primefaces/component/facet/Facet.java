@@ -25,10 +25,13 @@ package org.primefaces.component.facet;
 
 import java.io.IOException;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Facet.COMPONENT_TYPE, namespace = Facet.COMPONENT_FAMILY)
+@FacesComponentDescription("Facet replaces f:facet and allows custom passthrough attributes to be added to the facet.")
 public class Facet extends FacetBaseImpl {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
