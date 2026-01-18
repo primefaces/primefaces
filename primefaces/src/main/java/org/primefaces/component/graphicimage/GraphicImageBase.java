@@ -23,24 +23,17 @@
  */
 package org.primefaces.component.graphicimage;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.html.HtmlGraphicImage;
 
-
+@FacesComponentBase
 public abstract class GraphicImageBase extends HtmlGraphicImage {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.GraphicImageRenderer";
-
-    public enum PropertyKeys {
-        value,
-        cache,
-        name,
-        library,
-        stream,
-        srcset,
-        sizes
-    }
 
     public GraphicImageBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -51,51 +44,21 @@ public abstract class GraphicImageBase extends HtmlGraphicImage {
         return COMPONENT_FAMILY;
     }
 
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, false);
-    }
+    @Property(defaultValue = "false", description = "Enables/Disables browser from caching the image.")
+    public abstract boolean isCache();
 
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
+    @Property(description = "Name of the image.")
+    public abstract String getName();
 
-    public String getName() {
-        return (String) getStateHelper().eval(PropertyKeys.name, null);
-    }
+    @Property(description = "Library name of the image.")
+    public abstract String getLibrary();
 
-    public void setName(String name) {
-        getStateHelper().put(PropertyKeys.name, name);
-    }
+    @Property(defaultValue = "true", description = "Defines if the image is streamed or rendered directly as data uri / base64 with ViewScoped support.")
+    public abstract boolean isStream();
 
-    public String getLibrary() {
-        return (String) getStateHelper().eval(PropertyKeys.library, null);
-    }
+    @Property(description = "One or more strings separated by commas, indicating possible image sources for the user agent to use.")
+    public abstract String getSrcset();
 
-    public void setLibrary(String library) {
-        getStateHelper().put(PropertyKeys.library, library);
-    }
-
-    public boolean isStream() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.stream, true);
-    }
-
-    public void setStream(boolean stream) {
-        getStateHelper().put(PropertyKeys.stream, stream);
-    }
-
-    public void setSrcset(String srcset) {
-        getStateHelper().put(PropertyKeys.srcset, srcset);
-    }
-
-    public String getSrcset() {
-        return (String) getStateHelper().eval(PropertyKeys.srcset, null);
-    }
-
-    public void setSizes(String sizes) {
-        getStateHelper().put(PropertyKeys.sizes, sizes);
-    }
-
-    public String getSizes() {
-        return (String) getStateHelper().eval(PropertyKeys.sizes, null);
-    }
+    @Property(description = "One or more strings separated by commas, indicating a set of source sizes.")
+    public abstract String getSizes();
 }

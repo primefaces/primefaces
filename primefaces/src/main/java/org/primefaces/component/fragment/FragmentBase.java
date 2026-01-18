@@ -23,18 +23,17 @@
  */
 package org.primefaces.component.fragment;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIPanel;
 
+@FacesComponentBase
 public abstract class FragmentBase extends UIPanel {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.FragmentRenderer";
-
-    public enum PropertyKeys {
-        process,
-        update
-    }
 
     public FragmentBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -45,19 +44,9 @@ public abstract class FragmentBase extends UIPanel {
         return COMPONENT_FAMILY;
     }
 
-    public boolean isProcess() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.process, true);
-    }
+    @Property(defaultValue = "true", description = "Process the fragment automatically.")
+    public abstract boolean isProcess();
 
-    public void setProcess(boolean process) {
-        getStateHelper().put(PropertyKeys.process, process);
-    }
-
-    public boolean isUpdate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.update, false);
-    }
-
-    public void setUpdate(boolean update) {
-        getStateHelper().put(PropertyKeys.update, update);
-    }
+    @Property(defaultValue = "false", description = "Updates the fragment automatically.")
+    public abstract boolean isUpdate();
 }
