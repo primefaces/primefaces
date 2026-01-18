@@ -23,10 +23,15 @@
  */
 package org.primefaces.component.graphicimage;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.component.FacesComponent;
 
-@FacesComponent(value = GraphicImage.COMPONENT_TYPE, namespace = GraphicImage.COMPONENT_FAMILY)
-public class GraphicImage extends GraphicImageBase {
+@FacesComponent(value = GraphicImage.COMPONENT_TYPE, namespace = GraphicImageBase.COMPONENT_FAMILY)
+@FacesComponentDescription("GraphicImage extends the h:graphicImage component with the ability of displaying binary data like an inputstream. " +
+        "Main use cases of GraphicImage is to make displaying images stored in database or on-the-fly images easier. " +
+        "Legacy way to do this is to come up with a Servlet that does the streaming, GraphicImage does all the hard work without the need of a Servlet.")
+public class GraphicImage extends GraphicImageBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.GraphicImage";
 }
