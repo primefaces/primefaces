@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.fieldset;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 
@@ -35,6 +36,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Fieldset.COMPONENT_TYPE, namespace = Fieldset.COMPONENT_FAMILY)
+@FacesComponentDescription("Fieldset is a grouping component with a title and content.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
