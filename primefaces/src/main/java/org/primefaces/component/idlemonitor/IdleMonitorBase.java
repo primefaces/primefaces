@@ -23,26 +23,26 @@
  */
 package org.primefaces.component.idlemonitor;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class IdleMonitorBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "idle", event = AjaxBehaviorEvent.class, description = "Fires when the user goes idle."),
+    @FacesBehaviorEvent(name = "active", event = AjaxBehaviorEvent.class, description = "Fires when the user becomes active again.")
+})
+public abstract class IdleMonitorBase extends UIComponentBase implements Widget, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.IdleMonitorRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        timeout,
-        onidle,
-        onactive,
-        multiWindowSupport
-    }
 
     public IdleMonitorBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -53,43 +53,15 @@ public abstract class IdleMonitorBase extends UIComponentBase implements Widget,
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "300000", description = "Time to wait in milliseconds until deciding if the user is idle.")
+    public abstract int getTimeout();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Client side callback to execute when the user goes idle.")
+    public abstract String getOnidle();
 
-    public int getTimeout() {
-        return (Integer) getStateHelper().eval(PropertyKeys.timeout, 300000);
-    }
+    @Property(description = "Client side callback to execute when the user comes back.")
+    public abstract String getOnactive();
 
-    public void setTimeout(int timeout) {
-        getStateHelper().put(PropertyKeys.timeout, timeout);
-    }
-
-    public String getOnidle() {
-        return (String) getStateHelper().eval(PropertyKeys.onidle, null);
-    }
-
-    public void setOnidle(String onidle) {
-        getStateHelper().put(PropertyKeys.onidle, onidle);
-    }
-
-    public String getOnactive() {
-        return (String) getStateHelper().eval(PropertyKeys.onactive, null);
-    }
-
-    public void setOnactive(String onactive) {
-        getStateHelper().put(PropertyKeys.onactive, onactive);
-    }
-
-    public boolean isMultiWindowSupport() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiWindowSupport, false);
-    }
-
-    public void setMultiWindowSupport(boolean multiWindowSupport) {
-        getStateHelper().put(PropertyKeys.multiWindowSupport, multiWindowSupport);
-    }
+    @Property(defaultValue = "false", description = "When true, the lastAccessed state is shared across all browser windows within the same servlet context.")
+    public abstract boolean isMultiWindowSupport();
 }
