@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.fragment;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.component.FacesComponent;
 
-@FacesComponent(value = Fragment.COMPONENT_TYPE, namespace = Fragment.COMPONENT_FAMILY)
-public class Fragment extends FragmentBase {
+@FacesComponent(value = Fragment.COMPONENT_TYPE, namespace = FragmentBase.COMPONENT_FAMILY)
+@FacesComponentDescription("Fragment component automatically defines sections to be partially processed and updated afteran AJAX request.")
+public class Fragment extends FragmentBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Fragment";
 }

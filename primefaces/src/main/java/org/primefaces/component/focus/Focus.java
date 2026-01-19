@@ -23,14 +23,17 @@
  */
 package org.primefaces.component.focus;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Focus.COMPONENT_TYPE, namespace = Focus.COMPONENT_FAMILY)
+@FacesComponentDescription("Focus is a handy component that makes it easy to manage the element focus on a Faces page.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
-public class Focus extends FocusBase {
+public class Focus extends FocusBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Focus";
 }
