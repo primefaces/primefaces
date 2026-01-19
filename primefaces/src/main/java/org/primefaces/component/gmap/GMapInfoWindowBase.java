@@ -23,17 +23,15 @@
  */
 package org.primefaces.component.gmap;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIComponentBase;
 
-
+@FacesComponentBase
 public abstract class GMapInfoWindowBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public enum PropertyKeys {
-
-        maxWidth
-    }
 
     public GMapInfoWindowBase() {
         setRendererType(null);
@@ -44,12 +42,7 @@ public abstract class GMapInfoWindowBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public int getMaxWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxWidth, Integer.MIN_VALUE);
-    }
-
-    public void setMaxWidth(int maxWidth) {
-        getStateHelper().put(PropertyKeys.maxWidth, maxWidth);
-    }
+    @Property(defaultValue = " Integer.MIN_VALUE", description = "Maximum width of the info window.")
+    public abstract int getMaxWidth();
 
 }
