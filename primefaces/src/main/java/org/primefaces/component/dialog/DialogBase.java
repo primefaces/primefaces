@@ -147,6 +147,9 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, St
     @Property(defaultValue = "false", description = "Closes dialog when escape key is pressed.")
     public abstract boolean isCloseOnEscape();
 
+    @Property(defaultValue = "false", description = "Closes dialog by clicking on the modal background mask.")
+    public abstract boolean isDismissibleMask();
+
     @Property(description = "Component to receive focus when dialog is opened.")
     public abstract String getFocus();
 

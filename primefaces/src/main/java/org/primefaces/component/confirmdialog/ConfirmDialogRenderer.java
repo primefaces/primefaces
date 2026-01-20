@@ -88,6 +88,7 @@ public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
                 .attr("showEffect", component.getShowEffect(), null)
                 .attr("hideEffect", component.getHideEffect(), null)
                 .attr("closeOnEscape", component.isCloseOnEscape(), false)
+                .attr("dismissibleMask", component.isDismissibleMask(), false)
                 .attr("global", component.isGlobal(), false)
                 .attr("responsive", component.isResponsive(), false);
 
