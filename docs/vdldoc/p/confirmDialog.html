@@ -150,7 +150,15 @@
                 Defines text direction, valid values are "ltr" (default) and "rtl".
             </td>
                         </tr>
-                        <tr id="global" class="altColor">
+                        <tr id="dismissibleMask" class="altColor">
+                            <td class="colFirst"><a href="#dismissibleMask"><code>dismissibleMask</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
+                    </td><td class="colLast">
+                Defines if dialog should close when modal background mask is clicked. Default is false.
+            </td>
+                        </tr>
+                        <tr id="global" class="rowColor">
                             <td class="colFirst"><a href="#global"><code>global</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -158,7 +166,7 @@
                 When enabled, confirmDialog becomes a shared for other components that require confirmation.
             </td>
                         </tr>
-                        <tr id="header" class="rowColor">
+                        <tr id="header" class="altColor">
                             <td class="colFirst"><a href="#header"><code>header</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -166,7 +174,7 @@
                 Text for the header.
             </td>
                         </tr>
-                        <tr id="height" class="altColor">
+                        <tr id="height" class="rowColor">
                             <td class="colFirst"><a href="#height"><code>height</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -174,7 +182,7 @@
                 Height of the dialog.
             </td>
                         </tr>
-                        <tr id="hideEffect" class="rowColor">
+                        <tr id="hideEffect" class="altColor">
                             <td class="colFirst"><a href="#hideEffect"><code>hideEffect</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -182,7 +190,7 @@
                 Effect to use when hiding the dialog.
             </td>
                         </tr>
-                        <tr id="id" class="altColor">
+                        <tr id="id" class="rowColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -190,7 +198,7 @@
                 Unique identifier of the component in a namingContainer.
             </td>
                         </tr>
-                        <tr id="message" class="rowColor">
+                        <tr id="message" class="altColor">
                             <td class="colFirst"><a href="#message"><code>message</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -198,7 +206,7 @@
                 Text to be displayed in body. Required.
             </td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -206,7 +214,7 @@
                 Boolean value to specify the rendering of the component, when set to false component will not be rendered.
             </td>
                         </tr>
-                        <tr id="responsive" class="rowColor">
+                        <tr id="responsive" class="altColor">
                             <td class="colFirst"><a href="#responsive"><code>responsive</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -214,7 +222,7 @@
                 In responsive mode the dialog adjusts itself based on screen width, browser resizing, and scrolling of the document.
             </td>
                         </tr>
-                        <tr id="severity" class="altColor">
+                        <tr id="severity" class="rowColor">
                             <td class="colFirst"><a href="#severity"><code>severity</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -222,7 +230,7 @@
                 Message severity for the dislayed icon. Default is alert.
             </td>
                         </tr>
-                        <tr id="showEffect" class="rowColor">
+                        <tr id="showEffect" class="altColor">
                             <td class="colFirst"><a href="#showEffect"><code>showEffect</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -230,7 +238,7 @@
                 Effect to use when showing the dialog.
             </td>
                         </tr>
-                        <tr id="style" class="altColor">
+                        <tr id="style" class="rowColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -238,7 +246,7 @@
                 Inner style of the dialog container.
             </td>
                         </tr>
-                        <tr id="styleClass" class="rowColor">
+                        <tr id="styleClass" class="altColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -246,7 +254,7 @@
                 Style class of the dialog container.
             </td>
                         </tr>
-                        <tr id="visible" class="altColor">
+                        <tr id="visible" class="rowColor">
                             <td class="colFirst"><a href="#visible"><code>visible</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -254,7 +262,7 @@
                 Sets dialogs visibility. Default is false.
             </td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -262,7 +270,7 @@
                 Name of the client side widget.
             </td>
                         </tr>
-                        <tr id="width" class="altColor">
+                        <tr id="width" class="rowColor">
                             <td class="colFirst"><a href="#width"><code>width</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
