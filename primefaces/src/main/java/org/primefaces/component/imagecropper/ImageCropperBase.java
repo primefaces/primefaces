@@ -23,35 +23,18 @@
  */
 package org.primefaces.component.imagecropper;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIInput;
 
+@FacesComponentBase
 public abstract class ImageCropperBase extends UIInput implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ImageCropperRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        image,
-        alt,
-        aspectRatio,
-        minSize,
-        maxSize,
-        initialCoords,
-        boxWidth,
-        boxHeight,
-        sizeLimit,
-        responsive,
-        guides,
-        viewMode,
-        cache,
-        zoomOnTouch,
-        zoomOnWheel
-    }
 
     public ImageCropperBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -62,132 +45,52 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Binary data to stream or context relative path.")
+    public abstract Object getImage();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Alternate text of the image.")
+    public abstract String getAlt();
 
-    public Object getImage() {
-        return getStateHelper().eval(PropertyKeys.image, null);
-    }
+    @Property(description = "Aspect ratio of the cropper area.")
+    public abstract double getAspectRatio();
 
-    public void setImage(Object image) {
-        getStateHelper().put(PropertyKeys.image, image);
-    }
+    @Property(description = "Minimum size of the cropper area (width,height).")
+    public abstract String getMinSize();
 
-    public String getAlt() {
-        return (String) getStateHelper().eval(PropertyKeys.alt, null);
-    }
+    @Property(description = "Maximum size of the cropper area (width,height).")
+    public abstract String getMaxSize();
 
-    public void setAlt(String alt) {
-        getStateHelper().put(PropertyKeys.alt, alt);
-    }
+    @Property(description = "Initial coordinates of the cropper area (x, y, width,height).")
+    public abstract String getInitialCoords();
 
-    public double getAspectRatio() {
-        return (Double) getStateHelper().eval(PropertyKeys.aspectRatio, Double.MIN_VALUE);
-    }
+    @Property(defaultValue = "0", description = "Maximum box width of the cropping area.")
+    public abstract int getBoxWidth();
 
-    public void setAspectRatio(double aspectRatio) {
-        getStateHelper().put(PropertyKeys.aspectRatio, aspectRatio);
-    }
+    @Property(defaultValue = "0", description = "Maximum box height of the cropping area.")
+    public abstract int getBoxHeight();
 
-    public String getMinSize() {
-        return (String) getStateHelper().eval(PropertyKeys.minSize, null);
-    }
+    @Property(defaultValue = "10485760L", description = "Maximum number of bytes the image.")
+    public abstract Long getSizeLimit();
 
-    public void setMinSize(String minSize) {
-        getStateHelper().put(PropertyKeys.minSize, minSize);
-    }
+    @Property(defaultValue = "true", description = "Re-render the cropper when resizing the window.")
+    public abstract boolean isResponsive();
 
-    public String getMaxSize() {
-        return (String) getStateHelper().eval(PropertyKeys.maxSize, null);
-    }
+    @Property(defaultValue = "true", description = "Show the dashed lines in the crop box.")
+    public abstract boolean isGuides();
 
-    public void setMaxSize(String maxSize) {
-        getStateHelper().put(PropertyKeys.maxSize, maxSize);
-    }
+    @Property(defaultValue = "1", description = "Define the view mode of the cropper. " +
+        "ViewMode to 0, the crop box can extend outside the canvas, while a value of 1, 2 or 3 will restrict the crop box to the size of the canvas. " +
+        "ViewMode of 2 or 3 will additionally restrict the canvas to the container. " +
+        "Note that if the proportions of the canvas and the container are the same, there is no difference between 2 and 3.")
+    public abstract int getViewMode();
 
-    public String getInitialCoords() {
-        return (String) getStateHelper().eval(PropertyKeys.initialCoords, null);
-    }
+    @Property(defaultValue = "true", description = "Controls browser caching mode of the resource.")
+    public abstract boolean isCache();
 
-    public void setInitialCoords(String initialCoords) {
-        getStateHelper().put(PropertyKeys.initialCoords, initialCoords);
-    }
+    @Property(defaultValue = "true", description = "Enable to zoom the image by dragging touch.")
+    public abstract boolean isZoomOnTouch();
 
-    public int getBoxWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.boxWidth, 0);
-    }
-
-    public void setBoxWidth(int boxWidth) {
-        getStateHelper().put(PropertyKeys.boxWidth, boxWidth);
-    }
-
-    public int getBoxHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.boxHeight, 0);
-    }
-
-    public void setBoxHeight(int boxHeight) {
-        getStateHelper().put(PropertyKeys.boxHeight, boxHeight);
-    }
-
-    public Long getSizeLimit() {
-        return (Long) getStateHelper().eval(PropertyKeys.sizeLimit, 10485760L);
-    }
-
-    public void setSizeLimit(Long sizeLimit) {
-        getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
-    }
-
-    public boolean isResponsive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, true);
-    }
-
-    public void setResponsive(boolean responsive) {
-        getStateHelper().put(PropertyKeys.responsive, responsive);
-    }
-
-    public boolean isGuides() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.guides, true);
-    }
-
-    public void setGuides(boolean guides) {
-        getStateHelper().put(PropertyKeys.guides, guides);
-    }
-
-    public void setViewMode(int viewMode) {
-        getStateHelper().put(PropertyKeys.viewMode, viewMode);
-    }
-
-    public int getViewMode() {
-        return (Integer) getStateHelper().eval(PropertyKeys.viewMode, 1);
-    }
-
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
-    }
-
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
-
-    public boolean isZoomOnTouch() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.zoomOnTouch, true);
-    }
-
-    public void setZoomOnTouch(boolean zoomOnTouch) {
-        getStateHelper().put(PropertyKeys.zoomOnTouch, zoomOnTouch);
-    }
-
-    public boolean isZoomOnWheel() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.zoomOnWheel, true);
-    }
-
-    public void setZoomOnWheel(boolean zoomOnWheel) {
-        getStateHelper().put(PropertyKeys.zoomOnWheel, zoomOnWheel);
-    }
+    @Property(defaultValue = "true", description = "Enable to zoom the image by wheeling mouse.")
+    public abstract boolean isZoomOnWheel();
 
 }

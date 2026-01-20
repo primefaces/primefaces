@@ -166,7 +166,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         writer.writeAttribute("alt", alt, null);
 
         String src = DynamicContentSrcBuilder.build(context, component,
-                component.getValueExpression(ImageCropperBase.PropertyKeys.image.name()),
+                component.getValueExpression(ImageCropperBaseImpl.PropertyKeys.image),
                 new Lazy<>(component::getImage), component.isCache(), true);
         writer.writeAttribute("src", src, null);
 
@@ -266,7 +266,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         String originalFileName = null;
 
         // try to evaluate as Resource object, otherwise we would need to handle the Resource#resourcePath which would be more awkward
-        ValueExpression imageVE = component.getValueExpression(ImageCropperBase.PropertyKeys.image.toString());
+        ValueExpression imageVE = component.getValueExpression(ImageCropperBaseImpl.PropertyKeys.image);
         Resource resource = ResourceUtils.evaluateResourceExpression(context, imageVE);
         if (resource != null) {
             inputStream = resource.getInputStream();
