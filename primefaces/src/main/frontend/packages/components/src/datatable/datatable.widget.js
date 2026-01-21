@@ -4856,7 +4856,14 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {number} rowKey Key of the row to add.
      */
     addSelection(rowKey) {
-        if(!this.isSelected(rowKey)) {
+        if(this.selection.includes('@all')) {
+            // Remove the deselection marker if it exists (reselecting a deselected row)
+            var deselectionMarker = '!' + rowKey;
+            this.selection = $.grep(this.selection, function(value) {
+                return value !== deselectionMarker;
+            });
+        }
+        else if(!this.isSelected(rowKey)) {
             this.selection.push(rowKey);
         }
     }

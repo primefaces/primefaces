@@ -373,6 +373,41 @@ class DataTable006Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }
 
+    @Test
+    @Order(10)
+    @DisplayName("DataTable: selection - reselect deselected row with selectionPageOnly='false'")
+    void reselectDeselectedRow(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleSelectPageOnly.click();
+
+        // Act - select all
+        dataTable.toggleSelectAllCheckBox();
+        page.submit.click();
+
+        // Assert - all rows selected
+        assertSelectAllCheckbox(dataTable, true);
+        assertSelections(page.messages, "1,2,3,4,5");
+
+        // Act - deselect row 2
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - row 2 deselected
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages, "1,3,4,5");
+
+        // Act - reselect row 2 (the one we just deselected)
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - row 2 is reselected, all 5 rows should now be selected again
+        // Note: selectAll checkbox remains unchecked because we manually reselected rather than using toggle all
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages, "1,2,3,4,5");
+        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+    }
+
     private void assertConfiguration(JSONObject cfg, boolean selectionPageOnly) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
