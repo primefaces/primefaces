@@ -158,11 +158,15 @@ public class SelectionFeature implements DataTableFeature {
             String var = table.getVar();
             Map<String, Object> rowKeyToObjectMap = getSelectionMapFromValueExpression(context, table);
 
-            if (!rowKeys.isEmpty() && ALL_SELECTOR.equals(rowKeys.iterator().next())) {
-                selectAllRows(context, table, var, requestMap, rowKeyToObjectMap);
+            if (rowKeys.contains(ALL_SELECTOR)) {
+                // Extract deselected rows (only relevant when @all is present)
+                Set<String> deselectedRows = extractDeselectedRows(rowKeys);
+
+                // Select all rows, handling deselections
+                selectAllRows(context, table, var, requestMap, rowKeyToObjectMap, deselectedRows);
             }
             else {
-                // Remove entries from map that are not in rowKeys (unselected rows)
+                // Standard selection - explicit rowKeys
                 rowKeyToObjectMap.keySet().retainAll(rowKeys);
 
                 // Add/update entries from rowKeys (newly selected or still selected rows)
@@ -259,18 +263,21 @@ public class SelectionFeature implements DataTableFeature {
      * Selects all rows in the DataTable, handling both lazy and non-lazy modes.
      * For lazy tables, loads all data at once using the lazy data model.
      * For non-lazy tables, iterates through all row indices.
+     * Deselected rows (if any) are excluded from the selection.
      *
      * @param context the FacesContext
      * @param table the DataTable
      * @param var the variable name for the current row
      * @param requestMap the request map for storing the current row variable
      * @param rowKeyToObjectMap the map to populate with selected rows
+     * @param deselectedRows set of rowKeys to exclude from selection (may be empty)
      */
     private void selectAllRows(FacesContext context, DataTable table, String var,
-                               Map<String, Object> requestMap, Map<String, Object> rowKeyToObjectMap) {
+                               Map<String, Object> requestMap, Map<String, Object> rowKeyToObjectMap,
+                               Set<String> deselectedRows) {
         // Clear existing selections for select all
         rowKeyToObjectMap.clear();
-        
+
         if (table.isLazy()) {
             // For lazy tables, load all data at once using the lazy data model
             LazyDataModel<?> lazyModel = table.getLazyDataModel();
@@ -287,7 +294,7 @@ public class SelectionFeature implements DataTableFeature {
                 }
 
                 String rowKey = table.getRowKey(rowData);
-                if (rowKey != null && isSelectable(table, var, requestMap, rowData)) {
+                if (rowKey != null && !deselectedRows.contains(rowKey) && isSelectable(table, var, requestMap, rowData)) {
                     rowKeyToObjectMap.put(rowKey, rowData);
                 }
             }
@@ -302,11 +309,41 @@ public class SelectionFeature implements DataTableFeature {
                 }
 
                 String rowKey = table.getRowKey(rowData);
-                if (rowKey != null && isSelectable(table, var, requestMap, rowData)) {
+                if (rowKey != null && !deselectedRows.contains(rowKey) && isSelectable(table, var, requestMap, rowData)) {
                     rowKeyToObjectMap.put(rowKey, rowData);
                 }
             }
         }
+    }
+
+    /**
+     * Extracts deselected rows from the rowKeys set.
+     * This method is self-contained and checks if the {@link #ALL_SELECTOR} is present.
+     * If not present, it returns an empty set since deselection markers are only valid
+     * in combination with the "select all" operation.
+     * <p>
+     * Deselected rows are marked with a '!' prefix and allow tracking individual rows that were
+     * explicitly deselected after a "select all" operation.
+     *
+     * @param rowKeys the set of rowKeys to process
+     * @return a set of deselected row keys (without the '!' prefix), or empty set if @all is not present or no deselections found
+     */
+    private static Set<String> extractDeselectedRows(Set<String> rowKeys) {
+        Set<String> deselectedRows = new HashSet<>();
+
+        // Only extract deselection markers if @all selector is present
+        if (!rowKeys.contains(ALL_SELECTOR)) {
+            return deselectedRows;
+        }
+
+        // Convert to array for indexed iteration
+        String[] keys = rowKeys.toArray(new String[0]);
+        for (int i = 0; i < keys.length; i++) {
+            if (keys[i].startsWith("!")) {
+                deselectedRows.add(keys[i].substring(1));
+            }
+        }
+        return deselectedRows;
     }
 
     /**
