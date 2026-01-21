@@ -381,7 +381,8 @@ public class SelectionFeature implements DataTableFeature {
             }
 
             List<Object> selectionList = isArray ? Arrays.asList((Object[]) selection) : (List<Object>) selection;
-            for (Object selectedItem : selectionList) {
+            for (int i = 0; i < selectionList.size(); i++) {
+                Object selectedItem = selectionList.get(i);
                 String rowKey = table.getRowKey(selectedItem);
                 rowKeyToObjectMap.put(rowKey, selectedItem);
             }
