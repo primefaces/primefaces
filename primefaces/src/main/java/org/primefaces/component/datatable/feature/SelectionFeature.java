@@ -126,7 +126,7 @@ public class SelectionFeature implements DataTableFeature {
         }
 
         if (rowKeys.isEmpty()) {
-            setSelection(context, table, false, new ArrayList<>(), new HashSet<>());
+            setSelection(context, table, false, new HashMap<>());
         }
         else {
             String rowKey = rowKeys.iterator().next();
@@ -135,60 +135,54 @@ public class SelectionFeature implements DataTableFeature {
                 Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
                 String var = table.getVar();
 
-                List<Object> selectionTmp = Collections.emptyList();
-                Set<String> rowKeysTmp = Collections.emptySet();
+                Map<String, Object> selectionMap = new HashMap<>();
                 if (isSelectable(table, var, requestMap, o)) {
-                    selectionTmp = new ArrayList<>(1);
-                    selectionTmp.add(o);
-                    rowKeysTmp = new HashSet<>(1);
-                    rowKeysTmp.add(rowKey);
+                    selectionMap.put(rowKey, o);
                 }
 
-                setSelection(context, table, false, selectionTmp, rowKeysTmp);
+                setSelection(context, table, false, selectionMap);
             }
             else {
-                setSelection(context, table, false, new ArrayList<>(), new HashSet<>());
+                setSelection(context, table, false, new HashMap<>());
             }
         }
     }
 
     protected void decodeMultipleSelection(FacesContext context, DataTable table, Set<String> rowKeys) {
         if (rowKeys.isEmpty()) {
-            setSelection(context, table, true, new ArrayList<>(), new HashSet<>());
+            setSelection(context, table, true, new HashMap<>());
         }
         else {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             String var = table.getVar();
-
-            List<Object> selection = new ArrayList<>();
-
-            Set<String> rowKeysTmp = new HashSet<>();
+            Map<String, Object> rowKeyToObjectMap = getSelectionMapFromValueExpression(context, table);
+            
             if (!rowKeys.isEmpty() && ALL_SELECTOR.equals(rowKeys.iterator().next())) {
                 for (int i = 0; i < table.getRowCount(); i++) {
                     table.setRowIndex(i);
                     Object rowData = table.getRowData();
                     String rowKey = table.getRowKey(rowData);
-                    if (rowKey != null) {
-                        rowKeysTmp.add(rowKey);
-                        if (rowData != null && isSelectable(table, var, requestMap, rowData)) {
-                            selection.add(rowData);
-                        }
+                    if (rowKey != null && rowData != null && isSelectable(table, var, requestMap, rowData)) {
+                        rowKeyToObjectMap.put(rowKey, rowData);
                     }
                 }
             }
             else {
+                // Remove entries from map that are not in rowKeys (unselected rows)
+                rowKeyToObjectMap.keySet().retainAll(rowKeys);
+                
+                // Add/update entries from rowKeys (newly selected or still selected rows)
                 for (String rowKey : rowKeys) {
-                    Object rowData = table.getRowData(rowKey);
-                    if (rowData != null) {
-                        rowKeysTmp.add(rowKey);
-                        if (isSelectable(table, var, requestMap, rowData)) {
-                            selection.add(rowData);
+                    if (!rowKeyToObjectMap.containsKey(rowKey)) {
+                        Object rowData = table.getRowData(rowKey);
+                        if (rowData != null && isSelectable(table, var, requestMap, rowData)) {
+                            rowKeyToObjectMap.put(rowKey, rowData);
                         }
                     }
                 }
             }
 
-            setSelection(context, table, true, selection, rowKeysTmp);
+            setSelection(context, table, true, rowKeyToObjectMap);
         }
     }
 
@@ -217,7 +211,7 @@ public class SelectionFeature implements DataTableFeature {
         return selectable;
     }
 
-    protected void setSelection(FacesContext context, DataTable table, boolean multiple, List<Object> selected, Set<String> rowKeys) {
+    protected void setSelection(FacesContext context, DataTable table, boolean multiple, Map<String, Object> selectionMap) {
         ValueExpression selectionVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.toString());
         Class<?> clazz = selectionVE == null ? null : selectionVE.getType(context.getELContext());
         boolean isArray = clazz != null && clazz.isArray();
@@ -227,7 +221,8 @@ public class SelectionFeature implements DataTableFeature {
         }
 
         Object selection;
-        if (selected.isEmpty()) {
+        Set<String> rowKeys;
+        if (selectionMap.isEmpty()) {
             if (multiple) {
                 selection = isArray
                         ? Array.newInstance(clazz.getComponentType(), 0)
@@ -236,19 +231,23 @@ public class SelectionFeature implements DataTableFeature {
             else {
                 selection = null;
             }
+            rowKeys = new HashSet<>();
         }
         else {
             if (multiple) {
                 if (isArray) {
-                    Object arr = Array.newInstance(clazz.getComponentType(), selected.size());
-                    selection = selected.toArray((Object[]) arr);
+                    Object arr = Array.newInstance(clazz.getComponentType(), selectionMap.size());
+                    selection = selectionMap.values().toArray((Object[]) arr);
                 }
                 else {
-                    selection = selected;
+                    selection = new ArrayList<>(selectionMap.values());
                 }
+                rowKeys = new HashSet<>(selectionMap.keySet());
             }
             else {
-                selection = selected.get(0);
+                String rowKeySingle = selectionMap.keySet().iterator().next();
+                selection = selectionMap.get(rowKeySingle);
+                rowKeys = new HashSet<>(Collections.singletonList(rowKeySingle));
             }
         }
 
@@ -272,17 +271,16 @@ public class SelectionFeature implements DataTableFeature {
      * @throws FacesException if multiple selection is not an Array or List
      */
     private static Map<String, Object> getSelectionMapFromValueExpression(FacesContext context, DataTable table) {
+        Map<String, Object> rowKeyToObjectMap = new HashMap<>();
         ValueExpression selectionVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.name());
         if (selectionVE == null) {
-            return Collections.emptyMap();
+            return rowKeyToObjectMap;
         }
 
         Object selection = selectionVE.getValue(context.getELContext());
         if (selection == null) {
-            return Collections.emptyMap();
+            return rowKeyToObjectMap;
         }
-
-        Map<String, Object> rowKeyToObjectMap = new HashMap<>();
 
         if (table.isSingleSelectionMode()) {
             String rowKey = table.getRowKey(selection);
