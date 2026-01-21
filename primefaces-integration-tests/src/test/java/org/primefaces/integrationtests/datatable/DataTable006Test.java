@@ -281,24 +281,29 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, true);
         assertSelections(page.messages,
-                "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,"
-                        + "2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3");
+                "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
-        // Act - unselect one row
+        // Act - unselect one row (row 2)
         dataTable.getCell(1, 0).getWebElement().click();
         page.submit.click();
 
-        // Assert - only 1 record unselected
+        // Assert - only 1 record unselected (row 2), all others remain selected (74 rows)
         assertSelectAllCheckbox(dataTable, false);
-        assertSelections(page.messages, "1,3");
+        assertSelections(page.messages,
+                "1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
-        // Act - reselect all record, unselect one and move to next page
+        // Act - reselect all, unselect one (row 1) and move to next page
         dataTable.toggleSelectAllCheckBox();
         dataTable.getCell(0, 0).getWebElement().click();
         dataTable.selectPage(2);
         page.submit.click();
 
-        // Assert - only 1 record unselected should leave first page selections only
+        // Assert - after navigating to another page, only the original page's selections are maintained
+        // Client-side only tracks current page selections after individual row interaction
         assertSelections(page.messages, "2,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }

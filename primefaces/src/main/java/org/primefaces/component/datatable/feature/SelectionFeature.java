@@ -26,6 +26,7 @@ package org.primefaces.component.datatable.feature;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableBase;
 import org.primefaces.component.datatable.DataTableState;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.LangUtils;
 
 import java.lang.reflect.Array;
@@ -156,21 +157,14 @@ public class SelectionFeature implements DataTableFeature {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             String var = table.getVar();
             Map<String, Object> rowKeyToObjectMap = getSelectionMapFromValueExpression(context, table);
-            
+
             if (!rowKeys.isEmpty() && ALL_SELECTOR.equals(rowKeys.iterator().next())) {
-                for (int i = 0; i < table.getRowCount(); i++) {
-                    table.setRowIndex(i);
-                    Object rowData = table.getRowData();
-                    String rowKey = table.getRowKey(rowData);
-                    if (rowKey != null && rowData != null && isSelectable(table, var, requestMap, rowData)) {
-                        rowKeyToObjectMap.put(rowKey, rowData);
-                    }
-                }
+                selectAllRows(context, table, var, requestMap, rowKeyToObjectMap);
             }
             else {
                 // Remove entries from map that are not in rowKeys (unselected rows)
                 rowKeyToObjectMap.keySet().retainAll(rowKeys);
-                
+
                 // Add/update entries from rowKeys (newly selected or still selected rows)
                 for (String rowKey : rowKeys) {
                     if (!rowKeyToObjectMap.containsKey(rowKey)) {
@@ -258,6 +252,60 @@ public class SelectionFeature implements DataTableFeature {
         }
         else {
             table.setSelection(selection);
+        }
+    }
+
+    /**
+     * Selects all rows in the DataTable, handling both lazy and non-lazy modes.
+     * For lazy tables, loads all data at once using the lazy data model.
+     * For non-lazy tables, iterates through all row indices.
+     *
+     * @param context the FacesContext
+     * @param table the DataTable
+     * @param var the variable name for the current row
+     * @param requestMap the request map for storing the current row variable
+     * @param rowKeyToObjectMap the map to populate with selected rows
+     */
+    private void selectAllRows(FacesContext context, DataTable table, String var,
+                               Map<String, Object> requestMap, Map<String, Object> rowKeyToObjectMap) {
+        // Clear existing selections for select all
+        rowKeyToObjectMap.clear();
+        
+        if (table.isLazy()) {
+            // For lazy tables, load all data at once using the lazy data model
+            LazyDataModel<?> lazyModel = table.getLazyDataModel();
+            int rowCount = lazyModel.getRowCount();
+            List<?> allData = lazyModel.load(0, rowCount, table.getSortByAsMap(), table.getFilterByAsMap());
+
+            if (allData == null) {
+                return;
+            }
+            for (int i = 0; i < allData.size(); i++) {
+                Object rowData = allData.get(i);
+                if (rowData == null) {
+                    continue;
+                }
+
+                String rowKey = table.getRowKey(rowData);
+                if (rowKey != null && isSelectable(table, var, requestMap, rowData)) {
+                    rowKeyToObjectMap.put(rowKey, rowData);
+                }
+            }
+        }
+        else {
+            // For non-lazy tables, iterate through row indices
+            for (int i = 0; i < table.getRowCount(); i++) {
+                table.setRowIndex(i);
+                Object rowData = table.getRowData();
+                if (rowData == null) {
+                    continue;
+                }
+
+                String rowKey = table.getRowKey(rowData);
+                if (rowKey != null && isSelectable(table, var, requestMap, rowData)) {
+                    rowKeyToObjectMap.put(rowKey, rowData);
+                }
+            }
         }
     }
 
