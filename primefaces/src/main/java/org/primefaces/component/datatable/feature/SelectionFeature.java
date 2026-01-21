@@ -67,7 +67,15 @@ public class SelectionFeature implements DataTableFeature {
             table.setValue(null);
         }
 
-        decodeSelection(context, table, rowKeys);
+        // Store rowKeys for lazy tables to apply after data loading
+        // For non-lazy tables or lazy tables with data loaded, apply selection immediately
+        if (!table.isLazy() || table.isLazyDataLoaded()) {
+            decodeSelection(context, table, rowKeys);
+        }
+        else {
+            // Lazy table without data - store rowKeys for later application
+            table.setSelectedRowKeys(rowKeys);
+        }
 
         if (allEligibleToSelection) {
             table.setValue(originalValue);
@@ -81,7 +89,7 @@ public class SelectionFeature implements DataTableFeature {
 
     public void decodeSelection(FacesContext context, DataTable table, Set<String> rowKeys) {
         table.setSelection(null);
-        table.setSelectedRowKeys(null);
+        table.setSelectedRowKeys(rowKeys);
 
         if (table.isSingleSelectionMode()) {
             decodeSingleSelection(context, table, rowKeys);
@@ -92,7 +100,16 @@ public class SelectionFeature implements DataTableFeature {
     }
 
     public void decodeSelectionRowKeys(FacesContext context, DataTable table) {
-        Set<String> rowKeys = null;
+        Set<String> rowKeys = table.getSelectedRowKeys();
+
+        // If rowKeys are already set from decode phase (lazy table scenario), resolve them to objects
+        if (table.isLazy() && rowKeys != null && !rowKeys.isEmpty()) {
+            decodeSelection(context, table, rowKeys);
+            return;
+        }
+
+        // Otherwise, derive rowKeys from selection value expression (initial render)
+        rowKeys = null;
         ValueExpression selectionVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.name());
         if (selectionVE != null) {
             Object selection = selectionVE.getValue(context.getELContext());
@@ -118,8 +135,8 @@ public class SelectionFeature implements DataTableFeature {
                     }
                 }
             }
+            table.setSelectedRowKeys(rowKeys);
         }
-        table.setSelectedRowKeys(rowKeys);
     }
 
     protected void decodeSingleSelection(FacesContext context, DataTable table, Set<String> rowKeys) {
