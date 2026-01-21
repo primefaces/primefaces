@@ -212,6 +212,10 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         var oldVal = this.hiddenInput.val();
         var newVal = this.getValue();
 
+        if (this.cfg.emptyInputBehavior === 'null' && newVal === null) {
+            newVal = '';
+        }
+
         if (((oldVal === '') ^ (newVal === '')) || Number(oldVal) !== Number(newVal)) {
             this.setValueToHiddenInput(newVal);
         }
