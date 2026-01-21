@@ -32,6 +32,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -110,33 +111,12 @@ public class SelectionFeature implements DataTableFeature {
 
         // Otherwise, derive rowKeys from selection value expression (initial render)
         rowKeys = null;
-        ValueExpression selectionVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.name());
-        if (selectionVE != null) {
-            Object selection = selectionVE.getValue(context.getELContext());
+        Map<String, Object> rowKeyToObjectMap = getSelectionMapFromValueExpression(context, table);
 
-            if (selection != null) {
-                rowKeys = new HashSet<>();
-
-                if (table.isSingleSelectionMode()) {
-                    rowKeys.add(table.getRowKey(selection));
-                }
-                else {
-                    Class<?> clazz = selection.getClass();
-                    boolean isArray = clazz.isArray();
-
-                    if (!isArray && !List.class.isAssignableFrom(clazz)) {
-                        throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
-                    }
-
-                    List<Object> selectionTmp = isArray ? Arrays.asList((Object[]) selection) : (List<Object>) selection;
-                    for (int i = 0; i < selectionTmp.size(); i++) {
-                        Object o = selectionTmp.get(i);
-                        rowKeys.add(table.getRowKey(o));
-                    }
-                }
-            }
-            table.setSelectedRowKeys(rowKeys);
+        if (rowKeyToObjectMap != null && !rowKeyToObjectMap.isEmpty()) {
+            rowKeys = new HashSet<>(rowKeyToObjectMap.keySet());
         }
+        table.setSelectedRowKeys(rowKeys);
     }
 
     protected void decodeSingleSelection(FacesContext context, DataTable table, Set<String> rowKeys) {
@@ -280,5 +260,50 @@ public class SelectionFeature implements DataTableFeature {
         else {
             table.setSelection(selection);
         }
+    }
+
+    /**
+     * Reads the selection value expression and converts it to a Map of rowKey to selected object.
+     * Handles both single selection (returns map with one entry) and multiple selection (array or List).
+     *
+     * @param context the FacesContext
+     * @param table the DataTable
+     * @return a Map with rowKey as key and selected object as value, or empty map if selection value expression is null or selection is null
+     * @throws FacesException if multiple selection is not an Array or List
+     */
+    private static Map<String, Object> getSelectionMapFromValueExpression(FacesContext context, DataTable table) {
+        ValueExpression selectionVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.name());
+        if (selectionVE == null) {
+            return Collections.emptyMap();
+        }
+
+        Object selection = selectionVE.getValue(context.getELContext());
+        if (selection == null) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, Object> rowKeyToObjectMap = new HashMap<>();
+
+        if (table.isSingleSelectionMode()) {
+            String rowKey = table.getRowKey(selection);
+            rowKeyToObjectMap.put(rowKey, selection);
+        }
+        else {
+            Class<?> clazz = selection.getClass();
+            boolean isArray = clazz.isArray();
+
+            if (!isArray && !List.class.isAssignableFrom(clazz)) {
+                throw new FacesException("Multiple selection reference must be an Array or a List for datatable "
+                        + table.getClientId());
+            }
+
+            List<Object> selectionList = isArray ? Arrays.asList((Object[]) selection) : (List<Object>) selection;
+            for (Object selectedItem : selectionList) {
+                String rowKey = table.getRowKey(selectedItem);
+                rowKeyToObjectMap.put(rowKey, selectedItem);
+            }
+        }
+
+        return rowKeyToObjectMap;
     }
 }
