@@ -23,13 +23,25 @@
  */
 package org.primefaces.component.inplace;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.BehaviorEvent;
 
-public abstract class InplaceBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "save", event = BehaviorEvent.class, description = "Fires when inplace is saved."),
+    @FacesBehaviorEvent(name = "cancel", event = BehaviorEvent.class, description = "Fires when inplace is cancelled.")
+})
+public abstract class InplaceBase extends UIComponentBase implements Widget, StyleAware, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -37,25 +49,6 @@ public abstract class InplaceBase extends UIComponentBase implements Widget, Cli
 
     public static final String MODE_OUTPUT = "output";
     public static final String MODE_INPUT = "input";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        label,
-        emptyLabel,
-        effect,
-        effectSpeed,
-        disabled,
-        style,
-        styleClass,
-        editor,
-        saveLabel,
-        cancelLabel,
-        event,
-        toggleable,
-        mode,
-        tabindex
-    }
 
     public InplaceBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -66,123 +59,45 @@ public abstract class InplaceBase extends UIComponentBase implements Widget, Cli
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Facet(description = "Custom content for the display area. Alternative to label and value.")
+    public abstract UIComponent getOutputFacet();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Facet(description = "Custom content for the input area. Alternative to children.")
+    public abstract UIComponent getInputFacet();
 
-    public String getLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.label, null);
-    }
+    @Property(description = "Label to display.")
+    public abstract String getLabel();
 
-    public void setLabel(String label) {
-        getStateHelper().put(PropertyKeys.label, label);
-    }
+    @Property(description = "Label to display when value is empty.")
+    public abstract String getEmptyLabel();
 
-    public String getEmptyLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyLabel, null);
-    }
+    @Property(defaultValue = "fade", description = "Effect to use when toggling, valid values are \"fade\", \"slide\" and \"none\".")
+    public abstract String getEffect();
 
-    public void setEmptyLabel(String emptyLabel) {
-        getStateHelper().put(PropertyKeys.emptyLabel, emptyLabel);
-    }
+    @Property(defaultValue = "normal", description = "Speed of the effect, valid values are \"slow\", \"normal\" and \"fast\".")
+    public abstract String getEffectSpeed();
 
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, "fade");
-    }
+    @Property(defaultValue = "false", description = "Disables the component.")
+    public abstract boolean isDisabled();
 
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
+    @Property(defaultValue = "false", description = "Displays save and cancel buttons when enabled.")
+    public abstract boolean isEditor();
 
-    public String getEffectSpeed() {
-        return (String) getStateHelper().eval(PropertyKeys.effectSpeed, "normal");
-    }
+    @Property(defaultValue = "Save", description = "Label of the save button in editor mode.")
+    public abstract String getSaveLabel();
 
-    public void setEffectSpeed(String effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
-    }
+    @Property(defaultValue = "Cancel", description = "Label of the cancel button in editor mode.")
+    public abstract String getCancelLabel();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(defaultValue = "click", description = "Client side event to trigger display of inline content.")
+    public abstract String getEvent();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(defaultValue = "true", description = "Makes the component toggleable.")
+    public abstract boolean isToggleable();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "output", description = "Mode of the component, valid values are \"output\" and \"input\".")
+    public abstract String getMode();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isEditor() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.editor, false);
-    }
-
-    public void setEditor(boolean editor) {
-        getStateHelper().put(PropertyKeys.editor, editor);
-    }
-
-    public String getSaveLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.saveLabel, "Save");
-    }
-
-    public void setSaveLabel(String saveLabel) {
-        getStateHelper().put(PropertyKeys.saveLabel, saveLabel);
-    }
-
-    public String getCancelLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.cancelLabel, "Cancel");
-    }
-
-    public void setCancelLabel(String cancelLabel) {
-        getStateHelper().put(PropertyKeys.cancelLabel, cancelLabel);
-    }
-
-    public String getEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.event, "click");
-    }
-
-    public void setEvent(String event) {
-        getStateHelper().put(PropertyKeys.event, event);
-    }
-
-    public boolean isToggleable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, true);
-    }
-
-    public void setToggleable(boolean toggleable) {
-        getStateHelper().put(PropertyKeys.toggleable, toggleable);
-    }
-
-    public String getMode() {
-        return (String) getStateHelper().eval(PropertyKeys.mode, MODE_OUTPUT);
-    }
-
-    public void setMode(String mode) {
-        getStateHelper().put(PropertyKeys.mode, mode);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
+    @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")
+    public abstract String getTabindex();
 }
