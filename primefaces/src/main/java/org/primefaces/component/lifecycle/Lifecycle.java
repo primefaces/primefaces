@@ -23,16 +23,19 @@
  */
 package org.primefaces.component.lifecycle;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Lifecycle.COMPONENT_TYPE, namespace = Lifecycle.COMPONENT_FAMILY)
+@FacesComponentDescription("Lifecycle component displays JSF lifecycle phase execution times for performance monitoring.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "lifecycle/lifecycle.js")
 @ResourceDependency(library = "primefaces", name = "lifecycle/lifecycle.css")
-public class Lifecycle extends LifecycleBase {
+public class Lifecycle extends LifecycleBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Lifecycle";
 
