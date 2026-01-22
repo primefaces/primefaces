@@ -35,9 +35,11 @@ import jakarta.faces.component.html.HtmlInputTextarea;
 @FacesComponentBase
 public abstract class AbstractPrimeHtmlInputTextArea extends HtmlInputTextarea implements InputAware {
 
+    @Override
     @Property(description = "Defines the number of columns in the text area.", defaultValue = "0")
     public abstract int getCols();
 
+    @Override
     @Property(description = "Defines the number of rows in the text area.", defaultValue = "0")
     public abstract int getRows();
 

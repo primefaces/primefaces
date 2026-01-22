@@ -35,15 +35,19 @@ import jakarta.faces.component.html.HtmlInputText;
 @FacesComponentBase
 public abstract class AbstractPrimeHtmlInputText extends HtmlInputText implements InputAware {
 
+    @Override
     @Property(description = "Alternate textual description of the input field.")
     public abstract String getAlt();
 
+    @Override
     @Property(description = "Controls browser autocomplete behavior. Possible values are 'on', 'off', and 'new-password'.")
     public abstract String getAutocomplete();
 
+    @Override
     @Property(description = "Number of characters used to determine the width of the input element.", defaultValue = "Integer.MIN_VALUE")
     public abstract int getSize();
 
+    @Override
     @Property(description = "Input field type.", defaultValue = "text")
     public abstract String getType();
 
