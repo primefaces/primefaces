@@ -23,15 +23,18 @@
  */
 package org.primefaces.component.imageswitch;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ImageSwitch.COMPONENT_TYPE, namespace = ImageSwitch.COMPONENT_FAMILY)
+@FacesComponentDescription("ImageSwitch component is a simple image gallery component.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "imageswitch/imageswitch.js")
-public class ImageSwitch extends ImageSwitchBase {
+public class ImageSwitch extends ImageSwitchBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ImageSwitch";
 }
