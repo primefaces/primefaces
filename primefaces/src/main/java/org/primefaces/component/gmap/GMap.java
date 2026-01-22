@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.component.gmap;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.map.GeocodeEvent;
 import org.primefaces.event.map.MarkerDragEvent;
 import org.primefaces.event.map.OverlaySelectEvent;
@@ -37,11 +38,9 @@ import org.primefaces.model.map.Marker;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -50,40 +49,17 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = GMap.COMPONENT_TYPE, namespace = GMap.COMPONENT_FAMILY)
+@FacesComponentDescription("GMap component is built on Google Maps API Version 3 and is highly integrated with Faces and enhanced with AJAX capabilities.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "gmap/gmap.js")
-public class GMap extends GMapBase {
+public class GMap extends GMapBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.GMap";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("overlaySelect", OverlaySelectEvent.class)
-            .put("overlayDblSelect", OverlaySelectEvent.class)
-            .put("stateChange", StateChangeEvent.class)
-            .put("pointSelect", PointSelectEvent.class)
-            .put("pointDblSelect", PointSelectEvent.class)
-            .put("markerDrag", MarkerDragEvent.class)
-            .put("geocode", GeocodeEvent.class)
-            .put("reverseGeocode", ReverseGeocodeEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     @Override
     public void queueEvent(FacesEvent event) {

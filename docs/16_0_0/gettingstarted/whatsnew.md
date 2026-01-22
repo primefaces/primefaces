@@ -10,14 +10,16 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
 
 * ColumnToggler
     * Added `showSelectAll` property to show/hide the select all checkbox
+* Dialog/ConfirmDialog
+    * Added `dismissableMask` property to allow modal dialog to be closed if you click the background mask
 * Input(s)
     * Any component based on these now has an `ariaDescribedBy` property
 * GMap
-   * Added support for asynchronous loading of Google Maps API using Dynamic Library Import API.
-   * Added `apiKey` attribute for asynchronous loading when Google Maps is not pre-loaded.
-   * Added `apiVersion` attribute to specify API version (weekly, beta, alpha, or specific version).
-   * Added `libraries` attribute to load additional Google Maps libraries (e.g., places, geometry).
-   * Widget automatically detects if Google Maps is already loaded and supports both static and async loading methods.
+    * Added support for asynchronous loading of Google Maps API using Dynamic Library Import API.
+    * Added `apiKey` attribute for asynchronous loading when Google Maps is not pre-loaded.
+    * Added `apiVersion` attribute to specify API version (weekly, beta, alpha, or specific version).
+    * Added `libraries` attribute to load additional Google Maps libraries (e.g., places, geometry).
+    * Widget automatically detects if Google Maps is already loaded and supports both static and async loading methods.
 * MenuButton
     * Added new `buttonIcon` attribute to display an icon in place of the button label.
 * PickList
@@ -34,7 +36,6 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
     * Added `stickyTopAt` attribute for elements fixed at the top of the page whose height should be considered when positioning the sticky element.
 * TabView
     * Added new widget method `selectTabById(id, silent)` to select a tab by its client ID or expression at the JavaScript level, matching a tab panel by its DOM id. Returns true if the tab was found and selected, false otherwise.
-
 * TreeTable
     * Added `resizeMode` attribute to support column resizing using the "expand" mode.
     * Added `filterPrune="descendants"` to prune non-matching children unless they or their descendants match a filter.

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,15 @@
  */
 package org.primefaces.component.facet;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import java.io.IOException;
 
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Facet.COMPONENT_TYPE, namespace = Facet.COMPONENT_FAMILY)
+@FacesComponentDescription("Facet replaces f:facet and allows custom passthrough attributes to be added to the facet.")
 public class Facet extends FacetBaseImpl {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

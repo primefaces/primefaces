@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,37 +23,17 @@
  */
 package org.primefaces.component.idlemonitor;
 
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
-import jakarta.faces.event.BehaviorEvent;
 
-@FacesComponent(value = IdleMonitor.COMPONENT_TYPE, namespace = IdleMonitor.COMPONENT_FAMILY)
+@FacesComponent(value = IdleMonitor.COMPONENT_TYPE, namespace = IdleMonitorBase.COMPONENT_FAMILY)
+@FacesComponentDescription("IdleMonitor watches user actions on a page and notify callbacks in case they go idle or active again.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "idlemonitor/idlemonitor.js")
-public class IdleMonitor extends IdleMonitorBase {
+public class IdleMonitor extends IdleMonitorBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.IdleMonitor";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("idle", null)
-            .put("active", null)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 }

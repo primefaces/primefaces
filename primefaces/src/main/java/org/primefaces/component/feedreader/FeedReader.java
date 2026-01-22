@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.feedreader;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = FeedReader.COMPONENT_TYPE, namespace = FeedReader.COMPONENT_FAMILY)
-public class FeedReader extends FeedReaderBase {
+@FacesComponentDescription("FeedReader is a component that displays content from an RSS feed.")
+public class FeedReader extends FeedReaderBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.FeedReader";
 }

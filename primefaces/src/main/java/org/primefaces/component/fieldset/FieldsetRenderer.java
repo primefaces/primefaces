@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -139,7 +139,7 @@ public class FieldsetRenderer extends CoreRenderer<Fieldset> {
     protected void encodeLegend(FacesContext context, Fieldset component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String legendText = component.getLegend();
-        UIComponent legend = component.getFacet("legend");
+        UIComponent legend = component.getLegendFacet();
         boolean renderFacet = FacetUtils.shouldRenderFacet(legend);
 
         if (renderFacet || legendText != null) {

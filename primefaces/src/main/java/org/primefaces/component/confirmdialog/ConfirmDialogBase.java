@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -87,6 +87,9 @@ public abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAw
 
     @Property(defaultValue = "false", description = "Closes dialog when escape key is pressed.")
     public abstract boolean isCloseOnEscape();
+
+    @Property(defaultValue = "false", description = "Closes dialog by clicking on the modal background mask.")
+    public abstract boolean isDismissibleMask();
 
     @Property(defaultValue = "false", description = "When enabled, confirmDialog becomes a shared for other components that require confirmation.")
     public abstract boolean isGlobal();

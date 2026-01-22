@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -88,6 +88,7 @@ public class ConfirmDialogRenderer extends CoreRenderer<ConfirmDialog> {
                 .attr("showEffect", component.getShowEffect(), null)
                 .attr("hideEffect", component.getHideEffect(), null)
                 .attr("closeOnEscape", component.isCloseOnEscape(), false)
+                .attr("dismissibleMask", component.isDismissibleMask(), false)
                 .attr("global", component.isGlobal(), false)
                 .attr("responsive", component.isResponsive(), false);
 

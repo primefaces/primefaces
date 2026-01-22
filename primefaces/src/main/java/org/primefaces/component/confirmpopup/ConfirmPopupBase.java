@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,21 @@
  */
 package org.primefaces.component.confirmpopup;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 
-public abstract class ConfirmPopupBase extends UIPanel implements Widget {
+@FacesComponentBase
+public abstract class ConfirmPopupBase extends UIPanel implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ConfirmPopupRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        message,
-        icon,
-        style,
-        styleClass,
-        appendTo,
-        global,
-        dismissable
-    }
 
     public ConfirmPopupBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -54,67 +48,21 @@ public abstract class ConfirmPopupBase extends UIPanel implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Facet(description = "Allows to place HTML in the message area. Alternative to message.")
+    public abstract UIComponent getMessageFacet();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Text to be displayed in body.")
+    public abstract String getMessage();
 
-    public String getMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.message, null);
-    }
+    @Property(description = "Icon to display next to the message.")
+    public abstract String getIcon();
 
-    public void setMessage(String message) {
-        getStateHelper().put(PropertyKeys.message, message);
-    }
+    @Property(implicitDefaultValue = "@(body)", description = "Appends the popup to the given search expression.")
+    public abstract String getAppendTo();
 
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
+    @Property(defaultValue = "false", description = "When enabled, acts as a shared popup for multiple components that need confirmation.")
+    public abstract boolean isGlobal();
 
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
-    }
-
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    public boolean isGlobal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.global, false);
-    }
-
-    public void setGlobal(boolean global) {
-        getStateHelper().put(PropertyKeys.global, global);
-    }
-
-    public boolean isDismissable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dismissable, true);
-    }
-
-    public void setDismissable(boolean dismissable) {
-        getStateHelper().put(PropertyKeys.dismissable, dismissable);
-    }
+    @Property(defaultValue = "true", description = "Allows the popup to be hidden when clicking outside of it.")
+    public abstract boolean isDismissable();
 }

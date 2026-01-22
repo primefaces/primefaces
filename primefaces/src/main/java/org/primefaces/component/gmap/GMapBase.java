@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,39 +23,38 @@
  */
 package org.primefaces.component.gmap;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.map.GeocodeEvent;
+import org.primefaces.event.map.MarkerDragEvent;
+import org.primefaces.event.map.OverlaySelectEvent;
+import org.primefaces.event.map.PointSelectEvent;
+import org.primefaces.event.map.ReverseGeocodeEvent;
+import org.primefaces.event.map.StateChangeEvent;
 
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class GMapBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "overlaySelect", event = OverlaySelectEvent.class, description = "Fires when an overlay is selected."),
+    @FacesBehaviorEvent(name = "overlayDblSelect", event = OverlaySelectEvent.class, description = "Fires when an overlay is double-clicked."),
+    @FacesBehaviorEvent(name = "stateChange", event = StateChangeEvent.class, description = "Fires when map state changes."),
+    @FacesBehaviorEvent(name = "pointSelect", event = PointSelectEvent.class, description = "Fires when a point on the map is selected."),
+    @FacesBehaviorEvent(name = "pointDblSelect", event = PointSelectEvent.class, description = "Fires when a point on the map is double-clicked."),
+    @FacesBehaviorEvent(name = "markerDrag", event = MarkerDragEvent.class, description = "Fires when a marker is dragged."),
+    @FacesBehaviorEvent(name = "geocode", event = GeocodeEvent.class, description = "Fires when geocoding is performed."),
+    @FacesBehaviorEvent(name = "reverseGeocode", event = ReverseGeocodeEvent.class, description = "Fires when reverse geocoding is performed.")
+})
+public abstract class GMapBase extends UIComponentBase implements Widget, StyleAware, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.GMapRenderer";
-
-    public enum PropertyKeys {
-        apiKey,
-        apiVersion,
-        center,
-        disableDefaultUI,
-        disableDoubleClickZoom,
-        draggable,
-        fitBounds,
-        libraries,
-        mapTypeControl,
-        model,
-        navigationControl,
-        onPointClick,
-        scrollWheel,
-        streetView,
-        style,
-        styleClass,
-        type,
-        widgetVar,
-        zoom
-    }
 
     public GMapBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -66,155 +65,51 @@ public abstract class GMapBase extends UIComponentBase implements Widget, Client
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "An org.primefaces.model.MapModel instance.")
+    public abstract org.primefaces.model.map.MapModel getModel();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "There are four types of maps available: roadmap, satellite, hybrid, and terrain.")
+    public abstract String getType();
 
-    public org.primefaces.model.map.MapModel getModel() {
-        return (org.primefaces.model.map.MapModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
+    @Property(description = "Center point of the map.")
+    public abstract String getCenter();
 
-    public void setModel(org.primefaces.model.map.MapModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(defaultValue = "8", description = "Defines the initial zoom level.")
+    public abstract int getZoom();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "false", description = "Controls street view support.")
+    public abstract boolean isStreetView();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "false", description = "Disables default UI controls.")
+    public abstract boolean isDisableDefaultUI();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "true", description = "Defines visibility of navigation control.")
+    public abstract boolean isNavigationControl();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "true", description = "Defines visibility of map type control.")
+    public abstract boolean isMapTypeControl();
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
-    }
+    @Property(defaultValue = "true", description = "Defines draggability of map.")
+    public abstract boolean isDraggable();
 
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
+    @Property(defaultValue = "false", description = "Disables zooming on mouse double click.")
+    public abstract boolean isDisableDoubleClickZoom();
 
-    public String getCenter() {
-        return (String) getStateHelper().eval(PropertyKeys.center, null);
-    }
+    @Property(description = "Javascript callback to execute when a point on map is clicked.")
+    public abstract String getOnPointClick();
 
-    public void setCenter(String center) {
-        getStateHelper().put(PropertyKeys.center, center);
-    }
+    @Property(defaultValue = "false", description = "Defines if center and zoom should be calculated automatically to contain all markers on the map.")
+    public abstract boolean isFitBounds();
 
-    public int getZoom() {
-        return (Integer) getStateHelper().eval(PropertyKeys.zoom, 8);
-    }
+    @Property(defaultValue = "true", description = "Controls scrollwheel zooming on the map.")
+    public abstract boolean isScrollWheel();
 
-    public void setZoom(int zoom) {
-        getStateHelper().put(PropertyKeys.zoom, zoom);
-    }
+    @Property(description = "Google Maps API key.")
+    public abstract String getApiKey();
 
-    public boolean isStreetView() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.streetView, false);
-    }
+    @Property(defaultValue = "weekly", description = "Google Maps API version.")
+    public abstract String getApiVersion();
 
-    public void setStreetView(boolean streetView) {
-        getStateHelper().put(PropertyKeys.streetView, streetView);
-    }
-
-    public boolean isDisableDefaultUI() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableDefaultUI, false);
-    }
-
-    public void setDisableDefaultUI(boolean disableDefaultUI) {
-        getStateHelper().put(PropertyKeys.disableDefaultUI, disableDefaultUI);
-    }
-
-    public boolean isNavigationControl() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.navigationControl, true);
-    }
-
-    public void setNavigationControl(boolean navigationControl) {
-        getStateHelper().put(PropertyKeys.navigationControl, navigationControl);
-    }
-
-    public boolean isMapTypeControl() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.mapTypeControl, true);
-    }
-
-    public void setMapTypeControl(boolean mapTypeControl) {
-        getStateHelper().put(PropertyKeys.mapTypeControl, mapTypeControl);
-    }
-
-    public boolean isDraggable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
-    }
-
-    public void setDraggable(boolean draggable) {
-        getStateHelper().put(PropertyKeys.draggable, draggable);
-    }
-
-    public boolean isDisableDoubleClickZoom() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableDoubleClickZoom, false);
-    }
-
-    public void setDisableDoubleClickZoom(boolean disableDoubleClickZoom) {
-        getStateHelper().put(PropertyKeys.disableDoubleClickZoom, disableDoubleClickZoom);
-    }
-
-    public String getOnPointClick() {
-        return (String) getStateHelper().eval(PropertyKeys.onPointClick, null);
-    }
-
-    public void setOnPointClick(String onPointClick) {
-        getStateHelper().put(PropertyKeys.onPointClick, onPointClick);
-    }
-
-    public boolean isFitBounds() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.fitBounds, false);
-    }
-
-    public void setFitBounds(boolean fitBounds) {
-        getStateHelper().put(PropertyKeys.fitBounds, fitBounds);
-    }
-
-    public boolean isScrollWheel() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.scrollWheel, true);
-    }
-
-    public void setScrollWheel(boolean scrollWheel) {
-        getStateHelper().put(PropertyKeys.scrollWheel, scrollWheel);
-    }
-
-    public String getApiKey() {
-        return (String) getStateHelper().eval(PropertyKeys.apiKey, null);
-    }
-
-    public void setApiKey(String apiKey) {
-        getStateHelper().put(PropertyKeys.apiKey, apiKey);
-    }
-
-    public String getApiVersion() {
-        return (String) getStateHelper().eval(PropertyKeys.apiVersion, "weekly");
-    }
-
-    public void setApiVersion(String apiVersion) {
-        getStateHelper().put(PropertyKeys.apiVersion, apiVersion);
-    }
-
-    public String getLibraries() {
-        return (String) getStateHelper().eval(PropertyKeys.libraries, null);
-    }
-
-    public void setLibraries(String libraries) {
-        getStateHelper().put(PropertyKeys.libraries, libraries);
-    }
+    @Property(description = "Comma-separated list of additional Google Maps libraries to load.")
+    public abstract String getLibraries();
 }

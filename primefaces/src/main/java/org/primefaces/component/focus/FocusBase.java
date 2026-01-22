@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,35 +23,17 @@
  */
 package org.primefaces.component.focus;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIComponentBase;
 
-
+@FacesComponentBase
 public abstract class FocusBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.FocusRenderer";
-
-    public enum PropertyKeys {
-
-        forValue("for"),
-        context,
-        minSeverity;
-
-        private String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
-    }
 
     public FocusBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -62,28 +44,13 @@ public abstract class FocusBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
+    @Property(description = "Search expression for the component to receive focus.")
+    public abstract String getFor();
 
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
+    @Property(description = "Search expression for the context/search area to find the focusable component.")
+    public abstract String getContext();
 
-    public String getContext() {
-        return (String) getStateHelper().eval(PropertyKeys.context, null);
-    }
-
-    public void setContext(String context) {
-        getStateHelper().put(PropertyKeys.context, context);
-    }
-
-    public String getMinSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.minSeverity, "error");
-    }
-
-    public void setMinSeverity(String minSeverity) {
-        getStateHelper().put(PropertyKeys.minSeverity, minSeverity);
-    }
+    @Property(defaultValue = "error", description = "Minimum severity level to be used when finding the first invalid component.")
+    public abstract String getMinSeverity();
 
 }

@@ -7627,6 +7627,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines if dialog should close when modal background mask is clicked. Default is false.]]>
+            </description>
+            <name>dismissibleMask</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines text direction, valid values are "ltr" (default) and "rtl".]]>
             </description>
             <name>dir</name>
@@ -9987,6 +9995,14 @@
                 <![CDATA[Defines if dialog should close when escape key is pressed. Default is false.]]>
             </description>
             <name>closeOnEscape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if dialog should close when modal background mask is clicked. Default is false.]]>
+            </description>
+            <name>dismissibleMask</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -34471,6 +34487,9 @@
         </attribute>
     </tag>
     <tag>
+        <description>
+            <![CDATA[Facet replaces f:facet and allows custom passthrough attributes to be added to the facet.]]>
+        </description>
         <tag-name>facet</tag-name>
         <component>
             <component-type>org.primefaces.component.Facet</component-type>

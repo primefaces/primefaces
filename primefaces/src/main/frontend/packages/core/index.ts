@@ -562,6 +562,11 @@ declare global {
             closeOnEscape: boolean;
 
             /**
+             * Whether the dialog is closed when the user clicks on the modal background mask.
+             */
+            dismissibleMask: boolean;
+
+            /**
              * Whether the dialog is draggable.
              */
             draggable: boolean;

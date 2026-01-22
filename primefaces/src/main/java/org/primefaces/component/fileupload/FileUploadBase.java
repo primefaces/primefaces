@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,62 +23,22 @@
  */
 package org.primefaces.component.fileupload;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
+import jakarta.el.MethodExpression;
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIInput;
 
-public abstract class FileUploadBase extends UIInput implements Widget {
+@FacesComponentBase
+public abstract class FileUploadBase extends UIInput implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.FileUploadRenderer";
-
-    public enum PropertyKeys {
-
-        accept,
-        auto,
-        cancelButtonStyleClass,
-        cancelButtonTitle,
-        cancelIcon,
-        cancelLabel,
-        chooseButtonStyleClass,
-        chooseButtonTitle,
-        chooseIcon,
-        disabled,
-        displayFilename,
-        dragDrop,
-        dropZone,
-        global,
-        ignoreAutoUpdate,
-        label,
-        listener,
-        maxChunkSize,
-        maxRetries,
-        messageTemplate,
-        mode,
-        multiple,
-        onAdd,
-        oncancel,
-        oncomplete,
-        onerror,
-        onstart,
-        onupload,
-        onvalidationfailure,
-        previewWidth,
-        process,
-        retryTimeout,
-        sequential,
-        skinSimple,
-        style,
-        styleClass,
-        title,
-        update,
-        uploadButtonStyleClass,
-        uploadButtonTitle,
-        uploadIcon,
-        uploadLabel,
-        widgetVar
-    }
 
     public FileUploadBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -89,347 +49,127 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getUpdate() {
-        return (String) getStateHelper().eval(PropertyKeys.update, null);
-    }
-
-    public void setUpdate(String update) {
-        getStateHelper().put(PropertyKeys.update, update);
-    }
-
-    public String getProcess() {
-        return (String) getStateHelper().eval(PropertyKeys.process, null);
-    }
-
-    public void setProcess(String process) {
-        getStateHelper().put(PropertyKeys.process, process);
-    }
-
-    public jakarta.el.MethodExpression getListener() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
-    }
-
-    public void setListener(jakarta.el.MethodExpression fileUploadListener) {
-        getStateHelper().put(PropertyKeys.listener, fileUploadListener);
-    }
-
-    public boolean isMultiple() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
-    }
-
-    public void setMultiple(boolean multiple) {
-        getStateHelper().put(PropertyKeys.multiple, multiple);
-    }
-
-    public boolean isAuto() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.auto, false);
-    }
-
-    public void setAuto(boolean auto) {
-        getStateHelper().put(PropertyKeys.auto, auto);
-    }
-
-    public String getLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.label, "Choose");
-    }
-
-    public void setLabel(String label) {
-        getStateHelper().put(PropertyKeys.label, label);
-    }
-
-    public String getMode() {
-        return (String) getStateHelper().eval(PropertyKeys.mode, "advanced");
-    }
-
-    public void setMode(String mode) {
-        getStateHelper().put(PropertyKeys.mode, mode);
-    }
-
-    public String getUploadLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.uploadLabel, "Upload");
-    }
-
-    public void setUploadLabel(String uploadLabel) {
-        getStateHelper().put(PropertyKeys.uploadLabel, uploadLabel);
-    }
-
-    public String getCancelLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.cancelLabel, "Cancel");
-    }
-
-    public void setCancelLabel(String cancelLabel) {
-        getStateHelper().put(PropertyKeys.cancelLabel, cancelLabel);
-    }
-
-    public boolean isDragDrop() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dragDrop, true);
-    }
-
-    public void setDragDrop(boolean dragDrop) {
-        getStateHelper().put(PropertyKeys.dragDrop, dragDrop);
-    }
-
-    public String getOnstart() {
-        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
-    }
-
-    public void setOnstart(String onstart) {
-        getStateHelper().put(PropertyKeys.onstart, onstart);
-    }
-
-    public String getOnupload() {
-        return (String) getStateHelper().eval(PropertyKeys.onupload, null);
-    }
-
-    public void setOnupload(String onupload) {
-        getStateHelper().put(PropertyKeys.onupload, onupload);
-    }
-
-    public String getOncomplete() {
-        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
-    }
-
-    public void setOncomplete(String oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
-    }
-
-    public String getOnvalidationfailure() {
-        return (String) getStateHelper().eval(PropertyKeys.onvalidationfailure, null);
-    }
-
-    public void setOnvalidationfailure(String onvalidationfailure) {
-        getStateHelper().put(PropertyKeys.onvalidationfailure, onvalidationfailure);
-    }
-
-    public String getOnerror() {
-        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
-    }
-
-    public void setOnerror(String onerror) {
-        getStateHelper().put(PropertyKeys.onerror, onerror);
-    }
-
-    public String getOncancel() {
-        return (String) getStateHelper().eval(PropertyKeys.oncancel, null);
-    }
-
-    public void setOncancel(String oncancel) {
-        getStateHelper().put(PropertyKeys.oncancel, oncancel);
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public String getMessageTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.messageTemplate, null);
-    }
-
-    public void setMessageTemplate(String messageTemplate) {
-        getStateHelper().put(PropertyKeys.messageTemplate, messageTemplate);
-    }
-
-    public int getPreviewWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.previewWidth, 80);
-    }
-
-    public void setPreviewWidth(int previewWidth) {
-        getStateHelper().put(PropertyKeys.previewWidth, previewWidth);
-    }
-
-    public boolean isSkinSimple() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.skinSimple, false);
-    }
-
-    public void setSkinSimple(boolean skinSimple) {
-        getStateHelper().put(PropertyKeys.skinSimple, skinSimple);
-    }
-
-    public String getAccept() {
-        return (String) getStateHelper().eval(PropertyKeys.accept, null);
-    }
-
-    public void setAccept(String accept) {
-        getStateHelper().put(PropertyKeys.accept, accept);
-    }
-
-    public boolean isSequential() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.sequential, false);
-    }
-
-    public void setSequential(boolean sequential) {
-        getStateHelper().put(PropertyKeys.sequential, sequential);
-    }
-
-    public String getChooseIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.chooseIcon, "pi pi-plus");
-    }
-
-    public void setChooseIcon(String chooseIcon) {
-        getStateHelper().put(PropertyKeys.chooseIcon, chooseIcon);
-    }
-
-    public String getUploadIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.uploadIcon, "pi pi-upload");
-    }
-
-    public void setUploadIcon(String uploadIcon) {
-        getStateHelper().put(PropertyKeys.uploadIcon, uploadIcon);
-    }
-
-    public String getCancelIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.cancelIcon, "pi pi-times");
-    }
-
-    public void setCancelIcon(String cancelIcon) {
-        getStateHelper().put(PropertyKeys.cancelIcon, cancelIcon);
-    }
-
-    public String getOnAdd() {
-        return (String) getStateHelper().eval(PropertyKeys.onAdd, null);
-    }
-
-    public void setOnAdd(String onAdd) {
-        getStateHelper().put(PropertyKeys.onAdd, onAdd);
-    }
-
-    public Long getMaxChunkSize() {
-        return (Long) getStateHelper().eval(PropertyKeys.maxChunkSize, 0L);
-    }
-
-    public void setMaxChunkSize(Long maxChunkSize) {
-        getStateHelper().put(PropertyKeys.maxChunkSize, maxChunkSize);
-    }
-
-    public int getMaxRetries() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxRetries, 30);
-    }
-
-    public void setMaxRetries(int maxRetries) {
-        getStateHelper().put(PropertyKeys.maxRetries, maxRetries);
-    }
-
-    public int getRetryTimeout() {
-        return (Integer) getStateHelper().eval(PropertyKeys.retryTimeout, 1000);
-    }
-
-    public void setRetryTimeout(int retryTimeout) {
-        getStateHelper().put(PropertyKeys.retryTimeout, retryTimeout);
-    }
-
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
-
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
-
-    public String getChooseButtonTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.chooseButtonTitle, null);
-    }
-
-    public void setChooseButtonTitle(String chooseButtonTitle) {
-        getStateHelper().put(PropertyKeys.chooseButtonTitle, chooseButtonTitle);
-    }
-
-    public String getUploadButtonTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.uploadButtonTitle, null);
-    }
-
-    public void setUploadButtonTitle(String uploadButtonTitle) {
-        getStateHelper().put(PropertyKeys.uploadButtonTitle, uploadButtonTitle);
-    }
-
-    public String getCancelButtonTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.cancelButtonTitle, null);
-    }
-
-    public void setCancelButtonTitle(String cancelButtonTitle) {
-        getStateHelper().put(PropertyKeys.cancelButtonTitle, cancelButtonTitle);
-    }
-
-    public boolean isGlobal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
-    }
-
-    public void setGlobal(boolean global) {
-        getStateHelper().put(PropertyKeys.global, global);
-    }
-
-    public String getChooseButtonStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.chooseButtonStyleClass, null);
-    }
-
-    public void setChooseButtonStyleClass(String chooseButtonStyleClass) {
-        getStateHelper().put(PropertyKeys.chooseButtonStyleClass, chooseButtonStyleClass);
-    }
-
-    public String getUploadButtonStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.uploadButtonStyleClass, null);
-    }
-
-    public void setUploadButtonStyleClass(String uploadButtonStyleClass) {
-        getStateHelper().put(PropertyKeys.uploadButtonStyleClass, uploadButtonStyleClass);
-    }
-
-    public String getCancelButtonStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.cancelButtonStyleClass, null);
-    }
-
-    public void setCancelButtonStyleClass(String cancelButtonStyleClass) {
-        getStateHelper().put(PropertyKeys.cancelButtonStyleClass, cancelButtonStyleClass);
-    }
-
-    public String getDropZone() {
-        return (String) getStateHelper().eval(PropertyKeys.dropZone, null);
-    }
-
-    public void setDropZone(String dropZone) {
-        getStateHelper().put(PropertyKeys.dropZone, dropZone);
-    }
-
-    public boolean isDisplayFilename() {
-        return (boolean) getStateHelper().eval(PropertyKeys.displayFilename, () -> !(getMode().equals("simple") && isAuto()));
-    }
-
-    public void setDisplayFilename(boolean displayFilename) {
-        getStateHelper().put(PropertyKeys.displayFilename, displayFilename);
-    }
-
-    public boolean isIgnoreAutoUpdate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
-    }
-
-    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
-        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
-    }
+    @Facet(description = "Custom content to display when no files are selected.")
+    public abstract UIComponent getEmptyFacet();
+
+    @Property(description = "Comma separated list of content types to accept.")
+    public abstract String getAccept();
+
+    @Property(defaultValue = "false", description = "When enabled, upload starts automatically after selection.")
+    public abstract boolean isAuto();
+
+    @Property(description = "Style class of the cancel button.")
+    public abstract String getCancelButtonStyleClass();
+
+    @Property(description = "Title attribute of the cancel button.")
+    public abstract String getCancelButtonTitle();
+
+    @Property(defaultValue = "pi pi-times", description = "Icon of the cancel button.")
+    public abstract String getCancelIcon();
+
+    @Property(defaultValue = "Cancel", description = "Label of the cancel button.")
+    public abstract String getCancelLabel();
+
+    @Property(description = "Style class of the choose button.")
+    public abstract String getChooseButtonStyleClass();
+
+    @Property(description = "Title attribute of the choose button.")
+    public abstract String getChooseButtonTitle();
+
+    @Property(defaultValue = "pi pi-plus", description = "Icon of the choose button.")
+    public abstract String getChooseIcon();
+
+    @Property(defaultValue = "false", description = "Disables the component.")
+    public abstract boolean isDisabled();
+
+    @Property(description = "Whether to display the filename in simple mode.")
+    public abstract boolean isDisplayFilename();
+
+    @Property(defaultValue = "true", description = "Enables drag and drop functionality.")
+    public abstract boolean isDragDrop();
+
+    @Property(description = "Search expression to resolve a component as drop zone.")
+    public abstract String getDropZone();
+
+    @Property(defaultValue = "true", description = "Global AJAX requests are listened by ajaxStatus component, " +
+        "if disabled only ajaxStatus components defined in parent naming containers are notified.")
+    public abstract boolean isGlobal();
+
+    @Property(defaultValue = "false", description = "If true, ajax requests will not update components with autoUpdate=\"true\".")
+    public abstract boolean isIgnoreAutoUpdate();
+
+    @Property(defaultValue = "Choose", description = "Label of the choose button.")
+    public abstract String getLabel();
+
+    @Property(description = "Method expression to invoke when a file is uploaded.")
+    public abstract MethodExpression getListener();
+
+    @Property(defaultValue = "0L", description = "Maximum chunk size in bytes for chunked uploads. 0 means no chunking.")
+    public abstract Long getMaxChunkSize();
+
+    @Property(defaultValue = "30", description = "Maximum number of retries for failed chunk uploads.")
+    public abstract int getMaxRetries();
+
+    @Property(description = "Template for displaying file information.")
+    public abstract String getMessageTemplate();
+
+    @Property(defaultValue = "advanced", description = "Mode of the fileupload, 'simple' or 'advanced'.")
+    public abstract String getMode();
+
+    @Property(defaultValue = "false", description = "Allows multiple file selection.")
+    public abstract boolean isMultiple();
+
+    @Property(description = "Client side callback to execute when a file is added.")
+    public abstract String getOnAdd();
+
+    @Property(description = "Client side callback to execute when upload is cancelled.")
+    public abstract String getOncancel();
+
+    @Property(description = "Client side callback to execute when upload completes.")
+    public abstract String getOncomplete();
+
+    @Property(description = "Client side callback to execute when upload fails.")
+    public abstract String getOnerror();
+
+    @Property(description = "Client side callback to execute when upload starts.")
+    public abstract String getOnstart();
+
+    @Property(description = "Client side callback to execute when a file is uploaded.")
+    public abstract String getOnupload();
+
+    @Property(description = "Client side callback to execute when validation fails.")
+    public abstract String getOnvalidationfailure();
+
+    @Property(defaultValue = "80", description = "Width of the preview in pixels.")
+    public abstract int getPreviewWidth();
+
+    @Property(description = "Component(s) to process in partial request.")
+    public abstract String getProcess();
+
+    @Property(defaultValue = "1000", description = "Timeout in milliseconds between retries.")
+    public abstract int getRetryTimeout();
+
+    @Property(defaultValue = "false", description = "Uploads files sequentially instead of in parallel.")
+    public abstract boolean isSequential();
+
+    @Property(defaultValue = "false", description = "Applies simple skin to the component.")
+    public abstract boolean isSkinSimple();
+
+    @Property(description = "Title attribute of the file input.")
+    public abstract String getTitle();
+
+    @Property(description = "Component(s) to update in partial request.")
+    public abstract String getUpdate();
+
+    @Property(description = "Style class of the upload button.")
+    public abstract String getUploadButtonStyleClass();
+
+    @Property(description = "Title attribute of the upload button.")
+    public abstract String getUploadButtonTitle();
+
+    @Property(defaultValue = "pi pi-upload", description = "Icon of the upload button.")
+    public abstract String getUploadIcon();
+
+    @Property(defaultValue = "Upload", description = "Label of the upload button.")
+    public abstract String getUploadLabel();
 }

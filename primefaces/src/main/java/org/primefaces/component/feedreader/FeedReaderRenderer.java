@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,7 +57,7 @@ public class FeedReaderRenderer extends CoreRenderer<FeedReader> {
         }
         catch (Exception e) {
             logDevelopmentWarning(context, this, String.format("Unexpected RSS error: %s", e.getMessage()));
-            UIComponent errorFacet = component.getFacet("error");
+            UIComponent errorFacet = component.getErrorFacet();
             if (FacetUtils.shouldRenderFacet(errorFacet)) {
                 errorFacet.encodeAll(context);
             }
