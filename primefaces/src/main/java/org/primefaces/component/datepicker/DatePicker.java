@@ -95,7 +95,7 @@ public class DatePicker extends DatePickerBaseImpl {
     @Override
     public boolean isReadonlyInput() {
         return (boolean) getStateHelper().eval(PropertyKeys.readonlyInput,
-                () -> "week".equals(getView()) ? true : false);
+                () -> "week".equals(getView()));
     }
 
     public Boolean isShowTimeWithoutDefault() {

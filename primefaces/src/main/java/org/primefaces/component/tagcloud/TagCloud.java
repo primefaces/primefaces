@@ -27,7 +27,6 @@ import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
-import org.primefaces.util.Constants;
 
 import java.util.Map;
 
@@ -56,7 +55,6 @@ public class TagCloud extends TagCloudBaseImpl {
         if (isAjaxBehaviorEvent(event)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
 
             if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.select)) {

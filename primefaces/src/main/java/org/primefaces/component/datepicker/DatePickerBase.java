@@ -82,6 +82,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Mixed
     @Property(description = "Year range for navigation. Format: 'start:end'.")
     public abstract String getYearRange();
 
+    @Override
     @Property(description = "Selection mode. Options: 'single', 'multiple', 'range'. Defaults to 'range' when view is 'week', otherwise 'single'.")
     public abstract String getSelectionMode();
 
@@ -207,9 +208,6 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Mixed
 
     @Property(description = "When enabled, shows long month names.", defaultValue = "false")
     public abstract boolean isShowLongMonthNames();
-
-    @Property(description = "Flex layout configuration.")
-    public abstract Boolean getFlex();
 
     @Override
     public boolean hasTime() {
