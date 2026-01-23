@@ -60,7 +60,7 @@ public class InplaceRenderer extends CoreRenderer<Inplace> {
         String userStyle = component.getStyle();
         boolean disabled = component.isDisabled();
         boolean validationFailed = context.isValidationFailed() && !component.isValid();
-        UIComponent outputFacet = component.getFacet("output");
+        UIComponent outputFacet = component.getOutputFacet();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(outputFacet);
         boolean withPassword = !shouldRenderFacet && isPassword(component.getChildren().get(0));
         String styleClass = getStyleClassBuilder(context)
@@ -112,7 +112,7 @@ public class InplaceRenderer extends CoreRenderer<Inplace> {
                 .add(!validationFailed && Inplace.MODE_OUTPUT.equals(mode), "display", Inplace.DISPLAY_NONE)
                 .add(!validationFailed && Inplace.MODE_INPUT.equals(mode), "display", Inplace.DISPLAY_INLINE)
                 .build();
-        UIComponent inputFacet = component.getFacet("input");
+        UIComponent inputFacet = component.getInputFacet();
 
         if (!component.isDisabled()) {
             writer.startElement("span", null);
