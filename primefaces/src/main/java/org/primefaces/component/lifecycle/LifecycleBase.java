@@ -23,20 +23,17 @@
  */
 package org.primefaces.component.lifecycle;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
+@FacesComponentBase
 public abstract class LifecycleBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.LifecycleRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar
-    }
 
     public LifecycleBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -45,13 +42,5 @@ public abstract class LifecycleBase extends UIComponentBase implements Widget {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 }
