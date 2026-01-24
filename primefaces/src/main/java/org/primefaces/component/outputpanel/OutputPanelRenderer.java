@@ -80,7 +80,7 @@ public class OutputPanelRenderer extends CoreRenderer<OutputPanel> {
         }
 
         if (isDeferredNecessary(context, component)) {
-            UIComponent loadingFacet = component.getFacet("loading");
+            UIComponent loadingFacet = component.getLoadingFacet();
             if (FacetUtils.shouldRenderFacet(loadingFacet)) {
                 loadingFacet.encodeAll(context);
             }
