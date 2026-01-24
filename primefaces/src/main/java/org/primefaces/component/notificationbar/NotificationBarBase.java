@@ -23,26 +23,19 @@
  */
 package org.primefaces.component.notificationbar;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class NotificationBarBase extends UIComponentBase implements Widget {
+@FacesComponentBase
+public abstract class NotificationBarBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.NotificationBarRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        style,
-        styleClass,
-        position,
-        effect,
-        effectSpeed,
-        autoDisplay
-    }
 
     public NotificationBarBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -53,59 +46,15 @@ public abstract class NotificationBarBase extends UIComponentBase implements Wid
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "top", description = "Position of the notification bar, valid values are \"top\" and \"bottom\".")
+    public abstract String getPosition();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "fade", description = "Effect to use when showing/hiding the notification bar, valid values are \"fade\", \"slide\" and \"none\".")
+    public abstract String getEffect();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "normal", description = "Speed of the effect, valid values are \"slow\", \"normal\" and \"fast\".")
+    public abstract String getEffectSpeed();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.position, "top");
-    }
-
-    public void setPosition(String position) {
-        getStateHelper().put(PropertyKeys.position, position);
-    }
-
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, "fade");
-    }
-
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
-
-    public String getEffectSpeed() {
-        return (String) getStateHelper().eval(PropertyKeys.effectSpeed, "normal");
-    }
-
-    public void setEffectSpeed(String effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
-    }
-
-    public boolean isAutoDisplay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, false);
-    }
-
-    public void setAutoDisplay(boolean autoDisplay) {
-        getStateHelper().put(PropertyKeys.autoDisplay, autoDisplay);
-    }
+    @Property(defaultValue = "false", description = "Displays the notification bar automatically on page load.")
+    public abstract boolean isAutoDisplay();
 }

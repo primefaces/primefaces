@@ -23,31 +23,29 @@
  */
 package org.primefaces.component.multiselectlistbox;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = MultiSelectListbox.COMPONENT_TYPE, namespace = MultiSelectListbox.COMPONENT_FAMILY)
+@FacesComponentDescription("MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child relationship.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class MultiSelectListbox extends MultiSelectListboxBase {
+public class MultiSelectListbox extends MultiSelectListboxBaseImpl {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String COMPONENT_TYPE = "org.primefaces.component.MultiSelectListbox";
     public static final String CONTAINER_CLASS = "ui-multiselectlistbox ui-widget ui-helper-clearfix";
     public static final String LIST_CONTAINER_CLASS = "ui-multiselectlistbox-listcontainer";
@@ -55,50 +53,25 @@ public class MultiSelectListbox extends MultiSelectListboxBase {
     public static final String LIST_CLASS = "ui-multiselectlistbox-list ui-inputfield ui-widget-content";
     public static final String ITEM_CLASS = "ui-multiselectlistbox-item";
 
-    private static final String DEFAULT_EVENT = "change";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("change", null)
-            .put("itemSelect", SelectEvent.class)
-            .put("itemUnselect", UnselectEvent.class)
-            .build();
-    private static final Collection<String> EVENT_NAMES = LangUtils.concat(BEHAVIOR_EVENT_MAPPING.keySet(), DEFAULT_SELECT_EVENT_NAMES);
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
-
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
+        FacesContext context = event.getFacesContext();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        String clientId = getClientId(context);
 
-        if (eventName != null && event instanceof AjaxBehaviorEvent) {
-            AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
-            if ("itemSelect".equals(eventName)) {
-                String clientId = getClientId(context);
+        if (isAjaxBehaviorEventSource(event)) {
+            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.itemSelect)) {
                 Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(clientId + "_itemSelect"));
-                SelectEvent<?> toggleSelectEvent = new SelectEvent<>(this, ((AjaxBehaviorEvent) event).getBehavior(), selectedItemValue);
-                toggleSelectEvent.setPhaseId(event.getPhaseId());
-
-                super.queueEvent(toggleSelectEvent);
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), selectedItemValue);
+                selectEvent.setPhaseId(behaviorEvent.getPhaseId());
+                super.queueEvent(selectEvent);
             }
-            else if ("itemUnselect".equals(eventName)) {
-                String clientId = getClientId(context);
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.itemUnselect)) {
                 Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(clientId + "_itemUnselect"));
-                UnselectEvent<?> unselectEvent = new UnselectEvent<>(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
-                unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
+                UnselectEvent<?> unselectEvent = new UnselectEvent<>(this, behaviorEvent.getBehavior(), unselectedItemValue);
+                unselectEvent.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
             }
             else {
