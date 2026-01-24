@@ -106,7 +106,7 @@ public class OrderListRenderer extends CoreRenderer<OrderList> {
     protected void encodeList(FacesContext context, OrderList component, boolean flex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
-        UIComponent caption = component.getFacet("caption");
+        UIComponent caption = component.getCaptionFacet();
         String listStyleClass = OrderList.LIST_CLASS;
 
         String columnGridClass;
