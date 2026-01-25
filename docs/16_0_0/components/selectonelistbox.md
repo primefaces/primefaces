@@ -32,7 +32,8 @@ requiredMessage | null | String | Message to be displayed when required field va
 converterMessage | null | String | Message to be displayed when conversion fails.
 validatorMessage | null | String | Message to be displayed when validation fields.
 widgetVar | null | String | Name of the client side widget.
-disabled | false | Boolean | Disables the component.
+disabled | false | Boolean | Disables or enables the component.
+readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
 label | null | String | User presentable name.
 onchange | null | String | Callback to execute on value change.
 onclick | null | String | Callback for click event.
@@ -49,6 +50,7 @@ filterNormalize | false | Boolean | Defines if filtering would be done using nor
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 scrollHeight | null | Integer | Defines the height of the scrollable area.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 
 ## Getting started with SelectOneListbox
 SelectOneListbox usage is same as the standard one.

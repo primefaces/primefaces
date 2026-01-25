@@ -35,6 +35,7 @@ ColorPicker is an input component with a color palette based on [Coloris](https:
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | accesskey | null | String | Access key that when pressed transfers focus to the input element.
 | alt | null | String | Alternate textual description of the input field.
+| ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 | autocomplete | null | String | Controls browser autocomplete behavior.
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 | converterMessage | null | String | Message to be displayed when conversion fails.
@@ -94,9 +95,9 @@ ColorPicker is an input component with a color palette based on [Coloris](https:
 | widgetVar | null | String | Name of the client side widget.
 | alpha | true | boolean | Enable or disable alpha support. When disabled, it will strip the alpha value from the existing color value in all formats. Default true.
 | clearButton | false | boolean | Show an optional clear button. Default false.
-| clearLabel | Clear | String | Set the label of the clear button. (defaults to Messages.properties primefaces.colorpicker.CLEAR)
+| clearLabel | Clear | String | Set the label of the clear button. 
 | closeButton | false | boolean | Show an optional close button. Default false.
-| closeLabel | Close | String | Set the label of the close button. (defaults to Messages.properties primefaces.colorpicker.CLOSE)
+| closeLabel | Close | String | Set the label of the close button.
 | focusInput | true | boolean | Focus the color value input when the color picker dialog is opened. Default true.
 | forceAlpha | false | boolean | Set to true to always include the alpha value in the color value even if the opacity is 100%. Default false.
 | format | hex | String | Set the preferred color string format: hex, rgb, hsl, auto, mixed.

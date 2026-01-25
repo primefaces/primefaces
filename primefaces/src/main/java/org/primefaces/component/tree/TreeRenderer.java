@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,9 @@ import jakarta.faces.FacesException;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Tree.DEFAULT_RENDERER, componentFamily = Tree.COMPONENT_FAMILY)
 public class TreeRenderer extends CoreRenderer<Tree> {
 
     private static final String SB_DECODE_SELECTION = TreeRenderer.class.getName() + "#decodeSelection";
@@ -499,14 +501,6 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         boolean selectable = node.isSelectable();
         boolean partialSelected = node.isPartialSelected();
         boolean selected = node.isSelected();
-        String nodeClass = getStyleClassBuilder(context)
-                .add(leaf, Tree.LEAF_NODE_CLASS, Tree.PARENT_NODE_CLASS)
-                .add(!leaf && expanded, "ui-treenode-expanded", "ui-treenode-collapsed")
-                .add(selected, "ui-treenode-selected")
-                .add(!selected && partialSelected, "ui-treenode-hasselected")
-                .add(!selected && !partialSelected, "ui-treenode-unselected")
-                .add(uiTreeNode.getStyleClass())
-                .build();
 
         writer.startElement("table", component);
         writer.startElement("tbody", null);
@@ -530,6 +524,14 @@ public class TreeRenderer extends CoreRenderer<Tree> {
             writer.writeAttribute("data-rowkey", UITree.ROOT_ROW_KEY, null);
         }
 
+        String nodeClass = getStyleClassBuilder(context)
+                .add(leaf, Tree.LEAF_NODE_CLASS, Tree.PARENT_NODE_CLASS)
+                .add(!leaf && expanded, "ui-treenode-expanded", "ui-treenode-collapsed")
+                .add(selected, "ui-treenode-selected")
+                .add(!selected && partialSelected, "ui-treenode-hasselected")
+                .add(!selected && !partialSelected, "ui-treenode-unselected")
+                .add(uiTreeNode.getStyleClass())
+                .build();
         writer.writeAttribute("class", nodeClass, null);
 
         String nodeContentClass = getStyleClassBuilder(context)

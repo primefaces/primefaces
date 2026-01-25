@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,41 +23,18 @@
  */
 package org.primefaces.component.inputnumber;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.LocaleUtils;
 
+@FacesComponentBase
 public abstract class InputNumberBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.InputNumberRenderer";
-
-    public enum PropertyKeys {
-        caretPositionOnFocus,
-        decimalPlaces,
-        decimalPlacesRawValue,
-        decimalSeparator,
-        decimalSeparatorAlternative,
-        emptyValue,
-        inputStyle,
-        inputStyleClass,
-        leadingZero,
-        maxValue,
-        minValue,
-        modifyValueOnUpDownArrow,
-        modifyValueOnWheel,
-        padControl,
-        placeholder,
-        roundMethod,
-        selectOnFocus,
-        signPosition,
-        symbol,
-        symbolPosition,
-        thousandSeparator,
-        widgetVar
-    }
 
     public InputNumberBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -68,181 +45,64 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         return COMPONENT_FAMILY;
     }
 
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
+    @Property(description = "Currency symbol to display.")
+    public abstract String getSymbol();
 
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
+    @Property(description = "Position of the sign. Options: 'p' for prefix, 's' for suffix.")
+    public abstract String getSignPosition();
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Position of the symbol. Options: 'p' for prefix, 's' for suffix.")
+    public abstract String getSymbolPosition();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Minimum value allowed.")
+    public abstract String getMinValue();
 
-    public String getSymbol() {
-        return (String) getStateHelper().eval(PropertyKeys.symbol, null);
-    }
+    @Property(description = "Maximum value allowed.")
+    public abstract String getMaxValue();
 
-    public void setSymbol(String symbol) {
-        getStateHelper().put(PropertyKeys.symbol, symbol);
-    }
+    @Property(description = "Rounding method. Options: 'S' for standard, 'A' for away from zero, 'C' for ceiling, 'F' for floor, 'D' for down, 'U' for up.",
+        defaultValue = "S")
+    public abstract String getRoundMethod();
 
-    public String getSignPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.signPosition, null);
-    }
+    @Property(description = "Number of decimal places to display.")
+    public abstract String getDecimalPlaces();
 
-    public void setSignPosition(String signPosition) {
-        getStateHelper().put(PropertyKeys.signPosition, signPosition);
-    }
+    @Property(description = "Raw value for decimal places.")
+    public abstract Integer getDecimalPlacesRawValue();
 
-    public String getSymbolPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.symbolPosition, null);
-    }
+    @Property(description = "Decimal separator character. Defaults to locale-specific separator if not specified.")
+    public abstract String getDecimalSeparator();
 
-    public void setSymbolPosition(String symbolPosition) {
-        getStateHelper().put(PropertyKeys.symbolPosition, symbolPosition);
-    }
+    @Property(description = "Thousand separator character. Defaults to locale-specific separator if not specified.")
+    public abstract String getThousandSeparator();
 
-    public String getMinValue() {
-        return (String) getStateHelper().eval(PropertyKeys.minValue, null);
-    }
+    @Property(description = "Empty value behavior. Options: 'focus', 'blur', 'always', 'never'.", defaultValue = "focus")
+    public abstract String getEmptyValue();
 
-    public void setMinValue(String minValue) {
-        getStateHelper().put(PropertyKeys.minValue, minValue);
-    }
+    @Property(description = "Inline style for the input element.")
+    public abstract String getInputStyle();
 
-    public String getMaxValue() {
-        return (String) getStateHelper().eval(PropertyKeys.maxValue, null);
-    }
+    @Property(description = "CSS class for the input element.")
+    public abstract String getInputStyleClass();
 
-    public void setMaxValue(String maxValue) {
-        getStateHelper().put(PropertyKeys.maxValue, maxValue);
-    }
+    @Property(description = "Padding control. Options: 'true', 'false', 'floats'.", defaultValue = "true")
+    public abstract String getPadControl();
 
-    public String getRoundMethod() {
-        return (String) getStateHelper().eval(PropertyKeys.roundMethod, "S");
-    }
+    @Property(description = "Leading zero behavior. Options: 'allow', 'deny', 'keep'.", defaultValue = "allow")
+    public abstract String getLeadingZero();
 
-    public void setRoundMethod(String roundMethod) {
-        getStateHelper().put(PropertyKeys.roundMethod, roundMethod);
-    }
+    @Property(description = "Alternative decimal separator character.")
+    public abstract String getDecimalSeparatorAlternative();
 
-    public String getDecimalPlaces() {
-        return (String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
-    }
+    @Property(description = "When enabled, mouse wheel modifies the value.", defaultValue = "true")
+    public abstract boolean isModifyValueOnWheel();
 
-    public void setDecimalPlaces(String decimalPlaces) {
-        getStateHelper().put(PropertyKeys.decimalPlaces, decimalPlaces);
-    }
+    @Property(description = "When enabled, up/down arrow keys modify the value.", defaultValue = "true")
+    public abstract boolean isModifyValueOnUpDownArrow();
 
-    public Integer getDecimalPlacesRawValue() {
-        return (Integer) getStateHelper().eval(PropertyKeys.decimalPlacesRawValue, null);
-    }
+    @Property(description = "When enabled, selects all text on focus.", defaultValue = "true")
+    public abstract boolean isSelectOnFocus();
 
-    public void setDecimalPlacesRawValue(Integer decimalPlacesRawValue) {
-        getStateHelper().put(PropertyKeys.decimalPlacesRawValue, decimalPlacesRawValue);
-    }
-
-    public String getDecimalSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.decimalSeparator,
-            () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
-    }
-
-    public void setDecimalSeparator(final String decimalSeparator) {
-        getStateHelper().put(PropertyKeys.decimalSeparator, decimalSeparator);
-    }
-
-    public String getThousandSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.thousandSeparator,
-            () -> LocaleUtils.getThousandSeparator(getFacesContext()));
-    }
-
-    public void setThousandSeparator(final String thousandSeparator) {
-        getStateHelper().put(PropertyKeys.thousandSeparator, thousandSeparator);
-    }
-
-    public String getEmptyValue() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyValue, "focus");
-    }
-
-    public void setEmptyValue(String emptyValue) {
-        getStateHelper().put(PropertyKeys.emptyValue, emptyValue);
-    }
-
-    public String getInputStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
-    }
-
-    public void setInputStyle(String inputStyle) {
-        getStateHelper().put(PropertyKeys.inputStyle, inputStyle);
-    }
-
-    public String getInputStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
-    }
-
-    public void setInputStyleClass(String inputStyleClass) {
-        getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
-    }
-
-    public String getPadControl() {
-        return (String) getStateHelper().eval(PropertyKeys.padControl, "true");
-    }
-
-    public void setPadControl(String padControl) {
-        getStateHelper().put(PropertyKeys.padControl, padControl);
-    }
-
-    public String getLeadingZero() {
-        return (String) getStateHelper().eval(PropertyKeys.leadingZero, "allow");
-    }
-
-    public void setLeadingZero(String leadingZero) {
-        getStateHelper().put(PropertyKeys.leadingZero, leadingZero);
-    }
-
-    public String getDecimalSeparatorAlternative() {
-        return (String) getStateHelper().eval(PropertyKeys.decimalSeparatorAlternative, null);
-    }
-
-    public void setDecimalSeparatorAlternative(String decimalSeparatorAlternative) {
-        getStateHelper().put(PropertyKeys.decimalSeparatorAlternative, decimalSeparatorAlternative);
-    }
-
-    public boolean isModifyValueOnWheel() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.modifyValueOnWheel, true);
-    }
-
-    public void setModifyValueOnWheel(boolean modifyValueOnWheel) {
-        getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
-    }
-
-    public boolean isModifyValueOnUpDownArrow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.modifyValueOnUpDownArrow, true);
-    }
-
-    public void setModifyValueOnUpDownArrow(boolean modifyValueOnUpDownArrow) {
-        getStateHelper().put(PropertyKeys.modifyValueOnUpDownArrow, modifyValueOnUpDownArrow);
-    }
-
-    public boolean isSelectOnFocus() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.selectOnFocus, true);
-    }
-
-    public void setSelectOnFocus(boolean selectOnFocus) {
-        getStateHelper().put(PropertyKeys.selectOnFocus, selectOnFocus);
-    }
-
-    public String getCaretPositionOnFocus() {
-        return (String) getStateHelper().eval(PropertyKeys.caretPositionOnFocus, null);
-    }
-
-    public void setCaretPositionOnFocus(String caretPositionOnFocus) {
-        getStateHelper().put(PropertyKeys.caretPositionOnFocus, caretPositionOnFocus);
-    }
+    @Property(description = "Caret position on focus. Options: 'start', 'end', 'min', 'max'.")
+    public abstract String getCaretPositionOnFocus();
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,12 @@
  */
 package org.primefaces.component.columngroup;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIComponentBase;
 
-
+@FacesComponentBase
 public abstract class ColumnGroupBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -44,12 +47,6 @@ public abstract class ColumnGroupBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
+    @Property(description = "Type of group, valid values are header and footer.")
+    public abstract String getType();
 }

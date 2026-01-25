@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 package org.primefaces.util;
+
+import org.primefaces.cdk.api.Function;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -159,6 +161,8 @@ public class EscapeUtils {
         return Encode.forJavaScriptSource(input);
     }
 
+    @Function(name = "escapeJavaScriptVarName", description = "Escapes a string for a JS var name (e.g. ':' in a clientId)."
+                    + " This is useful if you need to use a clientId in the name of a p:remoteCommand.")
     public static String forJavaScriptVarName(String input) {
         Matcher matcher = JAVASCRIPT_VAR_NAME.matcher(input);
         return matcher.replaceAll("_");

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,9 @@ import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = TabView.DEFAULT_RENDERER, componentFamily = TabView.COMPONENT_FAMILY)
 public class TabViewRenderer extends CoreRenderer<TabView> {
 
     @Override
@@ -177,7 +179,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
     }
 
     protected void encodeFooter(FacesContext context, TabView component) throws IOException {
-        UIComponent footerFacet = component.getFacet("footer");
+        UIComponent footerFacet = component.getFooterFacet();
         if (FacetUtils.shouldRenderFacet(footerFacet)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
@@ -215,7 +217,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
             }
         });
 
-        UIComponent actionsFacet = component.getFacet("actions");
+        UIComponent actionsFacet = component.getActionsFacet();
         if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions ui-tabs-actions-global", null);
@@ -240,7 +242,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
                 .add(tab.isDisabled(), "ui-state-disabled")
                 .add(tab.getTitleStyleClass())
                 .build();
-        UIComponent titleFacet = tab.getFacet("title");
+        UIComponent titleFacet = tab.getTitleFacet();
         String tabindex = tab.isDisabled() ? "-1" : component.getTabindex();
 
         //header container
@@ -288,7 +290,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
             writer.endElement("span");
         }
 
-        UIComponent optionsFacet = tab.getFacet("actions");
+        UIComponent optionsFacet = tab.getActionsFacet();
         if (FacetUtils.shouldRenderFacet(optionsFacet)) {
             withFacet = true;
             writer.startElement("li", null);

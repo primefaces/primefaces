@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,9 +26,11 @@ package org.primefaces.component.radiobutton;
 import org.primefaces.expression.SearchExpressionUtils;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 
+@FacesComponent(value = RadioButton.COMPONENT_TYPE, namespace = RadioButton.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
@@ -59,4 +61,13 @@ public class RadioButton extends RadioButtonBase {
         getStateHelper().put("labelledby", labelledBy);
     }
 
+    @Override
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().get("ariaDescribedBy");
+    }
+
+    @Override
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
+    }
 }

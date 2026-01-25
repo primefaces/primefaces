@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,19 @@
  */
 package org.primefaces.component.slidemenu;
 
-import jakarta.faces.application.ResourceDependency;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = SlideMenu.COMPONENT_TYPE, namespace = SlideMenu.COMPONENT_FAMILY)
+@FacesComponentDescription("SlideMenu is used to display nested submenus with sliding animation.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class SlideMenu extends SlideMenuBase {
+public class SlideMenu extends SlideMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SlideMenu";
 
@@ -38,6 +43,6 @@ public class SlideMenu extends SlideMenuBase {
     public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-slidemenu ui-menu-dynamic ui-widget ui-widget-content ui-helper-clearfix ui-shadow";
     public static final String WRAPPER_CLASS = "ui-slidemenu-wrapper";
     public static final String CONTENT_CLASS = "ui-slidemenu-content";
-    public static final String BACKWARD_CLASS = "ui-slidemenu-backward ui-widget-header ui-helper-clearfix";
-    public static final String BACKWARD_ICON_CLASS = "ui-icon ui-icon-triangle-1-w";
+    public static final String BACKWARD_CLASS = "ui-slidemenu-backward";
+    public static final String BACKWARD_ICON_CLASS = "ui-menuitem-icon ui-icon ui-icon-triangle-1-w";
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,54 +23,19 @@
  */
 package org.primefaces.component.tooltip;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIOutput;
 
-public abstract class TooltipBase extends UIOutput implements Widget {
+@FacesComponentBase
+public abstract class TooltipBase extends UIOutput implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TooltipRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        showEvent,
-        showEffect,
-        showDelay,
-        hideEvent,
-        hideEffect,
-        hideDelay,
-        forValue("for"),
-        style,
-        styleClass,
-        globalSelector,
-        escape,
-        trackMouse,
-        beforeShow,
-        onHide,
-        onShow,
-        position,
-        delegate,
-        my,
-        at,
-        autoHide;
-
-        private String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
-    }
 
     public TooltipBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -81,171 +46,65 @@ public abstract class TooltipBase extends UIOutput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Event displaying the tooltip.", implicitDefaultValue = "mouseover")
+    public abstract String getShowEvent();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Effect to be used for displaying.", defaultValue = "fade")
+    public abstract String getShowEffect();
 
-    public String getShowEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.showEvent, null);
-    }
+    @Property(description = "Delay time to show tooltip in milliseconds.", defaultValue = "150")
+    public abstract int getShowDelay();
 
-    public void setShowEvent(String showEvent) {
-        getStateHelper().put(PropertyKeys.showEvent, showEvent);
-    }
+    @Property(description = "Event hiding the tooltip.", implicitDefaultValue = "mouseout")
+    public abstract String getHideEvent();
 
-    public String getShowEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.showEffect, "fade");
-    }
+    @Property(description = "Effect to be used for hiding", defaultValue = "fade")
+    public abstract String getHideEffect();
 
-    public void setShowEffect(String showEffect) {
-        getStateHelper().put(PropertyKeys.showEffect, showEffect);
-    }
+    @Property(description = "Delay time to hide tooltip in milliseconds.", defaultValue = "0")
+    public abstract int getHideDelay();
 
-    public int getShowDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.showDelay, 150);
-    }
+    @Property(description = "Id of the component to attach the tooltip.")
+    public abstract String getFor();
 
-    public void setShowDelay(int showDelay) {
-        getStateHelper().put(PropertyKeys.showDelay, showDelay);
-    }
+    @Property(description = "jquery selector for global tooltip.", implicitDefaultValue = "a,:input,:button")
+    public abstract String getGlobalSelector();
 
-    public String getHideEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.hideEvent, null);
-    }
+    @Property(description = "Defines whether html would be escaped or not.]", defaultValue = "true")
+    public abstract boolean isEscape();
 
-    public void setHideEvent(String hideEvent) {
-        getStateHelper().put(PropertyKeys.hideEvent, hideEvent);
-    }
+    @Property(description = "Tooltip position follows pointer on mousemover.", defaultValue = "false")
+    public abstract boolean isTrackMouse();
 
-    public String getHideEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.hideEffect, "fade");
-    }
+    @Property(description = "Client side callback to execute before tooltip is shown. Returning false will prevent display.")
+    public abstract String getBeforeShow();
 
-    public void setHideEffect(String hideEffect) {
-        getStateHelper().put(PropertyKeys.hideEffect, hideEffect);
-    }
+    @Property(description = "Client side callback to execute after tooltip is hidden.")
+    public abstract String getOnHide();
 
-    public int getHideDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.hideDelay, 0);
-    }
+    @Property(description = "Client side callback to execute after tooltip is shown.")
+    public abstract String getOnShow();
 
-    public void setHideDelay(int hideDelay) {
-        getStateHelper().put(PropertyKeys.hideDelay, hideDelay);
-    }
+    @Property(description = "Position of the tooltip, valid values are right, left, top and bottom.", defaultValue = "right")
+    public abstract String getPosition();
 
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
+    @Property(description = "When enabled, event delegation is used for better performance.", defaultValue = "false")
+    public abstract boolean isDelegate();
 
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
+    @Property(description = "Defines which position on the element being positioned to align with the target element: \"horizontal vertical\" alignment. "
+            + "A single value such as \"right\" will be normalized to \"right center\", \"top\" will be normalized to \"center top\" "
+            + "(following CSS convention). "
+            + "Acceptable horizontal values: \"left\", \"center\", \"right\". Acceptable vertical values: \"top\", \"center\", \"bottom\". "
+            + "Example: \"left top\" or \"center center\". "
+            + "Each dimension can also contain offsets, in pixels or percent, e.g., \"right+10 top-25%\". "
+            + "Percentage offsets are relative to the element being positioned. If set overrides the 'position' attribute. Example \"left center\".")
+    public abstract String getMy();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Defines which position on the target element to align the positioned element against: \"horizontal vertical\" alignment. "
+            + "See the my option for full details on possible values. Percentage offsets are relative to the target element. "
+            + "If set overrides the 'position' attribute. Example \"right center\".")
+    public abstract String getAt();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getGlobalSelector() {
-        return (String) getStateHelper().eval(PropertyKeys.globalSelector, null);
-    }
-
-    public void setGlobalSelector(String globalSelector) {
-        getStateHelper().put(PropertyKeys.globalSelector, globalSelector);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    public boolean isTrackMouse() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.trackMouse, false);
-    }
-
-    public void setTrackMouse(boolean trackMouse) {
-        getStateHelper().put(PropertyKeys.trackMouse, trackMouse);
-    }
-
-    public String getBeforeShow() {
-        return (String) getStateHelper().eval(PropertyKeys.beforeShow, null);
-    }
-
-    public void setBeforeShow(String beforeShow) {
-        getStateHelper().put(PropertyKeys.beforeShow, beforeShow);
-    }
-
-    public String getOnHide() {
-        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
-    }
-
-    public void setOnHide(String onHide) {
-        getStateHelper().put(PropertyKeys.onHide, onHide);
-    }
-
-    public String getOnShow() {
-        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
-    }
-
-    public void setOnShow(String onShow) {
-        getStateHelper().put(PropertyKeys.onShow, onShow);
-    }
-
-    public String getPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.position, "right");
-    }
-
-    public void setPosition(String position) {
-        getStateHelper().put(PropertyKeys.position, position);
-    }
-
-    public boolean isDelegate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.delegate, false);
-    }
-
-    public void setDelegate(boolean delegate) {
-        getStateHelper().put(PropertyKeys.delegate, delegate);
-    }
-
-    public String getMy() {
-        return (String) getStateHelper().eval(PropertyKeys.my, null);
-    }
-
-    public void setMy(String my) {
-        getStateHelper().put(PropertyKeys.my, my);
-    }
-
-    public String getAt() {
-        return (String) getStateHelper().eval(PropertyKeys.at, null);
-    }
-
-    public void setAt(String at) {
-        getStateHelper().put(PropertyKeys.at, at);
-    }
-
-    public boolean isAutoHide() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoHide, true);
-    }
-
-    public void setAutoHide(boolean autoHide) {
-        getStateHelper().put(PropertyKeys.autoHide, autoHide);
-    }
+    @Property(description = "Whether to hide tooltip when hovering over tooltip content.", defaultValue = "true")
+    public abstract boolean isAutoHide();
 }

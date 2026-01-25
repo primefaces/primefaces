@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -79,6 +79,7 @@ import jakarta.el.ELContext;
 import jakarta.el.ValueExpression;
 import jakarta.faces.FacesException;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.visit.VisitCallback;
 import jakarta.faces.component.visit.VisitContext;
@@ -96,6 +97,7 @@ import jakarta.faces.model.DataModel;
 import jakarta.faces.model.IterableDataModel;
 import jakarta.faces.model.ListDataModel;
 
+@FacesComponent(value = DataTable.COMPONENT_TYPE, namespace = DataTable.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -291,6 +293,15 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
+    protected void preEncode(FacesContext context) {
+        super.preEncode(context);
+
+        if (isSelectAll() && ((List<?>) getSelection()).isEmpty()) {
+            setSelectAll(false);
+        }
+    }
+
+    @Override
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         super.processEvent(event);
 
@@ -392,7 +403,15 @@ public class DataTable extends DataTableBase {
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
                 String rowsPerPageParam = params.get(clientId + "_rows");
-                Integer rowsPerPage = LangUtils.isNotBlank(rowsPerPageParam) ? Integer.parseInt(rowsPerPageParam) : null;
+                Integer rowsPerPage = null;
+                if (LangUtils.isNotBlank(rowsPerPageParam)) {
+                    if ("*".equals(rowsPerPageParam)) { // GitHub #14187 ShowAll option
+                        rowsPerPage = rows;
+                    }
+                    else {
+                        rowsPerPage = Integer.parseInt(rowsPerPageParam);
+                    }
+                }
 
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page, rowsPerPage);
             }

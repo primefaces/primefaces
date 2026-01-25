@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,9 @@ package org.primefaces.component.selectmanybutton;
 
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
@@ -38,8 +40,10 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = SelectManyButton.DEFAULT_RENDERER, componentFamily = SelectManyButton.COMPONENT_FAMILY)
 public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButton> {
 
     @Override
@@ -57,7 +61,22 @@ public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButto
         encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, SelectManyButton button) throws IOException {
+    protected void encodeMarkup(FacesContext context, SelectManyButton component) throws IOException {
+        String layout = component.getLayout();
+        if (LangUtils.isEmpty(layout)) {
+            layout = FacetUtils.shouldRenderFacet(component.getFacet("custom")) ? "custom" : null;
+        }
+        boolean custom = "custom".equals(layout);
+
+        if (custom) {
+            encodeCustomLayout(context, component);
+        }
+        else {
+            encodeDefaultLayout(context, component);
+        }
+    }
+
+    protected void encodeDefaultLayout(FacesContext context, SelectManyButton button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, button);
@@ -163,9 +182,115 @@ public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButto
         writer.endElement("div");
     }
 
+    protected void encodeCustomLayout(FacesContext context, SelectManyButton component) throws IOException {
+        UIComponent customFacet = component.getFacet("custom");
+        if (FacetUtils.shouldRenderFacet(customFacet)) {
+            ResponseWriter writer = context.getResponseWriter();
+            String style = component.getStyle();
+            String styleClass = createStyleClass(component, SelectManyButton.STYLE_CLASS);
+            writer.startElement("span", component);
+            writer.writeAttribute("id", component.getClientId(context), "id");
+            if (style != null) {
+                writer.writeAttribute("style", style, "style");
+            }
+            if (styleClass != null) {
+                writer.writeAttribute("class", styleClass, "styleClass");
+            }
+
+            encodeCustomLayoutHelper(context, component, false);
+            customFacet.encodeAll(context);
+
+            writer.endElement("span");
+        }
+        else {
+            encodeCustomLayoutHelper(context, component, true);
+        }
+    }
+
+    protected void encodeCustomLayoutHelper(FacesContext context, SelectManyButton component, boolean addId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("span", component);
+        if (addId) {
+            writer.writeAttribute("id", component.getClientId(context), "id");
+        }
+        writer.writeAttribute("class", "ui-helper-hidden", null);
+
+        Converter<?> converter = component.getConverter();
+        String name = component.getClientId(context);
+        List<SelectItem> selectItems = getSelectItems(context, component);
+        Object values = getValues(component);
+        Object submittedValues = getSubmittedValues(component);
+
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+            String id = name + UINamingContainer.getSeparatorChar(context) + i;
+            boolean disabled = selectItem.isDisabled() || component.isDisabled();
+            String itemValueAsString = getOptionAsString(context, component, converter, selectItem.getValue());
+
+            Object valuesArray;
+            Object itemValue;
+            if (submittedValues != null) {
+                valuesArray = submittedValues;
+                itemValue = itemValueAsString;
+            }
+            else {
+                valuesArray = values;
+                itemValue = selectItem.getValue();
+            }
+
+            boolean selected = isSelected(context, component, itemValue, valuesArray, converter);
+            if (selectItem.isNoSelectionOption() && values != null && !selected) {
+                continue;
+            }
+
+            encodeOptionInput(context, component, id, name, selected, disabled, itemValueAsString);
+        }
+
+        writer.endElement("span");
+    }
+
+    protected void encodeOptionInput(FacesContext context, SelectManyButton component, String id, String name, boolean checked,
+                                     boolean disabled, String value) throws IOException {
+
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("input", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", name, null);
+        writer.writeAttribute("type", "checkbox", null);
+        writer.writeAttribute("value", value, null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+
+        if (component.getTabindex() != null) {
+            writer.writeAttribute("tabindex", component.getTabindex(), null);
+        }
+        if (checked) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+
+        renderValidationMetadata(context, component);
+
+        writer.endElement("input");
+    }
+
     protected void encodeScript(FacesContext context, SelectManyButton component) throws IOException {
+        String layout = component.getLayout();
+        if (LangUtils.isEmpty(layout) && FacetUtils.shouldRenderFacet(component.getFacet("custom"))) {
+            layout = "custom";
+        }
+        boolean custom = "custom".equals(layout);
+
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectManyButton", component).finish();
+        wb.init("SelectManyButton", component)
+                .attr("custom", custom, false)
+                .callback("change", "function()", component.getOnchange());
+
+        encodeClientBehaviors(context, component);
+
+        wb.finish();
     }
 
     @Override

@@ -1,7 +1,7 @@
 # ImportConstants
 
 In older EL versions (< 3.0), it's not possible to use constants or any other static fields/methods in
-an EL expression. As it is not really a good practive to create beans with getter/setter for each
+an EL expression. As it is not really a good practice to create beans with getter/setter for each
 constants class. ImportConstant is an utility tag which allows to import constant fields in a page.
 The constants can be accessed via the name of the class (default setting) or via a custom name (var
 attribute).

@@ -42,4 +42,14 @@ body {
       }
     }
   }
+
+  @if ($highlightBg == $progressBarValueBg) {
+    .ui-state-highlight {
+      .ui-progressbar {
+        border-color: $highlightTextColor;
+        border-width: 1px;
+        border-style: solid;
+      }
+    }
+  }
 }

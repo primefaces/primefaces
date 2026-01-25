@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,19 @@
  */
 package org.primefaces.component.badge;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class BadgeBase extends UIComponentBase implements Widget {
+@FacesComponentBase
+public abstract class BadgeBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.BadgeRenderer";
-
-    public enum PropertyKeys {
-        value,
-        severity,
-        size,
-        style,
-        styleClass,
-        visible,
-        icon,
-        iconPos,
-        onclick
-    }
 
     public BadgeBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -54,74 +46,24 @@ public abstract class BadgeBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getValue() {
-        return (String) getStateHelper().eval(PropertyKeys.value, null);
-    }
+    @Property(description = "Value to display inside the badge.")
+    public abstract String getValue();
 
-    public void setValue(String value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
+    @Property(description = "Severity type of the badge")
+    public abstract String getSeverity();
 
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
-    }
+    @Property(description = "Size of the badge, valid options are \"large\" and \"xlarge\".")
+    public abstract String getSize();
 
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
-    }
+    @Property(defaultValue = "true", description = "Whether to hide the badge (but render the children).")
+    public abstract boolean isVisible();
 
-    public String getSize() {
-        return (String) getStateHelper().eval(PropertyKeys.size, null);
-    }
+    @Property(description = "Icon of the badge.")
+    public abstract String getIcon();
 
-    public void setSize(String size) {
-        getStateHelper().put(PropertyKeys.size, size);
-    }
+    @Property(defaultValue = "left", description = "Position of the icon, default value is left.")
+    public abstract String getIconPos();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isVisible() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.visible, true);
-    }
-
-    public void setVisible(boolean visible) {
-        getStateHelper().put(PropertyKeys.visible, visible);
-    }
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
-
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
-    public String getIconPos() {
-        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
-    }
-
-    public void setIconPos(String iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, iconPos);
-    }
-
-    public String getOnclick() {
-        return (String) getStateHelper().eval(PropertyKeys.onclick, null);
-    }
-
-    public void setOnclick(String onClick) {
-        getStateHelper().put(PropertyKeys.onclick, onClick);
-    }
+    @Property(description = "Client side callback to execute when the badge element clicked.")
+    public abstract String getOnclick();
 }

@@ -1,8 +1,8 @@
 import keycharm from "keycharm";
 import Hammer from "@egjs/hammerjs";
-import { Graph2d, Timeline, timeline } from "vis-timeline/esnext/esm/vis-timeline-graph2d.js";
-import { DataSet, DataView, Queue } from "vis-data/esnext/esm/vis-data.js";
-import * as VisUtil from "vis-util/esnext/esm/vis-util.js";
+import { Graph2d, Timeline, timeline } from "vis-timeline/esnext";
+import { DataSet, DataView, Queue } from "vis-data/esnext";
+import * as VisUtil from "vis-util/esnext";
 
 /**
  * The global object available via the global `window.vis`, when the timeline widget

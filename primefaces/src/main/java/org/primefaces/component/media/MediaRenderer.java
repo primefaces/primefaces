@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,9 +28,8 @@ import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.component.media.player.PDFPlayer;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.Lazy;
 
 import java.io.IOException;
 import java.util.Map;
@@ -40,7 +39,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIParameter;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Media.DEFAULT_RENDERER, componentFamily = Media.COMPONENT_FAMILY)
 public class MediaRenderer extends CoreRenderer<Media> {
 
     @Override
@@ -49,9 +50,7 @@ public class MediaRenderer extends CoreRenderer<Media> {
         ResponseWriter writer = context.getResponseWriter();
         String src;
         try {
-            src = DynamicContentSrcBuilder.build(context, component,
-                    component.getValueExpression(Media.PropertyKeys.value.name()),
-                    new Lazy<>(() -> component.getValue()), component.isCache(), true);
+            src = component.resolveSource(context);
         }
         catch (Exception ex) {
             throw new IOException(ex);
@@ -80,7 +79,7 @@ public class MediaRenderer extends CoreRenderer<Media> {
             writer.writeAttribute("class", component.getStyleClass(), null);
         }
 
-        renderPassThruAttributes(context, component, Media.MEDIA_ATTRS);
+        renderPassThruAttributes(context, component, HTML.MEDIA_ATTRS);
 
         if (sourceParam != null) {
             encodeParam(writer, player.getSourceParam(), src, false);

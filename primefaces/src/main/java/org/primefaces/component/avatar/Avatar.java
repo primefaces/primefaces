@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,16 @@
  */
 package org.primefaces.component.avatar;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.util.LangUtils;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Avatar.COMPONENT_TYPE, namespace = Avatar.COMPONENT_FAMILY)
+@FacesComponentDescription("Avatar is a visual representation of a user or entity.")
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Avatar extends AvatarBase {
+public class Avatar extends AvatarBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Avatar";
 
     public static final String STYLE_CLASS = "ui-avatar ui-widget";

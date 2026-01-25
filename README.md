@@ -32,34 +32,35 @@ What does that mean?
 - The most contributors here on GitHub are working on PrimeFaces in their spare time.
 - PrimeTek pushes fixes and new features from their closed source LTS and Pro repositories to the community edition.
 - We, the community on GitHub, only provide support for issues, which are reproducible with the current major release or SNAPSHOT.
-- We are NOT able to port bugfixes to elite releases. This is up to PrimeTek and can e.g. be triggered with [PrimeFaces PRO](https://www.primefaces.org/support/).
+- We are NOT able to port bugfixes to LTS releases. This is up to PrimeTek and can e.g. be triggered with [PrimeFaces PRO](https://www.primefaces.org/support/). You can also ask questions in the [LTS Discussions](https://github.com/orgs/primefaces/discussions/categories/primefaces-lts).
 
 ### Versions
 ***
 
-Version | JSF version | Java version | Binary | Source | Docs | Showcase Binary
------------- | ------------- | ------------- | -------------  | ------------- | ------------- | ------------- |
-![15.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=15&color=cyan)| ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/15.0.4/primefaces-15.0.4.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/15.0.4/primefaces-15.0.4-sources.jar) | [Docs](https://primefaces.github.io/primefaces/15_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/15.0.4/primefaces-showcase-15.0.4.war)
-![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.12/primefaces-14.0.12.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.12/primefaces-14.0.12-sources.jar) | [Docs](https://primefaces.github.io/primefaces/14_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/14.0.12/primefaces-showcase-14.0.12.war)
-![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) |  ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10-sources.jar) | [Docs](https://primefaces.github.io/primefaces/13_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/13.0.10/primefaces-showcase-13.0.10.war)
+Version | Status | JSF version | Java version | Documentation | Showcase
+------------ | ------------- | ------------- | -------------  | ------------- | ------------- |
+unreleased | unreleased | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/16_0_0/#/) | [HTTPS](https://primefaces-showcase-zvbjj.ondigitalocean.app/)
+![15.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=15&color=cyan) | STS | ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/15_0_0/#/) | [HTTPS](https://primefaces15-showcase-f233g.ondigitalocean.app/)
+![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan) | LTS | ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/14_0_0/#/) | [HTTPS](https://primefaces14-showcase-ifqw8.ondigitalocean.app/)
+![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/13_0_0/#/) |
 
 <details>
   <summary>Archive</summary>
   
 
-Version | JSF version | Java version | Binary | Source | Docs
------------- | ------------- | ------------- | -------------  | ------------- | ------------- |
-![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0-sources.jar) | [Documentation](https://primefaces.github.io/primefaces/12_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/12.0.0/primefaces-showcase-12.0.0.war)
-11.0.0| 2.0 - 4.0 | 8 - ? | [primefaces-11.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0.jar)  | [primefaces-11.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0-sources.jar) | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
-10.0.0| 2.0 - 3.0 | 8 - ? | [primefaces-10.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0.jar)  | [primefaces-10.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0-sources.jar) | [10.0.0 Documentation](https://primefaces.github.io/primefaces/10_0_0/#/)
-8.0| 2.0 - 2.3 | 8 - ? | [primefaces-8.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0.jar)  | [primefaces-8.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0-sources.jar) | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
-7.0| 2.0 - 2.3 | 7 - ? | [primefaces-7.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | [7.0 Documentation](https://primefaces.github.io/primefaces/7_0/#/)
-6.2| 2.0 - 2.3 | 6 - ? | [primefaces-6.2.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2.jar)  | [primefaces-6.2-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2-sources.jar) | [6.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
-6.1| 2.0 - 2.3 | 5 - ? | [primefaces-6.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1.jar)  | [primefaces-6.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1-sources.jar) | [6.1 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
-6.0| 2.0 - 2.2 | 5 - ? | [primefaces-6.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0.jar)  | [primefaces-6.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0-sources.jar) | [6.0 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_0.pdf)
-5.3| 2.0 - 2.2 | 5 - ? | [primefaces-5.3.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3.jar)  | [primefaces-5.3-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3-sources.jar) | [5.3 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf)
-5.2| 2.0 - 2.2 | 5 - ? | [primefaces-5.2.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2.jar)  | [primefaces-5.2-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2-sources.jar) | [5.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_2.pdf)
-5.1| 2.0 - 2.2 | 5 - ? | [primefaces-5.1.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1.jar)  | [primefaces-5.1-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1-sources.jar) | [5.1 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
+Version | Status | JSF version | Java version | Documentation
+------------ | ------------- | ------------- | ------------- | ------------- |
+![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/12_0_0/#/) 
+![11.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=11&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/11_0_0/#/)
+![10.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=10&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF30](https://img.shields.io/badge/JSF-3.0-yellow.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/10_0_0/#/)
+![8.0](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=8&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/8_0/#/)
+![7.0](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=7&color=cyan) | Legacy | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) | ![Java](https://img.shields.io/badge/Java%207+-red.svg) | [HTML](https://primefaces.github.io/primefaces/7_0/#/)
+![6.2](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=6.2&color=cyan) | Legacy | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) | ![Java](https://img.shields.io/badge/Java%206+-red.svg) | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
+![6.1](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=6.1&color=cyan) | Legacy | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) | ![Java](https://img.shields.io/badge/Java%205+-red.svg) | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
+![6.0](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=6.0&color=cyan) | Legacy | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) | ![Java](https://img.shields.io/badge/Java%205+-red.svg) | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_0.pdf)
+![5.3](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=5.3&color=cyan) | Legacy | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF22](https://img.shields.io/badge/JSF-2.2-red.svg) | ![Java](https://img.shields.io/badge/Java%205+-red.svg) | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf)
+![5.2](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=5.2&color=cyan) | Legacy | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF22](https://img.shields.io/badge/JSF-2.2-red.svg) | ![Java](https://img.shields.io/badge/Java%205+-red.svg) | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_2.pdf)
+![5.1](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=5.1&color=cyan) | Legacy | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF22](https://img.shields.io/badge/JSF-2.2-red.svg) | ![Java](https://img.shields.io/badge/Java%205+-red.svg) | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
 </details>
 
 
@@ -73,14 +74,14 @@ Version | JSF version | Java version | Binary | Source | Docs
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>15.0.4</version>
+      <version>15.0.6</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>15.0.4</version>
+      <version>15.0.6</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
@@ -109,6 +110,11 @@ Version | JSF version | Java version | Binary | Source | Docs
     </repository>
   </repositories>
   ```
+
+### Manual Download
+***
+
+PrimeFaces JAR can be downloaded manually via the [Maven Repository](https://repo1.maven.org/maven2/org/primefaces/primefaces/).
 
 ### Tag Library
 ***
@@ -145,19 +151,15 @@ The VDL documentation for the PrimeFaces tag library can be found here: https://
 ***
 Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase are available within module [primefaces-showcase](https://github.com/primefaces/primefaces/tree/master/primefaces-showcase).
 
+You can also download the PrimeFaces Showcase WAR via the [Maven Repository](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/). This is the version for plain Servlet containers like Tomcat.
+
 ### Contribution
 ***
 Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=15.0.4` to update all modules versions
-- Commit and push the changes to GitHub
-- In GitHub create a new Release titled `15.0.4` to tag this release
-- Run `mvn clean deploy -Prelease` to push to Maven Central
-- Rename Milestone in GitHub Issues and close it
-- Create a new Milestone
-
+Visit the [Release Checklist](https://github.com/primefaces/primefaces/wiki/Release-Checklist) for how to release an LTS or STS version.
 
 ### License
 ***

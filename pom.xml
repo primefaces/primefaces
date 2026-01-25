@@ -71,10 +71,10 @@
         <build.output>target</build.output>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
-        <junit.version>5.12.2</junit.version>
-        <poi.version>5.4.1</poi.version>
-        <jacoco.version>0.8.13</jacoco.version>
-        <tomcat.version>10.1.34</tomcat.version>
+        <junit.version>5.13.4</junit.version>
+        <poi.version>5.5.1</poi.version>
+        <jacoco.version>0.8.14</jacoco.version>
+        <tomcat.version>10.1.48</tomcat.version>
         <slf4j.version>2.0.17</slf4j.version>
 
         <sonar.skip>true</sonar.skip>
@@ -86,19 +86,9 @@
         <npm.email/>
     </properties>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
     <modules>
         <module>primefaces-themes</module>
+        <module>primefaces-cdk</module>
         <module>primefaces</module>
         <module>primefaces-showcase</module>
         <module>primefaces-selenium</module>
@@ -109,11 +99,64 @@
 
     <build>
         <directory>${build.output}</directory>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.1.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.14.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.12.0</version>
+                        <configuration>
+                        <sourcepath>${basedir}/src/main/java;</sourcepath>
+                        <doclint>none</doclint>
+                        <excludePackageNames>org.primefaces.shaded.*</excludePackageNames>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.4.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.5.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>3.5.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.5.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.5.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.6.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.14.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <proc>full</proc> <!-- see: https://github.com/projectlombok/lombok/issues/3752 -->
@@ -129,85 +172,39 @@
                     <execution>
                         <id>default-testCompile</id>
                         <configuration>
-
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.11.2</version>
-                <configuration>
-                    <sourcepath>${basedir}/src/main/java;</sourcepath>
-                    <doclint>none</doclint>
-                    <excludePackageNames>org.primefaces.shaded.*</excludePackageNames>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-docs</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.4.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <propertiesEncoding>${project.build.sourceEncoding}</propertiesEncoding>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.1.4</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.5.3</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.3</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
             </plugin>
 
             <plugin>
@@ -271,15 +268,9 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>10.21.4</version>
+                        <version>10.26.0</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
             </plugin>
 
             <plugin>
@@ -295,51 +286,83 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.jreleaser</groupId>
+                <artifactId>jreleaser-maven-plugin</artifactId>
+                <version>1.22.0</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <jreleaser>
+                        <release>
+                            <github>
+                                <releaseName>{{projectVersion}}</releaseName>
+                                <overwrite>true</overwrite>
+                                <releaseNotes>
+                                    <enabled>true</enabled>
+                                </releaseNotes>
+                            </github>
+                        </release>
+                        <signing>
+                            <active>ALWAYS</active>
+                            <armored>true</armored>
+                        </signing>
+                        <deploy>
+                            <maven>
+                                <pomchecker>
+                                    <failOnWarning>false</failOnWarning>
+                                    <strict>false</strict>
+                                </pomchecker>
+                                <mavenCentral>
+                                    <sonatype>
+                                        <active>ALWAYS</active>
+                                        <url>https://central.sonatype.com/api/v1/publisher</url>
+                                        <stagingRepositories>target/staging-deploy</stagingRepositories>
+                                    </sonatype>
+                                </mavenCentral>
+                            </maven>
+                        </deploy>
+                    </jreleaser>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
     <profiles>
         <profile>
             <id>release</id>
+            <properties>
+                <altDeploymentRepository>local::file:./target/staging-deploy</altDeploymentRepository>
+            </properties>
             <build>
+                <defaultGoal>clean deploy</defaultGoal>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.7</version>
+                        <artifactId>maven-javadoc-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
+                                <id>attach-javadocs</id>
                                 <goals>
-                                    <goal>sign</goal>
+                                    <goal>jar</goal>
                                 </goals>
                             </execution>
                         </executions>
                     </plugin>
-
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.7.0</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-        <profile>
-            <id>vscode-ide</id>
-            <activation>
-                <property><name>m2e.version</name></property>
-            </activation>
-            <properties>
-                <build.output>target-ide</build.output>
-            </properties>
         </profile>
         <profile>
             <id>coverage</id>
@@ -348,7 +371,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.13</version>
+                        <version>0.8.14</version>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
@@ -381,18 +404,18 @@
             <dependency>
                 <groupId>org.apache.tomee</groupId>
                 <artifactId>jakartaee-api</artifactId>
-                <version>10.0</version>
+                <version>10.0.1</version>
             </dependency>
             <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>jakarta.faces</artifactId>
-                <version>4.0.11</version>
+                <version>4.0.14</version>
             </dependency>
 
             <dependency>
                 <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
                 <artifactId>owasp-java-html-sanitizer</artifactId>
-                <version>20240325.1</version>
+                <version>20260102.1</version>
             </dependency>
 
             <!-- Data Exporter -->
@@ -416,7 +439,7 @@
             <dependency>
                 <groupId>com.apptasticsoftware</groupId>
                 <artifactId>rssreader</artifactId>
-                <version>3.9.3</version>
+                <version>3.12.0</version>
             </dependency>
 
             <!-- File Upload -->
@@ -430,7 +453,7 @@
             <dependency>
                 <groupId>uk.org.okapibarcode</groupId>
                 <artifactId>okapibarcode</artifactId>
-                <version>0.5.1</version>
+                <version>0.5.2</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.beust</groupId>

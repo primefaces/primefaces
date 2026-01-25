@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ public abstract class SelectManyButtonBase extends UISelectMany implements Widge
         widgetVar,
         disabled,
         label,
+        layout,
         onchange,
         style,
         styleClass,
@@ -109,5 +110,13 @@ public abstract class SelectManyButtonBase extends UISelectMany implements Widge
 
     public void setTabindex(String tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+    public String getLayout() {
+        return (String) getStateHelper().eval(PropertyKeys.layout, null);
+    }
+
+    public void setLayout(String layout) {
+        getStateHelper().put(PropertyKeys.layout, layout);
     }
 }

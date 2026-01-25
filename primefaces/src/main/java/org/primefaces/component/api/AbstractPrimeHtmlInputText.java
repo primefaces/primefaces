@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,8 @@
  */
 package org.primefaces.component.api;
 
-import org.primefaces.util.LangUtils;
-
-import java.util.Collection;
-import java.util.List;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 
 import jakarta.faces.component.html.HtmlInputText;
 
@@ -34,210 +32,23 @@ import jakarta.faces.component.html.HtmlInputText;
  * Extended {@link HtmlInputText} to allow for new events such as "input" and "paste".
  * Remove if Faces 5.0+ ever implements these events.
  */
-public abstract class AbstractPrimeHtmlInputText extends HtmlInputText {
-
-    // new HTML5 events
-    public enum PropertyKeys {
-        inputmode,
-        oncut,
-        oncopy,
-        onpaste,
-        onwheel,
-        oncontextmenu,
-        oninput,
-        oninvalid,
-        onreset,
-        onsearch,
-        ondrag,
-        ondragend,
-        ondragenter,
-        ondragleave,
-        ondragover,
-        ondragstart,
-        ondrop,
-        onscroll
-    }
-
-    protected static final List<String> EVENT_NAMES = LangUtils.unmodifiableList(
-                            "blur",
-                            "change",
-                            "valueChange",
-                            "select",
-                            "click",
-                            "dblclick",
-                            "focus",
-                            "keydown",
-                            "keypress",
-                            "keyup",
-                            "mousedown",
-                            "mousemove",
-                            "mouseout",
-                            "mouseover",
-                            "mouseup", // new events below here
-                            "wheel",
-                            "cut",
-                            "copy",
-                            "paste",
-                            "contextmenu",
-                            "input",
-                            "invalid",
-                            "reset",
-                            "search",
-                            "drag",
-                            "dragend",
-                            "dragenter",
-                            "dragleave",
-                            "dragover",
-                            "dragstart",
-                            "drop",
-                            "scroll");
+@FacesComponentBase
+public abstract class AbstractPrimeHtmlInputText extends HtmlInputText implements InputAware {
 
     @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
+    @Property(description = "Alternate textual description of the input field.")
+    public abstract String getAlt();
 
-    public String getInputmode() {
-        return (String) getStateHelper().eval(PropertyKeys.inputmode, null);
-    }
+    @Override
+    @Property(description = "Controls browser autocomplete behavior. Possible values are 'on', 'off', and 'new-password'.")
+    public abstract String getAutocomplete();
 
-    public void setInputmode(String inputmode) {
-        getStateHelper().put(PropertyKeys.inputmode, inputmode);
-    }
+    @Override
+    @Property(description = "Number of characters used to determine the width of the input element.", defaultValue = "Integer.MIN_VALUE")
+    public abstract int getSize();
 
-    public String getOncut() {
-        return (String) getStateHelper().eval(PropertyKeys.oncut);
-    }
+    @Override
+    @Property(description = "Input field type.", defaultValue = "text")
+    public abstract String getType();
 
-    public void setOncut(String oncut) {
-        getStateHelper().put(PropertyKeys.oncut, oncut);
-    }
-
-    public String getOncopy() {
-        return (String) getStateHelper().eval(PropertyKeys.oncopy);
-    }
-
-    public void setOncopy(String oncopy) {
-        getStateHelper().put(PropertyKeys.oncopy, oncopy);
-    }
-
-    public String getOnpaste() {
-        return (String) getStateHelper().eval(PropertyKeys.onpaste);
-    }
-
-    public void setOnpaste(String onpaste) {
-        getStateHelper().put(PropertyKeys.onpaste, onpaste);
-    }
-
-    public String getOnwheel() {
-        return (String) getStateHelper().eval(PropertyKeys.onwheel);
-    }
-
-    public void setOnwheel(String onwheel) {
-        getStateHelper().put(PropertyKeys.onwheel, onwheel);
-    }
-
-    public String getOncontextmenu() {
-        return (String) getStateHelper().eval(PropertyKeys.oncontextmenu);
-    }
-
-    public void setOncontextmenu(String oncontextmenu) {
-        getStateHelper().put(PropertyKeys.oncontextmenu, oncontextmenu);
-    }
-
-    public String getOninput() {
-        return (String) getStateHelper().eval(PropertyKeys.oninput);
-    }
-
-    public void setOninput(String oninput) {
-        getStateHelper().put(PropertyKeys.oninput, oninput);
-    }
-
-    public String getOninvalid() {
-        return (String) getStateHelper().eval(PropertyKeys.oninvalid);
-    }
-
-    public void setOninvalid(String oninvalid) {
-        getStateHelper().put(PropertyKeys.oninvalid, oninvalid);
-    }
-
-    public String getOnreset() {
-        return (String) getStateHelper().eval(PropertyKeys.onreset);
-    }
-
-    public void setOnreset(String onreset) {
-        getStateHelper().put(PropertyKeys.onreset, onreset);
-    }
-
-    public String getOnsearch() {
-        return (String) getStateHelper().eval(PropertyKeys.onsearch);
-    }
-
-    public void setOnsearch(String onsearch) {
-        getStateHelper().put(PropertyKeys.onsearch, onsearch);
-    }
-
-    public String getOndrag() {
-        return (String) getStateHelper().eval(PropertyKeys.ondrag);
-    }
-
-    public void setOndrag(String ondrag) {
-        getStateHelper().put(PropertyKeys.ondrag, ondrag);
-    }
-
-    public String getOndragend() {
-        return (String) getStateHelper().eval(PropertyKeys.ondragend);
-    }
-
-    public void setOndragend(String ondragend) {
-        getStateHelper().put(PropertyKeys.ondragend, ondragend);
-    }
-
-    public String getOndragenter() {
-        return (String) getStateHelper().eval(PropertyKeys.ondragenter);
-    }
-
-    public void setOndragenter(String ondragenter) {
-        getStateHelper().put(PropertyKeys.ondragenter, ondragenter);
-    }
-
-    public String getOndragleave() {
-        return (String) getStateHelper().eval(PropertyKeys.ondragleave);
-    }
-
-    public void setOndragleave(String ondragleave) {
-        getStateHelper().put(PropertyKeys.ondragleave, ondragleave);
-    }
-
-    public String getOndragover() {
-        return (String) getStateHelper().eval(PropertyKeys.ondragover);
-    }
-
-    public void setOndragover(String ondragover) {
-        getStateHelper().put(PropertyKeys.ondragover, ondragover);
-    }
-
-    public String getOndragstart() {
-        return (String) getStateHelper().eval(PropertyKeys.ondragstart);
-    }
-
-    public void setOndragstart(String ondragstart) {
-        getStateHelper().put(PropertyKeys.ondragstart, ondragstart);
-    }
-
-    public String getOndrop() {
-        return (String) getStateHelper().eval(PropertyKeys.ondrop);
-    }
-
-    public void setOndrop(String ondrop) {
-        getStateHelper().put(PropertyKeys.ondrop, ondrop);
-    }
-
-    public String getOnscroll() {
-        return (String) getStateHelper().eval(PropertyKeys.onscroll);
-    }
-
-    public void setOnscroll(String onscroll) {
-        getStateHelper().put(PropertyKeys.onscroll, onscroll);
-    }
 }

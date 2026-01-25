@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,27 @@
  */
 package org.primefaces.component.outputpanel;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "load", event = AjaxBehaviorEvent.class, description = "Fires when the panel content is loaded.", defaultEvent = true)
+})
+public abstract class OutputPanelBase extends UIPanel implements Widget, PrimeClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.OutputPanelRenderer";
-
-    public enum PropertyKeys {
-
-        style,
-        styleClass,
-        deferred,
-        deferredMode,
-        layout,
-        loaded
-    }
 
     public OutputPanelBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -54,51 +54,19 @@ public abstract class OutputPanelBase extends UIPanel implements Widget, ClientB
         return COMPONENT_FAMILY;
     }
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Facet to render when the panel is loading.")
+    public abstract UIComponent getLoadingFacet();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "false", description = "When true, panel content is loaded lazily.")
+    public abstract boolean isDeferred();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "load", description = "Mode of deferred loading, valid values are \"load\" and \"visible\".")
+    public abstract String getDeferredMode();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "block", description = "Layout of the panel, valid values are \"block\" and \"inline\".")
+    public abstract String getLayout();
 
-    public boolean isDeferred() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.deferred, false);
-    }
+    @Property(description = "Whether the panel content is loaded.")
+    public abstract Boolean isLoaded();
 
-    public void setDeferred(boolean deferred) {
-        getStateHelper().put(PropertyKeys.deferred, deferred);
-    }
-
-    public String getDeferredMode() {
-        return (String) getStateHelper().eval(PropertyKeys.deferredMode, "load");
-    }
-
-    public void setDeferredMode(String deferredMode) {
-        getStateHelper().put(PropertyKeys.deferredMode, deferredMode);
-    }
-
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "block");
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
-    }
-
-    public Boolean isLoaded() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.loaded, null);
-    }
-
-    public void setLoaded(Boolean loaded) {
-        getStateHelper().put(PropertyKeys.loaded, loaded);
-    }
 }

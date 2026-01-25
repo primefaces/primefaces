@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,22 @@
  */
 package org.primefaces.component.signature;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.el.ValueExpression;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
+@FacesComponent(value = Signature.COMPONENT_TYPE, namespace = Signature.COMPONENT_FAMILY)
+@FacesComponentDescription("Signature is used to draw a signature as an input.")
 @ResourceDependency(library = "primefaces", name = "signature/signature.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "signature/signature.js")
-public class Signature extends SignatureBase {
+public class Signature extends SignatureBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Signature";
 
@@ -81,5 +86,15 @@ public class Signature extends SignatureBase {
     @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
+    }
+
+    @Override
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().get("ariaDescribedBy");
+    }
+
+    @Override
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
     }
 }

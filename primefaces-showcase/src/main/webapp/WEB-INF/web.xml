@@ -89,7 +89,23 @@
         <param-value>5</param-value>
     </context-param>
     <context-param>
-        <param-name>com.sun.faces.serializeServerState</param-name>
+        <param-name>org.apache.myfaces.NUMBER_OF_VIEWS_IN_SESSION</param-name>
+        <param-value>5</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.apache.myfaces.NUMBER_OF_SEQUENTIAL_VIEWS_IN_SESSION</param-name>
+        <param-value>2</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.apache.myfaces.CHECK_ID_PRODUCTION_MODE</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.apache.myfaces.EARLY_FLUSH_ENABLED</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.apache.myfaces.SUPPORT_JSP_AND_FACES_EL</param-name>
         <param-value>false</param-value>
     </context-param>
 

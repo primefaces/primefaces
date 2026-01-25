@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,63 +23,41 @@
  */
 package org.primefaces.component.tagcloud;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = TagCloud.COMPONENT_TYPE, namespace = TagCloud.COMPONENT_FAMILY)
+@FacesComponentDescription("TagCloud displays a collection of tag with different strengths.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class TagCloud extends TagCloudBase {
+public class TagCloud extends TagCloudBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TagCloud";
 
     public static final String STYLE_CLASS = "ui-tagcloud ui-widget ui-widget-content";
 
-    private static final String DEFAULT_EVENT = "select";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("select", SelectEvent.class)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
-
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (event instanceof AjaxBehaviorEvent) {
+        if (isAjaxBehaviorEvent(event)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
 
-            if (eventName.equals(DEFAULT_EVENT)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.select)) {
                 int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                 TagCloudModel model = getModel();
 

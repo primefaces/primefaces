@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Sticky.DEFAULT_RENDERER, componentFamily = Sticky.COMPONENT_FAMILY)
 public class StickyRenderer extends CoreRenderer<Sticky> {
 
     @Override
@@ -53,6 +55,7 @@ public class StickyRenderer extends CoreRenderer<Sticky> {
         wb.init("Sticky", component)
             .attr("target", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, target))
             .attr("margin", component.getMargin(), 0)
+            .attr("stickyTopAt", component.getStickyTopAt(), null)
             .finish();
     }
 }

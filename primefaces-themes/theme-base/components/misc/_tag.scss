@@ -35,6 +35,16 @@ body {
       color: $dangerButtonTextColor;
     }
 
+    &.ui-tag-secondary {
+      background: $secondaryButtonBg;
+      color: $secondaryButtonTextColor;
+    }
+
+    &.ui-tag-help {
+      background: $helpButtonBg;
+      color: $helpButtonTextColor;
+    }
+
     &.ui-tag-rounded {
       border-radius: 10rem;
     }

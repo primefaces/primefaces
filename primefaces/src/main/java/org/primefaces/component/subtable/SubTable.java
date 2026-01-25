@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,8 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.event.PhaseId;
 
+@FacesComponent(value = SubTable.COMPONENT_TYPE, namespace = SubTable.COMPONENT_FAMILY)
 public class SubTable extends SubTableBase implements ColumnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";

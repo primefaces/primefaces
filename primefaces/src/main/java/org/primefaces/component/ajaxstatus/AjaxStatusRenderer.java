@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = AjaxStatus.DEFAULT_RENDERER, componentFamily = AjaxStatus.COMPONENT_FAMILY)
 public class AjaxStatusRenderer extends CoreRenderer<AjaxStatus> {
 
     @Override
@@ -68,16 +70,27 @@ public class AjaxStatusRenderer extends CoreRenderer<AjaxStatus> {
             writer.writeAttribute("class", component.getStyleClass(), "styleClass");
         }
 
-        for (int i = 0; i < AjaxStatus.EVENTS.size(); i++) {
-            String event = AjaxStatus.EVENTS.get(i);
-            UIComponent facet = component.getFacet(event);
-
-            if (FacetUtils.shouldRenderFacet(facet)) {
-                encodeFacet(context, clientId, facet, event, true);
-            }
+        UIComponent startFacet = component.getStartFacet();
+        if (FacetUtils.shouldRenderFacet(startFacet)) {
+            encodeFacet(context, clientId, startFacet, AjaxStatus.START, true);
         }
 
-        UIComponent defaultFacet = component.getFacet(AjaxStatus.DEFAULT);
+        UIComponent successFacet = component.getSuccessFacet();
+        if (FacetUtils.shouldRenderFacet(successFacet)) {
+            encodeFacet(context, clientId, successFacet, AjaxStatus.SUCCESS, true);
+        }
+
+        UIComponent completeFacet = component.getCompleteFacet();
+        if (FacetUtils.shouldRenderFacet(completeFacet)) {
+            encodeFacet(context, clientId, completeFacet, AjaxStatus.COMPLETE, true);
+        }
+
+        UIComponent errorFacet = component.getErrorFacet();
+        if (FacetUtils.shouldRenderFacet(errorFacet)) {
+            encodeFacet(context, clientId, errorFacet, AjaxStatus.ERROR, true);
+        }
+
+        UIComponent defaultFacet = component.getDefaultFacet();
         if (FacetUtils.shouldRenderFacet(defaultFacet)) {
             encodeFacet(context, clientId, defaultFacet, AjaxStatus.DEFAULT, false);
         }

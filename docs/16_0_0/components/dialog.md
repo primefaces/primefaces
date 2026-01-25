@@ -183,6 +183,20 @@ Widget: _PrimeFaces.widget.Dialog_
 | isVisible() | - | void | Returns visibility as a boolean.
 | resetPosition | - | void | Reset the dialog position based on the configured "position".
 
+## Custom Action
+If you’d like to add custom actions to a dialog titlebar, use actions facet with icon markup;
+
+```xhtml
+<p:dialog>
+    <f:facet name="actions">
+        <h:commandLink styleClass=""ui-dialog-titlebar-icon"">
+            <i class="ui-icon pi pi-question"></i>
+        </h:commandLink>
+    </f:facet>
+    //content
+</p:dialog>
+```
+
 ## Skinning
 Dialog resides in a main container element which _styleClass_ option apply. Following is the list of
 structural style classes;

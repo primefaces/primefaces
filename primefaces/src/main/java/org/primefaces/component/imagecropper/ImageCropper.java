@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,20 @@
  */
 package org.primefaces.component.imagecropper;
 
-import jakarta.faces.application.ResourceDependency;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = ImageCropper.COMPONENT_TYPE, namespace = ImageCropper.COMPONENT_FAMILY)
+@FacesComponentDescription("ImageCropper allows cropping a certain region of an image. " +
+    "A new image is created containing the cropped area and assigned to a CroppedImage instanced on the server side.")
 @ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.js")
-public class ImageCropper extends ImageCropperBase {
+public class ImageCropper extends ImageCropperBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ImageCropper";
 }

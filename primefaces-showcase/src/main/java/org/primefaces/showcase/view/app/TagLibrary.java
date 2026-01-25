@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -62,22 +62,20 @@ public class TagLibrary {
     private final Map<String, String> tags = new HashMap<>();
 
     @PostConstruct
-    public void init() throws ParserConfigurationException {
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        docBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
-        docBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); // Compliant
-        docBuilderFactory.setIgnoringElementContentWhitespace(true);
-        docBuilderFactory.setValidating(false);
-        docBuilderFactory.setNamespaceAware(true);
-
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-
+    public void init() {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if (classLoader == null) {
             classLoader = TagLibrary.class.getClassLoader();
         }
 
         try (InputStream is = classLoader.getResourceAsStream(TAGLIB_XML)) {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            docBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
+            docBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); // Compliant
+            docBuilderFactory.setIgnoringElementContentWhitespace(true);
+            docBuilderFactory.setValidating(false);
+            docBuilderFactory.setNamespaceAware(true);
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             if (is == null) {
                 throw new IOException("Resource not found: " + TAGLIB_XML);
             }
@@ -96,7 +94,7 @@ public class TagLibrary {
                 }
             }
         }
-        catch (IOException | SAXException e) {
+        catch (IOException | SAXException | ParserConfigurationException e) {
             throw new IllegalStateException("Error while reading XML: " + e.getMessage(), e);
         }
     }
@@ -104,14 +102,16 @@ public class TagLibrary {
     /**
      * Returns the map of tag names.
      *
-     * @return a map where the keys are lowercase tag names and the values are the real tag names.
+     * @return a map where the keys are lowercase tag names and the values are the
+     *         real tag names.
      */
     public Map<String, String> getTags() {
         return tags;
     }
 
     /**
-     * Checks if the VDL (View Declaration Language) tag is available for the given documentation link.
+     * Checks if the VDL (View Declaration Language) tag is available for the given
+     * documentation link.
      *
      * @param documentationLink the documentation link to check.
      * @return true if the VDL tag is available, false otherwise.
@@ -124,7 +124,8 @@ public class TagLibrary {
     }
 
     /**
-     * Gets the VDL (View Declaration Language) component for the given documentation link.
+     * Gets the VDL (View Declaration Language) component for the given
+     * documentation link.
      *
      * @param documentationLink the documentation link to get the VDL component for.
      * @return the VDL component name.

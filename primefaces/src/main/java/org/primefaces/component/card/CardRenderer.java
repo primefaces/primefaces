@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Card.DEFAULT_RENDERER, componentFamily = Card.COMPONENT_FAMILY)
 public class CardRenderer extends CoreRenderer<Card> {
 
     @Override
@@ -51,17 +53,17 @@ public class CardRenderer extends CoreRenderer<Card> {
         }
 
         //header
-        encodeCardTextOrFacet(context, component, component.getHeader(), "header", Card.HEADER_CLASS);
+        encodeCardTextOrFacet(context, component, component.getHeader(), component.getHeaderFacet(), Card.HEADER_CLASS);
 
         //BODY START
         writer.startElement("div", null);
         writer.writeAttribute("class", Card.BODY_CLASS, null);
 
         //title
-        encodeCardTextOrFacet(context, component, component.getTitle(), "title", Card.TITLE_CLASS);
+        encodeCardTextOrFacet(context, component, component.getTitle(), component.getTitleFacet(), Card.TITLE_CLASS);
 
         //subtitle
-        encodeCardTextOrFacet(context, component, component.getSubtitle(), "subtitle", Card.SUBTITLE_CLASS);
+        encodeCardTextOrFacet(context, component, component.getSubtitle(), component.getSubtitleFacet(), Card.SUBTITLE_CLASS);
 
         //content
         writer.startElement("div", null);
@@ -70,7 +72,7 @@ public class CardRenderer extends CoreRenderer<Card> {
         writer.endElement("div");
 
         //footer
-        encodeCardTextOrFacet(context, component, component.getFooter(), "footer", Card.FOOTER_CLASS);
+        encodeCardTextOrFacet(context, component, component.getFooter(), component.getFooterFacet(), Card.FOOTER_CLASS);
 
         writer.endElement("div");
         //BODY END
@@ -88,7 +90,7 @@ public class CardRenderer extends CoreRenderer<Card> {
         // nothing to do
     }
 
-    protected void encodeCardTextOrFacet(FacesContext context, Card component, String value, String facetName, String cssClass) throws IOException {
+    protected void encodeCardTextOrFacet(FacesContext context, Card component, String value, UIComponent facet, String cssClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         if (LangUtils.isNotBlank(value)) {
@@ -98,7 +100,6 @@ public class CardRenderer extends CoreRenderer<Card> {
             writer.endElement("div");
         }
         else {
-            UIComponent facet = component.getFacet(facetName);
             if (FacetUtils.shouldRenderFacet(facet)) {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", cssClass, null);

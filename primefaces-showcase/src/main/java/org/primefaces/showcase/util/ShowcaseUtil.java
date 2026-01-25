@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.faces.application.ProjectStage;
@@ -41,23 +42,30 @@ import jakarta.faces.context.FacesContext;
 
 public class ShowcaseUtil {
 
+    private static final Logger LOGGER = Logger.getLogger(ShowcaseUtil.class.getName());
+
     private ShowcaseUtil() {
 
     }
 
-    public static final List<FileContent> getFilesContent(String fullPath, Boolean readBeans) {
+    public static List<FileContent> getFilesContent(String fullPath, Boolean readBeans) {
         CacheProvider provider = CDI.current().select(ShowcaseCacheProvider.class).get().getCacheProvider();
         List<FileContent> files = (List<FileContent>) provider.get("contents", fullPath);
 
         if (files == null) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             FileContent srcContent = getFileContent(fullPath, readBeans);
-            UIComponent tabs = UIComponent.getCurrentComponent(facesContext).getFacet("static-tabs");
-            if (tabs != null) {
-                attach(tabs, srcContent);
+            if (srcContent == null) {
+                LOGGER.severe("File " + fullPath + " not found");
             }
-            files = new ArrayList<>();
-            flatFileContent(srcContent, files);
+            else {
+                UIComponent tabs = UIComponent.getCurrentComponent(facesContext).getFacet("static-tabs");
+                if (tabs != null) {
+                    attach(tabs, srcContent);
+                }
+                files = new ArrayList<>();
+                flatFileContent(srcContent, files);
+            }
 
             if (facesContext.isProjectStage(ProjectStage.Production)) {
                 provider.put("contents", fullPath, files);
@@ -66,14 +74,20 @@ public class ShowcaseUtil {
         return files;
     }
 
-    public static final Object getPropertyValueViaReflection(Object o, String field)
-                throws ReflectiveOperationException, IllegalArgumentException, IntrospectionException {
+    public static Object getPropertyValueViaReflection(Object o, String field)
+            throws ReflectiveOperationException, IllegalArgumentException, IntrospectionException {
         return new PropertyDescriptor(field, o.getClass()).getReadMethod().invoke(o);
     }
 
     // EXCLUDE-SOURCE-START
-    private static final FileContent getFileContent(String fullPath, Boolean readBeans) {
+    private static FileContent getFileContent(String fullPath, Boolean readBeans) {
         try {
+            // in case we get a request with .jsf, we should remap it to .xhtml
+            // later we could remove .jsf mapping propably
+            if (fullPath.endsWith(".jsf")) {
+                fullPath = fullPath.substring(0, fullPath.length() - ".jsf".length()) + ".xhtml";
+            }
+
             // Finding in WEB ...
             FacesContext fc = FacesContext.getCurrentInstance();
             InputStream is = fc.getExternalContext().getResourceAsStream(fullPath);

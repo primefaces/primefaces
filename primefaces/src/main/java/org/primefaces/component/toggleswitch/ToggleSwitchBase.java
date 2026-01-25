@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,18 +38,19 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
 
     public enum PropertyKeys {
 
-        widgetVar,
-        label,
         ariaLabel,
         disabled,
+        label,
+        offIcon,
+        onblur,
         onchange,
+        onfocus,
+        onIcon,
+        readonly,
         style,
         styleClass,
         tabindex,
-        onfocus,
-        onblur,
-        onIcon,
-        offIcon;
+        widgetVar,
     }
 
     public ToggleSwitchBase() {
@@ -157,6 +158,15 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
         getStateHelper().put(PropertyKeys.offIcon, offIcon);
     }
 
+    public boolean isReadonly() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+
+    }
+
+    public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
+    }
+
     @Override
     public String getInputClientId() {
         return this.getClientId(getFacesContext()) + "_input";
@@ -175,5 +185,15 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
     @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
+    }
+
+    @Override
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().get("ariaDescribedBy");
+    }
+
+    @Override
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
     }
 }

@@ -995,7 +995,7 @@ export class AjaxRequest {
                 core.debug('DOM is updated.');
             })
             .always(function(this: PrimeType.ajax.PrimeFacesSettings, data, status, xhr: string | PrimeType.ajax.pfXHR) {
-                const pfArgs = typeof xhr === "string" ? undefined : xhr.pfArgs;
+                const { pfArgs = {}, pfScripts = [], pfSettings = {} } = typeof xhr === "string" ? {} : xhr;
 
                 // first call the extension callback (e.g. datatable paging)
                 if (cfg.ext && cfg.ext.oncomplete) {
@@ -1005,6 +1005,31 @@ export class AjaxRequest {
                 // after that, call the end user's callback, which should be called when everything is ready
                 if (cfg.oncomplete) {
                     cfg.oncomplete.call(this, xhr, status, pfArgs, data);
+                }
+
+                // finally, call the programmatic scripts
+                if (pfScripts.length) {
+                    try {
+                        (window.PrimeFaces as any).scriptContext = {
+                            xhr: xhr,
+                            status: status,
+                            args: pfArgs,
+                            data: data
+                        };
+
+                        for (const script of pfScripts) {
+                            csp.eval(`(function(xhr, status, args, data) {
+                                ${script}
+                            })(
+                                window.PrimeFaces.scriptContext.xhr,
+                                window.PrimeFaces.scriptContext.status,
+                                window.PrimeFaces.scriptContext.args,
+                                window.PrimeFaces.scriptContext.data
+                            );`, pfSettings.nonce, window);
+                        }
+                    } finally {
+                        delete (window.PrimeFaces as any).scriptContext;
+                    }
                 }
 
                 if (global) {
@@ -1493,20 +1518,26 @@ export class AjaxResponseProcessor {
      */
     doExtension(node: Node, xhr?: PrimeType.ajax.pfXHR): void {
         if (xhr && node instanceof Element) {
-            if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
-                const textContent = getNodeTextContent(node);
-                // it's possible that pfArgs are already defined e.g. if Portlet parameter namespacing is enabled
-                // the "parameterPrefix" will be encoded on document start
-                // the other parameters will be encoded on document end
-                // --> see PrimePartialResponseWriter
-                if (xhr.pfArgs) {
-                    const json = JSON.parse(textContent);
-                    for (var name in json) {
-                        xhr.pfArgs[name] = json[name];
+            if (node.getAttribute("ln") === "primefaces") {
+                if (node.getAttribute("type") === "args") {
+                    const textContent = getNodeTextContent(node);
+                    // it's possible that pfArgs are already defined e.g. if Portlet parameter namespacing is enabled
+                    // the "parameterPrefix" will be encoded on document start
+                    // the other parameters will be encoded on document end
+                    // --> see PrimePartialResponseWriter
+                    if (xhr.pfArgs) {
+                        const json = JSON.parse(textContent);
+                        for (var name in json) {
+                            xhr.pfArgs[name] = json[name];
+                        }
+                    }
+                    else {
+                        xhr.pfArgs = JSON.parse(textContent);
                     }
                 }
-                else {
-                    xhr.pfArgs = JSON.parse(textContent);
+                else if (node.getAttribute("type") === "script") {
+                    xhr.pfScripts ||= [];
+                    xhr.pfScripts.push(getNodeTextContent(node));
                 }
             }
         }

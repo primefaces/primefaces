@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = SlideMenu.DEFAULT_RENDERER, componentFamily = SlideMenu.COMPONENT_FAMILY)
 public class SlideMenuRenderer extends TieredMenuRenderer {
 
     @Override
@@ -80,7 +82,7 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         if (menu.getElementsCount() > 0) {
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.LIST_CLASS, null);
-            encodeElements(context, abstractMenu, menu.getElements());
+            encodeElements(context, abstractMenu, menu.getElements(), true);
             writer.endElement("ul");
         }
 
@@ -90,10 +92,36 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         //back navigator
         writer.startElement("div", menu);
         writer.writeAttribute("class", SlideMenu.BACKWARD_CLASS, null);
+        writer.writeAttribute("style", "visibility: hidden;" , null);
+
+        writer.startElement("ul", null);
+        writer.writeAttribute("class", Menu.LIST_CLASS, null);
+
+        writer.startElement("li", null);
+        writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
+
+        writer.startElement("a", null);
+        writer.writeAttribute("class", AbstractMenu.MENUITEM_LINK_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("tabindex", "-1", null);
         writer.startElement("span", menu);
         writer.writeAttribute("class", SlideMenu.BACKWARD_ICON_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         writer.endElement("span");
+        writer.startElement("span", menu);
+        writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
         writer.writeText(menu.getBackLabel(), "backLabel");
+        writer.endElement("span");
+        writer.endElement("a");
+
+        writer.endElement("li");
+
+        writer.endElement("ul");
+
         writer.endElement("div");
 
         //wrapper
@@ -101,5 +129,4 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
 
         writer.endElement("div");
     }
-
 }

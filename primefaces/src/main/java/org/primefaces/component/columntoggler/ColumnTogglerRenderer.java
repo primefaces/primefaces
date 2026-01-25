@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ColumnToggler.DEFAULT_RENDERER, componentFamily = ColumnToggler.COMPONENT_FAMILY)
 public class ColumnTogglerRenderer extends CoreRenderer<ColumnToggler> {
 
     @Override
@@ -69,6 +71,7 @@ public class ColumnTogglerRenderer extends CoreRenderer<ColumnToggler> {
         wb.init("ColumnToggler", component);
         wb.attr("trigger", SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, component, component.getTrigger()));
         wb.attr("datasource", SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, component, component.getDatasource()));
+        wb.attr("showSelectAll", component.isShowSelectAll(), true);
 
         encodeClientBehaviors(context, component);
 

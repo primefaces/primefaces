@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,13 +54,9 @@ public class UIPageableData extends PrimeUIData implements Pageable, TouchAware 
     public static final String PAGINATOR_JTP_SELECT_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default";
     public static final String PAGINATOR_JTP_INPUT_CLASS = "ui-paginator-jtp-input " + InputText.STYLE_CLASS;
     public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "ui-paginator-first ui-state-default";
-    public static final String PAGINATOR_FIRST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-first";
     public static final String PAGINATOR_PREV_PAGE_LINK_CLASS = "ui-paginator-prev ui-state-default";
-    public static final String PAGINATOR_PREV_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-prev";
     public static final String PAGINATOR_NEXT_PAGE_LINK_CLASS = "ui-paginator-next ui-state-default";
-    public static final String PAGINATOR_NEXT_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-next";
     public static final String PAGINATOR_LAST_PAGE_LINK_CLASS = "ui-paginator-last ui-state-default";
-    public static final String PAGINATOR_LAST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-end";
     public static final String EMPTY_MESSAGE = "primefaces.data.EMPTY_MESSAGE";
 
     public enum PropertyKeys {
@@ -89,11 +85,10 @@ public class UIPageableData extends PrimeUIData implements Pageable, TouchAware 
     }
 
     @Override
-    public Boolean isTouchable() {
+    public Boolean getTouchable() {
         return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
     }
 
-    @Override
     public void setTouchable(Boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
     }

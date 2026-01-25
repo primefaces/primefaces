@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,18 @@
  */
 package org.primefaces.component.ajaxexceptionhandler;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
-
+@FacesComponentBase
 public abstract class AjaxExceptionHandlerBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AjaxExceptionHandlerRenderer";
-
-    public enum PropertyKeys {
-
-        onexception,
-        update,
-        type;
-    }
 
     public AjaxExceptionHandlerBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -50,28 +45,12 @@ public abstract class AjaxExceptionHandlerBase extends UIComponentBase implement
         return COMPONENT_FAMILY;
     }
 
-    public String getOnexception() {
-        return (String) getStateHelper().eval(PropertyKeys.onexception, null);
-    }
+    @Property(description = "Client-side callback to execute when an exception occurs.")
+    public abstract String getOnexception();
 
-    public void setOnexception(String onexception) {
-        getStateHelper().put(PropertyKeys.onexception, onexception);
-    }
+    @Property(description = "Component(s) to update after exception handling.")
+    public abstract String getUpdate();
 
-    public String getUpdate() {
-        return (String) getStateHelper().eval(PropertyKeys.update, null);
-    }
-
-    public void setUpdate(String update) {
-        getStateHelper().put(PropertyKeys.update, update);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
+    @Property(description = "Exception type to handle. If not specified, handles all exceptions.")
+    public abstract String getType();
 }

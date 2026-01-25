@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +35,6 @@ public class FirstPageLinkRenderer extends PageLinkRenderer implements Paginator
     @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
         boolean disabled = pageable.getPage() == 0;
-        super.render(context, pageable, UIPageableData.PAGINATOR_FIRST_PAGE_LINK_CLASS, UIPageableData.PAGINATOR_FIRST_PAGE_ICON_CLASS, disabled);
+        super.render(context, pageable, UIPageableData.PAGINATOR_FIRST_PAGE_LINK_CLASS, null, disabled);
     }
 }

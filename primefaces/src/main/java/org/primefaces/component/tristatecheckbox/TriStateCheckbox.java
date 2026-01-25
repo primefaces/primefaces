@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,31 @@
  */
 package org.primefaces.component.tristatecheckbox;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.ValueChangeEvent;
 
+@FacesComponent(value = TriStateCheckbox.COMPONENT_TYPE, namespace = TriStateCheckbox.COMPONENT_FAMILY)
+@FacesComponentDescription("TriStateCheckbox is a checkbox with 3 states: true, false, and unselected.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class TriStateCheckbox extends TriStateCheckboxBase {
+public class TriStateCheckbox extends TriStateCheckboxBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TriStateCheckbox";
     public static final String UI_ICON = "ui-icon ";
 
     @Override
-    public String getDefaultEventName() {
-        return "valueChange";
-    }
-
-    @Override
     public void validate(FacesContext context) {
+        if (isDisabled() || isReadonly()) {
+            return;
+        }
+
         Object submittedValue = getSubmittedValue();
         if (submittedValue != null) {
             super.validate(context);

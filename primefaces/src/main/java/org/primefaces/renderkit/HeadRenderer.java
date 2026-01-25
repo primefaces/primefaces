@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import org.primefaces.clientwindow.PrimeClientWindowUtils;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
@@ -41,9 +42,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import jakarta.el.ELContext;
-import jakarta.el.ExpressionFactory;
-import jakarta.el.ValueExpression;
 import jakarta.faces.FacesException;
 import jakarta.faces.application.ProjectStage;
 import jakarta.faces.component.UIComponent;
@@ -102,11 +100,7 @@ public class HeadRenderer extends Renderer<UIComponent> {
         String themeParamValue = applicationContext.getConfig().getTheme();
 
         if (themeParamValue != null) {
-            ELContext elContext = context.getELContext();
-            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
-            ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
-
-            theme = ve.getValue(elContext);
+            theme = context.getApplication().evaluateExpressionGet(context, themeParamValue, String.class);
         }
         else {
             theme = "saga-blue";     //default
@@ -211,7 +205,7 @@ public class HeadRenderer extends Renderer<UIComponent> {
         writer.write("PrimeFaces.settings={");
         writer.write("locale:'" + LocaleUtils.getCurrentLocale(context) + "',");
         writer.write("viewId:'" + context.getViewRoot().getViewId() + "',");
-        writer.write("contextPath:'" + externalContext.getRequestContextPath() + "',");
+        writer.write("contextPath:'" + EscapeUtils.forJavaScript(externalContext.getRequestContextPath()) + "',");
         writer.write("cookiesSecure:" + (requestContext.isSecure() && configuration.isCookiesSecure()));
 
         if (configuration.getCookiesSameSite() != null) {

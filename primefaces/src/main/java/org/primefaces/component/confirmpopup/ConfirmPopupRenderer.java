@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ConfirmPopup.DEFAULT_RENDERER, componentFamily = ConfirmPopup.COMPONENT_FAMILY)
 public class ConfirmPopupRenderer extends CoreRenderer<ConfirmPopup> {
 
     @Override
@@ -68,7 +70,7 @@ public class ConfirmPopupRenderer extends CoreRenderer<ConfirmPopup> {
     protected void encodeContent(FacesContext context, ConfirmPopup component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String messageText = component.getMessage();
-        UIComponent messageFacet = component.getFacet("message");
+        UIComponent messageFacet = component.getMessageFacet();
         String iconStyleClass = getStyleClassBuilder(context)
                 .add(ConfirmPopup.ICON_CLASS)
                 .add(component.getIcon())

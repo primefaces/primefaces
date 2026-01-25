@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,11 @@ package org.primefaces.component.rowtoggler;
 
 import org.primefaces.component.datatable.DataTable;
 
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
-
+@FacesComponent(value = RowToggler.COMPONENT_TYPE, namespace = RowToggler.COMPONENT_FAMILY)
 public class RowToggler extends RowTogglerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowToggler";

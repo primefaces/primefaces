@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,19 @@
  */
 package org.primefaces.component.linkbutton;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.html.HtmlOutcomeTargetLink;
 
+@FacesComponentBase
 public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.LinkButtonRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        fragment,
-        disableClientWindow,
-        href,
-        escape,
-        icon,
-        iconPos,
-        ariaLabel
-    }
 
     public LinkButtonBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -55,71 +46,15 @@ public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UI
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "true", description = "Escapes HTML content in the link text.")
+    public abstract boolean isEscape();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Icon of the button.")
+    public abstract String getIcon();
 
-    @Override
-    public String getFragment() {
-        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
-    }
+    @Property(defaultValue = "left", description = "Position of the icon, valid values are \"left\" and \"right\".")
+    public abstract String getIconPos();
 
-    public void setFragment(String fragment) {
-        getStateHelper().put(PropertyKeys.fragment, fragment);
-    }
-
-    @Override
-    public boolean isDisableClientWindow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
-    }
-
-    @Override
-    public void setDisableClientWindow(boolean disableClientWindow) {
-        getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
-    }
-
-    @Override
-    public String getHref() {
-        return (String) getStateHelper().eval(PropertyKeys.href, null);
-    }
-
-    public void setHref(String href) {
-        getStateHelper().put(PropertyKeys.href, href);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
-
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
-    public String getIconPos() {
-        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
-    }
-
-    public void setIconPos(String iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, iconPos);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
+    @Property(description = "Defines a string value that labels the current element for accessibility.")
+    public abstract String getAriaLabel();
 }

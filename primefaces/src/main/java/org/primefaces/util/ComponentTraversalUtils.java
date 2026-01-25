@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 package org.primefaces.util;
+
+import org.primefaces.cdk.api.Function;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -123,6 +125,8 @@ public class ComponentTraversalUtils {
      * @param base The base component to start the traversal.
      * @return The component or null.
      */
+    @Function(name = "resolveFirstComponentWithId", description = " \tReturns the first UIComponent with the same id (not clientId!) as the requested id."
+            + " This method ignores any algorithm or NamingContainers.")
     public static UIComponent firstWithId(String id, UIComponent base) {
         if (id.equals(base.getId())) {
             return base;

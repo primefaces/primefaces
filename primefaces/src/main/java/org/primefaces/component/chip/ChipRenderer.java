@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Chip.DEFAULT_RENDERER, componentFamily = Chip.COMPONENT_FAMILY)
 public class ChipRenderer extends CoreRenderer<Chip> {
 
     @Override
@@ -95,7 +97,7 @@ public class ChipRenderer extends CoreRenderer<Chip> {
             writer.endElement("div");
         }
 
-        if (component.getRemovable()) {
+        if (component.isRemovable()) {
             String removeIconStyleClass = getStyleClassBuilder(context)
                     .add(Chip.REMOVE_ICON_CLASS)
                     .add(component.getRemoveIcon())

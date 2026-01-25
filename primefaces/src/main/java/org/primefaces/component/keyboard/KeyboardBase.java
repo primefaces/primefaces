@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,17 @@
  */
 package org.primefaces.component.keyboard;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
-import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class KeyboardBase extends AbstractPrimeHtmlInputText implements Widget, RTLAware {
+@FacesComponentBase
+public abstract class KeyboardBase extends AbstractPrimeHtmlInputText implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.KeyboardRenderer";
-
-    public enum PropertyKeys {
-
-        placeholder,
-        widgetVar,
-        password,
-        showMode,
-        buttonImage,
-        buttonImageOnly,
-        effect,
-        effectDuration,
-        layout,
-        layoutTemplate,
-        keypadOnly,
-        promptLabel,
-        closeLabel,
-        clearLabel,
-        backspaceLabel
-    }
 
     public KeyboardBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -61,123 +44,42 @@ public abstract class KeyboardBase extends AbstractPrimeHtmlInputText implements
         return COMPONENT_FAMILY;
     }
 
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
+    @Property(description = "When enabled, masks input as password.", defaultValue = "false")
+    public abstract boolean isPassword();
 
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
+    @Property(description = "Mode to show the keyboard. Options: 'focus', 'click', 'button'.", defaultValue = "focus")
+    public abstract String getShowMode();
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Image URL for the keyboard toggle button.")
+    public abstract String getButtonImage();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "When enabled, shows only the button image without text.", defaultValue = "false")
+    public abstract boolean isButtonImageOnly();
 
-    public boolean isPassword() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.password, false);
-    }
+    @Property(description = "Animation effect when showing/hiding keyboard.", defaultValue = "fadeIn")
+    public abstract String getEffect();
 
-    public void setPassword(boolean password) {
-        getStateHelper().put(PropertyKeys.password, password);
-    }
+    @Property(description = "Duration of the animation effect.")
+    public abstract String getEffectDuration();
 
-    public String getShowMode() {
-        return (String) getStateHelper().eval(PropertyKeys.showMode, "focus");
-    }
+    @Property(description = "Keyboard layout. Options: 'qwerty', 'alpha', 'international', 'custom'.", defaultValue = "qwerty")
+    public abstract String getLayout();
 
-    public void setShowMode(String showMode) {
-        getStateHelper().put(PropertyKeys.showMode, showMode);
-    }
+    @Property(description = "Custom layout template for keyboard.")
+    public abstract String getLayoutTemplate();
 
-    public String getButtonImage() {
-        return (String) getStateHelper().eval(PropertyKeys.buttonImage, null);
-    }
+    @Property(description = "When enabled, shows only numeric keypad.", defaultValue = "false")
+    public abstract boolean isKeypadOnly();
 
-    public void setButtonImage(String buttonImage) {
-        getStateHelper().put(PropertyKeys.buttonImage, buttonImage);
-    }
+    @Property(description = "Label for prompt button.")
+    public abstract String getPromptLabel();
 
-    public boolean isButtonImageOnly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.buttonImageOnly, false);
-    }
+    @Property(description = "Label for close button.")
+    public abstract String getCloseLabel();
 
-    public void setButtonImageOnly(boolean buttonImageOnly) {
-        getStateHelper().put(PropertyKeys.buttonImageOnly, buttonImageOnly);
-    }
+    @Property(description = "Label for clear button.")
+    public abstract String getClearLabel();
 
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, "fadeIn");
-    }
-
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
-
-    public String getEffectDuration() {
-        return (String) getStateHelper().eval(PropertyKeys.effectDuration, null);
-    }
-
-    public void setEffectDuration(String effectDuration) {
-        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
-    }
-
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "qwerty");
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
-    }
-
-    public String getLayoutTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.layoutTemplate, null);
-    }
-
-    public void setLayoutTemplate(String layoutTemplate) {
-        getStateHelper().put(PropertyKeys.layoutTemplate, layoutTemplate);
-    }
-
-    public boolean isKeypadOnly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.keypadOnly, false);
-    }
-
-    public void setKeypadOnly(boolean keypadOnly) {
-        getStateHelper().put(PropertyKeys.keypadOnly, keypadOnly);
-    }
-
-    public String getPromptLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.promptLabel, null);
-    }
-
-    public void setPromptLabel(String promptLabel) {
-        getStateHelper().put(PropertyKeys.promptLabel, promptLabel);
-    }
-
-    public String getCloseLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.closeLabel, null);
-    }
-
-    public void setCloseLabel(String closeLabel) {
-        getStateHelper().put(PropertyKeys.closeLabel, closeLabel);
-    }
-
-    public String getClearLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.clearLabel, null);
-    }
-
-    public void setClearLabel(String clearLabel) {
-        getStateHelper().put(PropertyKeys.clearLabel, clearLabel);
-    }
-
-    public String getBackspaceLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.backspaceLabel, null);
-    }
-
-    public void setBackspaceLabel(String backspaceLabel) {
-        getStateHelper().put(PropertyKeys.backspaceLabel, backspaceLabel);
-    }
+    @Property(description = "Label for backspace button.")
+    public abstract String getBackspaceLabel();
 }

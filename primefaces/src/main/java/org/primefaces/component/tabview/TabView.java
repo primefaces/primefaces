@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,38 +24,37 @@
 package org.primefaces.component.tabview;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
 import org.primefaces.event.TabEvent;
 import org.primefaces.util.Callbacks;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Map;
 
 import jakarta.el.ELContext;
 import jakarta.el.ValueExpression;
 import jakarta.faces.FacesException;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = TabView.COMPONENT_TYPE, namespace = TabView.COMPONENT_FAMILY)
+@FacesComponentDescription("TabView is a tabbed panel component featuring client side tabs, dynamic content loading with AJAX and transition effects.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
-public class TabView extends TabViewBase {
+public class TabView extends TabViewBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TabView";
-
 
     public static final String CONTAINER_CLASS = "ui-tabs ui-widget ui-widget-content ui-hidden-container";
     public static final String NAVIGATOR_CLASS = "ui-tabs-nav ui-helper-reset ui-widget-header";
@@ -70,22 +69,6 @@ public class TabView extends TabViewBase {
     public static final String NAVIGATOR_LEFT_ICON_CLASS = "ui-icon ui-icon-carat-1-w";
     public static final String NAVIGATOR_RIGHT_ICON_CLASS = "ui-icon ui-icon-carat-1-e";
     public static final String SCROLLABLE_TABS_CLASS = "ui-tabs-scrollable";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("tabChange", TabChangeEvent.class)
-            .put("tabClose", TabCloseEvent.class)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");
@@ -106,9 +89,8 @@ public class TabView extends TabViewBase {
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
+        if (isAjaxBehaviorEventSource(event)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
             boolean repeating = isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
@@ -124,14 +106,14 @@ public class TabView extends TabViewBase {
             Tab tab = repeating ? getDynamicTab() : findTab(tabClientId);
 
             TabEvent<?> changeEvent;
-            if ("tabChange".equals(eventName)) {
-                changeEvent = new TabChangeEvent<>(this, behaviorEvent.getBehavior(), tab, data, eventName, tabindex);
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.tabChange)) {
+                changeEvent = new TabChangeEvent<>(this, behaviorEvent.getBehavior(), tab, data, ClientBehaviorEventKeys.tabChange.getName(), tabindex);
             }
-            else if ("tabClose".equals(eventName)) {
-                changeEvent  = new TabCloseEvent<>(this, behaviorEvent.getBehavior(), tab, data, eventName, tabindex);
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.tabClose)) {
+                changeEvent = new TabCloseEvent<>(this, behaviorEvent.getBehavior(), tab, data, ClientBehaviorEventKeys.tabClose.getName(), tabindex);
             }
             else {
-                throw new FacesException("Unsupported event: " + eventName);
+                throw new FacesException("Unsupported event");
             }
 
             changeEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -250,5 +232,4 @@ public class TabView extends TabViewBase {
     public void resetMultiViewState() {
         setActiveIndex(0);
     }
-
 }

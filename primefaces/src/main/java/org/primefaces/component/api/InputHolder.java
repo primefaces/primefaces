@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 package org.primefaces.component.api;
+
+import org.primefaces.cdk.api.Property;
 
 /**
  * InputHolder is implemented by input components who has an input field along with complex markup like spinner, autocomplete.
@@ -49,4 +51,15 @@ public interface InputHolder {
      * @param id the id
      */
     void setLabelledBy(String id);
+
+    /**
+     * @return The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
+     */
+    @Property(description = "The aria-describedby attribute is used to define a component id that describes the current element for accessibility.")
+    String getAriaDescribedBy();
+
+    /**
+     * @param ariaDescribedBy The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
+     */
+    void setAriaDescribedBy(String ariaDescribedBy);
 }

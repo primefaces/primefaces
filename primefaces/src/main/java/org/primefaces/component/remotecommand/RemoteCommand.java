@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,28 @@
  */
 package org.primefaces.component.remotecommand;
 
-import jakarta.faces.application.ResourceDependency;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = RemoteCommand.COMPONENT_TYPE, namespace = RemoteCommand.COMPONENT_FAMILY)
+@FacesComponentDescription("RemoteCommand provides a way to execute Faces backing bean methods directly from javascript.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
-public class RemoteCommand extends RemoteCommandBase {
+public class RemoteCommand extends RemoteCommandBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RemoteCommand";
 
     @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit) != null);
     }
 
     @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues) != null);
     }
 
     @Override

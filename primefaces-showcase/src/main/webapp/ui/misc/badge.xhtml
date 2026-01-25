@@ -2,6 +2,7 @@
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
+                xmlns:mycomposites="jakarta.faces.composite/composite"
                 xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
@@ -16,45 +17,47 @@
     <ui:param name="documentationLink" value="/components/badge"/>
 
     <ui:define name="implementation">
+        <mycomposites:componentDocumentation value="#{componentDocumentationController.badge}" rendered="false" />
+
         <div class="card">
             <h:form>
-	            <h5 class="mt-0">Numbers</h5>
-	            <p:badge value="2" styleClass="mr-2"></p:badge>
-	            <p:badge value="8" severity="success" styleClass="mr-2"></p:badge>
-	            <p:badge value="4" severity="info" styleClass="mr-2"></p:badge>
-	            <p:badge value="12" severity="warning" styleClass="mr-2"></p:badge>
-	            <p:badge value="3" severity="danger" onclick="alert('danger clicked!')"></p:badge>
+                <h5 class="mt-0">Numbers</h5>
+                <p:badge value="2" styleClass="mr-2"></p:badge>
+                <p:badge value="8" severity="success" styleClass="mr-2"></p:badge>
+                <p:badge value="4" severity="info" styleClass="mr-2"></p:badge>
+                <p:badge value="12" severity="warning" styleClass="mr-2"></p:badge>
+                <p:badge value="3" severity="danger" onclick="alert('danger clicked!')"></p:badge>
 
-	            <h5 class="mb-4">Positioned Badge</h5>
-	            <p:badge value="2">
-	                <i class="pi pi-bell" style="font-size: 2rem"/>
-	            </p:badge>
-	            <p:badge value="10+" severity="danger">
-	                <i class="pi pi-calendar ml-4" style="font-size: 2rem"/>
-	            </p:badge>
-	            <p:badge severity="danger">
-	                <i class="pi pi-envelope ml-4" style="font-size: 2rem"/>
-	            </p:badge>
+                <h5 class="mb-4">Positioned Badge</h5>
+                <p:badge value="2">
+                    <i class="pi pi-bell" style="font-size: 2rem"/>
+                </p:badge>
+                <p:badge value="10+" severity="danger">
+                    <i class="pi pi-calendar ml-4" style="font-size: 2rem"/>
+                </p:badge>
+                <p:badge severity="danger">
+                    <i class="pi pi-envelope ml-4" style="font-size: 2rem"/>
+                </p:badge>
 
-	            <h5>Button Badge</h5>
-	            <p:badge value="8">
-	                <p:commandButton value="Emails"/>
-	            </p:badge>
-	            <p:badge value="8" severity="danger">
-	                <p:commandButton value="Messages" icon="pi pi-users" styleClass="ml-4" />
-	            </p:badge>
+                <h5>Button Badge</h5>
+                <p:badge value="8">
+                    <p:commandButton value="Emails"/>
+                </p:badge>
+                <p:badge value="8" severity="danger">
+                    <p:commandButton value="Messages" icon="pi pi-users" styleClass="ml-4" />
+                </p:badge>
 
-	            <h5>Sizes</h5>
-	            <p:badge value="2" styleClass="mr-2"></p:badge>
-	            <p:badge value="4" styleClass="mr-2" size="large" severity="warning"></p:badge>
-	            <p:badge value="6" size="xlarge" severity="success"></p:badge>
+                <h5>Sizes</h5>
+                <p:badge value="2" styleClass="mr-2"></p:badge>
+                <p:badge value="4" styleClass="mr-2" size="large" severity="warning"></p:badge>
+                <p:badge value="6" size="xlarge" severity="success"></p:badge>
 
-	            <h5>Hidden</h5>
-	            <p:badge value="0" visible="false">
-	                <i class="pi pi-bell" style="font-size: 2rem"/>
-	            </p:badge>
-	            
-	            <h5>Icon</h5>
+                <h5>Hidden</h5>
+                <p:badge value="0" visible="false">
+                    <i class="pi pi-bell" style="font-size: 2rem"/>
+                </p:badge>
+                
+                <h5>Icon</h5>
                 <p:badge icon="pi pi-bell" severity="danger">
                     <p:commandButton value="Alerts" />
                 </p:badge>

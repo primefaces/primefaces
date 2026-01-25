@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,13 @@
  */
 package org.primefaces.component.dock;
 
-import jakarta.faces.application.ResourceDependency;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = Dock.COMPONENT_TYPE, namespace = Dock.COMPONENT_FAMILY)
+@FacesComponentDescription("Dock component mimics the well known dock interface of Mac OS X.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "dock/dock.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -32,7 +37,7 @@ import jakarta.faces.application.ResourceDependency;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "dock/dock.js")
-public class Dock extends DockBase {
+public class Dock extends DockBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Dock";
 }

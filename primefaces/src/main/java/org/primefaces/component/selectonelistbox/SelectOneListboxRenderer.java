@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,8 +38,10 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = SelectOneListbox.DEFAULT_RENDERER, componentFamily = SelectOneListbox.COMPONENT_FAMILY)
 public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox> {
 
     @Override
@@ -141,9 +143,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox
         if (customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
             writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
             writer.startElement("tbody", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, component, selectItem, values, submittedValues, converter, customContent, totalItems, i);
@@ -154,7 +157,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
             writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);

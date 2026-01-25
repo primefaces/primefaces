@@ -39,6 +39,7 @@ filterDelay | 300 | Integer | Delay in milliseconds before sending an ajax filte
 filterEvent | keyup | String | Event triggering filter for input filters. If "enter" it will only filter after ENTER key is pressed.
 filteredValue  | null | TreeNode | TreeNode to keep filtered data.
 filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.
+filterPrune | none | String | Controls pruning during filtering. Use `descendants` to prune non-matching children unless they or their descendants match; `none` keeps children of matching nodes. |
 first | 0 | Integer | Index of the first data to display.
 globalFilter | null | String | Value of the global filter to use when filtering by default.
 globalFilterFunction | null | MethodExpression | Custom implementation to globally filter a value against a constraint.
@@ -56,6 +57,7 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 required | false | Boolean | Validation constraint for selection.
 requiredMessage | null | String | Message for required selection validation.
 resizableColumns | false | Boolean | Defines if columns can be resized or not.
+resizeMode | null | String | Defines the resize behavior, valid values are "fit" (default) and expand.
 rows | 0 | Integer | Number of rows to display per page. Default value is 0 meaning to display all data available.
 rowsPerPageTemplate | null | String | Template of the rowsPerPage dropdown.
 rowStyleClass | null | String | Style class for each row.
@@ -131,6 +133,7 @@ TreeTable provides various ajax behavior events to respond user actions.
 expand | org.primefaces.event.NodeExpandEvent | When a node is expanded.
 collapse | org.primefaces.event.NodeCollapseEvent | When a node is collapsed.
 select | org.primefaces.event.NodeSelectEvent | When a node is selected.
+dblselect | org.primefaces.event.NodeSelectEvent | When a node is selected with double click.
 unselect | org.primefaces.event.NodeUnselectEvent | When a node is unselected.
 contextMenu | org.primefaces.event.NodeSelectEvent | ContextMenu display.
 colResize | org.primefaces.event.ColumnResizeEvent | When a column is resized.
@@ -148,6 +151,19 @@ Widget: _PrimeFaces.widget.TreeTable_
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 | clearFilters() | - | void | Clears all column filters
+
+## Filtering prune mode
+Set `filterPrune="descendants"` to hide non-matching children of a matched node unless they (or their descendants) match the filter. Omit the attribute or use `none` to keep children of matched nodes visible.
+
+```xhtml
+<p:treeTable value="#{bean.root}"
+             var="node"
+             filterPrune="descendants">
+    <p:column headerText="Name" filterBy="#{node.name}" filterMatchMode="contains">
+        #{node.name}
+    </p:column>
+</p:treeTable>
+```
 
 ## ContextMenu
 TreeTable has special integration with context menu, you can even match different context menus
@@ -209,4 +225,3 @@ Following is the list of structural style classes;
 .ui-treetable-data | Body element of the table containing data
 
 As skinning style classes are global, see the main theming section for more information.
-

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,26 @@
  */
 package org.primefaces.component.staticmessage;
 
-import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.LangUtils;
-
-import java.util.Collection;
 
 import jakarta.faces.component.UIComponentBase;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class StaticMessageBase extends UIComponentBase implements Widget, ClientBehaviorHolder, MixedClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "close", event = AjaxBehaviorEvent.class, description = "Fired when the message gets closed.", defaultEvent = true)
+})
+public abstract class StaticMessageBase extends UIComponentBase implements Widget, ClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.StaticMessageRenderer";
-
-    protected static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("close");
-
-    public enum PropertyKeys {
-        widgetVar,
-        summary,
-        detail,
-        display,
-        escape,
-        style,
-        styleClass,
-        severity,
-        closable
-    }
 
     public StaticMessageBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -61,75 +53,22 @@ public abstract class StaticMessageBase extends UIComponentBase implements Widge
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Defines whether html would be escaped or not, defaults to true.", defaultValue = "true")
+    public abstract boolean isEscape();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "The severity of the message: success, info, error, warn, fatal.")
+    public abstract String getSeverity();
 
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
+    @Property(description = "The message summary.")
+    public abstract String getSummary();
 
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
+    @Property(description = "The message detail.")
+    public abstract String getDetail();
 
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
-    }
+    @Property(description = "Defines display mode, valid values are text, icon and both(default).", defaultValue = "both")
+    public abstract String getDisplay();
 
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
-    }
+    @Property(description = "Adds a close icon to hide the message.", defaultValue = "false")
+    public abstract boolean isClosable();
 
-    public String getSummary() {
-        return (String) getStateHelper().eval(PropertyKeys.summary, null);
-    }
-
-    public void setSummary(String summary) {
-        getStateHelper().put(PropertyKeys.summary, summary);
-    }
-
-    public String getDetail() {
-        return (String) getStateHelper().eval(PropertyKeys.detail, null);
-    }
-
-    public void setDetail(String detail) {
-        getStateHelper().put(PropertyKeys.detail, detail);
-    }
-
-    public String getDisplay() {
-        return (String) getStateHelper().eval(PropertyKeys.display, "both");
-    }
-
-    public void setDisplay(String display) {
-        getStateHelper().put(PropertyKeys.display, display);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isClosable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.closable, false);
-    }
-
-    public void setClosable(boolean closable) {
-        getStateHelper().put(PropertyKeys.closable, closable);
-    }
 }

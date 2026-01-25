@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,9 @@ import java.util.Objects;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Splitter.DEFAULT_RENDERER, componentFamily = Splitter.COMPONENT_FAMILY)
 public class SplitterRenderer extends CoreRenderer<Splitter> {
 
     @Override
@@ -130,7 +132,7 @@ public class SplitterRenderer extends CoreRenderer<Splitter> {
         writer.writeAttribute(HTML.ARIA_ROLE, "presentation", null);
         writer.writeAttribute("data-size", component.getSize(), null);
         writer.writeAttribute("data-minsize", component.getMinSize(), null);
-        if (component.getStyle() != null) {
+        if (LangUtils.isNotBlank(component.getStyle())) {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
 

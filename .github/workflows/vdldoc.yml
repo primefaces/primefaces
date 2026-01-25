@@ -1,0 +1,60 @@
+name: Generate VDL Documentation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master, main ]
+    paths:
+      - 'primefaces/src/main/resources/META-INF/primefaces.taglib.xml'
+
+env:
+  JAVA_VERSION: '11'
+  JAVA_DISTRO: 'temurin'
+  BRANCH: 'master'
+
+jobs:
+  generate-vdldoc:
+    runs-on: ubuntu-latest
+    if: github.repository == 'primefaces/primefaces'
+    name: Generate VDL Documentation
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: ${{ env.JAVA_DISTRO }}
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Generate VDL Documentation
+        working-directory: primefaces
+        run: mvn vdldoc:vdldoc --batch-mode --show-version
+
+      - name: Copy VDL Documentation
+        run: |
+          cp -r primefaces/target/site/vdldoc/* docs/vdldoc/
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.changes == 'true'
+        run: |
+          git add docs/vdldoc/
+          git commit -m "Update VDL documentation [skip ci]"
+          git push

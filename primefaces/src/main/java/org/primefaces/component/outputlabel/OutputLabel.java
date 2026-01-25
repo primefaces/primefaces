@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,13 @@
  */
 package org.primefaces.component.outputlabel;
 
-public class OutputLabel extends OutputLabelBase {
+import org.primefaces.cdk.api.FacesComponentDescription;
+
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = OutputLabel.COMPONENT_TYPE, namespace = OutputLabel.COMPONENT_FAMILY)
+@FacesComponentDescription("OutputLabel is an extended version of standard Faces outputLabel component with enhanced features like required field indicator.")
+public class OutputLabel extends OutputLabelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OutputLabel";
 

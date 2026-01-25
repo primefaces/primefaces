@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
+
 /**
  * Use PrimeFlex instead Grid CSS
  */
@@ -33,5 +35,6 @@ public interface FlexAware {
      *
      * @return true to use PrimeFlex instead of Grid CSS.
      */
+    @Property(description = "Use modern FlexGrid CSS for this component.")
     Boolean getFlex();
 }

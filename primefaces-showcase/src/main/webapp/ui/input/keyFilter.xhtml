@@ -24,9 +24,14 @@
                     <p:keyFilter mask="num" />
                 </p:inputText>
 
-                <h5>Regex</h5>
+                <h5>Regex (indivdial key)</h5>
                 <p:inputText>
                     <p:keyFilter regEx="/[ABC]/i"/>
+                </p:inputText>
+
+                <h5>Regex (complete input)</h5>
+                <p:inputText>
+                    <p:keyFilter inputRegEx="/^\d*\.?\d*$/"/>
                 </p:inputText>
 
                 <h5>AutoComplete with TestFunction</h5>

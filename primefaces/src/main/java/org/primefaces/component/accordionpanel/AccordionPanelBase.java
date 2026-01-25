@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,39 +23,29 @@
  */
 package org.primefaces.component.accordionpanel;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.TabChangeEvent;
+import org.primefaces.event.TabCloseEvent;
 
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
-
-public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder,
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "tabChange", event = TabChangeEvent.class, description = "Fires when a tab is changed.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "tabClose", event = TabCloseEvent.class, description = "Fires when a tab is closed.")
+})
+public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, PrimeClientBehaviorHolder,
         MultiViewStateAware<AccordionState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AccordionPanelRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        activeIndex,
-        style,
-        styleClass,
-        onTabChange,
-        onTabShow,
-        onTabClose,
-        cache,
-        multiple,
-        dir,
-        tabindex,
-        tabController,
-        toggleSpeed,
-        scrollIntoView,
-        multiViewState
-    }
 
     public AccordionPanelBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -66,125 +56,42 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Id of the active tab.")
+    public abstract String getActive();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "0", description = "Index of the active tab.")
+    public abstract String getActiveIndex();
 
-    public String getActiveIndex() {
-        return (String) getStateHelper().eval(PropertyKeys.activeIndex, "0");
-    }
+    @Property(description = "Style of the accordion panel.")
+    public abstract String getStyle();
 
-    public void setActiveIndex(String activeIndex) {
-        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
-    }
+    @Property(description = "Style class of the accordion panel.")
+    public abstract String getStyleClass();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Client side callback to execute when a tab is changed.")
+    public abstract String getOnTabChange();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Client side callback to execute when a tab is shown.")
+    public abstract String getOnTabShow();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(description = "Client side callback to execute when a tab is closed.")
+    public abstract String getOnTabClose();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "true", description = "When enabled, dynamically loaded tab contents are cached.")
+    public abstract boolean isCache();
 
-    public String getOnTabChange() {
-        return (String) getStateHelper().eval(PropertyKeys.onTabChange, null);
-    }
+    @Property(description = "Allows multiple tabs to be active at the same time.")
+    public abstract boolean isMultiple();
 
-    public void setOnTabChange(String onTabChange) {
-        getStateHelper().put(PropertyKeys.onTabChange, onTabChange);
-    }
+    @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")
+    public abstract String getTabindex();
 
-    public String getOnTabShow() {
-        return (String) getStateHelper().eval(PropertyKeys.onTabShow, null);
-    }
+    @Property(description = "MethodExpression to control tab access.")
+    public abstract jakarta.el.MethodExpression getTabController();
 
-    public void setOnTabShow(String onTabShow) {
-        getStateHelper().put(PropertyKeys.onTabShow, onTabShow);
-    }
+    @Property(defaultValue = "500", description = "Speed of toggling in milliseconds.")
+    public abstract int getToggleSpeed();
 
-    public String getOnTabClose() {
-        return (String) getStateHelper().eval(PropertyKeys.onTabClose, null);
-    }
-
-    public void setOnTabClose(String onTabClose) {
-        getStateHelper().put(PropertyKeys.onTabClose, onTabClose);
-    }
-
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
-    }
-
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
-
-    public boolean isMultiple() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
-    }
-
-    public void setMultiple(boolean multiple) {
-        getStateHelper().put(PropertyKeys.multiple, multiple);
-    }
-
-    @Override
-    public String getDir() {
-        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
-    }
-
-    public void setDir(String dir) {
-        getStateHelper().put(PropertyKeys.dir, dir);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public jakarta.el.MethodExpression getTabController() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.tabController, null);
-    }
-
-    public void setTabController(jakarta.el.MethodExpression tabController) {
-        getStateHelper().put(PropertyKeys.tabController, tabController);
-    }
-
-    public int getToggleSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
-    }
-
-    public void setToggleSpeed(int toggleSpeed) {
-        getStateHelper().put(PropertyKeys.toggleSpeed, toggleSpeed);
-    }
-
-    @Override
-    public boolean isMultiViewState() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
-    }
-
-    public void setMultiViewState(boolean multiViewState) {
-        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
-    }
-
-    public String getScrollIntoView() {
-        return (String) getStateHelper().eval(PropertyKeys.scrollIntoView, null);
-    }
-
-    public void setScrollIntoView(String scrollIntoView) {
-        getStateHelper().put(PropertyKeys.scrollIntoView, scrollIntoView);
-    }
+    @Property(description = "Scrolls the active tab into view. Valid values are start, center, end, nearest.")
+    public abstract String getScrollIntoView();
 }

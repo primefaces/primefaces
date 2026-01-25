@@ -294,7 +294,7 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
                 onEntered: function() {
                     $this.bindPanelEvents();
                     $this.resetFocus(true);
-                    $this.getMenuElement().find('a.ui-menuitem-link:focusable:first').trigger('focus');
+                    $this.getMenuElement().find('a.ui-menuitem-link:not(.ui-state-disabled):focusable:first').trigger('focus');
                 }
             });
         }

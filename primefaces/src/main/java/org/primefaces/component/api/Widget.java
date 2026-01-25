@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
 import org.primefaces.util.LangUtils;
 
 import java.util.regex.Pattern;
@@ -40,6 +41,9 @@ public interface Widget {
 
     String ATTR_WIDGET_VAR_PATTERN = Widget.class.getName() + ".ATTR_WIDGET_VAR_PATTERN";
 
+    @Property(description = "Name of the client side widget.")
+    String getWidgetVar();
+
     // backwards compatibility
     default String resolveWidgetVar() {
         return resolveWidgetVar(FacesContext.getCurrentInstance());
@@ -54,7 +58,7 @@ public interface Widget {
         UIComponent component = (UIComponent) this;
 
         // Check if a custom widget variable name is set
-        String userWidgetVar = (String) component.getAttributes().get("widgetVar");
+        String userWidgetVar = getWidgetVar();
         if (LangUtils.isNotBlank(userWidgetVar)) {
             return userWidgetVar;
         }

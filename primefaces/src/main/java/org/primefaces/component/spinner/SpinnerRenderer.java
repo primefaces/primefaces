@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,9 @@ import java.math.BigInteger;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Spinner.DEFAULT_RENDERER, componentFamily = Spinner.COMPONENT_FAMILY)
 public class SpinnerRenderer extends InputRenderer<Spinner> {
 
     @Override
@@ -110,8 +112,8 @@ public class SpinnerRenderer extends InputRenderer<Spinner> {
                 .attr("rotate", component.isRotate(), false)
                 .attr("decimalPlaces", decimalPlaces, null)
                 .attr("modifyValueOnWheel", component.isModifyValueOnWheel(), true)
-                .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), component.getThousandSeparator())
-                .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), component.getDecimalSeparator());
+                .attr(Spinner.PropertyKeys.thousandSeparator.name(), component.getThousandSeparator())
+                .attr(Spinner.PropertyKeys.decimalSeparator.name(), component.getDecimalSeparator());
 
         wb.finish();
     }

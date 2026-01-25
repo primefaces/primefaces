@@ -125,6 +125,22 @@
                 Appends the overlay to the element defined by search expression. Defaults to document body.
             </td>
                         </tr>
+                        <tr id="ariaDescribedBy" class="rowColor">
+                            <td class="colFirst"><a href="#ariaDescribedBy"><code>ariaDescribedBy</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
+            </td>
+                        </tr>
+                        <tr id="autocomplete" class="altColor">
+                            <td class="colFirst"><a href="#autocomplete"><code>autocomplete</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                Controls browser autocomplete behavior for editable input field.
+            </td>
+                        </tr>
                         <tr id="autoWidth" class="rowColor">
                             <td class="colFirst"><a href="#autoWidth"><code>autoWidth</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
@@ -136,7 +152,7 @@
                         <tr id="binding" class="altColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.component.UIComponent</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">
                 An el expression referring to a server side UIComponent instance in a backing bean.
             </td>
@@ -152,7 +168,7 @@
                         <tr id="converter" class="altColor">
                             <td class="colFirst"><a href="#converter"><code>converter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.convert.Converter</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.convert.Converter</code>)
                     </td><td class="colLast">
                 An el expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
     In case it's a static text, it must refer to a converter id.
@@ -372,7 +388,7 @@
                                 <br>
                                 (<i>must evaluate to </i><code>boolean</code>)
                     </td><td class="colLast">
-                Flag indicating that this input element will prevent changes by the user.
+                Flag indicating that this component will prevent changes by the user.
             </td>
                         </tr>
                         <tr id="rendered" class="altColor">
@@ -450,7 +466,7 @@
                         <tr id="validator" class="rowColor">
                             <td class="colFirst"><a href="#validator"><code>validator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.validator.Validator</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.validator.Validator</code>)
                     </td><td class="colLast">
                 A method expression referring to a method validating the input.
             </td>
@@ -474,7 +490,7 @@
                         <tr id="valueChangeListener" class="altColor">
                             <td class="colFirst"><a href="#valueChangeListener"><code>valueChangeListener</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.event.ValueChangeListener</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.event.ValueChangeListener</code>)
                     </td><td class="colLast">
                 A method binding expression referring to a method for handling a valuchangeevent.
             </td>

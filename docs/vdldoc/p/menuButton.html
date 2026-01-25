@@ -128,12 +128,20 @@
                         <tr id="binding" class="rowColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.component.UIComponent</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">
                 An el expression referring to a server side UIComponent instance in a backing bean.
             </td>
                         </tr>
-                        <tr id="buttonStyle" class="altColor">
+                        <tr id="buttonIcon" class="altColor">
+                            <td class="colFirst"><a href="#buttonIcon"><code>buttonIcon</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                Icon to display on the button instead of the label.
+            </td>
+                        </tr>
+                        <tr id="buttonStyle" class="rowColor">
                             <td class="colFirst"><a href="#buttonStyle"><code>buttonStyle</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -141,7 +149,7 @@
                 Style of the button.
             </td>
                         </tr>
-                        <tr id="buttonStyleClass" class="rowColor">
+                        <tr id="buttonStyleClass" class="altColor">
                             <td class="colFirst"><a href="#buttonStyleClass"><code>buttonStyleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -149,7 +157,7 @@
                 Style class for the button.
             </td>
                         </tr>
-                        <tr id="collision" class="altColor">
+                        <tr id="collision" class="rowColor">
                             <td class="colFirst"><a href="#collision"><code>collision</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -157,7 +165,7 @@
                 For the overlay menu that shows up when the menu button is clicked. When the overlay menu overflows the window in some direction, move it to an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details. Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.
             </td>
                         </tr>
-                        <tr id="disabled" class="rowColor">
+                        <tr id="disabled" class="altColor">
                             <td class="colFirst"><a href="#disabled"><code>disabled</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -165,7 +173,7 @@
                 Disables or enables the button.
             </td>
                         </tr>
-                        <tr id="disableOnAjax" class="altColor">
+                        <tr id="disableOnAjax" class="rowColor">
                             <td class="colFirst"><a href="#disableOnAjax"><code>disableOnAjax</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -173,7 +181,7 @@
                 If true, the button will be disabled during Ajax requests triggered by its menu items. Default is 'true'.
             </td>
                         </tr>
-                        <tr id="icon" class="rowColor">
+                        <tr id="icon" class="altColor">
                             <td class="colFirst"><a href="#icon"><code>icon</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -181,7 +189,7 @@
                 Icon of the menu button.
             </td>
                         </tr>
-                        <tr id="iconPos" class="altColor">
+                        <tr id="iconPos" class="rowColor">
                             <td class="colFirst"><a href="#iconPos"><code>iconPos</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -189,7 +197,7 @@
                 Position of the icon, default value is left.
             </td>
                         </tr>
-                        <tr id="id" class="rowColor">
+                        <tr id="id" class="altColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -197,7 +205,7 @@
                 Unique identifier of the component in a namingContainer.
             </td>
                         </tr>
-                        <tr id="maxHeight" class="altColor">
+                        <tr id="maxHeight" class="rowColor">
                             <td class="colFirst"><a href="#maxHeight"><code>maxHeight</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -205,7 +213,7 @@
                 The maximum height of the overlay menu that shows up when the menu button is clicked. May be either a number (such as 200), which is interpreted as a height in pixels. Alternatively, may also be a CSS length such as 90vh or 10em. Useful in case the body of your layout does not scroll, especially in combination with the collision property.
             </td>
                         </tr>
-                        <tr id="menuStyleClass" class="rowColor">
+                        <tr id="menuStyleClass" class="altColor">
                             <td class="colFirst"><a href="#menuStyleClass"><code>menuStyleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -213,7 +221,7 @@
                 Style class of the overlay menu element.
             </td>
                         </tr>
-                        <tr id="model" class="altColor">
+                        <tr id="model" class="rowColor">
                             <td class="colFirst"><a href="#model"><code>model</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>org.primefaces.model.menu.MenuModel</code>)
@@ -221,7 +229,7 @@
                 MenuModel instance to create menus programmatically.
             </td>
                         </tr>
-                        <tr id="rendered" class="rowColor">
+                        <tr id="rendered" class="altColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -229,7 +237,7 @@
                 Boolean value to specify the rendering of the component, when set to false component will not be rendered.
             </td>
                         </tr>
-                        <tr id="style" class="altColor">
+                        <tr id="style" class="rowColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -237,7 +245,7 @@
                 Style of the main container element.
             </td>
                         </tr>
-                        <tr id="styleClass" class="rowColor">
+                        <tr id="styleClass" class="altColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -245,7 +253,7 @@
                 Style class of the main container element.
             </td>
                         </tr>
-                        <tr id="title" class="altColor">
+                        <tr id="title" class="rowColor">
                             <td class="colFirst"><a href="#title"><code>title</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -253,7 +261,7 @@
                 Advisory tooltip information.
             </td>
                         </tr>
-                        <tr id="value" class="rowColor">
+                        <tr id="value" class="altColor">
                             <td class="colFirst"><a href="#value"><code>value</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -261,7 +269,7 @@
                 Label of the button.
             </td>
                         </tr>
-                        <tr id="widgetVar" class="altColor">
+                        <tr id="widgetVar" class="rowColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)

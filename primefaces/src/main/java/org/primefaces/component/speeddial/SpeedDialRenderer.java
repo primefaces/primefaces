@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIForm;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = SpeedDial.DEFAULT_RENDERER, componentFamily = SpeedDial.COMPONENT_FAMILY)
 public class SpeedDialRenderer extends BaseMenuRenderer<SpeedDial> {
 
     @Override

@@ -157,34 +157,7 @@ PrimeFaces.widget.InputNumber = class InputNumber extends PrimeFaces.widget.Base
 
         // Change handler with value comparison
         wrapEventHandler('change', function(e) {
-            var newValue = $this.copyValueToHiddenInput();
-            // #10046 do not call on Change if the value has not changed
-            if (newValue === $this.initialValue || 
-                ($this.initialValue !== '' && newValue !== '' && Number(newValue) === Number($this.initialValue))) {
-                return false;
-            }
-            $this.initialValue = newValue;
-            return newValue;
-        });
-
-        // Simple input and keydown handlers
-        wrapEventHandler('input');
-        wrapEventHandler('keydown');
-
-        this.bindInputEvents();
-    }
-
-    /**
-     * Binds input listener which fixes a browser autofill issue.
-     * See: https://github.com/autoNumeric/autoNumeric/issues/536
-     * @private
-     */
-    bindInputEvents() {
-        var $this = this;
-
-        // GitHub #6447: browser auto fill fix
-        this.input.off('blur.inputnumber').on('blur.inputnumber', function(e) {
-            var element = AutoNumeric.getAutoNumericElement(this);
+            var element = $this.autonumeric;
             if (!element) {
                 return;
             }
@@ -207,17 +180,29 @@ PrimeFaces.widget.InputNumber = class InputNumber extends PrimeFaces.widget.Base
                 if ($this.cfg.currencySymbol) {
                     newValue = newValue.replaceAll($this.cfg.currencySymbol, '');
                 }
-                
+
                 // Set the cleaned value
                 element.set(newValue.trim(), null, true);
 
                 // GitHub #8610: reset the raw values so we don't fire change event if 1.0 == 1.00
-                if (element.rawValueOnFocus !== '' && Number(element.rawValue) === Number(element.rawValueOnFocus)) {
+                if (element.rawValueOnFocus !== '' && element.rawValue !== '' && Number(element.rawValue) === Number(element.rawValueOnFocus)) {
                     element.rawValueOnFocus = element.rawValue;
                 }
             }
-            $this.copyValueToHiddenInput();
+
+            var newValue = $this.copyValueToHiddenInput();
+            // #10046 do not call on Change if the value has not changed
+            if (newValue === $this.initialValue || 
+                ($this.initialValue !== '' && newValue !== '' && Number(newValue) === Number($this.initialValue))) {
+                return false;
+            }
+            $this.initialValue = newValue;
+            return newValue;
         });
+
+        // Simple input and keydown handlers
+        wrapEventHandler('input');
+        wrapEventHandler('keydown');
     }
 
     /**
@@ -228,6 +213,10 @@ PrimeFaces.widget.InputNumber = class InputNumber extends PrimeFaces.widget.Base
     copyValueToHiddenInput() {
         var oldVal = this.hiddenInput.val();
         var newVal = this.getValue();
+
+        if (this.cfg.emptyInputBehavior === 'null' && newVal === null) {
+            newVal = '';
+        }
 
         if (((oldVal === '') ^ (newVal === '')) || Number(oldVal) !== Number(newVal)) {
             this.setValueToHiddenInput(newVal);

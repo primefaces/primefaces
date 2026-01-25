@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,38 +23,18 @@
  */
 package org.primefaces.component.spinner;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.LocaleUtils;
 
-public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, RTLAware {
+@FacesComponentBase
+public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SpinnerRenderer";
-
-    public enum PropertyKeys {
-        placeholder,
-        widgetVar,
-        stepFactor,
-        min,
-        max,
-        prefix,
-        suffix,
-        decimalPlaces,
-        decimalSeparator,
-        thousandSeparator,
-        rotate,
-        round,
-        buttons,
-        upIcon,
-        downIcon,
-        upButtonStyleClass,
-        downButtonStyleClass,
-        modifyValueOnWheel
-    }
 
     public static final String BUTTONS_STACKED = "stacked";
     public static final String BUTTONS_HORIZONTAL = "horizontal";
@@ -72,150 +52,52 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
         return COMPONENT_FAMILY;
     }
 
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
+    @Property(description = "Step factor for increment/decrement operations.", defaultValue = "1.0")
+    public abstract double getStepFactor();
 
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
+    @Property(description = "Minimum value allowed.", defaultValue = "-1.7976931348623157E308")
+    public abstract double getMin();
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Maximum value allowed.", defaultValue = "1.7976931348623157E308")
+    public abstract double getMax();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Prefix text to display before the value.")
+    public abstract String getPrefix();
 
-    public double getStepFactor() {
-        return (Double) getStateHelper().eval(PropertyKeys.stepFactor, 1.0);
-    }
+    @Property(description = "Suffix text to display after the value.")
+    public abstract String getSuffix();
 
-    public void setStepFactor(double stepFactor) {
-        getStateHelper().put(PropertyKeys.stepFactor, stepFactor);
-    }
+    @Property(description = "Number of decimal places to display.")
+    public abstract String getDecimalPlaces();
 
-    public double getMin() {
-        return (Double) getStateHelper().eval(PropertyKeys.min, MIN_VALUE);
-    }
+    @Property(description = "Decimal separator character. Defaults to locale-specific separator if not specified.")
+    public abstract String getDecimalSeparator();
 
-    public void setMin(double min) {
-        getStateHelper().put(PropertyKeys.min, min);
-    }
+    @Property(description = "Thousand separator character. Defaults to locale-specific separator if not specified.")
+    public abstract String getThousandSeparator();
 
-    public double getMax() {
-        return (Double) getStateHelper().eval(PropertyKeys.max, MAX_VALUE);
-    }
+    @Property(description = "When enabled, values rotate from max to min when incrementing past max.", defaultValue = "false")
+    public abstract boolean isRotate();
 
-    public void setMax(double max) {
-        getStateHelper().put(PropertyKeys.max, max);
-    }
+    @Property(description = "When enabled, values are rounded to the nearest step.", defaultValue = "false")
+    public abstract boolean isRound();
 
-    public String getPrefix() {
-        return (String) getStateHelper().eval(PropertyKeys.prefix, null);
-    }
+    @Property(description = "Layout of the spinner buttons.", defaultValue = "stacked")
+    public abstract String getButtons();
 
-    public void setPrefix(String prefix) {
-        getStateHelper().put(PropertyKeys.prefix, prefix);
-    }
+    @Property(description = "Icon for the up/increment button.")
+    public abstract String getUpIcon();
 
-    public String getSuffix() {
-        return (String) getStateHelper().eval(PropertyKeys.suffix, null);
-    }
+    @Property(description = "Icon for the down/decrement button.")
+    public abstract String getDownIcon();
 
-    public void setSuffix(String suffix) {
-        getStateHelper().put(PropertyKeys.suffix, suffix);
-    }
+    @Property(description = "CSS class for the up/increment button.")
+    public abstract String getUpButtonStyleClass();
 
-    public String getDecimalPlaces() {
-        return (String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
-    }
+    @Property(description = "CSS class for the down/decrement button.")
+    public abstract String getDownButtonStyleClass();
 
-    public void setDecimalPlaces(String decimalPlaces) {
-        getStateHelper().put(PropertyKeys.decimalPlaces, decimalPlaces);
-    }
-
-    public String getDecimalSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.decimalSeparator,
-            () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
-    }
-
-    public void setDecimalSeparator(String decimalSeparator) {
-        getStateHelper().put(PropertyKeys.decimalSeparator, decimalSeparator);
-    }
-
-    public String getThousandSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.thousandSeparator,
-            () -> LocaleUtils.getThousandSeparator(getFacesContext()));
-    }
-
-    public void setThousandSeparator(String thousandSeparator) {
-        getStateHelper().put(PropertyKeys.thousandSeparator, thousandSeparator);
-    }
-
-    public boolean isRotate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.rotate, false);
-    }
-
-    public void setRotate(boolean rotate) {
-        getStateHelper().put(PropertyKeys.rotate, rotate);
-    }
-
-    public boolean isRound() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.round, false);
-    }
-
-    public void setRound(boolean round) {
-        getStateHelper().put(PropertyKeys.round, round);
-    }
-
-    public String getButtons() {
-        return (String) getStateHelper().eval(PropertyKeys.buttons, BUTTONS_STACKED);
-    }
-
-    public void setButtons(String buttons) {
-        getStateHelper().put(PropertyKeys.buttons, buttons);
-    }
-
-    public String getUpIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.upIcon, null);
-    }
-
-    public void setUpIcon(String upIcon) {
-        getStateHelper().put(PropertyKeys.upIcon, upIcon);
-    }
-
-    public String getDownIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.downIcon, null);
-    }
-
-    public void setDownIcon(String downIcon) {
-        getStateHelper().put(PropertyKeys.downIcon, downIcon);
-    }
-
-    public String getUpButtonStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.upButtonStyleClass, null);
-    }
-
-    public void setUpButtonStyleClass(String upButtonStyleClass) {
-        getStateHelper().put(PropertyKeys.upButtonStyleClass, upButtonStyleClass);
-    }
-
-    public String getDownButtonStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.downButtonStyleClass, null);
-    }
-
-    public void setDownButtonStyleClass(String downButtonStyleClass) {
-        getStateHelper().put(PropertyKeys.downButtonStyleClass, downButtonStyleClass);
-    }
-
-    public boolean isModifyValueOnWheel() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.modifyValueOnWheel, true);
-    }
-
-    public void setModifyValueOnWheel(boolean modifyValueOnWheel) {
-        getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
-    }
+    @Property(description = "When enabled, mouse wheel modifies the value.", defaultValue = "true")
+    public abstract boolean isModifyValueOnWheel();
 
 }

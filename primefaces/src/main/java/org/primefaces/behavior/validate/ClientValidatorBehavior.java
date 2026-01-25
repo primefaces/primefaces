@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,7 @@
  */
 package org.primefaces.behavior.validate;
 
-import org.primefaces.behavior.base.AbstractBehavior;
-import org.primefaces.behavior.base.BehaviorAttribute;
+import org.primefaces.cdk.api.FacesBehaviorDescription;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.Constants;
@@ -35,26 +34,16 @@ import java.util.logging.Logger;
 import jakarta.faces.application.ProjectStage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.ClientBehaviorContext;
+import jakarta.faces.component.behavior.FacesBehavior;
 
-public class ClientValidatorBehavior extends AbstractBehavior {
+@FacesBehavior(ClientValidatorBehavior.BEHAVIOR_ID)
+@FacesBehaviorDescription("ClientValidator is a behavior element used in Client Side Validation to do instant validation in case you do not want"
+        + " to wait for the users to fill in the form and hit commandButton/commandLink.")
+public class ClientValidatorBehavior extends ClientValidatorBehaviorBaseImpl {
+
+    public static final String BEHAVIOR_ID = "org.primefaces.behavior.ClientValidatorBehavior";
 
     private static final Logger LOGGER = Logger.getLogger(ClientValidatorBehavior.class.getName());
-
-    public enum PropertyKeys implements BehaviorAttribute {
-        event(String.class),
-        disabled(Boolean.class);
-
-        private final Class<?> expectedType;
-
-        PropertyKeys(Class<?> expectedType) {
-            this.expectedType = expectedType;
-        }
-
-        @Override
-        public Class<?> getExpectedType() {
-            return expectedType;
-        }
-    }
 
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
@@ -74,24 +63,4 @@ public class ClientValidatorBehavior extends AbstractBehavior {
         return "return PrimeFaces.vi(" + target + ", true, true)";
     }
 
-    @Override
-    protected BehaviorAttribute[] getAllAttributes() {
-        return PropertyKeys.values();
-    }
-
-    public String getEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.event, null);
-    }
-
-    public void setEvent(String event) {
-        getStateHelper().put(PropertyKeys.event, event);
-    }
-
-    public boolean isDisabled() {
-        return (boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
 }

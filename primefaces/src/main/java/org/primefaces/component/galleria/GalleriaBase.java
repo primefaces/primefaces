@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,47 +23,24 @@
  */
 package org.primefaces.component.galleria;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
-import org.primefaces.model.ResponsiveOption;
 
 import java.util.List;
 
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UIComponent;
 
-public abstract class GalleriaBase extends UITabPanel implements Widget, ClientBehaviorHolder {
+@FacesComponentBase
+public abstract class GalleriaBase extends UITabPanel implements Widget, PrimeClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.GalleriaRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        value,
-        style,
-        styleClass,
-        activeIndex,
-        fullScreen,
-        closeIcon,
-        numVisible,
-        responsiveOptions,
-        showThumbnails,
-        showIndicators,
-        showIndicatorsOnItem,
-        showCaption,
-        showItemNavigators,
-        showThumbnailNavigators,
-        showItemNavigatorsOnHover,
-        changeItemOnIndicatorHover,
-        circular,
-        autoPlay,
-        transitionInterval,
-        thumbnailsPosition,
-        verticalViewPortHeight,
-        indicatorsPosition,
-        tabindex
-    }
 
     public GalleriaBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -74,197 +51,81 @@ public abstract class GalleriaBase extends UITabPanel implements Widget, ClientB
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Facet(description = "Allows to place HTML in the header. Alternative to headerText.")
+    public abstract UIComponent getHeaderFacet();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
+    public abstract UIComponent getFooterFacet();
 
-    @Override
-    public Object getValue() {
-        return getStateHelper().eval(PropertyKeys.value, null);
-    }
+    @Facet(description = "Allows to place HTML in the caption. Alternative to caption.")
+    public abstract UIComponent getCaptionFacet();
 
-    @Override
-    public void setValue(Object value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
+    @Facet(description = "Allows to place HTML in the thumbnail. Alternative to thumbnail.")
+    public abstract UIComponent getThumbnailFacet();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Facet(description = "Allows to place HTML in the indicator. Alternative to indicator.")
+    public abstract UIComponent getIndicatorFacet();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Value binding expression to a data model.")
+    public abstract Object getValue();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "0", description = "Index of the first item.")
+    public abstract int getActiveIndex();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "false", description = "Whether to display the component on fullscreen.")
+    public abstract boolean isFullScreen();
 
-    public int getActiveIndex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
-    }
+    @Property(description = "Close icon on fullscreen mode.")
+    public abstract String getCloseIcon();
 
-    public void setActiveIndex(int activeIndex) {
-        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
-    }
+    @Property(defaultValue = "3", description = "Number of items per page.")
+    public abstract int getNumVisible();
 
-    public boolean isFullScreen() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.fullScreen, false);
-    }
+    @Property(description = "A list of breakpoint ResponsiveOption for responsive design.")
+    public abstract List getResponsiveOptions();
 
-    public void setFullScreen(boolean fullScreen) {
-        getStateHelper().put(PropertyKeys.fullScreen, fullScreen);
-    }
+    @Property(defaultValue = "true", description = "Whether to display thumbnail container.")
+    public abstract boolean isShowThumbnails();
 
-    public String getCloseIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.closeIcon, null);
-    }
+    @Property(defaultValue = "false", description = "Whether to display indicator container.")
+    public abstract boolean isShowIndicators();
 
-    public void setCloseIcon(String closeIcon) {
-        getStateHelper().put(PropertyKeys.closeIcon, closeIcon);
-    }
+    @Property(defaultValue = "false", description = "When enabled, indicator container is displayed on item container.")
+    public abstract boolean isShowIndicatorsOnItem();
 
-    public int getNumVisible() {
-        return (Integer) getStateHelper().eval(PropertyKeys.numVisible, 3);
-    }
+    @Property(defaultValue = "false", description = "Whether to display caption container.")
+    public abstract boolean isShowCaption();
 
-    public void setNumVisible(int numVisible) {
-        getStateHelper().put(PropertyKeys.numVisible, numVisible);
-    }
+    @Property(defaultValue = "false", description = "Whether to display item navigators..")
+    public abstract boolean isShowItemNavigators();
 
-    public List<ResponsiveOption> getResponsiveOptions() {
-        return (List<ResponsiveOption>) getStateHelper().eval(PropertyKeys.responsiveOptions, null);
-    }
+    @Property(defaultValue = "true", description = "Whether to display thumbnail navigators.")
+    public abstract boolean isShowThumbnailNavigators();
 
-    public void setResponsiveOptions(List<ResponsiveOption> responsiveOptions) {
-        getStateHelper().put(PropertyKeys.responsiveOptions, responsiveOptions);
-    }
+    @Property(defaultValue = "false", description = "Whether to display item navigators on hover.")
+    public abstract boolean isShowItemNavigatorsOnHover();
 
-    public boolean isShowThumbnails() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showThumbnails, true);
-    }
+    @Property(defaultValue = "false", description = "Whether to change item on indicator hover.")
+    public abstract boolean isChangeItemOnIndicatorHover();
 
-    public void setShowThumbnails(boolean showThumbnails) {
-        getStateHelper().put(PropertyKeys.showThumbnails, showThumbnails);
-    }
+    @Property(defaultValue = "false", description = "Defines if scrolling would be infinite.")
+    public abstract boolean isCircular();
 
-    public boolean isShowIndicators() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showIndicators, false);
-    }
+    @Property(defaultValue = "false", description = "Enables autoplay for the gallery.")
+    public abstract boolean isAutoPlay();
 
-    public void setShowIndicators(boolean showIndicators) {
-        getStateHelper().put(PropertyKeys.showIndicators, showIndicators);
-    }
+    @Property(defaultValue = "4000", description = "Time in milliseconds between item transitions.")
+    public abstract int getTransitionInterval();
 
-    public boolean isShowIndicatorsOnItem() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showIndicatorsOnItem, false);
-    }
+    @Property(defaultValue = "bottom", description = "Position of thumbnails. Valid values are \"bottom\", \"top\", \"left\" and \"right\".")
+    public abstract String getThumbnailsPosition();
 
-    public void setShowIndicatorsOnItem(boolean showIndicatorsOnItem) {
-        getStateHelper().put(PropertyKeys.showIndicatorsOnItem, showIndicatorsOnItem);
-    }
+    @Property(defaultValue = "450px", description = "Height of the viewport in vertical layout.")
+    public abstract String getVerticalViewPortHeight();
 
-    public boolean isShowCaption() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showCaption, false);
-    }
+    @Property(defaultValue = "bottom", description = "Position of indicators. Valid values are \"bottom\", \"top\", \"left\" and \"right\".")
+    public abstract String getIndicatorsPosition();
 
-    public void setShowCaption(boolean showCaption) {
-        getStateHelper().put(PropertyKeys.showCaption, showCaption);
-    }
-
-    public boolean isShowItemNavigators() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showItemNavigators, false);
-    }
-
-    public void setShowItemNavigators(boolean showItemNavigators) {
-        getStateHelper().put(PropertyKeys.showItemNavigators, showItemNavigators);
-    }
-
-    public boolean isShowThumbnailNavigators() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showThumbnailNavigators, true);
-    }
-
-    public void setShowThumbnailNavigators(boolean showThumbnailNavigators) {
-        getStateHelper().put(PropertyKeys.showThumbnailNavigators, showThumbnailNavigators);
-    }
-
-    public boolean isShowItemNavigatorsOnHover() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showItemNavigatorsOnHover, false);
-    }
-
-    public void setShowItemNavigatorsOnHover(boolean showItemNavigatorsOnHover) {
-        getStateHelper().put(PropertyKeys.showItemNavigatorsOnHover, showItemNavigatorsOnHover);
-    }
-
-    public boolean isChangeItemOnIndicatorHover() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.changeItemOnIndicatorHover, false);
-    }
-
-    public void setChangeItemOnIndicatorHover(boolean changeItemOnIndicatorHover) {
-        getStateHelper().put(PropertyKeys.changeItemOnIndicatorHover, changeItemOnIndicatorHover);
-    }
-
-    public boolean isCircular() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.circular, false);
-    }
-
-    public void setCircular(boolean circular) {
-        getStateHelper().put(PropertyKeys.circular, circular);
-    }
-
-    public boolean isAutoPlay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoPlay, false);
-    }
-
-    public void setAutoPlay(boolean autoPlay) {
-        getStateHelper().put(PropertyKeys.autoPlay, autoPlay);
-    }
-
-    public int getTransitionInterval() {
-        return (Integer) getStateHelper().eval(PropertyKeys.transitionInterval, 4000);
-    }
-
-    public void setTransitionInterval(int transitionInterval) {
-        getStateHelper().put(PropertyKeys.transitionInterval, transitionInterval);
-    }
-
-    public String getThumbnailsPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.thumbnailsPosition, "bottom");
-    }
-
-    public void setThumbnailsPosition(String thumbnailsPosition) {
-        getStateHelper().put(PropertyKeys.thumbnailsPosition, thumbnailsPosition);
-    }
-
-    public String getVerticalViewPortHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.verticalViewPortHeight, "450px");
-    }
-
-    public void setVerticalViewPortHeight(String verticalViewPortHeight) {
-        getStateHelper().put(PropertyKeys.verticalViewPortHeight, verticalViewPortHeight);
-    }
-
-    public String getIndicatorsPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.indicatorsPosition, "bottom");
-    }
-
-    public void setIndicatorsPosition(String indicatorsPosition) {
-        getStateHelper().put(PropertyKeys.indicatorsPosition, indicatorsPosition);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
+    @Property(defaultValue = "0", description = "Specifies the tab order of element in tab navigation.")
+    public abstract String getTabindex();
 }

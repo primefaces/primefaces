@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,17 @@
  */
 package org.primefaces.component.stack;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
+@FacesComponentBase
 public abstract class StackBase extends AbstractMenu implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.StackRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        model,
-        icon,
-        openSpeed,
-        closeSpeed,
-        expanded
-    }
 
     public StackBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -51,52 +44,20 @@ public abstract class StackBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
     @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
+    @Property(description = "MenuModel instance to create menus programmatically")
+    public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(description = "An optional image to contain stacked items.")
+    public abstract String getIcon();
 
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
+    @Property(defaultValue = "300", description = "Speed of the animation when opening the stack.")
+    public abstract int getOpenSpeed();
 
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
+    @Property(defaultValue = "300", description = "Speed of the animation when closing the stack.")
+    public abstract int getCloseSpeed();
 
-    public int getOpenSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.openSpeed, 300);
-    }
+    @Property(defaultValue = "false", description = "Whether to display stack as expanded or not.")
+    public abstract boolean isExpanded();
 
-    public void setOpenSpeed(int openSpeed) {
-        getStateHelper().put(PropertyKeys.openSpeed, openSpeed);
-    }
-
-    public int getCloseSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.closeSpeed, 300);
-    }
-
-    public void setCloseSpeed(int closeSpeed) {
-        getStateHelper().put(PropertyKeys.closeSpeed, closeSpeed);
-    }
-
-    public boolean isExpanded() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.expanded, false);
-    }
-
-    public void setExpanded(boolean expanded) {
-        getStateHelper().put(PropertyKeys.expanded, expanded);
-    }
 }

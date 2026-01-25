@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,8 +42,10 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = SelectOneRadio.DEFAULT_RENDERER, componentFamily = SelectOneRadio.COMPONENT_FAMILY)
 public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
 
     @Override
@@ -162,8 +164,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
                 }
 
                 writer.startElement("div", null);
-                writer.writeAttribute("class", columnClass, null);
-                writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
+                if (LangUtils.isNotEmpty(columnClass)) {
+                    writer.writeAttribute("class", columnClass, null);
+                }
                 encodeOption(context, component, selectItem, id, name, converter, selected, disabled);
                 writer.endElement("div");
 

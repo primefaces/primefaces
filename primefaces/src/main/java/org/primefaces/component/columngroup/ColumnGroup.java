@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,13 @@
  */
 package org.primefaces.component.columngroup;
 
-public class ColumnGroup extends ColumnGroupBase {
+import org.primefaces.cdk.api.FacesComponentDescription;
+
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = ColumnGroup.COMPONENT_TYPE, namespace = ColumnGroup.COMPONENT_FAMILY)
+@FacesComponentDescription("ColumnGroup is used by datatable for grouping.")
+public class ColumnGroup extends ColumnGroupBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColumnGroup";
 }

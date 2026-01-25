@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,46 +23,23 @@
  */
 package org.primefaces.component.dnd;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.DragDropEvent;
 
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class DroppableBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "drop", event = DragDropEvent.class, description = "Fires when an element is dropped.", defaultEvent = true)
+})
+public abstract class DroppableBase extends UIComponentBase implements Widget, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DroppableRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        forValue("for"),
-        disabled,
-        hoverStyleClass,
-        activeStyleClass,
-        onDrop,
-        accept,
-        scope,
-        tolerance,
-        datasource,
-        greedy;
-
-        private String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
-    }
 
     public DroppableBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -73,91 +50,39 @@ public abstract class DroppableBase extends UIComponentBase implements Widget, C
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Id of the component to make droppable.")
+    public abstract String getFor();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "false", description = "Disables the droppable if set to true.")
+    public abstract boolean isDisabled();
 
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
+    @Property(description = "Style class to apply when an acceptable draggable is being hovered over the droppable.")
+    public abstract String getHoverStyleClass();
 
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
+    @Property(description = "Style class to apply when an acceptable draggable is being dragged.")
+    public abstract String getActiveStyleClass();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(description = "Client side callback to execute when an accepted draggable is dropped on the droppable. " +
+        "Function receives (event, ui) where ui.draggable, ui.helper, ui.position, and ui.offset are available.")
+    public abstract String getOnDrop();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(implicitDefaultValue = "*", description = "Controls which draggable elements are accepted by the droppable. " +
+        "Can be a selector string or a function that returns true if the draggable should be accepted.")
+    public abstract String getAccept();
 
-    public String getHoverStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.hoverStyleClass, null);
-    }
+    @Property(implicitDefaultValue = "default", description = "Used to group sets of draggable and droppable items, " +
+        "in addition to the accept option. A draggable with the same scope value as a droppable will be accepted.")
+    public abstract String getScope();
 
-    public void setHoverStyleClass(String hoverStyleClass) {
-        getStateHelper().put(PropertyKeys.hoverStyleClass, hoverStyleClass);
-    }
+    @Property(implicitDefaultValue = "intersect",
+        description = "Specifies which mode to use for testing whether a draggable is hovering over a droppable. " +
+            "Possible values: 'fit', 'intersect', 'pointer', 'touch'.")
+    public abstract String getTolerance();
 
-    public String getActiveStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.activeStyleClass, null);
-    }
+    @Property(description = "Id of the datasource component to bind drag data.")
+    public abstract String getDatasource();
 
-    public void setActiveStyleClass(String activeStyleClass) {
-        getStateHelper().put(PropertyKeys.activeStyleClass, activeStyleClass);
-    }
-
-    public String getOnDrop() {
-        return (String) getStateHelper().eval(PropertyKeys.onDrop, null);
-    }
-
-    public void setOnDrop(String onDrop) {
-        getStateHelper().put(PropertyKeys.onDrop, onDrop);
-    }
-
-    public String getAccept() {
-        return (String) getStateHelper().eval(PropertyKeys.accept, null);
-    }
-
-    public void setAccept(String accept) {
-        getStateHelper().put(PropertyKeys.accept, accept);
-    }
-
-    public String getScope() {
-        return (String) getStateHelper().eval(PropertyKeys.scope, null);
-    }
-
-    public void setScope(String scope) {
-        getStateHelper().put(PropertyKeys.scope, scope);
-    }
-
-    public String getTolerance() {
-        return (String) getStateHelper().eval(PropertyKeys.tolerance, null);
-    }
-
-    public void setTolerance(String tolerance) {
-        getStateHelper().put(PropertyKeys.tolerance, tolerance);
-    }
-
-    public String getDatasource() {
-        return (String) getStateHelper().eval(PropertyKeys.datasource, null);
-    }
-
-    public void setDatasource(String datasource) {
-        getStateHelper().put(PropertyKeys.datasource, datasource);
-    }
-
-    public boolean isGreedy() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.greedy, false);
-    }
-
-    public void setGreedy(boolean greedy) {
-        getStateHelper().put(PropertyKeys.greedy, greedy);
-    }
+    @Property(defaultValue = "false", description = "By default, when an element is dropped on nested droppables, " +
+        "each droppable will receive the element. Setting this to true prevents parent droppables from receiving the element.")
+    public abstract boolean isGreedy();
 }

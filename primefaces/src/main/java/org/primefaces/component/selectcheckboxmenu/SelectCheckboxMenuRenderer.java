@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,8 +47,10 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = SelectCheckboxMenu.DEFAULT_RENDERER, componentFamily = SelectCheckboxMenu.COMPONENT_FAMILY)
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckboxMenu> {
 
     @Override
@@ -465,10 +467,11 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
                 writer.startElement("table", null);
                 writer.writeAttribute("id", component.getClientId(context) + "_list", null);
                 writer.writeAttribute("class", SelectCheckboxMenu.TABLE_CLASS, null);
-                writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
                 writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "true", null);
                 encodeColumnsHeader(context, component, columns);
                 writer.startElement("tbody", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
                 encodeOptionsAsTable(context, component, selectItems, columns);
                 writer.endElement("tbody");
                 writer.endElement("table");

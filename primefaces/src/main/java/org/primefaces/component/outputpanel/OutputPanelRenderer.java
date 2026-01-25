@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,9 @@ import java.util.Map;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = OutputPanel.DEFAULT_RENDERER, componentFamily = OutputPanel.COMPONENT_FAMILY)
 public class OutputPanelRenderer extends CoreRenderer<OutputPanel> {
 
     private static final String BLOCK = "div";
@@ -78,7 +80,7 @@ public class OutputPanelRenderer extends CoreRenderer<OutputPanel> {
         }
 
         if (isDeferredNecessary(context, component)) {
-            UIComponent loadingFacet = component.getFacet("loading");
+            UIComponent loadingFacet = component.getLoadingFacet();
             if (FacetUtils.shouldRenderFacet(loadingFacet)) {
                 loadingFacet.encodeAll(context);
             }

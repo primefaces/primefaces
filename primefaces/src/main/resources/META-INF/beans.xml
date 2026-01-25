@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="https://jakarta.ee/xml/ns/jakartaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/beans_4_0.xsd"
+    version="4.0" bean-discovery-mode="all">
+
+    <scan>
+        <exclude name="org.primefaces.util.ExcelStylesManager"/>
+        <exclude name="org.primefaces.util.ExcelXmlStylesManager"/>
+        <exclude name="org.primefaces.util.ExcelStylesManager$Styles"/>
+        <exclude name="org.primefaces.util.HtmlSanitizer"/>
+
+        <exclude name="org.primefaces.cache.EHCacheProvider"/>
+        <exclude name="org.primefaces.cache.EHCache3Provider"/>
+
+        <exclude name="org.primefaces.component.barcode.BarcodeHandler"/>
+        <exclude name="org.primefaces.component.datatable.export.DataTableExcelExporter"/>
+        <exclude name="org.primefaces.component.datatable.export.DataTableExcelXExporter"/>
+        <exclude name="org.primefaces.component.datatable.export.DataTableExcelXStreamExporter"/>
+        <exclude name="org.primefaces.component.datatable.export.DataTablePDFExporter"/>
+        <exclude name="org.primefaces.component.feedreader.RSSUtils"/>
+        <exclude name="org.primefaces.component.treetable.export.TreeTableExcelExporter"/>
+        <exclude name="org.primefaces.component.treetable.export.TreeTableExcelXExporter"/>
+        <exclude name="org.primefaces.component.treetable.export.TreeTableExcelXStreamExporter"/>
+        <exclude name="org.primefaces.component.treetable.export.TreeTablePDFExporter"/>
+    </scan>
+</beans>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,8 +37,10 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = MultiSelectListbox.DEFAULT_RENDERER, componentFamily = MultiSelectListbox.COMPONENT_FAMILY)
 public class MultiSelectListboxRenderer extends SelectOneRenderer<MultiSelectListbox> {
 
     @Override

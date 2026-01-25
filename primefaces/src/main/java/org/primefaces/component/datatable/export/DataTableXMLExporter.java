@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -59,6 +59,9 @@ public class DataTableXMLExporter extends DataTableExporter<PrintWriter, Exporte
     protected void exportTable(FacesContext context, DataTable table, int index) throws IOException {
         String doctag = table.getExportTag() != null ? table.getExportTag() : table.getId();
         document.append("<?xml version=\"1.0\"?>\n").append("<").append(doctag).append(">\n");
+
+        // GitHub #14103: must be called so visible columns are cached
+        getExportableColumns(table);
 
         super.exportTable(context, table, index);
 

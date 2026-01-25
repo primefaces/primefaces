@@ -43,6 +43,9 @@
  * added to this map.
  * @prop {(google.maps.Rectangle & PrimeFaces.widget.GMap.IdProviding)[]} cfg.rectangles List of overlay rectangular
  * shapes added to this map.
+ * @prop {string} [cfg.apiKey] Google Maps API key. Required for asynchronous loading if Google Maps is not already loaded.
+ * @prop {string} [cfg.apiVersion] Google Maps API version. Defaults to 'weekly'. Only used for asynchronous loading.
+ * @prop {string[]} [cfg.libraries] Additional Google Maps libraries to load (e.g., ['places', 'geometry']). Only used for asynchronous loading.
  */
 PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
 
@@ -58,12 +61,138 @@ PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
     }
 
     /**
+     * Override to handle async _render() method.
+     * @override
+     */
+    renderDeferred() {
+        if (this.jq.is(':visible')) {
+            // Call async _render and handle postRender after it completes
+            Promise.resolve(this._render()).then(() => {
+                this.postRender();
+            }).catch((error) => {
+                PrimeFaces.error('Error rendering GMap widget: ' + (error.message || error));
+            });
+        }
+        else if (this.jq[0]) {
+            var container = this.jq[0].closest('.ui-hidden-container');
+            if (container instanceof HTMLElement) {
+                var $container = $(container);
+                if ($container.length) {
+                    var $this = this;
+                    this.addDeferredRender(this.id, $container, () => {
+                        return Promise.resolve($this._render()).then(() => true).catch(() => false);
+                    });
+                }
+            }
+        }
+    }
+
+    /**
+     * Ensures Google Maps API is loaded. Supports both static loading (already loaded) and dynamic async loading.
+     * @private
+     * @returns {Promise<void>} Promise that resolves when Google Maps is ready to use.
+     */
+    async ensureGoogleMapsLoaded() {
+        // Check if Google Maps is already loaded (static loading scenario)
+        if (window.google && window.google.maps && window.google.maps.Map) {
+            return Promise.resolve();
+        }
+
+        // Check if bootstrap loader is already present and use it
+        if (window.google && window.google.maps && window.google.maps.importLibrary) {
+            try {
+                await window.google.maps.importLibrary("maps");
+                // Load additional libraries if specified
+                if (this.cfg.libraries && Array.isArray(this.cfg.libraries)) {
+                    await Promise.all(this.cfg.libraries.map(lib => 
+                        window.google.maps.importLibrary(lib)
+                    ));
+                }
+                return Promise.resolve();
+            } catch (error) {
+                return Promise.reject(new Error('Failed to load Google Maps library: ' + error.message));
+            }
+        }
+
+        // If bootstrap is loading, wait for it
+        if (window.google && window.google.maps && window.google.maps.__ib__) {
+            await window.google.maps.__ib__;
+            return this.ensureGoogleMapsLoaded(); // Retry after bootstrap loads
+        }
+
+        // Need to load Google Maps dynamically - check for API key
+        if (!this.cfg.apiKey) {
+            return Promise.reject(new Error('Google Maps API key is required. Either load Google Maps statically via script tag, or provide apiKey in widget configuration.'));
+        }
+
+        // Load Google Maps using the dynamic library import bootstrap loader
+        return new Promise((resolve, reject) => {
+            const version = this.cfg.apiVersion || 'weekly';
+            const libraries = this.cfg.libraries && Array.isArray(this.cfg.libraries) ? this.cfg.libraries : [];
+            
+            // Create bootstrap loader inline script (from Google Maps documentation)
+            const librariesParam = libraries.length > 0 ? `,libraries: "${libraries.join(',')}"` : '';
+            const bootstrapCode = `(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=\`https://maps.\${c}apis.com/maps/api/js?\`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({key:"${this.cfg.apiKey}",v:"${version}"${librariesParam}});`;
+
+            const script = document.createElement('script');
+            script.textContent = bootstrapCode;
+            script.onerror = () => reject(new Error('Failed to load Google Maps bootstrap loader'));
+            
+            // Wait for the bootstrap to initialize
+            const checkReady = () => {
+                if (window.google && window.google.maps && window.google.maps.importLibrary) {
+                    // Bootstrap ready, load the maps library
+                    window.google.maps.importLibrary("maps")
+                        .then(() => {
+                            // Load additional libraries if specified
+                            if (libraries.length > 0) {
+                                return Promise.all(libraries.map(lib => 
+                                    window.google.maps.importLibrary(lib)
+                                ));
+                            }
+                        })
+                        .then(() => resolve())
+                        .catch(reject);
+                } else if (window.google && window.google.maps && window.google.maps.__ib__) {
+                    // Bootstrap is loading, wait for it
+                    window.google.maps.__ib__.then(() => {
+                        setTimeout(checkReady, 10);
+                    }).catch(reject);
+                } else {
+                    // Keep checking
+                    setTimeout(checkReady, 50);
+                }
+            };
+
+            document.head.appendChild(script);
+            // Start checking after script execution
+            setTimeout(checkReady, 10);
+        });
+    }
+
+    /**
      * @include
      * @override
      * @protected
      * @inheritdoc
      */
-    _render() {
+    async _render() {
+        // Ensure Google Maps is loaded before rendering
+        try {
+            await this.ensureGoogleMapsLoaded();
+        } catch (error) {
+            PrimeFaces.error('Failed to load Google Maps: ' + error.message);
+            return;
+        }
+
+        if (this.cfg.mapTypeId) {
+            this.cfg.mapTypeId = google.maps.MapTypeId[this.cfg.mapTypeId];
+        }
+
+        if (this.cfg.center) {
+            var center = this.cfg.center.split(',');
+            this.cfg.center = new google.maps.LatLng(center[0], center[1]);
+        }
         this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
         this.cfg.fitBounds = this.cfg.fitBounds !== false;
         this.viewport = this.map.getBounds();

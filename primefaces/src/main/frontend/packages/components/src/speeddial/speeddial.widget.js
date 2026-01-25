@@ -97,7 +97,7 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
         this.cfg.type = this.cfg.type || 'linear';
         this.cfg.radius = this.cfg.radius || 0;
         this.cfg.mask = this.cfg.mask || false;
-        this.cfg.hideOnClickOutside = this.cfg.hideOnClickOutside || true;
+        this.cfg.hideOnClickOutside = this.cfg.hideOnClickOutside === undefined ? true : this.cfg.hideOnClickOutside;
         this.cfg.keepOpen = this.cfg.keepOpen || false;
 
         this.visible = this.cfg.visible;
@@ -121,6 +121,9 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
 
         this.bindEvents();
 
+        if (this.cfg.visible) {
+            this.show();
+        }
     }
 
     /**
@@ -161,11 +164,11 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
     bindEvents() {
         var $this = this;
 
-        this.button.on('click.speeddial', function(e) {
+        this.button.on('click.speeddial', function (e) {
             $this.onClick(e);
         });
 
-        this.items.on('click.speeddial', function() {
+        this.items.on('click.speeddial', function () {
             $this.onItemClick();
         });
     }
@@ -179,14 +182,15 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
         }
 
         this.container.addClass('ui-speeddial-opened');
+        this.container.find('a').attr("tabindex", "0");
         this.visible = true;
         this.updateItemStyles();
 
-        if(this.cfg.onVisibleChange) {
+        if (this.cfg.onVisibleChange) {
             this.cfg.onVisibleChange.call(this, true);
         }
 
-        if(this.cfg.onShow) {
+        if (this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
     }
@@ -200,14 +204,15 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
         }
 
         this.container.removeClass('ui-speeddial-opened');
+        this.container.find('a').attr("tabindex", "-1");
         this.visible = false;
         this.updateItemStyles();
 
-        if(this.cfg.onVisibleChange) {
+        if (this.cfg.onVisibleChange) {
             this.cfg.onVisibleChange.call(this, false);
         }
 
-        if(this.cfg.onHide) {
+        if (this.cfg.onHide) {
             this.cfg.onHide.call(this);
         }
     }
@@ -220,7 +225,7 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
     onClick(event) {
         this.visible ? this.hide() : this.show();
 
-        if(this.cfg.onClick) {
+        if (this.cfg.onClick) {
             this.cfg.onClick.call(this, event);
         }
 
@@ -255,7 +260,7 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
                 $this.isItemClicked = false;
             };
             $(document).on('click.' + this.id, this.documentClickListener);
-            this.addDestroyListener(function() {
+            this.addDestroyListener(function () {
                 $(document).off('click.' + this.id);
             });
         }

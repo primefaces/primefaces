@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -73,7 +73,6 @@ public class AppMenu {
         //THEMING CATEGORY START
         List<MenuItem> themingMenuItems = new ArrayList<>();
         themingMenuItems.add(new MenuItem("Overview", "/theming"));
-        themingMenuItems.add(new MenuItem("Visual Editor", "https://www.primefaces.org/designer-jsf"));
         themingMenuItems.add(new MenuItem("Colors", "/colors"));
         themingMenuItems.add(new MenuItem("SASS API", "https://www.primefaces.org/designer/api/primefaces/13.0.0/"));
         menuCategories.add(new MenuCategory("Theming", themingMenuItems));
@@ -358,7 +357,7 @@ public class AppMenu {
         treeTableMenuItems.add(new MenuItem("Gridlines", "/ui/data/treetable/gridlines"));
         treeTableMenuItems.add(new MenuItem("Selection", "/ui/data/treetable/selection"));
         treeTableMenuItems.add(new MenuItem("Events", "/ui/data/treetable/events"));
-        dataTableMenuItems.add(new MenuItem("Field", "/ui/data/treetable/field"));
+        treeTableMenuItems.add(new MenuItem("Field", "/ui/data/treetable/field"));
         treeTableMenuItems.add(new MenuItem("ContextMenu", "/ui/data/treetable/contextMenu"));
         treeTableMenuItems.add(new MenuItem("Scroll", "/ui/data/treetable/scroll"));
         treeTableMenuItems.add(new MenuItem("Resize", "/ui/data/treetable/resize"));

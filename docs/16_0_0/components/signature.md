@@ -23,6 +23,7 @@ devices and legacy browsers without canvas support.
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 ariaLabel | "Sign here" | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 backgroundColor | #ffffff | String | Background color as hex value
 base64Value | null | String | Write-only value used to pass the value in base64 to backing bean

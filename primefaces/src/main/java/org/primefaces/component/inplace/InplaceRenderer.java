@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Inplace.DEFAULT_RENDERER, componentFamily = Inplace.COMPONENT_FAMILY)
 public class InplaceRenderer extends CoreRenderer<Inplace> {
 
     @Override
@@ -58,7 +60,7 @@ public class InplaceRenderer extends CoreRenderer<Inplace> {
         String userStyle = component.getStyle();
         boolean disabled = component.isDisabled();
         boolean validationFailed = context.isValidationFailed() && !component.isValid();
-        UIComponent outputFacet = component.getFacet("output");
+        UIComponent outputFacet = component.getOutputFacet();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(outputFacet);
         boolean withPassword = !shouldRenderFacet && isPassword(component.getChildren().get(0));
         String styleClass = getStyleClassBuilder(context)
@@ -110,7 +112,7 @@ public class InplaceRenderer extends CoreRenderer<Inplace> {
                 .add(!validationFailed && Inplace.MODE_OUTPUT.equals(mode), "display", Inplace.DISPLAY_NONE)
                 .add(!validationFailed && Inplace.MODE_INPUT.equals(mode), "display", Inplace.DISPLAY_INLINE)
                 .build();
-        UIComponent inputFacet = component.getFacet("input");
+        UIComponent inputFacet = component.getInputFacet();
 
         if (!component.isDisabled()) {
             writer.startElement("span", null);

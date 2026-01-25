@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 package org.primefaces.util;
+
+import org.primefaces.cdk.api.Function;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -51,7 +53,7 @@ public class LocaleUtils {
             throw new IllegalArgumentException("Invalid locale format: " + str);
         }
         if (len == 2) {
-            return new Locale(str, "");
+            return new Locale.Builder().setLanguage(str).build();
         }
         else {
             if (str.charAt(2) != '_') {
@@ -59,20 +61,30 @@ public class LocaleUtils {
             }
             char ch3 = str.charAt(3);
             if (ch3 == '_') {
-                return new Locale(str.substring(0, 2), "", str.substring(4));
+                return new Locale.Builder()
+                        .setLanguage(str.substring(0, 2))
+                        .setVariant(str.substring(4))
+                        .build();
             }
             char ch4 = str.charAt(4);
             if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
                 throw new IllegalArgumentException("Invalid locale format: " + str);
             }
             if (len == 5) {
-                return new Locale(str.substring(0, 2), str.substring(3, 5));
+                return new Locale.Builder()
+                        .setLanguage(str.substring(0, 2))
+                        .setRegion(str.substring(3, 5))
+                        .build();
             }
             else {
                 if (str.charAt(5) != '_') {
                     throw new IllegalArgumentException("Invalid locale format: " + str);
                 }
-                return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+                return new Locale.Builder()
+                        .setLanguage(str.substring(0, 2))
+                        .setRegion(str.substring(3, 5))
+                        .setVariant(str.substring(6))
+                        .build();
             }
         }
     }
@@ -171,6 +183,7 @@ public class LocaleUtils {
      * @return the ISO 639-1 Language Code
      * @see <a href="https://www.w3schools.com/tags/ref_language_codes.asp">HTML Language Code Reference</a>
      */
+    @Function(name = "language", description = "Gets the current ISO 639-1 Language Code from current Locale so 'pt_BR' becomes 'pt'.")
     public static String getCurrentLanguage() {
         return calculateLanguage(getCurrentLocale());
     }

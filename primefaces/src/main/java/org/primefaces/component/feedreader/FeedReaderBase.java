@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,19 @@
  */
 package org.primefaces.component.feedreader;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
 
-
+@FacesComponentBase
 public abstract class FeedReaderBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.FeedReaderRenderer";
-
-    public enum PropertyKeys {
-
-        value,
-        var,
-        size,
-        podcast
-    }
 
     public FeedReaderBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -49,36 +46,19 @@ public abstract class FeedReaderBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getValue() {
-        return (String) getStateHelper().eval(PropertyKeys.value, null);
-    }
+    @Facet(description = "Content to display when an error occurs while parsing the feed.")
+    public abstract UIComponent getErrorFacet();
 
-    public void setValue(String value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
+    @Property(description = "URL of the RSS feed.")
+    public abstract String getValue();
 
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
+    @Property(description = "Name of the request-scoped variable used to reference each feed item.")
+    public abstract String getVar();
 
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
+    @Property(defaultValue = "Integer.MAX_VALUE", description = "Maximum number of feed items to display.")
+    public abstract int getSize();
 
-    public int getSize() {
-        return (Integer) getStateHelper().eval(PropertyKeys.size, Integer.MAX_VALUE);
-    }
-
-    public void setSize(int size) {
-        getStateHelper().put(PropertyKeys.size, size);
-    }
-
-    public boolean isPodcast() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.podcast, Boolean.FALSE);
-    }
-
-    public void setPodcast(Boolean podcast) {
-        getStateHelper().put(PropertyKeys.podcast, podcast);
-    }
+    @Property(defaultValue = "false", description = "Specifies whether the feed is a podcast feed.")
+    public abstract boolean isPodcast();
 
 }

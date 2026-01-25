@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,14 @@
  */
 package org.primefaces.component.splitter;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 
-public class SplitterPanel extends SplitterPanelBase {
+@FacesComponent(value = SplitterPanel.COMPONENT_TYPE, namespace = SplitterPanel.COMPONENT_FAMILY)
+@FacesComponentDescription("SplitterPanel is utilized by the Splitter component to separate content.")
+public class SplitterPanel extends SplitterPanelBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SplitterPanel";
 
     public static final String STYLE_CLASS = "ui-splitter-panel";

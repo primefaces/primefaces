@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,8 +35,6 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import jakarta.el.ELContext;
-import jakarta.el.ValueExpression;
 import jakarta.faces.application.ProjectStage;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -65,11 +63,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                     String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
 
                     if (dynamicContentEL != null) {
-                        ELContext eLContext = context.getELContext();
-                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(
-                                context.getELContext(), dynamicContentEL, Object.class);
-                        Object value = ve.getValue(eLContext);
-
+                        Object value = context.getApplication().evaluateExpressionGet(context, dynamicContentEL, Object.class);
                         if (value == null) {
                             if (context.isProjectStage(ProjectStage.Development)) {
                                 LOGGER.log(Level.WARNING,

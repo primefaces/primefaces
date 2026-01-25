@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,13 +35,18 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.PhaseId;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = InputTextarea.DEFAULT_RENDERER, componentFamily = InputTextarea.COMPONENT_FAMILY)
 public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
+
+    private static final Pattern NEWLINE_NORMALIZE_PATTERN = Pattern.compile("\\r\\n?");
 
     @Override
     public void decode(FacesContext context, InputTextarea component) {
@@ -57,9 +62,9 @@ public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
 
         if (submittedValue != null) {
             // #5381: normalize new lines to match JavaScript
-            submittedValue = submittedValue.replaceAll("\\r\\n?", "\n");
+            submittedValue = NEWLINE_NORMALIZE_PATTERN.matcher(submittedValue).replaceAll("\n");
             int maxlength = component.getMaxlength();
-            if (submittedValue.length() > maxlength) {
+            if (maxlength > 0 && submittedValue.length() > maxlength) {
                 submittedValue = LangUtils.substring(submittedValue, 0, maxlength);
             }
         }
@@ -116,7 +121,7 @@ public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("InputTextarea", component)
                 .attr("autoResize", autoResize)
-                .attr("maxlength", component.getMaxlength(), Integer.MAX_VALUE);
+                .attr("maxlength", component.getMaxlength(), Integer.MIN_VALUE);
 
         if (counter != null) {
             UIComponent counterComponent = SearchExpressionUtils.contextlessResolveComponent(context, component, counter);

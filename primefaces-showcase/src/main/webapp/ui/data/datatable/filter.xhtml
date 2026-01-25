@@ -32,7 +32,7 @@
                 <p:dataTable var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable"
                     emptyMessage="No customers found with given criteria"
                     filteredValue="#{dtFilterView.filteredCustomers1}"
-                    globalFilterOnly="#{dtFilterView.globalFilterOnly}">
+                    globalFilterOnly="#{dtFilterView.globalFilterOnly}" partialUpdate="false">
 
                     <f:facet name="header">
                         <div class="flex align-items-center justify-content-between">
@@ -44,7 +44,11 @@
                                              action="#{dtFilterView.toggleGlobalFilter()}"/>
                             </div>
                         </div>
-
+                    </f:facet>
+                    <f:facet name="footer">
+                        <div class="flex align-items-center justify-content-center">
+                           <span>Total Customers: #{dtFilterView.filteredCustomers1 == null ? dtFilterView.customers1.size() : dtFilterView.filteredCustomers1.size()}</span>
+                        </div>
                     </f:facet>
 
                     <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains" filterPlaceholder="Filter By Name">
@@ -72,7 +76,7 @@
 
                     <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" converter="jakarta.faces.DateTime" />
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" />
                         </f:facet>
                     </p:column>
 
@@ -131,7 +135,7 @@
 
                     <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()" styleClass="ui-custom-filter"/>
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()" styleClass="ui-custom-filter" />
                         </f:facet>
                     </p:column>
 
@@ -239,7 +243,7 @@
 
                     <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" converter="jakarta.faces.DateTime" />
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" />
                         </f:facet>
                     </p:column>
 

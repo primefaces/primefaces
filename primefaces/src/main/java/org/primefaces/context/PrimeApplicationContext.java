@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,8 @@ import org.primefaces.component.datatable.export.DataTableExcelXExporter;
 import org.primefaces.component.datatable.export.DataTableExcelXStreamExporter;
 import org.primefaces.component.datatable.export.DataTablePDFExporter;
 import org.primefaces.component.datatable.export.DataTableXMLExporter;
+import org.primefaces.component.datatable.export.InMemoryDataTableCSVExporter;
+import org.primefaces.component.datatable.export.InMemoryDataTableXMLExporter;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.component.treetable.TreeTable;
@@ -195,7 +197,9 @@ public class PrimeApplicationContext {
                         .put("xls", DataTableExcelExporter.class)
                         .put("pdf", DataTablePDFExporter.class)
                         .put("csv", DataTableCSVExporter.class)
+                        .put("csvmemory", InMemoryDataTableCSVExporter.class)
                         .put("xml", DataTableXMLExporter.class)
+                        .put("xmlmemory", InMemoryDataTableXMLExporter.class)
                         .put("xlsx", DataTableExcelXExporter.class)
                         .put("xlsxstream", DataTableExcelXStreamExporter.class)
                         .build())

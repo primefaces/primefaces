@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,19 @@
  */
 package org.primefaces.component.imagecompare;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class ImageCompareBase extends UIComponentBase implements Widget {
+@FacesComponentBase
+public abstract class ImageCompareBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ImageCompareRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        leftImage,
-        rightImage,
-        width,
-        height,
-        style,
-        styleClass;
-    }
 
     public ImageCompareBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -53,59 +46,15 @@ public abstract class ImageCompareBase extends UIComponentBase implements Widget
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Source of the image placed on the left side.")
+    public abstract String getLeftImage();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Source of the image placed on the right side.")
+    public abstract String getRightImage();
 
-    public String getLeftImage() {
-        return (String) getStateHelper().eval(PropertyKeys.leftImage, null);
-    }
+    @Property(description = "Width of the images.")
+    public abstract String getWidth();
 
-    public void setLeftImage(String leftImage) {
-        getStateHelper().put(PropertyKeys.leftImage, leftImage);
-    }
-
-    public String getRightImage() {
-        return (String) getStateHelper().eval(PropertyKeys.rightImage, null);
-    }
-
-    public void setRightImage(String rightImage) {
-        getStateHelper().put(PropertyKeys.rightImage, rightImage);
-    }
-
-    public String getWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.width, null);
-    }
-
-    public void setWidth(String width) {
-        getStateHelper().put(PropertyKeys.width, width);
-    }
-
-    public String getHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.height, null);
-    }
-
-    public void setHeight(String height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Height of the images.")
+    public abstract String getHeight();
 }

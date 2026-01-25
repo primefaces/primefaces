@@ -23,11 +23,14 @@ GMap is a map component integrated with Google Maps API V3.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | widgetVar | null | String | Name of the client side widget.
+| apiKey | null | String | Google Maps API key. Required for asynchronous loading if Google Maps is not already loaded via script tag.
+| apiVersion | weekly | String | Google Maps API version. Only used for asynchronous loading. Valid values: 'weekly', 'beta', 'alpha', or a specific version number.
 | center | null | String | Center point of the map.
-| disableDefaultUI | false | Boolean | Disables default UI controls
 | disabledDoubleClickZoom | false | Boolean | Disables zooming on mouse double click.
+| disableDefaultUI | false | Boolean | Disables default UI controls
 | draggable | true | Boolean | Defines draggability of map.
 | fitBounds | true | Boolean | Defines if center and zoom should be calculated automatically to contain all markers on the map.
+| libraries | null | String | Comma-separated list of additional Google Maps libraries to load (e.g., 'places,geometry'). Only used for asynchronous loading.
 | mapTypeControl | true | Boolean | Defines visibility of map type control.
 | model | null | MapModel | An org.primefaces.model.MapModel instance.
 | navigationControl | true | Boolean | Defines visibility of navigation control.
@@ -58,6 +61,72 @@ _zoom_ : Zoom level of the map
 _type_ : Type of map, valid values are, "hybrid", "satellite", "hybrid" and "terrain".
 _style_ : Dimensions of the map.
 
+## Asynchronous Loading of Google Maps API
+GMap supports both static and asynchronous loading of the Google Maps API. The widget automatically detects if Google Maps is already loaded and will use asynchronous loading only when needed.
+
+### Static Loading (Traditional Method)
+If you prefer to load Google Maps statically via a script tag, simply include the script in your page before the GMap component:
+
+```html
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+```
+
+```xhtml
+<p:gmap center="41.381542, 2.122893" zoom="15" type="hybrid" style="width:600px;height:400px" />
+```
+
+### Asynchronous Loading (Dynamic Library Import)
+For better performance and on-demand loading, you can let GMap load Google Maps asynchronously. The widget uses Google's Dynamic Library Import API to load libraries only when needed.
+
+To enable asynchronous loading, provide the `apiKey` attribute (and optionally `apiVersion` and `libraries`):
+
+```xhtml
+<p:gmap center="41.381542, 2.122893" zoom="15" type="hybrid" 
+        style="width:600px;height:400px" 
+        apiKey="YOUR_API_KEY" />
+```
+
+#### Loading Additional Libraries
+If your application needs additional Google Maps libraries (such as Places API or Geometry library), specify them using the `libraries` attribute:
+
+```xhtml
+<p:gmap center="41.381542, 2.122893" zoom="15" type="hybrid" 
+        style="width:600px;height:400px" 
+        apiKey="YOUR_API_KEY"
+        libraries="places,geometry" />
+```
+
+#### Specifying API Version
+You can control which version of the Google Maps API to load using the `apiVersion` attribute:
+
+```xhtml
+<p:gmap center="41.381542, 2.122893" zoom="15" type="hybrid" 
+        style="width:600px;height:400px" 
+        apiKey="YOUR_API_KEY"
+        apiVersion="weekly" />
+```
+
+Valid values for `apiVersion`:
+- `weekly` (default) - Latest weekly release
+- `beta` - Beta release
+- `alpha` - Alpha release
+- Specific version number (e.g., `3.55`)
+
+### When to Use Each Method
+
+**Use Static Loading when:**
+- You have multiple GMap components on the same page (more efficient to load once)
+- You need strict control over when Google Maps loads
+- You're using legacy code that already includes the script tag
+
+**Use Asynchronous Loading when:**
+- You want improved initial page load performance
+- You prefer on-demand loading of Google Maps libraries
+- You're building single-page applications (SPAs) where maps may not always be needed
+
+**Note:** If Google Maps is already loaded statically, the widget will automatically use the existing instance and ignore the `apiKey`, `apiVersion`, and `libraries` attributes.
+
+For more information about Google Maps Dynamic Library Import API, see the [official documentation](https://developers.google.com/maps/documentation/javascript/load-maps-js-api).
 
 ## MapModel
 GMap is backed by an _org.primefaces.model.map.MapModel_ instance, PrimeFaces provides

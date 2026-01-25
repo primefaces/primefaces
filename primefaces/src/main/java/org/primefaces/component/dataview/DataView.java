@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,33 +24,34 @@
 package org.primefaces.component.dataview;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.model.DataModel;
 
+@FacesComponent(value = DataView.COMPONENT_TYPE, namespace = DataView.COMPONENT_FAMILY)
+@FacesComponentDescription("DataView displays data in grid or list layout.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
-public class DataView extends DataViewBase {
+public class DataView extends DataViewBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataView";
 
@@ -67,24 +68,8 @@ public class DataView extends DataViewBase {
     public static final String GRID_LAYOUT_ROW_CLASS = "ui-dataview-row";
     public static final String GRID_LAYOUT_COLUMN_CLASS = "ui-dataview-column";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("page", PageEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
     private DataViewGridItem gridItem;
     private DataViewListItem listItem;
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     public boolean isLayoutRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_layout");

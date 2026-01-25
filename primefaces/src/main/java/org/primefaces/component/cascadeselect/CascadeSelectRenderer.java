@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,8 +41,10 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = CascadeSelect.DEFAULT_RENDERER, componentFamily = CascadeSelect.COMPONENT_FAMILY)
 public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
 
     @Override
@@ -69,6 +71,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         String styleClass = getStyleClassBuilder(context)
                 .add(CascadeSelect.STYLE_CLASS)
                 .add(component.isDisabled(), "ui-state-disabled")
+                .add(component.isReadonly(), "ui-state-readonly")
                 .add(component.getStyleClass())
                 .build();
 
@@ -142,7 +145,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
         writer.startElement("div", null);
         writer.writeAttribute("class", CascadeSelect.TRIGGER_CLASS, null);
         writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, HTML.ARIA_ROLE_LISTBOX, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
 
         writer.startElement("span", null);
@@ -175,7 +178,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "listbox", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
         writer.writeAttribute("aria-orientation", "horizontal", null);
         renderARIARequired(context, component);
 

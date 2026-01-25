@@ -109,10 +109,26 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr id="apiKey" class="rowColor">
+                            <td class="colFirst"><a href="#apiKey"><code>apiKey</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                Google Maps API key. Required for asynchronous loading if Google Maps is not already loaded via script tag.
+            </td>
+                        </tr>
+                        <tr id="apiVersion" class="altColor">
+                            <td class="colFirst"><a href="#apiVersion"><code>apiVersion</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                Google Maps API version. Valid values: 'weekly', 'beta', 'alpha', or a specific version number.
+            </td>
+                        </tr>
                         <tr id="binding" class="rowColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.component.UIComponent</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">
                 An el expression referring to a server side UIComponent instance in a backing bean.
             </td>
@@ -165,7 +181,15 @@
                 Unique identifier of the component in a namingContainer.
             </td>
                         </tr>
-                        <tr id="mapTypeControl" class="altColor">
+                        <tr id="libraries" class="altColor">
+                            <td class="colFirst"><a href="#libraries"><code>libraries</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                Comma-separated list of additional Google Maps libraries to load (e.g., 'places,geometry').
+            </td>
+                        </tr>
+                        <tr id="mapTypeControl" class="rowColor">
                             <td class="colFirst"><a href="#mapTypeControl"><code>mapTypeControl</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -173,7 +197,7 @@
                 Defines visibility of map type control. Default is true.
             </td>
                         </tr>
-                        <tr id="model" class="rowColor">
+                        <tr id="model" class="altColor">
                             <td class="colFirst"><a href="#model"><code>model</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>org.primefaces.model.map.MapModel</code>)
@@ -181,7 +205,7 @@
                 An org.primefaces.model.MapModel instance.
             </td>
                         </tr>
-                        <tr id="navigationControl" class="altColor">
+                        <tr id="navigationControl" class="rowColor">
                             <td class="colFirst"><a href="#navigationControl"><code>navigationControl</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -189,7 +213,7 @@
                 Defines visibility of navigation control. Default is true.
             </td>
                         </tr>
-                        <tr id="onPointClick" class="rowColor">
+                        <tr id="onPointClick" class="altColor">
                             <td class="colFirst"><a href="#onPointClick"><code>onPointClick</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -197,7 +221,7 @@
                 Javascript callback to execute when a point on map is clicked.
             </td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -205,7 +229,7 @@
                 Boolean value to specify the rendering of the component, when set to false component will not be rendered.
             </td>
                         </tr>
-                        <tr id="scrollWheel" class="rowColor">
+                        <tr id="scrollWheel" class="altColor">
                             <td class="colFirst"><a href="#scrollWheel"><code>scrollWheel</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -213,7 +237,7 @@
                 Controls scrollwheel zooming on the map. Default is true.
             </td>
                         </tr>
-                        <tr id="streetView" class="altColor">
+                        <tr id="streetView" class="rowColor">
                             <td class="colFirst"><a href="#streetView"><code>streetView</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -221,7 +245,7 @@
                 Controls street view support. Default is false.
             </td>
                         </tr>
-                        <tr id="style" class="rowColor">
+                        <tr id="style" class="altColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -229,7 +253,7 @@
                 Inline style of the map container.
             </td>
                         </tr>
-                        <tr id="styleClass" class="altColor">
+                        <tr id="styleClass" class="rowColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -237,7 +261,7 @@
                 Style class of the map container.
             </td>
                         </tr>
-                        <tr id="type" class="rowColor">
+                        <tr id="type" class="altColor">
                             <td class="colFirst"><a href="#type"><code>type</code></a></td><td class="colOne"><code>true</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -245,7 +269,7 @@
                 There are four types of maps available: roadmap, satellite, hybrid, and terrain. Required.
             </td>
                         </tr>
-                        <tr id="widgetVar" class="altColor">
+                        <tr id="widgetVar" class="rowColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -253,7 +277,7 @@
                 Name of the client side widget.
             </td>
                         </tr>
-                        <tr id="zoom" class="rowColor">
+                        <tr id="zoom" class="altColor">
                             <td class="colFirst"><a href="#zoom"><code>zoom</code></a></td><td class="colOne"><code>true</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)

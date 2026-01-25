@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,31 @@
  */
 package org.primefaces.component.orderlist;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = OrderList.COMPONENT_TYPE, namespace = OrderList.COMPONENT_FAMILY)
+@FacesComponentDescription("OrderList is used to reorder a list via drag and drop.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class OrderList extends OrderListBase {
+public class OrderList extends OrderListBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OrderList";
 
@@ -65,31 +66,13 @@ public class OrderList extends OrderListBase {
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
     public static final String CONTROLS_RIGHT_CLASS = "ui-orderlist-controls-right";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("select", SelectEvent.class)
-            .put("unselect", UnselectEvent.class)
-            .put("reorder", null)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-
-    @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
+        FacesContext context = event.getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
+        if (ComponentUtils.isRequestSource(this, context) && isAjaxBehaviorEventSource(event)) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             customEvents.put(eventName, (AjaxBehaviorEvent) event);
         }
@@ -104,7 +87,6 @@ public class OrderList extends OrderListBase {
 
         if (isValid() && customEvents != null) {
             for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
-                String eventName = event.getKey();
                 AjaxBehaviorEvent behaviorEvent = event.getValue();
 
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -112,21 +94,22 @@ public class OrderList extends OrderListBase {
                 List<?> list = (List) getValue();
                 FacesEvent wrapperEvent = null;
 
-                if ("select".equals(eventName)) {
+                if (isAjaxBehaviorEvent(behaviorEvent, ClientBehaviorEventKeys.select)) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     boolean metaKey = Boolean.parseBoolean(params.get(clientId + "_metaKey"));
                     boolean ctrlKey = Boolean.parseBoolean(params.get(clientId + "_ctrlKey"));
                     wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
                 }
-                else if ("unselect".equals(eventName)) {
+                else if (isAjaxBehaviorEvent(behaviorEvent, ClientBehaviorEventKeys.unselect)) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     wrapperEvent = new UnselectEvent<>(this, behaviorEvent.getBehavior(), list.get(itemIndex));
                 }
-                else if ("reorder".equals(eventName)) {
+                else if (isAjaxBehaviorEvent(behaviorEvent, ClientBehaviorEventKeys.reorder)) {
                     wrapperEvent = behaviorEvent;
                 }
 
                 if (wrapperEvent == null) {
+                    String eventName = event.getKey();
                     throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
                 }
 

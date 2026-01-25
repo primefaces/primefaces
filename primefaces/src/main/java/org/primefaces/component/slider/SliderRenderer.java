@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
@@ -35,7 +36,9 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Slider.DEFAULT_RENDERER, componentFamily = Slider.COMPONENT_FAMILY)
 public class SliderRenderer extends CoreRenderer<Slider> {
 
     @Override
@@ -53,13 +56,18 @@ public class SliderRenderer extends CoreRenderer<Slider> {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
 
+        String styleClass = getStyleClassBuilder(context)
+                .add(component.getStyleClass())
+                .add(component.isReadonly(), "ui-state-readonly")
+                .build();
+
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         if (component.getStyle() != null) {
             writer.writeAttribute("style", component.getStyle(), null);
         }
-        if (component.getStyleClass() != null) {
-            writer.writeAttribute("class", component.getStyleClass(), null);
+        if (LangUtils.isNotEmpty(styleClass)) {
+            writer.writeAttribute("class", styleClass, null);
         }
 
         writer.endElement("div");

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,17 @@
  */
 package org.primefaces.component.inputmask;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.Widget;
 
+@FacesComponentBase
 public abstract class InputMaskBase extends AbstractPrimeHtmlInputText implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.InputMaskRenderer";
-
-    public enum PropertyKeys {
-
-        placeholder,
-        widgetVar,
-        mask,
-        slotChar,
-        autoClear,
-        validateMask,
-        showMaskOnFocus,
-        showMaskOnHover
-    }
 
     public InputMaskBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -53,67 +44,21 @@ public abstract class InputMaskBase extends AbstractPrimeHtmlInputText implement
         return COMPONENT_FAMILY;
     }
 
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
+    @Property(description = "Mask pattern to apply to the input.")
+    public abstract String getMask();
 
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
+    @Property(description = "Character to display in empty mask slots.", defaultValue = "_")
+    public abstract String getSlotChar();
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "When enabled, clears the input when it doesn't match the mask.", defaultValue = "true")
+    public abstract boolean isAutoClear();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "When enabled, validates input against the mask.", defaultValue = "true")
+    public abstract boolean isValidateMask();
 
-    public String getMask() {
-        return (String) getStateHelper().eval(PropertyKeys.mask, null);
-    }
+    @Property(description = "When enabled, shows the mask when input receives focus.", defaultValue = "true")
+    public abstract boolean isShowMaskOnFocus();
 
-    public void setMask(String mask) {
-        getStateHelper().put(PropertyKeys.mask, mask);
-    }
-
-    public String getSlotChar() {
-        return (String) getStateHelper().eval(PropertyKeys.slotChar, "_");
-    }
-
-    public void setSlotChar(String slotChar) {
-        getStateHelper().put(PropertyKeys.slotChar, slotChar);
-    }
-
-    public boolean isAutoClear() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoClear, true);
-    }
-
-    public void setAutoClear(boolean autoClear) {
-        getStateHelper().put(PropertyKeys.autoClear, autoClear);
-    }
-
-    public boolean isValidateMask() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.validateMask, true);
-    }
-
-    public void setValidateMask(boolean validateMask) {
-        getStateHelper().put(PropertyKeys.validateMask, validateMask);
-    }
-
-    public boolean isShowMaskOnFocus() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showMaskOnFocus, true);
-    }
-
-    public void setShowMaskOnFocus(boolean showMaskOnFocus) {
-        getStateHelper().put(PropertyKeys.showMaskOnFocus, showMaskOnFocus);
-    }
-
-    public boolean isShowMaskOnHover() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showMaskOnHover, true);
-    }
-
-    public void setShowMaskOnHover(boolean showMaskOnHover) {
-        getStateHelper().put(PropertyKeys.showMaskOnHover, showMaskOnHover);
-    }
+    @Property(description = "When enabled, shows the mask when hovering over the input.", defaultValue = "true")
+    public abstract boolean isShowMaskOnHover();
 }

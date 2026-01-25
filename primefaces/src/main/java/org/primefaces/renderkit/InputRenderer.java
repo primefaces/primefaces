@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,9 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.InputAware;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
@@ -145,6 +147,20 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
             if (LangUtils.isNotBlank(labelledBy)) {
                 writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
             }
+            String ariaDescribedBy = inputHolder.getAriaDescribedBy();
+            if (LangUtils.isNotBlank(ariaDescribedBy)) {
+                String target = SearchExpressionUtils.resolveClientIds(ariaDescribedBy, component);
+                writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target, null);
+            }
+        }
+
+        String ariaDescribedBy = null;
+        if (component instanceof InputAware) {
+            ariaDescribedBy = ((InputAware) component).getAriaDescribedBy();
+            if (LangUtils.isNotBlank(ariaDescribedBy)) {
+                String target = SearchExpressionUtils.resolveClientIds(ariaDescribedBy, component);
+                writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target, null);
+            }
         }
 
         if (disabled) {
@@ -167,7 +183,7 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
     protected void renderARIACombobox(FacesContext context, UIInput component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, HTML.ARIA_ROLE_LISTBOX, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
     }
 
@@ -213,6 +229,9 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
             sb.append(" ui-state-disabled");
         }
 
+        if (isReadOnly(component)) {
+            sb.append(" ui-state-readonly");
+        }
 
         if (LangUtils.isNotBlank(styleClassProperty)) {
             String styleClass = Objects.toString(component.getAttributes().get(styleClassProperty), Constants.EMPTY_STRING);

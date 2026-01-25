@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,10 +50,12 @@ import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.component.UISelectBoolean;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.metadata.ConstraintDescriptor;
 
+@FacesRenderer(rendererType = OutputLabel.DEFAULT_RENDERER, componentFamily = OutputLabel.COMPONENT_FAMILY)
 public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
 
     private static final Logger LOGGER = Logger.getLogger(OutputLabelRenderer.class.getName());

@@ -131,6 +131,8 @@ const LocaleEnUs: PrimeType.Locale = {
         "lastPageLabel": "Last Page",
         "listLabel": "Options List",
         "listView": "List View",
+        "maximizeLabel": "Maximize",
+        "minimizeLabel": "Minimize",
         "moveAllToSource": "Move All to Source",
         "moveAllToTarget": "Move All to Target",
         "moveBottom": "Move Bottom",
@@ -155,6 +157,7 @@ const LocaleEnUs: PrimeType.Locale = {
         "saveEdit": "Save Edit",
         "scrollTop": "Scroll Top",
         "selectAll": "All items selected",
+        "selectColor": "Select Color",
         "selectLabel": "Select",
         "selectRow": "Row Selected",
         "showFilterMenu": "Show Filter Menu",
@@ -594,7 +597,10 @@ export class Core {
      * @return A CSS ID selector for the given ID.
      */
     escapeClientId(id: string): string {
-        return "#" + id.replace(/[:|]/g,"\\$&");
+        // If the id already starts with '#', remove it to avoid double-escaping, but keep escaping all chars.
+        const rawId = id.startsWith("#") ? id.substring(1) : id;
+        // Escape ':' and '|' for jQuery usage.
+        return "#" + rawId.replace(/([:|])/g, "\\$1");
     }
 
     /**
@@ -1456,7 +1462,7 @@ export class Core {
      * @param context The ID of a container with an element to focus
      */
     focus(id?: string | null, context?: string): void {
-        var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
+        var selector = ':not(:submit):not(:button):not([readonly]):input:visible:enabled[name]';
         
         // if looking in container like dialog also check for first link
         if (context) {
@@ -2115,11 +2121,13 @@ export class Core {
     }
 
     /**
-     * Logs the current PrimeFaces and jQuery version to console.
+     * Returns the current PrimeFaces and jQuery version as a string and logs it to the console.
+     * @returns The current PrimeFaces and jQuery version as a string.
      */
-    version(): void {
+    version(): string {
         const version = 'PrimeFaces ' + this.VERSION + ' (jQuery ' + jQuery.fn.jquery + ' / UI ' + $.ui.version + ')';
         console.log(version);
+        return version;
     }
 
     /**

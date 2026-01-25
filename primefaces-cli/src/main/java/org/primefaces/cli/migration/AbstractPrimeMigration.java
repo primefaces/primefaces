@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -63,10 +63,19 @@ public abstract class AbstractPrimeMigration implements Runnable {
         initReplaceRegEx();
 
         try {
-            System.out.println("Start migrating " + directory + " and subdirectories; " +
-                    "fileextension: " + fileextensionsSet.stream().collect(Collectors.joining(",")) + "; " +
-                    "replaceExisting: " + replaceExisting);
-            migrateDirectory(Paths.get(directory), fileextensionsSet, replaceExisting);
+            Path target = Paths.get(directory);
+
+            if (target.toFile().isFile()) {
+                System.out.println("Start migrating " + directory + "; " +
+                        "replaceExisting: " + replaceExisting);
+                migrateFile(target, replaceExisting);
+            }
+            else {
+                System.out.println("Start migrating " + directory + " and subdirectories; " +
+                        "fileextension: " + fileextensionsSet.stream().collect(Collectors.joining(",")) + "; " +
+                        "replaceExisting: " + replaceExisting);
+                migrateDirectory(Paths.get(directory), fileextensionsSet, replaceExisting);
+            }
             System.out.println("Finished migration!");
         }
         catch (Exception ex) {

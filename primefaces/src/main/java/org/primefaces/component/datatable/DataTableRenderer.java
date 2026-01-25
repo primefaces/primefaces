@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,7 +65,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = DataTable.DEFAULT_RENDERER, componentFamily = DataTable.COMPONENT_FAMILY)
 public class DataTableRenderer extends DataRenderer<DataTable> {
 
     private static final Logger LOGGER = Logger.getLogger(DataTableRenderer.class.getName());
@@ -564,7 +566,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
         if (LangUtils.isNotBlank(scrollHeight)) {
-            if (!endsWithLenghtUnit(scrollHeight)) {
+            if (!endsWithLengthUnit(scrollHeight)) {
                 scrollHeight = scrollHeight + "px";
             }
             // % handle specially in the JS code
@@ -674,8 +676,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.startElement("th", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         writer.writeAttribute("scope", "col", null);
+        if (LangUtils.isNotBlank(ariaHeaderLabel)) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
+        }
         if (component != null) {
             renderDynamicPassThruAttributes(context, component);
         }
@@ -724,7 +728,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         if (width != null) {
-            String unit = endsWithLenghtUnit(width) ? Constants.EMPTY_STRING : "px";
+            String unit = endsWithLengthUnit(width) ? Constants.EMPTY_STRING : "px";
             if (style != null) {
                 style = style + ";width:" + width + unit;
             }

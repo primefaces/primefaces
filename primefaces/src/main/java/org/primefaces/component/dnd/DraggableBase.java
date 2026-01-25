@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,58 +23,18 @@
  */
 package org.primefaces.component.dnd;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
+@FacesComponentBase
 public abstract class DraggableBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DraggableRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        proxy,
-        dragOnly,
-        forValue("for"),
-        disabled,
-        axis,
-        containment,
-        helper,
-        revert,
-        snap,
-        snapMode,
-        snapTolerance,
-        zindex,
-        handle,
-        opacity,
-        stack,
-        grid,
-        scope,
-        cursor,
-        dashboard,
-        appendTo,
-        onStart,
-        onStop,
-        onDrag,
-        cancel;
-
-        private String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
-    }
 
     public DraggableBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -85,203 +45,80 @@ public abstract class DraggableBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "false", description = "When enabled, a proxy element is used for dragging instead of the element itself.")
+    public abstract boolean isProxy();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "false", description = "When enabled, the element can only be dragged, not dropped.")
+    public abstract boolean isDragOnly();
 
-    public boolean isProxy() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.proxy, false);
-    }
+    @Property(defaultValue = "false", description = "Disables the component.")
+    public abstract boolean isDisabled();
 
-    public void setProxy(boolean proxy) {
-        getStateHelper().put(PropertyKeys.proxy, proxy);
-    }
+    @Property(defaultValue = "false", description = "If set to true, the element will be returned to its start position when dragging stops.")
+    public abstract boolean isRevert();
 
-    public boolean isDragOnly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dragOnly, false);
-    }
+    @Property(defaultValue = "false", description = "When enabled, the draggable will snap to the edges of the nearest elements.")
+    public abstract boolean isSnap();
 
-    public void setDragOnly(boolean dragOnly) {
-        getStateHelper().put(PropertyKeys.dragOnly, dragOnly);
-    }
+    @Property(description = "Id of the component to make draggable.")
+    public abstract String getFor();
 
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
+    @Property(description = "Constrains dragging to either the horizontal (x) or vertical (y) axis. Possible values: 'x', 'y'.")
+    public abstract String getAxis();
 
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
+    @Property(description = "Constrains dragging to within the bounds of the specified element or region. " +
+        "Can be a selector, element, string ('parent', 'document', 'window'), or array [x1, y1, x2, y2].")
+    public abstract String getContainment();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(implicitDefaultValue = "original", description = "Allows for a helper element to be used for dragging display. " +
+        "Possible values: 'original', 'clone', or a function that returns a DOM element.")
+    public abstract String getHelper();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(implicitDefaultValue = "both", description = "Defines how snap elements are detected. Possible values: 'inner', 'outer', 'both'.")
+    public abstract String getSnapMode();
 
-    public String getAxis() {
-        return (String) getStateHelper().eval(PropertyKeys.axis, null);
-    }
+    @Property(defaultValue = "20", description = "Distance in pixels from the snap element edges at which snapping should occur.")
+    public abstract int getSnapTolerance();
 
-    public void setAxis(String axis) {
-        getStateHelper().put(PropertyKeys.axis, axis);
-    }
+    @Property(defaultValue = "-1", description = "Controls the z-index of the helper element during dragging.")
+    public abstract int getZindex();
 
-    public String getContainment() {
-        return (String) getStateHelper().eval(PropertyKeys.containment, null);
-    }
+    @Property(description = "Restricts dragging start from specified elements. Dragging can only start if the mousedown occurs on the specified element(s).")
+    public abstract String getHandle();
 
-    public void setContainment(String containment) {
-        getStateHelper().put(PropertyKeys.containment, containment);
-    }
+    @Property(defaultValue = "1.0", description = "Opacity for the helper while being dragged.")
+    public abstract double getOpacity();
 
-    public String getHelper() {
-        return (String) getStateHelper().eval(PropertyKeys.helper, null);
-    }
+    @Property(description = "Controls the z-index of the group of elements for which the stack option is set.")
+    public abstract String getStack();
 
-    public void setHelper(String helper) {
-        getStateHelper().put(PropertyKeys.helper, helper);
-    }
+    @Property(description = "Snaps the dragging helper to a grid, specified as [x,y] in pixels.")
+    public abstract String getGrid();
 
-    public boolean isRevert() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.revert, false);
-    }
+    @Property(implicitDefaultValue = "default", description = "Used to group sets of draggable and droppable components.")
+    public abstract String getScope();
 
-    public void setRevert(boolean revert) {
-        getStateHelper().put(PropertyKeys.revert, revert);
-    }
+    @Property(defaultValue = "crosshair", description = "CSS cursor to display when dragging.")
+    public abstract String getCursor();
 
-    public boolean isSnap() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.snap, false);
-    }
+    @Property(description = "Id of the dashboard component to connect with.")
+    public abstract String getDashboard();
 
-    public void setSnap(boolean snap) {
-        getStateHelper().put(PropertyKeys.snap, snap);
-    }
+    @Property(implicitDefaultValue = "parent",
+        description = "Which element the draggable helper should be appended to while dragging. Can be a selector, element, jQuery object, or 'parent'.")
+    public abstract String getAppendTo();
 
-    public String getSnapMode() {
-        return (String) getStateHelper().eval(PropertyKeys.snapMode, null);
-    }
+    @Property(description = "Client side callback to execute when dragging starts.")
+    public abstract String getOnStart();
 
-    public void setSnapMode(String snapMode) {
-        getStateHelper().put(PropertyKeys.snapMode, snapMode);
-    }
+    @Property(description = "Client side callback to execute when dragging stops.")
+    public abstract String getOnStop();
 
-    public int getSnapTolerance() {
-        return (Integer) getStateHelper().eval(PropertyKeys.snapTolerance, 20);
-    }
+    @Property(description = "Client side callback to execute during dragging, immediately before the current move happens." +
+        " Function receives (event, ui) where ui.helper, ui.position, and ui.offset are available. " +
+        "The values in ui.position may be changed to modify where the element will be positioned.")
+    public abstract String getOnDrag();
 
-    public void setSnapTolerance(int snapTolerance) {
-        getStateHelper().put(PropertyKeys.snapTolerance, snapTolerance);
-    }
-
-    public int getZindex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.zindex, -1);
-    }
-
-    public void setZindex(int zindex) {
-        getStateHelper().put(PropertyKeys.zindex, zindex);
-    }
-
-    public String getHandle() {
-        return (String) getStateHelper().eval(PropertyKeys.handle, null);
-    }
-
-    public void setHandle(String handle) {
-        getStateHelper().put(PropertyKeys.handle, handle);
-    }
-
-    public double getOpacity() {
-        return (Double) getStateHelper().eval(PropertyKeys.opacity, 1.0);
-    }
-
-    public void setOpacity(double opacity) {
-        getStateHelper().put(PropertyKeys.opacity, opacity);
-    }
-
-    public String getStack() {
-        return (String) getStateHelper().eval(PropertyKeys.stack, null);
-    }
-
-    public void setStack(String stack) {
-        getStateHelper().put(PropertyKeys.stack, stack);
-    }
-
-    public String getGrid() {
-        return (String) getStateHelper().eval(PropertyKeys.grid, null);
-    }
-
-    public void setGrid(String grid) {
-        getStateHelper().put(PropertyKeys.grid, grid);
-    }
-
-    public String getScope() {
-        return (String) getStateHelper().eval(PropertyKeys.scope, null);
-    }
-
-    public void setScope(String scope) {
-        getStateHelper().put(PropertyKeys.scope, scope);
-    }
-
-    public String getCursor() {
-        return (String) getStateHelper().eval(PropertyKeys.cursor, "crosshair");
-    }
-
-    public void setCursor(String cursor) {
-        getStateHelper().put(PropertyKeys.cursor, cursor);
-    }
-
-    public String getDashboard() {
-        return (String) getStateHelper().eval(PropertyKeys.dashboard, null);
-    }
-
-    public void setDashboard(String dashboard) {
-        getStateHelper().put(PropertyKeys.dashboard, dashboard);
-    }
-
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
-    }
-
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    public String getOnStart() {
-        return (String) getStateHelper().eval(PropertyKeys.onStart, null);
-    }
-
-    public void setOnStart(String onStart) {
-        getStateHelper().put(PropertyKeys.onStart, onStart);
-    }
-
-    public String getOnStop() {
-        return (String) getStateHelper().eval(PropertyKeys.onStop, null);
-    }
-
-    public void setOnStop(String onStop) {
-        getStateHelper().put(PropertyKeys.onStop, onStop);
-    }
-
-    public String getOnDrag() {
-        return (String) getStateHelper().eval(PropertyKeys.onDrag, null);
-    }
-
-    public void setOnDrag(String onDrag) {
-        getStateHelper().put(PropertyKeys.onDrag, onDrag);
-    }
-
-    public String getCancel() {
-        return (String) getStateHelper().eval(PropertyKeys.cancel, null);
-    }
-
-    public void setCancel(String cancel) {
-        getStateHelper().put(PropertyKeys.cancel, cancel);
-    }
+    @Property(implicitDefaultValue = "input,textarea,button,select,option", description = "Prevents dragging from starting on specified elements.")
+    public abstract String getCancel();
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
+
 import java.util.List;
 import java.util.Map;
 
@@ -30,17 +32,22 @@ import jakarta.faces.component.UIComponent;
 
 public interface UIOutcomeTarget {
 
+    @Property(description = "Used to resolve a navigation case.")
     String getOutcome();
 
+    @Property(defaultValue = "false", description = "Whether to include page parameters in target URI.")
     boolean isIncludeViewParams();
 
+    @Property(description = "Identifier of the target page which should be scrolled to.")
     String getFragment();
 
     List<UIComponent> getChildren();
 
     Map<String, List<String>> getParams();
 
+    @Property(description = "Resource to link to.")
     String getHref();
 
+    @Property(defaultValue = "false", description = "Disable appending the on the rendering of this element.")
     boolean isDisableClientWindow();
 }

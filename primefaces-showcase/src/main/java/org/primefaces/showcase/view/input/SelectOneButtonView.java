@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,12 @@
  */
 package org.primefaces.showcase.view.input;
 
+import org.primefaces.component.selectonebutton.SelectOneButton;
+
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Named;
 
 @Named
@@ -31,6 +36,15 @@ import jakarta.inject.Named;
 public class SelectOneButtonView {
 
     private String option;
+    private String option2;
+    private String color;
+    private String paymentMethod;
+
+    public void onChange(AjaxBehaviorEvent event) {
+        Object value = ((SelectOneButton) event.getSource()).getValue();
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Button", value + " selected.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
     public String getOption() {
         return option;
@@ -38,5 +52,29 @@ public class SelectOneButtonView {
 
     public void setOption(String option) {
         this.option = option;
+    }
+
+    public String getOption2() {
+        return option2;
+    }
+
+    public void setOption2(String option2) {
+        this.option2 = option2;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

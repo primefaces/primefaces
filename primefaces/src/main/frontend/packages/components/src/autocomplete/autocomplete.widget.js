@@ -376,7 +376,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
         this.dropdown.on("mouseup", function() {
             if ($this.active) {
                 $this.searchWithDropdown();
-                $this.input.trigger('focus');
+                PrimeFaces.queueTask(() => { $this.input.trigger('focus'); }, 1);
             }
         }).on("keyup", function(e) {
             if (PrimeFaces.utils.isActionKey(e)) {
@@ -594,7 +594,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
             $this.checkMatchedItem = true;
         }).on('change.autoComplete', function(e) {
             var value = e.currentTarget.value,
-                valid = $this.isValid(value, true);
+                valid = $this.isValid(value, false);
 
             if ($this.cfg.forceSelection && $this.currentInputValue === '' && !valid) {
                 $this.preventInputChangeEvent = true;
@@ -778,6 +778,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
     showSuggestions(query) {
         this.items = this.panel.find('.ui-autocomplete-item');
         this.items.attr('role', 'option');
+        this.panel.children('.ui-autocomplete-items').attr('aria-label', this.getAriaLabel('listLabel'));
 
         if (this.cfg.grouping) {
             this.groupItems();

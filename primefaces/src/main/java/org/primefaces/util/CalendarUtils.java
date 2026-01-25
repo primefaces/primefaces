@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.util;
 
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.datepicker.DatePicker;
+import org.primefaces.convert.DateTimeConverter;
 import org.primefaces.convert.DateTimePatternConverter;
 import org.primefaces.convert.PatternConverter;
 
@@ -312,6 +313,11 @@ public class CalendarUtils {
             Converter converter = calendar.getConverter();
             // always use the user-applied converter first
             if (converter != null) {
+                if (converter instanceof DateTimeConverter) {
+                    ((DateTimeConverter) converter).setPattern(pattern);
+                    ((DateTimeConverter) converter).setLocale(calendar.calculateLocale(context));
+                    ((DateTimeConverter) converter).setTimeZone(calculateTimeZone(calendar.getTimeZone()));
+                }
                 return converter.getAsString(context, calendar, value);
             }
         }

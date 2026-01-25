@@ -17,31 +17,32 @@ AccordionPanel is a container component that displays content in stacked format.
 
 ## Attributes
 
-| Name          | Default | Type       | Description     |
-| ------------- | ------- | ---------- | ----------------- |
-| id            | null    | String     | Unique identifier of the component
-| binding       | null    | Object     | An EL expression that maps to a server side UIComponent instance in a backing bean.
-| value         | null    | List       | List to iterate to display dynamic number of tabs.
-| var           | null    | String     | Name of iterator to use in a dynamic number of tabs.
-| varStatus     | null    | String     | Name of the exported request scoped variable to represent state of the iteration same as in ui:repeat varStatus.
-| activeIndex   | 0       | String     | Index of the active tab or a comma separated string of indexes when multiple mode is on. Alternative: all.
-| cache         | true    | Boolean    | Defines if activating a dynamic tab should load the contents from server again.
-| dir           | ltr     | String     | Defines text direction, valid values are ltr and rtl.
-| dynamic       | false   | Boolean    | Defines the toggle mode.
-| multiple      | false   | Boolean    | Controls multiple selection.
-| onTabChange   | null    | String     | Client side callback to invoke when an inactive tab is clicked.
-| onTabClose    | null    | String     | Client side callback to invoke when a tab is closed.
-| onTabShow     | null    | String     | Client side callback to invoke when a tab gets activated.
-| prependId     | true    | Boolean    | AccordionPanel is a naming container thus prepends its id to its children by default a false value turns this behavior off except for dynamic tabs.
-| rendered      | true    | Boolean    | Boolean value to specify the rendering of the component.
-| style         | null    | String     | Inline style of the container element.
-| styleClass    | null    | String     | Style class of the container element.
-| tabController | null    | MethodExpr | Server side listener to decide whether a tab change or tab close should be allowed.
-| tabindex      | 0       | String     | Position of the headers in the tabbing order.
-| toggleSpeed   | 500     | Integer    | Speed of toggling in milliseconds
+| Name           | Default | Type       | Description     |
+|----------------| ------- | ---------- | ----------------- |
+| id             | null    | String     | Unique identifier of the component
+| binding        | null    | Object     | An EL expression that maps to a server side UIComponent instance in a backing bean.
+| value          | null    | List       | List to iterate to display dynamic number of tabs.
+| var            | null    | String     | Name of iterator to use in a dynamic number of tabs.
+| varStatus      | null    | String     | Name of the exported request scoped variable to represent state of the iteration same as in ui:repeat varStatus.
+| activeIndex    | 0       | String     | (DEPRECATED, use active instead!) Index of the active tab or a comma separated string of indexes when multiple mode is on. Alternative: all.
+| active         | 0       | String     | Index or key of the active tab or a comma separated string of indexes/keys when multiple mode is on. Alternative: all.
+| cache          | true    | Boolean    | Defines if activating a dynamic tab should load the contents from server again.
+| dir            | ltr     | String     | Defines text direction, valid values are ltr and rtl.
+| dynamic        | false   | Boolean    | Defines the toggle mode.
+| multiple       | false   | Boolean    | Controls multiple selection.
+| onTabChange    | null    | String     | Client side callback to invoke when an inactive tab is clicked.
+| onTabClose     | null    | String     | Client side callback to invoke when a tab is closed.
+| onTabShow      | null    | String     | Client side callback to invoke when a tab gets activated.
+| prependId      | true    | Boolean    | AccordionPanel is a naming container thus prepends its id to its children by default a false value turns this behavior off except for dynamic tabs.
+| rendered       | true    | Boolean    | Boolean value to specify the rendering of the component.
+| style          | null    | String     | Inline style of the container element.
+| styleClass     | null    | String     | Style class of the container element.
+| tabController  | null    | MethodExpr | Server side listener to decide whether a tab change or tab close should be allowed.
+| tabindex       | 0       | String     | Position of the headers in the tabbing order.
+| toggleSpeed    | 500     | Integer    | Speed of toggling in milliseconds
 | scrollIntoView |null    | String     | Should the tab scroll into view. One of start, center, end, nearest, or null if disabled. Default is null
-| widgetVar     | null    | String     | Name of the client side widget.
-| multiViewState| false   | Boolean    | Whether to keep Panel state across views, defaults to false.
+| widgetVar      | null    | String     | Name of the client side widget.
+| multiViewState | false   | Boolean    | Whether to keep Panel state across views, defaults to false.
 
 ## Getting Started with Accordion Panel
 Accordion panel consists of one or more tabs and each tab can group any content. Titles can also be

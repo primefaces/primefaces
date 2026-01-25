@@ -438,7 +438,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         var submenuLink = submenu.find('> .ui-menuitem-link');
 
         submenuLink.find('> .ui-menuitem-text').attr('aria-expanded', "false");
-        submenuLink.find('> .ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s');
+        submenuLink.find('> .ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
         submenu.children('.ui-menu-list').hide();
 
         this.removeAsExpanded(submenu);
@@ -531,14 +531,38 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * Collapses all menu panels that are currently expanded.
      */
     collapseAll(): void {
-        this.headers.filter('.ui-state-active').each(function() {
+        let $this = this;
+        $this.headers.filter('.ui-state-active').each(function() {
             const header = $(this);
-            header.removeClass('ui-state-active').children('.ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
-            header.next().addClass('ui-helper-hidden');
+            $this.collapseActiveSibling(header);
+            $this.collapseRootSubmenu(header);
+            header.removeClass('ui-state-hover');
         });
 
-        this.jq.find('.ui-menu-parent > .ui-menu-list:not(.ui-helper-hidden)').each(function() {
-            $(this).addClass('ui-helper-hidden').prev().children('.ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+        $this.jq.find('.ui-menu-parent > .ui-menu-list:not(.ui-helper-hidden)').each(function() {
+            $this.collapseTreeItem($(this));
+        });
+    }
+
+    /**
+     * Expands all menu panels that are currently collapsed.
+     */
+    expandAll(): void {
+        let $this = this;
+        $this.headers.filter(':not(.ui-state-active)').each(function() {
+            const header = $(this);
+            if (!$this.cfg.multiple) {
+                $this.collapseActiveSibling(header);
+            }
+            $this.expandRootSubmenu(header, false);
+        });
+
+        $this.jq.find('.ui-menu-parent').each(function() {
+            const submenu = $(this);
+            const submenuList = submenu.children('.ui-menu-list');
+            if (!submenuList.is(':visible')) {
+                $this.expandTreeItem(submenu, false);
+            }
         });
     }
 }

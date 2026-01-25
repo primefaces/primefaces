@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,11 +45,13 @@ import jakarta.el.ELContext;
 import jakarta.el.ValueExpression;
 import jakarta.faces.FacesException;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = Schedule.COMPONENT_TYPE, namespace = Schedule.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "schedule/schedule.css")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "moment/moment.js")
@@ -204,8 +206,10 @@ public class Schedule extends ScheduleBase {
         ELContext elContext = getFacesContext().getELContext();
         ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
                 getValueExpression(PropertyKeys.view.toString()), true);
-        if (expr != null && !expr.isReadOnly(elContext)) {
-            expr.setValue(elContext, getView());
+        if (expr != null) {
+            if (!expr.isReadOnly(elContext)) {
+                expr.setValue(elContext, getView());
+            }
             getStateHelper().remove(PropertyKeys.view);
         }
     }

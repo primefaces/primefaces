@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,14 @@
  */
 package org.primefaces.component.calendar;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,14 +38,18 @@ import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 
+@FacesComponent(value = Calendar.COMPONENT_TYPE, namespace = Calendar.COMPONENT_FAMILY)
+@FacesComponentDescription("Calendar is an input component used to provide a date.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -50,50 +57,51 @@ import jakarta.faces.event.PhaseId;
 @ResourceDependency(library = "primefaces", name = "inputmask/inputmask.js")
 @ResourceDependency(library = "primefaces", name = "calendar/calendar.css")
 @ResourceDependency(library = "primefaces", name = "calendar/calendar.js")
-public class Calendar extends CalendarBase {
+public class Calendar extends CalendarBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Calendar";
 
+    protected static final List<PrimeClientBehaviorEventKeys> UNOBTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
+            ClientBehaviorEventKeys.dateSelect, ClientBehaviorEventKeys.viewChange, ClientBehaviorEventKeys.close);
+
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
+    @Override
+    public Collection<PrimeClientBehaviorEventKeys> getUnobtrusiveClientBehaviorEventKeys() {
+        return UNOBTRUSIVE_EVENT_KEYS;
+    }
+
+    @Override
+    public Boolean getTimeOnlyWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly);
+    }
+
     public boolean isPopup() {
-        return getMode().equalsIgnoreCase("popup");
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return CALENDAR_EVENT_NAMES;
-    }
-
-    @Override
-    public Collection<String> getUnobstrusiveEventNames() {
-        return UNOBSTRUSIVE_EVENT_NAMES;
+        return "popup".equalsIgnoreCase(getMode());
     }
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = event.getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
+        if (isAjaxBehaviorEventSource(event)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName != null) {
-                if ("dateSelect".equals(eventName) || "close".equals(eventName)) {
-                    customEvents.put(eventName, (AjaxBehaviorEvent) event);
-                }
-                else if ("viewChange".equals(eventName)) {
-                    int month = Integer.parseInt(params.get(clientId + "_month"));
-                    int year = Integer.parseInt(params.get(clientId + "_year"));
-                    DateViewChangeEvent dateViewChangeEvent = new DateViewChangeEvent(this, behaviorEvent.getBehavior(), month, year);
-                    dateViewChangeEvent.setPhaseId(behaviorEvent.getPhaseId());
-                    super.queueEvent(dateViewChangeEvent);
-                }
-                else {
-                    super.queueEvent(event);        //regular events like change, click, blur
-                }
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.dateSelect) || isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.close)) {
+                customEvents.put(eventName, (AjaxBehaviorEvent) event);
+            }
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.viewChange)) {
+                int month = Integer.parseInt(params.get(clientId + "_month"));
+                int year = Integer.parseInt(params.get(clientId + "_year"));
+                DateViewChangeEvent dateViewChangeEvent = new DateViewChangeEvent(this, behaviorEvent.getBehavior(), month, year);
+                dateViewChangeEvent.setPhaseId(behaviorEvent.getPhaseId());
+                super.queueEvent(dateViewChangeEvent);
+            }
+            else {
+                super.queueEvent(event);        //regular events like change, click, blur
             }
         }
         else {

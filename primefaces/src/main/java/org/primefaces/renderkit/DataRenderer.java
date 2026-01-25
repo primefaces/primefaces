@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,8 +37,6 @@ import org.primefaces.component.paginator.PageLinksRenderer;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
@@ -46,6 +44,7 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -64,6 +63,8 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
             .put("{JumpToPageDropdown}", new JumpToPageDropdownRenderer())
             .put("{JumpToPageInput}", new JumpToPageInputRenderer())
             .build();
+
+    private static final Pattern HTML_TAG_PATTERN = Pattern.compile("\\<.*?\\>");
 
     public static void addPaginatorElement(String element, PaginatorElementRenderer renderer) {
         PAGINATOR_ELEMENTS.put(element, renderer);
@@ -214,15 +215,6 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
             // for headerText of column
             if (ariaHeaderText == null) {
                 ariaHeaderText = column.getHeaderText();
-            }
-
-            // for header facet
-            if (ariaHeaderText == null) {
-                UIComponent headerFacet = column.getFacet("header");
-                if (FacetUtils.shouldRenderFacet(headerFacet)) {
-                    // encode and strip all HTML tags
-                    ariaHeaderText = ComponentUtils.encodeComponent(headerFacet, context).replaceAll("\\<.*?\\>", Constants.EMPTY_STRING);
-                }
             }
 
             return ariaHeaderText;

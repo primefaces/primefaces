@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,28 @@
  */
 package org.primefaces.component.splitter;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.SplitterResizeEvent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = Splitter.COMPONENT_TYPE, namespace = Splitter.COMPONENT_FAMILY)
+@FacesComponentDescription("Splitter is utilized to separate and resize panels.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Splitter extends SplitterBase {
+public class Splitter extends SplitterBaseImpl {
+
     public static final String COMPONENT_TYPE = "org.primefaces.component.Splitter";
 
     public static final String STYLE_CLASS = "ui-splitter ui-widget";
@@ -53,37 +53,16 @@ public class Splitter extends SplitterBase {
     public static final String GUTTER_CLASS = "ui-splitter-gutter";
     public static final String GUTTER_HANDLE_CLASS = "ui-splitter-gutter-handle";
 
-    private static final String DEFAULT_EVENT = "resizeEnd";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put(DEFAULT_EVENT, SplitterResizeEvent.class)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if (ComponentUtils.isRequestSource(this, context)) {
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        if (isAjaxBehaviorEventSource(event)) {
             String clientId = getClientId(context);
 
-            if (DEFAULT_EVENT.equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.resizeEnd)) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 List<Double> panelSizes = new ArrayList<>();
                 String[] sizes = params.get(clientId + "_panelSizes").split("_");
@@ -94,7 +73,6 @@ public class Splitter extends SplitterBase {
 
                 super.queueEvent(new SplitterResizeEvent(this, behaviorEvent.getBehavior(), panelSizes));
             }
-
         }
         else {
             super.queueEvent(event);

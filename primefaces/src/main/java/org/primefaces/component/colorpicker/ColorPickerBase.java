@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,37 +23,27 @@
  */
 package org.primefaces.component.colorpicker;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class ColorPickerBase extends AbstractPrimeHtmlInputText implements Widget, PrimeClientBehaviorHolder, RTLAware {
+import jakarta.faces.event.AjaxBehaviorEvent;
+
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fires when the color is changed.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "open", event = AjaxBehaviorEvent.class, description = "Fires when the color picker is opened."),
+    @FacesBehaviorEvent(name = "close", event = AjaxBehaviorEvent.class, description = "Fires when the color picker is closed.")
+})
+public abstract class ColorPickerBase extends AbstractPrimeHtmlInputText implements Widget, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ColorPickerRenderer";
-
-    public static final String CLEAR_LABEL = "primefaces.colorpicker.CLEAR";
-    public static final String CLOSE_LABEL = "primefaces.colorpicker.CLOSE";
-
-    public enum PropertyKeys {
-        widgetVar,
-        mode,
-        theme,
-        themeMode,
-        format,
-        formatToggle,
-        alpha,
-        forceAlpha,
-        swatchesOnly,
-        focusInput,
-        selectInput,
-        clearButton,
-        closeButton,
-        swatches,
-        locale;
-    }
 
     public ColorPickerBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -64,123 +54,45 @@ public abstract class ColorPickerBase extends AbstractPrimeHtmlInputText impleme
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Display mode. Options: 'popup', 'inline'.", defaultValue = "popup")
+    public abstract String getMode();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Color picker theme.", defaultValue = "default")
+    public abstract String getTheme();
 
-    public String getMode() {
-        return (String) getStateHelper().eval(PropertyKeys.mode, "popup");
-    }
+    @Property(description = "Theme mode. Options: 'auto', 'light', 'dark'.", defaultValue = "auto")
+    public abstract String getThemeMode();
 
-    public void setMode(String mode) {
-        getStateHelper().put(PropertyKeys.mode, mode);
-    }
+    @Property(description = "Color format. Options: 'hex', 'rgb', 'hsl', 'hsv'.", defaultValue = "hex")
+    public abstract String getFormat();
 
-    public String getTheme() {
-        return (String) getStateHelper().eval(PropertyKeys.theme, "default");
-    }
+    @Property(description = "When enabled, allows toggling between color formats.", defaultValue = "false")
+    public abstract boolean isFormatToggle();
 
-    public void setTheme(String theme) {
-        getStateHelper().put(PropertyKeys.theme, theme);
-    }
+    @Property(description = "When enabled, includes alpha channel (transparency).", defaultValue = "true")
+    public abstract boolean isAlpha();
 
-    public String getThemeMode() {
-        return (String) getStateHelper().eval(PropertyKeys.themeMode, "auto");
-    }
+    @Property(description = "When enabled, forces alpha channel to be always visible.", defaultValue = "false")
+    public abstract boolean isForceAlpha();
 
-    public void setThemeMode(String themeMode) {
-        getStateHelper().put(PropertyKeys.themeMode, themeMode);
-    }
+    @Property(description = "When enabled, shows only color swatches.", defaultValue = "false")
+    public abstract boolean isSwatchesOnly();
 
-    public String getFormat() {
-        return (String) getStateHelper().eval(PropertyKeys.format, "hex");
-    }
+    @Property(description = "When enabled, focuses the input field.", defaultValue = "true")
+    public abstract boolean isFocusInput();
 
-    public void setFormat(String format) {
-        getStateHelper().put(PropertyKeys.format, format);
-    }
+    @Property(description = "When enabled, selects the input text on focus.", defaultValue = "false")
+    public abstract boolean isSelectInput();
 
-    public boolean isFormatToggle() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.formatToggle, false);
-    }
+    @Property(description = "When enabled, shows clear button.", defaultValue = "false")
+    public abstract boolean isClearButton();
 
-    public void setFormatToggle(boolean formatToggle) {
-        getStateHelper().put(PropertyKeys.formatToggle, formatToggle);
-    }
+    @Property(description = "When enabled, shows close button.", defaultValue = "false")
+    public abstract boolean isCloseButton();
 
-    public boolean isAlpha() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.alpha, true);
-    }
+    @Property(description = "Comma-separated list of color swatches to display.")
+    public abstract String getSwatches();
 
-    public void setAlpha(boolean alpha) {
-        getStateHelper().put(PropertyKeys.alpha, alpha);
-    }
-
-    public boolean isForceAlpha() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.forceAlpha, false);
-    }
-
-    public void setForceAlpha(boolean forceAlpha) {
-        getStateHelper().put(PropertyKeys.forceAlpha, forceAlpha);
-    }
-
-    public boolean isSwatchesOnly() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.swatchesOnly, false);
-    }
-
-    public void setSwatchesOnly(boolean swatchesOnly) {
-        getStateHelper().put(PropertyKeys.swatchesOnly, swatchesOnly);
-    }
-
-    public boolean isFocusInput() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.focusInput, true);
-    }
-
-    public void setFocusInput(boolean focusInput) {
-        getStateHelper().put(PropertyKeys.focusInput, focusInput);
-    }
-
-    public boolean isSelectInput() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.selectInput, false);
-    }
-
-    public void setSelectInput(boolean selectInput) {
-        getStateHelper().put(PropertyKeys.selectInput, selectInput);
-    }
-
-    public boolean isClearButton() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.clearButton, false);
-    }
-
-    public void setClearButton(boolean clearButton) {
-        getStateHelper().put(PropertyKeys.clearButton, clearButton);
-    }
-
-    public boolean isCloseButton() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closeButton, false);
-    }
-
-    public void setCloseButton(boolean closeButton) {
-        getStateHelper().put(PropertyKeys.closeButton, closeButton);
-    }
-
-    public String getSwatches() {
-        return (String) getStateHelper().eval(PropertyKeys.swatches, null);
-    }
-
-    public void setSwatches(String swatches) {
-        getStateHelper().put(PropertyKeys.swatches, swatches);
-    }
-
-    public Object getLocale() {
-        return getStateHelper().eval(PropertyKeys.locale, null);
-    }
-
-    public void setLocale(Object locale) {
-        getStateHelper().put(PropertyKeys.locale, locale);
-    }
+    @Property(description = "Locale for the color picker.")
+    public abstract Object getLocale();
 }

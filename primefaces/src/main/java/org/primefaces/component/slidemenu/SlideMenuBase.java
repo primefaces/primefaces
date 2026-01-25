@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,19 @@
  */
 package org.primefaces.component.slidemenu;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.OverlayMenu;
 
-public abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu {
+@FacesComponentBase
+public abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SlideMenuRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        model,
-        style,
-        styleClass,
-        backLabel,
-        trigger,
-        my,
-        at,
-        overlay,
-        triggerEvent
-    }
 
     public SlideMenuBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -56,88 +46,15 @@ public abstract class SlideMenuBase extends AbstractMenu implements Widget, Over
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
     @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
+    @Property(description = "MenuModel instance to create menus programmatically")
+    public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(defaultValue = "Back", description = "Text for back link.")
+    public abstract String getBackLabel();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "false",
+        description = "Defines positioning, when enabled menu is displayed with absolute position relative to the trigger.")
+    public abstract boolean isOverlay();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getBackLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.backLabel, "Back");
-    }
-
-    public void setBackLabel(String backLabel) {
-        getStateHelper().put(PropertyKeys.backLabel, backLabel);
-    }
-
-    @Override
-    public String getTrigger() {
-        return (String) getStateHelper().eval(PropertyKeys.trigger, null);
-    }
-
-    public void setTrigger(String trigger) {
-        getStateHelper().put(PropertyKeys.trigger, trigger);
-    }
-
-    @Override
-    public String getMy() {
-        return (String) getStateHelper().eval(PropertyKeys.my, null);
-    }
-
-    public void setMy(String my) {
-        getStateHelper().put(PropertyKeys.my, my);
-    }
-
-    @Override
-    public String getAt() {
-        return (String) getStateHelper().eval(PropertyKeys.at, null);
-    }
-
-    public void setAt(String at) {
-        getStateHelper().put(PropertyKeys.at, at);
-    }
-
-    public boolean isOverlay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.overlay, false);
-    }
-
-    public void setOverlay(boolean overlay) {
-        getStateHelper().put(PropertyKeys.overlay, overlay);
-    }
-
-    @Override
-    public String getTriggerEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.triggerEvent, "click");
-    }
-
-    public void setTriggerEvent(String triggerEvent) {
-        getStateHelper().put(PropertyKeys.triggerEvent, triggerEvent);
-    }
 }

@@ -262,7 +262,7 @@ Auto uploads are triggered as soon as files are selected from the dialog.
 
 ## Client Side Validation
 
-You can use [client side validation (CSV)](/core/csv.md) to avoid roundtrips to the server with `p:validateFile` see [Validate File Component](/components/validateFile.md).
+You can use [client side validation (CSV)](/core/csv.md) to avoid roundtrips to the server with `p:validateFile` see [Validate File Component](/validators/validateFile.md).
 Especially useful if you want to prevent a huge file from being uploaded to the server if its over its size limit.
 
 ```xhtml
@@ -306,8 +306,6 @@ the sizeLimit configuration. Following fileUpload limits the size to 1000 bytes 
    <p:validateFile  sizeLimit="1000" />
 </p:fileUpload>
 ```
-
-
 
 ## Skinning
 FileUpload resides in a container element which `style` and `styleClass` options apply. As skinning
@@ -360,6 +358,13 @@ folder.
 ```
 **Note** that uploadDirectory is used internally, you always need to implement the logic to save the file
 contents yourself in your backing bean.
+
+## Configuration for Tomcat since June 2025 (>= 9.0.106, >= 10.1.42, >= 11.0.8)
+> maxPartCount limits the total number of parts in a multi-part request and maxPartHeaderSize limits the size of the headers provided with each part.
+
+See https://tomcat.apache.org/tomcat-11.0-doc/config/http.html#Common_Attributes for additional information.
+
+```xml
 
 ## Chunking and Resume
 FileUpload supports chunked upload using the `maxChunkSize` attribute but only in advanced mode!

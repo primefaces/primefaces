@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,13 +46,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -473,6 +476,73 @@ class FileUploadUtilsTest {
         assertEquals(expected, FileUploadUtils.formatAllowTypes(input));
     }
 
+    @Test
+    void extractAllowTypes_Null() {
+        String result = FileUploadUtils.extractAllowTypes(null);
+        assertNull(result);
+    }
 
+    @Test
+    void extractAllowTypes_Whitespace() {
+        String result = FileUploadUtils.extractAllowTypes("   ");
+        assertNull(result);
+    }
+
+    @Test
+    void extractAllowTypes_Single() {
+        String result = FileUploadUtils.extractAllowTypes(".pdf");
+        assertEquals("/.*\\.(pdf)/", result);
+    }
+
+    @Test
+    void extractAllowTypes_Multiple() {
+        String result = FileUploadUtils.extractAllowTypes(".pdf,.doc,.txt");
+        assertEquals("/.*\\.(pdf|doc|txt)/", result);
+    }
+
+    @Test
+    void extractAllowTypes_Mixed() {
+        String result = FileUploadUtils.extractAllowTypes("image/*,.jpg,.png,text/plain,.doc");
+        assertEquals("/.*\\.(jpg|png|doc)/", result);
+    }
+
+    @Test
+    void extractAllowTypes_OnlyMimeTypes() {
+        String result = FileUploadUtils.extractAllowTypes("image/*,text/plain,application/json");
+        assertNull(result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        ".pdf-backup",
+        ".doc@old",
+        ".txt#new",
+        ".file.ext",
+        ".doc with spaces",
+        ".verylongextensionname",
+        ".123456789012345",
+        ".",
+        ".  ",
+        ".doc-",
+        ".pdf+",
+        ".txt*"
+    })
+    void extractAllowTypes_Invalid(String extension) {
+        String result = FileUploadUtils.extractAllowTypes(extension);
+        assertNull(result);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "'.pdf,.doc', '/.*\\.(pdf|doc)/'",
+        "'.jpg,.png,.gif', '/.*\\.(jpg|png|gif)/'",
+        "'.txt,.pdf,.doc,.xlsx', '/.*\\.(txt|pdf|doc|xlsx)/'",
+        "'.a,.b,.c', '/.*\\.(a|b|c)/'",
+        "'.mp3,.mp4,.avi', '/.*\\.(mp3|mp4|avi)/'"
+    })
+    void extractAllowTypes_Regex(String input, String expectedOutput) {
+        String result = FileUploadUtils.extractAllowTypes(input);
+        assertEquals(expectedOutput, result);
+    }
 
 }

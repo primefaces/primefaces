@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -77,7 +77,7 @@ public class CoreHead001Test extends AbstractPrimePageTest {
         // <f:facet name="last">
         WebElement webMeta = headElements.get(5);
         assertEquals(webMeta.getTagName(), "meta");
-        assertEquals(webMeta.getDomAttribute("name"), "apple-mobile-web-app-capable");
+        assertEquals(webMeta.getDomAttribute("name"), "mobile-web-app-capable");
         assertEquals(webMeta.getDomAttribute("content"), "yes");
 
         // Scripts in order

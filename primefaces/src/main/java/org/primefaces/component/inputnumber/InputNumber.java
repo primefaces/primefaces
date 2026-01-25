@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,20 @@
  */
 package org.primefaces.component.inputnumber;
 
-import jakarta.faces.application.ResourceDependency;
+import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.util.LocaleUtils;
 
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = InputNumber.COMPONENT_TYPE, namespace = InputNumber.COMPONENT_FAMILY)
+@FacesComponentDescription("InputNumber is an extension to the InputText with optimized handling for numbers.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "inputnumber/inputnumber.js")
-public class InputNumber extends InputNumberBase {
+public class InputNumber extends InputNumberBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputNumber";
 
@@ -56,4 +62,25 @@ public class InputNumber extends InputNumberBase {
         getStateHelper().put("labelledby", labelledBy);
     }
 
+    @Override
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().get("ariaDescribedBy");
+    }
+
+    @Override
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
+    }
+
+    @Override
+    public String getDecimalSeparator() {
+        return (String) getStateHelper().eval(PropertyKeys.decimalSeparator,
+            () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
+    }
+
+    @Override
+    public String getThousandSeparator() {
+        return (String) getStateHelper().eval(PropertyKeys.thousandSeparator,
+            () -> LocaleUtils.getThousandSeparator(getFacesContext()));
+    }
 }

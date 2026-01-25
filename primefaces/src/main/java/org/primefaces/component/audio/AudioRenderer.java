@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,12 +31,14 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
 import org.apache.commons.io.FilenameUtils;
 
 /**
  * The HTML <audio> element is used to embed sound content in documents.
  */
+@FacesRenderer(rendererType = Audio.DEFAULT_RENDERER, componentFamily = Audio.COMPONENT_FAMILY)
 public class AudioRenderer extends CoreRenderer<Audio> {
 
     @Override
@@ -68,7 +70,7 @@ public class AudioRenderer extends CoreRenderer<Audio> {
 
         AudioType player = resolvePlayer(context, component);
         writer.startElement("source", null);
-        writer.writeAttribute("src", component.resolveSource(context, component), null);
+        writer.writeAttribute("src", component.resolveSource(context), null);
         writer.writeAttribute("type", player.getMediaType(), null);
         writer.endElement("source");
 

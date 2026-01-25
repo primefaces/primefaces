@@ -26,8 +26,8 @@ style | null | String | Inline style of the panel/table.
 contentStyle | null | String | Inline style of the panel-content.
 styleClass | null | String | Style class of the panel/table.
 contentStyleClass | null | String | Style class of the panel-content.
-columnClasses | null | String | Comma separated list of column style classes.<br/>For layout=grid: Grid CSS - classes<br/>For layout=flex: PrimeFlex (FlexGrid) - classes; primeflex.css must be included into the template.xhtml
-layout | tabular | String | Displays data in a 'tabular' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'grid'.
+columnClasses | null | String | Comma separated list of column style classes.<br/>For layout=grid: Grid CSS - classes<br/>For layout=flex: PrimeFlex (FlexGrid) - classes; primeflex.css must be included into the template.xhtml<br/>For layout=tailwind: Tailwind CSS utility classes
+layout | tabular | String | Displays data in a 'tabular' layout, 'grid' layout, 'flex' layout, or 'tailwind' layout. The grid, flex, and tailwind layouts are responsive layouts. Default value is 'grid'.
 role | grid | String | Role for aria.
 
 ## Getting started with PanelGrid
@@ -88,7 +88,7 @@ To remove borders add ui-noborder style class to the component using styleClass 
 remove borders plus background color, apply ui-panelgrid-blank style.
 
 ## Responsive
-PanelGrid offers responsive support using `layout="flex"` for PrimeFlex or `layout="grid"` for Grid CSS. 
+PanelGrid offers responsive support using `layout="flex"` for PrimeFlex or `layout="grid"` for Grid CSS.
 However, you may find your labels not lining up in horizontal forms.  You can use the following CSS to address this:
 ```xml
 <style type="text/css">
@@ -107,9 +107,9 @@ Note: This documentation refers to version 3.0.0 of PrimeFlex.
 
 ## Responsive Style, StyleClass, and ID
 PanelGrid offers responsive support using `layout="flex"` for PrimeFlex or `layout="grid"` for Grid CSS and
- a non-responsive layout using `layout="tabular"`. Flex and Grid layout wraps components in a DIV and grid layout
- further wraps a row in a DIV.  These DIVs may now be styled by utilizing `row` and `column` components which optionally
- represent the cell and may be utilized to attach `style`, `styleClass` and `id`.
+a non-responsive layout using `layout="tabular"`. Flex and Grid layout wraps components in a DIV and grid layout
+further wraps a row in a DIV.  These DIVs may now be styled by utilizing `row` and `column` components which optionally
+represent the cell and may be utilized to attach `style`, `styleClass` and `id`.
 
 `layout="grid"` supports `column` and `row`.
 `layout="flex"` supports `column`.
@@ -155,6 +155,99 @@ be utilized based `columnClasses[column%columns]`.
 </p:panelGrid>
 ```
 
+## Tailwind CSS Layout
+PanelGrid offers an additional responsive layout using `layout="tailwind"` for Tailwind CSS. This layout renders using CSS Grid with Tailwind utility classes and provides automatic responsive breakpoints based on the number of columns.
+
+### Basic Usage
+```xml
+<p:panelGrid columns="2" layout="tailwind" contentStyleClass="gap-4">
+    <h:outputLabel for="firstname" value="Firstname:" />
+    <p:inputText id="firstname" value="#{bean.firstname}" />
+    <h:outputLabel for="surname" value="Surname:" />
+    <p:inputText id="surname" value="#{bean.surname}" />
+</p:panelGrid>
+```
+
+### Responsive Breakpoints
+The Tailwind layout automatically applies responsive grid columns based on the number of columns specified:
+- **2 columns**: `grid-cols-1 sm:grid-cols-2` (1 column on mobile, 2 on tablet+)
+- **3 columns**: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` (responsive 1→2→3)
+- **4 columns**: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4` (responsive 1→2→4)
+- And so on up to 12 columns
+
+### Controlling Width
+By default, the Tailwind grid takes full width. Use the `styleClass` attribute to control this:
+```xml
+<p:panelGrid columns="2" layout="tailwind" 
+             styleClass="max-w-2xl"
+             contentStyleClass="gap-4">
+    <!-- content -->
+</p:panelGrid>
+```
+
+Common width classes:
+- `styleClass="w-auto"` - Auto width (content-based)
+- `styleClass="inline-grid"` - Inline grid (similar to table behavior)
+- `styleClass="max-w-2xl"` - Maximum width constraint
+- `styleClass="max-w-4xl mx-auto"` - Centered with max width
+
+### Controlling Spacing
+Use `contentStyleClass` to control the gap between cells:
+```xml
+<p:panelGrid columns="2" layout="tailwind" contentStyleClass="gap-6">
+    <!-- content -->
+</p:panelGrid>
+```
+
+Common gap values:
+- `contentStyleClass="gap-2"` - Small gap (8px)
+- `contentStyleClass="gap-4"` - Medium gap (16px)
+- `contentStyleClass="gap-6"` - Large gap (24px)
+- `contentStyleClass="gap-0"` - No gap
+
+### Column Classes
+The `columnClasses` attribute works with Tailwind layout to apply different styles to alternating columns:
+```xml
+<p:panelGrid columns="2" layout="tailwind" 
+             columnClasses="font-semibold, bg-gray-50"
+             contentStyleClass="gap-4">
+    <!-- First column gets: font-semibold -->
+    <!-- Second column gets: bg-gray-50 -->
+</p:panelGrid>
+```
+
+### Colspan and Column Styling
+The Tailwind layout supports `<p:column>` components with `colspan`, `id`, `style`, and `styleClass`:
+```xml
+<p:panelGrid columns="4" layout="tailwind" contentStyleClass="gap-4">
+    <p:column colspan="2" styleClass="bg-blue-100 p-4">
+        <h:outputText value="This spans 2 columns" />
+    </p:column>
+    <p:column colspan="2" styleClass="bg-green-100 p-4">
+        <h:outputText value="This also spans 2 columns" />
+    </p:column>
+    <p:column>Single</p:column>
+    <p:column>Single</p:column>
+    <p:column>Single</p:column>
+    <p:column>Single</p:column>
+</p:panelGrid>
+```
+
+### Aligning Labels
+To vertically center labels with input fields, add `items-center` to the `contentStyleClass`:
+```xml
+<p:panelGrid columns="2" layout="tailwind" 
+             contentStyleClass="gap-4 items-center">
+    <h:outputLabel for="firstname" value="Firstname:" />
+    <p:inputText id="firstname" value="#{bean.firstname}" />
+</p:panelGrid>
+```
+
+### Limitations
+- `layout="tailwind"` supports `<p:column>` components with colspan and rowspan
+- `<p:row>` components are not supported in Tailwind layout
+- Ensure all required Tailwind CSS grid classes are included in your compiled CSS configuration
+
 ## Skinning
 PanelGrid resides in a main container which _style_ and _styleClass_ attributes apply. Following is the
 list of structural style classes;
@@ -168,4 +261,3 @@ list of structural style classes;
 .ui-panelgrid-odd | Odd numbered rows.
 
 As skinning style classes are global, see the main theming section for more information.
-

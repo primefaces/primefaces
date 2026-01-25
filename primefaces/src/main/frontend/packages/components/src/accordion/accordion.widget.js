@@ -13,7 +13,7 @@
  * read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  *
- * @prop {number[]} cfg.active List of tabs that are currently active (open). Each item is a 0-based index of a tab.
+ * @prop {number[]} cfg.active List of tabs that are currently active (open). Each item is either a key or a 0-based index of a tab.
  * @prop {boolean} cfg.cache `true` if activating a dynamic tab should not load the contents from server again and use
  * the cached contents; or `false` if the caching is disabled.
  * @prop {string} cfg.collapsedIcon The icon class name for the collapsed icon.
@@ -64,14 +64,14 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
             this.cfg.active = [];
 
             if (stateHolderVal != null && stateHolderVal.length > 0) {
-                var indexes = this.stateHolder.val().split(',');
-                for (const index of indexes) {
-                    this.cfg.active.push(parseInt(index));
+                var activated = this.stateHolder.val().split(',');
+                for (const active of activated) {
+                    this.cfg.active.push(active);
                 }
             }
         }
         else if (stateHolderVal != null) {
-            this.cfg.active = parseInt(this.stateHolder.val());
+            this.cfg.active = this.stateHolder.val();
         }
 
         this.headers.each(function() {
@@ -233,11 +233,13 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
 
         var shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
 
+        let key = header.attr('data-key') ?? index;
+
         //update state
         if (this.cfg.multiple)
-            this.addToSelection(index);
+            this.addToSelection(key);
         else
-            this.cfg.active = index;
+            this.cfg.active = key;
 
         this.saveState();
 
@@ -262,6 +264,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
         var $this = this;
         this.panels.each(function(index) {
             $this.select(index);
+
             if (!$this.cfg.multiple) {
                 return false; // breaks
             }
@@ -281,14 +284,11 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
             return;
         }
 
-        if (this.cfg.controlled) {
-            this.fireTabCloseEvent(index);
-        }
-        else {
+        if (!this.cfg.controlled) {
             this.hide(index);
-
-            this.fireTabCloseEvent(index);
         }
+
+        this.fireTabCloseEvent(index);
     }
 
     /**
@@ -347,7 +347,9 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
                 $this.cfg.onTabClose.call($this, panel);
         });
 
-        this.removeFromSelection(index);
+        let key = header.attr('data-key') ?? index;
+
+        this.removeFromSelection(key);
         this.saveState();
     }
 

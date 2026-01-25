@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,84 +23,63 @@
  */
 package org.primefaces.component.columntoggler;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
 import org.primefaces.event.ColumnToggleEvent;
 import org.primefaces.event.ToggleCloseEvent;
-import org.primefaces.event.ToggleEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.Visibility;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = ColumnToggler.COMPONENT_TYPE, namespace = ColumnToggler.COMPONENT_FAMILY)
+@FacesComponentDescription("ColumnToggler is a helper component for datatable to toggle visibility of columns.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class ColumnToggler extends ColumnTogglerBase {
+public class ColumnToggler extends ColumnTogglerBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColumnToggler";
-
-    private static final String DEFAULT_EVENT = "toggle";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("toggle", ToggleEvent.class)
-            .put("close", ToggleCloseEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private UIComponent dataSourceComponent;
 
     @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
-
-    @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        if (isAjaxBehaviorEventSource(event)) {
+            FacesContext context = getFacesContext();
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if (event instanceof AjaxBehaviorEvent && "toggle".equals(eventName)) {
-            String clientId = getClientId(context);
-            Visibility visibility = Visibility.valueOf(params.get(clientId + "_visibility"));
-            int index = Integer.parseInt(params.get(clientId + "_index"));
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.toggle)) {
+                String clientId = getClientId(context);
+                Visibility visibility = Visibility.valueOf(params.get(clientId + "_visibility"));
+                int index = Integer.parseInt(params.get(clientId + "_index"));
 
-            UIColumn column = ((UITable) getDataSourceComponent()).getColumns().get(index);
-            super.queueEvent(new ColumnToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), column, visibility, index));
-        }
-        else if (event instanceof AjaxBehaviorEvent && "close".equals(eventName)) {
-            String clientId = this.getClientId(context);
+                UIColumn column = ((UITable<?>) getDataSourceComponent()).getColumns().get(index);
+                super.queueEvent(new ColumnToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), column, visibility, index));
+            }
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.close)) {
+                String clientId = this.getClientId(context);
 
-            String visibleColumnIds = params.get(clientId + "_visibleColumnIds");
-            if (visibleColumnIds != null) {
-                String[] visibleColumns = visibleColumnIds.split(",");
+                String visibleColumnIds = params.get(clientId + "_visibleColumnIds");
+                if (visibleColumnIds != null) {
+                    String[] visibleColumns = visibleColumnIds.split(",");
 
-                super.queueEvent(new ToggleCloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), Arrays.asList(visibleColumns)));
+                    super.queueEvent(new ToggleCloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), Arrays.asList(visibleColumns)));
+                }
+            }
+            else {
+                super.queueEvent(event);
             }
         }
         else {

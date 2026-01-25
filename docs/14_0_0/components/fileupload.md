@@ -292,7 +292,7 @@ Auto uploads are triggered as soon as files are selected from the dialog.
 
 ## Client Side Validation
 
-You can use [client side validation (CSV)](/core/csv.md) to avoid roundtrips to the server with `p:validateFile` see [Validate File Component](/components/validateFile.md).
+You can use [client side validation (CSV)](/core/csv.md) to avoid roundtrips to the server with `p:validateFile` see [Validate File Component](/validators/validateFile.md).
 Especially useful if you want to prevent a huge file from being uploaded to the server if its over its size limit.
 
 ```xhtml

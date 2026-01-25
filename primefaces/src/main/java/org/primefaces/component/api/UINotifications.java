@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,58 +23,34 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIMessages;
 
 public abstract class UINotifications extends UIMessages implements UINotification {
 
-    public enum PropertyKeys {
-        escape,
-        severity,
-        forType,
-        forIgnores,
-        skipDetailIfEqualsSummary
-    }
+    @Property(defaultValue = "true", description = "Defines whether html would be escaped or not.")
+    public abstract boolean isEscape();
 
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
+    @Property(description = "Type of the \"for\" attribute. Valid values are \"key\" and \"expression\".")
+    public abstract String getForType();
 
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
+    @Property(description = "Defines a list of keys and clientIds, which should NOT be rendered by this component. Separated by space or comma.")
+    public abstract String getForIgnores();
 
+    @Property(defaultValue = "true", description = "Specifies if the summary of the FacesMessage should be displayed.")
     @Override
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
-    }
+    public abstract boolean isShowSummary();
 
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
-    }
-
-    public String getForType() {
-        return (String) getStateHelper().eval(PropertyKeys.forType, null);
-    }
-
-    public void setForType(String forType) {
-        getStateHelper().put(PropertyKeys.forType, forType);
-    }
-
-    public String getForIgnores() {
-        return (String) getStateHelper().eval(PropertyKeys.forIgnores, null);
-    }
-
-    public void setForIgnores(String forIgnores) {
-        getStateHelper().put(PropertyKeys.forIgnores, forIgnores);
-    }
-
+    @Property(defaultValue = "false", description = "Specifies if the detail of the FacesMessage should be displayed.")
     @Override
-    public boolean isSkipDetailIfEqualsSummary() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
-    }
+    public abstract boolean isShowDetail();
 
-    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
-        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
-    }
+    @Property(defaultValue = "false", description = "When true, only facesmessages with no clientIds are displayed.")
+    @Override
+    public abstract boolean isGlobalOnly();
 
+    @Property(description = "Identifier of the component whose messages to display only, takes precendence when used with globalOnly.")
+    @Override
+    public abstract String getFor();
 }

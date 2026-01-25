@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,19 @@
  */
 package org.primefaces.component.menu;
 
+import org.primefaces.cdk.api.Property;
+
 public interface OverlayMenu {
 
+    @Property(description = "Target component to attach the overlay menu.")
     String getTrigger();
 
+    @Property(description = "Corner of menu to align with trigger element.")
     String getMy();
 
+    @Property(description = "Corner of trigger to align with menu element.")
     String getAt();
 
+    @Property(defaultValue = "click", description = "Event to show the dynamic positioned menu.")
     String getTriggerEvent();
 }

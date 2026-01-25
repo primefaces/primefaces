@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = InputNumber.DEFAULT_RENDERER, componentFamily = InputNumber.COMPONENT_FAMILY)
 public class InputNumberRenderer extends InputRenderer<InputNumber> {
 
     // Default values for "minValue"/"maxValue" properties of the AutoNumeric Plugin
@@ -192,7 +194,7 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", component.getType(), null);
-        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("autocomplete", LangUtils.defaultIfBlank(component.getAutocomplete(), "off"), null);
         writer.writeAttribute("value", valueToRender, null);
 
         if (!isValueBlank(style)) {

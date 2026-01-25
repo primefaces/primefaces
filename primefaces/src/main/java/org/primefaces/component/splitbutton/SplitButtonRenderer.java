@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,9 @@ import jakarta.faces.component.UIForm;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.ActionEvent;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = SplitButton.DEFAULT_RENDERER, componentFamily = SplitButton.COMPONENT_FAMILY)
 public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
 
     private static final String SB_BUILD_ONCLICK = SplitButtonRenderer.class.getName() + "#buildOnclick";
@@ -86,8 +88,14 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
             model.generateUniqueIds();
         }
 
-        encodeMarkup(context, component);
-        encodeScript(context, component);
+        if (component.isDynamic() && component.isDynamicLoadRequest(context)) {
+            String menuId = component.getClientId(context) + "_menu";
+            encodeMenu(context, component, menuId);
+        }
+        else {
+            encodeMarkup(context, component);
+            encodeScript(context, component);
+        }
     }
 
     protected void encodeMarkup(FacesContext context, SplitButton component) throws IOException {
@@ -112,7 +120,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         OverlayPanel customOverlay = component.getCustomOverlay();
         if (customOverlay != null || component.getElementsCount() > 0) {
             encodeMenuIcon(context, component, menuButtonId, menuId, hasOverlay);
-            if (hasOverlay) {
+            if (hasOverlay && !component.isDynamic()) {
                 encodeMenu(context, component, menuId);
             }
         }
@@ -231,6 +239,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
 
         wb.attr("disableOnAjax", component.isDisableOnAjax(), true)
             .attr("disabledAttr", component.isDisabled(), false)
+            .attr("dynamic", component.isDynamic(), false)
             .finish();
     }
 

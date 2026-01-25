@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.showcase.view.input;
 
+import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.event.SelectEvent;
 
 import java.util.ArrayList;
@@ -31,11 +32,14 @@ import java.util.List;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Named;
 
 @Named
 @RequestScoped
 public class InputTextareaView {
+
+    private String value;
 
     public List<String> completeArea(String query) {
         List<String> results = new ArrayList<>();
@@ -59,5 +63,20 @@ public class InputTextareaView {
     public void onSelect(SelectEvent<String> event) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "select", event.getObject()));
+    }
+
+    public void onChange(AjaxBehaviorEvent event) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        InputTextarea inputTextarea = (InputTextarea) event.getComponent();
+        String newValue = (String) inputTextarea.getValue();
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "change", newValue));
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

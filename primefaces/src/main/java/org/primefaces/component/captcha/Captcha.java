@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.component.captcha;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MessageFactory;
@@ -43,15 +44,18 @@ import jakarta.el.ELException;
 import jakarta.faces.FacesException;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 import org.json.JSONObject;
 
+@FacesComponent(value = Captcha.COMPONENT_TYPE, namespace = Captcha.COMPONENT_FAMILY)
+@FacesComponentDescription("Captcha is a form validation component based on Recaptcha/hCaptcha API.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "captcha/captcha.js")
-public class Captcha extends CaptchaBase {
+public class Captcha extends CaptchaBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Captcha";
 
@@ -62,6 +66,51 @@ public class Captcha extends CaptchaBase {
     public static final String HCAPTCHA = "h-captcha";
 
     private static final Logger LOGGER = Logger.getLogger(Captcha.class.getName());
+
+    @Override
+    public String getExecutor() {
+        return (String) getStateHelper().eval(PropertyKeys.executor, () -> {
+            String type = this.getType();
+            switch (type) {
+                case Captcha.RECAPTCHA:
+                    return "grecaptcha";
+                case Captcha.HCAPTCHA:
+                    return "hcaptcha";
+                default:
+                    return null;
+            }
+        });
+    }
+
+    @Override
+    public String getSourceUrl() {
+        return (String) getStateHelper().eval(PropertyKeys.sourceUrl, () -> {
+            String type = this.getType();
+            switch (type) {
+                case Captcha.RECAPTCHA:
+                    return "https://www.google.com/recaptcha/api.js";
+                case Captcha.HCAPTCHA:
+                    return "https://js.hcaptcha.com/1/api.js";
+                default:
+                    return null;
+            }
+        });
+    }
+
+    @Override
+    public String getVerifyUrl() {
+        return (String) getStateHelper().eval(PropertyKeys.verifyUrl, () -> {
+            String type = this.getType();
+            switch (type) {
+                case Captcha.RECAPTCHA:
+                    return "https://www.google.com/recaptcha/api/siteverify";
+                case Captcha.HCAPTCHA:
+                    return "https://api.hcaptcha.com/siteverify";
+                default:
+                    return null;
+            }
+        });
+    }
 
     @Override
     protected void validateValue(FacesContext context, Object value) {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,13 @@
  */
 package org.primefaces.component.dataview;
 
-public class DataViewGridItem extends DataViewGridItemBase {
+import org.primefaces.cdk.api.FacesComponentDescription;
+
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = DataViewGridItem.COMPONENT_TYPE, namespace = DataViewGridItem.COMPONENT_FAMILY)
+@FacesComponentDescription("dataViewGridItem is a helper component for DataView to add grid items.")
+public class DataViewGridItem extends DataViewGridItemBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataViewGridItem";
 }

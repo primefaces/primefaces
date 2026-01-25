@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,20 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.cdk.api.Function;
+import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.UITable;
+import org.primefaces.component.poll.PollBase;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.csp.CspResponseWriter;
+import org.primefaces.event.DynamicOncompleteEvent;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.renderkit.RendererUtils;
 
 import java.io.IOException;
@@ -60,6 +65,7 @@ import jakarta.faces.FacesException;
 import jakarta.faces.FacesWrapper;
 import jakarta.faces.application.ConfigurableNavigationHandler;
 import jakarta.faces.application.NavigationCase;
+import jakarta.faces.component.ActionSource;
 import jakarta.faces.component.EditableValueHolder;
 import jakarta.faces.component.StateHelper;
 import jakarta.faces.component.UIComponent;
@@ -77,6 +83,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.event.PhaseId;
 import jakarta.faces.render.Renderer;
 
 public class ComponentUtils {
@@ -92,6 +99,9 @@ public class ComponentUtils {
 
     // regex for finding ID's
     private static final Pattern ID_PATTERN = Pattern.compile("\\sid=\"(.*?)\"");
+
+    // regex for finding Sources
+    private static final Pattern SOURCE_PATTERN = Pattern.compile("source:&quot;(.*?)&quot;");
 
 
     private ComponentUtils() {
@@ -258,8 +268,13 @@ public class ComponentUtils {
     }
 
     public static void decodeBehaviors(FacesContext context, UIComponent component) {
-        if (!(component instanceof ClientBehaviorHolder)) {
+        if (!(component instanceof ClientBehaviorHolder) || !isRequestSource(component, context)) {
             return;
+        }
+
+        if (component instanceof AjaxSource && component.getValueExpression("oncomplete") != null) {
+            PhaseId phaseId = isImmediate(component) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION;
+            component.queueEvent(new DynamicOncompleteEvent(component, (AjaxSource) component, phaseId));
         }
 
         Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
@@ -269,18 +284,11 @@ public class ComponentUtils {
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String behaviorEvent = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-
-        if (null != behaviorEvent) {
+        if (behaviorEvent != null) {
             List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
-
             if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
-                String behaviorSource = params.get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
-                String clientId = component.getClientId(context);
-
-                if (behaviorSource != null && clientId.equals(behaviorSource)) {
-                    for (ClientBehavior behavior : behaviorsForEvent) {
-                        behavior.decode(context, component);
-                    }
+                for (ClientBehavior behavior : behaviorsForEvent) {
+                    behavior.decode(context, component);
                 }
             }
         }
@@ -295,7 +303,7 @@ public class ComponentUtils {
     }
 
     public static boolean isTouchable(FacesContext context, TouchAware component) {
-        Boolean local = component.isTouchable();
+        Boolean local = component.getTouchable();
         if (local != null) {
             return local;
         }
@@ -605,26 +613,30 @@ public class ComponentUtils {
         }
 
         // replace 'id=' and 'source:' values
-        encodedComponent = encodedComponent.replaceAll("\\sid=\"(.*?)\"", " id=\"$1" + separator + index + "\"");
-        encodedComponent = encodedComponent.replaceAll("source:&quot;(.*?)&quot;", " source:&quot;$1" + separator + index + "&quot;");
+        encodedComponent = ID_PATTERN.matcher(encodedComponent).replaceAll(" id=\"$1" + separator + index + "\"");
+        encodedComponent = SOURCE_PATTERN.matcher(encodedComponent).replaceAll(" source:&quot;$1" + separator + index + "&quot;");
 
         originalWriter.write(encodedComponent);
     }
 
 
+    @Function(name = "dynamicColumnValue", description = "Gets the value of the current column."
+            + " This is only required when p:columns and field is used with a nested expression like user.name.")
     public static Object getDynamicColumnValue(UIComponent component) {
         org.primefaces.component.api.UIColumn column =
                 ComponentTraversalUtils.closest(org.primefaces.component.api.UIColumn.class, component);
-        UITable table =
+        UITable<?> table =
                 ComponentTraversalUtils.closest(UITable.class, (UIComponent) column);
 
         return table.getFieldValue(FacesContext.getCurrentInstance(), column);
     }
 
+    @Function(name = "dynamicColumnValueAsString", description = "Gets the value of the current column converted to string."
+            + " This is only required when p:columns and field is used with a nested expression like user.name.")
     public static String getDynamicColumnValueAsString(UIComponent component) {
         org.primefaces.component.api.UIColumn column =
                 ComponentTraversalUtils.closest(org.primefaces.component.api.UIColumn.class, component);
-        UITable table =
+        UITable<?> table =
                 ComponentTraversalUtils.closest(UITable.class, (UIComponent) column);
 
         return table.getConvertedFieldValue(FacesContext.getCurrentInstance(), column);
@@ -796,4 +808,23 @@ public class ComponentUtils {
             return value;
         }
     }
+
+    public static boolean isImmediate(UIComponent component) {
+        if (component instanceof ActionSource) {
+            return ((ActionSource) component).isImmediate();
+        }
+        else if (component instanceof EditableValueHolder) {
+            return ((EditableValueHolder) component).isImmediate();
+        }
+        else if (component instanceof MenuItem) {
+            return ((MenuItem) component).isImmediate();
+        }
+        else if (component instanceof PollBase) {
+            return ((PollBase) component).isImmediate();
+        }
+        else {
+            return false;
+        }
+    }
+
 }

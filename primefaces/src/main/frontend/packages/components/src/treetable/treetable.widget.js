@@ -234,6 +234,14 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             this.paginator.init(this.cfg.paginator);
             this.paginator.bindSwipeEvents(this.jq, this.cfg);
         }
+
+        //double click
+        if (this.hasBehavior('dblselect')) {
+            var rowSelector = '> tr.ui-treetable-selectable-node';
+            this.tbody.off('dblclick.treeTable', rowSelector).on('dblclick.treeTable', rowSelector, null, function(e) {
+                $this.onRowDblclick(e, $(this));
+            });
+        }
     }
 
     /**
@@ -1053,6 +1061,35 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
     }
 
     /**
+     * Callback for a double click event on a node.
+     * @private
+     * @param {JQuery.TriggeredEvent} event The click event that occurred.
+     * @param {JQuery} node The node that was clicked.
+     */
+    onRowDblclick(event, node) {
+        var selected = node.hasClass('ui-state-highlight'),
+            nodeKey = node.attr('data-rk');
+
+        if (this.isCheckboxSelection()) {
+            if (!selected) {
+                this.toggleCheckboxNode(node);
+            }
+        }
+        else {
+            if (this.isSingleSelection() || !selected) {
+                this.unselectAllNodes();
+            }
+            this.selectNode(node, true);
+        }
+
+        this.fireSelectEvent(nodeKey, 'dblselect');
+
+        if (this.cfg.disabledTextSelection) {
+            PrimeFaces.clearSelection();
+        }
+    }
+
+    /**
      * Callback for when a right click was performed on a node. Selects or unselects the row, if that feature is
      * enabled.
      * @private
@@ -1832,7 +1869,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @return {number} An estimate in pixels for the width of the native scrollbar.
      */
     getScrollbarWidth() {
-        return jQBrowser.webkit ? '15' : PrimeFaces.calculateScrollbarWidth();
+        return PrimeFaces.env.browser.webkit ? '15' : PrimeFaces.calculateScrollbarWidth();
     }
 
     /**
@@ -1948,7 +1985,8 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             table = this.thead.parent(),
             change = null,
             newWidth = null,
-            nextColumnWidth = null;
+            nextColumnWidth = null,
+            expandMode = (this.cfg.resizeMode === 'expand');
 
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left);
@@ -1961,23 +1999,49 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
 
-        if(newWidth > 15 && nextColumnWidth > 15) {
-            columnHeader.width(newWidth);
-            nextColumnHeader.width(nextColumnWidth);
-            this.updateResizableState(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth);
-
+        const tableWidthChange = change > 0 ? -change : change;
+        const scrollbarWidth = this.getScrollbarWidth();
+        if(newWidth > scrollbarWidth && nextColumnWidth > scrollbarWidth || (expandMode && newWidth > scrollbarWidth)) {
+            if (expandMode) {
+                table.width(table.width() + tableWidthChange);
+                setTimeout(function () {
+                    columnHeader.width(newWidth);
+                }, 1);
+            }
+            else {
+                columnHeader.width(newWidth);
+                nextColumnHeader.width(nextColumnWidth);
+                this.updateResizableState(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth);
+            }
             var colIndex = columnHeader.index();
 
             if(this.cfg.scrollable) {
-                this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
-                this.theadClone.find(PrimeFaces.escapeClientId(nextColumnHeader.attr('id') + '_clone')).width(nextColumnWidth);
+                var cloneTable = this.theadClone.parent();
 
-                if(this.footerCols.length > 0) {
-                    var footerCol = this.footerCols.eq(colIndex),
-                    nextFooterCol = footerCol.next();
+                if (expandMode) {
+                    var $this = this;
 
-                    footerCol.width(newWidth);
-                    nextFooterCol.width(nextColumnWidth);
+                    //body
+                    cloneTable.width(cloneTable.width() + tableWidthChange);
+
+                    //footer
+                    this.footerTable.width(this.footerTable.width() + change);
+
+                    setTimeout(function () {
+                        $this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);   //body
+                        $this.footerCols.eq(colIndex).width(newWidth);                                                          //footer
+                    }, 1);
+                } else {
+                    this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
+                    this.theadClone.find(PrimeFaces.escapeClientId(nextColumnHeader.attr('id') + '_clone')).width(nextColumnWidth);
+
+                    if (this.footerCols.length > 0) {
+                        var footerCol = this.footerCols.eq(colIndex),
+                            nextFooterCol = footerCol.next();
+
+                        footerCol.width(newWidth);
+                        nextFooterCol.width(nextColumnWidth);
+                    }
                 }
             }
         }
@@ -2473,9 +2537,10 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Updates the vertical scroll position and adjusts the margin.
-     * @private
-     */
+    * Updates the vertical scroll position and adjusts the margin.
+    * Also toggles CSS classes on the scroll body to indicate horizontal/vertical overflow.
+    * @private
+    */
     updateVerticalScroll() {
         if(this.cfg.scrollable && this.cfg.scrollHeight) {
             if(this.bodyTable.outerHeight() < this.scrollBody.outerHeight()) {
@@ -2487,6 +2552,17 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                 this.scrollFooterBox.css('margin-right', this.marginRight);
             }
         }
+
+        // Add or remove CSS classes based on scroll overflow direction
+        if (!this.scrollBody || !this.scrollBody[0]) {
+            return;
+        }
+        const el = this.scrollBody[0];
+        const hasHorizontalScroll = el.scrollWidth > el.clientWidth;
+        const hasVerticalScroll   = el.scrollHeight > el.clientHeight;
+
+        el.classList.toggle('ui-scrollable-x', hasHorizontalScroll);
+        el.classList.toggle('ui-scrollable-y', hasVerticalScroll);
     }
 
     /**

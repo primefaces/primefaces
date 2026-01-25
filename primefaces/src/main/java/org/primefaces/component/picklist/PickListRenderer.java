@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,9 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = PickList.DEFAULT_RENDERER, componentFamily = PickList.COMPONENT_FAMILY)
 public class PickListRenderer extends InputRenderer<PickList> {
 
     @Override
@@ -143,6 +145,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
                 .attr("effect", component.getEffect())
                 .attr("effectSpeed", component.getEffectSpeed())
                 .attr("escape", component.isEscape())
+                .attr("dragDrop", component.isDragDrop(), true)
                 .attr("showSourceControls", component.isShowSourceControls(), false)
                 .attr("showTargetControls", component.isShowTargetControls(), false)
                 .attr("disabled", component.isDisabled(), false)
@@ -216,11 +219,6 @@ public class PickListRenderer extends InputRenderer<PickList> {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.LIST_WRAPPER_CLASS, null);
-
-        // only render required on target list
-        if (!isSource) {
-            renderARIARequired(context, component);
-        }
 
         if (filter) {
             encodeFilter(context, component, listId + "_filter", isSource);

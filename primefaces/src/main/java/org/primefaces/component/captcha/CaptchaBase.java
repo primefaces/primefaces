@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,18 @@
  */
 package org.primefaces.component.captcha;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIInput;
 
+@FacesComponentBase
 public abstract class CaptchaBase extends UIInput implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CaptchaRenderer";
-
-    public enum PropertyKeys {
-
-        type,
-        theme,
-        language,
-        tabindex,
-        label,
-        callback,
-        expired,
-        size,
-        executor,
-        sourceUrl,
-        verifyUrl
-    }
 
     public CaptchaBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -57,121 +45,36 @@ public abstract class CaptchaBase extends UIInput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getTheme() {
-        return (String) getStateHelper().eval(PropertyKeys.theme, "auto");
-    }
+    @Property(defaultValue = "g-recaptcha", description = "Which captcha to use, either 'g-recaptcha' for Google reCaptcha or 'h-captcha` for hCaptcha.")
+    public abstract String getType();
 
-    public void setTheme(String theme) {
-        getStateHelper().put(PropertyKeys.theme, theme);
-    }
+    @Property(defaultValue = "auto", description = "Theme of the captcha either 'light', 'dark', or 'auto'.")
+    public abstract String getTheme();
 
-    public String getLanguage() {
-        return (String) getStateHelper().eval(PropertyKeys.language, "en");
-    }
+    @Property(defaultValue = "en", description = "Key of the supported languages.")
+    public abstract String getLanguage();
 
-    public void setLanguage(String language) {
-        getStateHelper().put(PropertyKeys.language, language);
-    }
+    @Property(defaultValue = "0", description = "Position of the input element in the tabbing order.")
+    public abstract int getTabindex();
 
-    public int getTabindex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.tabindex, 0);
-    }
+    @Property(description = "A localized user presentable name.")
+    public abstract String getLabel();
 
-    public void setTabindex(int tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
+    @Property(description = "Callback executed when the user submits a successful captcha response.")
+    public abstract String getCallback();
 
-    public String getLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.label, null);
-    }
+    @Property(description = "Callback executed when the captcha response expires and the user needs to solve a new captcha.")
+    public abstract String getExpired();
 
-    public void setLabel(String label) {
-        getStateHelper().put(PropertyKeys.label, label);
-    }
+    @Property(description = "The size of the widget.")
+    public abstract String getSize();
 
-    public String getCallback() {
-        return (String) getStateHelper().eval(PropertyKeys.callback, null);
-    }
+    @Property(implicitDefaultValue = "grecaptcha", description = "JavaScript global executor for the captcha.")
+    public abstract String getExecutor();
 
-    public void setCallback(String callback) {
-        getStateHelper().put(PropertyKeys.callback, callback);
-    }
+    @Property(description = "URL for the ReCaptcha JavaScript file. Some countries do not have access to Google.")
+    public abstract String getSourceUrl();
 
-    public String getExpired() {
-        return (String) getStateHelper().eval(PropertyKeys.expired, null);
-    }
-
-    public void setExpired(String expired) {
-        getStateHelper().put(PropertyKeys.expired, expired);
-    }
-
-    public String getSize() {
-        return (String) getStateHelper().eval(PropertyKeys.size, null);
-    }
-
-    public void setSize(String size) {
-        getStateHelper().put(PropertyKeys.size, size);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, Captcha.RECAPTCHA);
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    public String getExecutor() {
-        return (String) getStateHelper().eval(PropertyKeys.executor, () -> {
-            String type = this.getType();
-            switch (type) {
-                case Captcha.RECAPTCHA:
-                    return "grecaptcha";
-                case Captcha.HCAPTCHA:
-                    return "hcaptcha";
-                default:
-                    return null;
-            }
-        });
-    }
-
-    public void setExecutor(String executor) {
-        getStateHelper().put(PropertyKeys.executor, executor);
-    }
-
-    public String getSourceUrl() {
-        return (String) getStateHelper().eval(PropertyKeys.sourceUrl, () -> {
-            String type = this.getType();
-            switch (type) {
-                case Captcha.RECAPTCHA:
-                    return "https://www.google.com/recaptcha/api.js";
-                case Captcha.HCAPTCHA:
-                    return "https://js.hcaptcha.com/1/api.js";
-                default:
-                    return null;
-            }
-        });
-    }
-
-    public void setSourceUrl(String sourceUrl) {
-        getStateHelper().put(PropertyKeys.sourceUrl, sourceUrl);
-    }
-
-    public String getVerifyUrl() {
-        return (String) getStateHelper().eval(PropertyKeys.verifyUrl, () -> {
-            String type = this.getType();
-            switch (type) {
-                case Captcha.RECAPTCHA:
-                    return "https://www.google.com/recaptcha/api/siteverify";
-                case Captcha.HCAPTCHA:
-                    return "https://api.hcaptcha.com/siteverify";
-                default:
-                    return null;
-            }
-        });
-    }
-
-    public void setVerifyUrl(String verifyUrl) {
-        getStateHelper().put(PropertyKeys.verifyUrl, verifyUrl);
-    }
+    @Property(description = "URL for the verification of the captcha.")
+    public abstract String getVerifyUrl();
 }

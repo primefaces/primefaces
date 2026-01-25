@@ -28,6 +28,7 @@ If you use the OutputPanel just as simple placeholder, it's better to use anothe
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
+widgetVar | null | String | Name of the client side widget.
 style | null | String | Style of the HTML container element
 styleClass | null | String | StyleClass of the HTML container element
 layout | block | String | Shortcut for the css display property, valid values are block(default) and inline.

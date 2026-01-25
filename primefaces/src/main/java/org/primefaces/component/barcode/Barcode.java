@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,13 @@
  */
 package org.primefaces.component.barcode;
 
-public class Barcode extends BarcodeBase {
+import org.primefaces.cdk.api.FacesComponentDescription;
+
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = Barcode.COMPONENT_TYPE, namespace = Barcode.COMPONENT_FAMILY)
+@FacesComponentDescription("Barcode component is used to display various barcode formats QR Code, Code 128, Code 39, EAN-13, UPC-A, ITF-14, and DataMatrix.")
+public class Barcode extends BarcodeBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Barcode";
 }

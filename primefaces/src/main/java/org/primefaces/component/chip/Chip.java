@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,18 @@
  */
 package org.primefaces.component.chip;
 
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
 import jakarta.faces.application.ResourceDependency;
-import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.component.FacesComponent;
 
+@FacesComponent(value = Chip.COMPONENT_TYPE, namespace = Chip.COMPONENT_FAMILY)
+@FacesComponentDescription("Chip represents entities using icons, labels and images.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Chip extends ChipBase {
+public class Chip extends ChipBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chip";
 
@@ -45,25 +44,4 @@ public class Chip extends ChipBase {
     public static final String TEXT_CLASS = "ui-chip-text";
     public static final String REMOVE_ICON_CLASS = "ui-chip-remove-icon";
 
-    private static final String DEFAULT_EVENT = "select";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("select", null)
-            .put("close", null)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
 }

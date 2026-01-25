@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,9 @@ import jakarta.faces.FacesException;
 import jakarta.faces.component.behavior.ClientBehavior;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = GMap.DEFAULT_RENDERER, componentFamily = GMap.COMPONENT_FAMILY)
 public class GMapRenderer extends CoreRenderer<GMap> {
 
     @Override
@@ -82,9 +84,12 @@ public class GMapRenderer extends CoreRenderer<GMap> {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("GMap", component)
-                .nativeAttr("mapTypeId", "google.maps.MapTypeId." + component.getType().toUpperCase())
-                .nativeAttr("center", "new google.maps.LatLng(" + component.getCenter() + ")")
-                .attr("zoom", component.getZoom());
+                .attr("mapTypeId", component.getType().toUpperCase())
+                .attr("center", component.getCenter())
+                .attr("zoom", component.getZoom())
+                .attr("apiKey", component.getApiKey())
+                .attr("apiVersion", component.getApiVersion())
+                .attr("libraries", component.getLibraries());
 
 
         if (!component.isFitBounds()) {

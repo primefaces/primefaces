@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,9 @@ import java.util.List;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Carousel.DEFAULT_RENDERER, componentFamily = Carousel.COMPONENT_FAMILY)
 public class CarouselRenderer extends CoreRenderer<Carousel> {
 
     @Override
@@ -238,7 +240,7 @@ public class CarouselRenderer extends CoreRenderer<Carousel> {
     protected void encodeHeader(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String headerText = component.getHeaderText();
-        UIComponent facet = component.getFacet("header");
+        UIComponent facet = component.getHeaderFacet();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (headerText == null && !shouldRenderFacet) {
@@ -261,7 +263,7 @@ public class CarouselRenderer extends CoreRenderer<Carousel> {
     protected void encodeFooter(FacesContext context, Carousel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String footerText = component.getFooterText();
-        UIComponent facet = component.getFacet("footer");
+        UIComponent facet = component.getFooterFacet();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (footerText == null && !shouldRenderFacet) {

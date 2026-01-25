@@ -85,8 +85,11 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
             $span.remove();
         }
 
+        const isIndeterminate = this.jq.hasClass('ui-progressbar-indeterminate');
+        const isTransparent = value === 0 && !isIndeterminate;
+
         // Handle styling based on value
-        const styles = value === 0 ?
+        const styles = isTransparent ?
             {
                 value: { 'background-color': 'transparent' },
                 label: { 'text-align': 'left', 'color': getComputedStyle(document.documentElement).getPropertyValue('--text-color') }

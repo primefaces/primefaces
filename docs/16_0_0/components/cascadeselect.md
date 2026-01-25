@@ -20,24 +20,26 @@ CascadeSelect displays a nested structure of options.
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component.
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-required | false | Boolean | Marks component as required
-validator | null | MethodExpr | A method expression that refers to a method validating the input
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-converterMessage | null | String | Message to be displayed when conversion fails.
-validatorMessage | null | String | Message to be displayed when validation fields.
-var | null | String | Name of the item iterator.
-widgetVar | null | String | Name of the client side widget.
-disabled | false | Boolean | Disables the component.
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
+binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
+converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
+converterMessage | null | String | Message to be displayed when conversion fails.
+disabled | false | Boolean | Disables or enables the component.
+immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 placeholder | null | String | The placeholder attribute specifies a short hint that describes the expected value of an input field.
-tabindex | null | String | Tabindex of the input.
+readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
+rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+required | false | Boolean | Marks component as required
+requiredMessage | null | String | Message to be displayed when required field validation fails.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
+tabindex | null | String | Tabindex of the input.
+validator | null | MethodExpr | A method expression that refers to a method validating the input
+validatorMessage | null | String | Message to be displayed when validation fields.
+value | null | Object | Value of the component.
+var | null | String | Name of the item iterator.
+widgetVar | null | String | Name of the client side widget.
 
 ## Getting started with CascadeSelect
 

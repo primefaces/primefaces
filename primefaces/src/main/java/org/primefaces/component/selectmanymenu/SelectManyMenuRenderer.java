@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,8 +39,10 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
+import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
+@FacesRenderer(rendererType = SelectManyMenu.DEFAULT_RENDERER, componentFamily = SelectManyMenu.COMPONENT_FAMILY)
 public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
 
     @Override
@@ -145,9 +147,10 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
         if (customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
             writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "" + component.isMetaKeySelection(), null);
             writer.startElement("tbody", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, component, selectItem, values, submittedValues, converter, customContent, showCheckbox);
@@ -158,7 +161,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
             writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "" + component.isMetaKeySelection(), null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);

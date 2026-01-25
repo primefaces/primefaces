@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,18 @@
  */
 package org.primefaces.component.panelmenu;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class PanelMenuBase extends AbstractMenu implements Widget {
+@FacesComponentBase
+public abstract class PanelMenuBase extends AbstractMenu implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PanelMenuRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        model,
-        style,
-        styleClass,
-        multiple,
-        stateful,
-        statefulGlobal
-    }
 
     public PanelMenuBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -52,60 +45,18 @@ public abstract class PanelMenuBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
     @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
+    @Property(description = "MenuModel instance to build menu dynamically.")
+    public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(defaultValue = "true", description = "Allows multiple root submenus to be expanded at the same time.")
+    public abstract boolean isMultiple();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "true", description = "Menu state is saved in HTML5 LocalStorage.")
+    public abstract boolean isStateful();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "false",
+        description = "When enabled, menu state is saved globally across pages. If disabled then state is stored per view/page.")
+    public abstract boolean isStatefulGlobal();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isMultiple() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, true);
-    }
-
-    public void setMultiple(boolean multiple) {
-        getStateHelper().put(PropertyKeys.multiple, multiple);
-    }
-
-    public boolean isStateful() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.stateful, true);
-    }
-
-    public void setStateful(boolean stateful) {
-        getStateHelper().put(PropertyKeys.stateful, stateful);
-    }
-
-    public boolean isStatefulGlobal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.statefulGlobal, false);
-    }
-
-    public void setStatefulGlobal(boolean statefulGlobal) {
-        getStateHelper().put(PropertyKeys.statefulGlobal, statefulGlobal);
-    }
 }

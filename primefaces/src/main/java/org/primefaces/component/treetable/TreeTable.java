@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,6 +58,7 @@ import java.util.Map;
 import jakarta.el.ELContext;
 import jakarta.el.ValueExpression;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AbortProcessingException;
@@ -68,6 +69,7 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 import jakarta.faces.event.PostRestoreStateEvent;
 
+@FacesComponent(value = TreeTable.COMPONENT_TYPE, namespace = TreeTable.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -120,6 +122,7 @@ public class TreeTable extends TreeTableBase {
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("contextMenu", NodeSelectEvent.class)
             .put("select", NodeSelectEvent.class)
+            .put("dblselect", NodeSelectEvent.class)
             .put("unselect", NodeUnselectEvent.class)
             .put("expand", NodeExpandEvent.class)
             .put("collapse", NodeCollapseEvent.class)
@@ -181,7 +184,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if ("select".equals(eventName)) {
+            else if ("select".equals(eventName) || "dblselect".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
                 TreeNode<?> node = getRowNode();

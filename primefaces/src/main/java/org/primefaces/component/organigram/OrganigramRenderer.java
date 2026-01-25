@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,10 +38,12 @@ import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
 /**
  * Renderer for the {@link Organigram} component.
  */
+@FacesRenderer(rendererType = Organigram.DEFAULT_RENDERER, componentFamily = Organigram.COMPONENT_FAMILY)
 public class OrganigramRenderer extends CoreRenderer<Organigram> {
 
     @Override
@@ -60,7 +62,7 @@ public class OrganigramRenderer extends CoreRenderer<Organigram> {
     protected void decodeSelection(FacesContext context, Organigram component) {
 
         if (ComponentUtils.isRequestSource(component, context)) {
-            boolean selectionEnabled = component.getValueExpression("selection") != null;
+            boolean selectionEnabled = component.getValueExpression(OrganigramBaseImpl.PropertyKeys.selection) != null;
 
             if (selectionEnabled) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -76,7 +78,7 @@ public class OrganigramRenderer extends CoreRenderer<Organigram> {
     }
 
     protected void assignSelection(FacesContext context, Organigram component, OrganigramNode node) {
-        ValueExpression ve = component.getValueExpression("selection");
+        ValueExpression ve = component.getValueExpression(OrganigramBaseImpl.PropertyKeys.selection);
         ve.setValue(context.getELContext(), node);
     }
 
@@ -93,7 +95,7 @@ public class OrganigramRenderer extends CoreRenderer<Organigram> {
         Map<String, UIOrganigramNode> nodeMapping = lookupNodeMapping(component);
 
         // checks if a node is currently selected to render the node as selected later
-        boolean selectionEnabled = component.getValueExpression("selection") != null;
+        boolean selectionEnabled = component.getValueExpression(OrganigramBaseImpl.PropertyKeys.selection) != null;
         OrganigramNode selection = null;
 
         if (selectionEnabled) {

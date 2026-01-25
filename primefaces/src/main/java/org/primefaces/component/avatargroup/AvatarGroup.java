@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,15 @@
  */
 package org.primefaces.component.avatargroup;
 
-import jakarta.faces.application.ResourceDependency;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = AvatarGroup.COMPONENT_TYPE, namespace = AvatarGroup.COMPONENT_FAMILY)
+@FacesComponentDescription("AvatarGroup is a container component that displays a group of avatars.")
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class AvatarGroup extends AvatarGroupBase {
+public class AvatarGroup extends AvatarGroupBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.AvatarGroup";
 
     public static final String STYLE_CLASS = "ui-avatar-group ui-widget";

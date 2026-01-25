@@ -133,7 +133,15 @@
                 Appends the datepicker's panel to the given search expression.
             </td>
                         </tr>
-                        <tr id="autocomplete" class="altColor">
+                        <tr id="ariaDescribedBy" class="altColor">
+                            <td class="colFirst"><a href="#ariaDescribedBy"><code>ariaDescribedBy</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
+            </td>
+                        </tr>
+                        <tr id="autocomplete" class="rowColor">
                             <td class="colFirst"><a href="#autocomplete"><code>autocomplete</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -141,7 +149,7 @@
                 Controls browser autocomplete behavior.
             </td>
                         </tr>
-                        <tr id="autoDetectDisplay" class="rowColor">
+                        <tr id="autoDetectDisplay" class="altColor">
                             <td class="colFirst"><a href="#autoDetectDisplay"><code>autoDetectDisplay</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -149,7 +157,7 @@
                 Detects if mobile browser and sets optimized interface for touch devices. Default is true.
             </td>
                         </tr>
-                        <tr id="autoMonthFormat" class="altColor">
+                        <tr id="autoMonthFormat" class="rowColor">
                             <td class="colFirst"><a href="#autoMonthFormat"><code>autoMonthFormat</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -157,7 +165,7 @@
                 Whether to format the month. Default is true.
             </td>
                         </tr>
-                        <tr id="beforeShow" class="rowColor">
+                        <tr id="beforeShow" class="altColor">
                             <td class="colFirst"><a href="#beforeShow"><code>beforeShow</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -165,15 +173,15 @@
                 Callback to execute before displaying calendar.
             </td>
                         </tr>
-                        <tr id="binding" class="altColor">
+                        <tr id="binding" class="rowColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.component.UIComponent</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">
                 An el expression referring to a server side UIComponent instance in a backing bean.
             </td>
                         </tr>
-                        <tr id="buttonTabindex" class="rowColor">
+                        <tr id="buttonTabindex" class="altColor">
                             <td class="colFirst"><a href="#buttonTabindex"><code>buttonTabindex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -181,16 +189,16 @@
                 Position of the button in the tabbing order.
             </td>
                         </tr>
-                        <tr id="converter" class="altColor">
+                        <tr id="converter" class="rowColor">
                             <td class="colFirst"><a href="#converter"><code>converter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.convert.Converter</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.convert.Converter</code>)
                     </td><td class="colLast">
                 An el expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
     In case it's a static text, it must refer to a converter id.
             </td>
                         </tr>
-                        <tr id="converterMessage" class="rowColor">
+                        <tr id="converterMessage" class="altColor">
                             <td class="colFirst"><a href="#converterMessage"><code>converterMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -198,7 +206,7 @@
                 Message to display when conversion fails.
             </td>
                         </tr>
-                        <tr id="dateTemplate" class="altColor">
+                        <tr id="dateTemplate" class="rowColor">
                             <td class="colFirst"><a href="#dateTemplate"><code>dateTemplate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -206,7 +214,7 @@
                 Function that gets a date information and returns the cell content in datepicker.
             </td>
                         </tr>
-                        <tr id="defaultHour" class="rowColor">
+                        <tr id="defaultHour" class="altColor">
                             <td class="colFirst"><a href="#defaultHour"><code>defaultHour</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -214,7 +222,7 @@
                 Default for hour selection, if no date is given. Default is 0.
             </td>
                         </tr>
-                        <tr id="defaultMillisecond" class="altColor">
+                        <tr id="defaultMillisecond" class="rowColor">
                             <td class="colFirst"><a href="#defaultMillisecond"><code>defaultMillisecond</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -222,7 +230,7 @@
                 Default for millisecond selection, if no date is given. Default is 0.
             </td>
                         </tr>
-                        <tr id="defaultMinute" class="rowColor">
+                        <tr id="defaultMinute" class="altColor">
                             <td class="colFirst"><a href="#defaultMinute"><code>defaultMinute</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -230,7 +238,7 @@
                 Default for minute selection, if no date is given. Default is 0.
             </td>
                         </tr>
-                        <tr id="defaultSecond" class="altColor">
+                        <tr id="defaultSecond" class="rowColor">
                             <td class="colFirst"><a href="#defaultSecond"><code>defaultSecond</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -238,7 +246,7 @@
                 Default for second selection, if no date is given. Default is 0.
             </td>
                         </tr>
-                        <tr id="dir" class="rowColor">
+                        <tr id="dir" class="altColor">
                             <td class="colFirst"><a href="#dir"><code>dir</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -246,7 +254,7 @@
                 Direction indication for text that does not inherit directionality.
             </td>
                         </tr>
-                        <tr id="disabled" class="altColor">
+                        <tr id="disabled" class="rowColor">
                             <td class="colFirst"><a href="#disabled"><code>disabled</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>boolean</code>)
@@ -254,7 +262,7 @@
                 Disables the input element, default is false.
             </td>
                         </tr>
-                        <tr id="disabledDates" class="rowColor">
+                        <tr id="disabledDates" class="altColor">
                             <td class="colFirst"><a href="#disabledDates"><code>disabledDates</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.util.List</code>)
@@ -262,7 +270,7 @@
                 List with dates that should be disabled (not selectable).
             </td>
                         </tr>
-                        <tr id="disabledDays" class="altColor">
+                        <tr id="disabledDays" class="rowColor">
                             <td class="colFirst"><a href="#disabledDays"><code>disabledDays</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.util.List</code>)
@@ -270,7 +278,7 @@
                 List with weekday numbers that should be disabled (not selectable).
             </td>
                         </tr>
-                        <tr id="enabledDates" class="rowColor">
+                        <tr id="enabledDates" class="altColor">
                             <td class="colFirst"><a href="#enabledDates"><code>enabledDates</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.util.List</code>)
@@ -278,7 +286,7 @@
                 List with dates that should be enabled, the others will be disabled (not selectable).
             </td>
                         </tr>
-                        <tr id="flex" class="altColor">
+                        <tr id="flex" class="rowColor">
                             <td class="colFirst"><a href="#flex"><code>flex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -286,7 +294,7 @@
                 Use modern PrimeFlex-Grid instead of classic Grid CSS.
             </td>
                         </tr>
-                        <tr id="focusOnSelect" class="rowColor">
+                        <tr id="focusOnSelect" class="altColor">
                             <td class="colFirst"><a href="#focusOnSelect"><code>focusOnSelect</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -294,7 +302,7 @@
                 If enabled, the input is focused again after selecting a date. Default is false.
             </td>
                         </tr>
-                        <tr id="hideOnDateTimeSelect" class="altColor">
+                        <tr id="hideOnDateTimeSelect" class="rowColor">
                             <td class="colFirst"><a href="#hideOnDateTimeSelect"><code>hideOnDateTimeSelect</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -302,7 +310,7 @@
                 Whether to hide the overlay on date selection when showTime is enabled. Default is false.
             </td>
                         </tr>
-                        <tr id="hideOnRangeSelection" class="rowColor">
+                        <tr id="hideOnRangeSelection" class="altColor">
                             <td class="colFirst"><a href="#hideOnRangeSelection"><code>hideOnRangeSelection</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -310,7 +318,7 @@
                 Whether to hide the overlay on date selection is completed when selectionMode is range. Default is false.
             </td>
                         </tr>
-                        <tr id="hourFormat" class="altColor">
+                        <tr id="hourFormat" class="rowColor">
                             <td class="colFirst"><a href="#hourFormat"><code>hourFormat</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -318,7 +326,7 @@
                 Specifies 12 or 24 hour format.
             </td>
                         </tr>
-                        <tr id="id" class="rowColor">
+                        <tr id="id" class="altColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -326,7 +334,7 @@
                 Unique identifier of the component in a namingContainer.
             </td>
                         </tr>
-                        <tr id="immediate" class="altColor">
+                        <tr id="immediate" class="rowColor">
                             <td class="colFirst"><a href="#immediate"><code>immediate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -334,7 +342,7 @@
                 When set true, process validations logic is executed at apply request values phase for this component. Default is false.
             </td>
                         </tr>
-                        <tr id="inline" class="rowColor">
+                        <tr id="inline" class="altColor">
                             <td class="colFirst"><a href="#inline"><code>inline</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -342,7 +350,7 @@
                 When enabled, displays the datepicker as inline. Default is false for popup mode.
             </td>
                         </tr>
-                        <tr id="inputmode" class="altColor">
+                        <tr id="inputmode" class="rowColor">
                             <td class="colFirst"><a href="#inputmode"><code>inputmode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -350,7 +358,7 @@
                 HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard.
             </td>
                         </tr>
-                        <tr id="inputStyle" class="rowColor">
+                        <tr id="inputStyle" class="altColor">
                             <td class="colFirst"><a href="#inputStyle"><code>inputStyle</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -358,7 +366,7 @@
                 Inline style of the input element. Used when inline is false.
             </td>
                         </tr>
-                        <tr id="inputStyleClass" class="altColor">
+                        <tr id="inputStyleClass" class="rowColor">
                             <td class="colFirst"><a href="#inputStyleClass"><code>inputStyleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -366,7 +374,7 @@
                 Style class of the input element. Used when inline is false.
             </td>
                         </tr>
-                        <tr id="keepInvalid" class="rowColor">
+                        <tr id="keepInvalid" class="altColor">
                             <td class="colFirst"><a href="#keepInvalid"><code>keepInvalid</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -374,7 +382,7 @@
                 Keep invalid value when input blur. Default is false.
             </td>
                         </tr>
-                        <tr id="label" class="altColor">
+                        <tr id="label" class="rowColor">
                             <td class="colFirst"><a href="#label"><code>label</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -382,20 +390,12 @@
                 A localized user presentable name.
             </td>
                         </tr>
-                        <tr id="lang" class="rowColor">
+                        <tr id="lang" class="altColor">
                             <td class="colFirst"><a href="#lang"><code>lang</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">
                 Code describing the language used in the generated markup.
-            </td>
-                        </tr>
-                        <tr id="locale" class="altColor">
-                            <td class="colFirst"><a href="#locale"><code>locale</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
-                                <br>
-                                (<i>must evaluate to </i><code>java.lang.Object</code>)
-                    </td><td class="colLast">
-                User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.
             </td>
                         </tr>
                         <tr id="locale" class="rowColor">
@@ -411,8 +411,7 @@
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">
-                Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to
-                inputMask component for more information about custom templates.
+                Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to inputMask component for more information about custom templates. The `mask` property is invalid in conjuction with multiple or range selection mode.
             </td>
                         </tr>
                         <tr id="maskAutoClear" class="rowColor">
@@ -796,7 +795,7 @@
                                 <br>
                                 (<i>must evaluate to </i><code>boolean</code>)
                     </td><td class="colLast">
-                Flag indicating that this input element will prevent changes by the user.
+                Flag indicating that this component will prevent changes by the user.
             </td>
                         </tr>
                         <tr id="readonlyInput" class="rowColor">
@@ -945,15 +944,7 @@
                 Display the current calendar week infront of each row in the calendar panel.
             </td>
                         </tr>
-                        <tr id="showWeek" class="rowColor">
-                            <td class="colFirst"><a href="#showWeek"><code>showWeek</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
-                                <br>
-                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
-                    </td><td class="colLast">
-                Display the current calendar week infront of each row in the calendar panel.
-            </td>
-                        </tr>
-                        <tr id="size" class="altColor">
+                        <tr id="size" class="rowColor">
                             <td class="colFirst"><a href="#size"><code>size</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>int</code>)
@@ -961,7 +952,7 @@
                 Number of characters used to determine the width of the input element.
             </td>
                         </tr>
-                        <tr id="stepHour" class="rowColor">
+                        <tr id="stepHour" class="altColor">
                             <td class="colFirst"><a href="#stepHour"><code>stepHour</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -969,7 +960,7 @@
                 Hours to change per step. Default is 1.
             </td>
                         </tr>
-                        <tr id="stepMillisecond" class="altColor">
+                        <tr id="stepMillisecond" class="rowColor">
                             <td class="colFirst"><a href="#stepMillisecond"><code>stepMillisecond</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -977,7 +968,7 @@
                 Milliseconds to change per step. Default is 1.
             </td>
                         </tr>
-                        <tr id="stepMinute" class="rowColor">
+                        <tr id="stepMinute" class="altColor">
                             <td class="colFirst"><a href="#stepMinute"><code>stepMinute</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -985,7 +976,7 @@
                 Minutes to change per step. Default is 1.
             </td>
                         </tr>
-                        <tr id="stepSecond" class="altColor">
+                        <tr id="stepSecond" class="rowColor">
                             <td class="colFirst"><a href="#stepSecond"><code>stepSecond</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -993,7 +984,7 @@
                 Seconds to change per step. Default is 1.
             </td>
                         </tr>
-                        <tr id="style" class="rowColor">
+                        <tr id="style" class="altColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -1001,7 +992,7 @@
                 Inline style of the component.
             </td>
                         </tr>
-                        <tr id="styleClass" class="altColor">
+                        <tr id="styleClass" class="rowColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -1009,7 +1000,7 @@
                 Style class of the component.
             </td>
                         </tr>
-                        <tr id="tabindex" class="rowColor">
+                        <tr id="tabindex" class="altColor">
                             <td class="colFirst"><a href="#tabindex"><code>tabindex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -1017,7 +1008,7 @@
                 Position of the element in the tabbing order.
             </td>
                         </tr>
-                        <tr id="timeInput" class="altColor">
+                        <tr id="timeInput" class="rowColor">
                             <td class="colFirst"><a href="#timeInput"><code>timeInput</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -1025,20 +1016,12 @@
                 Allows direct input in time field. Default is false.
             </td>
                         </tr>
-                        <tr id="timeOnly" class="rowColor">
-                            <td class="colFirst"><a href="#timeOnly"><code>timeOnly</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
-                                <br>
-                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
-                    </td><td class="colLast">
-                Shows only time picker without date. Default is false.
-            </td>
-                        </tr>
                         <tr id="timeOnly" class="altColor">
                             <td class="colFirst"><a href="#timeOnly"><code>timeOnly</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">
-                Whether to display timepicker only. Default is false.
+                Shows only time picker without date. Default is false.
             </td>
                         </tr>
                         <tr id="timeZone" class="rowColor">
@@ -1092,7 +1075,7 @@
                         <tr id="validator" class="rowColor">
                             <td class="colFirst"><a href="#validator"><code>validator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.validator.Validator</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.validator.Validator</code>)
                     </td><td class="colLast">
                 A method expression referring to a method validating the input.
             </td>
@@ -1116,7 +1099,7 @@
                         <tr id="valueChangeListener" class="altColor">
                             <td class="colFirst"><a href="#valueChangeListener"><code>valueChangeListener</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.event.ValueChangeListener</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.event.ValueChangeListener</code>)
                     </td><td class="colLast">
                 A method binding expression referring to a method for handling a valuchangeevent.
             </td>
@@ -1137,15 +1120,7 @@
                 A javascript method that is used to calculate the calendar week. Default implementations are available if start of week is monday, sunday or saturday.
             </td>
                         </tr>
-                        <tr id="weekCalculator" class="rowColor">
-                            <td class="colFirst"><a href="#weekCalculator"><code>weekCalculator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
-                                <br>
-                                (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">
-                A javascript method that is used to calculate the calendar week. Default implementations are available if start of week is monday, sunday or saturday.
-            </td>
-                        </tr>
-                        <tr id="widgetVar" class="altColor">
+                        <tr id="widgetVar" class="rowColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -1153,7 +1128,7 @@
                 Name of the client side widget.
             </td>
                         </tr>
-                        <tr id="yearNavigator" class="rowColor">
+                        <tr id="yearNavigator" class="altColor">
                             <td class="colFirst"><a href="#yearNavigator"><code>yearNavigator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -1161,7 +1136,7 @@
                 Display the year navigator. When set to 'true' or 'input', the year is shown as a numeric input, which is accessible for visually impaired users. If set to 'select', it appears as a dropdown menu. Default is 'false'.
             </td>
                         </tr>
-                        <tr id="yearRange" class="altColor">
+                        <tr id="yearRange" class="rowColor">
                             <td class="colFirst"><a href="#yearRange"><code>yearRange</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)

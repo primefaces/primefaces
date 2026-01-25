@@ -112,7 +112,7 @@
                         <tr id="binding" class="rowColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.component.UIComponent</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">
                 An el expression referring to a server side UIComponent instance in a backing bean.
             </td>
@@ -141,7 +141,15 @@
                 Boolean value to specify the rendering of the component, when set to false component will not be rendered.
             </td>
                         </tr>
-                        <tr id="trigger" class="rowColor">
+                        <tr id="showSelectAll" class="rowColor">
+                            <td class="colFirst"><a href="#showSelectAll"><code>showSelectAll</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
+                    </td><td class="colLast">
+                Whether to show the select all checkbox. Defaults to true.
+            </td>
+                        </tr>
+                        <tr id="trigger" class="altColor">
                             <td class="colFirst"><a href="#trigger"><code>trigger</code></a></td><td class="colOne"><code>true</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -149,7 +157,7 @@
                 A search expression resolving to a component to get attached to.
             </td>
                         </tr>
-                        <tr id="widgetVar" class="altColor">
+                        <tr id="widgetVar" class="rowColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)

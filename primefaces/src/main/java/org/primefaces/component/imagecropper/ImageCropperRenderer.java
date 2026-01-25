@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +46,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -57,11 +58,15 @@ import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 
+@FacesRenderer(rendererType = ImageCropper.DEFAULT_RENDERER, componentFamily = ImageCropper.COMPONENT_FAMILY)
 public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
+
+    private static final Pattern IMAGE_TYPE_PATTERN = Pattern.compile("^image/([^;]+);?.*$");
 
     @Override
     public void decode(FacesContext context, ImageCropper component) {
@@ -161,7 +166,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         writer.writeAttribute("alt", alt, null);
 
         String src = DynamicContentSrcBuilder.build(context, component,
-                component.getValueExpression(ImageCropperBase.PropertyKeys.image.name()),
+                component.getValueExpression(ImageCropperBaseImpl.PropertyKeys.image),
                 new Lazy<>(component::getImage), component.isCache(), true);
         writer.writeAttribute("src", src, null);
 
@@ -235,7 +240,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         }
 
         if (contentType != null) {
-            format = contentType.replaceFirst("^image/([^;]+);?.*$", "$1");
+            format = IMAGE_TYPE_PATTERN.matcher(contentType).replaceFirst("$1");
         }
         else {
             int queryStringIndex = imagePath.indexOf('?');
@@ -261,7 +266,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         String originalFileName = null;
 
         // try to evaluate as Resource object, otherwise we would need to handle the Resource#resourcePath which would be more awkward
-        ValueExpression imageVE = component.getValueExpression(ImageCropperBase.PropertyKeys.image.toString());
+        ValueExpression imageVE = component.getValueExpression(ImageCropperBaseImpl.PropertyKeys.image);
         Resource resource = ResourceUtils.evaluateResourceExpression(context, imageVE);
         if (resource != null) {
             inputStream = resource.getInputStream();

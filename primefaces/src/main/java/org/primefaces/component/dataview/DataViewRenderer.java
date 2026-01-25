@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,9 @@ import java.util.logging.Logger;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = DataView.DEFAULT_RENDERER, componentFamily = DataView.COMPONENT_FAMILY)
 public class DataViewRenderer extends DataRenderer<DataView> {
 
     private static final Logger LOGGER = Logger.getLogger(DataViewRenderer.class.getName());

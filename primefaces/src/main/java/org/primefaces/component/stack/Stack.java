@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,19 @@
  */
 package org.primefaces.component.stack;
 
-import jakarta.faces.application.ResourceDependency;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = Stack.COMPONENT_TYPE, namespace = Stack.COMPONENT_FAMILY)
+@FacesComponentDescription("Stack is a navigation component that mimics the stacks feature in Mac OS X.")
 @ResourceDependency(library = "primefaces", name = "stack/stack.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "stack/stack.js")
-public class Stack extends StackBase {
+public class Stack extends StackBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Stack";
 }

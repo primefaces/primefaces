@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,28 @@
  */
 package org.primefaces.component.dashboard;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.model.dashboard.DashboardModel;
 import org.primefaces.model.dashboard.DashboardWidget;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = Dashboard.COMPONENT_TYPE, namespace = Dashboard.COMPONENT_FAMILY)
+@FacesComponentDescription("Dashboard provides a portal like layout with drag-drop based reorder capabilities.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Dashboard extends DashboardBase {
+public class Dashboard extends DashboardBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Dashboard";
 
@@ -53,33 +52,16 @@ public class Dashboard extends DashboardBase {
     public static final String COLUMN_CLASS = "ui-dashboard-column";
     public static final String PANEL_CLASS = "ui-dashboard-panel";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("reorder", DashboardReorderEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context)) {
+        if (isAjaxBehaviorEventSource(event)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if ("reorder".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.reorder)) {
                 String widgetClientId = params.get(clientId + "_widgetId");
                 Integer itemIndex = Integer.valueOf(params.get(clientId + "_itemIndex"));
                 Integer receiverColumnIndex = Integer.valueOf(params.get(clientId + "_receiverColumnIndex"));
@@ -129,7 +111,7 @@ public class Dashboard extends DashboardBase {
             return;
         }
 
-        if (ComponentUtils.isRequestSource(this, context)) {
+        if (isAjaxRequestSource(context)) {
             decode(context);
         }
         else {
@@ -139,14 +121,14 @@ public class Dashboard extends DashboardBase {
 
     @Override
     public void processValidators(FacesContext context) {
-        if (!ComponentUtils.isRequestSource(this, context)) {
+        if (!isAjaxRequestSource(context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if (!ComponentUtils.isRequestSource(this, context)) {
+        if (!isAjaxRequestSource(context)) {
             super.processUpdates(context);
         }
     }

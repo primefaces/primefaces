@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,26 @@
  */
 package org.primefaces.component.dashboard;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.DashboardReorderEvent;
 
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "reorder", event = DashboardReorderEvent.class, description = "Fired when dashboard panels are reordered", defaultEvent = true)
+})
 public abstract class DashboardBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DashboardRenderer";
-
-    public enum PropertyKeys {
-        disabled,
-        model,
-        reordering,
-        responsive,
-        scope,
-        style,
-        styleClass,
-        var,
-        widgetVar
-    }
 
     public DashboardBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -56,75 +53,28 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Dashboard model instance representing the layout of the UI.")
+    public abstract org.primefaces.model.dashboard.DashboardModel getModel();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Disables the component.", defaultValue = "false")
+    public abstract boolean isDisabled();
 
-    public org.primefaces.model.dashboard.DashboardModel getModel() {
-        return (org.primefaces.model.dashboard.DashboardModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
+    @Property(description = "Allow reordering of panels.", defaultValue = "true")
+    public abstract boolean isReordering();
 
-    public void setModel(org.primefaces.model.dashboard.DashboardModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(description = "Inline style of the dashboard container.")
+    public abstract String getStyle();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(description = "Style class of the dashboard container.")
+    public abstract String getStyleClass();
 
-    public void setReordering(boolean reordering) {
-        getStateHelper().put(PropertyKeys.reordering, reordering);
-    }
+    @Property(description = "In responsive mode, PrimeFlex can be used to dynamically size columns and responsiveness.", defaultValue = "false")
+    public abstract boolean isResponsive();
 
-    public boolean isReordering() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.reordering, true);
-    }
+    @Property(description = "Name of collection iterator which will be the value of DashboardWidget.getValue().")
+    public abstract String getVar();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isResponsive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
-    }
-
-    public void setResponsive(boolean responsive) {
-        getStateHelper().put(PropertyKeys.responsive, responsive);
-    }
-
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
-
-    public String getScope() {
-        return (String) getStateHelper().eval(PropertyKeys.scope, null);
-    }
-
-    public void setScope(String scope) {
-        getStateHelper().put(PropertyKeys.scope, scope);
-    }
+    @Property(description = "Scope for dashboard drag and drop behaviour. Items can be dragged between multiple dashboards with the same scope.",
+            implicitDefaultValue = "dashboard")
+    public abstract String getScope();
 }

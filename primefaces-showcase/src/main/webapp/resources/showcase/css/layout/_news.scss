@@ -3,12 +3,12 @@
     top: 0;
     left: 0;
     z-index: 997;
-    height: 70px;
+    height: 30px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("\#{resource['showcase:images/news/topbar-newyear-bg.png']}"), linear-gradient(180deg, #D2000B 0%, #9B0008 100%);
+    background-color: black;
     background-size: cover;
     background-blend-mode: multiply;
 
@@ -20,7 +20,15 @@
         align-items: center;
         color: #ffffff;
         font-weight: bold;
-        font-size: 20px;
+        font-size: 14px;
+
+        .layout-news-link {
+            color: white;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
 
         .layout-news-details {
             display: flex;
@@ -95,8 +103,6 @@
         position: absolute;
         z-index: 2;
         right: 28px;
-        background: linear-gradient(180deg, #D8000A 0%, rgba(255, 0, 0, 0) 100%);
-        filter: drop-shadow(0px 12px 12px rgba(0, 0, 0, 0.17));
         border-radius: 50%;
         display: flex;
         justify-content: center;
@@ -108,7 +114,7 @@
 
 .layout-wrapper.layout-news-active {
     .layout-topbar {
-        top: 70px;
+        top: 30px;
     }
 
     .layout-sidebar {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,31 +23,32 @@
  */
 package org.primefaces.component.datalist;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.data.PageEvent;
 
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "page", event = PageEvent.class),
+    @FacesBehaviorEvent(name = "tap", event = SelectEvent.class),
+    @FacesBehaviorEvent(name = "taphold", event = SelectEvent.class),
+})
 public abstract class DataListBase extends UIPageableData
-        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataListState> {
+        implements Widget, StyleAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataListState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DataListRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        type,
-        itemType,
-        style,
-        styleClass,
-        varStatus,
-        itemStyleClass,
-        multiViewState
-    }
 
     public DataListBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -58,69 +59,16 @@ public abstract class DataListBase extends UIPageableData
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "unordered", description = "Type of the list, valid values are \"unordered\", \"ordered\" and \"definition\".")
+    public abstract String getType();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Specifies the list item type.")
+    public abstract String getItemType();
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "unordered");
-    }
+    @Property(description = "Name of the exported request scoped variable for the status of the iteration.")
+    public abstract String getVarStatus();
 
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
+    @Property(description = "Style class of an item in list. This option is useful to assign specific styles to certain items using an EL expression.")
+    public abstract String getItemStyleClass();
 
-    public String getItemType() {
-        return (String) getStateHelper().eval(PropertyKeys.itemType, null);
-    }
-
-    public void setItemType(String itemType) {
-        getStateHelper().put(PropertyKeys.itemType, itemType);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getVarStatus() {
-        return (String) getStateHelper().eval(PropertyKeys.varStatus, null);
-    }
-
-    public void setVarStatus(String varStatus) {
-        getStateHelper().put(PropertyKeys.varStatus, varStatus);
-    }
-
-
-    public String getItemStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
-    }
-
-    public void setItemStyleClass(String itemStyleClass) {
-        getStateHelper().put(PropertyKeys.itemStyleClass, itemStyleClass);
-    }
-
-    @Override
-    public boolean isMultiViewState() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
-    }
-
-    public void setMultiViewState(boolean multiViewState) {
-        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
-    }
 }

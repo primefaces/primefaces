@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,17 @@
  */
 package org.primefaces.component.defaultcommand;
 
-import jakarta.faces.application.ResourceDependency;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = DefaultCommand.COMPONENT_TYPE, namespace = DefaultCommand.COMPONENT_FAMILY)
+@FacesComponentDescription("DefaultCommand defines the default command component to invoke when enter key is pressed in a form.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
-public class DefaultCommand extends DefaultCommandBase {
+public class DefaultCommand extends DefaultCommandBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DefaultCommand";
 }

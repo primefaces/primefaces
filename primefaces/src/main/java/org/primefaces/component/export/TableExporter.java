@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -380,8 +380,11 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
                 if (currentMeta == null) {
                     currentMeta = new ColumnMeta(columnKey);
                     currentMeta.setVisible(true);
-                    currentMeta.setDisplayPriority(column.getDisplayPriority());
                 }
+                else if (currentMeta.getVisible() == null) {
+                    currentMeta.setVisible(true);
+                }
+                currentMeta.setDisplayPriority(column.getDisplayPriority());
                 // #7200 display visible columns only
                 if (!visibleColumnsOnly || currentMeta.getVisible()) {
                     exportableColumnsMetadata.add(currentMeta);

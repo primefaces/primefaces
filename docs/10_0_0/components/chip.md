@@ -26,7 +26,7 @@ Chip represents entities using icons, labels and images.
 | icon | null | String | Defines the icon to display.
 | image | null | String | Defines the image to display.
 | removable | false | Boolean | Whether to display a remove icon.
-| removeIconClass | pi pi-times-circle | String | Icon of the remove element.
+| removeIcon | pi pi-times-circle | String | Icon of the remove element.
 | widgetVar | null | String | Name of the client side widget.
 | style | null | String | Style of the Chip.
 | styleClass | null | String | StyleClass of the Chip.

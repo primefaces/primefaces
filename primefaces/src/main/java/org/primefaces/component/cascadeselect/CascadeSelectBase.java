@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,29 @@
  */
 package org.primefaces.component.cascadeselect;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SelectEvent;
 
 import jakarta.faces.component.UISelectOne;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class CascadeSelectBase extends UISelectOne implements Widget, InputHolder, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected.", defaultEvent = true)
+})
+public abstract class CascadeSelectBase extends UISelectOne implements Widget, InputHolder, ClientBehaviorHolder,
+        PrimeClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CascadeSelectRenderer";
-
-    public enum PropertyKeys {
-
-        var,
-        widgetVar,
-        appendTo,
-        placeholder,
-        disabled,
-        tabindex,
-        style,
-        styleClass
-    }
 
     public CascadeSelectBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -57,67 +56,21 @@ public abstract class CascadeSelectBase extends UISelectOne implements Widget, I
         return COMPONENT_FAMILY;
     }
 
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
+    @Property(description = "Name of the iterator variable that references each element in the data set.")
+    public abstract String getVar();
 
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
+    @Property(defaultValue = "@(body)", description = "Appends the overlay to the element defined by search expression.")
+    public abstract String getAppendTo();
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "The placeholder attribute specifies a short hint that describes the expected value of an input field.")
+    public abstract String getPlaceholder();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Position in the tabbing order.")
+    public abstract String getTabindex();
 
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
-    }
+    @Property(description = "Disables or enables the component.")
+    public abstract boolean isDisabled();
 
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Flag indicating that this component will prevent changes by the user.")
+    public abstract boolean isReadonly();
 }

@@ -3,6 +3,7 @@
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
                 xmlns:p="primefaces"
+                xmlns:mycomposites="jakarta.faces.composite/composite"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -17,6 +18,9 @@
     <ui:param name="widgetLink" value="Panel-1"/>
 
     <ui:define name="implementation">
+
+        <mycomposites:componentDocumentation value="#{componentDocumentationController.panel}" rendered="false" />
+
         <h:form>
             <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
 
@@ -65,10 +69,10 @@
                 </f:facet>
                 <f:facet name="actions">
                     <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
-                            <h:outputText styleClass="ui-icon pi pi-question"/>
+                            <i class="ui-icon pi pi-question"></i>
                     </p:commandLink>
                     <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
-                        <h:outputText styleClass="ui-icon pi pi-star"/>
+                        <i class="ui-icon pi pi-star"></i>
                     </p:commandLink>
                 </f:facet>
             </p:panel>

@@ -35,9 +35,14 @@
     padding-left: .5em;
 }
 
+.ui-inputgroup>.ui-password-masked:not(:first-child) {
+    padding-left: 0;
+}
+
 .ui-inputgroup > .ui-inputtext:not(:first-child),
 .ui-inputgroup > .ui-inputtextarea:not(:first-child),
 .ui-inputgroup > .ui-password:not(:first-child),
+.ui-inputgroup > .ui-password-masked > .ui-inputfield,
 .ui-inputgroup > .ui-inputnumber:not(:first-child) > .ui-inputtext,
 .ui-inputgroup > .ui-inputmask:not(:first-child),
 .ui-inputgroup > .ui-calendar:not(:first-child) > .ui-inputfield,
@@ -55,6 +60,7 @@
 .ui-inputgroup > .ui-inputtext:not(:last-child),
 .ui-inputgroup > .ui-inputtextarea:not(:last-child),
 .ui-inputgroup > .ui-password:not(:last-child),
+.ui-inputgroup > .ui-password-masked:not(:last-child) > .ui-inputfield,
 .ui-inputgroup > .ui-inputnumber:not(:last-child) > .ui-inputtext,
 .ui-inputgroup > .ui-inputmask:not(:last-child),
 .ui-inputgroup > .ui-selectonemenu:not(:last-child),

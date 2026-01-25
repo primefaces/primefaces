@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,20 +24,9 @@
 package org.primefaces.util;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
-import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import jakarta.faces.application.Application;
@@ -245,7 +234,7 @@ public class MessageFactory {
     }
 
     /**
-     * Custom ResourceBundle.Control to handle loading resources as UTF-8 in Java8 and OSGI classloader issues.
+     * Custom ResourceBundle.Control to handle OSGI classloader issues.
      *
      */
     private static final class PrimeFacesControl extends ResourceBundle.Control {
@@ -260,7 +249,7 @@ public class MessageFactory {
         public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader classLoader,
                     boolean reload) throws IllegalAccessException, InstantiationException, IOException {
 
-            ResourceBundle resourceBundle = createUnicodeBundle(baseName, locale, format, classLoader, reload);
+            ResourceBundle resourceBundle = super.newBundle(baseName, locale, format, classLoader, reload);
 
             // If the ResourceBundle cannot be found with the default class loader (usually the thread context class
             // loader or TCCL), try to find it with the OSGi bundle's class loader. Since default i18n files are
@@ -268,96 +257,10 @@ public class MessageFactory {
             // an OSGi environment. Instead, i18n files are only visible to the class loader of the OSGi bundle that
             // they are included in.
             if (resourceBundle == null && !osgiBundleClassLoader.equals(classLoader)) {
-                resourceBundle = createUnicodeBundle(baseName, locale, format, osgiBundleClassLoader, reload);
+                resourceBundle = super.newBundle(baseName, locale, format, osgiBundleClassLoader, reload);
             }
 
             return resourceBundle;
-        }
-
-        /**
-         * For Java 8 we need to create bundle using UTF-8. This is standard in JDK9+.
-         */
-        private ResourceBundle createUnicodeBundle(String baseName, Locale locale, String format, final ClassLoader loader,
-                    final boolean reload) throws IllegalAccessException, InstantiationException, IOException {
-
-            // The below is a copy of the default implementation.
-            String bundleName = toBundleName(baseName, locale);
-            ResourceBundle bundle = null;
-            if ("java.class".equals(format)) {
-                try {
-                    @SuppressWarnings("unchecked")
-                    Class<? extends ResourceBundle> bundleClass = (Class<? extends ResourceBundle>) loader.loadClass(bundleName);
-
-                    // If the class isn't a ResourceBundle subclass, throw a ClassCastException.
-                    if (!ResourceBundle.class.isAssignableFrom(bundleClass)) {
-                        throw new ClassCastException(bundleClass.getName() + " cannot be cast to ResourceBundle");
-                    }
-
-                    bundle = bundleClass.getConstructor().newInstance();
-                }
-                catch (IllegalArgumentException | InvocationTargetException | SecurityException
-                        | NoSuchMethodException | ClassNotFoundException e) {
-                    // ignore for now
-                }
-            }
-            else if ("java.properties".equals(format)) {
-                String resourceName = toResourceName(bundleName, "properties");
-                if (resourceName == null) {
-                    return null;
-                }
-
-                try {
-                    InputStream stream = null;
-                    if (System.getSecurityManager() != null) {
-                        stream = AccessController.doPrivileged((PrivilegedExceptionAction<InputStream>) () -> {
-                            InputStream is = null;
-                            if (reload) {
-                                URL url = loader.getResource(resourceName);
-                                if (url != null) {
-                                    URLConnection connection = url.openConnection();
-                                    if (connection != null) {
-                                        connection.setUseCaches(false);
-                                        is = connection.getInputStream();
-                                    }
-                                }
-                            }
-                            else {
-                                is = loader.getResourceAsStream(resourceName);
-                            }
-                            return is;
-                        });
-                    }
-                    else {
-                        if (reload) {
-                            URL url = loader.getResource(resourceName);
-                            if (url != null) {
-                                URLConnection connection = url.openConnection();
-                                if (connection != null) {
-                                    connection.setUseCaches(false);
-                                    stream = connection.getInputStream();
-                                }
-                            }
-                        }
-                        else {
-                            stream = loader.getResourceAsStream(resourceName);
-                        }
-                    }
-
-                    if (stream != null) {
-                        try (Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
-                            // Only this line is changed to make it to read properties files as UTF-8.
-                            bundle = new PropertyResourceBundle(reader);
-                        }
-                    }
-                }
-                catch (PrivilegedActionException e) {
-                    throw (IOException) e.getException();
-                }
-            }
-            else {
-                throw new IllegalArgumentException("unknown format: " + format);
-            }
-            return bundle;
         }
     }
 }

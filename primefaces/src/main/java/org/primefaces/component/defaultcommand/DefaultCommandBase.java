@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,18 @@
  */
 package org.primefaces.component.defaultcommand;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
+@FacesComponentBase
 public abstract class DefaultCommandBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DefaultCommandRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        target,
-        scope;
-    }
 
     public DefaultCommandBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -49,27 +45,9 @@ public abstract class DefaultCommandBase extends UIComponentBase implements Widg
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Identifier of the default command component.")
+    public abstract String getTarget();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getTarget() {
-        return (String) getStateHelper().eval(PropertyKeys.target, null);
-    }
-
-    public void setTarget(String target) {
-        getStateHelper().put(PropertyKeys.target, target);
-    }
-
-    public String getScope() {
-        return (String) getStateHelper().eval(PropertyKeys.scope, null);
-    }
-
-    public void setScope(String scope) {
-        getStateHelper().put(PropertyKeys.scope, scope);
-    }
+    @Property(description = "Identifier of the grouping component to enable multiple default commands in a form.")
+    public abstract String getScope();
 }

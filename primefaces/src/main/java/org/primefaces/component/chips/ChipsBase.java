@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,25 @@
  */
 package org.primefaces.component.chips;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected."),
+    @FacesBehaviorEvent(name = "itemUnselect", event = UnselectEvent.class, description = "Fires when an item is unselected.")
+})
 public abstract class ChipsBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ChipsRenderer";
-
-    public enum PropertyKeys {
-
-        placeholder,
-        widgetVar,
-        max,
-        inputStyle,
-        inputStyleClass,
-        addOnBlur,
-        addOnPaste,
-        unique,
-        separator
-    }
 
     public ChipsBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -56,75 +52,24 @@ public abstract class ChipsBase extends AbstractPrimeHtmlInputText implements Wi
         return COMPONENT_FAMILY;
     }
 
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
+    @Property(description = "Maximum number of chips allowed.", defaultValue = "2147483647")
+    public abstract int getMax();
 
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
+    @Property(description = "Inline style for the input element.")
+    public abstract String getInputStyle();
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "CSS class for the input element.")
+    public abstract String getInputStyleClass();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "When enabled, adds a chip when input loses focus.", defaultValue = "false")
+    public abstract boolean isAddOnBlur();
 
-    public int getMax() {
-        return (Integer) getStateHelper().eval(PropertyKeys.max, Integer.MAX_VALUE);
-    }
+    @Property(description = "When enabled, adds chips from pasted text.", defaultValue = "false")
+    public abstract boolean isAddOnPaste();
 
-    public void setMax(int max) {
-        getStateHelper().put(PropertyKeys.max, max);
-    }
+    @Property(description = "When enabled, prevents duplicate chips.", defaultValue = "false")
+    public abstract boolean isUnique();
 
-    public String getInputStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
-    }
-
-    public void setInputStyle(String inputStyle) {
-        getStateHelper().put(PropertyKeys.inputStyle, inputStyle);
-    }
-
-    public String getInputStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
-    }
-
-    public void setInputStyleClass(String inputStyleClass) {
-        getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
-    }
-
-    public boolean isAddOnBlur() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.addOnBlur, false);
-    }
-
-    public void setAddOnBlur(boolean addOnBlur) {
-        getStateHelper().put(PropertyKeys.addOnBlur, addOnBlur);
-    }
-
-    public boolean isAddOnPaste() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.addOnPaste, false);
-    }
-
-    public void setAddOnPaste(boolean addOnPaste) {
-        getStateHelper().put(PropertyKeys.addOnPaste, addOnPaste);
-    }
-
-    public boolean isUnique() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.unique, false);
-    }
-
-    public void setUnique(boolean unique) {
-        getStateHelper().put(PropertyKeys.unique, unique);
-    }
-
-    public String getSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.separator, null);
-    }
-
-    public void setSeparator(String separator) {
-        getStateHelper().put(PropertyKeys.separator, separator);
-    }
+    @Property(description = "Character(s) used to separate chips when pasting.")
+    public abstract String getSeparator();
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,66 +23,43 @@
  */
 package org.primefaces.component.dnd;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIData;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = Droppable.COMPONENT_TYPE, namespace = Droppable.COMPONENT_FAMILY)
+@FacesComponentDescription("Droppable is a component that makes its child elements accept draggable elements.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Droppable extends DroppableBase {
+public class Droppable extends DroppableBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Droppable";
 
-    private static final String DEFAULT_EVENT = "drop";
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("drop", null)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = event.getFacesContext();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
 
-        if (ComponentUtils.isRequestSource(this, context)) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = getClientId(context);
-
+        if (isAjaxBehaviorEventSource(event)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if ("drop".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.drop)) {
                 String dragId = params.get(clientId + "_dragId");
                 String dropId = params.get(clientId + "_dropId");
                 DragDropEvent<?> dndEvent = null;
@@ -102,9 +79,9 @@ public class Droppable extends DroppableBase {
                     dndEvent = new DragDropEvent<>(this, behaviorEvent.getBehavior(), dragId, dropId);
                 }
 
+                dndEvent.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(dndEvent);
             }
-
         }
         else {
             super.queueEvent(event);

@@ -776,12 +776,21 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     bindClearFilterEvent(filter) {
         var $this = this;
 
-        filter.off('search').on('search', function(e) {
+        filter.off('search.filterClear').on('search.filterClear', function(e) {
             // only care when 'X'' is clicked
             if ($(this).val() == "") {
                 $this.filter();
             }
         });
+
+        // #14480 Safari does not trigger 'search' event on clear button
+        if (PrimeFaces.env.browser.safari) {
+            filter.off('input.filterClear').on('input.filterClear', function(e) {
+                if (this.value === "") {
+                    $this.filter();
+                }
+            });
+        }
     }
 
     /**
@@ -1315,6 +1324,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                     $this.selectRowWithCheckbox(checkbox, e);
                 else
                     $this.unselectRowWithCheckbox(checkbox, e);
+
+                e.preventDefault();
+                e.stopPropagation();
             });
         }
         else {
@@ -1361,6 +1373,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                     else {
                         $this.selectRowWithCheckbox(checkbox, e);
                     }
+                    e.preventDefault();
+                    e.stopPropagation();
                 },
                 'keydown.dataTable': function(e) {
                     if ($this.cfg.selectionRowMode === 'none' && PrimeFaces.utils.isActionKey(e)) {
@@ -1736,6 +1750,16 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 $this.adjustScrollWidth();
             }
         });
+
+        // Add or remove CSS classes based on scroll overflow direction
+        const el = this.scrollBody && this.scrollBody[0];
+        if (el) {
+            const hasHorizontalScroll = el.scrollWidth > el.clientWidth;
+            const hasVerticalScroll = el.scrollHeight > el.clientHeight;
+
+            el.classList.toggle('ui-scrollable-x', hasHorizontalScroll);
+            el.classList.toggle('ui-scrollable-y', hasVerticalScroll);
+        }
     }
 
     /**
@@ -1749,6 +1773,15 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
+     * Resets the column widths of this DataTable.
+     * @protected
+     */
+    resetColumnsWidth() {
+        this.bodyTable.find(".ui-datatable-scrollable-theadclone").remove();
+        this.cloneTableHeader(this.thead, this.bodyTable);
+    }
+
+    /**
      * Clones a table header and removes duplicate IDs.
      * @private
      * @param {JQuery} thead The head (`THEAD`) of the table to clone.
@@ -1756,17 +1789,56 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @return {JQuery} The cloned table head.
      */
     cloneTableHeader(thead, table) {
-        var clone = thead.clone();
-        clone.find('th').each(function() {
-            var header = $(this);
-            header.attr('id', header.attr('id') + '_clone');
-            header.removeAttr('aria-label');
-            header.children().not('.ui-column-title').remove();
-            header.children('.ui-column-title').children().remove();
-        });
-        clone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(table);
+        const theadClone = thead.clone();
+        const firstRow = this.firstRow();
+        const isAutoLayout = firstRow.length > 0 && this.isAutoLayout();
 
-        return clone;
+        if (isAutoLayout) {
+            theadClone.find("th").each(function() {
+                $(this).css({width: "", minWidth: ""}); // clear out width so table-layout:auto is properly recalculated
+            });
+            theadClone.insertBefore(this.tbody);
+        }
+
+        theadClone.find("th").each(function(i) {
+            const th = $(this);
+
+            if (isAutoLayout) {
+                const td = firstRow.find("td").eq(i);
+                const width = td.width();
+                th.css({width: width + "px"}).data("width", width); // remember width in data so minWidth can be set after prependTo
+            }
+
+            th.attr("id", th.attr("id") + "_clone");
+            th.removeAttr("aria-label");
+            th.children().not(".ui-column-title").remove();
+            th.children(".ui-column-title").children().remove();
+        });
+
+        theadClone.removeAttr("id").addClass("ui-datatable-scrollable-theadclone").height(0).prependTo(table);
+
+        if (isAutoLayout) {
+            thead.find("th").each(function(i) {
+                const th = $(this);
+                const thClone = theadClone.find("th").eq(i);
+                const width = thClone.data("width"); // because setting minWidth doesn't work before prependTo
+                th.css({width: width + "px", minWidth: width + "px"});
+                thClone.css({width: width + "px", minWidth: width + "px"});
+            });
+
+            if (!thead.data("resizeTimer")) {
+                thead.data("resizeTimer", true);
+                const thiz = this;
+                var resizeTimer;
+    
+                $(window).on('resize', function() {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(thiz.resetColumnsWidth.bind(thiz), 100);
+                });
+            }
+        }
+
+        return theadClone;
     }
 
     /**
@@ -2933,7 +3005,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     updateSelectionAria(row) {
         if (row) {
             var jq = row.children('td.ui-selection-column').find(":radio,:checkbox,div.ui-chkbox-box");
-            if (jq) {
+            // Only update aria-label if one doesn't already exist
+            if (jq && !jq.attr('aria-label')) {
                 var rowMeta = this.getRowMeta(row);
                 var checked = row.attr('aria-selected') === "true"
                 var ariaLabel = checked ? this.getAriaLabel('unselectLabel') : this.getAriaLabel('selectLabel');
@@ -3606,9 +3679,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                         .on("keydown" + namespace, $this.jqId + " tr.ui-row-editing", function(e) {
                             switch (e.key) {
                                 case 'Enter':
-                                    var target = $(e.target);
-                                    // GitHub #7028
-                                    if(target.is("textarea")) {
+                                    // #7028/#13927 Do not proceed if target is a textarea, button, link, or TextEditor
+                                    if(PrimeFaces.utils.isEnterKeyBlocked(e)) {
                                          return true;
                                     }
                                     $(this).closest("tr").find(".ui-row-editor-check").trigger("click");
@@ -3897,8 +3969,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                         input = $(this);
 
                         if(key === 'Enter') {
-                            // GitHub #7028
-                            if(input.is("textarea")) {
+                            // #7028/#13927 Do not proceed if target is a textarea, button, link, or TextEditor
+                            if(PrimeFaces.utils.isEnterKeyBlocked(e)) {
                                 return true;
                             }
                             $this.saveCell(cell);
@@ -4569,12 +4641,31 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
+     * Checks whether this DataTable has got an auto layout.
+     * @protected
+     * @return {boolean} `true` if this DataTable has got an auto layout, or `false` otherwise.
+     */
+    isAutoLayout() {
+        return $(this.jq).find("table").css("table-layout") === "auto";
+    }
+
+    /**
+     * Retrieves the first data row in the table body, excluding any empty message rows.
+     * This is used to calculate the proper column widths.
+     * @protected
+     * @returns {JQuery} The first table row that does not have the 'ui-datatable-empty-message' class.
+     */
+    firstRow() {
+        return this.tbody.find("tr:not(.ui-datatable-empty-message)").first(); 
+    }
+
+    /**
      * Adds and sets up an invisible row for internal purposes.
      * @protected
      */
     addGhostRow() {
-        var firstRow = this.tbody.find('tr:first');
-        if(firstRow.hasClass('ui-datatable-empty-message')) {
+        const firstRow = this.firstRow();
+        if(firstRow.length === 0) {
             return;
         }
 
@@ -4951,6 +5042,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
                 //save order
                 $this.saveColumnOrder();
+
+                // update headers
+                $this.headers = $this.thead.find('> tr > th');
 
                 //fire colReorder event
                 if($this.hasBehavior('colReorder')) {
@@ -5335,6 +5429,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         }).get();
 
         this.writeRowExpansions();
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.expansion-' + this.id, null, function(e) {
+            $this.updateExpandedRowsColspan();
+        });
     }
 
     /**
@@ -5571,10 +5669,15 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     /**
      * Computes the `colspan value for the table rows.
      * @private
+     * @param {boolean} visibleOnly If true, only visible columns are considered.
      * @return {number} The computed `colspan` value.
      */
-    calculateColspan() {
-        var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column)'),
+    calculateColspan(visibleOnly = false) {
+        var headerSelector = '> tr:first th:not(.ui-helper-hidden):not(.ui-grouped-column)';
+        if (visibleOnly) {
+            headerSelector += ':visible';
+        }
+        var visibleHeaderColumns = this.thead.find(headerSelector),
             colSpanValue = 0;
 
         for(var i = 0; i < visibleHeaderColumns.length; i++) {
@@ -5648,7 +5751,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @private
      */
     updateExpandedRowsColspan() {
-        var colspanValue = this.calculateColspan(),
+        var colspanValue = this.calculateColspan(true),
             $this = this;
         this.getExpandedRows().each(function() {
             $this.updateColspan($(this).next('.ui-expanded-row-content'), colspanValue);
@@ -5761,6 +5864,18 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         // update the colspan of the expanded rows
         if(this.cfg.expansion) {
             this.updateExpandedRowsColspan();
+        }
+
+        // reset the position and column widths if scrollable
+        if(this.scrollBody) {
+            // reset scroll position to left-top.
+            this.scrollBody.scrollTop(0).scrollLeft(0); 
+
+            // reset the column widths if the first row exists
+            const firstRow = this.firstRow();
+            if (firstRow.length && this.isAutoLayout()) {
+                this.resetColumnsWidth();
+            }
         }
     }
 

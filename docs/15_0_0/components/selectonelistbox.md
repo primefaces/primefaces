@@ -32,7 +32,8 @@ requiredMessage | null | String | Message to be displayed when required field va
 converterMessage | null | String | Message to be displayed when conversion fails.
 validatorMessage | null | String | Message to be displayed when validation fields.
 widgetVar | null | String | Name of the client side widget.
-disabled | false | Boolean | Disables the component.
+disabled | false | Boolean | Disables or enables the component.
+readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
 label | null | String | User presentable name.
 onchange | null | String | Callback to execute on value change.
 onclick | null | String | Callback for click event.

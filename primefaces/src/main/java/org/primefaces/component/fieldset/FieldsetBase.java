@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,32 +23,28 @@
  */
 package org.primefaces.component.fieldset;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.ToggleEvent;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "toggle", event = ToggleEvent.class, description = "Fires when fieldset is toggled.", defaultEvent = true)
+})
+public abstract class FieldsetBase extends UIPanel implements Widget, PrimeClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.FieldsetRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        legend,
-        style,
-        styleClass,
-        toggleable,
-        toggleSpeed,
-        collapsed,
-        tabindex,
-        escape,
-        title,
-        dynamic
-    }
 
     public FieldsetBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -59,91 +55,31 @@ public abstract class FieldsetBase extends UIPanel implements Widget, ClientBeha
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Facet(description = "Custom content for the legend. Alternative to legend attribute.")
+    public abstract UIComponent getLegendFacet();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Text content for the legend.")
+    public abstract String getLegend();
 
-    public String getLegend() {
-        return (String) getStateHelper().eval(PropertyKeys.legend, null);
-    }
+    @Property(defaultValue = "false", description = "Makes fieldset toggleable.")
+    public abstract boolean isToggleable();
 
-    public void setLegend(String legend) {
-        getStateHelper().put(PropertyKeys.legend, legend);
-    }
+    @Property(defaultValue = "500", description = "Speed of toggling in milliseconds.")
+    public abstract int getToggleSpeed();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "false", description = "Renders fieldset as collapsed.")
+    public abstract boolean isCollapsed();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")
+    public abstract String getTabindex();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "true", description = "Defines whether HTML in legend text is escaped or not.")
+    public abstract boolean isEscape();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Advisory tooltip information.")
+    public abstract String getTitle();
 
-    public boolean isToggleable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
-    }
+    @Property(defaultValue = "false", description = "Enables lazy loading for fieldset content.")
+    public abstract boolean isDynamic();
 
-    public void setToggleable(boolean toggleable) {
-        getStateHelper().put(PropertyKeys.toggleable, toggleable);
-    }
-
-    public int getToggleSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
-    }
-
-    public void setToggleSpeed(int toggleSpeed) {
-        getStateHelper().put(PropertyKeys.toggleSpeed, toggleSpeed);
-    }
-
-    public boolean isCollapsed() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
-    }
-
-    public void setCollapsed(boolean collapsed) {
-        getStateHelper().put(PropertyKeys.collapsed, collapsed);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
-
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
-
-    public boolean isDynamic() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
-    }
-
-    public void setDynamic(boolean dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, dynamic);
-    }
 }

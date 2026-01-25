@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,38 +23,23 @@
  */
 package org.primefaces.component.knob;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIInput;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.BehaviorEvent;
 
-public abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvent(name = "change", event = BehaviorEvent.class, description = "Fires when the knob value changes.", defaultEvent = true)
+public abstract class KnobBase extends UIInput implements Widget, StyleAware, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.KnobRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        min,
-        max,
-        step,
-        thickness,
-        width,
-        height,
-        foregroundColor,
-        backgroundColor,
-        colorTheme,
-        disabled,
-        showLabel,
-        cursor,
-        labelTemplate,
-        onchange,
-        lineCap,
-        styleClass
-    }
 
     public KnobBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -65,139 +50,48 @@ public abstract class KnobBase extends UIInput implements Widget, ClientBehavior
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "0", description = "Minimum value.")
+    public abstract int getMin();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "100", description = "Maximum value.")
+    public abstract int getMax();
 
-    public int getMin() {
-        return (Integer) getStateHelper().eval(PropertyKeys.min, 0);
-    }
+    @Property(defaultValue = "1", description = "Step size.")
+    public abstract int getStep();
 
-    public void setMin(int min) {
-        getStateHelper().put(PropertyKeys.min, min);
-    }
+    @Property(description = "Thickness of the knob arc.")
+    public abstract Float getThickness();
 
-    public int getMax() {
-        return (Integer) getStateHelper().eval(PropertyKeys.max, 100);
-    }
+    @Property(description = "Width of the knob.")
+    public abstract Object getWidth();
 
-    public void setMax(int max) {
-        getStateHelper().put(PropertyKeys.max, max);
-    }
+    @Property(description = "Height of the knob.")
+    public abstract Object getHeight();
 
-    public int getStep() {
-        return (Integer) getStateHelper().eval(PropertyKeys.step, 1);
-    }
+    @Property(description = "Foreground color of the knob.")
+    public abstract Object getForegroundColor();
 
-    public void setStep(int step) {
-        getStateHelper().put(PropertyKeys.step, step);
-    }
+    @Property(description = "Background color of the knob.")
+    public abstract Object getBackgroundColor();
 
-    public Float getThickness() {
-        return (Float) getStateHelper().eval(PropertyKeys.thickness, null);
-    }
+    @Property(description = "Color theme for the knob.")
+    public abstract String getColorTheme();
 
-    public void setThickness(Float thickness) {
-        getStateHelper().put(PropertyKeys.thickness, thickness);
-    }
+    @Property(description = "Disables the component.")
+    public abstract boolean isDisabled();
 
-    public Object getWidth() {
-        return getStateHelper().eval(PropertyKeys.width, null);
-    }
+    @Property(defaultValue = "true", description = "Shows the label.")
+    public abstract boolean isShowLabel();
 
-    public void setWidth(Object width) {
-        getStateHelper().put(PropertyKeys.width, width);
-    }
+    @Property(description = "Shows a cursor.")
+    public abstract boolean isCursor();
 
-    public Object getHeight() {
-        return getStateHelper().eval(PropertyKeys.height, null);
-    }
+    @Property(defaultValue = "{value}", description = "Template for the label.")
+    public abstract String getLabelTemplate();
 
-    public void setHeight(Object height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
+    @Property(description = "Client side callback to execute when value changes.")
+    public abstract String getOnchange();
 
-    public Object getForegroundColor() {
-        return getStateHelper().eval(PropertyKeys.foregroundColor, null);
-    }
-
-    public void setForegroundColor(Object foregroundColor) {
-        getStateHelper().put(PropertyKeys.foregroundColor, foregroundColor);
-    }
-
-    public Object getBackgroundColor() {
-        return getStateHelper().eval(PropertyKeys.backgroundColor, null);
-    }
-
-    public void setBackgroundColor(Object backgroundColor) {
-        getStateHelper().put(PropertyKeys.backgroundColor, backgroundColor);
-    }
-
-    public String getColorTheme() {
-        return (String) getStateHelper().eval(PropertyKeys.colorTheme, null);
-    }
-
-    public void setColorTheme(String colorTheme) {
-        getStateHelper().put(PropertyKeys.colorTheme, colorTheme);
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public boolean isShowLabel() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showLabel, true);
-    }
-
-    public void setShowLabel(boolean showLabel) {
-        getStateHelper().put(PropertyKeys.showLabel, showLabel);
-    }
-
-    public boolean isCursor() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cursor, false);
-    }
-
-    public void setCursor(boolean cursor) {
-        getStateHelper().put(PropertyKeys.cursor, cursor);
-    }
-
-    public String getLabelTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.labelTemplate, "{value}");
-    }
-
-    public void setLabelTemplate(String labelTemplate) {
-        getStateHelper().put(PropertyKeys.labelTemplate, labelTemplate);
-    }
-
-    public String getOnchange() {
-        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
-    }
-
-    public void setOnchange(String onchange) {
-        getStateHelper().put(PropertyKeys.onchange, onchange);
-    }
-
-    public String getLineCap() {
-        return (String) getStateHelper().eval(PropertyKeys.lineCap, "butt");
-    }
-
-    public void setLineCap(String lineCap) {
-        getStateHelper().put(PropertyKeys.lineCap, lineCap);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "butt", description = "Line cap style, valid values are \"butt\" and \"round\".")
+    public abstract String getLineCap();
 }

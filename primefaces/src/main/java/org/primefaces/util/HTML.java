@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -201,14 +201,19 @@ public class HTML {
         "currentTime",
         "defaultMuted",
         "defaultPlaybackRate",
-        "disableremoteplayback",
         "disablepictureinpicture",
+        "disableremoteplayback",
+        "height",
         "loop",
         "muted",
         "playbackRate",
         "playsinline",
+        "poster",
         "preload",
-        "volume"
+        "style",
+        "usemap",
+        "volume",
+        "width"
     );
 
     public static final List<String> MEDIA_EVENTS = LangUtils.unmodifiableList(
@@ -301,14 +306,16 @@ public class HTML {
     public static final String ARIA_VALUE_MIN = "aria-valuemin";
     public static final String ARIA_VALUE_MAX = "aria-valuemax";
     public static final String ARIA_ROLE = "role";
-    public static final String ARIA_ROLE_NONE = "none";
     public static final String ARIA_ROLE_COMBOBOX = "combobox";
+    public static final String ARIA_ROLE_GROUP = "group";
     public static final String ARIA_ROLE_LISTBOX = "listbox";
     public static final String ARIA_ROLE_MENU = "menu";
-    public static final String ARIA_ROLE_MENUITEM = "menuitem";
     public static final String ARIA_ROLE_MENUBAR = "menubar";
+    public static final String ARIA_ROLE_MENUITEM = "menuitem";
+    public static final String ARIA_ROLE_NONE = "none";
     public static final String ARIA_ROLE_OPTION = "option";
     public static final String ARIA_ROLE_SEPARATOR = "separator";
+    public static final String ARIA_ROLE_TEXTBOX = "textbox";
 
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
     public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-icon-only";

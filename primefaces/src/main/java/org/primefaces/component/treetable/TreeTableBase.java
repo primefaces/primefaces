@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,6 +41,8 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TreeTableRenderer";
+    public static final String FILTER_PRUNE_NONE = "none";
+    public static final String FILTER_PRUNE_DESCENDANTS = "descendants";
 
     public enum PropertyKeys {
 
@@ -77,6 +79,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         rows,
         first,
         filterBy,
+        filterPrune,
         filterNormalize,
         globalFilter,
         globalFilterFunction,
@@ -93,6 +96,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         saveOnCellBlur,
         showGridlines,
         size,
+        resizeMode,
         exportTag,
         exportRowTag
     }
@@ -307,6 +311,14 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.paginator, paginator);
     }
 
+    public String getResizeMode() {
+        return (String) getStateHelper().eval(PropertyKeys.resizeMode, null);
+    }
+
+    public void setResizeMode(String resizeMode) {
+        getStateHelper().put(PropertyKeys.resizeMode, resizeMode);
+    }
+
     @Override
     public String getPaginatorTemplate() {
         return (String) getStateHelper().eval(PropertyKeys.paginatorTemplate,
@@ -402,6 +414,18 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setFilterDelay(int filterDelay) {
         getStateHelper().put(PropertyKeys.filterDelay, filterDelay);
+    }
+
+    public String getFilterPrune() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPrune, FILTER_PRUNE_NONE);
+    }
+
+    public void setFilterPrune(String filterPrune) {
+        getStateHelper().put(PropertyKeys.filterPrune, filterPrune);
+    }
+
+    public boolean isFilterPruneDescendants() {
+        return FILTER_PRUNE_DESCENDANTS.equals(getFilterPrune());
     }
 
     public String getCellEditMode() {

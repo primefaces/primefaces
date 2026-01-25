@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,18 @@
  */
 package org.primefaces.component.barcode;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
+
 import jakarta.faces.component.html.HtmlGraphicImage;
 
-
-public abstract class BarcodeBase extends HtmlGraphicImage {
+@FacesComponentBase
+public abstract class BarcodeBase extends HtmlGraphicImage implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.BarcodeRenderer";
-
-    public enum PropertyKeys {
-
-        type,
-        cache,
-        format,
-        orientation,
-        qrErrorCorrection,
-        hrp,
-        magnification,
-        quietZoneHorizontal,
-        quietZoneVertical
-    }
 
     public BarcodeBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -54,76 +45,32 @@ public abstract class BarcodeBase extends HtmlGraphicImage {
         return COMPONENT_FAMILY;
     }
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
-    }
+    @Property(description = "Type of the barcode.")
+    public abstract String getType();
 
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
+    @Property(defaultValue = "true", description = "Controls browser caching mode of the resources.")
+    public abstract boolean isCache();
 
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
-    }
+    @Property(defaultValue = "svg", description = "Format of the generated barcode, valid values are \"svg\" and \"png\".")
+    public abstract String getFormat();
 
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
+    @Property(defaultValue = "0", description = "Orientation in terms of angle. (0, 90, 180, 270)")
+    public abstract int getOrientation();
 
-    public String getFormat() {
-        return (String) getStateHelper().eval(PropertyKeys.format, "svg");
-    }
+    @Property(defaultValue = "L",
+        description = "The QR Code error correction level. L - up to 7% damage. M - up to 15% damage. Q - up to 25% damage. H - up to 30% damage")
+    public abstract String getQrErrorCorrection();
 
-    public void setFormat(String format) {
-        getStateHelper().put(PropertyKeys.format, format);
-    }
+    @Property(defaultValue = "bottom", description = "The barcode human readable placement of text either \"none\", \"top\", or \"bottom\".")
+    public abstract String getHrp();
 
-    public int getOrientation() {
-        return (Integer) getStateHelper().eval(PropertyKeys.orientation, 0);
-    }
+    @Property(defaultValue = "2.0", description = "The magnification factor of the barcode.")
+    public abstract double getMagnification();
 
-    public void setOrientation(int orientation) {
-        getStateHelper().put(PropertyKeys.orientation, orientation);
-    }
+    @Property(defaultValue = "10", description = "The horizontal quiet zone of the barcode in pixels.")
+    public abstract int getQuietZoneHorizontal();
 
-    public String getQrErrorCorrection() {
-        return (String) getStateHelper().eval(PropertyKeys.qrErrorCorrection, "L");
-    }
-
-    public void setQrErrorCorrection(String qrErrorCorrection) {
-        getStateHelper().put(PropertyKeys.qrErrorCorrection, qrErrorCorrection);
-    }
-
-    public String getHrp() {
-        return (String) getStateHelper().eval(PropertyKeys.hrp, "bottom");
-    }
-
-    public void setHrp(String hrp) {
-        getStateHelper().put(PropertyKeys.hrp, hrp);
-    }
-
-    public double getMagnification() {
-        return (Double) getStateHelper().eval(PropertyKeys.magnification, 2.0);
-    }
-
-    public void setMagnification(double magnification) {
-        getStateHelper().put(PropertyKeys.magnification, magnification);
-    }
-
-    public int getQuietZoneHorizontal() {
-        return (Integer) getStateHelper().eval(PropertyKeys.quietZoneHorizontal, 10);
-    }
-
-    public void setQuietZoneHorizontal(int quietZoneHorizontal) {
-        getStateHelper().put(PropertyKeys.quietZoneHorizontal, quietZoneHorizontal);
-    }
-
-    public int getQuietZoneVertical() {
-        return (Integer) getStateHelper().eval(PropertyKeys.quietZoneVertical, 1);
-    }
-
-    public void setQuietZoneVertical(int quietZoneVertical) {
-        getStateHelper().put(PropertyKeys.quietZoneVertical, quietZoneVertical);
-    }
+    @Property(defaultValue = "1", description = "The vertical quiet zone of the barcode in pixels.")
+    public abstract int getQuietZoneVertical();
 
 }

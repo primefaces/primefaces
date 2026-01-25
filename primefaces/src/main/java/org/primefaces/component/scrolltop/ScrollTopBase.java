@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ public abstract class ScrollTopBase extends UIComponentBase implements Widget {
         icon,
         behavior,
         style,
-        styleClass
+        styleClass,
     }
 
     public ScrollTopBase() {
@@ -98,5 +98,14 @@ public abstract class ScrollTopBase extends UIComponentBase implements Widget {
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    @Override
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
+    }
+
+    public void setWidgetVar(java.lang.String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 }

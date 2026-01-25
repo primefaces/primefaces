@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,8 @@
  */
 package org.primefaces.behavior.ajax;
 
-import org.primefaces.behavior.base.AbstractBehaviorHandler;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.behavior.PrimeClientBehaviorHandler;
+import org.primefaces.cdk.api.component.PrimeClientBehaviorHolder;
 
 import java.util.Map;
 
@@ -35,7 +35,7 @@ import jakarta.faces.view.facelets.BehaviorConfig;
 import jakarta.faces.view.facelets.FaceletContext;
 import jakarta.faces.view.facelets.TagAttribute;
 
-public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
+public class AjaxBehaviorHandler extends PrimeClientBehaviorHandler<AjaxBehavior> {
 
     private static final Class<?>[] EMPTY_PARAMS = new Class<?>[]{};
     private static final Class<?>[] ARG_PARAMS = new Class<?>[]{AjaxBehaviorEvent.class};

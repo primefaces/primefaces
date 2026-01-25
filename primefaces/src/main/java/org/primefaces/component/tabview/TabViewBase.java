@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,44 +23,32 @@
  */
 package org.primefaces.component.tabview;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
-import org.primefaces.component.datalist.DataListBase;
+import org.primefaces.event.TabChangeEvent;
+import org.primefaces.event.TabCloseEvent;
 
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UIComponent;
 
-public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, TouchAware, ClientBehaviorHolder, PrimeClientBehaviorHolder,
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "tabChange", event = TabChangeEvent.class, description = "Fires when a tab is changed.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "tabClose", event = TabCloseEvent.class, description = "Fires when a tab is closed.")
+})
+public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, StyleAware, TouchAware, PrimeClientBehaviorHolder,
         MultiViewStateAware<TabViewState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TabViewRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        activeIndex,
-        effect,
-        effectDuration,
-        cache,
-        onTabChange,
-        onTabShow,
-        style,
-        styleClass,
-        orientation,
-        onTabClose,
-        dir,
-        scrollable,
-        tabindex,
-        touchable,
-        multiViewState,
-        focusOnError,
-        focusOnLastActiveTab
-    }
 
     public TabViewBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -71,151 +59,45 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
+    public abstract UIComponent getFooterFacet();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Facet(description = "Allows to add custom action to the tab header.")
+    public abstract UIComponent getActionsFacet();
 
-    public int getActiveIndex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
-    }
+    @Property(defaultValue = "0", description = "Index of the active tab.")
+    public abstract int getActiveIndex();
 
-    public void setActiveIndex(int activeIndex) {
-        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
-    }
+    @Property(description = "Animation effect to use when changing tabs.")
+    public abstract String getEffect();
 
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, null);
-    }
+    @Property(defaultValue = "normal", description = "Duration of the animation effect.")
+    public abstract String getEffectDuration();
 
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
+    @Property(defaultValue = "true", description = "When enabled, dynamically loaded tab contents are cached.")
+    public abstract boolean isCache();
 
-    public String getEffectDuration() {
-        return (String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
-    }
+    @Property(description = "Client side callback to execute when a tab is changed.")
+    public abstract String getOnTabChange();
 
-    public void setEffectDuration(String effectDuration) {
-        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
-    }
+    @Property(description = "Client side callback to execute when a tab is shown.")
+    public abstract String getOnTabShow();
 
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
-    }
+    @Property(defaultValue = "top", description = "Specifies the position of tab headers. Valid values are \"top\", \"bottom\", \"left\" and \"right\".")
+    public abstract String getOrientation();
 
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
+    @Property(description = "Client side callback to execute when a tab is closed.")
+    public abstract String getOnTabClose();
 
-    public String getOnTabChange() {
-        return (String) getStateHelper().eval(PropertyKeys.onTabChange, null);
-    }
+    @Property(defaultValue = "false", description = "When enabled, tabs can be scrolled.")
+    public abstract boolean isScrollable();
 
-    public void setOnTabChange(String onTabChange) {
-        getStateHelper().put(PropertyKeys.onTabChange, onTabChange);
-    }
+    @Property(description = "Position of the element in the tabbing order.")
+    public abstract String getTabindex();
 
-    public String getOnTabShow() {
-        return (String) getStateHelper().eval(PropertyKeys.onTabShow, null);
-    }
+    @Property(defaultValue = "false", description = "When enabled, focuses on the tab containing the first error on validation failure.")
+    public abstract boolean isFocusOnError();
 
-    public void setOnTabShow(String onTabShow) {
-        getStateHelper().put(PropertyKeys.onTabShow, onTabShow);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getOrientation() {
-        return (String) getStateHelper().eval(PropertyKeys.orientation, "top");
-    }
-
-    public void setOrientation(String orientation) {
-        getStateHelper().put(PropertyKeys.orientation, orientation);
-    }
-
-    public String getOnTabClose() {
-        return (String) getStateHelper().eval(PropertyKeys.onTabClose, null);
-    }
-
-    public void setOnTabClose(String onTabClose) {
-        getStateHelper().put(PropertyKeys.onTabClose, onTabClose);
-    }
-
-    @Override
-    public String getDir() {
-        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
-    }
-
-    public void setDir(String dir) {
-        getStateHelper().put(PropertyKeys.dir, dir);
-    }
-
-    public boolean isScrollable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.scrollable, false);
-    }
-
-    public void setScrollable(boolean scrollable) {
-        getStateHelper().put(PropertyKeys.scrollable, scrollable);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public boolean isFocusOnError() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnError, false);
-    }
-
-    public void setFocusOnError(boolean focusOnError) {
-        getStateHelper().put(PropertyKeys.focusOnError, focusOnError);
-    }
-
-    public boolean isFocusOnLastActiveTab() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnLastActiveTab, false);
-    }
-
-    public void setFocusOnLastActiveTab(boolean focusOnLastActiveTab) {
-        getStateHelper().put(PropertyKeys.focusOnLastActiveTab, focusOnLastActiveTab);
-    }
-
-    @Override
-    public Boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
-    }
-
-    @Override
-    public void setTouchable(Boolean touchable) {
-        getStateHelper().put(PropertyKeys.touchable, touchable);
-    }
-
-    @Override
-    public boolean isMultiViewState() {
-        return (Boolean) getStateHelper().eval(DataListBase.PropertyKeys.multiViewState, false);
-    }
-
-    public void setMultiViewState(boolean multiViewState) {
-        getStateHelper().put(DataListBase.PropertyKeys.multiViewState, multiViewState);
-    }
+    @Property(defaultValue = "false", description = "When enabled, focuses on the last active tab when the component is rendered.")
+    public abstract boolean isFocusOnLastActiveTab();
 }

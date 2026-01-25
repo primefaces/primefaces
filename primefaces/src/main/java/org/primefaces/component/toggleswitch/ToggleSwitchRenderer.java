@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ToggleSwitch.DEFAULT_RENDERER, componentFamily = ToggleSwitch.COMPONENT_FAMILY)
 public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
 
     @Override
@@ -67,6 +69,7 @@ public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
                 .add(component.getStyleClass())
                 .add(checked, ToggleSwitch.CHECKED_CLASS)
                 .add(disabled, "ui-state-disabled")
+                .add(component.isReadonly(), "ui-state-readonly")
                 .add(component.getOffIcon() != null, "ui-toggleswitch-dual-icon")
                 .build();
 
@@ -130,10 +133,10 @@ public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_CHECKED, checked, null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
-        if (checked) {
+        if (checked && !component.isDisabled()) {
+            writer.writeAttribute(HTML.ARIA_CHECKED, "true", null);
             writer.writeAttribute("checked", "checked", null);
         }
 

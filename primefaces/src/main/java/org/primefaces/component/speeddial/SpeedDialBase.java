@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,44 +23,18 @@
  */
 package org.primefaces.component.speeddial;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class SpeedDialBase extends AbstractMenu implements Widget {
+@FacesComponentBase
+public abstract class SpeedDialBase extends AbstractMenu implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SpeedDialRenderer";
-
-    public enum PropertyKeys {
-        widgetVar,
-        model,
-        disabled,
-        visible,
-        direction,
-        transitionDelay,
-        type,
-        radius,
-        mask,
-        hideOnClickOutside,
-        style,
-        styleClass,
-        buttonStyleClass,
-        buttonStyle,
-        maskStyleClass,
-        maskStyle,
-        showIcon,
-        hideIcon,
-        rotateAnimation,
-        onVisibleChange,
-        onClick,
-        onShow,
-        onHide,
-        keepOpen,
-        badge,
-        ariaLabel,
-        title
-    }
 
     public SpeedDialBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -71,220 +45,79 @@ public abstract class SpeedDialBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
     @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
+    @Property(description = "MenuModel instance to create menus programmatically")
+    public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(defaultValue = "false", description = "Whether the component is disabled.")
+    public abstract boolean isDisabled();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(defaultValue = "false", description = "Specifies the visibility of the overlay.")
+    public abstract boolean isVisible();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(defaultValue = "up",
+        description = "Specifies the opening direction of actions. Valid values are up, down, left, right, up-left, up-right, down-left and down-right.")
+    public abstract String getDirection();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "30", description = "Transition delay step for each action item.")
+    public abstract int getTransitionDelay();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "linear",
+        description = "Specifies the opening type of actions. Valid values are linear, circle, semi-circle and quarter-circle.")
+    public abstract String getType();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "0", description = "Radius for circle types.")
+    public abstract int getRadius();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "false", description = "Whether to show a mask element behind the speed dial.")
+    public abstract boolean isMask();
 
-    public boolean isVisible() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.visible, false);
-    }
+    @Property(defaultValue = "true", description = "Whether the actions close when clicked outside.")
+    public abstract boolean isHideOnClickOutside();
 
-    public void setVisible(boolean visible) {
-        getStateHelper().put(PropertyKeys.visible, visible);
-    }
+    @Property(description = "Inline style of the button element.")
+    public abstract String getButtonStyle();
 
-    public String getDirection() {
-        return (String) getStateHelper().eval(PropertyKeys.direction, "up");
-    }
+    @Property(description = "Style class of the button element.")
+    public abstract String getButtonStyleClass();
 
-    public void setDirection(String direction) {
-        getStateHelper().put(PropertyKeys.direction, direction);
-    }
+    @Property(description = "Inline style of the mask element.")
+    public abstract String getMaskStyle();
 
-    public int getTransitionDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.transitionDelay, 30);
-    }
+    @Property(description = "Style class of the mask element.")
+    public abstract String getMaskStyleClass();
 
-    public void setTransitionDelay(int transitionDelay) {
-        getStateHelper().put(PropertyKeys.transitionDelay, transitionDelay);
-    }
+    @Property(defaultValue = "pi pi-plus", description = "Icon of the button when speed dial is closed.")
+    public abstract String getShowIcon();
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "linear");
-    }
+    @Property(description = "Icon of the button when speed dial is opened.")
+    public abstract String getHideIcon();
 
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
+    @Property(defaultValue = "true", description = "Whether to show rotate animation when button state changes.")
+    public abstract boolean isRotateAnimation();
 
-    public int getRadius() {
-        return (Integer) getStateHelper().eval(PropertyKeys.radius, 0);
-    }
+    @Property(description = "Client side callback to execute when visibility changes.")
+    public abstract String getOnVisibleChange();
 
-    public void setRadius(int radius) {
-        getStateHelper().put(PropertyKeys.radius, radius);
-    }
+    @Property(description = "Client side callback to execute when button is clicked.")
+    public abstract String getOnClick();
 
-    public boolean isMask() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.mask, false);
-    }
+    @Property(description = "Client side callback to execute when speed dial is shown.")
+    public abstract String getOnShow();
 
-    public void setMask(boolean mask) {
-        getStateHelper().put(PropertyKeys.mask, mask);
-    }
+    @Property(description = "Client side callback to execute when speed dial is hidden.")
+    public abstract String getOnHide();
 
-    public boolean isHideOnClickOutside() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.hideOnClickOutside, true);
-    }
+    @Property(defaultValue = "false", description = "Whether to keep the speed dial open after clicking an action.")
+    public abstract boolean isKeepOpen();
 
-    public void setHideOnClickOutside(boolean hideOnClickOutside) {
-        getStateHelper().put(PropertyKeys.hideOnClickOutside, hideOnClickOutside);
-    }
+    @Property(description = "Badge value to display on the button.")
+    public abstract Object getBadge();
 
-    public String getButtonStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.buttonStyle, null);
-    }
+    @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
+    public abstract String getAriaLabel();
 
-    public void setButtonStyle(String buttonStyle) {
-        getStateHelper().put(PropertyKeys.buttonStyle, buttonStyle);
-    }
+    @Property(description = "Advisory tooltip information.")
+    public abstract String getTitle();
 
-    public String getButtonStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.buttonStyleClass, null);
-    }
-
-    public void setButtonStyleClass(String buttonStyleClass) {
-        getStateHelper().put(PropertyKeys.buttonStyleClass, buttonStyleClass);
-    }
-
-    public String getMaskStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.maskStyle, null);
-    }
-
-    public void setMaskStyle(String maskStyle) {
-        getStateHelper().put(PropertyKeys.maskStyle, maskStyle);
-    }
-
-    public String getMaskStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.maskStyleClass, null);
-    }
-
-    public void setMaskStyleClass(String maskStyleClass) {
-        getStateHelper().put(PropertyKeys.maskStyleClass, maskStyleClass);
-    }
-
-    public String getShowIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.showIcon, "pi pi-plus");
-    }
-
-    public void setShowIcon(String showIcon) {
-        getStateHelper().put(PropertyKeys.showIcon, showIcon);
-    }
-
-    public String getHideIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.hideIcon, null);
-    }
-
-    public void setHideIcon(String hideIcon) {
-        getStateHelper().put(PropertyKeys.hideIcon, hideIcon);
-    }
-
-    public boolean isRotateAnimation() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.rotateAnimation, true);
-    }
-
-    public void setRotateAnimation(boolean rotateAnimation) {
-        getStateHelper().put(PropertyKeys.rotateAnimation, rotateAnimation);
-    }
-
-    public String getOnVisibleChange() {
-        return (String) getStateHelper().eval(PropertyKeys.onVisibleChange, null);
-    }
-
-    public void setOnVisibleChange(String onVisibleChange) {
-        getStateHelper().put(PropertyKeys.onVisibleChange, onVisibleChange);
-    }
-
-    public String getOnClick() {
-        return (String) getStateHelper().eval(PropertyKeys.onClick, null);
-    }
-
-    public void setOnClick(String onClick) {
-        getStateHelper().put(PropertyKeys.onClick, onClick);
-    }
-
-    public String getOnShow() {
-        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
-    }
-
-    public void setOnShow(String onShow) {
-        getStateHelper().put(PropertyKeys.onShow, onShow);
-    }
-
-    public String getOnHide() {
-        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
-    }
-
-    public void setOnHide(String onHide) {
-        getStateHelper().put(PropertyKeys.onHide, onHide);
-    }
-
-    public boolean isKeepOpen() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.keepOpen, false);
-    }
-
-    public void setKeepOpen(boolean keepOpen) {
-        getStateHelper().put(PropertyKeys.keepOpen, keepOpen);
-    }
-
-    public Object getBadge() {
-        return getStateHelper().eval(PropertyKeys.badge, null);
-    }
-
-    public void setBadge(Object badge) {
-        getStateHelper().put(PropertyKeys.badge, badge);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
-
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
-
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
 }

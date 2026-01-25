@@ -15,7 +15,7 @@
         <i>show()</i> and <i>hide()</i>.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/confirm"/>
+    <ui:param name="documentationLink" value="/components/confirmdialog"/>
     <ui:param name="widgetLink" value="ConfirmDialog-1"/>
 
     <ui:define name="implementation">
@@ -69,7 +69,7 @@
                 <p:commandButton type="button" onclick="PF('cd').show()" value="Destroy World" icon="pi pi-trash"
                                  styleClass="ui-button-danger mr-2"/>
                 <p:confirmDialog message="Are you sure about destroying the world?" header="Initiating destroy process"
-                                 severity="alert" widgetVar="cd">
+                                 severity="alert" widgetVar="cd" dismissibleMask="true">
                     <p:commandButton value="Yes Sure" action="#{confirmView.delete}" update="message"
                                      oncomplete="PF('cd').hide()" styleClass="ui-button-danger"/>
                     <p:commandButton value="Not Yet" onclick="PF('cd').hide();" type="button"/>

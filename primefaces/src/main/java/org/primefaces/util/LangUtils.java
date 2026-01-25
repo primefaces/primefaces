@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 package org.primefaces.util;
+
+import org.primefaces.cdk.api.utils.ReflectionUtils;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -53,6 +55,7 @@ public class LangUtils {
 
     public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
     private static final Pattern CAPITAL_CASE = Pattern.compile("(?<=.)(?=\\p{Lu})");
+    private static final Pattern DIACRITICS_PATTERN = Pattern.compile("\\p{M}");
 
     private LangUtils() {
     }
@@ -300,48 +303,27 @@ public class LangUtils {
     }
 
     public static boolean isClassAvailable(String name) {
-        return tryToLoadClassForName(name) != null;
+        return ReflectionUtils.isClassAvailable(name);
     }
 
     public static <T> Class<T> tryToLoadClassForName(String name) {
-        try {
-            return loadClassForName(name);
-        }
-        catch (ClassNotFoundException e) {
-            return null;
-        }
+        return ReflectionUtils.tryToLoadClassForName(name);
     }
 
     public static Method tryToLoadMethodForName(Class<?> clazz, String name, Class<?>... args) {
-        try {
-            return clazz.getDeclaredMethod(name, args);
-        }
-        catch (NoSuchMethodException e) {
-            return null;
-        }
+        return ReflectionUtils.tryToLoadMethodForName(clazz, name, args);
     }
 
     public static <T> Class<T> loadClassForName(String name) throws ClassNotFoundException {
-        try {
-            return (Class<T>) Class.forName(name, false, LangUtils.class.getClassLoader());
-        }
-        catch (ClassNotFoundException e) {
-            return (Class<T>) Class.forName(name, false, getContextClassLoader());
-        }
+        return ReflectionUtils.loadClassForName(name);
     }
 
     public static ClassLoader getContextClassLoader() {
-        return Thread.currentThread().getContextClassLoader();
+        return ReflectionUtils.getContextClassLoader();
     }
 
-    public static ClassLoader getCurrentClassLoader(Class clazz) {
-        ClassLoader cl = getContextClassLoader();
-
-        if (cl == null && clazz != null) {
-            cl = clazz.getClassLoader();
-        }
-
-        return cl;
+    public static ClassLoader getCurrentClassLoader(Class<?> clazz) {
+        return ReflectionUtils.getCurrentClassLoader(clazz);
     }
 
     /**
@@ -555,7 +537,7 @@ public class LangUtils {
             return Constants.EMPTY_STRING;
         }
 
-        return java.text.Normalizer.normalize(strValue, java.text.Normalizer.Form.NFD).replaceAll("\\p{M}", Constants.EMPTY_STRING);
+        return DIACRITICS_PATTERN.matcher(java.text.Normalizer.normalize(strValue, java.text.Normalizer.Form.NFD)).replaceAll(Constants.EMPTY_STRING);
     }
 
     private static boolean withDecimalsParsing(final String str, final int beginIdx) {

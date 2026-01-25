@@ -109,15 +109,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr id="binding" class="rowColor">
+                        <tr id="ariaDescribedBy" class="rowColor">
+                            <td class="colFirst"><a href="#ariaDescribedBy"><code>ariaDescribedBy</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
+            </td>
+                        </tr>
+                        <tr id="binding" class="altColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.component.UIComponent</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">
                 An el expression referring to a server side UIComponent instance in a backing bean.
             </td>
                         </tr>
-                        <tr id="caseSensitive" class="altColor">
+                        <tr id="caseSensitive" class="rowColor">
                             <td class="colFirst"><a href="#caseSensitive"><code>caseSensitive</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -125,7 +133,7 @@
                 Defines if filtering would be case sensitive. Default is false.
             </td>
                         </tr>
-                        <tr id="collectionType" class="rowColor">
+                        <tr id="collectionType" class="altColor">
                             <td class="colFirst"><a href="#collectionType"><code>collectionType</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -138,16 +146,16 @@
                 <code>Class</code> object itself.
             </td>
                         </tr>
-                        <tr id="converter" class="altColor">
+                        <tr id="converter" class="rowColor">
                             <td class="colFirst"><a href="#converter"><code>converter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.convert.Converter</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.convert.Converter</code>)
                     </td><td class="colLast">
                 An el expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
     In case it's a static text, it must refer to a converter id.
             </td>
                         </tr>
-                        <tr id="converterMessage" class="rowColor">
+                        <tr id="converterMessage" class="altColor">
                             <td class="colFirst"><a href="#converterMessage"><code>converterMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -155,13 +163,15 @@
                 Message to display when conversion fails.
             </td>
                         </tr>
-                        <tr id="disabled" class="altColor">
+                        <tr id="disabled" class="rowColor">
                             <td class="colFirst"><a href="#disabled"><code>disabled</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>boolean</code>)
-                    </td><td class="colLast"><i>No Description</i></td>
+                    </td><td class="colLast">
+                Flag indicating whether the component should be disabled.
+            </td>
                         </tr>
-                        <tr id="filter" class="rowColor">
+                        <tr id="filter" class="altColor">
                             <td class="colFirst"><a href="#filter"><code>filter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -169,7 +179,7 @@
                 Displays an input filter for the list.
             </td>
                         </tr>
-                        <tr id="filterFunction" class="altColor">
+                        <tr id="filterFunction" class="rowColor">
                             <td class="colFirst"><a href="#filterFunction"><code>filterFunction</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -177,7 +187,7 @@
                 Client side function to use in custom filterMatchMode.
             </td>
                         </tr>
-                        <tr id="filterMatchMode" class="rowColor">
+                        <tr id="filterMatchMode" class="altColor">
                             <td class="colFirst"><a href="#filterMatchMode"><code>filterMatchMode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -185,7 +195,7 @@
                 Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.
             </td>
                         </tr>
-                        <tr id="filterNormalize" class="altColor">
+                        <tr id="filterNormalize" class="rowColor">
                             <td class="colFirst"><a href="#filterNormalize"><code>filterNormalize</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -193,7 +203,7 @@
                 Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.
             </td>
                         </tr>
-                        <tr id="hideNoSelectionOption" class="rowColor">
+                        <tr id="hideNoSelectionOption" class="altColor">
                             <td class="colFirst"><a href="#hideNoSelectionOption"><code>hideNoSelectionOption</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>boolean</code>)
@@ -201,7 +211,7 @@
                 Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
             </td>
                         </tr>
-                        <tr id="id" class="altColor">
+                        <tr id="id" class="rowColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -209,7 +219,7 @@
                 Unique identifier of the component in a namingContainer.
             </td>
                         </tr>
-                        <tr id="immediate" class="rowColor">
+                        <tr id="immediate" class="altColor">
                             <td class="colFirst"><a href="#immediate"><code>immediate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -217,13 +227,15 @@
                 When set true, process validations logic is executed at apply request values phase for this component. Default is false.
             </td>
                         </tr>
-                        <tr id="label" class="altColor">
+                        <tr id="label" class="rowColor">
                             <td class="colFirst"><a href="#label"><code>label</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast"><i>No Description</i></td>
+                    </td><td class="colLast">
+                User presentable name.
+            </td>
                         </tr>
-                        <tr id="metaKeySelection" class="rowColor">
+                        <tr id="metaKeySelection" class="altColor">
                             <td class="colFirst"><a href="#metaKeySelection"><code>metaKeySelection</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -231,25 +243,31 @@
                 The meta key (SHIFT or CTRL) must be held down to multi-select items. Default is true.
             </td>
                         </tr>
-                        <tr id="onchange" class="altColor">
+                        <tr id="onchange" class="rowColor">
                             <td class="colFirst"><a href="#onchange"><code>onchange</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast"><i>No Description</i></td>
+                    </td><td class="colLast">
+                Client side callback to execute on state change.
+            </td>
                         </tr>
-                        <tr id="onclick" class="rowColor">
+                        <tr id="onclick" class="altColor">
                             <td class="colFirst"><a href="#onclick"><code>onclick</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast"><i>No Description</i></td>
+                    </td><td class="colLast">
+                Client side callback to execute when input element is clicked.
+            </td>
                         </tr>
-                        <tr id="ondblclick" class="altColor">
+                        <tr id="ondblclick" class="rowColor">
                             <td class="colFirst"><a href="#ondblclick"><code>ondblclick</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast"><i>No Description</i></td>
+                    </td><td class="colLast">
+                Client side callback to execute when input element is double clicked.
+            </td>
                         </tr>
-                        <tr id="rendered" class="rowColor">
+                        <tr id="rendered" class="altColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -257,7 +275,7 @@
                 Boolean value to specify the rendering of the component, when set to false component will not be rendered.
             </td>
                         </tr>
-                        <tr id="required" class="altColor">
+                        <tr id="required" class="rowColor">
                             <td class="colFirst"><a href="#required"><code>required</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -265,7 +283,7 @@
                 Marks component as required.
             </td>
                         </tr>
-                        <tr id="requiredMessage" class="rowColor">
+                        <tr id="requiredMessage" class="altColor">
                             <td class="colFirst"><a href="#requiredMessage"><code>requiredMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -273,7 +291,7 @@
                 Message to display when required field validation fails.
             </td>
                         </tr>
-                        <tr id="scrollHeight" class="altColor">
+                        <tr id="scrollHeight" class="rowColor">
                             <td class="colFirst"><a href="#scrollHeight"><code>scrollHeight</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -281,7 +299,7 @@
                 Defines the height of the scrollable area.
             </td>
                         </tr>
-                        <tr id="showCheckbox" class="rowColor">
+                        <tr id="showCheckbox" class="altColor">
                             <td class="colFirst"><a href="#showCheckbox"><code>showCheckbox</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -289,19 +307,23 @@
                 When true, a checkbox is displayed next to each item.
             </td>
                         </tr>
-                        <tr id="style" class="altColor">
+                        <tr id="style" class="rowColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast"><i>No Description</i></td>
+                    </td><td class="colLast">
+                Inline style of the component.
+            </td>
                         </tr>
-                        <tr id="styleClass" class="rowColor">
+                        <tr id="styleClass" class="altColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast"><i>No Description</i></td>
+                    </td><td class="colLast">
+                Style class of the component.
+            </td>
                         </tr>
-                        <tr id="tabindex" class="altColor">
+                        <tr id="tabindex" class="rowColor">
                             <td class="colFirst"><a href="#tabindex"><code>tabindex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -309,15 +331,15 @@
                 Position of the input element in the tabbing order.
             </td>
                         </tr>
-                        <tr id="validator" class="rowColor">
+                        <tr id="validator" class="altColor">
                             <td class="colFirst"><a href="#validator"><code>validator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.validator.Validator</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.validator.Validator</code>)
                     </td><td class="colLast">
                 A method expression referring to a method validating the input.
             </td>
                         </tr>
-                        <tr id="validatorMessage" class="altColor">
+                        <tr id="validatorMessage" class="rowColor">
                             <td class="colFirst"><a href="#validatorMessage"><code>validatorMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -325,7 +347,7 @@
                 Message to display when validation fails.
             </td>
                         </tr>
-                        <tr id="value" class="rowColor">
+                        <tr id="value" class="altColor">
                             <td class="colFirst"><a href="#value"><code>value</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
@@ -333,20 +355,20 @@
                 Value of the component.
             </td>
                         </tr>
-                        <tr id="valueChangeListener" class="altColor">
+                        <tr id="valueChangeListener" class="rowColor">
                             <td class="colFirst"><a href="#valueChangeListener"><code>valueChangeListener</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.event.ValueChangeListener</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.event.ValueChangeListener</code>)
                     </td><td class="colLast">
                 A method binding expression referring to a method for handling a valuchangeevent.
             </td>
                         </tr>
-                        <tr id="var" class="rowColor">
+                        <tr id="var" class="altColor">
                             <td class="colFirst"><a href="#var"><code>var</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>java.lang.String</code></td><td class="colLast">
                 Name of iterator to be used in custom content display.
             </td>
                         </tr>
-                        <tr id="widgetVar" class="altColor">
+                        <tr id="widgetVar" class="rowColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)

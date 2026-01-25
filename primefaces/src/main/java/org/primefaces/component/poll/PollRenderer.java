@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,9 @@ import jakarta.faces.FacesException;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.ActionEvent;
 import jakarta.faces.event.PhaseId;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Poll.DEFAULT_RENDERER, componentFamily = Poll.COMPONENT_FAMILY)
 public class PollRenderer extends CoreRenderer<Poll> {
 
     @Override

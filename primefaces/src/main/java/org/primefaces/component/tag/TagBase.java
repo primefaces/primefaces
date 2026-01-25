@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,18 @@
  */
 package org.primefaces.component.tag;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
+
 import jakarta.faces.component.UIOutput;
 
-public abstract class TagBase extends UIOutput {
+@FacesComponentBase
+public abstract class TagBase extends UIOutput implements StyleAware {
+
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TagRenderer";
-
-    public enum PropertyKeys {
-        severity,
-        rounded,
-        icon,
-        style,
-        styleClass
-    }
 
     public TagBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -47,43 +45,13 @@ public abstract class TagBase extends UIOutput {
         return COMPONENT_FAMILY;
     }
 
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
+    @Property(description = "Icon of the tag.")
+    public abstract String getIcon();
 
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
+    @Property(description = "Severity of the tag, valid options are \"info\", \"success\", \"warning\", \"danger\", \"help\", and \"secondary\".")
+    public abstract String getSeverity();
 
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
-    }
+    @Property(defaultValue = "false", description = "Whether to display the tag with rounded corners.")
+    public abstract boolean isRounded();
 
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
-    }
-
-    public boolean isRounded() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.rounded, false);
-    }
-
-    public void setRounded(boolean rounded) {
-        getStateHelper().put(PropertyKeys.rounded, rounded);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import jakarta.faces.application.FacesMessage;
@@ -60,51 +62,99 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         fileLimit,
         sizeLimit,
         contentType,
-        virusScan;
+        virusScan,
+        allowMediaTypes
     }
+
+    private static final Logger LOGGER = Logger.getLogger(FileValidator.class.getName());
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-
+        String componentAccept;
+        UploadedFile singleFile = null;
+        UploadedFiles multipleFiles = null;
         if (component instanceof FileUpload) {
-            String accept = Boolean.TRUE.equals(getContentType()) ? ((FileUpload) component).getAccept() : null;
+            FileUpload fileUpload = (FileUpload) component;
+            componentAccept = fileUpload.getAccept();
             if (value instanceof UploadedFile) {
-                UploadedFile uploadedFile = (UploadedFile) value;
-
-                validateUploadedFile(context, uploadedFile, accept);
+                singleFile = (UploadedFile) value;
             }
             else if (value instanceof UploadedFiles) {
-                UploadedFiles uploadedFiles = (UploadedFiles) value;
-
-                validateUploadedFiles(context, uploadedFiles, accept);
-            }
-            else if (value != null) {
-                throw new IllegalArgumentException("Argument of type '" + value.getClass().getName() + "' not supported");
+                multipleFiles = (UploadedFiles) value;
             }
         }
         else if (component instanceof HtmlInputFile) {
-            String accept = Boolean.TRUE.equals(getContentType()) ? (String) component.getAttributes().get("accept") : null;
-
+            HtmlInputFile inputFile = (HtmlInputFile) component;
+            componentAccept = (String) inputFile.getAttributes().get("accept");
             if (value instanceof Part) {
-                UploadedFile uploadedFile = new NativeUploadedFile((Part) value, getSizeLimit(), null);
-                validateUploadedFile(context, uploadedFile, accept);
+                singleFile = new NativeUploadedFile((Part) value, getSizeLimit(), null);
             }
             else if (value instanceof List) {
-                List<UploadedFile> uploadedFiles = (List<UploadedFile>) ((List) value).stream()
+                List<UploadedFile> files = (List<UploadedFile>) ((List) value).stream()
                         .map(part -> new NativeUploadedFile((Part) part, getSizeLimit(), null))
                         .collect(Collectors.toList());
-                validateUploadedFiles(context, new UploadedFiles(uploadedFiles), accept);
-            }
-            else if (value != null) {
-                throw new IllegalArgumentException("Argument of type '" + value.getClass().getName() + "' not supported");
+                multipleFiles = new UploadedFiles(files);
             }
         }
         else {
-            throw new IllegalArgumentException("Component of type '" + component.getClass() + "' not supported");
+            throw new IllegalArgumentException("Component of type '" + component.getClass().getName() + "' not supported");
+        }
+        if (value != null && singleFile == null && multipleFiles == null) {
+            throw new IllegalArgumentException("Argument of type '" + value.getClass().getName() + "' not supported");
+        }
+        String accept = resolveAccept(componentAccept);
+        String allowTypes = resolveAllowTypes(componentAccept, component);
+        if (singleFile != null) {
+            validateUploadedFile(context, singleFile, accept, allowTypes);
+        }
+        else if (multipleFiles != null) {
+            validateUploadedFiles(context, multipleFiles, accept, allowTypes);
         }
     }
 
-    protected void validateUploadedFiles(FacesContext context, UploadedFiles uploadedFiles, String accept) {
+    /**
+     * Resolves the accept value for validation.
+     * If content-type validation is enabled, returns either the validator's allowMediaTypes
+     * or the component's accept attribute.
+     * @param accept Raw accept attribute from the component
+     * @return the accept value to use for validation, or null if content type validation is disabled
+     */
+    private String resolveAccept(String accept) {
+        if (Boolean.TRUE.equals(getContentType())) {
+            if (LangUtils.isNotBlank(getAllowMediaTypes())) {
+                return getAllowMediaTypes();
+            }
+            return accept;
+        }
+        return null;
+    }
+
+    /**
+     * Resolves the allowed file types pattern for validation.
+     * Returns the validator's allowTypes if configured. If allowTypes is not configured
+     * and content-type validation is enabled, extracts file extensions from the component's
+     * accept attribute and converts them to a regex pattern.
+     * @param accept Raw accept attribute from the component
+     * @param component The UI component being validated
+     * @return the file types pattern to use for validation, or null if none found
+     */
+    private String resolveAllowTypes(String accept, UIComponent component) {
+        String allowTypes = getAllowTypes();
+        if (LangUtils.isBlank(allowTypes) && Boolean.TRUE.equals(getContentType())) {
+            String extractedAllowTypes = FileUploadUtils.extractAllowTypes(accept);
+            if (LangUtils.isNotBlank(extractedAllowTypes)) {
+                allowTypes = extractedAllowTypes;
+            }
+            else {
+                LOGGER.log(Level.WARNING,
+                    "Either allowTypes attribute in p:validateFile or accept attribute with filename extension(s) in p:fileUpload is required. ClientId: "
+                    + component.getClientId());
+            }
+        }
+        return allowTypes;
+    }
+
+    protected void validateUploadedFiles(FacesContext context, UploadedFiles uploadedFiles, String accept, String allowTypes) {
         Integer fileLimit = getFileLimit();
         if (fileLimit != null && uploadedFiles.getFiles().size() > fileLimit) {
             throw new ValidatorException(
@@ -114,7 +164,7 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         long totalSize = 0;
         for (UploadedFile file : uploadedFiles.getFiles()) {
             totalSize += file.getSize();
-            validateUploadedFile(context, file, accept);
+            validateUploadedFile(context, file, accept, allowTypes);
         }
 
         Long sizeLimit = getSizeLimit();
@@ -125,7 +175,7 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         }
     }
 
-    protected void validateUploadedFile(FacesContext context, UploadedFile uploadedFile, String accept) {
+    protected void validateUploadedFile(FacesContext context, UploadedFile uploadedFile, String accept, String allowTypes) {
         PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
 
         Long sizeLimit = getSizeLimit();
@@ -135,7 +185,6 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
                             uploadedFile.getFileName(), FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(context))));
         }
 
-        String allowTypes = getAllowTypes();
         if (!FileUploadUtils.isValidType(applicationContext, uploadedFile, allowTypes, accept)) {
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(context, ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName(),
@@ -180,7 +229,6 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         return VALIDATOR_ID;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -198,8 +246,6 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
     public int hashCode() {
         return Objects.hash(getStateHelper());
     }
-
-
 
     public Integer getFileLimit() {
         return (Integer) getStateHelper().eval(PropertyKeys.fileLimit, null);
@@ -239,5 +285,13 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
 
     public void setVirusScan(Boolean virusScan) {
         getStateHelper().put(PropertyKeys.virusScan, virusScan);
+    }
+
+    public String getAllowMediaTypes() {
+        return (String) getStateHelper().eval(PropertyKeys.allowMediaTypes, null);
+    }
+
+    public void setAllowMediaTypes(String allowMediaTypes) {
+        getStateHelper().put(PropertyKeys.allowMediaTypes, allowMediaTypes);
     }
 }

@@ -125,7 +125,15 @@
                 Alternate textual description of the input element.
             </td>
                         </tr>
-                        <tr id="autocomplete" class="rowColor">
+                        <tr id="ariaDescribedBy" class="rowColor">
+                            <td class="colFirst"><a href="#ariaDescribedBy"><code>ariaDescribedBy</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
+            </td>
+                        </tr>
+                        <tr id="autocomplete" class="altColor">
                             <td class="colFirst"><a href="#autocomplete"><code>autocomplete</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -133,15 +141,15 @@
                 Controls browser autocomplete behavior.
             </td>
                         </tr>
-                        <tr id="binding" class="altColor">
+                        <tr id="binding" class="rowColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.component.UIComponent</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">
                 An el expression referring to a server side UIComponent instance in a backing bean.
             </td>
                         </tr>
-                        <tr id="caretPositionOnFocus" class="rowColor">
+                        <tr id="caretPositionOnFocus" class="altColor">
                             <td class="colFirst"><a href="#caretPositionOnFocus"><code>caretPositionOnFocus</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -149,16 +157,16 @@
                 Defines where should be positioned the caret on focus such as 'start', 'end', 'decimalLeft', 'decimalRight', default is null.
             </td>
                         </tr>
-                        <tr id="converter" class="altColor">
+                        <tr id="converter" class="rowColor">
                             <td class="colFirst"><a href="#converter"><code>converter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.convert.Converter</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.convert.Converter</code>)
                     </td><td class="colLast">
                 An el expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
     In case it's a static text, it must refer to a converter id.
             </td>
                         </tr>
-                        <tr id="converterMessage" class="rowColor">
+                        <tr id="converterMessage" class="altColor">
                             <td class="colFirst"><a href="#converterMessage"><code>converterMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -166,7 +174,7 @@
                 Message to display when conversion fails.
             </td>
                         </tr>
-                        <tr id="decimalPlaces" class="altColor">
+                        <tr id="decimalPlaces" class="rowColor">
                             <td class="colFirst"><a href="#decimalPlaces"><code>decimalPlaces</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -174,7 +182,7 @@
                 Number of decimal places. If value is Integer/Long/Short number defaults to 0 else defaults to 2.
             </td>
                         </tr>
-                        <tr id="decimalPlacesRawValue" class="rowColor">
+                        <tr id="decimalPlacesRawValue" class="altColor">
                             <td class="colFirst"><a href="#decimalPlacesRawValue"><code>decimalPlacesRawValue</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -182,7 +190,7 @@
                 Specifies the number of decimal places to retain for the raw value and `decimalPlaces` will be used for display values. If this option is left as `null` (the default), the `decimalPlaces` value will be used. Note: Setting this to fewer decimal places than those displayed may cause user confusion.
             </td>
                         </tr>
-                        <tr id="decimalSeparator" class="altColor">
+                        <tr id="decimalSeparator" class="rowColor">
                             <td class="colFirst"><a href="#decimalSeparator"><code>decimalSeparator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -190,7 +198,7 @@
                 Decimal separator char. Default is taken from the view's locale.
             </td>
                         </tr>
-                        <tr id="decimalSeparatorAlternative" class="rowColor">
+                        <tr id="decimalSeparatorAlternative" class="altColor">
                             <td class="colFirst"><a href="#decimalSeparatorAlternative"><code>decimalSeparatorAlternative</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -198,7 +206,7 @@
                 Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.
             </td>
                         </tr>
-                        <tr id="dir" class="altColor">
+                        <tr id="dir" class="rowColor">
                             <td class="colFirst"><a href="#dir"><code>dir</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -206,7 +214,7 @@
                 Direction indication for text that does not inherit directionality.
             </td>
                         </tr>
-                        <tr id="disabled" class="rowColor">
+                        <tr id="disabled" class="altColor">
                             <td class="colFirst"><a href="#disabled"><code>disabled</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>boolean</code>)
@@ -214,7 +222,7 @@
                 Disables the input element, default is false.
             </td>
                         </tr>
-                        <tr id="emptyValue" class="altColor">
+                        <tr id="emptyValue" class="rowColor">
                             <td class="colFirst"><a href="#emptyValue"><code>emptyValue</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -222,7 +230,7 @@
                 Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number). Default is focus.
             </td>
                         </tr>
-                        <tr id="id" class="rowColor">
+                        <tr id="id" class="altColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -230,7 +238,7 @@
                 Unique identifier of the component in a namingContainer.
             </td>
                         </tr>
-                        <tr id="immediate" class="altColor">
+                        <tr id="immediate" class="rowColor">
                             <td class="colFirst"><a href="#immediate"><code>immediate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -238,7 +246,7 @@
                 When set true, process validations logic is executed at apply request values phase for this component. Default is false.
             </td>
                         </tr>
-                        <tr id="inputmode" class="rowColor">
+                        <tr id="inputmode" class="altColor">
                             <td class="colFirst"><a href="#inputmode"><code>inputmode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -246,7 +254,7 @@
                 HTML5 inputmode attribute for hinting at the type of data this control has for touch devices to display appropriate virtual keyboard. Default is 'numeric' if decimalPlaces==0, 'decimal' if decimalPlaces>0.
             </td>
                         </tr>
-                        <tr id="inputStyle" class="altColor">
+                        <tr id="inputStyle" class="rowColor">
                             <td class="colFirst"><a href="#inputStyle"><code>inputStyle</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -254,7 +262,7 @@
                 Inline style of the input element.
             </td>
                         </tr>
-                        <tr id="inputStyleClass" class="rowColor">
+                        <tr id="inputStyleClass" class="altColor">
                             <td class="colFirst"><a href="#inputStyleClass"><code>inputStyleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -262,7 +270,7 @@
                 Style class of the input element.
             </td>
                         </tr>
-                        <tr id="label" class="altColor">
+                        <tr id="label" class="rowColor">
                             <td class="colFirst"><a href="#label"><code>label</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -270,7 +278,7 @@
                 A localized user presentable name.
             </td>
                         </tr>
-                        <tr id="lang" class="rowColor">
+                        <tr id="lang" class="altColor">
                             <td class="colFirst"><a href="#lang"><code>lang</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -278,7 +286,7 @@
                 Code describing the language used in the generated markup.
             </td>
                         </tr>
-                        <tr id="leadingZero" class="altColor">
+                        <tr id="leadingZero" class="rowColor">
                             <td class="colFirst"><a href="#leadingZero"><code>leadingZero</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -286,7 +294,7 @@
                 Controls leading zero behavior. Valid values are "allow"(default), "deny" and "keep".
             </td>
                         </tr>
-                        <tr id="maxlength" class="rowColor">
+                        <tr id="maxlength" class="altColor">
                             <td class="colFirst"><a href="#maxlength"><code>maxlength</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>int</code>)
@@ -294,7 +302,7 @@
                 DO NOT USE! To limit the number of digits...set minValue, maxValue and/or decimalPlaces accordingly.
             </td>
                         </tr>
-                        <tr id="maxValue" class="altColor">
+                        <tr id="maxValue" class="rowColor">
                             <td class="colFirst"><a href="#maxValue"><code>maxValue</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -302,7 +310,7 @@
                 Maximum values. Default is 10000000000000.
             </td>
                         </tr>
-                        <tr id="minValue" class="rowColor">
+                        <tr id="minValue" class="altColor">
                             <td class="colFirst"><a href="#minValue"><code>minValue</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -310,7 +318,7 @@
                 Minimum value. Warning: If minValue is greater than 0, then you will effectively prevent your users to entirely delete the content of their input. Default is -10000000000000.
             </td>
                         </tr>
-                        <tr id="modifyValueOnUpDownArrow" class="altColor">
+                        <tr id="modifyValueOnUpDownArrow" class="rowColor">
                             <td class="colFirst"><a href="#modifyValueOnUpDownArrow"><code>modifyValueOnUpDownArrow</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>boolean</code>)
@@ -318,7 +326,7 @@
                 Allows the user to increment or decrement the element value with the up and down arrow keys, default is true.
             </td>
                         </tr>
-                        <tr id="modifyValueOnWheel" class="rowColor">
+                        <tr id="modifyValueOnWheel" class="altColor">
                             <td class="colFirst"><a href="#modifyValueOnWheel"><code>modifyValueOnWheel</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>boolean</code>)
@@ -326,7 +334,7 @@
                 Allows the user to increment or decrement the element value with the mouse wheel, default is true.
             </td>
                         </tr>
-                        <tr id="onblur" class="altColor">
+                        <tr id="onblur" class="rowColor">
                             <td class="colFirst"><a href="#onblur"><code>onblur</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -334,7 +342,7 @@
                 Client side callback to execute when input element loses focus.
             </td>
                         </tr>
-                        <tr id="onchange" class="rowColor">
+                        <tr id="onchange" class="altColor">
                             <td class="colFirst"><a href="#onchange"><code>onchange</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -342,7 +350,7 @@
                 Client side callback to execute when input element loses focus and its value has been modified since gaining focus.
             </td>
                         </tr>
-                        <tr id="onclick" class="altColor">
+                        <tr id="onclick" class="rowColor">
                             <td class="colFirst"><a href="#onclick"><code>onclick</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -350,7 +358,7 @@
                 Client side callback to execute when input element is clicked.
             </td>
                         </tr>
-                        <tr id="oncontextmenu" class="rowColor">
+                        <tr id="oncontextmenu" class="altColor">
                             <td class="colFirst"><a href="#oncontextmenu"><code>oncontextmenu</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -358,7 +366,7 @@
                 Client side callback to execute when a context menu is triggered.
             </td>
                         </tr>
-                        <tr id="oncopy" class="altColor">
+                        <tr id="oncopy" class="rowColor">
                             <td class="colFirst"><a href="#oncopy"><code>oncopy</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -366,7 +374,7 @@
                 Client side callback to execute when the user cuts the content of an element.
             </td>
                         </tr>
-                        <tr id="oncut" class="rowColor">
+                        <tr id="oncut" class="altColor">
                             <td class="colFirst"><a href="#oncut"><code>oncut</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -374,7 +382,7 @@
                 Client side callback to execute when the user copies the content of an element.
             </td>
                         </tr>
-                        <tr id="ondblclick" class="altColor">
+                        <tr id="ondblclick" class="rowColor">
                             <td class="colFirst"><a href="#ondblclick"><code>ondblclick</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -382,7 +390,7 @@
                 Client side callback to execute when input element is double clicked.
             </td>
                         </tr>
-                        <tr id="ondrag" class="rowColor">
+                        <tr id="ondrag" class="altColor">
                             <td class="colFirst"><a href="#ondrag"><code>ondrag</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -390,7 +398,7 @@
                 Client side callback to execute when an element is dragged.
             </td>
                         </tr>
-                        <tr id="ondragend" class="altColor">
+                        <tr id="ondragend" class="rowColor">
                             <td class="colFirst"><a href="#ondragend"><code>ondragend</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -398,7 +406,7 @@
                 Client side callback to execute at the end of a drag operation.
             </td>
                         </tr>
-                        <tr id="ondragenter" class="rowColor">
+                        <tr id="ondragenter" class="altColor">
                             <td class="colFirst"><a href="#ondragenter"><code>ondragenter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -406,7 +414,7 @@
                 Client side callback to execute when an element has been dragged to a valid drop target.
             </td>
                         </tr>
-                        <tr id="ondragleave" class="altColor">
+                        <tr id="ondragleave" class="rowColor">
                             <td class="colFirst"><a href="#ondragleave"><code>ondragleave</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -414,7 +422,7 @@
                 Client side callback to execute when an element leaves a valid drop target.
             </td>
                         </tr>
-                        <tr id="ondragover" class="rowColor">
+                        <tr id="ondragover" class="altColor">
                             <td class="colFirst"><a href="#ondragover"><code>ondragover</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -422,7 +430,7 @@
                 Client side callback to execute when an element is being dragged over a valid drop target.
             </td>
                         </tr>
-                        <tr id="ondragstart" class="altColor">
+                        <tr id="ondragstart" class="rowColor">
                             <td class="colFirst"><a href="#ondragstart"><code>ondragstart</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -430,7 +438,7 @@
                 Client side callback to execute at the start of a drag operation.
             </td>
                         </tr>
-                        <tr id="ondrop" class="rowColor">
+                        <tr id="ondrop" class="altColor">
                             <td class="colFirst"><a href="#ondrop"><code>ondrop</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -438,7 +446,7 @@
                 Client side callback to execute when dragged element is being dropped.
             </td>
                         </tr>
-                        <tr id="onfocus" class="altColor">
+                        <tr id="onfocus" class="rowColor">
                             <td class="colFirst"><a href="#onfocus"><code>onfocus</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -446,7 +454,7 @@
                 Client side callback to execute when input element receives focus.
             </td>
                         </tr>
-                        <tr id="oninput" class="rowColor">
+                        <tr id="oninput" class="altColor">
                             <td class="colFirst"><a href="#oninput"><code>oninput</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -454,7 +462,7 @@
                 Client side callback to execute when an element gets user input.
             </td>
                         </tr>
-                        <tr id="oninvalid" class="altColor">
+                        <tr id="oninvalid" class="rowColor">
                             <td class="colFirst"><a href="#oninvalid"><code>oninvalid</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -462,7 +470,7 @@
                 Client side callback to execute when an element is invalid.
             </td>
                         </tr>
-                        <tr id="onkeydown" class="rowColor">
+                        <tr id="onkeydown" class="altColor">
                             <td class="colFirst"><a href="#onkeydown"><code>onkeydown</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -470,7 +478,7 @@
                 Client side callback to execute when a key is pressed down over input element.
             </td>
                         </tr>
-                        <tr id="onkeypress" class="altColor">
+                        <tr id="onkeypress" class="rowColor">
                             <td class="colFirst"><a href="#onkeypress"><code>onkeypress</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -478,7 +486,7 @@
                 Client side callback to execute when a key is pressed and released over input element.
             </td>
                         </tr>
-                        <tr id="onkeyup" class="rowColor">
+                        <tr id="onkeyup" class="altColor">
                             <td class="colFirst"><a href="#onkeyup"><code>onkeyup</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -486,7 +494,7 @@
                 Client side callback to execute when a key is released over input element.
             </td>
                         </tr>
-                        <tr id="onmousedown" class="altColor">
+                        <tr id="onmousedown" class="rowColor">
                             <td class="colFirst"><a href="#onmousedown"><code>onmousedown</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -494,7 +502,7 @@
                 Client side callback to execute when a pointer input element is pressed down over input element.
             </td>
                         </tr>
-                        <tr id="onmousemove" class="rowColor">
+                        <tr id="onmousemove" class="altColor">
                             <td class="colFirst"><a href="#onmousemove"><code>onmousemove</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -502,7 +510,7 @@
                 Client side callback to execute when a pointer input element is moved within input element.
             </td>
                         </tr>
-                        <tr id="onmouseout" class="altColor">
+                        <tr id="onmouseout" class="rowColor">
                             <td class="colFirst"><a href="#onmouseout"><code>onmouseout</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -510,7 +518,7 @@
                 Client side callback to execute when a pointer input element is moved away from input element.
             </td>
                         </tr>
-                        <tr id="onmouseover" class="rowColor">
+                        <tr id="onmouseover" class="altColor">
                             <td class="colFirst"><a href="#onmouseover"><code>onmouseover</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -518,7 +526,7 @@
                 Client side callback to execute when a pointer input element is moved onto input element.
             </td>
                         </tr>
-                        <tr id="onmouseup" class="altColor">
+                        <tr id="onmouseup" class="rowColor">
                             <td class="colFirst"><a href="#onmouseup"><code>onmouseup</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -526,7 +534,7 @@
                 Client side callback to execute when a pointer input element is released over input element.
             </td>
                         </tr>
-                        <tr id="onpaste" class="rowColor">
+                        <tr id="onpaste" class="altColor">
                             <td class="colFirst"><a href="#onpaste"><code>onpaste</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -534,7 +542,7 @@
                 Client side callback to execute when the user pastes some content in an element.
             </td>
                         </tr>
-                        <tr id="onreset" class="altColor">
+                        <tr id="onreset" class="rowColor">
                             <td class="colFirst"><a href="#onreset"><code>onreset</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -542,7 +550,7 @@
                 Client side callback to execute when the Reset button in a form is clicked.
             </td>
                         </tr>
-                        <tr id="onscroll" class="rowColor">
+                        <tr id="onscroll" class="altColor">
                             <td class="colFirst"><a href="#onscroll"><code>onscroll</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -550,7 +558,7 @@
                 Client side callback to execute when an element's scrollbar is being scrolled.
             </td>
                         </tr>
-                        <tr id="onsearch" class="altColor">
+                        <tr id="onsearch" class="rowColor">
                             <td class="colFirst"><a href="#onsearch"><code>onsearch</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -558,7 +566,7 @@
                 Client side callback to execute when the user writes something in a search field.
             </td>
                         </tr>
-                        <tr id="onselect" class="rowColor">
+                        <tr id="onselect" class="altColor">
                             <td class="colFirst"><a href="#onselect"><code>onselect</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -566,7 +574,7 @@
                 Client side callback to execute when text within input element is selected by user.
             </td>
                         </tr>
-                        <tr id="onwheel" class="altColor">
+                        <tr id="onwheel" class="rowColor">
                             <td class="colFirst"><a href="#onwheel"><code>onwheel</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -574,7 +582,7 @@
                 Client side callback to execute when the mouse wheel rolls up or down over an element.
             </td>
                         </tr>
-                        <tr id="padControl" class="rowColor">
+                        <tr id="padControl" class="altColor">
                             <td class="colFirst"><a href="#padControl"><code>padControl</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -582,7 +590,7 @@
                 Allow padding the decimal places with zeros. If set to 'floats', padding is only done when there are some decimals (up to the number of decimal places from the decimalPlaces variable). If set to an integer, padding will use that number for adding the zeros. If set to "true" it will always pad the decimal places with zeroes, and never if set to "false". Default is "true"
             </td>
                         </tr>
-                        <tr id="placeholder" class="altColor">
+                        <tr id="placeholder" class="rowColor">
                             <td class="colFirst"><a href="#placeholder"><code>placeholder</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -590,15 +598,15 @@
                 The placeholder attribute specifies a short hint that describes the expected value of an input field.
             </td>
                         </tr>
-                        <tr id="readonly" class="rowColor">
+                        <tr id="readonly" class="altColor">
                             <td class="colFirst"><a href="#readonly"><code>readonly</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>boolean</code>)
                     </td><td class="colLast">
-                Flag indicating that this input element will prevent changes by the user.
+                Flag indicating that this component will prevent changes by the user.
             </td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -606,7 +614,7 @@
                 Boolean value to specify the rendering of the component, when set to false component will not be rendered.
             </td>
                         </tr>
-                        <tr id="required" class="rowColor">
+                        <tr id="required" class="altColor">
                             <td class="colFirst"><a href="#required"><code>required</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -614,7 +622,7 @@
                 Marks component as required.
             </td>
                         </tr>
-                        <tr id="requiredMessage" class="altColor">
+                        <tr id="requiredMessage" class="rowColor">
                             <td class="colFirst"><a href="#requiredMessage"><code>requiredMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -622,7 +630,7 @@
                 Message to display when required field validation fails.
             </td>
                         </tr>
-                        <tr id="roundMethod" class="rowColor">
+                        <tr id="roundMethod" class="altColor">
                             <td class="colFirst"><a href="#roundMethod"><code>roundMethod</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -630,7 +638,7 @@
                 Controls the rounding method. Default is Round-Half-Up Symmetric.
             </td>
                         </tr>
-                        <tr id="selectOnFocus" class="altColor">
+                        <tr id="selectOnFocus" class="rowColor">
                             <td class="colFirst"><a href="#selectOnFocus"><code>selectOnFocus</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>boolean</code>)
@@ -638,7 +646,7 @@
                 Defines if the element value should be selected on focus, default is true.
             </td>
                         </tr>
-                        <tr id="signPosition" class="rowColor">
+                        <tr id="signPosition" class="altColor">
                             <td class="colFirst"><a href="#signPosition"><code>signPosition</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -646,7 +654,7 @@
                 Placement of the negative/positive sign relative to the symbolPosition option The sign is placed on either side of the symbolPosition, which can be placed on either side of the numbers. 'p' for prefix 's' for suffix 'l' for left 'r' for right 
             </td>
                         </tr>
-                        <tr id="size" class="altColor">
+                        <tr id="size" class="rowColor">
                             <td class="colFirst"><a href="#size"><code>size</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>int</code>)
@@ -654,7 +662,7 @@
                 Number of characters used to determine the width of the input element.
             </td>
                         </tr>
-                        <tr id="style" class="rowColor">
+                        <tr id="style" class="altColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -662,7 +670,7 @@
                 Inline style of the component.
             </td>
                         </tr>
-                        <tr id="styleClass" class="altColor">
+                        <tr id="styleClass" class="rowColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -670,7 +678,7 @@
                 Style class of the component.
             </td>
                         </tr>
-                        <tr id="symbol" class="rowColor">
+                        <tr id="symbol" class="altColor">
                             <td class="colFirst"><a href="#symbol"><code>symbol</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -678,7 +686,7 @@
                 Desired symbol or unit. Default is none.
             </td>
                         </tr>
-                        <tr id="symbolPosition" class="altColor">
+                        <tr id="symbolPosition" class="rowColor">
                             <td class="colFirst"><a href="#symbolPosition"><code>symbolPosition</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -686,7 +694,7 @@
                 Position of the symbol. 'p' for prefix 's' for suffix
             </td>
                         </tr>
-                        <tr id="tabindex" class="rowColor">
+                        <tr id="tabindex" class="altColor">
                             <td class="colFirst"><a href="#tabindex"><code>tabindex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -694,7 +702,7 @@
                 Position of the element in the tabbing order.
             </td>
                         </tr>
-                        <tr id="thousandSeparator" class="altColor">
+                        <tr id="thousandSeparator" class="rowColor">
                             <td class="colFirst"><a href="#thousandSeparator"><code>thousandSeparator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -702,7 +710,7 @@
                 Thousand separator char. Default is taken from the view's locale.
             </td>
                         </tr>
-                        <tr id="title" class="rowColor">
+                        <tr id="title" class="altColor">
                             <td class="colFirst"><a href="#title"><code>title</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -710,7 +718,7 @@
                 Advisory tooltip information.
             </td>
                         </tr>
-                        <tr id="type" class="altColor">
+                        <tr id="type" class="rowColor">
                             <td class="colFirst"><a href="#type"><code>type</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -718,15 +726,15 @@
                 Input field type. Valid values are "text"(default), "tel" and "hidden".
             </td>
                         </tr>
-                        <tr id="validator" class="rowColor">
+                        <tr id="validator" class="altColor">
                             <td class="colFirst"><a href="#validator"><code>validator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.validator.Validator</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.validator.Validator</code>)
                     </td><td class="colLast">
                 A method expression referring to a method validating the input.
             </td>
                         </tr>
-                        <tr id="validatorMessage" class="altColor">
+                        <tr id="validatorMessage" class="rowColor">
                             <td class="colFirst"><a href="#validatorMessage"><code>validatorMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -734,7 +742,7 @@
                 Message to display when validation fails.
             </td>
                         </tr>
-                        <tr id="value" class="rowColor">
+                        <tr id="value" class="altColor">
                             <td class="colFirst"><a href="#value"><code>value</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
@@ -742,15 +750,15 @@
                 Value of the component.
             </td>
                         </tr>
-                        <tr id="valueChangeListener" class="altColor">
+                        <tr id="valueChangeListener" class="rowColor">
                             <td class="colFirst"><a href="#valueChangeListener"><code>valueChangeListener</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.event.ValueChangeListener</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.event.ValueChangeListener</code>)
                     </td><td class="colLast">
                 A method binding expression referring to a method for handling a valuchangeevent.
             </td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,9 @@ import java.util.Map;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Diagram.DEFAULT_RENDERER, componentFamily = Diagram.COMPONENT_FAMILY)
 public class DiagramRenderer extends CoreRenderer<Diagram> {
 
     private static final String SB_DIAGRAM = CoreRenderer.class.getName() + "#diagram";
@@ -381,7 +383,7 @@ public class DiagramRenderer extends CoreRenderer<Diagram> {
         String style = component.getStyle();
         String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? Diagram.CONTAINER_CLASS : Diagram.CONTAINER_CLASS + " " + styleClass;
-        UIComponent elementFacet = component.getFacet("element");
+        UIComponent elementFacet = component.getElementFacet();
 
         writer.startElement("div", component);
         writer.writeAttribute("id", component.getClientId(context), null);

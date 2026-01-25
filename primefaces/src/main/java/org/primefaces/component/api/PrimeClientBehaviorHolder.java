@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,31 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
+
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
 import jakarta.faces.event.BehaviorEvent;
 
-public interface PrimeClientBehaviorHolder {
+public interface PrimeClientBehaviorHolder extends org.primefaces.cdk.api.component.PrimeClientBehaviorHolder {
 
     Set<String> DEFAULT_SELECT_EVENT_NAMES =
             Set.of("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup",
                     "mousedown", "mousemove", "mouseout", "mouseover", "mouseup");
 
     Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
+
+    @Override
+    default Collection<String> getImplicitBehaviorEventNames() {
+        return Collections.emptyList(); // not required yet
+    }
+
+    // just for now until all components using CDK
+    @Override
+    default PrimeClientBehaviorEventKeys[] getClientBehaviorEventKeys() {
+        return null;
+    }
 }

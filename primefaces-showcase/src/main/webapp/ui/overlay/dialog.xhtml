@@ -32,6 +32,9 @@
 
             <h5>Fit Viewport</h5>
             <p:commandButton value="Show" type="button" icon="pi pi-external-link" onclick="PF('dlg5').show()"/>
+
+            <h5>Custom Toolbar</h5>
+            <p:commandButton value="Show" type="button" icon="pi pi-external-link" onclick="PF('dlg6').show()"/>
         </div>
 
         <p:dialog header="Header" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade" closeOnEscape="true">
@@ -41,7 +44,7 @@
             cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </p:dialog>
 
-        <p:dialog header="Header" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true" closeOnEscape="true">
+        <p:dialog header="Header" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true" closeOnEscape="true" dismissibleMask="true">
             <p class="m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
             Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
@@ -81,6 +84,17 @@
                 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
                 cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </p:dialog>
+
+        <p:dialog header="Header" widgetVar="dlg6" minHeight="40" width="350" showEffect="fade" closeOnEscape="true">
+            <f:facet name="actions">
+                <p:commandLink styleClass="ui-dialog-titlebar-icon"><i class="ui-icon pi pi-calendar"></i></p:commandLink>
+                <p:commandLink styleClass="ui-dialog-titlebar-icon"><i class="ui-icon pi pi-question"></i></p:commandLink>
+            </f:facet>
+            <p class="m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </p:dialog>
 
     </ui:define>

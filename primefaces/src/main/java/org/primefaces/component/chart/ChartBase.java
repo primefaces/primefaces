@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,24 @@
  */
 package org.primefaces.component.chart;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.ItemSelectEvent;
 
 import jakarta.faces.component.UIComponentBase;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class ChartBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "itemSelect", event = ItemSelectEvent.class, description = "Fires when an item is selected.", defaultEvent = true)
+})
+public abstract class ChartBase extends UIComponentBase implements Widget, ClientBehaviorHolder,
+        PrimeClientBehaviorHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -44,78 +55,18 @@ public abstract class ChartBase extends UIComponentBase implements Widget, Clien
         return COMPONENT_FAMILY;
     }
 
-    public enum PropertyKeys {
-        widgetVar,
-        value,
-        extender,
-        ariaLabel,
-        style,
-        styleClass,
-        canvasStyle,
-        canvasStyleClass
-    }
+    @Property(description = "Chart model data as a JSON string, either generated from an XDEV model object or provided as raw JSON configuration.")
+    public abstract String getValue();
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
+    public abstract String getAriaLabel();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Name of javascript function to extend the options of the underlying Chart.js plugin.")
+    public abstract String getExtender();
 
-    public String getValue() {
-        return (String) getStateHelper().eval(PropertyKeys.value, null);
-    }
+    @Property(description = "Inline style of the canvas element.")
+    public abstract String getCanvasStyle();
 
-    public void setValue(String value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
-
-    public String getExtender() {
-        return (String) getStateHelper().eval(PropertyKeys.extender, null);
-    }
-
-    public void setExtender(String extender) {
-        getStateHelper().put(PropertyKeys.extender, extender);
-    }
-
-    public String getCanvasStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.canvasStyle, null);
-    }
-
-    public void setCanvasStyle(String canvasStyle) {
-        getStateHelper().put(PropertyKeys.canvasStyle, canvasStyle);
-    }
-
-    public String getCanvasStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.canvasStyleClass, null);
-    }
-
-    public void setCanvasStyleClass(String canvasStyleClass) {
-        getStateHelper().put(PropertyKeys.canvasStyleClass, canvasStyleClass);
-    }
+    @Property(description = "Style class of the canvas element.")
+    public abstract String getCanvasStyleClass();
 }

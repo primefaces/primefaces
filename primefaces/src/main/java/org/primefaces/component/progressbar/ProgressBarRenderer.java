@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,9 @@ import java.util.Map;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = ProgressBar.DEFAULT_RENDERER, componentFamily = ProgressBar.COMPONENT_FAMILY)
 public class ProgressBarRenderer extends CoreRenderer<ProgressBar> {
 
     @Override
@@ -87,14 +89,19 @@ public class ProgressBarRenderer extends CoreRenderer<ProgressBar> {
         //value
         writer.startElement("div", component);
         writer.writeAttribute("class", ProgressBar.VALUE_CLASS, null);
-        if (value != 0) {
+        if (value >= 0) {
             writer.writeAttribute("style", "display:block;width:" + value + "%", style);
         }
         //label
         writer.startElement("div", component);
         writer.writeAttribute("class", ProgressBar.LABEL_CLASS, null);
         if (labelTemplate != null) {
-            writer.writeAttribute("style", "display:block", style);
+            if (value == 0) {
+                writer.writeAttribute("style", "color:var(--text-color);display:block", style);
+            }
+            else {
+                writer.writeAttribute("style", "display:block", style);
+            }
             writer.writeText(labelTemplate.replace("{value}", String.valueOf(value)), null);
         }
         writer.endElement("div"); // label end

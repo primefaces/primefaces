@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = Galleria.DEFAULT_RENDERER, componentFamily = Galleria.COMPONENT_FAMILY)
 public class GalleriaRenderer extends CoreRenderer<Galleria> {
 
     @Override
@@ -70,7 +72,7 @@ public class GalleriaRenderer extends CoreRenderer<Galleria> {
 
     protected void encodeHeader(FacesContext context, Galleria component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent facet = component.getFacet("header");
+        UIComponent facet = component.getHeaderFacet();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (shouldRenderFacet) {
@@ -97,7 +99,7 @@ public class GalleriaRenderer extends CoreRenderer<Galleria> {
 
     protected void encodeFooter(FacesContext context, Galleria component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent facet = component.getFacet("footer");
+        UIComponent facet = component.getFooterFacet();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (shouldRenderFacet) {
@@ -160,7 +162,7 @@ public class GalleriaRenderer extends CoreRenderer<Galleria> {
     }
 
     public void encodeCaptions(FacesContext context, Galleria component) throws IOException {
-        UIComponent facet = component.getFacet("caption");
+        UIComponent facet = component.getCaptionFacet();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (component.isShowCaption() && shouldRenderFacet) {
@@ -174,7 +176,7 @@ public class GalleriaRenderer extends CoreRenderer<Galleria> {
                 for (int i = 0; i < component.getRowCount(); i++) {
                     component.setIndex(i);
 
-                    encodeCaption(context, component, component.getFacet("caption"), true);
+                    encodeCaption(context, component, component.getCaptionFacet(), true);
                 }
 
                 component.setIndex(-1);
@@ -213,7 +215,7 @@ public class GalleriaRenderer extends CoreRenderer<Galleria> {
     }
 
     public void encodeIndicators(FacesContext context, Galleria component) throws IOException {
-        UIComponent facet = component.getFacet("indicator");
+        UIComponent facet = component.getIndicatorFacet();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (component.isShowIndicators() && shouldRenderFacet) {
@@ -236,7 +238,7 @@ public class GalleriaRenderer extends CoreRenderer<Galleria> {
                         requestMap.put(varStatus, status);
                     }
 
-                    encodeIndicator(context, component, component.getFacet("indicator"), true);
+                    encodeIndicator(context, component, component.getIndicatorFacet(), true);
                 }
 
                 component.setIndex(-1);
@@ -284,7 +286,7 @@ public class GalleriaRenderer extends CoreRenderer<Galleria> {
     }
 
     public void encodeThumbnails(FacesContext context, Galleria component) throws IOException {
-        UIComponent facet = component.getFacet("thumbnail");
+        UIComponent facet = component.getThumbnailFacet();
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (component.isShowThumbnails() && shouldRenderFacet) {
@@ -297,7 +299,7 @@ public class GalleriaRenderer extends CoreRenderer<Galleria> {
                 for (int i = 0; i < component.getRowCount(); i++) {
                     component.setIndex(i);
 
-                    encodeThumbnail(context, component, component.getFacet("thumbnail"), true);
+                    encodeThumbnail(context, component, component.getThumbnailFacet(), true);
                 }
 
                 component.setIndex(-1);

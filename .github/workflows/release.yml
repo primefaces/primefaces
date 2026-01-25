@@ -1,0 +1,128 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g. 1.0.0)'
+        required: true
+        type: string
+      next_version:
+        description: 'Next development version (e.g. 1.0.1-SNAPSHOT)'
+        required: true
+        type: string
+
+env:
+  JAVA_VERSION: '11'
+  JAVA_DISTRO: 'temurin'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      issues: write 
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: ${{ env.JAVA_DISTRO }}
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: Set version
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          # Configure git for any operations
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          # Fetch latest changes to ensure we're up to date
+          git fetch origin "${{ github.ref_name }}"
+          
+          # Always pull latest changes first to avoid conflicts
+          git pull origin "${{ github.ref_name }}" --rebase
+          
+          # Check if version is already set after pulling
+          CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          TAG_NAME="v${{ github.event.inputs.version }}"
+          
+          echo "Current version: $CURRENT_VERSION"
+          echo "Target version: ${{ github.event.inputs.version }}"
+          echo "Working on branch: ${{ github.ref_name }}"
+          
+          # Debug: Show recent commits
+          echo "Recent commits:"
+          git log --oneline -5
+          
+          # Check if we already have the release commit
+          if git log --oneline -10 | grep -q "Release version ${{ github.event.inputs.version }}"; then
+            echo "Release commit already exists, skipping version setting"
+          elif [ "$CURRENT_VERSION" != "${{ github.event.inputs.version }}" ]; then
+            echo "Setting version to ${{ github.event.inputs.version }}"
+            mvn versions:set -DgenerateBackupPoms=false -DnewVersion=${{ github.event.inputs.version }}
+            git add pom.xml "**/pom.xml"
+            git commit -m "Release version ${{ github.event.inputs.version }}"
+            git push origin "${{ github.ref_name }}"
+          else
+            echo "Version is already set to ${{ github.event.inputs.version }}"
+          fi
+          
+          # Check if tag already exists (locally or remotely)
+          if git tag -l "$TAG_NAME" | grep -q "$TAG_NAME"; then
+            echo "Tag $TAG_NAME already exists locally"
+          elif git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME"; then
+            echo "Tag $TAG_NAME already exists remotely"
+          else
+            echo "Creating and pushing tag $TAG_NAME"
+            git tag -a "$TAG_NAME" -m "Release version ${{ github.event.inputs.version }}"
+            git push origin "$TAG_NAME"
+          fi
+
+      - name: Build
+        run: mvn -Prelease
+        
+      - name: Release
+        env:
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN : ${{ secrets.SONATYPE_TOKEN }}
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
+        run: mvn -N jreleaser:full-release
+
+      - name: Set next version
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          # Configure git (in case it's needed again)
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          # Check if next version is already set
+          CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          
+          echo "Current version: $CURRENT_VERSION"
+          echo "Next version: ${{ github.event.inputs.next_version }}"
+          
+          # Check if we already have the next version commit
+          if git log --oneline -10 | grep -q "Prepare for next development version"; then
+            echo "Next version commit already exists, skipping"
+          elif [ "$CURRENT_VERSION" != "${{ github.event.inputs.next_version }}" ]; then
+            echo "Setting next version to ${{ github.event.inputs.next_version }}"
+            mvn versions:set -DgenerateBackupPoms=false -DnewVersion=${{ github.event.inputs.next_version }}
+            git add pom.xml "**/pom.xml"
+            git commit -m "Prepare for next development version"
+            git push origin "${{ github.ref_name }}"
+          else
+            echo "Next version is already set to ${{ github.event.inputs.next_version }}"
+          fi

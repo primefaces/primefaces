@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,16 @@
  */
 package org.primefaces.component.organigramnode;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
+
 import jakarta.faces.component.UIComponentBase;
 
-
-public abstract class UIOrganigramNodeBase extends UIComponentBase {
+@FacesComponentBase
+public abstract class UIOrganigramNodeBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public enum PropertyKeys {
-
-        type,
-        style,
-        styleClass,
-        icon,
-        iconPos,
-        expandedIcon,
-        collapsedIcon,
-        skipLeafHandling
-    }
 
     public UIOrganigramNodeBase() {
         setRendererType(null);
@@ -51,68 +43,21 @@ public abstract class UIOrganigramNodeBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
-    }
+    @Property(description = "Type of the node.")
+    public abstract String getType();
 
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
+    @Property(description = "Icon of the node.")
+    public abstract String getIcon();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Position of the icon, valid values are \"left\" and \"right\".")
+    public abstract String getIconPos();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Icon to display when node is expanded.")
+    public abstract String getExpandedIcon();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(description = "Icon to display when node is collapsed.")
+    public abstract String getCollapsedIcon();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
-
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
-    public String getIconPos() {
-        return (String) getStateHelper().eval(PropertyKeys.iconPos, null);
-    }
-
-    public void setIconPos(String iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, iconPos);
-    }
-
-    public String getExpandedIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.expandedIcon, null);
-    }
-
-    public void setExpandedIcon(String expandedIcon) {
-        getStateHelper().put(PropertyKeys.expandedIcon, expandedIcon);
-    }
-
-    public String getCollapsedIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.collapsedIcon, null);
-    }
-
-    public void setCollapsedIcon(String collapsedIcon) {
-        getStateHelper().put(PropertyKeys.collapsedIcon, collapsedIcon);
-    }
-
-    public boolean isSkipLeafHandling() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.skipLeafHandling, false);
-    }
-
-    public void setSkipLeafHandling(boolean skipLeafHandling) {
-        getStateHelper().put(PropertyKeys.skipLeafHandling, skipLeafHandling);
-    }
-
+    @Property(defaultValue = "false", description = "When true, skips the default leaf handling.")
+    public abstract boolean isSkipLeafHandling();
 }

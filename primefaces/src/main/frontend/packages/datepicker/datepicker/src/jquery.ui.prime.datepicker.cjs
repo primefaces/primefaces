@@ -37,6 +37,7 @@ $.widget("prime.datePicker", {
         showIcon: false,
         icon: 'ui-icon ui-icon-calendar',
         showOnFocus: true,
+        focusOnSelect: false,
         keepInvalid: false,
         numberOfMonths: 1,
         view: 'date',
@@ -256,7 +257,11 @@ $.widget("prime.datePicker", {
         }
         this.bindResponsiveResizeListener();
         // #13634 ensure input is formatted correctly after AJAX update
-        this.inputfield.val(this.getValueToRender());
+        let inputValue = this.getValueToRender();
+        if (!inputValue && this.options.keepInvalid && this.options.defaultDate) {
+            inputValue = this.options.defaultDate;
+        }
+        this.inputfield.val(inputValue);
     },
 
     parseOptionValue: function(option) {
@@ -1415,7 +1420,7 @@ $.widget("prime.datePicker", {
             'ui-state-disabled': disabled
         });
 
-        return '<a tabindex="0" class="ui-monthpicker-month' + monthClass + '">' + content + '</a>';
+        return '<a tabindex="0" class="ui-monthpicker-month' + monthClass + '" aria-disabled="' + disabled + '">' + content + '</a>';
     },
 
     renderMonthViewMonths: function() {
@@ -1634,22 +1639,28 @@ $.widget("prime.datePicker", {
         var sundayIndex = this.getSundayIndex();
         for (var i = 0; i < weekDates.length; i++) {
             var date = weekDates[i],
+                disabled = !weekDates[i].selectable,
+                selected = this.isSelected(date),
                 cellClass = this.getClassesToAdd({
                     'ui-datepicker-other-month': date.otherMonth,
                     'ui-datepicker-today': date.today,
                     'ui-datepicker-week-end': i == sundayIndex || i == saturdayIndex,
                     'ui-datepicker-other-month-hidden': date.otherMonth && !this.options.showOtherMonths
-                }),
+                }).trim(),
                 dateClass = this.getClassesToAdd({
                     'ui-state-default': true,
-                    'ui-state-active': this.isSelected(date),
-                    'ui-state-disabled': !date.selectable,
+                    'ui-state-active': selected,
+                    'ui-state-disabled': disabled,
                     'ui-state-highlight': date.today
-                }),
+                }).trim(),
                 content = this.renderDateCellContent(date, dateClass);
 
             weekHtml += (
-                '<td class="' + cellClass + '" aria-label="' + this.options.locale.monthNames[date.month] + ' ' + date.day + '">' +
+                '<td role="gridcell"' +
+                (cellClass ? ' class="' + cellClass + '"' : '') + 
+                (disabled ? ' aria-disabled="true"' : '') + 
+                (selected ? ' aria-selected="true"' : '') + 
+                ' aria-label="' + this.options.locale.monthNames[date.month] + ' ' + date.day + '">' +
                 content +
                 '</td>'
             );
@@ -1669,8 +1680,7 @@ $.widget("prime.datePicker", {
             }
         }
         if (date.selectable) {
-            var selected = this.isSelected(date);
-            return '<a tabindex="0" class="' + dateClass + '" aria-selected="' + selected + '">' + content + '</a>';
+            return '<a tabindex="0" class="' + dateClass + '">' + content + '</a>';
         }
         else {
             return '<span class="' + dateClass + '">' + content + '</span>';
@@ -1929,10 +1939,13 @@ $.widget("prime.datePicker", {
             yearNavigatorSelector = '.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year';
         this.panel.off('change.datePicker-monthNav', monthNavigatorSelector)
             .on('change.datePicker-monthNav', monthNavigatorSelector, null, this.onMonthDropdownChange.bind($this));
-        this.panel.off('change.datePicker-yearnav keydown.datePicker-yearnav keyup.datePicker-yearnav', yearNavigatorSelector)
-            .on('change.datePicker-yearnav', yearNavigatorSelector, null, this.onYearInputChange.bind($this))
+        this.panel.off('change.datePicker-yearnav', yearNavigatorSelector)
+            .on('change.datePicker-yearnav', yearNavigatorSelector, null, this.onYearInputChange.bind($this));
+        if (this.isYearNavigatorInput()) {
+            this.panel.off('keydown.datePicker-yearnav keyup.datePicker-yearnav', yearNavigatorSelector)
             .on('keydown.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyDown(event);})
             .on('keyup.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyUp(event);});
+        }
 
         var monthViewMonthSelector = '.ui-monthpicker > .ui-monthpicker-month';
         this.panel.off('click.datePicker-monthViewMonth', monthViewMonthSelector).on('click.datePicker-monthViewMonth', monthViewMonthSelector, null, function(e) {
@@ -2368,7 +2381,7 @@ $.widget("prime.datePicker", {
     },
 
     onInputChange: function(event) {
-        if ((this.options.autoMonthFormat || !this.inputfield.val() || this.options.showMinMaxRange) && this.options.monthNavigator && this.options.view !== 'month') { 
+        if ((this.options.autoMonthFormat || !this.inputfield.val()) && this.options.monthNavigator && this.options.view !== 'month') { 
             var viewMonth = this.viewDate.getMonth();
             viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
             this.viewDate.setMonth(viewMonth);
@@ -2384,7 +2397,6 @@ $.widget("prime.datePicker", {
     onInputKeyDown: function(event) {
         switch (event.key) {
             case 'ArrowDown':
-            case 'Enter':
                 this.inputfield.val(this.getValueToRender());
                 this.showOverlay();
                 break;
@@ -2733,7 +2745,7 @@ $.widget("prime.datePicker", {
             }
         }
         if (focused) {
-            focused.first().trigger('focus');
+            PrimeFaces.queueTask(function() { focused.first().trigger('focus') }, 1);
         }
 
         $this.inputfield.attr('aria-expanded', 'true');
@@ -2750,6 +2762,12 @@ $.widget("prime.datePicker", {
             return;
         }
         var $this = this;
+
+        // #14158 needed for float label
+        let parent = this.inputfield.parent();
+        if (parent.is("div, span:not('.ui-float-label')")) {
+            parent.addClass('ui-inputwrapper-focus');
+        }
 
         this.transition.show({
             onEnter: function() {
@@ -3059,7 +3077,7 @@ $.widget("prime.datePicker", {
             this.selectDate(event, dateMeta);
         }
 
-        if (!this.options.inline && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
+        if (!this.options.inline && this.options.focusOnSelect && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
             PrimeFaces.queueTask(function() {
                 $this.hideOverlay();
             }, 100);
@@ -3124,6 +3142,9 @@ $.widget("prime.datePicker", {
         if (this.options.onSelect) {
             this.options.onSelect.call(this, event, date);
         }
+
+        // #14158 needed for float label
+        PrimeFaces.updateFilledState(this.inputfield, this.inputfield.parent());
     },
 
     incrementHour: function(event) {
@@ -3560,7 +3581,7 @@ $.widget("prime.datePicker", {
 
         this.viewDate = value;
 
-        if ((this.options.autoMonthFormat || !this.inputfield.val() || this.options.showMinMaxRange) && this.options.monthNavigator && this.options.view !== 'month') {
+        if ((this.options.autoMonthFormat || !this.inputfield.val()) && this.options.monthNavigator && this.options.view !== 'month') {
             var viewMonth = this.viewDate.getMonth();
             viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
             this.viewDate.setMonth(viewMonth);

@@ -49,26 +49,26 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20250517</version>
+            <version>20251224</version>
         </dependency>
 
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.32.0</version>
+            <version>4.40.0</version>
         </dependency>
 
         <!-- org.seleniumhq.selenium and com.googlecode.owasp-java-html-sanitizer need guava; resolved version-conflicts -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.4.8-jre</version>
+            <version>33.5.0-jre</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>6.1.0</version>
+            <version>6.3.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.github.docker-java</groupId>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.17.5</version>
+            <version>1.18.4</version>
         </dependency>
     </dependencies>
 </project>

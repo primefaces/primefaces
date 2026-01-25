@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,44 +23,19 @@
  */
 package org.primefaces.component.poll;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
+@FacesComponentBase
 public abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PollRenderer";
-
-    public enum PropertyKeys {
-        async,
-        autoStart,
-        delay,
-        form,
-        global,
-        ignoreAutoUpdate,
-        ignoreComponentNotFound,
-        immediate,
-        interval,
-        intervalType,
-        listener,
-        onactivated,
-        oncomplete,
-        ondeactivated,
-        onerror,
-        onstart,
-        onsuccess,
-        partialSubmit,
-        partialSubmitFilter,
-        process,
-        resetValues,
-        stop,
-        timeout,
-        update,
-        widgetVar
-    }
 
     public PollBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -71,219 +46,27 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "2", description = "Interval in seconds to do periodic AJAX requests.")
+    public abstract Object getInterval();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "An action listener to process when command is executed.")
+    public abstract jakarta.el.MethodExpression getListener();
 
-    public Object getInterval() {
-        return getStateHelper().eval(PropertyKeys.interval, 2);
-    }
+    @Property(description = "When set true, process validations logic is executed at apply request values phase for this component.")
+    public abstract boolean isImmediate();
 
-    public void setInterval(Object interval) {
-        getStateHelper().put(PropertyKeys.interval, interval);
-    }
+    @Property(defaultValue = "true", description = "In autoStart mode, polling starts automatically on page load, to start polling on demand set to false.")
+    public abstract boolean isAutoStart();
 
-    @Override
-    public String getUpdate() {
-        return (String) getStateHelper().eval(PropertyKeys.update, null);
-    }
+    @Property(description = "Stops polling when true.")
+    public abstract boolean isStop();
 
-    public void setUpdate(String update) {
-        getStateHelper().put(PropertyKeys.update, update);
-    }
+    @Property(description = "Type of interval value. Valid values are \"second\" and \"millisecond\".", defaultValue = "second")
+    public abstract String getIntervalType();
 
-    public jakarta.el.MethodExpression getListener() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
-    }
+    @Property(description = "Client side callback to execute when the poller is activated. Return false to prevent poller from starting.")
+    public abstract String getOnactivated();
 
-    public void setListener(jakarta.el.MethodExpression listener) {
-        getStateHelper().put(PropertyKeys.listener, listener);
-    }
-
-    public boolean isImmediate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.immediate, false);
-    }
-
-    public void setImmediate(boolean immediate) {
-        getStateHelper().put(PropertyKeys.immediate, immediate);
-    }
-
-    @Override
-    public String getOnstart() {
-        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
-    }
-
-    public void setOnstart(String onstart) {
-        getStateHelper().put(PropertyKeys.onstart, onstart);
-    }
-
-    @Override
-    public String getOncomplete() {
-        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
-    }
-
-    public void setOncomplete(String oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
-    }
-
-    @Override
-    public String getProcess() {
-        return (String) getStateHelper().eval(PropertyKeys.process, null);
-    }
-
-    public void setProcess(String process) {
-        getStateHelper().put(PropertyKeys.process, process);
-    }
-
-    @Override
-    public String getOnerror() {
-        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
-    }
-
-    public void setOnerror(String onerror) {
-        getStateHelper().put(PropertyKeys.onerror, onerror);
-    }
-
-    @Override
-    public String getOnsuccess() {
-        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
-    }
-
-    public void setOnsuccess(String onsuccess) {
-        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
-    }
-
-    @Override
-    public boolean isGlobal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
-    }
-
-    public void setGlobal(boolean global) {
-        getStateHelper().put(PropertyKeys.global, global);
-    }
-
-    @Override
-    public String getDelay() {
-        return (String) getStateHelper().eval(PropertyKeys.delay, null);
-    }
-
-    public void setDelay(String delay) {
-        getStateHelper().put(PropertyKeys.delay, delay);
-    }
-
-    @Override
-    public int getTimeout() {
-        return (Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
-    }
-
-    public void setTimeout(int timeout) {
-        getStateHelper().put(PropertyKeys.timeout, timeout);
-    }
-
-    @Override
-    public boolean isAsync() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.async, false);
-    }
-
-    public void setAsync(boolean async) {
-        getStateHelper().put(PropertyKeys.async, async);
-    }
-
-    public boolean isAutoStart() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoStart, true);
-    }
-
-    public void setAutoStart(boolean autoStart) {
-        getStateHelper().put(PropertyKeys.autoStart, autoStart);
-    }
-
-    public boolean isStop() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.stop, false);
-    }
-
-    public void setStop(boolean stop) {
-        getStateHelper().put(PropertyKeys.stop, stop);
-    }
-
-    @Override
-    public boolean isPartialSubmit() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
-    }
-
-    public void setPartialSubmit(boolean partialSubmit) {
-        getStateHelper().put(PropertyKeys.partialSubmit, partialSubmit);
-    }
-
-    @Override
-    public boolean isResetValues() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
-    }
-
-    public void setResetValues(boolean resetValues) {
-        getStateHelper().put(PropertyKeys.resetValues, resetValues);
-    }
-
-    @Override
-    public boolean isIgnoreAutoUpdate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
-    }
-
-    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
-        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
-    }
-
-    @Override
-    public String getPartialSubmitFilter() {
-        return (String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
-    }
-
-    public void setPartialSubmitFilter(String partialSubmitFilter) {
-        getStateHelper().put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
-    }
-
-    @Override
-    public String getForm() {
-        return (String) getStateHelper().eval(PropertyKeys.form, null);
-    }
-
-    public void setForm(String form) {
-        getStateHelper().put(PropertyKeys.form, form);
-    }
-
-    public String getIntervalType() {
-        return (String) getStateHelper().eval(PropertyKeys.intervalType, "second");
-    }
-
-    public void setIntervalType(String intervalType) {
-        getStateHelper().put(PropertyKeys.intervalType, intervalType);
-    }
-
-    @Override
-    public boolean isIgnoreComponentNotFound() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
-    }
-
-    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
-        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
-    }
-
-    public String getOnactivated() {
-        return (String) getStateHelper().eval(PropertyKeys.onactivated, null);
-    }
-
-    public void setOnactivated(String onactivated) {
-        getStateHelper().put(PropertyKeys.onactivated, onactivated);
-    }
-
-    public String getOndeactivated() {
-        return (String) getStateHelper().eval(PropertyKeys.ondeactivated, null);
-    }
-
-    public void setOndeactivated(String ondeactivated) {
-        getStateHelper().put(PropertyKeys.ondeactivated, ondeactivated);
-    }
+    @Property(description = "Client side callback to execute when the poller is deactivated. Return false to prevent poller from stopping.")
+    public abstract String getOndeactivated();
 }

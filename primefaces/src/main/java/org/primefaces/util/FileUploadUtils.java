@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,6 +43,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -470,4 +471,27 @@ public class FileUploadUtils {
             return decimalFormat.format((bytes / Math.pow(1024, i))) + " " + sizes[i];
         }
     }
+
+    /**
+     * Extracts file extensions from an HTML accept attribute and converts them to a JavaScript-compatible
+     * regular expression pattern. Only processes dot-prefixed extensions (e.g., ".pdf", ".doc") and
+     * ignores MIME types (e.g., "image/*", "text/plain").
+     * @param accept Raw accept attribute from the component (e.g., ".pdf,.doc,image/*")
+     * @return a regex pattern matching the file extensions (e.g., "/.*\.(pdf|doc)/"), or null if no valid extensions found
+     */
+    public static String extractAllowTypes(String accept) {
+        if (LangUtils.isBlank(accept)) return null;
+        return Arrays.stream(accept.split(","))
+                .map(String::trim)
+                .filter(part -> part.startsWith("."))
+                .map(part -> part.substring(1).trim())
+                .filter(ext -> !ext.isEmpty())
+                .filter(ext -> ext.matches("[a-zA-Z0-9]{1,10}"))
+                .distinct()
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        list -> list.isEmpty() ? null : "/.*\\.(" + String.join("|", list) + ")/"
+                ));
+    }
+
 }

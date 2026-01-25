@@ -5,6 +5,123 @@
                 xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
+    <ui:define name="head">
+        <style>
+            .custom-button {
+                display: inline-block;
+                padding: 0.5rem 1rem;
+                margin: 0.25rem;
+                border: 1px solid #dee2e6;
+                border-radius: 0.25rem;
+                background: #fff;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .custom-button:hover {
+                background: #f8f9fa;
+            }
+            .custom-button.ui-state-active {
+                background: #007bff;
+                color: #fff;
+                border-color: #007bff;
+            }
+            .legend {
+                display: inline-block;
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: 0.25rem;
+                vertical-align: sub;
+                margin-right: 0.5rem;
+            }
+            .payment-button {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 1.5rem 2rem;
+                margin: 0.5rem;
+                border: 2px solid;
+                border-radius: 0.5rem;
+                background: #fff;
+                cursor: pointer;
+                transition: all 0.2s;
+                min-width: 200px;
+                min-height: 120px;
+            }
+            .payment-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            .payment-button.ui-state-active {
+                background: #f8f9fa;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+            .payment-button.paypal {
+                border-color: #0070ba;
+            }
+            .payment-button.paypal.ui-state-active {
+                border-color: #0070ba;
+                background: #f0f7ff;
+            }
+            .payment-button.bitcoin {
+                border-color: #f7931a;
+            }
+            .payment-button.bitcoin.ui-state-active {
+                border-color: #f7931a;
+                background: #fff8f0;
+            }
+            .payment-button.creditcard {
+                border-color: #6c757d;
+            }
+            .payment-button.creditcard.ui-state-active {
+                border-color: #6c757d;
+                background: #f8f9fa;
+            }
+            .payment-button.cash {
+                border-color: #28a745;
+            }
+            .payment-button.cash.ui-state-active {
+                border-color: #28a745;
+                background: #f0fff4;
+            }
+            .payment-button.ui-state-disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                pointer-events: none;
+            }
+            .payment-icon {
+                font-size: 2.5rem;
+                margin-bottom: 0.75rem;
+            }
+            .payment-button.paypal .payment-icon {
+                color: #0070ba;
+            }
+            .payment-button.bitcoin .payment-icon {
+                color: #f7931a;
+            }
+            .payment-button.creditcard .payment-icon {
+                color: #6c757d;
+            }
+            .payment-button.cash .payment-icon {
+                color: #28a745;
+            }
+            .payment-title {
+                font-weight: bold;
+                font-size: 1.1rem;
+                margin-bottom: 0.25rem;
+            }
+            .payment-tagline {
+                font-size: 0.85rem;
+                color: #6c757d;
+                text-align: center;
+            }
+            .payment-button.ui-state-active .payment-tagline {
+                color: #495057;
+            }
+        </style>
+    </ui:define>
+
     <ui:define name="title">
         SelectOneButton
     </ui:define>
@@ -19,11 +136,82 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <p:selectOneButton value="#{selectOneButtonView.option}">
+                <p:growl showDetail="true" showSummary="true">
+                    <p:autoUpdate />
+                </p:growl>
+
+                <h5 class="mt-0">Default</h5>
+                <p:selectOneButton value="#{selectOneButtonView.option}" unselectable="false">
+                    <p:ajax event="change" listener="#{selectOneButtonView.onChange}" />
                     <f:selectItem itemLabel="Option1" itemValue="Option1"/>
                     <f:selectItem itemLabel="Option2" itemValue="Option2"/>
                     <f:selectItem itemLabel="Option3" itemValue="Option3"/>
                 </p:selectOneButton>
+
+                <h5>Unselectable</h5>
+                <p:selectOneButton value="#{selectOneButtonView.option2}" unselectable="true">
+                    <p:ajax event="change" listener="#{selectOneButtonView.onChange}" />
+                    <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                    <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                    <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                </p:selectOneButton>
+
+                <h5>Custom Layout (Facet)</h5>
+                <p:selectOneButton id="customButton" value="#{selectOneButtonView.color}">
+                    <p:ajax event="change" listener="#{selectOneButtonView.onChange}" />
+                    <f:selectItem itemLabel="Red" itemValue="Red"/>
+                    <f:selectItem itemLabel="Green" itemValue="Green"/>
+                    <f:selectItem itemLabel="Blue" itemValue="Blue"/>
+
+                    <f:facet name="custom">
+                        <div class="custom-button" role="radio" tabindex="0">
+                            <span class="legend" style="background:red; display:inline-block; width:1rem; height:1rem; border-radius:0.25rem; vertical-align:middle; margin-right:0.5rem;"/> Red
+                        </div>
+                        <div class="custom-button" role="radio" tabindex="0">
+                            <span class="legend" style="background:green; display:inline-block; width:1rem; height:1rem; border-radius:0.25rem; vertical-align:middle; margin-right:0.5rem;"/> Green
+                        </div>
+                        <p:badge icon="pi pi-bell" severity="info" iconPos="left">
+                            <div class="custom-button" role="radio" tabindex="0">
+                                <span class="legend" style="background:blue; display:inline-block; width:1rem; height:1rem; border-radius:0.25rem; vertical-align:middle; margin-right:0.5rem;"/> Blue
+                            </div>
+                        </p:badge>
+                    </f:facet>
+                </p:selectOneButton>
+
+                <h5>Custom Layout (Referenced)</h5>
+                <div id="customButton2Container">
+                    <p:selectOneButton id="customButton2" value="#{selectOneButtonView.paymentMethod}" layout="custom">
+                        <p:ajax event="change" listener="#{selectOneButtonView.onChange}" />
+
+                        <f:selectItem itemLabel="PayPal" itemValue="PayPal"/>
+                        <f:selectItem itemLabel="Bitcoin" itemValue="Bitcoin"/>
+                        <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" itemDisabled="true"/>
+                        <f:selectItem itemLabel="Cash" itemValue="Cash"/>
+                    </p:selectOneButton>
+
+                    <div class="flex flex-wrap justify-content-start mt-3">
+                        <div class="payment-button paypal" role="radio" tabindex="0">
+                            <i class="pi pi-paypal payment-icon"></i>
+                            <div class="payment-title">PayPal</div>
+                            <div class="payment-tagline">Secure online payment</div>
+                        </div>
+                        <div class="payment-button bitcoin" role="radio" tabindex="0">
+                            <i class="pi pi-bitcoin payment-icon"></i>
+                            <div class="payment-title">Bitcoin</div>
+                            <div class="payment-tagline">Cryptocurrency payment</div>
+                        </div>
+                        <div class="payment-button creditcard ui-state-disabled" role="radio" tabindex="-1">
+                            <i class="pi pi-credit-card payment-icon"></i>
+                            <div class="payment-title">Credit Card</div>
+                            <div class="payment-tagline">Currently unavailable</div>
+                        </div>
+                        <div class="payment-button cash" role="radio" tabindex="0">
+                            <i class="pi pi-money-bill payment-icon"></i>
+                            <div class="payment-title">Cash</div>
+                            <div class="payment-tagline">Pay on delivery</div>
+                        </div>
+                    </div>
+                </div>
             </h:form>
         </div>
     </ui:define>

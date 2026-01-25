@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -88,10 +88,20 @@ public class CspPhaseListener implements PhaseListener {
         state.setInitialized(true);
 
         if (LangUtils.isNotBlank(reportOnlyPolicy)) {
-            String policy = reportOnlyPolicy + " 'nonce-" + state.getNonce() + "';";
+            String policy = reportOnlyPolicy.trim();
+            if (!policy.contains("script-src") && !policy.contains("default-src")) {
+                if (!policy.endsWith(";")) {
+                    policy += ";";
+                }
+                policy += " script-src 'self'";
+            }
+            policy += " 'nonce-" + state.getNonce() + "';";
             externalContext.addResponseHeader("Content-Security-Policy-Report-Only", policy);
         }
         else {
+            if (customPolicy != null) {
+                customPolicy = context.getApplication().evaluateExpressionGet(context, customPolicy, String.class);
+            }
             String policy = LangUtils.isBlank(customPolicy) ? "script-src 'self'" : customPolicy;
             policy += " 'nonce-" + state.getNonce() + "';";
             externalContext.addResponseHeader("Content-Security-Policy", policy);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,19 @@
  */
 package org.primefaces.component.badge;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.model.badge.BadgeModel;
 import org.primefaces.model.badge.DefaultBadgeModel;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
+@FacesComponent(value = Badge.COMPONENT_TYPE, namespace = Badge.COMPONENT_FAMILY)
+@FacesComponentDescription("Badge is a small status indicator for another element like a button or a link.")
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Badge extends BadgeBase {
+public class Badge extends BadgeBaseImpl {
+
     public static final String COMPONENT_TYPE = "org.primefaces.component.Badge";
 
     public static final String STYLE_CLASS = "ui-badge ui-widget";

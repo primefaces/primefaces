@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <script src="https://maps.google.com/maps/api/js?key=AIzaSyCvCDkYieuUBmMWon_mfLAfjuaeuosuqow&amp;sensor=true"></script>
+
     </ui:define>
 
     <ui:define name="title">
@@ -15,6 +15,17 @@
 
     <ui:define name="description">
         Center, zoom and type attributes are required to create a map.
+        <br/>
+        <br/>
+        <strong>Asynchronous vs Synchronous Loading:</strong>
+        <br/>
+        GMap supports both static and asynchronous loading of the Google Maps API. The widget automatically detects if Google Maps is already loaded and will use asynchronous loading only when needed.
+        <br/>
+        <br/>
+        <strong>Static Loading (Traditional Method):</strong> Include the script tag before the GMap component if you prefer to load Google Maps statically. This is more efficient when you have multiple GMap components on the same page.
+        <br/>
+        <br/>
+        <strong>Asynchronous Loading (Dynamic Library Import):</strong> For better performance and on-demand loading, provide the apiKey attribute (and optionally apiVersion and libraries). The widget uses Google's Dynamic Library Import API to load libraries only when needed. If Google Maps is already loaded statically, the widget will automatically use the existing instance and ignore the apiKey, apiVersion, and libraries attributes.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/gmap"/>
@@ -22,7 +33,7 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px"/>
+            <p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px" apiKey="AIzaSyCvCDkYieuUBmMWon_mfLAfjuaeuosuqow"/>
         </div>
     </ui:define>
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = PanelGrid.DEFAULT_RENDERER, componentFamily = PanelGrid.COMPONENT_FAMILY)
 public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
 
     @Override
@@ -52,10 +54,149 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
         else if (PanelGrid.LAYOUT_GRID.equalsIgnoreCase(layout) || PanelGrid.LAYOUT_FLEX.equalsIgnoreCase(layout)) {
             encodeGridLayout(context, component);
         }
+        else if (PanelGrid.LAYOUT_TAILWIND.equalsIgnoreCase(layout)) {
+            encodeTailwindLayout(context, component);
+        }
         else {
             throw new FacesException("The value of 'layout' attribute of PanelGrid \"" + component.getClientId(
-                context) + "\" must be 'grid', 'tabular' or 'flex'. Default value is 'grid'.");
+                    context) + "\" must be 'grid', 'tabular', 'flex' or 'tailwind'. Default value is 'grid'.");
         }
+    }
+
+    public void encodeTailwindLayout(FacesContext context, PanelGrid component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = component.getClientId(context);
+        int columns = component.getColumns();
+
+        if (columns <= 0 || columns > 12) {
+            throw new FacesException("PanelGrid \"" + clientId + "\" columns must be between 1 and 12 for Tailwind layout.");
+        }
+
+        String style = component.getStyle();
+        String containerClass = getStyleClassBuilder(context)
+                .add(PanelGrid.CONTAINER_CLASS)
+                .add(component.getStyleClass())
+                .build();
+
+        writer.startElement("div", component);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", containerClass, "styleClass");
+        if (LangUtils.isNotBlank(style)) {
+            writer.writeAttribute("style", style, "style");
+        }
+
+        encodeTailwindFacet(context, component, columns, "header", PanelGrid.HEADER_CLASS);
+        encodeTailwindBody(context, component, columns);
+        encodeTailwindFacet(context, component, columns, "footer", PanelGrid.FOOTER_CLASS);
+
+        writer.endElement("div");
+    }
+
+    public void encodeTailwindBody(FacesContext context, PanelGrid component, int columns) throws IOException {
+        String clientId = component.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
+        String columnClassesValue = component.getColumnClasses();
+        String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
+
+        // Build Tailwind grid class based on columns
+        String gridClass = getTailwindGridClass(columns);
+
+        // Check if custom gap is specified in contentStyleClass
+        String contentStyleClass = component.getContentStyleClass();
+        boolean hasCustomGap = contentStyleClass != null && contentStyleClass.contains("gap-");
+
+        String contentClass = getStyleClassBuilder(context)
+                .add(PanelGrid.CONTENT_CLASS)
+                .add(gridClass)
+                .add(hasCustomGap ? null : "gap-4") // Default gap only if not specified
+                .add(contentStyleClass)
+                .build();
+
+        writer.startElement("div", component);
+        writer.writeAttribute("id", clientId + "_content", null);
+        writer.writeAttribute("class", contentClass, null);
+
+        if (LangUtils.isNotBlank(component.getContentStyle())) {
+            writer.writeAttribute("style", component.getContentStyle(), null);
+        }
+
+        int i = 0;
+        for (UIComponent child : component.getChildren()) {
+            if (!child.isRendered()) {
+                continue;
+            }
+
+            int colMod = i % columns;
+            String columnClass = (colMod < columnClasses.length)
+                    ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim()
+                    : PanelGrid.CELL_CLASS;
+
+            writer.startElement("div", null);
+            Column column = child instanceof Column ? (Column) child : null;
+            if (column != null) {
+                if (column.getId() != null) writer.writeAttribute("id", column.getClientId(context), null);
+                if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
+                if (column.getStyleClass() != null) {
+                    columnClass = columnClass + " " + column.getStyleClass();
+                }
+                // Handle colspan for Tailwind
+                if (column.getColspan() > 1) {
+                    columnClass = columnClass + " " + getTailwindColSpanClass(column.getColspan());
+                }
+                // Handle rowspan for Tailwind
+                if (column.getRowspan() > 1) {
+                    columnClass = columnClass + " " + getTailwindRowSpanClass(column.getRowspan());
+                }
+            }
+            writer.writeAttribute("class", columnClass, null);
+            child.encodeAll(context);
+            writer.endElement("div");
+
+            i++;
+        }
+
+        writer.endElement("div");
+    }
+
+    public void encodeTailwindFacet(FacesContext context, PanelGrid component, int columns, String facetName, String styleClass) throws IOException {
+        UIComponent facet = component.getFacet(facetName);
+        if (FacetUtils.shouldRenderFacet(facet)) {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("div", null);
+            writer.writeAttribute("class", styleClass + " ui-widget-header", null);
+            facet.encodeAll(context);
+            writer.endElement("div");
+        }
+    }
+
+    private String getTailwindGridClass(int columns) {
+        switch (columns) {
+            case 1: return "grid grid-cols-1";
+            case 2: return "grid grid-cols-1 sm:grid-cols-2";
+            case 3: return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+            case 4: return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
+            case 5: return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5";
+            case 6: return "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6";
+            case 7: return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7";
+            case 8: return "grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8";
+            case 9: return "grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-9";
+            case 10: return "grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10";
+            case 11: return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-11";
+            case 12: return "grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-12";
+            default: return "grid grid-cols-" + columns;
+        }
+    }
+
+    private String getTailwindColSpanClass(int colspan) {
+        if (colspan <= 1) return "";
+        if (colspan >= 12) return "col-span-full";
+        return "col-span-" + colspan;
+    }
+
+    private String getTailwindRowSpanClass(int rowspan) {
+        if (rowspan <= 1) return "";
+        if (rowspan >= 6) return "row-span-6";
+        return "row-span-" + rowspan;
     }
 
     public void encodeLegacyTableLayout(FacesContext context, PanelGrid component) throws IOException {

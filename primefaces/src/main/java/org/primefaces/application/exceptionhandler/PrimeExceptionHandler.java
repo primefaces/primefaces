@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import jakarta.el.ELException;
 import jakarta.faces.FacesException;
@@ -69,6 +70,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeExceptionHandler.class.getName());
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    private static final Pattern NEWLINE_PATTERN = Pattern.compile("(\r\n|\n)");
 
     private final Lazy<PrimeConfiguration> config;
 
@@ -270,7 +272,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
             rootCause.printStackTrace(pw);
-            info.setFormattedStackTrace(EscapeUtils.forXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
+            info.setFormattedStackTrace(NEWLINE_PATTERN.matcher(EscapeUtils.forXml(sw.toString())).replaceAll("<br/>"));
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);

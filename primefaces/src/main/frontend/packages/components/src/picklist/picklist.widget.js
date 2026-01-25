@@ -124,6 +124,9 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         this.generateItems(this.sourceList, this.sourceInput);
         this.generateItems(this.targetList, this.targetInput);
 
+        //always bind button events and labels
+        this.bindButtonEvents();
+
         if(this.cfg.disabled) {
             $(this.jqId + ' li.ui-picklist-item').addClass('ui-state-disabled');
             $(this.jqId + ' button').attr('disabled', 'disabled').addClass('ui-state-disabled');
@@ -133,8 +136,6 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             this.bindDragDopEvents();
 
             this.bindItemEvents();
-
-            this.bindButtonEvents();
 
             this.bindFilterEvents();
 
@@ -156,11 +157,14 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         var $this = this,
             reordered = true;
 
+        // #13131 always disable drag and drop on touch devices
+        const dragDropDisabled = ($this.cfg.dragDrop === false) || PrimeFaces.env.isTouchable($this.cfg);
+
         //Sortable lists
         $(this.jqId + ' ul').sortable({
             cancel: '.ui-state-disabled,.ui-chkbox-box',
             connectWith: this.jqId + ' .ui-picklist-list',
-            disabled: PrimeFaces.env.isTouchable($this.cfg), // #13131 disable on touch devices
+            disabled: dragDropDisabled, 
             revert: 1,
             helper: 'clone',
             placeholder: "ui-picklist-item ui-state-highlight",
@@ -1237,6 +1241,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
     fireReorderEvent() {
         this.callBehavior('reorder');
         this.fireInputChanged();
+        this.updateButtonsState();
     }
     
     /**
@@ -1285,9 +1290,39 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
     updateButtonsState() {
         var addButton = $(this.jqId + ' .ui-picklist-button-add');
         var sourceListButtons = $(this.jqId + ' .ui-picklist-source-controls .ui-button');
-        if (this.sourceList.find('li.ui-state-highlight').length) {
+        var sourceSelectedItems = this.sourceList.find('li.ui-state-highlight');
+        if (sourceSelectedItems.length) {
             this.enableButton(addButton);
-            this.enableButton(sourceListButtons);
+            
+            // Handle move-up and move-down buttons separately
+            var sourceMoveUpButton = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up');
+            var sourceMoveDownButton = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down');
+            var sourceMoveTopButton = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top');
+            var sourceMoveBottomButton = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-bottom');
+            
+            // Get first and last selected items
+            var firstSelectedItem = sourceSelectedItems.first();
+            var lastSelectedItem = sourceSelectedItems.last();
+            
+            // Check if first selected item is the first child (can't move up)
+            if (firstSelectedItem.is(':first-child')) {
+                this.disableButton(sourceMoveUpButton);
+                this.disableButton(sourceMoveTopButton);
+            }
+            else {
+                this.enableButton(sourceMoveUpButton);
+                this.enableButton(sourceMoveTopButton);
+            }
+            
+            // Check if last selected item is the last child (can't move down)
+            if (lastSelectedItem.is(':last-child')) {
+                this.disableButton(sourceMoveDownButton);
+                this.disableButton(sourceMoveBottomButton);
+            }
+            else {
+                this.enableButton(sourceMoveDownButton);
+                this.enableButton(sourceMoveBottomButton);
+            }
         }
         else {
             this.disableButton(addButton);
@@ -1296,9 +1331,39 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
 
         var removeButton = $(this.jqId + ' .ui-picklist-button-remove');
         var targetListButtons = $(this.jqId + ' .ui-picklist-target-controls .ui-button');
-        if (this.targetList.find('li.ui-state-highlight').length) {
+        var targetSelectedItems = this.targetList.find('li.ui-state-highlight');
+        if (targetSelectedItems.length) {
             this.enableButton(removeButton);
-            this.enableButton(targetListButtons);
+            
+            // Handle move-up and move-down buttons separately
+            var targetMoveUpButton = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up');
+            var targetMoveDownButton = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down');
+            var targetMoveTopButton = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top');
+            var targetMoveBottomButton = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom');
+            
+            // Get first and last selected items
+            var firstSelectedItem = targetSelectedItems.first();
+            var lastSelectedItem = targetSelectedItems.last();
+            
+            // Check if first selected item is the first child (can't move up)
+            if (firstSelectedItem.is(':first-child')) {
+                this.disableButton(targetMoveUpButton);
+                this.disableButton(targetMoveTopButton);
+            }
+            else {
+                this.enableButton(targetMoveUpButton);
+                this.enableButton(targetMoveTopButton);
+            }
+            
+            // Check if last selected item is the last child (can't move down)
+            if (lastSelectedItem.is(':last-child')) {
+                this.disableButton(targetMoveDownButton);
+                this.disableButton(targetMoveBottomButton);
+            }
+            else {
+                this.enableButton(targetMoveDownButton);
+                this.enableButton(targetMoveBottomButton);
+            }
         }
         else {
             this.disableButton(removeButton);

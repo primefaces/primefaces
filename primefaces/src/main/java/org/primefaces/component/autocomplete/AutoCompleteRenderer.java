@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,9 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.event.PhaseId;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = AutoComplete.DEFAULT_RENDERER, componentFamily = AutoComplete.COMPONENT_FAMILY)
 public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
     @Override
@@ -212,7 +214,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, HTML.ARIA_ROLE_LISTBOX, null);
 
         if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
@@ -481,7 +483,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, HTML.ARIA_ROLE_LISTBOX, null);
 
         renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
@@ -521,7 +523,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
     }
 
     protected void encodeFooter(FacesContext context, AutoComplete component) throws IOException {
-        UIComponent footer = component.getFacet("footer");
+        UIComponent footer = component.getFooterFacet();
         if (FacetUtils.shouldRenderFacet(footer)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
@@ -535,9 +537,12 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
             throws IOException {
 
         // do not render table if empty message and there are no records
-        if (items == null || ((Collection<?>) items).isEmpty()) {
+        if (items == null
+                || (items instanceof Collection<?> && ((Collection<?>) items).isEmpty())
+                || (items instanceof Map<?, ?> && ((Map<?, ?>) items).isEmpty())) {
             return;
         }
+
         ResponseWriter writer = context.getResponseWriter();
         String var = component.getVar();
         boolean pojo = var != null;
@@ -553,7 +558,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
         writer.startElement("table", component);
         writer.writeAttribute("class", AutoComplete.TABLE_CLASS, null);
-        writer.writeAttribute("role", HTML.ARIA_ROLE_LISTBOX, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
 
         if (hasHeader) {
             writer.startElement("thead", component);
@@ -587,6 +592,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         }
 
         writer.startElement("tbody", component);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_GROUP, null);
 
         if (items != null) {
             int index = 0;
@@ -659,7 +665,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
             boolean pojo, String var, String key, int rowNumber) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        UIComponent itemtip = component.getFacet("itemtip");
+        UIComponent itemtip = component.getItemtipFacet();
         boolean hasGroupByTooltip = (component.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         writer.startElement("li", null);
@@ -724,7 +730,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        UIComponent itemtip = component.getFacet("itemtip");
+        UIComponent itemtip = component.getItemtipFacet();
         boolean hasGroupByTooltip = (component.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         writer.startElement("tr", null);
@@ -893,6 +899,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         }
         else {
             writer.startElement("li", null);
+            writer.writeAttribute("id", component.getClientId(context) + "_moretext", null);
             writer.writeAttribute("class", AutoComplete.MORE_TEXT_LIST_CLASS, null);
             writer.writeText(moreText, "moreText");
             writer.endElement("li");

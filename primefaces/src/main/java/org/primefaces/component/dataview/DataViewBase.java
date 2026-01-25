@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,35 +23,30 @@
  */
 package org.primefaces.component.dataview;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.data.PageEvent;
 
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "page", event = PageEvent.class, description = "Fired on pagination.", defaultEvent = true)
+})
 public abstract class DataViewBase extends UIPageableData
-        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataViewState>, FlexAware {
+        implements Widget, StyleAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataViewState>, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DataViewRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        style,
-        styleClass,
-        layout,
-        gridIcon,
-        listIcon,
-        multiViewState,
-        gridRowStyle,
-        gridRowStyleClass,
-        gridRowTitle,
-        flex
-    }
 
     public DataViewBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -62,93 +57,21 @@ public abstract class DataViewBase extends UIPageableData
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "list", description = "Layout of the items, valid values are \"list\" and \"grid\".")
+    public abstract String getLayout();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Icon to display for grid layout toggle button.")
+    public abstract String getGridIcon();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Icon to display for list layout toggle button.")
+    public abstract String getListIcon();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Inline style of each row (grid-cell) in grid layout.")
+    public abstract String getGridRowStyle();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(description = "Style class of each row (grid-cell) in grid layout.")
+    public abstract String getGridRowStyleClass();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "list");
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
-    }
-
-    public String getGridIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.gridIcon, null);
-    }
-
-    public void setGridIcon(String gridIcon) {
-        getStateHelper().put(PropertyKeys.gridIcon, gridIcon);
-    }
-
-    public String getListIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.listIcon, null);
-    }
-
-    public void setListIcon(String listIcon) {
-        getStateHelper().put(PropertyKeys.listIcon, listIcon);
-    }
-
-    @Override
-    public boolean isMultiViewState() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
-    }
-
-    public void setMultiViewState(boolean multiViewState) {
-        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
-    }
-
-    public String getGridRowStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.gridRowStyle, null);
-    }
-
-    public void setGridRowStyle(String gridRowStyle) {
-        getStateHelper().put(PropertyKeys.gridRowStyle, gridRowStyle);
-    }
-
-    public String getGridRowStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.gridRowStyleClass, null);
-    }
-
-    public void setGridRowStyleClass(String gridRowStyleClass) {
-        getStateHelper().put(PropertyKeys.gridRowStyleClass, gridRowStyleClass);
-    }
-
-    public String getRowTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.gridRowTitle, null);
-    }
-
-    public void setRowTitle(String rowTitle) {
-        getStateHelper().put(PropertyKeys.gridRowTitle, rowTitle);
-    }
-
-    @Override
-    public Boolean getFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
-    }
-
-    public void setFlex(Boolean flex) {
-        getStateHelper().put(PropertyKeys.flex, flex);
-    }
+    @Property(description = "Title for each row.")
+    public abstract String getRowTitle();
 }

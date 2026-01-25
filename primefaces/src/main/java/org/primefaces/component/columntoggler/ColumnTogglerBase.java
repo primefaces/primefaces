@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,55 +23,40 @@
  */
 package org.primefaces.component.columntoggler;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.ColumnToggleEvent;
+import org.primefaces.event.ToggleCloseEvent;
 
 import jakarta.faces.component.UIComponentBase;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "toggle", event = ColumnToggleEvent.class, description = "Fires when the column toggler is toggled.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "close", event = ToggleCloseEvent.class, description = "Fires when the column toggler is closed."),
+})
 public abstract class ColumnTogglerBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ColumnTogglerRenderer";
 
-    public enum PropertyKeys {
-
-        widgetVar,
-        trigger,
-        datasource;
-    }
-
-    public ColumnTogglerBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "A search expression resolving to a component to get attached to.")
+    public abstract String getTrigger();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "A search expression resolving to a DataTable component whose columns to be toggled.")
+    public abstract String getDatasource();
 
-    public String getTrigger() {
-        return (String) getStateHelper().eval(PropertyKeys.trigger, null);
-    }
-
-    public void setTrigger(String trigger) {
-        getStateHelper().put(PropertyKeys.trigger, trigger);
-    }
-
-    public String getDatasource() {
-        return (String) getStateHelper().eval(PropertyKeys.datasource, null);
-    }
-
-    public void setDatasource(String datasource) {
-        getStateHelper().put(PropertyKeys.datasource, datasource);
-    }
+    @Property(defaultValue = "true", description = "Whether to show the select all checkbox.")
+    public abstract boolean isShowSelectAll();
 }

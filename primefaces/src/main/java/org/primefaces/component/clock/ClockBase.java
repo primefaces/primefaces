@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,18 @@
  */
 package org.primefaces.component.clock;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIOutput;
 
+@FacesComponentBase
 public abstract class ClockBase extends UIOutput implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ClockRenderer";
-
-    public enum PropertyKeys {
-
-        pattern,
-        mode,
-        autoSync,
-        syncInterval,
-        timeZone,
-        displayMode
-    }
 
     public ClockBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -52,51 +45,22 @@ public abstract class ClockBase extends UIOutput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getPattern() {
-        return (String) getStateHelper().eval(PropertyKeys.pattern, null);
-    }
+    @Property(description = "Datetime format.")
+    public abstract String getPattern();
 
-    public void setPattern(String pattern) {
-        getStateHelper().put(PropertyKeys.pattern, pattern);
-    }
+    @Property(description = "Mode of the client, valid values are client and server.", defaultValue = "client")
+    public abstract String getMode();
 
-    public String getMode() {
-        return (String) getStateHelper().eval(PropertyKeys.mode, "client");
-    }
+    @Property(description = "Syncs time periodically in server mode.", defaultValue = "false")
+    public abstract boolean isAutoSync();
 
-    public void setMode(String mode) {
-        getStateHelper().put(PropertyKeys.mode, mode);
-    }
+    @Property(description = "Defines the sync interval in autoSync mode.", defaultValue = "60000")
+    public abstract int getSyncInterval();
 
-    public boolean isAutoSync() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoSync, false);
-    }
+    @Property(description = "String or a java.util.TimeZone instance to specify the timezone used for date conversion.",
+            implicitDefaultValue = "TimeZone.getDefault()")
+    public abstract Object getTimeZone();
 
-    public void setAutoSync(boolean autoSync) {
-        getStateHelper().put(PropertyKeys.autoSync, autoSync);
-    }
-
-    public int getSyncInterval() {
-        return (Integer) getStateHelper().eval(PropertyKeys.syncInterval, 60000);
-    }
-
-    public void setSyncInterval(int syncInterval) {
-        getStateHelper().put(PropertyKeys.syncInterval, syncInterval);
-    }
-
-    public Object getTimeZone() {
-        return getStateHelper().eval(PropertyKeys.timeZone, null);
-    }
-
-    public void setTimeZone(Object timeZone) {
-        getStateHelper().put(PropertyKeys.timeZone, timeZone);
-    }
-
-    public String getDisplayMode() {
-        return (String) getStateHelper().eval(PropertyKeys.displayMode, "digital");
-    }
-
-    public void setDisplayMode(String displayMode) {
-        getStateHelper().put(PropertyKeys.displayMode, displayMode);
-    }
+    @Property(description = "Display mode, valid values are digital(default) and analog.", defaultValue = "digital")
+    public abstract String getDisplayMode();
 }

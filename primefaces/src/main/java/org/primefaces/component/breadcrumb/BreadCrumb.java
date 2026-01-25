@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,18 @@
  */
 package org.primefaces.component.breadcrumb;
 
-import jakarta.faces.application.ResourceDependency;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
+
+@FacesComponent(value = BreadCrumb.COMPONENT_TYPE, namespace = BreadCrumb.COMPONENT_FAMILY)
+@FacesComponentDescription("Breadcrumb is a navigation component that provides contextual information about page hierarchy in the workflow.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class BreadCrumb extends BreadCrumbBase {
+public class BreadCrumb extends BreadCrumbBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.BreadCrumb";
 

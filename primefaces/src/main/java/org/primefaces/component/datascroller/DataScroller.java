@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,21 @@
  */
 package org.primefaces.component.datascroller;
 
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.PhaseId;
 
+@FacesComponent(value = DataScroller.COMPONENT_TYPE, namespace = DataScroller.COMPONENT_FAMILY)
+@FacesComponentDescription("DataScroller displays a collection of data featuring on demand loading using scroll.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class DataScroller extends DataScrollerBase {
+public class DataScroller extends DataScrollerBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataScroller";
     public static final String CONTAINER_CLASS = "ui-datascroller ui-widget";
@@ -50,28 +49,6 @@ public class DataScroller extends DataScrollerBase {
     public static final String LOADER_CLASS = "ui-datascroller-loader";
     public static final String LOADING_CLASS = "ui-datascroller-loading";
     public static final String VIRTUALSCROLL_WRAPPER_CLASS = "ui-datascroller-virtualscroll-wrapper";
-
-    private static final String DEFAULT_EVENT = "load";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-                .put(DEFAULT_EVENT, null)
-                .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
 
     public boolean isLoadRequest() {
         FacesContext context = getFacesContext();

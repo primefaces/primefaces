@@ -30,9 +30,17 @@ Browsers will report CSP violations to a user-defined HTTP endpoint using `repor
 </context-param>
 <context-param>
     <param-name>primefaces.CSP_REPORT_ONLY_POLICY</param-name>
-    <param-value>report-uri /my-csp-reports</param-value>
+    <param-value>report-uri /my-csp-reports; script-src 'self'</param-value>
 </context-param>
 ```
+⚠️ Note: primefaces.CSP_REPORT_ONLY_POLICY works the same way as primefaces.CSP_POLICY:
+you can provide a complete CSP policy string containing the directives you need (for example, script-src, default-src, etc.).
+If you do not provide a full policy, PrimeFaces will automatically apply a default policy of:
+
+```
+script-src 'self'
+```
+This ensures the report-only header always contains a valid directive, even if only report-uri is configured.
 
 ## Policy
 There are many ways to configure CSP for different levels of security. Currently, PrimeFaces has chosen to

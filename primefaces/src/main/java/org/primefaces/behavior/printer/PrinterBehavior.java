@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,39 +23,27 @@
  */
 package org.primefaces.behavior.printer;
 
-import org.primefaces.behavior.base.AbstractBehavior;
-import org.primefaces.behavior.base.BehaviorAttribute;
+import org.primefaces.cdk.api.FacesBehaviorDescription;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.behavior.ClientBehaviorContext;
+import jakarta.faces.component.behavior.FacesBehavior;
 import jakarta.faces.context.FacesContext;
 
 import org.json.JSONObject;
 
+@FacesBehavior(PrinterBehavior.BEHAVIOR_ID)
+@FacesBehaviorDescription("Printer allows sending a specific Faces component to the printer, not the whole page.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "printer/printer.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
-public class PrinterBehavior extends AbstractBehavior {
+public class PrinterBehavior extends PrinterBehaviorBaseImpl {
 
-    public enum PropertyKeys implements BehaviorAttribute {
-        target(String.class),
-        configuration(String.class);
-
-        private final Class<?> expectedType;
-
-        PropertyKeys(Class<?> expectedType) {
-            this.expectedType = expectedType;
-        }
-
-        @Override
-        public Class<?> getExpectedType() {
-            return expectedType;
-        }
-    }
+    public static final String BEHAVIOR_ID = "org.primefaces.component.PrinterBehavior";
 
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
@@ -78,24 +66,4 @@ public class PrinterBehavior extends AbstractBehavior {
                     component, config);
     }
 
-    @Override
-    protected BehaviorAttribute[] getAllAttributes() {
-        return PropertyKeys.values();
-    }
-
-    public String getTarget() {
-        return (String) getStateHelper().eval(PropertyKeys.target, null);
-    }
-
-    public void setTarget(String target) {
-        getStateHelper().put(PropertyKeys.target, target);
-    }
-
-    public String getConfiguration() {
-        return (String) getStateHelper().eval(PropertyKeys.configuration, null);
-    }
-
-    public void setConfiguration(String configuration) {
-        getStateHelper().put(PropertyKeys.configuration, configuration);
-    }
 }

@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-import { core, PF as _PF, type Core } from "./src/core/core.js";
+import { PF as _PF, core, type Core } from "./src/core/core.js";
 import { globalAjaxSetup } from "./src/core/core.ajax.js";
 import { globalUtilsSetup } from "./src/core/core.utils.js";
 
@@ -562,6 +562,11 @@ declare global {
             closeOnEscape: boolean;
 
             /**
+             * Whether the dialog is closed when the user clicks on the modal background mask.
+             */
+            dismissibleMask: boolean;
+
+            /**
              * Whether the dialog is draggable.
              */
             draggable: boolean;
@@ -876,6 +881,11 @@ declare global {
              * calling a remote command.  See {@link PrimeFaces.ajax.pfXHR} and {@link PrimeFaces.ab}.
              */
             pfArgs?: P;
+            /**
+             * An array with scripts added by PrimeFaces.current().executeScript(...).
+             * These will be invoked the same way as the oncomplete attribute of an ajax source.
+             */
+            pfScripts?: string[];
             /**
              * Additional settings, such as portlet forms and nonces.
              */
@@ -1720,6 +1730,8 @@ declare global {
             "lastPageLabel"?: string;
             "listLabel"?: string;
             "listView"?: string;
+            "maximizeLabel"?: string;
+            "minimizeLabel"?: string;
             "moveAllToSource"?: string;
             "moveAllToTarget"?: string;
             "moveBottom"?: string;
@@ -1743,6 +1755,7 @@ declare global {
             "rowsPerPageLabel"?: string;
             "saveEdit"?: string;
             "scrollTop"?: string;
+            "selectColor"?: string;
             "selectAll"?: string;
             "selectLabel"?: string;
             "selectRow"?: string;

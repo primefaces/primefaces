@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,8 @@ import jakarta.faces.FacesException;
 import jakarta.faces.component.UIForm;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
-
+import jakarta.faces.render.FacesRenderer;
+@FacesRenderer(rendererType = MenuButton.DEFAULT_RENDERER, componentFamily = MenuButton.COMPONENT_FAMILY)
 public class MenuButtonRenderer extends TieredMenuRenderer {
 
     @Override
@@ -73,10 +74,11 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         boolean isIconLeft = button.getIconPos().equals("left");
         String value = button.getValue();
+        String buttonIcon = button.getButtonIcon();
         String buttonClass = getStyleClassBuilder(context)
                 .add(button.getButtonStyleClass())
                 .add(isIconLeft, HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
-                .add(isValueBlank(value), HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
+                .add(isValueBlank(value) && isValueBlank(buttonIcon), HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
                 .add(disabled, "ui-state-disabled")
                 .build();
 
@@ -112,7 +114,15 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        renderButtonValue(writer, true, button.getValue(), button.getTitle(), button.getAriaLabel());
+        if (!isValueBlank(buttonIcon)) {
+            // Render buttonIcon instead of label
+            writer.startElement("span", null);
+            writer.writeAttribute("class", buttonIcon, null);
+            writer.endElement("span");
+        }
+        else {
+            renderButtonValue(writer, true, button.getValue(), button.getTitle(), button.getAriaLabel());
+        }
 
         writer.endElement("span");
 
@@ -142,7 +152,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
 
         if (button.getElementsCount() > 0) {
             List<MenuElement> elements = button.getElements();
-            encodeElements(context, button, elements);
+            encodeElements(context, button, elements, true);
         }
 
         writer.endElement("ul");

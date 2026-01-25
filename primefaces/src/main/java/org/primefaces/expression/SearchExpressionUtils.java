@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.expression;
 
+import org.primefaces.cdk.api.Function;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
@@ -180,6 +181,7 @@ public class SearchExpressionUtils {
     }
 
     // used by p:resolveClientId
+    @Function(description = "Returns the clientId of the resolved component for the given expression.")
     public static String resolveClientId(String expression, UIComponent source) {
         if (LangUtils.isBlank(expression)) {
             return null;
@@ -191,16 +193,19 @@ public class SearchExpressionUtils {
     }
 
     // used by p:resolveComponent
+    @Function(description = "Returns the resolved UIComponent for the given expression.")
     public static UIComponent resolveComponent(String expression, UIComponent source) {
         return contextlessResolveComponent(FacesContext.getCurrentInstance(), source, expression);
     }
 
     // used by p:resolveClientIds
+    @Function(description = "Returns the clientIds of the resolved components for the given expression.")
     public static String resolveClientIds(String expressions, UIComponent source) {
         return resolveClientIdsAsString(FacesContext.getCurrentInstance(), source, expressions);
     }
 
     // used by p:resolveWidgetVar
+    @Function(description = "Returns the widgetVar of the resolved component for the given expression.")
     public static String resolveWidgetVar(String expression, UIComponent component) {
         FacesContext context = FacesContext.getCurrentInstance();
         UIComponent resolvedComponent = contextlessResolveComponent(FacesContext.getCurrentInstance(), component, expression);
@@ -218,6 +223,7 @@ public class SearchExpressionUtils {
     }
 
     // used by p:closestWidgetVar
+    @Function(description = "Returns the widgetVar of the closest parent widget of the given component.")
     public static String closestWidgetVar(UIComponent component) {
         Widget widget = ComponentTraversalUtils.closest(Widget.class, component, true);
         if (widget != null) {

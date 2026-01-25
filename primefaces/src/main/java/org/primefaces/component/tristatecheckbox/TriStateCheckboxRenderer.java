@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,9 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = TriStateCheckbox.DEFAULT_RENDERER, componentFamily = TriStateCheckbox.COMPONENT_FAMILY)
 public class TriStateCheckboxRenderer extends InputRenderer<TriStateCheckbox> {
 
     @Override
@@ -67,7 +69,20 @@ public class TriStateCheckboxRenderer extends InputRenderer<TriStateCheckbox> {
     protected void encodeMarkup(FacesContext context, TriStateCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
-        Boolean value = (Boolean) checkbox.getValue();
+        Object rawValue = checkbox.getValue();
+        Boolean value = null;
+        if (rawValue instanceof String) {
+            String stringValue = (String) rawValue;
+            if (LangUtils.isBlank(stringValue)) {
+                value = null;
+            }
+            else {
+                value = Boolean.valueOf(stringValue);
+            }
+        }
+        else {
+            value = (Boolean) rawValue;
+        }
 
         boolean disabled = checkbox.isDisabled();
         boolean readonly = checkbox.isReadonly();

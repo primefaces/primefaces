@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,40 +23,18 @@
  */
 package org.primefaces.component.keyfilter;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
+@FacesComponentBase
 public abstract class KeyFilterBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.KeyFilterRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        forValue("for"),
-        regEx,
-        inputRegEx,
-        mask,
-        testFunction,
-        preventPaste;
-
-        private String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
-    }
 
     public KeyFilterBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -67,59 +45,22 @@ public abstract class KeyFilterBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Search expression to resolve the component to apply key filter.")
+    public abstract String getFor();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Regular expression for validation.")
+    public abstract String getRegEx();
 
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
+    @Property(description = "Regular expression for input validation.")
+    public abstract String getInputRegEx();
 
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
+    @Property(description = "Predefined mask name like 'int', 'num', 'money', 'hex', 'email', 'alpha', 'alphanum'.")
+    public abstract String getMask();
 
-    public String getRegEx() {
-        return (String) getStateHelper().eval(PropertyKeys.regEx, null);
-    }
+    @Property(description = "JavaScript function name for custom validation.")
+    public abstract String getTestFunction();
 
-    public void setRegEx(String regEx) {
-        getStateHelper().put(PropertyKeys.regEx, regEx);
-    }
+    @Property(defaultValue = "true", description = "Prevents paste operation.")
+    public abstract boolean isPreventPaste();
 
-    public String getInputRegEx() {
-        return (String) getStateHelper().eval(PropertyKeys.inputRegEx, null);
-    }
-
-    public void setInputRegEx(String inputRegEx) {
-        getStateHelper().put(PropertyKeys.inputRegEx, inputRegEx);
-    }
-
-    public String getMask() {
-        return (String) getStateHelper().eval(PropertyKeys.mask, null);
-    }
-
-    public void setMask(String mask) {
-        getStateHelper().put(PropertyKeys.mask, mask);
-    }
-
-    public String getTestFunction() {
-        return (String) getStateHelper().eval(PropertyKeys.testFunction, null);
-    }
-
-    public void setTestFunction(String testFunction) {
-        getStateHelper().put(PropertyKeys.testFunction, testFunction);
-    }
-
-    public boolean isPreventPaste() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.preventPaste, true);
-    }
-
-    public void setPreventPaste(boolean preventPaste) {
-        getStateHelper().put(PropertyKeys.preventPaste, preventPaste);
-    }
 }

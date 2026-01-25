@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,52 +23,28 @@
  */
 package org.primefaces.component.menuitem;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.component.api.DialogReturnAware;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import jakarta.el.MethodExpression;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIParameter;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.ActionEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
-
-public class UIMenuItem extends UIMenuItemBase implements DialogReturnAware {
+@FacesComponent(value = UIMenuItem.COMPONENT_TYPE, namespace = UIMenuItem.COMPONENT_FAMILY)
+@FacesComponentDescription("MenuItem is a component that represents a menu item.")
+public class UIMenuItem extends UIMenuItemBaseImpl implements DialogReturnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UIMenuItem";
 
-    private static final String DEFAULT_EVENT = "click";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("click", null)
-            .put(EVENT_DIALOG_RETURN, SelectEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private String confirmationScript;
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
 
     @Override
     public void decode(FacesContext facesContext) {

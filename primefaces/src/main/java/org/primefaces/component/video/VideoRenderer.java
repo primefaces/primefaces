@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,12 +31,14 @@ import java.io.IOException;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.render.FacesRenderer;
 
 import org.apache.commons.io.FilenameUtils;
 
 /**
  * The HTML <video> element is used to embed sound content in documents.
  */
+@FacesRenderer(rendererType = Video.DEFAULT_RENDERER, componentFamily = Video.COMPONENT_FAMILY)
 public class VideoRenderer extends CoreRenderer<Video> {
 
     @Override
@@ -66,22 +68,9 @@ public class VideoRenderer extends CoreRenderer<Video> {
         writer.writeAttribute("id", clientId, "id");
         renderPassThruAttributes(context, component, HTML.MEDIA_ATTRS_WITH_EVENTS);
 
-        if (LangUtils.isNotBlank(component.getHeight())) {
-            writer.writeAttribute("height", component.getHeight(), null);
-        }
-        if (LangUtils.isNotBlank(component.getWidth())) {
-            writer.writeAttribute("width", component.getWidth(), null);
-        }
-        if (LangUtils.isNotBlank(component.getPreload())) {
-            writer.writeAttribute("preload", component.getPreload(), null);
-        }
-        if (LangUtils.isNotBlank(component.getPoster())) {
-            writer.writeAttribute("poster", component.getPoster(), null);
-        }
-
         VideoType player = resolvePlayer(context, component);
         writer.startElement("source", null);
-        writer.writeAttribute("src", component.resolveSource(context, component), null);
+        writer.writeAttribute("src", component.resolveSource(context), null);
         writer.writeAttribute("type", player.getMediaType(), null);
         writer.endElement("source");
 

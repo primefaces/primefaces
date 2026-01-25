@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,21 @@
  */
 package org.primefaces.component.ajaxstatus;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class AjaxStatusBase extends UIComponentBase implements Widget {
+@FacesComponentBase
+public abstract class AjaxStatusBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AjaxStatusRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        delay,
-        onstart,
-        oncomplete,
-        onsuccess,
-        onerror,
-        style,
-        styleClass;
-    }
 
     public AjaxStatusBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -54,67 +48,33 @@ public abstract class AjaxStatusBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Facet(description = "Facet to show content when AJAX request starts.")
+    public abstract UIComponent getStartFacet();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Facet(description = "Facet to show content when AJAX request completes successfully.")
+    public abstract UIComponent getSuccessFacet();
 
-    public int getDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
-    }
+    @Facet(description = "Facet to show content when AJAX request completes (success or error).")
+    public abstract UIComponent getCompleteFacet();
 
-    public void setDelay(int delay) {
-        getStateHelper().put(PropertyKeys.delay, delay);
-    }
+    @Facet(description = "Facet to show content when AJAX request fails with error.")
+    public abstract UIComponent getErrorFacet();
 
-    public String getOnstart() {
-        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
-    }
+    @Facet(description = "Default facet to show when there is no AJAX request in progress.")
+    public abstract UIComponent getDefaultFacet();
 
-    public void setOnstart(String onstart) {
-        getStateHelper().put(PropertyKeys.onstart, onstart);
-    }
+    @Property(description = "Delay in milliseconds before showing the status.", defaultValue = "0")
+    public abstract int getDelay();
 
-    public String getOncomplete() {
-        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
-    }
+    @Property(description = "Client-side callback to execute when AJAX request starts.")
+    public abstract String getOnstart();
 
-    public void setOncomplete(String oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
-    }
+    @Property(description = "Client-side callback to execute when AJAX request completes.")
+    public abstract String getOncomplete();
 
-    public String getOnsuccess() {
-        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
-    }
+    @Property(description = "Client-side callback to execute when AJAX request succeeds.")
+    public abstract String getOnsuccess();
 
-    public void setOnsuccess(String onsuccess) {
-        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
-    }
-
-    public String getOnerror() {
-        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
-    }
-
-    public void setOnerror(String onerror) {
-        getStateHelper().put(PropertyKeys.onerror, onerror);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Client-side callback to execute when AJAX request fails.")
+    public abstract String getOnerror();
 }

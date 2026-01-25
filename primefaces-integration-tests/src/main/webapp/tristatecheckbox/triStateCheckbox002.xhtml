@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <h3>Constant values</h3>
+            <p:triStateCheckbox id="triStateConstantNull" value="" style="margin-right: 1em;" readonly="true" />
+            <h:outputLabel value="Constant null"/>
+
+            <p:triStateCheckbox id="triStateConstantTrue" value="true" style="margin-right: 1em;" readonly="true"/>
+            <h:outputLabel value="Constant true"/>
+            
+            <p:triStateCheckbox id="triStateConstantFalse" value="false" style="margin-right: 1em;" readonly="true" />
+            <h:outputLabel value="Constant false"/>
+
+            <p:commandButton id="button" update="@form" value="Submit"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

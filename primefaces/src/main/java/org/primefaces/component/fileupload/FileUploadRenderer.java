@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = FileUpload.DEFAULT_RENDERER, componentFamily = FileUpload.COMPONENT_FAMILY)
 public class FileUploadRenderer extends CoreRenderer<FileUpload> {
 
     @Override
@@ -177,7 +179,7 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
 
-        UIComponent emptyFacet = component.getFacet("empty");
+        UIComponent emptyFacet = component.getEmptyFacet();
         if (FacetUtils.shouldRenderFacet(emptyFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", FileUpload.EMPTY_CLASS, null);

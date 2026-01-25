@@ -46,6 +46,7 @@ unselectable | false | Boolean | Unselectable mode when true clicking a radio ag
 hideNoSelectionOption | false | Boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 readonly | false | Boolean | Flag indicating that this input element will prevent changes by the user.
 columnClasses | null | String | Comma separated list of column style classes.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 
 ## Getting started with SelectOneRadio
 SelectOneRadio usage is same as the standard one.
@@ -114,6 +115,17 @@ index of the selectItem.
 
 For the better accessibility support, you might want to wrap each custom radio button in an element
 with a `role="radio"` attribute.
+
+## Ajax Behavior Events
+
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `change`  
+**Available Events:** `change`  
+
+```xhtml
+<p:ajax event="change" listener="#{bean.handlechange}" update="msgs" />
+```
 
 ## Client Side API
 Widget: _PrimeFaces.widget.SelectOneRadio_

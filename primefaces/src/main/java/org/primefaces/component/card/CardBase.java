@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,20 @@
  */
 package org.primefaces.component.card;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
 
-public class CardBase extends UIComponentBase {
+@FacesComponentBase
+public abstract class CardBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CardRenderer";
-
-    public enum PropertyKeys {
-        header,
-        title,
-        subtitle,
-        footer,
-        style,
-        styleClass
-    }
 
     public CardBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -49,51 +47,27 @@ public class CardBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Facet(description = "Header content of the card.")
+    public abstract UIComponent getHeaderFacet();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Facet(description = "Title content of the card.")
+    public abstract UIComponent getTitleFacet();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Facet(description = "Subtitle content of the card.")
+    public abstract UIComponent getSubtitleFacet();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Facet(description = "Footer content of the card.")
+    public abstract UIComponent getFooterFacet();
 
-    public String getHeader() {
-        return (String) getStateHelper().eval(PropertyKeys.header, null);
-    }
+    @Property(description = "Header text of the card.")
+    public abstract String getHeader();
 
-    public void setHeader(String header) {
-        getStateHelper().put(PropertyKeys.header, header);
-    }
+    @Property(description = "Title text of the card.")
+    public abstract String getTitle();
 
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
+    @Property(description = "Subtitle text of the card.")
+    public abstract String getSubtitle();
 
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
-
-    public String getSubtitle() {
-        return (String) getStateHelper().eval(PropertyKeys.subtitle, null);
-    }
-
-    public void setSubtitle(String subtitle) {
-        getStateHelper().put(PropertyKeys.subtitle, subtitle);
-    }
-
-    public String getFooter() {
-        return (String) getStateHelper().eval(PropertyKeys.footer, null);
-    }
-
-    public void setFooter(String footer) {
-        getStateHelper().put(PropertyKeys.footer, footer);
-    }
+    @Property(description = "Footer text of the card.")
+    public abstract String getFooter();
 }

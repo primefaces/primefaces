@@ -112,7 +112,7 @@
                         <tr id="binding" class="rowColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.component.UIComponent</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">
                 An el expression referring to a server side UIComponent instance in a backing bean.
             </td>
@@ -153,7 +153,9 @@
                             <td class="colFirst"><a href="#gridIcon"><code>gridIcon</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast"><i>No Description</i></td>
+                    </td><td class="colLast">
+                Icon to display for grid layout toggle button.
+            </td>
                         </tr>
                         <tr id="gridRowStyle" class="rowColor">
                             <td class="colFirst"><a href="#gridRowStyle"><code>gridRowStyle</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -199,7 +201,9 @@
                             <td class="colFirst"><a href="#listIcon"><code>listIcon</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast"><i>No Description</i></td>
+                    </td><td class="colLast">
+                Icon to display for list layout toggle button.
+            </td>
                         </tr>
                         <tr id="multiViewState" class="rowColor">
                             <td class="colFirst"><a href="#multiViewState"><code>multiViewState</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -257,7 +261,15 @@
                 Boolean value to specify the rendering of the component, when set to false component will not be rendered.
             </td>
                         </tr>
-                        <tr id="rows" class="altColor">
+                        <tr id="rowIndexVar" class="altColor">
+                            <td class="colFirst"><a href="#rowIndexVar"><code>rowIndexVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                Name of iterator to refer each row index.
+            </td>
+                        </tr>
+                        <tr id="rows" class="rowColor">
                             <td class="colFirst"><a href="#rows"><code>rows</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -265,7 +277,7 @@
                 Number of rows to display per page. Default value is 0 meaning to display all data available.
             </td>
                         </tr>
-                        <tr id="rowsPerPageTemplate" class="rowColor">
+                        <tr id="rowsPerPageTemplate" class="altColor">
                             <td class="colFirst"><a href="#rowsPerPageTemplate"><code>rowsPerPageTemplate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -273,7 +285,7 @@
                 Template of the rowsPerPage dropdown.
             </td>
                         </tr>
-                        <tr id="style" class="altColor">
+                        <tr id="style" class="rowColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -281,7 +293,7 @@
                 Inline style of the main container.
             </td>
                         </tr>
-                        <tr id="styleClass" class="rowColor">
+                        <tr id="styleClass" class="altColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -289,7 +301,7 @@
                 Style class of the main container.
             </td>
                         </tr>
-                        <tr id="touchable" class="altColor">
+                        <tr id="touchable" class="rowColor">
                             <td class="colFirst"><a href="#touchable"><code>touchable</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -297,7 +309,7 @@
                 Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
             </td>
                         </tr>
-                        <tr id="value" class="rowColor">
+                        <tr id="value" class="altColor">
                             <td class="colFirst"><a href="#value"><code>value</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
@@ -305,12 +317,12 @@
                 Datasource of the component.
             </td>
                         </tr>
-                        <tr id="var" class="altColor">
+                        <tr id="var" class="rowColor">
                             <td class="colFirst"><a href="#var"><code>var</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>java.lang.String</code></td><td class="colLast">
                 Name of the iterator variable that references each element in the data set.
             </td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)

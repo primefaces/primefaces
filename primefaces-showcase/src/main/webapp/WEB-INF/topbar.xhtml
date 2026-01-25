@@ -1,6 +1,18 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
                 xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
 
+    <div class="layout-news">
+        <div class="layout-news-container">
+            <div class="layout-news-content">
+                <span class="layout-news-text">Summer Sale is here 🏖️ Get 50% off with code PRSM25</span>
+                <a class="layout-news-link" href="https://www.primefaces.org/blog/summer-sale-2025" target="_blank" rel="noopener noreferrer">Learn More</a>
+            </div>
+            <a class="layout-news-close">
+                <span class="pi pi-times"></span>
+            </a>
+        </div>
+    </div>
+
     <div class="layout-topbar">
         <a class="menu-button" tabindex="0">
             <i class="pi pi-bars"></i>
@@ -27,8 +39,6 @@
                     <ul class="connected-overlay-in">
                         <li class="topbar-submenu-header">THEMING</li>
                         <li><h:link outcome="/theming"><i class="pi pi-fw pi-file"></i><span>Guide</span></h:link></li>
-                        <li><a href="https://www.primefaces.org/designer/primefaces"><i class="pi pi-fw pi-palette"></i><span>Designer</span></a></li>
-                        <li><a href="https://www.primefaces.org/designer-jsf"><i class="pi pi-fw pi-desktop"></i><span>Visual Editor</span></a></li>
                         <li><h:link outcome="/icons"><i class="pi pi-fw pi-info-circle"></i><span>Icons</span></h:link></li>
                         <li><h:link outcome="/uikit"><i class="pi pi-fw pi-pencil"></i><span>UI Kit</span></h:link></li>
 

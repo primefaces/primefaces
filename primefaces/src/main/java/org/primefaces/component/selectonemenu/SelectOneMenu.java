@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,7 @@ import java.util.Map;
 
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
@@ -47,6 +48,7 @@ import jakarta.faces.render.Renderer;
 import jakarta.faces.validator.Validator;
 import jakarta.faces.validator.ValidatorException;
 
+@FacesComponent(value = SelectOneMenu.COMPONENT_TYPE, namespace = SelectOneMenu.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -222,5 +224,13 @@ public class SelectOneMenu extends SelectOneMenuBase {
         getStateHelper().put("labelledby", labelledBy);
     }
 
+    @Override
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().get("ariaDescribedBy");
+    }
 
+    @Override
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
+    }
 }

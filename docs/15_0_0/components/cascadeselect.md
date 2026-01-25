@@ -32,7 +32,8 @@ converterMessage | null | String | Message to be displayed when conversion fails
 validatorMessage | null | String | Message to be displayed when validation fields.
 var | null | String | Name of the item iterator.
 widgetVar | null | String | Name of the client side widget.
-disabled | false | Boolean | Disables the component.
+disabled | false | Boolean | Disables or enables the component.
+readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
 placeholder | null | String | The placeholder attribute specifies a short hint that describes the expected value of an input field.
 tabindex | null | String | Tabindex of the input.

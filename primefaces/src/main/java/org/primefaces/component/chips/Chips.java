@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.chips;
 
-import org.primefaces.component.api.AbstractPrimeHtmlInputText;
+import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 import java.util.Collection;
@@ -35,16 +35,19 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
+@FacesComponent(value = Chips.COMPONENT_TYPE, namespace = Chips.COMPONENT_FAMILY)
+@FacesComponentDescription("Chips is used to enter multiple values on an inputfield.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Chips extends ChipsBase {
+public class Chips extends ChipsBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chips";
     public static final String STYLE_CLASS = "ui-chips ui-widget";
@@ -54,9 +57,8 @@ public class Chips extends ChipsBase {
     public static final String TOKEN_CLOSE_ICON_CLASS = "ui-chips-token-icon ui-icon ui-icon-close";
     public static final String TOKEN_INPUT_CLASS = "ui-chips-input-token";
 
-    private static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "itemUnselect");
-    private static final Collection<String> EVENT_NAMES = LangUtils.concat(AbstractPrimeHtmlInputText.EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
-
+    private static final List<PrimeClientBehaviorEventKeys> UNOBTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
+            ClientBehaviorEventKeys.itemSelect, ClientBehaviorEventKeys.itemUnselect);
 
     @Override
     public String getInputClientId() {
@@ -79,31 +81,35 @@ public class Chips extends ChipsBase {
     }
 
     @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
+    public String getAriaDescribedBy() {
+        return (String) getStateHelper().get("ariaDescribedBy");
     }
 
     @Override
-    public Collection<String> getUnobstrusiveEventNames() {
-        return UNOBSTRUSIVE_EVENT_NAMES;
+    public void setAriaDescribedBy(String ariaDescribedBy) {
+        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
+    }
+
+    @Override
+    public Collection<PrimeClientBehaviorEventKeys> getUnobtrusiveClientBehaviorEventKeys() {
+        return UNOBTRUSIVE_EVENT_KEYS;
     }
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if (eventName != null && event instanceof AjaxBehaviorEvent) {
+        if (isAjaxBehaviorEventSource(event)) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
-            if ("itemSelect".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.itemSelect)) {
                 Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
                 SelectEvent<?> selectEvent = new SelectEvent<>(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
-            else if ("itemUnselect".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.itemUnselect)) {
                 Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
                 UnselectEvent<?> unselectEvent = new UnselectEvent<>(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());

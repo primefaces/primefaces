@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,9 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = SelectBooleanCheckbox.DEFAULT_RENDERER, componentFamily = SelectBooleanCheckbox.COMPONENT_FAMILY)
 public class SelectBooleanCheckboxRenderer extends InputRenderer<SelectBooleanCheckbox> {
 
     @Override
@@ -70,9 +72,12 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer<SelectBooleanCh
         String title = component.getTitle();
 
         String style = component.getStyle();
-        String styleClass = component.getStyleClass();
-        styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
-        styleClass = "ui-selectbooleancheckbox " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add("ui-selectbooleancheckbox")
+                .add(HTML.CHECKBOX_CLASS)
+                .add(component.getStyleClass())
+                .add(component.isReadonly(), "ui-state-readonly")
+                .build();
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");

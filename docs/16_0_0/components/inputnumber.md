@@ -23,6 +23,7 @@ and maximum value, negative numbers, and a lot of round methods.
 id | null | String | Unique identifier of the component
 accesskey | null | String | Access key that when pressed transfers focus to the input element.
 alt | null | String | Alternate textual description of the input field.
+ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
 autocomplete | null | String | Controls browser autocomplete behavior.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,9 @@ import jakarta.faces.component.behavior.ClientBehaviorContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.ActionEvent;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = CommandLink.DEFAULT_RENDERER, componentFamily = CommandLink.COMPONENT_FAMILY)
 public class CommandLinkRenderer extends CoreRenderer<CommandLink> {
 
     private static final String SB_BUILD_ONCLICK = CommandLinkRenderer.class.getName() + "#buildOnclick";
@@ -148,7 +150,7 @@ public class CommandLinkRenderer extends CoreRenderer<CommandLink> {
         }
 
         List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>(1);
-        behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
+        behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBTRUSIVE));
         String dialogReturnBehavior = getEventBehaviors(context, component, DialogReturnAware.EVENT_DIALOG_RETURN, behaviorParams);
         if (dialogReturnBehavior != null) {
             writer.writeAttribute(DialogReturnAware.ATTRIBUTE_DIALOG_RETURN_SCRIPT, dialogReturnBehavior, null);

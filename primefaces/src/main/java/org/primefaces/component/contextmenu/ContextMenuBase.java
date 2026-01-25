@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,45 +23,19 @@
  */
 package org.primefaces.component.contextmenu;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class ContextMenuBase extends AbstractMenu implements Widget, TouchAware {
+@FacesComponentBase
+public abstract class ContextMenuBase extends AbstractMenu implements Widget, TouchAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ContextMenuRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        forValue("for"),
-        style,
-        styleClass,
-        model,
-        disabled,
-        nodeType,
-        event,
-        beforeShow,
-        selectionMode,
-        targetFilter,
-        touchable;
-
-        private String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
-    }
 
     public ContextMenuBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -72,102 +46,29 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget, To
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
-
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Id of the component to attach to")
+    public abstract String getFor();
 
     @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
+    @Property(description = "Menu model instance to create menu programmatically.")
+    public abstract org.primefaces.model.menu.MenuModel getModel();
 
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
+    @Property(defaultValue = "false", description = "If true, prevents menu from being shown")
+    public abstract Boolean isDisabled();
 
-    public Boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(description = "Specific type of tree nodes to attach to.")
+    public abstract String getNodeType();
 
-    public void setDisabled(Boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(description = "Event to bind contextMenu display, default is contextmenu aka right click.")
+    public abstract String getEvent();
 
-    public String getNodeType() {
-        return (String) getStateHelper().eval(PropertyKeys.nodeType, null);
-    }
+    @Property(description = "Client side callback to execute before showing.")
+    public abstract String getBeforeShow();
 
-    public void setNodeType(String nodeType) {
-        getStateHelper().put(PropertyKeys.nodeType, nodeType);
-    }
+    @Property(defaultValue = "multiple", description = "Defines the selection behavior, e.g., \"single\" or \"multiple\".")
+    public abstract String getSelectionMode();
 
-    public String getEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.event, null);
-    }
+    @Property(description = "Selector to filter the elements to attach the menu.")
+    public abstract String getTargetFilter();
 
-    public void setEvent(String event) {
-        getStateHelper().put(PropertyKeys.event, event);
-    }
-
-    public String getBeforeShow() {
-        return (String) getStateHelper().eval(PropertyKeys.beforeShow, null);
-    }
-
-    public void setBeforeShow(String beforeShow) {
-        getStateHelper().put(PropertyKeys.beforeShow, beforeShow);
-    }
-
-    public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, "multiple");
-    }
-
-    public void setSelectionMode(String selectionMode) {
-        getStateHelper().put(PropertyKeys.selectionMode, selectionMode);
-    }
-
-    public String getTargetFilter() {
-        return (String) getStateHelper().eval(PropertyKeys.targetFilter, null);
-    }
-
-    public void setTargetFilter(String targetFilter) {
-        getStateHelper().put(PropertyKeys.targetFilter, targetFilter);
-    }
-
-    @Override
-    public Boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
-    }
-
-    @Override
-    public void setTouchable(Boolean touchable) {
-        getStateHelper().put(PropertyKeys.touchable, touchable);
-    }
 }

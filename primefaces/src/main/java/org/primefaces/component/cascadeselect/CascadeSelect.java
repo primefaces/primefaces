@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,25 @@
  */
 package org.primefaces.component.cascadeselect;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.render.Renderer;
 
+@FacesComponent(value = CascadeSelect.COMPONENT_TYPE, namespace = CascadeSelect.COMPONENT_FAMILY)
+@FacesComponentDescription("CascadeSelect displays a nested structure of options.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class CascadeSelect extends CascadeSelectBase {
+public class CascadeSelect extends CascadeSelectBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CascadeSelect";
 
@@ -62,39 +60,16 @@ public class CascadeSelect extends CascadeSelectBase {
     public static final String SUBLIST_CLASS = "ui-cascadeselect-sublist";
     public static final String LABEL_EMPTY_CLASS = "ui-cascadeselect-label-empty";
 
-    private static final String DEFAULT_EVENT = "itemSelect";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("itemSelect", SelectEvent.class)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
-
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        if (isAjaxBehaviorEventSource(event)) {
             FacesEvent wrapperEvent = null;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if ("itemSelect".equals(eventName)) {
-                Renderer renderer = ComponentUtils.getUnwrappedRenderer(
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.itemSelect)) {
+                Renderer<?> renderer = ComponentUtils.getUnwrappedRenderer(
                         context,
                         "jakarta.faces.SelectOne",
                         "jakarta.faces.Listbox");
@@ -132,4 +107,5 @@ public class CascadeSelect extends CascadeSelectBase {
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
+
 }

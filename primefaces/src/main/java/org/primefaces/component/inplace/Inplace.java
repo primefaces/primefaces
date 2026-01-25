@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,23 @@
  */
 package org.primefaces.component.inplace;
 
-import org.primefaces.util.MapBuilder;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
-import jakarta.faces.event.BehaviorEvent;
 
+@FacesComponent(value = Inplace.COMPONENT_TYPE, namespace = Inplace.COMPONENT_FAMILY)
+@FacesComponentDescription("Inplace provides an easy way to edit content inplace with a custom input.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Inplace extends InplaceBase {
+public class Inplace extends InplaceBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Inplace";
 
@@ -52,23 +52,6 @@ public class Inplace extends InplaceBase {
     public static final String CANCEL_BUTTON_CLASS = "ui-inplace-cancel";
     public static final String DISPLAY_INLINE = "inline";
     public static final String DISPLAY_NONE = "none";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("save", null)
-            .put("cancel", null)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
 
     @Override

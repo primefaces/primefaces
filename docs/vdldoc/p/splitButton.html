@@ -120,7 +120,7 @@
                         <tr id="action" class="altColor">
                             <td class="colFirst"><a href="#action"><code>action</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.el.MethodExpression</code>)
+                                (<i>must evaluate to </i><code>jakarta.el.MethodExpression</code>)
                     </td><td class="colLast">
                 A method expression or a string outcome to process when command is executed.
             </td>
@@ -128,7 +128,7 @@
                         <tr id="actionListener" class="rowColor">
                             <td class="colFirst"><a href="#actionListener"><code>actionListener</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.event.ActionListener</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.event.ActionListener</code>)
                     </td><td class="colLast">
                 An actionlistener to process when command is executed.
             </td>
@@ -157,7 +157,15 @@
                 Appends the overlay to the element defined by search expression. Defaults to document body.
             </td>
                         </tr>
-                        <tr id="ariaLabel" class="rowColor">
+                        <tr id="ariaDescribedBy" class="rowColor">
+                            <td class="colFirst"><a href="#ariaDescribedBy"><code>ariaDescribedBy</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
+            </td>
+                        </tr>
+                        <tr id="ariaLabel" class="altColor">
                             <td class="colFirst"><a href="#ariaLabel"><code>ariaLabel</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -165,7 +173,7 @@
                 The aria-label attribute is used to define a string that labels the current element for accessibility.
             </td>
                         </tr>
-                        <tr id="async" class="altColor">
+                        <tr id="async" class="rowColor">
                             <td class="colFirst"><a href="#async"><code>async</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -173,15 +181,15 @@
                 When set to true, ajax requests are not queued.
             </td>
                         </tr>
-                        <tr id="binding" class="rowColor">
+                        <tr id="binding" class="altColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
-                                (<i>must evaluate to </i><code>javax.faces.component.UIComponent</code>)
+                                (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">
                 An el expression referring to a server side UIComponent instance in a backing bean.
             </td>
                         </tr>
-                        <tr id="delay" class="altColor">
+                        <tr id="delay" class="rowColor">
                             <td class="colFirst"><a href="#delay"><code>delay</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -189,7 +197,7 @@
                 If less than delay milliseconds elapses between calls to request() only the most recent one is sent and all other requests are discarded. The default value of this option is null. If the value of delay is the literal string 'none' without the quotes or the default, no delay is used.
             </td>
                         </tr>
-                        <tr id="dir" class="rowColor">
+                        <tr id="dir" class="altColor">
                             <td class="colFirst"><a href="#dir"><code>dir</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -197,7 +205,7 @@
                 Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
             </td>
                         </tr>
-                        <tr id="disabled" class="altColor">
+                        <tr id="disabled" class="rowColor">
                             <td class="colFirst"><a href="#disabled"><code>disabled</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -205,12 +213,21 @@
                 Disables the button.
             </td>
                         </tr>
-                        <tr id="disableOnAjax" class="rowColor">
+                        <tr id="disableOnAjax" class="altColor">
                             <td class="colFirst"><a href="#disableOnAjax"><code>disableOnAjax</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">
                 If true, the button will be disabled during Ajax requests triggered by the button or its menu items. Default is 'true'.
+            </td>
+                        </tr>
+                        <tr id="dynamic" class="rowColor">
+                            <td class="colFirst"><a href="#dynamic"><code>dynamic</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
+                    </td><td class="colLast">
+                Defines if dynamic loading is enabled for the element's panel.
+                If the value is "true", the overlay is not rendered on page load to improve performance. Default is false.
             </td>
                         </tr>
                         <tr id="filter" class="altColor">

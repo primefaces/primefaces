@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,9 @@ import java.io.IOException;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.FacesRenderer;
 
+@FacesRenderer(rendererType = KeyFilter.DEFAULT_RENDERER, componentFamily = KeyFilter.COMPONENT_FAMILY)
 public class KeyFilterRenderer extends CoreRenderer<KeyFilter> {
 
     @Override

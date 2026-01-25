@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
@@ -47,6 +48,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private static final String BODY_TAG = "body";
     private static final String HTML_TAG = "html";
     private static final String TYPE_ATTRIBUTE = "type";
+    private static final Pattern TRACKING_SUFFIX_PATTERN = Pattern.compile("_\\d+$");
 
     private final MoveScriptsToBottomState state;
 
@@ -238,7 +240,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             // write inline scripts
             for (Map.Entry<String, List<String>> entry : state.getInlines().entrySet()) {
                 // strip tracking _0, _1, _2 etc off the end of the string
-                String type = entry.getKey().replaceAll("_\\d+$", "");
+                String type = TRACKING_SUFFIX_PATTERN.matcher(entry.getKey()).replaceAll("");
                 List<String> inlines = entry.getValue();
 
                 String id = UUID.randomUUID().toString();

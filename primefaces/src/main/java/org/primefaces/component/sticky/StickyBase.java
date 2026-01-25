@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,18 @@
  */
 package org.primefaces.component.sticky;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIPanel;
 
+@FacesComponentBase
 public abstract class StickyBase extends UIPanel implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.StickyRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        target,
-        margin
-    }
 
     public StickyBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -49,27 +45,12 @@ public abstract class StickyBase extends UIPanel implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Identifier of the component(s) to make sticky.")
+    public abstract String getTarget();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "0", description = "Margin to the top of the page during fixed scrolling.")
+    public abstract int getMargin();
 
-    public String getTarget() {
-        return (String) getStateHelper().eval(PropertyKeys.target, null);
-    }
-
-    public void setTarget(String target) {
-        getStateHelper().put(PropertyKeys.target, target);
-    }
-
-    public int getMargin() {
-        return (Integer) getStateHelper().eval(PropertyKeys.margin, 0);
-    }
-
-    public void setMargin(int margin) {
-        getStateHelper().put(PropertyKeys.margin, margin);
-    }
+    @Property(description = "Selector for elements fixed at the top of the page whose height should be considered when positioning the sticky element.")
+    public abstract String getStickyTopAt();
 }

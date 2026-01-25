@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,13 +25,13 @@ package org.primefaces.behavior.ajax;
 
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.event.DynamicOncompleteEvent;
 import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import jakarta.faces.component.ActionSource;
-import jakarta.faces.component.EditableValueHolder;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.ClientBehavior;
 import jakarta.faces.component.behavior.ClientBehaviorContext;
@@ -54,6 +54,10 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             event.setPhaseId(phaseId);
 
             component.queueEvent(event);
+
+            if (ajaxBehavior.getValueExpression("oncomplete") != null) {
+                component.queueEvent(new DynamicOncompleteEvent(component, ajaxBehavior, phaseId));
+            }
         }
     }
 
@@ -66,7 +70,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
         UIComponent component = behaviorContext.getComponent();
 
-        ClientBehaviorRenderingMode renderingMode = ClientBehaviorRenderingMode.OBSTRUSIVE;
+        ClientBehaviorRenderingMode renderingMode = ClientBehaviorRenderingMode.OBTRUSIVE;
 
         Collection<ClientBehaviorContext.Parameter> behaviorParameters = behaviorContext.getParameters();
         if (behaviorParameters != null && !behaviorParameters.isEmpty()) {
@@ -116,26 +120,20 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
                 .onstart(ajaxBehavior.getOnstart())
                 .onerror(ajaxBehavior.getOnerror())
                 .onsuccess(ajaxBehavior.getOnsuccess())
-                .oncomplete(ajaxBehavior.getOncomplete())
+                // If oncomplete is a ValueExpression, then it's handled in AjaxBehaviorRenderer#decode().
+                .oncomplete(ajaxBehavior.getValueExpression("oncomplete") == null ? ajaxBehavior.getOncomplete() : null)
                 .params(component)
                 .buildBehavior(renderingMode);
 
         return request;
     }
 
-    private boolean isImmediate(UIComponent component, AjaxBehavior ajaxBehavior) {
-        boolean immediate = false;
-
+    private static boolean isImmediate(UIComponent component, AjaxBehavior ajaxBehavior) {
         if (ajaxBehavior.isImmediateSet()) {
-            immediate = ajaxBehavior.isImmediate();
+            return ajaxBehavior.isImmediate();
         }
-        else if (component instanceof EditableValueHolder) {
-            immediate = ((EditableValueHolder) component).isImmediate();
+        else {
+            return ComponentUtils.isImmediate(component);
         }
-        else if (component instanceof ActionSource) {
-            immediate = ((ActionSource) component).isImmediate();
-        }
-
-        return immediate;
     }
 }
