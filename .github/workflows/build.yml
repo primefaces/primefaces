@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [25]
+        java: [11, 25]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -35,15 +35,8 @@ jobs:
       - name: Build
         run: mvn clean install -T1C -Pminify --batch-mode --show-version
       - name: Sonar Cloud
-        if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
-        run: |
-          echo "Debug: SonarCloud Configuration"
-          echo "Project Key: java-helpers:primefaces"
-          echo "Organization: java-helpers"
-          echo "Host URL: https://sonarcloud.io"
-          echo "Token check: ${SONAR_TOKEN:0:10}..."
-          echo "Testing basic SonarCloud connectivity..."
-          mvn sonar:sonar -Dsonar.projectKey=java-helpers:primefaces -Dsonar.organization=java-helpers -Dsonar.host.url=https://sonarcloud.io --file primefaces/pom.xml -X
+        if: (github.ref == 'refs/heads/master' || github.event_name == 'pull_request') && matrix.java == 25
+        run: mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Pquick --file primefaces/pom.xml
         # new approach with code-coverage does not work as of 2024/12 because
         # "Failed to execute goal org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar (default-cli) on project primefaces-parent: Could not find a default branch for project with key 'org.primefaces:primefaces-parent'. Make sure project exists. -> [Help 1]"
         # setting sonar.skip=true in the parent-pom.xml does not work either because this results in skipping the whole project, setting sonar.skip=false for modules does not compensate for this
@@ -55,15 +48,30 @@ jobs:
 
   integration-tests:
     runs-on: ubuntu-latest
-    if: false  # Disabled - only one integration test run for Java 25
     name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
     strategy:
       fail-fast: false
       matrix:
         include:
-          # Only Java 25 with Mojarra 4.1
+          # Java 11 with Faces 4.0
+          - java: 11
+            facesimpl: 'mojarra-4.0'
+          - java: 11
+            facesimpl: 'myfaces-4.0'
+          # Java 17 with Faces 4.1
+          - java: 17
+            facesimpl: 'mojarra-4.1'
+          - java: 17
+            facesimpl: 'myfaces-4.1'
+          # Java 25 with both Faces 4.0 and 4.1
+          - java: 25
+            facesimpl: 'mojarra-4.0'
+          - java: 25
+            facesimpl: 'myfaces-4.0'
           - java: 25
             facesimpl: 'mojarra-4.1'
+          - java: 25
+            facesimpl: 'myfaces-4.1'
     steps:
       - uses: actions/checkout@v6
       - name: Set up JDK ${{ matrix.java }}
