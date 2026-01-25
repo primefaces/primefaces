@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 25]
+        java: [25]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -35,7 +35,7 @@ jobs:
       - name: Build
         run: mvn clean install -T1C -Pminify --batch-mode --show-version
       - name: Sonar Cloud
-        if: (github.ref == 'refs/heads/master' || github.event_name == 'pull_request') && matrix.java == 25
+        if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
         run: |
           echo "Debug: SonarCloud Configuration"
           echo "Project Key: java-helpers:primefaces"
