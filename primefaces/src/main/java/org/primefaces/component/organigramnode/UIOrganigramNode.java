@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.organigramnode;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = UIOrganigramNode.COMPONENT_TYPE, namespace = UIOrganigramNode.COMPONENT_FAMILY)
-public class UIOrganigramNode extends UIOrganigramNodeBase {
+@FacesComponentDescription("OrganigramNode is used to customize the appearance and behavior of nodes in an Organigram component.")
+public class UIOrganigramNode extends UIOrganigramNodeBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OrganigramNode";
 }
