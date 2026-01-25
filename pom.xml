@@ -78,7 +78,6 @@
         <slf4j.version>2.0.17</slf4j.version>
 
         <sonar.skip>true</sonar.skip>
-        <sonar.coverage.jacoco.xmlReportPaths>../primefaces-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 
         <npm.token/>
         <npm.username/>
