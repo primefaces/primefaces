@@ -17,7 +17,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.repository == 'primefaces/primefaces'
     name: Build
     strategy:
       fail-fast: false
@@ -49,7 +48,6 @@ jobs:
 
   integration-tests:
     runs-on: ubuntu-latest
-    if: github.repository == 'primefaces/primefaces'
     name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
     strategy:
       fail-fast: false
