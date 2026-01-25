@@ -111,7 +111,7 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, St
     @Property(description = "Hide effect to be used when hiding dialog.")
     public abstract String getHideEffect();
 
-    @Property(description = "Position of the dialog relative to the target element.")
+    @Property(implicitDefaultValue = "center", description = "Position of the dialog relative to the target element.")
     public abstract String getMy();
 
     @Property(description = "Position of the target element relative to the dialog.")

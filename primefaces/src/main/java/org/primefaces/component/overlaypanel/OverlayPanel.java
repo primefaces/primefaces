@@ -23,56 +23,29 @@
  */
 package org.primefaces.component.overlaypanel;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
-import jakarta.faces.event.BehaviorEvent;
 
 @FacesComponent(value = OverlayPanel.COMPONENT_TYPE, namespace = OverlayPanel.COMPONENT_FAMILY)
+@FacesComponentDescription("OverlayPanel is a generic container component that is displayed as a popup.]]>")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class OverlayPanel extends OverlayPanelBase {
+public class OverlayPanel extends OverlayPanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OverlayPanel";
 
     public static final String STYLE_CLASS = "ui-overlaypanel ui-widget ui-widget-content ui-shadow ui-hidden-container";
     public static final String CONTENT_CLASS = "ui-overlaypanel-content";
 
-    private static final String DEFAULT_EVENT = "show";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("show", null)
-            .put("hide", null)
-            .put("loadContent", null)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
     public OverlayPanelRenderer getRenderer() {
         return (OverlayPanelRenderer) getFacesContext().getRenderKit().getRenderer(getFamily(), getRendererType());
-    }
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
     }
 
     @Override

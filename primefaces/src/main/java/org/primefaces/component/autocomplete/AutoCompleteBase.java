@@ -150,10 +150,10 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
     @Property(description = "Tooltip text for group headers.")
     public abstract String getGroupByTooltip();
 
-    @Property(description = "Position of the panel relative to the input.")
+    @Property(implicitDefaultValue = "left top", description = "Position of the panel relative to the input.")
     public abstract String getMy();
 
-    @Property(description = "Position of the panel relative to the target.")
+    @Property(implicitDefaultValue = "left bottom", description = "Position of the panel relative to the target.")
     public abstract String getAt();
 
     @Property(description = "When enabled, component is active.", defaultValue = "true")
