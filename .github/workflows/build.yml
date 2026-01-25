@@ -36,7 +36,14 @@ jobs:
         run: mvn clean install -T1C -Pminify --batch-mode --show-version
       - name: Sonar Cloud
         if: (github.ref == 'refs/heads/master' || github.event_name == 'pull_request') && matrix.java == 25
-        run: mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Pquick --file primefaces/pom.xml -Dsonar.pullRequest.key=${{ github.event.number }} -Dsonar.pullRequest.branch=${{ github.head_ref }} -Dsonar.pullRequest.base=${{ github.base_ref }}
+        run: |
+          echo "Debug: SonarCloud Configuration"
+          echo "Project Key: java-helpers:primefaces"
+          echo "Organization: java-helpers"
+          echo "Host URL: https://sonarcloud.io"
+          echo "Token check: ${SONAR_TOKEN:0:10}..."
+          echo "Testing basic SonarCloud connectivity..."
+          mvn sonar:sonar -Dsonar.projectKey=java-helpers:primefaces -Dsonar.organization=java-helpers -Dsonar.host.url=https://sonarcloud.io --file primefaces/pom.xml -X
         # new approach with code-coverage does not work as of 2024/12 because
         # "Failed to execute goal org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar (default-cli) on project primefaces-parent: Could not find a default branch for project with key 'org.primefaces:primefaces-parent'. Make sure project exists. -> [Help 1]"
         # setting sonar.skip=true in the parent-pom.xml does not work either because this results in skipping the whole project, setting sonar.skip=false for modules does not compensate for this
