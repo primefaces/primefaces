@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.linkbutton;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.util.ComponentUtils;
 
 import java.util.List;
@@ -34,12 +35,14 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIParameter;
 
 @FacesComponent(value = LinkButton.COMPONENT_TYPE, namespace = LinkButton.COMPONENT_FAMILY)
+@FacesComponentDescription("LinkButton is a styled link component with button-like appearance and icon support.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class LinkButton extends LinkButtonBase {
+public class LinkButton extends LinkButtonBaseImpl {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String COMPONENT_TYPE = "org.primefaces.component.LinkButton";
 
     @Override

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.link;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.util.ComponentUtils;
 
 import java.util.List;
@@ -32,12 +33,14 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Link.COMPONENT_TYPE, namespace = Link.COMPONENT_FAMILY)
+@FacesComponentDescription("Link is an extended version of standard JSF link component with enhanced features.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Link extends LinkBase {
+public class Link extends LinkBaseImpl {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String COMPONENT_TYPE = "org.primefaces.component.Link";
 
     public static final String STYLE_CLASS = "ui-link ui-widget";
