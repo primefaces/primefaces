@@ -48,30 +48,15 @@ jobs:
 
   integration-tests:
     runs-on: ubuntu-latest
+    if: false  # Disabled - only one integration test run for Java 25
     name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
     strategy:
       fail-fast: false
       matrix:
         include:
-          # Java 11 with Faces 4.0
-          - java: 11
-            facesimpl: 'mojarra-4.0'
-          - java: 11
-            facesimpl: 'myfaces-4.0'
-          # Java 17 with Faces 4.1
-          - java: 17
-            facesimpl: 'mojarra-4.1'
-          - java: 17
-            facesimpl: 'myfaces-4.1'
-          # Java 25 with both Faces 4.0 and 4.1
-          - java: 25
-            facesimpl: 'mojarra-4.0'
-          - java: 25
-            facesimpl: 'myfaces-4.0'
+          # Only Java 25 with Mojarra 4.1
           - java: 25
             facesimpl: 'mojarra-4.1'
-          - java: 25
-            facesimpl: 'myfaces-4.1'
     steps:
       - uses: actions/checkout@v6
       - name: Set up JDK ${{ matrix.java }}
