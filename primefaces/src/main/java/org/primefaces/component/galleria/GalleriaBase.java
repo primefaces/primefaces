@@ -51,19 +51,19 @@ public abstract class GalleriaBase extends UITabPanel implements Widget, PrimeCl
         return COMPONENT_FAMILY;
     }
 
-    @Facet(description = "Allows to place HTML in the header. Alternative to headerText.")
+    @Facet(description = "Allows custom HTML in the header. Alternative to headerText.")
     public abstract UIComponent getHeaderFacet();
 
-    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
+    @Facet(description = "Allows custom HTML in the footer. Alternative to footerText.")
     public abstract UIComponent getFooterFacet();
 
-    @Facet(description = "Allows to place HTML in the caption. Alternative to caption.")
+    @Facet(description = "Allows custom HTML in the caption. Alternative to caption.")
     public abstract UIComponent getCaptionFacet();
 
-    @Facet(description = "Allows to place HTML in the thumbnail. Alternative to thumbnail.")
+    @Facet(description = "Allows custom HTML in the thumbnail. Alternative to thumbnail.")
     public abstract UIComponent getThumbnailFacet();
 
-    @Facet(description = "Allows to place HTML in the indicator. Alternative to indicator.")
+    @Facet(description = "Allows custom HTML in the indicator. Alternative to indicator.")
     public abstract UIComponent getIndicatorFacet();
 
     @Property(description = "Value binding expression to a data model.")

@@ -59,7 +59,7 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
         return COMPONENT_FAMILY;
     }
 
-    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
+    @Facet(description = "Allows custom HTML in the footer. Alternative to footerText.")
     public abstract UIComponent getFooterFacet();
 
     @Facet(description = "Allows to add custom action to the tab header.")

@@ -60,10 +60,10 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
     @Facet(description = "Built-in support to display a fully customizable popup menu, an icon to display the menu is placed at top-right corner")
     public abstract UIComponent getOptionsFacet();
 
-    @Facet(description = "Allows to place HTML in the header. Alternative to headerText.")
+    @Facet(description = "Allows custom HTML in the header. Alternative to headerText.")
     public abstract UIComponent getHeaderFacet();
 
-    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
+    @Facet(description = "Allows custom HTML in the footer. Alternative to footerText.")
     public abstract UIComponent getFooterFacet();
 
     @Facet(description = "Allows to add custom action to the titlebar.")

@@ -49,13 +49,13 @@ public abstract class TieredMenuBase extends AbstractMenu implements Widget, Ove
         return COMPONENT_FAMILY;
     }
 
-    @Facet(description = "Allows to place HTML in the start of the menu.")
+    @Facet(description = "Allows custom HTML in the start of the menu.")
     public abstract UIComponent getStartFacet();
 
-    @Facet(description = "Allows to place HTML in the end of the menu.")
+    @Facet(description = "Allows custom HTML in the end of the menu.")
     public abstract UIComponent getEndFacet();
 
-    @Facet(description = "Allows to place HTML in the options of the menu.")
+    @Facet(description = "Allows custom HTML in the options of the menu.")
     public abstract UIComponent getOptionsFacet();
 
     @Override

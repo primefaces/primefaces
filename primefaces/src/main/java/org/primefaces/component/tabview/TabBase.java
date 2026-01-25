@@ -50,7 +50,7 @@ public abstract class TabBase extends UIPanel {
     @Facet(description = "Allows to add custom options to the tab header.")
     public abstract UIComponent getOptionsFacet();
 
-    @Facet(description = "Allows to place HTML in the title. Alternative to title.")
+    @Facet(description = "Allows custom HTML in the title. Alternative to title.")
     public abstract UIComponent getTitleFacet();
 
     @Property(description = "Title text of the tab.")
