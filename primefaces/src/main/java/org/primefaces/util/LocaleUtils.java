@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.cdk.api.Function;
+
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
@@ -181,6 +183,7 @@ public class LocaleUtils {
      * @return the ISO 639-1 Language Code
      * @see <a href="https://www.w3schools.com/tags/ref_language_codes.asp">HTML Language Code Reference</a>
      */
+    @Function(name = "language", description = "Gets the current ISO 639-1 Language Code from current Locale so 'pt_BR' becomes 'pt'.")
     public static String getCurrentLanguage() {
         return calculateLanguage(getCurrentLocale());
     }

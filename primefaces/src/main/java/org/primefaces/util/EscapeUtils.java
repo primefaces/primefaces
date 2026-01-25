@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.cdk.api.Function;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -159,6 +161,8 @@ public class EscapeUtils {
         return Encode.forJavaScriptSource(input);
     }
 
+    @Function(name = "escapeJavaScriptVarName", description = "Escapes a string for a JS var name (e.g. ':' in a clientId)."
+                    + " This is useful if you need to use a clientId in the name of a p:remoteCommand.")
     public static String forJavaScriptVarName(String input) {
         Matcher matcher = JAVASCRIPT_VAR_NAME.matcher(input);
         return matcher.replaceAll("_");
