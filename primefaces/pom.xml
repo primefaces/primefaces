@@ -29,7 +29,7 @@
 
         <!-- SonarQube configuration -->
         <sonar.skip>false</sonar.skip>
-        <sonar.projectKey>java-helpers:primefaces</sonar.projectKey>
+        <sonar.projectKey>org.primefaces:primefaces</sonar.projectKey>
         <sonar.projectName>PrimeFaces</sonar.projectName>
         <sonar.organization>org.primefaces</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
