@@ -31,7 +31,7 @@
         <sonar.skip>false</sonar.skip>
         <sonar.projectKey>java-helpers:primefaces</sonar.projectKey>
         <sonar.projectName>PrimeFaces</sonar.projectName>
-        <sonar.organization>java-helpers</sonar.organization>
+        <sonar.organization>org.primefaces</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>../primefaces-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
