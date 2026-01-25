@@ -23,21 +23,18 @@
  */
 package org.primefaces.component.outputlabel;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.RTLAware;
 
 import jakarta.faces.component.html.HtmlOutputLabel;
 
-
+@FacesComponentBase
 public abstract class OutputLabelBase extends HtmlOutputLabel implements RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.OutputLabelRenderer";
-
-    public enum PropertyKeys {
-
-        indicateRequired;
-    }
 
     public OutputLabelBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -48,12 +45,7 @@ public abstract class OutputLabelBase extends HtmlOutputLabel implements RTLAwar
         return COMPONENT_FAMILY;
     }
 
-    public String getIndicateRequired() {
-        return (String) getStateHelper().eval(PropertyKeys.indicateRequired, "auto");
-    }
-
-    public void setIndicateRequired(String indicateRequired) {
-        getStateHelper().put(PropertyKeys.indicateRequired, indicateRequired);
-    }
+    @Property(defaultValue = "auto", description = "Defines how required field indicator is displayed. Valid values are \"auto\", \"on\", \"off\".")
+    public abstract String getIndicateRequired();
 
 }
