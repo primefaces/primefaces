@@ -66,10 +66,10 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, St
         return COMPONENT_FAMILY;
     }
 
-    @Facet(description = "Allows to place HTML in the header. Alternative to header.")
+    @Facet(description = "Allows custom HTML in the header. Alternative to header.")
     public abstract UIComponent getHeaderFacet();
 
-    @Facet(description = "Allows to place HTML in the footer. Alternative to footer.")
+    @Facet(description = "Allows custom HTML in the footer. Alternative to footer.")
     public abstract UIComponent getFooterFacet();
 
     @Facet(description = "Allows to add custom action to the titlebar.")
