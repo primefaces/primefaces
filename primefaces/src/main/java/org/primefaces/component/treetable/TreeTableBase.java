@@ -86,6 +86,14 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
         return COMPONENT_FAMILY;
     }
 
+    @Override
+    @Property(defaultValue = "0", description = "Number of rows to display per page. 0 means to display all data available.")
+    public abstract int getRows();
+
+    @Override
+    @Property(defaultValue = "0", description = "Index of the first data to display.")
+    public abstract int getFirst();
+
     @Property(defaultValue = "false", description = "Makes data scrollable with fixed header.")
     public abstract boolean isScrollable();
 

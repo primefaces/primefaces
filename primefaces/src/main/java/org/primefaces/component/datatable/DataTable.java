@@ -24,6 +24,7 @@
 package org.primefaces.component.datatable;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
@@ -58,7 +59,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.ELUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,7 +86,6 @@ import jakarta.faces.component.visit.VisitContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AbortProcessingException;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.ComponentSystemEvent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
@@ -98,13 +97,15 @@ import jakarta.faces.model.IterableDataModel;
 import jakarta.faces.model.ListDataModel;
 
 @FacesComponent(value = DataTable.COMPONENT_TYPE, namespace = DataTable.COMPONENT_FAMILY)
+@FacesComponentDescription("DataTable is an enhanced version of the standard Datatable that provides built-in solutions to many commons use cases"
+        + " like paging, sorting, selection, lazy loading, filtering and more.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class DataTable extends DataTableBase {
+public class DataTable extends DataTableBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
 
@@ -180,36 +181,6 @@ public class DataTable extends DataTableBase {
     public static final String LARGE_SIZE_CLASS = "ui-datatable-lg";
 
     private static final Logger LOGGER = Logger.getLogger(DataTable.class.getName());
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("page", PageEvent.class)
-            .put("sort", SortEvent.class)
-            .put("filter", FilterEvent.class)
-            .put("rowSelect", SelectEvent.class)
-            .put("rowUnselect", UnselectEvent.class)
-            .put("rowEdit", RowEditEvent.class)
-            .put("rowEditInit", RowEditEvent.class)
-            .put("rowEditCancel", RowEditEvent.class)
-            .put("colResize", ColumnResizeEvent.class)
-            .put("toggleSelect", ToggleSelectEvent.class)
-            .put("colReorder", null)
-            .put("contextMenu", SelectEvent.class)
-            .put("rowSelectRadio", SelectEvent.class)
-            .put("rowSelectCheckbox", SelectEvent.class)
-            .put("rowUnselectCheckbox", UnselectEvent.class)
-            .put("rowDblselect", SelectEvent.class)
-            .put("rowToggle", ToggleEvent.class)
-            .put("cellEditInit", CellEditEvent.class)
-            .put("cellEdit", CellEditEvent.class)
-            .put("rowReorder", ReorderEvent.class)
-            .put("tap", SelectEvent.class)
-            .put("taphold", SelectEvent.class)
-            .put("cellEditCancel", CellEditEvent.class)
-            .put("virtualScroll", PageEvent.class)
-            .put("liveScroll", PageEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private boolean reset = false;
     private List<UIColumn> columns;
@@ -606,16 +577,6 @@ public class DataTable extends DataTableBase {
         return ComponentTraversalUtils.firstChild(RowExpansion.class, this);
     }
 
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
     public SubTable getSubTable() {
         return ComponentTraversalUtils.firstChildRendered(SubTable.class, this);
     }
@@ -920,6 +881,7 @@ public class DataTable extends DataTableBase {
         return iterableChildren;
     }
 
+    @Override
     public List<?> getFilteredValue() {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
         if (ve != null) {
@@ -1185,5 +1147,28 @@ public class DataTable extends DataTableBase {
         // see https://github.com/primefaces/primefaces/issues/2154
         return getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE
                 && (!isNestedWithinIterator() || columns.stream().noneMatch(DynamicColumn.class::isInstance));
+    }
+
+    public String getSelectionMode() {
+        return (String) getStateHelper().eval(PropertyKeys.selectionMode, () -> {
+            // if not set by xhtml, we need to check the type of the value binding
+            Class<?> type = ELUtils.getType(getFacesContext(),
+                    getValueExpression(PropertyKeys.selection.toString()),
+                    this::getSelection);
+            if (type != null) {
+                String selectionMode = "single";
+                if (Collection.class.isAssignableFrom(type) || type.isArray()) {
+                    selectionMode = "multiple";
+                }
+
+                // remember in ViewState, to not do the same check again
+                setSelectionMode(selectionMode);
+
+                return selectionMode;
+            }
+            else {
+                return null;
+            }
+        });
     }
 }

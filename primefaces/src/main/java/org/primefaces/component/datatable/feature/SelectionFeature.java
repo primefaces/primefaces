@@ -24,7 +24,6 @@
 package org.primefaces.component.datatable.feature;
 
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.DataTableBase;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.util.LangUtils;
 
@@ -93,7 +92,7 @@ public class SelectionFeature implements DataTableFeature {
 
     public void decodeSelectionRowKeys(FacesContext context, DataTable table) {
         Set<String> rowKeys = null;
-        ValueExpression selectionVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.name());
+        ValueExpression selectionVE = table.getValueExpression(DataTable.PropertyKeys.selection.name());
         if (selectionVE != null) {
             Object selection = selectionVE.getValue(context.getELContext());
 
@@ -221,7 +220,7 @@ public class SelectionFeature implements DataTableFeature {
     }
 
     protected void setSelection(FacesContext context, DataTable table, boolean multiple, List<Object> selected, Set<String> rowKeys) {
-        ValueExpression selectionVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.toString());
+        ValueExpression selectionVE = table.getValueExpression(DataTable.PropertyKeys.selection.toString());
         Class<?> clazz = selectionVE == null ? null : selectionVE.getType(context.getELContext());
         boolean isArray = clazz != null && clazz.isArray();
 

@@ -29,20 +29,17 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.MultiViewStateAware;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.data.PageEvent;
-
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "page", event = PageEvent.class, description = "Fired on pagination.", defaultEvent = true)
 })
 public abstract class DataViewBase extends UIPageableData
-        implements Widget, StyleAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataViewState>, FlexAware {
+        implements Widget, StyleAware, MultiViewStateAware<DataViewState>, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

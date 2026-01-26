@@ -38,7 +38,7 @@ public interface Pageable {
     @Property(defaultValue = "({currentPage} of {totalPages})", description = "Template of the currentPageReport UI.")
     String getCurrentPageReportTemplate();
 
-    @Property(defaultValue = "0", description = "Number of rows to display per page. 0 means to display all data available.")
+    @Property(defaultValue = "0", description = "Number of rows to display per page. 0 means to display all data available.", callSuper = true)
     int getRows();
 
     int getRowCount();
@@ -63,7 +63,7 @@ public interface Pageable {
 
     int getPageCount();
 
-    @Property(defaultValue = "0", description = "Index of the first data to display.")
+    @Property(defaultValue = "0", description = "Index of the first data to display.", callSuper = true)
     int getFirst();
 
     int getRowsToRender();

@@ -36,7 +36,7 @@ import jakarta.faces.context.FacesContext;
 /**
  * UIData for pageable components
  */
-public class UIPageableData extends PrimeUIData implements Pageable, TouchAware {
+public abstract class UIPageableData extends PrimeUIData implements Pageable, TouchAware {
 
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
     public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "ui-paginator ui-paginator-bottom ui-widget-header";
@@ -61,14 +61,8 @@ public class UIPageableData extends PrimeUIData implements Pageable, TouchAware 
 
     public enum PropertyKeys {
         rows, // #5068
-        touchable,
         paginator,
-        paginatorTemplate,
-        rowsPerPageTemplate,
-        currentPageReportTemplate,
         pageLinks,
-        paginatorPosition,
-        paginatorAlwaysVisible,
         emptyMessage
     }
 
@@ -84,76 +78,12 @@ public class UIPageableData extends PrimeUIData implements Pageable, TouchAware 
         getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
     }
 
-    @Override
-    public Boolean getTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
-    }
-
-    public void setTouchable(Boolean touchable) {
-        getStateHelper().put(PropertyKeys.touchable, touchable);
-    }
-
     public boolean isPaginator() {
         return (Boolean) getStateHelper().eval(PropertyKeys.paginator, false);
     }
 
     public void setPaginator(boolean paginator) {
         getStateHelper().put(PropertyKeys.paginator, paginator);
-    }
-
-    @Override
-    public String getPaginatorTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.paginatorTemplate,
-                "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}");
-    }
-
-    public void setPaginatorTemplate(String paginatorTemplate) {
-        getStateHelper().put(PropertyKeys.paginatorTemplate, paginatorTemplate);
-    }
-
-    @Override
-    public String getRowsPerPageTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.rowsPerPageTemplate, null);
-    }
-
-    public void setRowsPerPageTemplate(String rowsPerPageTemplate) {
-        getStateHelper().put(PropertyKeys.rowsPerPageTemplate, rowsPerPageTemplate);
-    }
-
-    @Override
-    public String getCurrentPageReportTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.currentPageReportTemplate, "({currentPage} of {totalPages})");
-    }
-
-    public void setCurrentPageReportTemplate(String currentPageReportTemplate) {
-        getStateHelper().put(PropertyKeys.currentPageReportTemplate, currentPageReportTemplate);
-    }
-
-    @Override
-    public int getPageLinks() {
-        return (Integer) getStateHelper().eval(PropertyKeys.pageLinks, 10);
-    }
-
-    public void setPageLinks(int pageLinks) {
-        getStateHelper().put(PropertyKeys.pageLinks, pageLinks);
-    }
-
-    @Override
-    public String getPaginatorPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.paginatorPosition, "both");
-    }
-
-    public void setPaginatorPosition(String paginatorPosition) {
-        getStateHelper().put(PropertyKeys.paginatorPosition, paginatorPosition);
-    }
-
-    @Override
-    public boolean isPaginatorAlwaysVisible() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.paginatorAlwaysVisible, true);
-    }
-
-    public void setPaginatorAlwaysVisible(boolean paginatorAlwaysVisible) {
-        getStateHelper().put(PropertyKeys.paginatorAlwaysVisible, paginatorAlwaysVisible);
     }
 
     @Override
