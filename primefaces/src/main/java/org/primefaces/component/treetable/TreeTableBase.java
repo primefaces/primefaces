@@ -109,8 +109,7 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
     @Property(description = "Style class of the table element.")
     public abstract String getTableStyleClass();
 
-    @Property(implicitDefaultValue = "PrimeFaces translation", description = "Text to display when there is no data to display.")
-    public abstract String getEmptyMessage();
+
 
     @Property(defaultValue = "false", description = "Defines if columns can be resized or not.")
     public abstract boolean isResizableColumns();
@@ -148,9 +147,6 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
 
     @Property(defaultValue = "true", description = "Disables text selection on row click.")
     public abstract boolean isDisabledTextSelection();
-
-    @Property(defaultValue = "false", description = "Enables pagination.")
-    public abstract boolean isPaginator();
 
     @Property(implicitDefaultValue = "fit", description = "Defines the resize behavior, valid values are \"fit\" and expand.")
     public abstract String getResizeMode();

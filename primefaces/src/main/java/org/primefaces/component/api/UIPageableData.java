@@ -70,20 +70,9 @@ public abstract class UIPageableData extends PrimeUIData implements Pageable, To
         rowsInitialValue;
     }
 
+    @Override
     public String getEmptyMessage() {
         return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(getFacesContext(), EMPTY_MESSAGE));
-    }
-
-    public void setEmptyMessage(String emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
-    }
-
-    public boolean isPaginator() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.paginator, false);
-    }
-
-    public void setPaginator(boolean paginator) {
-        getStateHelper().put(PropertyKeys.paginator, paginator);
     }
 
     @Override

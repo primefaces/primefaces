@@ -32,6 +32,12 @@ public interface Pageable {
 
     String getClientId(FacesContext context);
 
+    @Property(implicitDefaultValue = "i18n", description = "Text to display when there is no data to display.", callSuper = true)
+    String getEmptyMessage();
+
+    @Property(defaultValue = "false", description = "Enables pagination.")
+    boolean isPaginator();
+
     @Property(defaultValue = "bottom", description = "Position of the paginator.")
     String getPaginatorPosition();
 
