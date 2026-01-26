@@ -57,10 +57,10 @@ public abstract class CarouselBase extends UITabPanel implements Widget, PrimeCl
         return COMPONENT_FAMILY;
     }
 
-    @Facet(description = "Allows to place HTML in the header. Alternative to headerText.")
+    @Facet(description = "Allows custom HTML in the header. Alternative to headerText.")
     public abstract UIComponent getHeaderFacet();
 
-    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
+    @Facet(description = "Allows custom HTML in the footer. Alternative to footerText.")
     public abstract UIComponent getFooterFacet();
 
     @Property(defaultValue = "0", description = "Index of the first page.")
