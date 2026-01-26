@@ -102,7 +102,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
 
         //Source List
         encodeList(context, component, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(),
-                component.getFacet("sourceCaption"), component.isShowSourceFilter(), true);
+                component.getSourceCaptionFacet(), component.isShowSourceFilter(), true);
 
         //Buttons
         writer.startElement("div", null);
@@ -126,7 +126,7 @@ public class PickListRenderer extends InputRenderer<PickList> {
 
         //Target List
         encodeList(context, component, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(),
-                component.getFacet("targetCaption"), component.isShowTargetFilter(), false);
+                component.getTargetCaptionFacet(), component.isShowTargetFilter(), false);
 
         //Target List Reorder Buttons
         if (component.isShowTargetControls()) {

@@ -23,34 +23,20 @@
  */
 package org.primefaces.component.photocam;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
+import jakarta.el.MethodExpression;
 import jakarta.faces.component.UIInput;
 
-public abstract class PhotoCamBase extends UIInput implements Widget {
+@FacesComponentBase
+public abstract class PhotoCamBase extends UIInput implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PhotoCamRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        style,
-        styleClass,
-        process,
-        update,
-        listener,
-        width,
-        height,
-        photoWidth,
-        photoHeight,
-        format,
-        jpegQuality,
-        autoStart,
-        device,
-        onCameraError
-    }
 
     public PhotoCamBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -61,124 +47,40 @@ public abstract class PhotoCamBase extends UIInput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Component(s) to process in partial request.")
+    public abstract String getProcess();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Component(s) to update in partial request.")
+    public abstract String getUpdate();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Method expression to invoke when a photo is captured.")
+    public abstract MethodExpression getListener();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "320", description = "Width of the camera viewfinder.")
+    public abstract int getWidth();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "240", description = "Height of the camera viewfinder.")
+    public abstract int getHeight();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "320", description = "Width of the captured photo.")
+    public abstract int getPhotoWidth();
 
-    public String getProcess() {
-        return (String) getStateHelper().eval(PropertyKeys.process, null);
-    }
+    @Property(defaultValue = "240", description = "Height of the captured photo.")
+    public abstract int getPhotoHeight();
 
-    public void setProcess(String process) {
-        getStateHelper().put(PropertyKeys.process, process);
-    }
+    @Property(description = "Format of the captured photo. Valid values are 'jpeg' and 'png'.")
+    public abstract String getFormat();
 
-    public String getUpdate() {
-        return (String) getStateHelper().eval(PropertyKeys.update, null);
-    }
+    @Property(defaultValue = "90", description = "JPEG quality when format is 'jpeg'. Valid range is 0-100.")
+    public abstract int getJpegQuality();
 
-    public void setUpdate(String update) {
-        getStateHelper().put(PropertyKeys.update, update);
-    }
+    @Property(defaultValue = "true", description = "When true, camera starts automatically.")
+    public abstract boolean isAutoStart();
 
-    public jakarta.el.MethodExpression getListener() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
-    }
+    @Property(description = "Device ID of the camera to use.")
+    public abstract String getDevice();
 
-    public void setListener(jakarta.el.MethodExpression listener) {
-        getStateHelper().put(PropertyKeys.listener, listener);
-    }
-
-    public int getWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.width, 320);
-    }
-
-    public void setWidth(int width) {
-        getStateHelper().put(PropertyKeys.width, width);
-    }
-
-    public int getHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.height, 240);
-    }
-
-    public void setHeight(int height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
-
-    public int getPhotoWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.photoWidth, 320);
-    }
-
-    public void setPhotoWidth(int photoWidth) {
-        getStateHelper().put(PropertyKeys.photoWidth, photoWidth);
-    }
-
-    public int getPhotoHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.photoHeight, 240);
-    }
-
-    public void setPhotoHeight(int photoHeight) {
-        getStateHelper().put(PropertyKeys.photoHeight, photoHeight);
-    }
-
-    public String getFormat() {
-        return (String) getStateHelper().eval(PropertyKeys.format, null);
-    }
-
-    public void setFormat(String format) {
-        getStateHelper().put(PropertyKeys.format, format);
-    }
-
-    public int getJpegQuality() {
-        return (Integer) getStateHelper().eval(PropertyKeys.jpegQuality, 90);
-    }
-
-    public void setJpegQuality(int jpegQuality) {
-        getStateHelper().put(PropertyKeys.jpegQuality, jpegQuality);
-    }
-
-    public boolean isAutoStart() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoStart, true);
-    }
-
-    public void setAutoStart(boolean autoStart) {
-        getStateHelper().put(PropertyKeys.autoStart, autoStart);
-    }
-
-    public String getDevice() {
-        return (String) getStateHelper().eval(PropertyKeys.device, null);
-    }
-
-    public void setDevice(String device) {
-        getStateHelper().put(PropertyKeys.device, device);
-    }
-
-    public String getOnCameraError() {
-        return (String) getStateHelper().eval(PropertyKeys.onCameraError, null);
-    }
-
-    public void setOnCameraError(String onCameraError) {
-        getStateHelper().put(PropertyKeys.onCameraError, onCameraError);
-    }
+    @Property(description = "Client side callback to execute when camera error occurs.")
+    public abstract String getOnCameraError();
 
 }

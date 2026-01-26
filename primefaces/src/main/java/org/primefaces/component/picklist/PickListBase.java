@@ -23,54 +23,34 @@
  */
 package org.primefaces.component.picklist;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.TransferEvent;
+import org.primefaces.event.UnselectEvent;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIInput;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "transfer", event = TransferEvent.class, description = "Fires when items are transferred between lists.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "select", event = SelectEvent.class, description = "Fires when an item is selected."),
+    @FacesBehaviorEvent(name = "unselect", event = UnselectEvent.class, description = "Fires when an item is unselected."),
+    @FacesBehaviorEvent(name = "reorder", event = AjaxBehaviorEvent.class, description = "Fires when items are reordered.")
+})
+public abstract class PickListBase extends UIInput implements Widget, StyleAware, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PickListRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        var,
-        itemLabel,
-        itemValue,
-        style,
-        styleClass,
-        disabled,
-        effect,
-        effectSpeed,
-        escape,
-        showSourceControls,
-        showTargetControls,
-        onTransfer,
-        label,
-        itemDisabled,
-        showSourceFilter,
-        showTargetFilter,
-        sourceFilterPlaceholder,
-        targetFilterPlaceholder,
-        filterMatchMode,
-        filterFunction,
-        showCheckbox,
-        labelDisplay,
-        orientation,
-        responsive,
-        tabindex,
-        filterEvent,
-        filterDelay,
-        escapeValue,
-        transferOnDblclick,
-        transferOnCheckboxClick,
-        filterNormalize,
-        dragDrop
-    }
 
     public PickListBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -81,267 +61,100 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
-
-    public String getItemLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
-    }
-
-    public void setItemLabel(String itemLabel) {
-        getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
-    }
-
-    public Object getItemValue() {
-        return getStateHelper().eval(PropertyKeys.itemValue, null);
-    }
-
-    public void setItemValue(Object itemValue) {
-        getStateHelper().put(PropertyKeys.itemValue, itemValue);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, "fade");
-    }
-
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
-
-    public String getEffectSpeed() {
-        return (String) getStateHelper().eval(PropertyKeys.effectSpeed, "fast");
-    }
-
-    public void setEffectSpeed(String effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
-    }
-
-    public boolean isShowSourceControls() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showSourceControls, false);
-    }
-
-    public void setShowSourceControls(boolean showSourceControls) {
-        getStateHelper().put(PropertyKeys.showSourceControls, showSourceControls);
-    }
-
-    public boolean isShowTargetControls() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showTargetControls, false);
-    }
-
-    public void setShowTargetControls(boolean showTargetControls) {
-        getStateHelper().put(PropertyKeys.showTargetControls, showTargetControls);
-    }
-
-    public String getOnTransfer() {
-        return (String) getStateHelper().eval(PropertyKeys.onTransfer, null);
-    }
-
-    public void setOnTransfer(String onTransfer) {
-        getStateHelper().put(PropertyKeys.onTransfer, onTransfer);
-    }
-
-    public String getLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.label, null);
-    }
-
-    public void setLabel(String label) {
-        getStateHelper().put(PropertyKeys.label, label);
-    }
-
-    public boolean isItemDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.itemDisabled, false);
-    }
-
-    public void setItemDisabled(boolean itemDisabled) {
-        getStateHelper().put(PropertyKeys.itemDisabled, itemDisabled);
-    }
-
-    public boolean isShowSourceFilter() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showSourceFilter, false);
-    }
-
-    public void setShowSourceFilter(boolean showSourceFilter) {
-        getStateHelper().put(PropertyKeys.showSourceFilter, showSourceFilter);
-    }
-
-    public boolean isShowTargetFilter() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showTargetFilter, false);
-    }
-
-    public void setShowTargetFilter(boolean showTargetFilter) {
-        getStateHelper().put(PropertyKeys.showTargetFilter, showTargetFilter);
-    }
-
-    public String getSourceFilterPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.sourceFilterPlaceholder, null);
-    }
-
-    public void setSourceFilterPlaceholder(String sourceFilterPlaceholder) {
-        getStateHelper().put(PropertyKeys.sourceFilterPlaceholder, sourceFilterPlaceholder);
-    }
-
-    public String getTargetFilterPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.targetFilterPlaceholder, null);
-    }
-
-    public void setTargetFilterPlaceholder(String targetFilterPlaceholder) {
-        getStateHelper().put(PropertyKeys.targetFilterPlaceholder, targetFilterPlaceholder);
-    }
-
-    public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
-    }
-
-    public void setFilterMatchMode(String filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
-    }
-
-    public String getFilterFunction() {
-        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
-    }
-
-    public void setFilterFunction(String filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
-    }
-
-    public boolean isShowCheckbox() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showCheckbox, false);
-    }
-
-    public void setShowCheckbox(boolean showCheckbox) {
-        getStateHelper().put(PropertyKeys.showCheckbox, showCheckbox);
-    }
-
-    public String getLabelDisplay() {
-        return (String) getStateHelper().eval(PropertyKeys.labelDisplay, "tooltip");
-    }
-
-    public void setLabelDisplay(String labelDisplay) {
-        getStateHelper().put(PropertyKeys.labelDisplay, labelDisplay);
-    }
-
-    public String getOrientation() {
-        return (String) getStateHelper().eval(PropertyKeys.orientation, "horizontal");
-    }
-
-    public void setOrientation(String orientation) {
-        getStateHelper().put(PropertyKeys.orientation, orientation);
-    }
-
-    public boolean isResponsive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
-    }
-
-    public void setResponsive(boolean responsive) {
-        getStateHelper().put(PropertyKeys.responsive, responsive);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public String getFilterEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.filterEvent, null);
-    }
-
-    public void setFilterEvent(String filterEvent) {
-        getStateHelper().put(PropertyKeys.filterEvent, filterEvent);
-    }
-
-    public int getFilterDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.filterDelay, Integer.MAX_VALUE);
-    }
-
-    public void setFilterDelay(int filterDelay) {
-        getStateHelper().put(PropertyKeys.filterDelay, filterDelay);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    public boolean isEscapeValue() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escapeValue, true);
-    }
-
-    public void setEscapeValue(boolean escapeValue) {
-        getStateHelper().put(PropertyKeys.escapeValue, escapeValue);
-    }
-
-    public boolean isTransferOnDblclick() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.transferOnDblclick, true);
-    }
-
-    public void setTransferOnDblclick(boolean transferOnDblclick) {
-        getStateHelper().put(PropertyKeys.transferOnDblclick, transferOnDblclick);
-    }
-
-    public boolean isTransferOnCheckboxClick() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.transferOnCheckboxClick, false);
-    }
-
-    public void setTransferOnCheckboxClick(boolean transferOnCheckboxClick) {
-        getStateHelper().put(PropertyKeys.transferOnCheckboxClick, transferOnCheckboxClick);
-    }
-
-    public boolean isFilterNormalize() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
-    }
-
-    public void setFilterNormalize(boolean filterNormalize) {
-        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
-    }
-
-    public boolean isDragDrop() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dragDrop, true);
-    }
-
-    public void setDragDrop(boolean dragDrop) {
-        getStateHelper().put(PropertyKeys.dragDrop, dragDrop);
-    }
+    @Facet(description = "Custom content for the source list caption.")
+    public abstract UIComponent getSourceCaptionFacet();
+
+    @Facet(description = "Custom content for the target list caption.")
+    public abstract UIComponent getTargetCaptionFacet();
+
+    @Property(description = "Name of the iterator variable used to reference each data.")
+    public abstract String getVar();
+
+    @Property(description = "Label of the item.")
+    public abstract String getItemLabel();
+
+    @Property(description = "Value of the item.")
+    public abstract Object getItemValue();
+
+    @Property(defaultValue = "false", description = "Disables the component.")
+    public abstract boolean isDisabled();
+
+    @Property(defaultValue = "fade", description = "Effect to use when transferring items. Valid values are 'fade', 'slide' and 'none'.")
+    public abstract String getEffect();
+
+    @Property(defaultValue = "fast", description = "Speed of the effect. Valid values are 'slow', 'normal' and 'fast'.")
+    public abstract String getEffectSpeed();
+
+    @Property(defaultValue = "false", description = "Shows reorder controls for source list.")
+    public abstract boolean isShowSourceControls();
+
+    @Property(defaultValue = "false", description = "Shows reorder controls for target list.")
+    public abstract boolean isShowTargetControls();
+
+    @Property(description = "Client side callback to execute when items are transferred.")
+    public abstract String getOnTransfer();
+
+    @Property(description = "Label for the component.")
+    public abstract String getLabel();
+
+    @Property(defaultValue = "false", description = "Defines if an item is disabled.")
+    public abstract boolean isItemDisabled();
+
+    @Property(defaultValue = "false", description = "Shows filter input for source list.")
+    public abstract boolean isShowSourceFilter();
+
+    @Property(defaultValue = "false", description = "Shows filter input for target list.")
+    public abstract boolean isShowTargetFilter();
+
+    @Property(description = "Placeholder text for source filter input.")
+    public abstract String getSourceFilterPlaceholder();
+
+    @Property(description = "Placeholder text for target filter input.")
+    public abstract String getTargetFilterPlaceholder();
+
+    @Property(description = "Match mode for filtering, " +
+        "valid values are 'startsWith', 'endsWith', 'contains', 'exact', 'lt', 'lte', 'gt', 'gte', 'equals', 'in' and 'custom'.")
+    public abstract String getFilterMatchMode();
+
+    @Property(description = "Client side function to use for custom filtering.")
+    public abstract String getFilterFunction();
+
+    @Property(defaultValue = "false", description = "Shows checkbox for each item.")
+    public abstract boolean isShowCheckbox();
+
+    @Property(defaultValue = "tooltip", description = "Defines how labels are displayed. Valid values are 'tooltip' and 'inline'.")
+    public abstract String getLabelDisplay();
+
+    @Property(defaultValue = "horizontal", description = "Defines layout orientation. Valid values are 'horizontal' and 'vertical'.")
+    public abstract String getOrientation();
+
+    @Property(defaultValue = "false", description = "In responsive mode, picklist adjusts itself based on screen size.")
+    public abstract boolean isResponsive();
+
+    @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")
+    public abstract String getTabindex();
+
+    @Property(description = "Event to trigger filtering. Valid values are 'keyup', 'keydown' and 'keypress'.")
+    public abstract String getFilterEvent();
+
+    @Property(defaultValue = "Integer.MAX_VALUE", description = "Delay in milliseconds before sending each filter query.")
+    public abstract int getFilterDelay();
+
+    @Property(defaultValue = "true", description = "Escapes special HTML characters in item labels.")
+    public abstract boolean isEscape();
+
+    @Property(defaultValue = "true", description = "Escapes special HTML characters in item values.")
+    public abstract boolean isEscapeValue();
+
+    @Property(defaultValue = "true", description = "Transfers items on double click.")
+    public abstract boolean isTransferOnDblclick();
+
+    @Property(defaultValue = "false", description = "Transfers items when checkbox is clicked.")
+    public abstract boolean isTransferOnCheckboxClick();
+
+    @Property(defaultValue = "false", description = "Normalizes the filter input by removing accents.")
+    public abstract boolean isFilterNormalize();
+
+    @Property(defaultValue = "true", description = "Enables drag and drop functionality.")
+    public abstract boolean isDragDrop();
 }
