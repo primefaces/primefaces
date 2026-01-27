@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.picklist;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
@@ -30,11 +31,9 @@ import org.primefaces.model.DualListModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 import org.primefaces.util.MessageFactory;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -47,16 +46,16 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = PickList.COMPONENT_TYPE, namespace = PickList.COMPONENT_FAMILY)
+@FacesComponentDescription("PickList is a component to transfer items between two lists.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class PickList extends PickListBase {
+public class PickList extends PickListBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PickList";
 
@@ -95,30 +94,7 @@ public class PickList extends PickListBase {
     public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("transfer", TransferEvent.class)
-            .put("select", SelectEvent.class)
-            .put("unselect", UnselectEvent.class)
-            .put("reorder", null)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return "transfer";
-    }
 
     @Override
     protected void validateValue(FacesContext facesContext, Object newValue) {
