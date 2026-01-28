@@ -105,8 +105,8 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
      * "aria-required" if the component is required
      * "aria-invalid" if the component is invalid
      * "aria-labelledby" if the component has a labelledby attribute
-     * "disabled" and "aria-disabled" if the component is disabled
-     * "readonly" and "aria-readonly" if the component is readonly
+     * "disabled" if the component is disabled
+     * "readonly" if the component is readonly
      * </pre>
      * @param context the {@link FacesContext}
      * @param component the {@link UIInput} component to add attributes for
