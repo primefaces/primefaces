@@ -151,6 +151,16 @@
                             </p:selectOneMenu>
                         </h:panelGroup>
                     </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="@next" value="Disabled"/>
+                        <p:selectOneMenu id="disabled" value="#{selectOneMenuView.selectedOption}" disabled="true">
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                            <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                            <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                        </p:selectOneMenu>
+                    </div>
                 </div>
             </h:form>
         </div>
