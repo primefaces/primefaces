@@ -1149,6 +1149,7 @@ public class DataTable extends DataTableBaseImpl {
                 && (!isNestedWithinIterator() || columns.stream().noneMatch(DynamicColumn.class::isInstance));
     }
 
+    @Override
     public String getSelectionMode() {
         return (String) getStateHelper().eval(PropertyKeys.selectionMode, () -> {
             // if not set by xhtml, we need to check the type of the value binding

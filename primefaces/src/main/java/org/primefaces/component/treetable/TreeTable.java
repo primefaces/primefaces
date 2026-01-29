@@ -129,7 +129,6 @@ public class TreeTable extends TreeTableBaseImpl {
 
         if (isAjaxBehaviorEventSource(event)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
             FacesEvent wrapperEvent = null;
             TreeNode<?> root = getValue();
