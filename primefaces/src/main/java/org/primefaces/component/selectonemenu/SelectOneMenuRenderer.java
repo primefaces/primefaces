@@ -245,10 +245,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
             writer.writeAttribute("tabindex", tabIndex, null);
             writer.writeAttribute("autocomplete", component.getAutocomplete(), null);
             encodeAriaLabel(writer, component);
-
-            if (component.isDisabled()) {
-                writer.writeAttribute("disabled", "disabled", null);
-            }
             renderAccessibilityAttributes(context, component);
 
             String valueToRender = ComponentUtils.getValueToRender(context, component);
@@ -294,9 +290,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
             //for keyboard accessibility and ScreenReader
             writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
 
+            if (component.isDisabled()) {
+                writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
+            }
+
             encodeAriaLabel(writer, component);
             renderARIACombobox(context, component);
-            renderAccessibilityAttributes(context, component);
             renderPassThruAttributes(context, component, HTML.TAB_INDEX);
             renderDomEvents(context, component, HTML.BLUR_FOCUS_EVENTS);
 
