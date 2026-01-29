@@ -25,6 +25,7 @@ package org.primefaces.component.treetable;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UIPageableData;
@@ -120,7 +121,7 @@ public class TreeTable extends TreeTableBaseImpl {
 
     private List<UIColumn> columns;
     private List<String> filteredRowKeys = new ArrayList<>();
-    private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
+    private Map<PrimeClientBehaviorEventKeys, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
     @Override
     public void queueEvent(FacesEvent event) {
@@ -187,7 +188,7 @@ public class TreeTable extends TreeTableBaseImpl {
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());
             }
             else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.filter)) {
-                deferredEvents.put("filter", (AjaxBehaviorEvent) event);
+                deferredEvents.put(ClientBehaviorEventKeys.filter, (AjaxBehaviorEvent) event);
                 return;
             }
             else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowEdit,
@@ -272,7 +273,7 @@ public class TreeTable extends TreeTableBaseImpl {
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
 
-            AjaxBehaviorEvent event = deferredEvents.get("filter");
+            AjaxBehaviorEvent event = deferredEvents.get(ClientBehaviorEventKeys.filter);
             if (event != null) {
                 FilterEvent wrappedEvent = new FilterEvent(this, event.getBehavior(), getFilterByAsMap());
                 wrappedEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);

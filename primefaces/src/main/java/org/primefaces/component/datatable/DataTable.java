@@ -25,6 +25,7 @@ package org.primefaces.component.datatable;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
@@ -184,7 +185,7 @@ public class DataTable extends DataTableBaseImpl {
 
     private boolean reset = false;
     private List<UIColumn> columns;
-    private final Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
+    private final Map<PrimeClientBehaviorEventKeys, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
     protected enum InternalPropertyKeys {
         filterByAsMap,
@@ -310,7 +311,7 @@ public class DataTable extends DataTableBaseImpl {
         FilterFeature feature = DataTableFeatures.filterFeature();
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
-            AjaxBehaviorEvent event = deferredEvents.get("filter");
+            AjaxBehaviorEvent event = deferredEvents.get(ClientBehaviorEventKeys.filter);
             if (event != null) {
                 FilterEvent wrappedEvent = new FilterEvent(this, event.getBehavior(), getFilterByAsMap());
                 wrappedEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
@@ -360,16 +361,16 @@ public class DataTable extends DataTableBaseImpl {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if ("rowSelect".equals(eventName) || "rowSelectRadio".equals(eventName) || "contextMenu".equals(eventName)
-                    || "rowSelectCheckbox".equals(eventName) || "rowDblselect".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowSelect, ClientBehaviorEventKeys.rowSelectRadio,
+                    ClientBehaviorEventKeys.contextMenu, ClientBehaviorEventKeys.rowSelectCheckbox, ClientBehaviorEventKeys.rowDblselect)) {
                 String rowKey = params.get(clientId + "_instantSelectedRowKey");
                 wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), getRowData(rowKey));
             }
-            else if ("rowUnselect".equals(eventName) || "rowUnselectCheckbox".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowUnselect, ClientBehaviorEventKeys.rowUnselectCheckbox)) {
                 String rowKey = params.get(clientId + "_instantUnselectedRowKey");
                 wrapperEvent = new UnselectEvent<>(this, behaviorEvent.getBehavior(), getRowData(rowKey));
             }
-            else if ("page".equals(eventName) || "virtualScroll".equals(eventName) || "liveScroll".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.page, ClientBehaviorEventKeys.virtualScroll, ClientBehaviorEventKeys.liveScroll)) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
@@ -386,36 +387,36 @@ public class DataTable extends DataTableBaseImpl {
 
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page, rowsPerPage);
             }
-            else if ("sort".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.sort)) {
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());
             }
-            else if ("filter".equals(eventName)) {
-                deferredEvents.put("filter", (AjaxBehaviorEvent) event);
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.filter)) {
+                deferredEvents.put(ClientBehaviorEventKeys.filter, (AjaxBehaviorEvent) event);
                 return;
             }
-            else if ("rowEdit".equals(eventName) || "rowEditCancel".equals(eventName) || "rowEditInit".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowEdit, ClientBehaviorEventKeys.rowEditInit, ClientBehaviorEventKeys.rowEditCancel)) {
                 loadLazyDataIfRequired();
 
                 int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
                 setRowIndex(rowIndex);
                 wrapperEvent = new RowEditEvent<>(this, behaviorEvent.getBehavior(), getRowData());
             }
-            else if ("colResize".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.colResize)) {
                 String columnId = params.get(clientId + "_columnId");
                 int width = Double.valueOf(params.get(clientId + "_width")).intValue();
                 int height = Double.valueOf(params.get(clientId + "_height")).intValue();
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
-            else if ("toggleSelect".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.toggleSelect)) {
                 boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));
 
                 wrapperEvent = new ToggleSelectEvent(this, behaviorEvent.getBehavior(), checked);
             }
-            else if ("colReorder".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.colReorder)) {
                 wrapperEvent = behaviorEvent;
             }
-            else if ("rowToggle".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowToggle)) {
                 loadLazyDataIfRequired();
 
                 boolean expansion = params.containsKey(clientId + "_rowExpansion");
@@ -425,7 +426,8 @@ public class DataTable extends DataTableBaseImpl {
 
                 wrapperEvent = new ToggleEvent(this, behaviorEvent.getBehavior(), visibility, getRowData());
             }
-            else if ("cellEdit".equals(eventName) || "cellEditCancel".equals(eventName) || "cellEditInit".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.cellEdit, ClientBehaviorEventKeys.cellEditInit,
+                    ClientBehaviorEventKeys.cellEditCancel)) {
                 String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
                 int rowIndex = Integer.parseInt(cellInfo[0]);
                 int cellIndex = Integer.parseInt(cellInfo[1]);
@@ -449,13 +451,13 @@ public class DataTable extends DataTableBaseImpl {
 
                 wrapperEvent = new CellEditEvent<>(this, behaviorEvent.getBehavior(), rowIndex, column, rowKey);
             }
-            else if ("rowReorder".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowReorder)) {
                 int fromIndex = Integer.parseInt(params.get(clientId + "_fromIndex"));
                 int toIndex = Integer.parseInt(params.get(clientId + "_toIndex"));
 
                 wrapperEvent = new ReorderEvent(this, behaviorEvent.getBehavior(), fromIndex, toIndex);
             }
-            else if ("tap".equals(eventName) || "taphold".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.tap, ClientBehaviorEventKeys.taphold)) {
                 String rowkey = params.get(clientId + "_rowkey");
                 wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), getRowData(rowkey));
             }

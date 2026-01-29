@@ -23,21 +23,18 @@
  */
 package org.primefaces.component.toggleswitch;
 
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
-import jakarta.faces.event.BehaviorEvent;
 
 @FacesComponent(value = ToggleSwitch.COMPONENT_TYPE, namespace = ToggleSwitch.COMPONENT_FAMILY)
+@FacesComponentDescription("ToggleSwitch is used to select a boolean value.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class ToggleSwitch extends ToggleSwitchBase {
+public class ToggleSwitch extends ToggleSwitchBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ToggleSwitch";
 
@@ -46,24 +43,4 @@ public class ToggleSwitch extends ToggleSwitchBase {
     public static final String HANDLER_CLASS = "ui-toggleswitch-handler";
     public static final String CHECKED_CLASS = "ui-toggleswitch-checked";
 
-    private static final String DEFAULT_EVENT = "change";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("change", null)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
 }

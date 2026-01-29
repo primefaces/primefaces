@@ -24,6 +24,7 @@
 package org.primefaces.component.tree;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
@@ -32,12 +33,9 @@ import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,17 +47,17 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 
 @FacesComponent(value = Tree.COMPONENT_TYPE, namespace = Tree.COMPONENT_FAMILY)
+@FacesComponentDescription("Tree is is used for displaying hierarchical data and creating site navigations.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Tree extends TreeBase {
+public class Tree extends TreeBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tree";
 
@@ -85,17 +83,6 @@ public class Tree extends TreeBase {
     public static final String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
     public static final String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
     public static final String NODE_LABEL_CLASS = "ui-treenode-label";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("select", NodeSelectEvent.class)
-            .put("unselect", NodeUnselectEvent.class)
-            .put("expand", NodeExpandEvent.class)
-            .put("collapse", NodeCollapseEvent.class)
-            .put("dragdrop", TreeDragDropEvent.class)
-            .put("contextMenu", NodeSelectEvent.class)
-            .put("filter", null)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private Map<String, UITreeNode> nodes;
     private TreeNode<?> dragNode;
@@ -146,20 +133,10 @@ public class Tree extends TreeBase {
     }
 
     @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
+        if (isAjaxBehaviorEventSource(event)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
@@ -167,31 +144,31 @@ public class Tree extends TreeBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             TreeNode<?> root = getValue();
 
-            if ("expand".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.expand)) {
                 setRowKey(root, params.get(clientId + "_expandNode"));
                 TreeNode<?> expandedNode = getRowNode();
                 expandedNode.setExpanded(true);
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), expandedNode);
             }
-            else if ("collapse".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.collapse)) {
                 setRowKey(root, params.get(clientId + "_collapseNode"));
                 TreeNode<?> collapsedNode = getRowNode();
                 collapsedNode.setExpanded(false);
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), collapsedNode);
             }
-            else if ("select".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.select)) {
                 setRowKey(root, params.get(clientId + "_instantSelection"));
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), getRowNode());
             }
-            else if ("unselect".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.unselect)) {
                 setRowKey(root, params.get(clientId + "_instantUnselection"));
 
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), getRowNode());
             }
-            else if ("dragdrop".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.dragdrop)) {
                 if (!retValOnDrop) {
                     return;
                 }
@@ -206,12 +183,12 @@ public class Tree extends TreeBase {
                     wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex, isDroppedNodeCopy);
                 }
             }
-            else if ("contextMenu".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.contextMenu)) {
                 setRowKey(root, params.get(clientId + "_contextMenuNode"));
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), getRowNode(), true);
             }
-            else if ("filter".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.filter)) {
                 wrapperEvent = behaviorEvent;
             }
 
