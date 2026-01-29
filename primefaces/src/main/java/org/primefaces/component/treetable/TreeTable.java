@@ -46,7 +46,6 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.TreeNodeChildren;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 
