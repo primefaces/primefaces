@@ -265,9 +265,10 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
      * Collapses all siblings of the given header column.
      * @private
      * @param {JQuery} header The header column that was clicked. 
+     * @param {boolean} [animate] Whether to animate the collapse.
      */
-    collapseActiveSibling: function(header) {
-        this.collapseRootSubmenu(header.parent().siblings().children('.ui-panelmenu-header.ui-state-active').eq(0));
+    collapseActiveSibling: function(header, animate = true) {
+        this.collapseRootSubmenu(header.parent().siblings().children('.ui-panelmenu-header.ui-state-active').eq(0), animate);
     },
 
     /**
@@ -345,14 +346,15 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Collapses the given accordional panel, hiding the menu entries it contains.
      * @param {JQuery} header A menu panel to collapse.
+     * @param {boolean} [animate] Whether to animate the collapse.
      */
-    collapseRootSubmenu: function(header) {
+    collapseRootSubmenu: function(header, animate = true) {
         var panel = header.next();
 
         header.attr('aria-expanded', false).removeClass('ui-state-active').addClass('ui-state-hover')
                             .children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
 
-        panel.attr('aria-hidden', true).slideUp('normal', 'easeInOutCirc');
+        panel.attr('aria-hidden', true).slideUp(animate ? 400 : 0, 'easeInOutCirc');
 
         this.removeAsExpanded(panel);
     },
@@ -416,7 +418,8 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     saveState: function() {
         if(this.cfg.stateful) {
-            var expandedNodeIds = this.expandedNodes.join(',');
+            var uniqueExpandedNodes = Array.from(new Set(this.expandedNodes));
+            var expandedNodeIds = uniqueExpandedNodes.join(',');
 
             localStorage.setItem(this.stateKey, expandedNodeIds);
         }
@@ -459,6 +462,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.expandedNodes.push(activeTreeSubmenus.eq(k).parent().attr('id'));
             }
         }
+        this.saveState();
     },
 
     /**
@@ -467,6 +471,9 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     removeAsExpanded: function(element) {
+        if (!this.expandedNodes) {
+            return;
+        }
         var id = element.attr('id');
 
         this.expandedNodes = $.grep(this.expandedNodes, function(value) {
@@ -504,8 +511,8 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         let $this = this;
         $this.headers.filter('.ui-state-active').each(function() {
             const header = $(this);
-            $this.collapseActiveSibling(header);
-            $this.collapseRootSubmenu(header);
+            $this.collapseActiveSibling(header, false);
+            $this.collapseRootSubmenu(header, false);
             header.removeClass('ui-state-hover');
         });
 
