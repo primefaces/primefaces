@@ -40,6 +40,7 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.List;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
@@ -204,15 +205,20 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
         }
 
         if (column.getElementsCount() > 0) {
-            List<MenuElement> columnElements = column.getElements();
-            for (MenuElement element : columnElements) {
-                if (element.isRendered()) {
-                    if (element instanceof Submenu) {
-                        encodeDescendantSubmenu(context, component, (Submenu) element);
+            List<?> columnElements = column.getElements();
+            for (Object element : columnElements) {
+                if (element instanceof MenuElement) {
+                    if (((MenuElement) element).isRendered()) {
+                        if (element instanceof Submenu) {
+                            encodeDescendantSubmenu(context, component, (Submenu) element);
+                        }
+                        else if (element instanceof Separator) {
+                            encodeSubmenuSeparator(context, (Separator) element);
+                        }
                     }
-                    else if (element instanceof Separator) {
-                        encodeSubmenuSeparator(context, (Separator) element);
-                    }
+                }
+                else if (element instanceof UIComponent) {
+                    ((UIComponent) element).encodeAll(context);
                 }
             }
         }
