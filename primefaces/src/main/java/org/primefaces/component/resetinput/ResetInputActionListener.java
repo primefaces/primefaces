@@ -77,9 +77,11 @@ public class ResetInputActionListener implements ActionListener, Serializable {
                                                 : ResetInputVisitCallback.INSTANCE;
 
         List<UIComponent> components = SearchExpressionUtils.contextlessResolveComponents(context, event.getComponent(), expressions);
-        for (int i = 0; i < components.size(); i++) {
-            UIComponent component = components.get(i);
-            component.visitTree(visitContext, visitCallback);
+        if (components != null && !components.isEmpty()) {
+            for (int i = 0; i < components.size(); i++) {
+                UIComponent component = components.get(i);
+                component.visitTree(visitContext, visitCallback);
+            }
         }
     }
 }

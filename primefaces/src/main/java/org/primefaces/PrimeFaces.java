@@ -200,8 +200,10 @@ public class PrimeFaces {
         UIViewRoot root = facesContext.getViewRoot();
         for (String expression : expressions) {
             List<UIComponent> components = SearchExpressionUtils.contextlessResolveComponents(facesContext, root, expression);
-            for (UIComponent component : components) {
-                component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+            if (components != null && !components.isEmpty()) {
+                for (UIComponent component : components) {
+                    component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+                }
             }
         }
     }
