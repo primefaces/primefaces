@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.summaryrow;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = SummaryRow.COMPONENT_TYPE, namespace = SummaryRow.COMPONENT_FAMILY)
-public class SummaryRow extends SummaryRowBase {
+@FacesComponentDescription("SummaryRow is a helper component for data grouping.")
+public class SummaryRow extends SummaryRowBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SummaryRow";
 }
