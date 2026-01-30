@@ -134,7 +134,7 @@ public class OrganigramView implements Serializable {
     public void removeDivision() {
         // re-evaluate selection - might be a differenct object instance if viewstate serialization is enabled
         OrganigramNode currentSelection = OrganigramHelper.findTreeNode(rootNode, selection);
-        setMessage(currentSelection.getData() + " will entfernt werden.", FacesMessage.SEVERITY_INFO);
+        setMessage(currentSelection.getData() + " wants to be removed.", FacesMessage.SEVERITY_INFO);
     }
 
     public void removeEmployee() {
