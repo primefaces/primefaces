@@ -23,35 +23,28 @@
  */
 package org.primefaces.component.progressbar;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class ProgressBarBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "start", event = AjaxBehaviorEvent.class, description = "Fires when progress bar starts."),
+    @FacesBehaviorEvent(name = "complete", event = AjaxBehaviorEvent.class, description = "Fires when progress bar completes.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "progress", event = AjaxBehaviorEvent.class, description = "Fires during progress bar updates.")
+})
+public abstract class ProgressBarBase extends UIComponentBase implements Widget, StyleAware, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ProgressBarRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        value,
-        disabled,
-        ajax,
-        interval,
-        style,
-        styleClass,
-        labelTemplate,
-        displayOnly,
-        global,
-        mode,
-        animationDuration,
-        title,
-        severity
-    }
 
     public ProgressBarBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -62,115 +55,36 @@ public abstract class ProgressBarBase extends UIComponentBase implements Widget,
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "0", description = "Current value of the progress bar.")
+    public abstract int getValue();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "false", description = "Disables or enables the progress bar.")
+    public abstract boolean isDisabled();
 
-    public int getValue() {
-        return (Integer) getStateHelper().eval(PropertyKeys.value, 0);
-    }
+    @Property(defaultValue = "false", description = "Enables AJAX mode where progress is polled from server.")
+    public abstract boolean isAjax();
 
-    public void setValue(int value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
+    @Property(defaultValue = "3000", description = "Interval in milliseconds for polling in AJAX mode.")
+    public abstract int getInterval();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(implicitDefaultValue = "{value}", description = "Template for the label displayed on the progress bar.")
+    public abstract String getLabelTemplate();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(defaultValue = "false", description = "When true, progress bar is displayed as read-only.")
+    public abstract boolean isDisplayOnly();
 
-    public boolean isAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ajax, false);
-    }
+    @Property(defaultValue = "true", description = "Defines whether ajax requests are global.")
+    public abstract boolean isGlobal();
 
-    public void setAjax(boolean ajax) {
-        getStateHelper().put(PropertyKeys.ajax, ajax);
-    }
+    @Property(defaultValue = "determinate", description = "Mode of the progress bar, valid values are 'determinate' and 'indeterminate'.")
+    public abstract String getMode();
 
-    public int getInterval() {
-        return (Integer) getStateHelper().eval(PropertyKeys.interval, 3000);
-    }
+    @Property(defaultValue = "500", description = "Duration of the animation in milliseconds.")
+    public abstract int getAnimationDuration();
 
-    public void setInterval(int interval) {
-        getStateHelper().put(PropertyKeys.interval, interval);
-    }
+    @Property(description = "Title attribute of the progress bar.")
+    public abstract String getTitle();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getLabelTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.labelTemplate, null);
-    }
-
-    public void setLabelTemplate(String labelTemplate) {
-        getStateHelper().put(PropertyKeys.labelTemplate, labelTemplate);
-    }
-
-    public boolean isDisplayOnly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.displayOnly, false);
-    }
-
-    public void setDisplayOnly(boolean displayOnly) {
-        getStateHelper().put(PropertyKeys.displayOnly, displayOnly);
-    }
-
-    public boolean isGlobal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
-    }
-
-    public void setGlobal(boolean global) {
-        getStateHelper().put(PropertyKeys.global, global);
-    }
-
-    public String getMode() {
-        return (String) getStateHelper().eval(PropertyKeys.mode, "determinate");
-    }
-
-    public void setMode(String mode) {
-        getStateHelper().put(PropertyKeys.mode, mode);
-    }
-
-    public int getAnimationDuration() {
-        return (Integer) getStateHelper().eval(PropertyKeys.animationDuration, 500);
-    }
-
-    public void setAnimationDuration(int animationDuration) {
-        getStateHelper().put(PropertyKeys.animationDuration, animationDuration);
-    }
-
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title);
-    }
-
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
-
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
-    }
-
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
-    }
+    @Property(description = "Severity of the progress bar, valid values are 'info', 'success', 'warning', 'danger'.")
+    public abstract String getSeverity();
 }

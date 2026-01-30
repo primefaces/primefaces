@@ -204,11 +204,14 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
             writer.writeAttribute("class", column.getStyleClass(), null);
         }
 
+        // Render the elements inside the column, which can include MenuElements (like Submenu or Separator) and UIComponents
         if (column.getElementsCount() > 0) {
+            // Use List<?> as columns may contain various types.
             List<?> columnElements = column.getElements();
             for (Object element : columnElements) {
                 if (element instanceof MenuElement) {
-                    if (((MenuElement) element).isRendered()) {
+                    MenuElement menuElement = (MenuElement) element;
+                    if (menuElement.isRendered()) {
                         if (element instanceof Submenu) {
                             encodeDescendantSubmenu(context, component, (Submenu) element);
                         }
@@ -217,6 +220,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
                         }
                     }
                 }
+                // UIComponent support allows for arbitrary component placement in columns.
                 else if (element instanceof UIComponent) {
                     ((UIComponent) element).encodeAll(context);
                 }
