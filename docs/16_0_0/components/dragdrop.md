@@ -180,7 +180,7 @@ specified with the for attribute.
 
 ```xhtml
 <p:outputPanel id="slot" styleClass="slot" />
-<p:droppable for="slot" />
+<p:droppable for="slot" scope="slot-scope"/>
 ```
 slot styleClass represents a small rectangle.
 
@@ -211,9 +211,9 @@ Following example shows how to enable draggable images to be dropped on droppabl
 
 ```xhtml
 <p:graphicImage id="messi" value="barca/messi_thumb.jpg" />
-<p:draggable for="messi"/>
+<p:draggable for="messi" scope="football-scope"/>
 <p:outputPanel id="zone" styleClass="slot" />
-<p:droppable for="zone">
+<p:droppable for="zone" scope="football-scope">
     <p:ajax listener="#{ddController.onDrop}" />
 </p:droppable>
 ```
@@ -221,7 +221,9 @@ Following example shows how to enable draggable images to be dropped on droppabl
 public void onDrop(DragDropEvent ddEvent) {
     String draggedId = ddEvent.getDragId(); //Client id of dragged component
     String droppedId = ddEvent.getDropId(); //Client id of dropped component
-    Object data = ddEvent.getData(); //Model object of a datasource
+    // get the dropped object (in this case a GraphicImage)
+    FacesContext context = FacesContext.getCurrentInstance();
+    GraphicImage droppedComponent = (GraphicImage) context.getViewRoot().findComponent(draggedId);
 }
 ```
 
