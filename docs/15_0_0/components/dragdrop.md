@@ -180,7 +180,7 @@ specified with the for attribute.
 
 ```xhtml
 <p:outputPanel id="slot" styleClass="slot" />
-<p:droppable for="slot" scope="slot-scope"/>
+<p:droppable for="slot" />
 ```
 slot styleClass represents a small rectangle.
 
@@ -211,9 +211,9 @@ Following example shows how to enable draggable images to be dropped on droppabl
 
 ```xhtml
 <p:graphicImage id="messi" value="barca/messi_thumb.jpg" />
-<p:draggable for="messi" scope="football-scope"/>
+<p:draggable for="messi" />
 <p:outputPanel id="zone" styleClass="slot" />
-<p:droppable for="zone" scope="football-scope">
+<p:droppable for="zone">
     <p:ajax listener="#{ddController.onDrop}" />
 </p:droppable>
 ```
