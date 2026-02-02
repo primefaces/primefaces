@@ -211,7 +211,7 @@ Following example shows how to enable draggable images to be dropped on droppabl
 
 ```xhtml
 <p:graphicImage id="messi" value="barca/messi_thumb.jpg" />
-<p:draggable for="messi" />
+<p:draggable for="messi"/>
 <p:outputPanel id="zone" styleClass="slot" />
 <p:droppable for="zone">
     <p:ajax listener="#{ddController.onDrop}" />
