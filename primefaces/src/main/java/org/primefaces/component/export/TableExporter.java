@@ -30,6 +30,7 @@ import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.component.rowtoggler.RowToggler;
+import org.primefaces.component.tooltip.Tooltip;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -509,6 +510,9 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
             return Constants.EMPTY_STRING;
         }
         else if (component instanceof RowToggler) {
+            return Constants.EMPTY_STRING;
+        }
+        else if (component instanceof Tooltip) {
             return Constants.EMPTY_STRING;
         }
         else {
