@@ -169,7 +169,7 @@ it’s parent.
 | activeStyleClass | null | String | Style class to apply when an acceptable draggable is being dragged.
 | onDrop | null | String | Client side callback to execute when a draggable is dropped.
 | accept | null | String | Selector to define the accepted draggables.
-|  | null | String |  key to match draggables and droppables.
+| scope | null | String | Scope key to match draggables and droppables.
 | tolerance | intersect | String | Specifies the intersection mode to accept a draggable. Values are 'fit', 'pointer', 'touch' or 'intersect'
 | datasource | null | String | Id of a UIData component to connect with.
 | greedy | false | Boolean | Avoids parent droppable elements receiving the drop event. Default value is false.
@@ -211,7 +211,7 @@ Following example shows how to enable draggable images to be dropped on droppabl
 
 ```xhtml
 <p:graphicImage id="messi" value="barca/messi_thumb.jpg" />
-<p:draggable for="messi" />
+<p:draggable for="messi"/>
 <p:outputPanel id="zone" styleClass="slot" />
 <p:droppable for="zone">
     <p:ajax listener="#{ddController.onDrop}" />
