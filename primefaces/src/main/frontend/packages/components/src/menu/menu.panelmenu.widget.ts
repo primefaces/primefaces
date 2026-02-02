@@ -303,9 +303,10 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
     /**
      * Collapses all siblings of the given header column.
      * @param header The header column that was clicked. 
+     * @param animate Whether to animate the collapse.
      */
-    private collapseActiveSibling(header: JQuery): void {
-        this.collapseRootSubmenu(header.parent().siblings().children('.ui-panelmenu-header.ui-state-active').eq(0));
+    private collapseActiveSibling(header: JQuery, animate = true): void {
+        this.collapseRootSubmenu(header.parent().siblings().children('.ui-panelmenu-header.ui-state-active').eq(0), animate);
     }
 
     /**
@@ -380,14 +381,15 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
     /**
      * Collapses the given accordion panel, hiding the menu entries it contains.
      * @param header A menu panel to collapse.
+     * @param animate Whether to animate the collapse.
      */
-    collapseRootSubmenu(header: JQuery): void {
+    collapseRootSubmenu(header: JQuery, animate = true): void {
         var panel = header.next();
 
         header.attr('aria-expanded', "false").removeClass('ui-state-active').addClass('ui-state-hover')
             .children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
 
-        panel.attr('aria-hidden', "true").slideUp(400, 'easeInOutCirc');
+        panel.attr('aria-hidden', "true").slideUp(animate ? 400 : 0, 'easeInOutCirc');
 
         this.removeAsExpanded(panel);
     }
@@ -449,9 +451,9 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * between page reloads.
      */
     private saveState(): void {
-        if(this.cfg.stateful) {
-            const expandedNodeIds = this.expandedNodes.join(',');
-
+        if(this.cfg.stateful && this.expandedNodes) {
+            const uniqueExpandedNodes = Array.from(new Set(this.expandedNodes));
+            const expandedNodeIds = uniqueExpandedNodes.join(',');
             localStorage.setItem(this.stateKey, expandedNodeIds);
         }
     }
@@ -494,6 +496,8 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
                 this.expandedNodes.push(activeTreeSubmenus.eq(k).parent().attr('id') ?? "");
             }
         }
+
+        this.saveState();
     }
 
     /**
@@ -534,8 +538,8 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         let $this = this;
         $this.headers.filter('.ui-state-active').each(function() {
             const header = $(this);
-            $this.collapseActiveSibling(header);
-            $this.collapseRootSubmenu(header);
+            $this.collapseActiveSibling(header, false);
+            $this.collapseRootSubmenu(header, false);
             header.removeClass('ui-state-hover');
         });
 
