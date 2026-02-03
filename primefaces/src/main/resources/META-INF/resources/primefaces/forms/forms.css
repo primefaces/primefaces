@@ -1182,6 +1182,7 @@ body .ui-cascadeselect-item-content .ui-cascadeselect-group-icon {
 
 .ui-float-label .ui-outputlabel {
     display: block;
+    min-height: 100%;
     max-width: 95%;
     overflow: hidden;
     text-overflow: ellipsis;
