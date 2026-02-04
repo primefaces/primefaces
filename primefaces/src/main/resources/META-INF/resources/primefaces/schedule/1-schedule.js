@@ -263,7 +263,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                             'top': (mouseEnterInfo.jsEvent.pageY + 15) + 'px',
                             'z-index': PrimeFaces.nextZindex()
                         });
-                        $this.tip[0].innerHTML = mouseEnterInfo.event.extendedProps.description;
+                        $this.tip[0].innerHTML = PrimeFaces.escapeHTML(mouseEnterInfo.event.extendedProps.description);
                         $this.tip.show();
                     }, 150);
                 }
