@@ -23,35 +23,22 @@
  */
 package org.primefaces.component.texteditor;
 
-import org.primefaces.util.LangUtils;
-
-import java.util.Collection;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = TextEditor.COMPONENT_TYPE, namespace = TextEditor.COMPONENT_FAMILY)
+@FacesComponentDescription("Editor is an input component with rich text editing capabilities.")
 @ResourceDependency(library = "primefaces", name = "texteditor/texteditor.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "texteditor/texteditor.js")
-public class TextEditor extends TextEditorBase {
+public class TextEditor extends TextEditorBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TextEditor";
 
     public static final String EDITOR_CLASS = "ui-texteditor";
 
-    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("blur", "change", "click", "dblclick", "focus", "keydown",
-            "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select");
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return "change";
-    }
 }

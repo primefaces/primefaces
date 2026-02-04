@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.subtable;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+
 import jakarta.faces.component.UIData;
 
+@FacesComponentBase
 public abstract class SubTableBase extends UIData {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SubTableRenderer";
-
-    public enum PropertyKeys {
-    }
 
     protected enum InternalPropertyKeys {
         columnMeta

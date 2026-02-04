@@ -23,37 +23,40 @@
  */
 package org.primefaces.component.texteditor;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import java.util.List;
 
 import jakarta.faces.component.UIInput;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "blur", event = AjaxBehaviorEvent.class, description = "Fires when the element loses focus."),
+    @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fires when the element's value changes."),
+    @FacesBehaviorEvent(name = "click", event = AjaxBehaviorEvent.class, description = "Fires when the element is clicked."),
+    @FacesBehaviorEvent(name = "dblclick", event = AjaxBehaviorEvent.class, description = "Fires when the element is double-clicked."),
+    @FacesBehaviorEvent(name = "focus", event = AjaxBehaviorEvent.class, description = "Fires when the element gains focus."),
+    @FacesBehaviorEvent(name = "keydown", event = AjaxBehaviorEvent.class, description = "Fires when a key is pressed down on the element."),
+    @FacesBehaviorEvent(name = "keypress", event = AjaxBehaviorEvent.class, description = "Fires when a key is pressed and released on the element."),
+    @FacesBehaviorEvent(name = "keyup", event = AjaxBehaviorEvent.class, description = "Fires when a key is released on the element."),
+    @FacesBehaviorEvent(name = "mousedown", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is pressed down on the element."),
+    @FacesBehaviorEvent(name = "mousemove", event = AjaxBehaviorEvent.class, description = "Fires when the mouse is moved over the element."),
+    @FacesBehaviorEvent(name = "mouseout", event = AjaxBehaviorEvent.class, description = "Fires when the mouse leaves the element."),
+    @FacesBehaviorEvent(name = "mouseover", event = AjaxBehaviorEvent.class, description = "Fires when the mouse enters the element."),
+    @FacesBehaviorEvent(name = "mouseup", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is released over the element."),
+    @FacesBehaviorEvent(name = "select", event = AjaxBehaviorEvent.class, description = "Fires when some text is selected in the element."),
+})
+public abstract class TextEditorBase extends UIInput implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TextEditorRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        height,
-        readonly,
-        disabled,
-        style,
-        styleClass,
-        placeholder,
-        toolbarVisible,
-        allowBlocks,
-        allowFormatting,
-        allowLinks,
-        allowStyles,
-        allowImages,
-        formats,
-        secure
-    }
 
     public TextEditorBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -64,123 +67,39 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Height of the editor.")
+    public abstract String getHeight();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Whether to instantiate the editor to read-only mode.", defaultValue = "false")
+    public abstract boolean isReadonly();
 
-    public String getHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.height, null);
-    }
+    @Property(description = "Disables the editor.", defaultValue = "false")
+    public abstract boolean isDisabled();
 
-    public void setHeight(String height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
+    @Property(description = "Placeholder text to show when editor is empty.")
+    public abstract String getPlaceholder();
 
-    public boolean isReadonly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
-    }
+    @Property(description = "Whether the toolbar of the editor is visible.", defaultValue = "true")
+    public abstract boolean isToolbarVisible();
 
-    public void setReadonly(boolean readonly) {
-        getStateHelper().put(PropertyKeys.readonly, readonly);
-    }
+    @Property(description = "Whether to allow blocks to be included.", defaultValue = "true")
+    public abstract boolean isAllowBlocks();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Whether to allow formatting to be included.", defaultValue = "true")
+    public abstract boolean isAllowFormatting();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Whether to allow links to be included.", defaultValue = "true")
+    public abstract boolean isAllowLinks();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(description = "Whether to allow styles to be included.", defaultValue = "true")
+    public abstract boolean isAllowStyles();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Whether to allow images to be included.", defaultValue = "true")
+    public abstract boolean isAllowImages();
 
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
+    @Property(description = "Define a list of formats to allow in the editor. By default all formats are allowed.")
+    public abstract List getFormats();
 
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public boolean isToolbarVisible() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.toolbarVisible, true);
-    }
-
-    public void setToolbarVisible(boolean toolbarVisible) {
-        getStateHelper().put(PropertyKeys.toolbarVisible, toolbarVisible);
-    }
-
-    public boolean isAllowBlocks() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowBlocks, true);
-    }
-
-    public void setAllowBlocks(boolean allowBlocks) {
-        getStateHelper().put(PropertyKeys.allowBlocks, allowBlocks);
-    }
-
-    public boolean isAllowFormatting() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowFormatting, true);
-    }
-
-    public void setAllowFormatting(boolean allowFormatting) {
-        getStateHelper().put(PropertyKeys.allowFormatting, allowFormatting);
-    }
-
-    public boolean isAllowLinks() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowLinks, true);
-    }
-
-    public void setAllowLinks(boolean allowLinks) {
-        getStateHelper().put(PropertyKeys.allowLinks, allowLinks);
-    }
-
-    public boolean isAllowStyles() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowStyles, true);
-    }
-
-    public void setAllowStyles(boolean allowStyles) {
-        getStateHelper().put(PropertyKeys.allowStyles, allowStyles);
-    }
-
-    public boolean isAllowImages() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowImages, true);
-    }
-
-    public void setAllowImages(boolean allowImages) {
-        getStateHelper().put(PropertyKeys.allowImages, allowImages);
-    }
-
-    public List getFormats() {
-        return (List) getStateHelper().eval(PropertyKeys.formats, null);
-    }
-
-    public void setFormats(List formats) {
-        getStateHelper().put(PropertyKeys.formats, formats);
-    }
-
-    public boolean isSecure() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.secure, true);
-    }
-
-    public void setSecure(boolean secure) {
-        getStateHelper().put(PropertyKeys.secure, secure);
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(description = "Secure the component with the HTML Sanitizer library on the classpath.", defaultValue = "true")
+    public abstract boolean isSecure();
 }

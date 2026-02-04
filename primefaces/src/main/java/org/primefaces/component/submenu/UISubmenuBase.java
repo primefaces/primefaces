@@ -23,24 +23,17 @@
  */
 package org.primefaces.component.submenu;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.model.menu.Submenu;
 
 import jakarta.faces.component.UIComponentBase;
 
-
-public abstract class UISubmenuBase extends UIComponentBase implements Submenu {
+@FacesComponentBase
+public abstract class UISubmenuBase extends UIComponentBase implements Submenu, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public enum PropertyKeys {
-
-        label,
-        disabled,
-        icon,
-        style,
-        styleClass,
-        expanded
-    }
 
     public UISubmenuBase() {
         setRendererType(null);
@@ -51,58 +44,19 @@ public abstract class UISubmenuBase extends UIComponentBase implements Submenu {
         return COMPONENT_FAMILY;
     }
 
+    @Property(description = "Label of the submenu header.")
     @Override
-    public String getLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.label, null);
-    }
+    public abstract String getLabel();
 
-    public void setLabel(String label) {
-        getStateHelper().put(PropertyKeys.label, label);
-    }
-
+    @Property(defaultValue = "false", description = "Disables or enables the submenu.")
     @Override
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    public abstract boolean isDisabled();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
+    @Property(description = "Icon of a submenu, see menuitem to see how it is used.")
     @Override
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
+    public abstract String getIcon();
 
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
+    @Property(defaultValue = "false", description = "Defines the state of the submenu.")
     @Override
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    @Override
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    @Override
-    public boolean isExpanded() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.expanded, false);
-    }
-
-    public void setExpanded(boolean expanded) {
-        getStateHelper().put(PropertyKeys.expanded, expanded);
-    }
-
+    public abstract boolean isExpanded();
 }
