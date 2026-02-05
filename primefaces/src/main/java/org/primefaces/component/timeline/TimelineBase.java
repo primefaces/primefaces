@@ -198,7 +198,7 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
             + " For example, if the calculated time range for preloading is 5 days and the preload factor is 0.2, the result is 5 * 0.2 = 1 day."
             + " That means, 1 day backwards and / or 1 day onwards will be added to the original calculated time range."
             + " The event's area to be preloaded is wider then. This helps to avoid frequently, time-consuming fetching of events.",
-            defaultValue = "0.0")
+            defaultValue = "0.0f")
     public abstract Float getPreloadFactor();
 
     @Property(description = "The minimal margin in pixels between events.",
