@@ -8,6 +8,7 @@ Deployable version of **PrimeFaces Showcase** WAR file can be downloaded manuall
 ## Prebuilt WAR
 
 The showcase can be downloaded from [Maven](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-showcase).
+The prebuilt WAR is the version for Servlet Containers (like Tomcat or Jetty) and comes with MyFaces.
 
 ## Build from sources
 
