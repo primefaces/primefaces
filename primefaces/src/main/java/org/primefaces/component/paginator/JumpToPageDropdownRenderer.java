@@ -25,6 +25,7 @@ package org.primefaces.component.paginator;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIPageableData;
+import org.primefaces.util.LocaleUtils;
 
 import java.io.IOException;
 
@@ -41,11 +42,11 @@ public class JumpToPageDropdownRenderer implements PaginatorElementRenderer {
 
         writer.startElement("select", null);
         writer.writeAttribute("class", UIPageableData.PAGINATOR_JTP_SELECT_CLASS, null);
-        writer.writeAttribute("value", pageable.getPage(), null);
+        writer.writeAttribute("value", LocaleUtils.formatInteger(context, pageable.getPage()), null);
 
         for (int i = 0; i < pageCount; i++) {
             writer.startElement("option", null);
-            writer.writeAttribute("value", i, null);
+            writer.writeAttribute("value", LocaleUtils.formatInteger(context, i), null);
 
             if (i == currentPage) {
                 writer.writeAttribute("selected", "selected", null);
