@@ -23,46 +23,21 @@
  */
 package org.primefaces.component.selectmanybutton;
 
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.cdk.api.FacesComponentDescription;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
-import jakarta.faces.event.BehaviorEvent;
 
 @FacesComponent(value = SelectManyButton.COMPONENT_TYPE, namespace = SelectManyButton.COMPONENT_FAMILY)
+@FacesComponentDescription("SelectManyButton is a multi select component using button user interface.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class SelectManyButton extends SelectManyButtonBase {
+public class SelectManyButton extends SelectManyButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyButton";
 
     public static final String STYLE_CLASS = "ui-selectmanybutton ui-buttonset ui-widget";
 
-    private static final String DEFAULT_EVENT = "change";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("change", null)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
 }

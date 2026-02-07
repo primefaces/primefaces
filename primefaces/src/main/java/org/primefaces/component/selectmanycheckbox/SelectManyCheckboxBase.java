@@ -23,23 +23,40 @@
  */
 package org.primefaces.component.selectmanycheckbox;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.html.HtmlSelectManyCheckbox;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements Widget, FlexAware {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "blur", event = AjaxBehaviorEvent.class, description = "Fires when the element loses focus."),
+    @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fires when the element's value changes."),
+    @FacesBehaviorEvent(name = "click", event = AjaxBehaviorEvent.class, description = "Fires when the element is clicked."),
+    @FacesBehaviorEvent(name = "valueChange", event = AjaxBehaviorEvent.class, description = "Fires when the element's value is changed.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "dblclick", event = AjaxBehaviorEvent.class, description = "Fires when the element is double-clicked."),
+    @FacesBehaviorEvent(name = "focus", event = AjaxBehaviorEvent.class, description = "Fires when the element gains focus."),
+    @FacesBehaviorEvent(name = "keydown", event = AjaxBehaviorEvent.class, description = "Fires when a key is pressed down on the element."),
+    @FacesBehaviorEvent(name = "keypress", event = AjaxBehaviorEvent.class, description = "Fires when a key is pressed and released on the element."),
+    @FacesBehaviorEvent(name = "keyup", event = AjaxBehaviorEvent.class, description = "Fires when a key is released on the element."),
+    @FacesBehaviorEvent(name = "mousedown", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is pressed down on the element."),
+    @FacesBehaviorEvent(name = "mousemove", event = AjaxBehaviorEvent.class, description = "Fires when the mouse is moved over the element."),
+    @FacesBehaviorEvent(name = "mouseout", event = AjaxBehaviorEvent.class, description = "Fires when the mouse leaves the element."),
+    @FacesBehaviorEvent(name = "mouseover", event = AjaxBehaviorEvent.class, description = "Fires when the mouse enters the element."),
+    @FacesBehaviorEvent(name = "mouseup", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is released over the element."),
+    @FacesBehaviorEvent(name = "select", event = AjaxBehaviorEvent.class, description = "Fires when some text is selected in the element.")
+})
+public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements Widget, FlexAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectManyCheckboxRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        columns,
-        flex
-    }
 
     public SelectManyCheckboxBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -50,28 +67,10 @@ public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox impl
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 12);
-    }
-
-    public void setColumns(int columns) {
-        getStateHelper().put(PropertyKeys.columns, columns);
-    }
+    @Property(defaultValue = "12", description = "Defines the number of columns in grid layout.")
+    public abstract int getColumns();
 
     @Override
-    public Boolean getFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
-    }
-
-    public void setFlex(Boolean flex) {
-        getStateHelper().put(PropertyKeys.flex, flex);
-    }
+    @Property(description = "Use modern PrimeFlex-Grid instead of classic Grid CSS.")
+    public abstract Boolean getFlex();
 }

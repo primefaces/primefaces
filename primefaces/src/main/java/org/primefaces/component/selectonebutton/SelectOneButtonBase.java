@@ -23,29 +23,25 @@
  */
 package org.primefaces.component.selectonebutton;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UISelectOne;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class SelectOneButtonBase extends UISelectOne implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fires when the value of the button changes.", defaultEvent = true)
+})
+public abstract class SelectOneButtonBase extends UISelectOne implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectOneButtonRenderer";
-
-    public enum PropertyKeys {
-        disabled,
-        label,
-        layout,
-        onchange,
-        style,
-        styleClass,
-        tabindex,
-        unselectable,
-        widgetVar
-    }
 
     public SelectOneButtonBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -56,75 +52,24 @@ public abstract class SelectOneButtonBase extends UISelectOne implements Widget,
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Disables or enables the component.",
+            defaultValue = "false")
+    public abstract boolean isDisabled();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Label of the button.")
+    public abstract String getLabel();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(description = "Layout of the selectOneButton, valid values are 'custom' or 'default'.")
+    public abstract String getLayout();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(description = "Javascript to execute when the value of the button changes.")
+    public abstract String getOnchange();
 
-    public String getLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.label, null);
-    }
+    @Property(description = "Position of the element in the tabbing order.",
+            defaultValue = "0")
+    public abstract String getTabindex();
 
-    public void setLabel(String label) {
-        getStateHelper().put(PropertyKeys.label, label);
-    }
-
-    public String getOnchange() {
-        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
-    }
-
-    public void setOnchange(String onchange) {
-        getStateHelper().put(PropertyKeys.onchange, onchange);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public boolean isUnselectable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.unselectable, true);
-    }
-
-    public void setUnselectable(boolean unselectable) {
-        getStateHelper().put(PropertyKeys.unselectable, unselectable);
-    }
-
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, null);
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
-    }
+    @Property(description = "Unselectable mode when true allows the button to be unselected.",
+            defaultValue = "true")
+    public abstract boolean isUnselectable();
 }

@@ -23,31 +23,46 @@
  */
 package org.primefaces.component.selectmanymenu;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 import jakarta.faces.component.html.HtmlSelectManyMenu;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, InputHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "blur", event = AjaxBehaviorEvent.class, description = "Fires when the element loses focus."),
+    @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fires when the element's value changes."),
+    @FacesBehaviorEvent(name = "valueChange", event = AjaxBehaviorEvent.class, description = "Fires when the element's value is changed.",
+            defaultEvent = true),
+    @FacesBehaviorEvent(name = "click", event = AjaxBehaviorEvent.class, description = "Fires when the element is clicked."),
+    @FacesBehaviorEvent(name = "dblclick", event = AjaxBehaviorEvent.class, description = "Fires when the element is double-clicked."),
+    @FacesBehaviorEvent(name = "focus", event = AjaxBehaviorEvent.class, description = "Fires when the element gains focus."),
+    @FacesBehaviorEvent(name = "keydown", event = AjaxBehaviorEvent.class, description = "Fires when a key is pressed down on the element."),
+    @FacesBehaviorEvent(name = "keypress", event = AjaxBehaviorEvent.class, description = "Fires when a key is pressed and released on the element."),
+    @FacesBehaviorEvent(name = "keyup", event = AjaxBehaviorEvent.class, description = "Fires when a key is released on the element."),
+    @FacesBehaviorEvent(name = "mousedown", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is pressed down on the element."),
+    @FacesBehaviorEvent(name = "mousemove", event = AjaxBehaviorEvent.class, description = "Fires when the mouse is moved over the element."),
+    @FacesBehaviorEvent(name = "mouseout", event = AjaxBehaviorEvent.class, description = "Fires when the mouse leaves the element."),
+    @FacesBehaviorEvent(name = "mouseover", event = AjaxBehaviorEvent.class, description = "Fires when the mouse enters the element."),
+    @FacesBehaviorEvent(name = "mouseup", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is released over the element."),
+    @FacesBehaviorEvent(name = "select", event = AjaxBehaviorEvent.class, description = "Fires when some text is selected in the element."),
+    @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected."),
+    @FacesBehaviorEvent(name = "itemUnselect", event = UnselectEvent.class, description = "Fires when an item is unselected."),
+    @FacesBehaviorEvent(name = "clear", event = AjaxBehaviorEvent.class, description = "Fires when the selection is cleared.")
+})
+public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, InputHolder, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectManyMenuRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        var,
-        showCheckbox,
-        filter,
-        filterMatchMode,
-        filterFunction,
-        caseSensitive,
-        scrollHeight,
-        metaKeySelection,
-        filterNormalize
-    }
 
     public SelectManyMenuBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -58,83 +73,36 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Name of iterator to be used in custom content display.")
+    public abstract String getVar();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "When true, a checkbox is displayed next to each item.",
+            defaultValue = "false")
+    public abstract boolean isShowCheckbox();
 
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
+    @Property(description = "Displays an input filter for the list.",
+            defaultValue = "false")
+    public abstract boolean isFilter();
 
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
+    @Property(description = "Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.")
+    public abstract String getFilterMatchMode();
 
-    public boolean isShowCheckbox() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showCheckbox, false);
-    }
+    @Property(description = "Client side function to use in custom filterMatchMode.")
+    public abstract String getFilterFunction();
 
-    public void setShowCheckbox(boolean showCheckbox) {
-        getStateHelper().put(PropertyKeys.showCheckbox, showCheckbox);
-    }
+    @Property(description = "Defines if filtering would be case sensitive.",
+            defaultValue = "false")
+    public abstract boolean isCaseSensitive();
 
-    public boolean isFilter() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
-    }
+    @Property(description = "Defines if filtering would be done using normalized values (accents will be removed from characters).",
+            defaultValue = "false")
+    public abstract boolean isFilterNormalize();
 
-    public void setFilter(boolean filter) {
-        getStateHelper().put(PropertyKeys.filter, filter);
-    }
+    @Property(description = "Defines the height of the scrollable area.",
+            defaultValue = "Integer.MAX_VALUE")
+    public abstract int getScrollHeight();
 
-    public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
-    }
-
-    public void setFilterMatchMode(String filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
-    }
-
-    public String getFilterFunction() {
-        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
-    }
-
-    public void setFilterFunction(String filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
-    }
-
-    public boolean isCaseSensitive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
-    }
-
-    public void setCaseSensitive(boolean caseSensitive) {
-        getStateHelper().put(PropertyKeys.caseSensitive, caseSensitive);
-    }
-
-    public int getScrollHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
-    }
-
-    public void setScrollHeight(int scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
-
-    public boolean isMetaKeySelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.metaKeySelection, true);
-    }
-
-    public void setMetaKeySelection(boolean metaKeySelection) {
-        getStateHelper().put(PropertyKeys.metaKeySelection, metaKeySelection);
-    }
-
-    public boolean isFilterNormalize() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
-    }
-
-    public void setFilterNormalize(boolean filterNormalize) {
-        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
-    }
+    @Property(description = "The meta key (SHIFT or CTRL) must be held down to multi-select items.",
+            defaultValue = "true")
+    public abstract boolean isMetaKeySelection();
 }

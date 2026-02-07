@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.Property;
 
 public interface MultiViewStateAware<T> {
 
-    @Property(description = "Whether to keep component state across views, defaults to false.")
+    @Property(description = "Whether to keep component state across views.")
     boolean isMultiViewState();
 
     void restoreMultiViewState();
