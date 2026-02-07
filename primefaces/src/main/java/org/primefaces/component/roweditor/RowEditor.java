@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.roweditor;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = RowEditor.COMPONENT_TYPE, namespace = RowEditor.COMPONENT_FAMILY)
-public class RowEditor extends RowEditorBase {
+@FacesComponentDescription("RowEditor is a helper component for datatable.")
+public class RowEditor extends RowEditorBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowEditor";
 }

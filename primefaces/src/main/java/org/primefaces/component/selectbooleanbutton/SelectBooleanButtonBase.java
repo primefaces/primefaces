@@ -23,25 +23,39 @@
  */
 package org.primefaces.component.selectbooleanbutton;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.html.HtmlSelectBooleanCheckbox;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox implements Widget {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "blur", event = AjaxBehaviorEvent.class, description = "Fires when the element loses focus."),
+    @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fires when the element's value changes."),
+    @FacesBehaviorEvent(name = "click", event = AjaxBehaviorEvent.class, description = "Fires when the element is clicked."),
+    @FacesBehaviorEvent(name = "valueChange", event = AjaxBehaviorEvent.class, description = "Fires when the element's value is changed.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "dblclick", event = AjaxBehaviorEvent.class, description = "Fires when the element is double-clicked."),
+    @FacesBehaviorEvent(name = "focus", event = AjaxBehaviorEvent.class, description = "Fires when the element gains focus."),
+    @FacesBehaviorEvent(name = "keydown", event = AjaxBehaviorEvent.class, description = "Fires when a key is pressed down on the element."),
+    @FacesBehaviorEvent(name = "keypress", event = AjaxBehaviorEvent.class, description = "Fires when a key is pressed and released on the element."),
+    @FacesBehaviorEvent(name = "keyup", event = AjaxBehaviorEvent.class, description = "Fires when a key is released on the element."),
+    @FacesBehaviorEvent(name = "mousedown", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is pressed down on the element."),
+    @FacesBehaviorEvent(name = "mousemove", event = AjaxBehaviorEvent.class, description = "Fires when the mouse is moved over the element."),
+    @FacesBehaviorEvent(name = "mouseout", event = AjaxBehaviorEvent.class, description = "Fires when the mouse leaves the element."),
+    @FacesBehaviorEvent(name = "mouseover", event = AjaxBehaviorEvent.class, description = "Fires when the mouse enters the element."),
+    @FacesBehaviorEvent(name = "mouseup", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is released over the element."),
+    @FacesBehaviorEvent(name = "select", event = AjaxBehaviorEvent.class, description = "Fires when some text is selected in the element.")
+})
+public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectBooleanButtonRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        onLabel,
-        offLabel,
-        onIcon,
-        offIcon,
-        ariaLabel;
-    }
 
     public SelectBooleanButtonBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -52,51 +66,21 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Name of the client side widget.")
+    public abstract String getWidgetVar();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Custom label for on state.")
+    public abstract String getOnLabel();
 
-    public String getOnLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.onLabel, null);
-    }
+    @Property(description = "Custom label for off state.")
+    public abstract String getOffLabel();
 
-    public void setOnLabel(String onLabel) {
-        getStateHelper().put(PropertyKeys.onLabel, onLabel);
-    }
+    @Property(description = "The icon representing the \"On\" position.")
+    public abstract String getOnIcon();
 
-    public String getOffLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.offLabel, null);
-    }
+    @Property(description = "The icon representing the \"Off\" position.")
+    public abstract String getOffIcon();
 
-    public void setOffLabel(String offLabel) {
-        getStateHelper().put(PropertyKeys.offLabel, offLabel);
-    }
-
-    public String getOnIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.onIcon, null);
-    }
-
-    public void setOnIcon(String onIcon) {
-        getStateHelper().put(PropertyKeys.onIcon, onIcon);
-    }
-
-    public String getOffIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.offIcon, null);
-    }
-
-    public void setOffIcon(String offIcon) {
-        getStateHelper().put(PropertyKeys.offIcon, offIcon);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
+    @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
+    public abstract String getAriaLabel();
 }

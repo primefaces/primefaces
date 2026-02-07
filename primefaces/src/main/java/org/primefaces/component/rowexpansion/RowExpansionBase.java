@@ -23,9 +23,12 @@
  */
 package org.primefaces.component.rowexpansion;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIColumn;
 
-
+@FacesComponentBase
 public abstract class RowExpansionBase extends UIColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -44,12 +47,6 @@ public abstract class RowExpansionBase extends UIColumn {
         return COMPONENT_FAMILY;
     }
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
+    @Property(description = "Style class of the component.")
+    public abstract String getStyleClass();
 }

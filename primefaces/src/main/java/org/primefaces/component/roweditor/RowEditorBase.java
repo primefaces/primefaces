@@ -23,23 +23,18 @@
  */
 package org.primefaces.component.roweditor;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
+
 import jakarta.faces.component.UIComponentBase;
 
-
-public abstract class RowEditorBase extends UIComponentBase {
+@FacesComponentBase
+public abstract class RowEditorBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.RowEditorRenderer";
-
-    public enum PropertyKeys {
-
-        style,
-        styleClass,
-        editTitle,
-        cancelTitle,
-        saveTitle;
-    }
 
     public RowEditorBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -50,44 +45,12 @@ public abstract class RowEditorBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Title attribute for edit icon.")
+    public abstract String getEditTitle();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Title attribute for cancel icon.")
+    public abstract String getCancelTitle();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getEditTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.editTitle, null);
-    }
-
-    public void setEditTitle(String editTitle) {
-        getStateHelper().put(PropertyKeys.editTitle, editTitle);
-    }
-
-    public String getCancelTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.cancelTitle, null);
-    }
-
-    public void setCancelTitle(String cancelTitle) {
-        getStateHelper().put(PropertyKeys.cancelTitle, cancelTitle);
-    }
-
-    public String getSaveTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.saveTitle, null);
-    }
-
-    public void setSaveTitle(String saveTitle) {
-        getStateHelper().put(PropertyKeys.saveTitle, saveTitle);
-    }
-
+    @Property(description = "Title attribute for save icon.")
+    public abstract String getSaveTitle();
 }

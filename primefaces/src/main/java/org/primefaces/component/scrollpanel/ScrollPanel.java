@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.scrollpanel;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ScrollPanel.COMPONENT_TYPE, namespace = ScrollPanel.COMPONENT_FAMILY)
+@FacesComponentDescription("ScrollPanel is used to display scrollable content with theme aware scrollbars instead of native browser scrollbars.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "scrollpanel/scrollpanel.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -34,7 +37,7 @@ import jakarta.faces.component.FacesComponent;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "scrollpanel/scrollpanel.js")
-public class ScrollPanel extends ScrollPanelBase {
+public class ScrollPanel extends ScrollPanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ScrollPanel";
 

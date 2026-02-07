@@ -23,15 +23,18 @@
  */
 package org.primefaces.component.selectbooleancheckbox;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = SelectBooleanCheckbox.COMPONENT_TYPE, namespace = SelectBooleanCheckbox.COMPONENT_FAMILY)
+@FacesComponentDescription("SelectBooleanCheckbox is an extended version of the standard checkbox with theme integration.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class SelectBooleanCheckbox extends SelectBooleanCheckboxBase {
+public class SelectBooleanCheckbox extends SelectBooleanCheckboxBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanCheckbox";
 
