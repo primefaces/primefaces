@@ -24,6 +24,7 @@
 package org.primefaces.component.columns;
 
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -122,5 +123,10 @@ public class Columns extends ColumnsBaseImpl {
         cellEditor = null;
 
         return super.saveState(context);
+    }
+
+    @Override
+    public String getFilterMatchMode() {
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, DEFAULT_FILTER_MATCH_MODE.operator());
     }
 }

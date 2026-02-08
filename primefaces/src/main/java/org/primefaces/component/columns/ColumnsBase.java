@@ -59,7 +59,7 @@ public abstract class ColumnsBase extends PrimeUIData implements UIColumn, Style
     public abstract String getFilterStyleClass();
 
     @Property(description = "Match mode for filtering.",
-            defaultValue = "DEFAULT_FILTER_MATCH_MODE.operator()")
+            implicitDefaultValue = "startsWith")
     public abstract String getFilterMatchMode();
 
     @Property(description = "Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.",

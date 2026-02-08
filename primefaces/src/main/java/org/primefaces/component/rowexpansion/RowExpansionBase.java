@@ -33,11 +33,6 @@ public abstract class RowExpansionBase extends UIColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public enum PropertyKeys {
-
-        styleClass
-    }
-
     public RowExpansionBase() {
         setRendererType(null);
     }
