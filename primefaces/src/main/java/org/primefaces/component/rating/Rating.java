@@ -25,6 +25,7 @@ package org.primefaces.component.rating;
 
 import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.RateEvent;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 import java.util.HashMap;
@@ -57,12 +58,9 @@ public class Rating extends RatingBaseImpl {
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (isAjaxBehaviorEvent(event)) {
+        if (ComponentUtils.isRequestSource(this, context) && isAjaxBehaviorEventSource(event)) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-
-            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rate, ClientBehaviorEventKeys.cancel)) {
-                customEvents.put(eventName, (AjaxBehaviorEvent) event);
-            }
+            customEvents.put(eventName, (AjaxBehaviorEvent) event);
         }
         else {
             super.queueEvent(event);
@@ -75,12 +73,13 @@ public class Rating extends RatingBaseImpl {
 
         if (isValid() && customEvents != null) {
             for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
-                String eventName = event.getKey();
                 AjaxBehaviorEvent behaviorEvent = event.getValue();
-                Object value = "cancel".equals(eventName) ? null : getValue();
-                setValue(value);
-                RateEvent<?> rateEvent = new RateEvent<>(this, behaviorEvent.getBehavior(), value);
 
+                if (isAjaxBehaviorEvent(behaviorEvent, ClientBehaviorEventKeys.cancel)) {
+                    setValue(null);
+                }
+
+                RateEvent<?> rateEvent = new RateEvent<>(this, behaviorEvent.getBehavior(), getValue());
                 rateEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 super.queueEvent(rateEvent);

@@ -25,7 +25,6 @@ package org.primefaces.component.column;
 
 import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.component.columns.ColumnsBaseImpl;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
 
@@ -99,6 +98,6 @@ public class Column extends ColumnBaseImpl {
 
     @Override
     public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(ColumnsBaseImpl.PropertyKeys.filterMatchMode, DEFAULT_FILTER_MATCH_MODE.operator());
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, DEFAULT_FILTER_MATCH_MODE.operator());
     }
 }
