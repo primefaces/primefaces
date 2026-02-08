@@ -27,7 +27,6 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
@@ -42,7 +41,7 @@ import jakarta.faces.component.UIComponent;
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "pageChange", event = PageChangeEvent.class, description = "Fires when a page is changed.", defaultEvent = true)
 })
-public abstract class CarouselBase extends UITabPanel implements Widget, PrimeClientBehaviorHolder, TouchAware, StyleAware {
+public abstract class CarouselBase extends UITabPanel implements Widget, TouchAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -28,7 +28,6 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
@@ -44,7 +43,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "unselect", event = UnselectEvent.class, description = "Fires when an item is unselected."),
     @FacesBehaviorEvent(name = "reorder", event = AjaxBehaviorEvent.class, description = "Fires when items are reordered.")
 })
-public abstract class OrderListBase extends UIInput implements Widget, PrimeClientBehaviorHolder, FlexAware, StyleAware {
+public abstract class OrderListBase extends UIInput implements Widget, FlexAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

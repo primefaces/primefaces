@@ -28,7 +28,6 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
@@ -40,7 +39,7 @@ import org.primefaces.event.TabCloseEvent;
     @FacesBehaviorEvent(name = "tabChange", event = TabChangeEvent.class, description = "Fires when a tab is changed.", defaultEvent = true),
     @FacesBehaviorEvent(name = "tabClose", event = TabCloseEvent.class, description = "Fires when a tab is closed.")
 })
-public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, PrimeClientBehaviorHolder,
+public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware,
         MultiViewStateAware<AccordionState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

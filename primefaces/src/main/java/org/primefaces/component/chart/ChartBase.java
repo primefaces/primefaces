@@ -27,20 +27,17 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.ItemSelectEvent;
 
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "itemSelect", event = ItemSelectEvent.class, description = "Fires when an item is selected.", defaultEvent = true)
 })
-public abstract class ChartBase extends UIComponentBase implements Widget, ClientBehaviorHolder,
-        PrimeClientBehaviorHolder, StyleAware {
+public abstract class ChartBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

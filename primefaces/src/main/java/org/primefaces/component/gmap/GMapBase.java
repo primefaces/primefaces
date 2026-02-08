@@ -27,7 +27,6 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.map.GeocodeEvent;
@@ -50,7 +49,7 @@ import jakarta.faces.component.UIComponentBase;
     @FacesBehaviorEvent(name = "geocode", event = GeocodeEvent.class, description = "Fires when geocoding is performed."),
     @FacesBehaviorEvent(name = "reverseGeocode", event = ReverseGeocodeEvent.class, description = "Fires when reverse geocoding is performed.")
 })
-public abstract class GMapBase extends UIComponentBase implements Widget, StyleAware, PrimeClientBehaviorHolder {
+public abstract class GMapBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

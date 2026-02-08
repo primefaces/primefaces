@@ -23,12 +23,8 @@
  */
 package org.primefaces.component.galleria;
 
-import java.util.Collections;
-import java.util.Map;
-
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
-import jakarta.faces.event.BehaviorEvent;
 
 @FacesComponent(value = Galleria.COMPONENT_TYPE, namespace = Galleria.COMPONENT_FAMILY)
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -56,8 +52,4 @@ public class Galleria extends GalleriaBaseImpl {
     public static final String THUMBNAIL_ITEM_CLASS = "ui-galleria-thumbnail-item";
     public static final String THUMBNAIL_ITEM_CONTENT_CLASS = "ui-galleria-thumbnail-item-content";
 
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return Collections.emptyMap();
-    }
 }
