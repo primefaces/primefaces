@@ -21,33 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.accordionpanel;
+package org.primefaces.cdk.api;
 
-import org.primefaces.event.TabEvent;
-import org.primefaces.facelets.MethodRule;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import jakarta.faces.view.facelets.ComponentConfig;
 import jakarta.faces.view.facelets.ComponentHandler;
-import jakarta.faces.view.facelets.MetaRule;
-import jakarta.faces.view.facelets.MetaRuleset;
 
-public class AccordionPanelComponentHandler extends ComponentHandler {
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.TYPE })
+@Inherited
+public @interface FacesComponentHandler {
 
-    private static final MetaRule TABCHANGE_CONTROLLER = new MethodRule(AccordionPanel.PropertyKeys.tabController.name(),
-            Boolean.class,
-            new Class[]{TabEvent.class});
-
-    public AccordionPanelComponentHandler(ComponentConfig config) {
-        super(config);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    protected MetaRuleset createMetaRuleset(Class type) {
-        MetaRuleset metaRuleset = super.createMetaRuleset(type);
-
-        metaRuleset.addRule(TABCHANGE_CONTROLLER);
-
-        return metaRuleset;
-    }
+    Class<? extends ComponentHandler> value();
 }

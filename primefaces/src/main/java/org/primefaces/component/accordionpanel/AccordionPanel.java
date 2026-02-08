@@ -25,6 +25,7 @@ package org.primefaces.component.accordionpanel;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentHandler;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
@@ -48,6 +49,7 @@ import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = AccordionPanel.COMPONENT_TYPE, namespace = AccordionPanel.COMPONENT_FAMILY)
 @FacesComponentDescription("AccordionPanel is a container component that displays content in stacked format.")
+@FacesComponentHandler(AccordionPanelHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

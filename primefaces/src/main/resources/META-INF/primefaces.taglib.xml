@@ -699,7 +699,7 @@
         <component>
             <component-type>org.primefaces.component.AccordionPanel</component-type>
             <renderer-type>org.primefaces.component.AccordionPanelRenderer</renderer-type>
-            <handler-class>org.primefaces.component.accordionpanel.AccordionPanelComponentHandler</handler-class>
+            <handler-class>org.primefaces.component.accordionpanel.AccordionPanelHandler</handler-class>
         </component>
         <attribute>
             <description>
@@ -30143,7 +30143,7 @@
         <component>
             <component-type>org.primefaces.component.Tree</component-type>
             <renderer-type>org.primefaces.component.TreeRenderer</renderer-type>
-            <handler-class>org.primefaces.component.tree.TreeComponentHandler</handler-class>
+            <handler-class>org.primefaces.component.tree.TreeHandler</handler-class>
         </component>
         <attribute>
             <description>

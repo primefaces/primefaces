@@ -21,29 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.tree;
+package org.primefaces.component.accordionpanel;
 
+import org.primefaces.event.TabEvent;
 import org.primefaces.facelets.MethodRule;
-import org.primefaces.model.TreeNode;
-
-import java.util.Locale;
 
 import jakarta.faces.view.facelets.ComponentConfig;
 import jakarta.faces.view.facelets.ComponentHandler;
 import jakarta.faces.view.facelets.MetaRule;
 import jakarta.faces.view.facelets.MetaRuleset;
 
-public class TreeComponentHandler extends ComponentHandler {
+public class AccordionPanelHandler extends ComponentHandler {
 
-    private static final MetaRule DROP_LISTENER = new MethodRule(Tree.PropertyKeys.onDrop.name(),
+    private static final MetaRule TABCHANGE_CONTROLLER = new MethodRule(AccordionPanel.PropertyKeys.tabController.name(),
             Boolean.class,
-            new Class[]{TreeDragDropInfo.class});
+            new Class[]{TabEvent.class});
 
-    private static final MetaRule FILTER_FUNCTION = new MethodRule(Tree.PropertyKeys.filterFunction.name(),
-            Boolean.class,
-            new Class[]{TreeNode.class, Object.class, Locale.class});
-
-    public TreeComponentHandler(ComponentConfig config) {
+    public AccordionPanelHandler(ComponentConfig config) {
         super(config);
     }
 
@@ -52,8 +46,7 @@ public class TreeComponentHandler extends ComponentHandler {
     protected MetaRuleset createMetaRuleset(Class type) {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);
 
-        metaRuleset.addRule(DROP_LISTENER);
-        metaRuleset.addRule(FILTER_FUNCTION);
+        metaRuleset.addRule(TABCHANGE_CONTROLLER);
 
         return metaRuleset;
     }

@@ -26,6 +26,8 @@ package org.primefaces.cdk.impl.taglib;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.faces.view.facelets.ComponentHandler;
+
 public class ComponentInfo {
 
     private final Class<?> componentClass;
@@ -33,15 +35,17 @@ public class ComponentInfo {
     private String componentType;
     private String rendererType;
     private String tagName;
+    private Class<? extends ComponentHandler> handlerClass;
     private List<PropertyInfo> properties;
 
     public ComponentInfo(Class<?> componentClass, String description, String componentType, String rendererType,
-                         String tagName) {
+                         String tagName, Class<? extends ComponentHandler> handlerClass) {
         this.componentClass = componentClass;
         this.description = description;
         this.componentType = componentType;
         this.rendererType = rendererType;
         this.tagName = tagName;
+        this.handlerClass = handlerClass;
         this.properties = new ArrayList<>();
     }
 
@@ -85,6 +89,14 @@ public class ComponentInfo {
         this.properties = properties;
     }
 
+    public Class<? extends ComponentHandler> getHandlerClass() {
+        return handlerClass;
+    }
+
+    public void setHandlerClass(Class<? extends ComponentHandler> handlerClass) {
+        this.handlerClass = handlerClass;
+    }
+
     @Override
     public String toString() {
         return "ComponentInfo{" +
@@ -93,6 +105,7 @@ public class ComponentInfo {
                 ", componentType='" + componentType + '\'' +
                 ", rendererType='" + rendererType + '\'' +
                 ", tagName='" + tagName + '\'' +
+                ", handlerClass='" + handlerClass + '\'' +
                 ", properties=" + properties.size() +
                 '}';
     }

@@ -26,6 +26,7 @@ package org.primefaces.cdk.impl.taglib;
 import org.primefaces.cdk.api.FacesBehaviorDescription;
 import org.primefaces.cdk.api.FacesBehaviorHandler;
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentHandler;
 import org.primefaces.cdk.api.Function;
 import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
@@ -41,6 +42,7 @@ import java.util.logging.Logger;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.FacesBehavior;
+import jakarta.faces.view.facelets.ComponentHandler;
 import jakarta.faces.view.facelets.TagHandler;
 
 public final class TaglibUtils {
@@ -140,7 +142,8 @@ public final class TaglibUtils {
                 getComponentDescription(componentClass),
                 getComponentType(componentClass),
                 getRendererType(componentClass),
-                getTagName(componentClass));
+                getTagName(componentClass),
+                getComponentHandlerClass(componentClass));
 
         findAllProperties(componentClass, true).stream()
                 .map(property -> TaglibUtils.findPropertyInfo(componentClass, property))
@@ -156,7 +159,7 @@ public final class TaglibUtils {
                 getBehaviorId(behaviorClass),
                 getRendererType(behaviorClass),
                 getTagName(behaviorClass),
-                getHandlerClass(behaviorClass));
+                getBehaviorHandlerClass(behaviorClass));
 
         findAllProperties(behaviorClass, false).stream()
                 .map(property -> TaglibUtils.findPropertyInfo(behaviorClass, property))
@@ -183,8 +186,13 @@ public final class TaglibUtils {
         }
     }
 
-    private static Class<? extends TagHandler> getHandlerClass(Class<?> behaviorClass) {
+    private static Class<? extends TagHandler> getBehaviorHandlerClass(Class<?> behaviorClass) {
         FacesBehaviorHandler annotation = behaviorClass.getAnnotation(FacesBehaviorHandler.class);
+        return annotation == null ? null : annotation.value();
+    }
+
+    private static Class<? extends ComponentHandler> getComponentHandlerClass(Class<?> componentClass) {
+        FacesComponentHandler annotation = componentClass.getAnnotation(FacesComponentHandler.class);
         return annotation == null ? null : annotation.value();
     }
 

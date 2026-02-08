@@ -24,6 +24,7 @@
 package org.primefaces.component.autocomplete;
 
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentHandler;
 import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.column.Column;
@@ -56,6 +57,7 @@ import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = AutoComplete.COMPONENT_TYPE, namespace = AutoComplete.COMPONENT_FAMILY)
 @FacesComponentDescription("AutoComplete is a component that provides live suggestions while an input is being typed.")
+@FacesComponentHandler(AutoCompleteHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

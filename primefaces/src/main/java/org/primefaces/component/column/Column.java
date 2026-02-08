@@ -24,6 +24,7 @@
 package org.primefaces.component.column;
 
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentHandler;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
@@ -38,6 +39,7 @@ import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Column.COMPONENT_TYPE, namespace = Column.COMPONENT_FAMILY)
 @FacesComponentDescription("Column is an extended version of the standard column used by various PrimeFaces components like datatable, treetable and more.")
+@FacesComponentHandler(ColumnHandler.class)
 public class Column extends ColumnBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Column";

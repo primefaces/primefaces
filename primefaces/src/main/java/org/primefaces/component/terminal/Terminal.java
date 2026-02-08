@@ -24,6 +24,7 @@
 package org.primefaces.component.terminal;
 
 import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentHandler;
 import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
 import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.model.terminal.TerminalCommand;
@@ -37,6 +38,7 @@ import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Terminal.COMPONENT_TYPE, namespace = Terminal.COMPONENT_FAMILY)
 @FacesComponentDescription("Terminal is an ajax powered component bringing desktop command-line tools to the web.")
+@FacesComponentHandler(TerminalHandler.class)
 @ResourceDependency(library = "primefaces", name = "terminal/terminal.css")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

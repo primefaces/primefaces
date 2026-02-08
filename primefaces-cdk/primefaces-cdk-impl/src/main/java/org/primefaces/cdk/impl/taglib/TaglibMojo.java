@@ -278,6 +278,9 @@ public class TaglibMojo extends AbstractMojo {
             if (componentInfo.getRendererType() != null) {
                 component.addElement("renderer-type").addText(componentInfo.getRendererType());
             }
+            if (componentInfo.getHandlerClass() != null) {
+                component.addElement("handler-class").addText(componentInfo.getHandlerClass().getName());
+            }
 
             // Add attributes for each property
             for (PropertyInfo propertyInfo : componentInfo.getProperties()) {

@@ -21,17 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.summaryrow;
+package org.primefaces.component.tree;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
-import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.facelets.MethodRule;
+import org.primefaces.model.TreeNode;
 
-import jakarta.faces.component.FacesComponent;
+import java.util.Locale;
 
-@FacesComponent(value = SummaryRow.COMPONENT_TYPE, namespace = SummaryRow.COMPONENT_FAMILY)
-@FacesComponentDescription("SummaryRow is a helper component for data grouping.")
-@FacesComponentHandler(SummaryRowHandler.class)
-public class SummaryRow extends SummaryRowBaseImpl {
+import jakarta.faces.view.facelets.ComponentConfig;
+import jakarta.faces.view.facelets.ComponentHandler;
+import jakarta.faces.view.facelets.MetaRule;
+import jakarta.faces.view.facelets.MetaRuleset;
 
-    public static final String COMPONENT_TYPE = "org.primefaces.component.SummaryRow";
+public class TreeHandler extends ComponentHandler {
+
+    private static final MetaRule DROP_LISTENER = new MethodRule(Tree.PropertyKeys.onDrop.name(),
+            Boolean.class,
+            new Class[]{TreeDragDropInfo.class});
+
+    private static final MetaRule FILTER_FUNCTION = new MethodRule(Tree.PropertyKeys.filterFunction.name(),
+            Boolean.class,
+            new Class[]{TreeNode.class, Object.class, Locale.class});
+
+    public TreeHandler(ComponentConfig config) {
+        super(config);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(DROP_LISTENER);
+        metaRuleset.addRule(FILTER_FUNCTION);
+
+        return metaRuleset;
+    }
 }
