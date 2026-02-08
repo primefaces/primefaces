@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.columns;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -38,7 +39,8 @@ import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Columns.COMPONENT_TYPE, namespace = Columns.COMPONENT_FAMILY)
-public class Columns extends ColumnsBase {
+@FacesComponentDescription("Columns is used by datatable to create columns dynamically.")
+public class Columns extends ColumnsBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Columns";
 

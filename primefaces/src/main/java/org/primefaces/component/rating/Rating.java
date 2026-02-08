@@ -23,11 +23,10 @@
  */
 package org.primefaces.component.rating;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.event.RateEvent;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,15 +34,15 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Rating.COMPONENT_TYPE, namespace = Rating.COMPONENT_FAMILY)
+@FacesComponentDescription("Rating component features a star based rating system.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Rating extends RatingBase {
+public class Rating extends RatingBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Rating";
 
@@ -52,38 +51,16 @@ public class Rating extends RatingBase {
     public static final String STAR_CLASS = "ui-rating-star";
     public static final String STAR_ON_CLASS = "ui-rating-star ui-rating-star-on";
 
-    private static final String DEFAULT_EVENT = "rate";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("rate", RateEvent.class)
-            .put("cancel", RateEvent.class)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (event instanceof AjaxBehaviorEvent) {
+        if (isAjaxBehaviorEvent(event)) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if ("rate".equals(eventName) || "cancel".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rate, ClientBehaviorEventKeys.cancel)) {
                 customEvents.put(eventName, (AjaxBehaviorEvent) event);
             }
         }

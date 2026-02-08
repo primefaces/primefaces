@@ -35,7 +35,7 @@ import jakarta.faces.view.facelets.MetaRuleset;
 
 public class PhotoCamHandler extends ComponentHandler {
 
-    private static final MetaRule LISTENER = new MethodRule(PhotoCamBaseImpl.PropertyKeys.listener.name(),
+    private static final MetaRule LISTENER = new MethodRule(PhotoCam.PropertyKeys.listener.name(),
             List.class,
             new Class[]{CaptureEvent.class});
 

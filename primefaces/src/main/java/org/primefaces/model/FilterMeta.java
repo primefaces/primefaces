@@ -25,7 +25,7 @@ package org.primefaces.model;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.column.Column;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
@@ -85,7 +85,7 @@ public class FilterMeta implements Serializable {
         }
 
         String field = column.getField();
-        ValueExpression filterByVE = column.getValueExpression(ColumnBase.PropertyKeys.filterBy.name());
+        ValueExpression filterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.name());
         if (field == null && filterByVE == null) {
             return null;
         }

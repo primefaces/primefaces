@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.headerrow;
 
+import org.primefaces.cdk.api.FacesComponentDescription;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = HeaderRow.COMPONENT_TYPE, namespace = HeaderRow.COMPONENT_FAMILY)
-public class HeaderRow extends HeaderRowBase {
+@FacesComponentDescription("HeaderRow is a helper component for row grouping.")
+public class HeaderRow extends HeaderRowBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.HeaderRow";
 
@@ -34,8 +37,8 @@ public class HeaderRow extends HeaderRowBase {
         return isRendered()
                 && (getField() != null
                 || getGroupBy() != null
-                || getValueExpression(PropertyKeys.field.name()) != null
-                || getValueExpression(PropertyKeys.groupBy.name()) != null);
+                || getValueExpression(PropertyKeys.field) != null
+                || getValueExpression(PropertyKeys.groupBy) != null);
 
     }
 }

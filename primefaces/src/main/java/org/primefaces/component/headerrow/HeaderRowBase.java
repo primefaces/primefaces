@@ -23,27 +23,18 @@
  */
 package org.primefaces.component.headerrow;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
+
 import jakarta.faces.component.UIComponentBase;
 
-
-public abstract class HeaderRowBase extends UIComponentBase {
+@FacesComponentBase
+public abstract class HeaderRowBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.HeaderRowRenderer";
-
-    public enum PropertyKeys {
-        field,
-        groupBy,
-        sortFunction,
-        sortOrder,
-        expandable,
-        expanded,
-        style,
-        styleClass,
-        rowspan,
-        colspan
-    }
 
     public HeaderRowBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -54,84 +45,27 @@ public abstract class HeaderRowBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getField() {
-        return (String) getStateHelper().eval(PropertyKeys.field, null);
-    }
+    @Property(description = "Name of the field associated to bean \"var\".")
+    public abstract String getField();
 
-    public void setField(String field) {
-        getStateHelper().put(PropertyKeys.field, field);
-    }
+    @Property(description = "Property to be used for grouping.")
+    public abstract String getGroupBy();
 
-    public String getGroupBy() {
-        return (String) getStateHelper().eval(PropertyKeys.groupBy, null);
-    }
+    @Property(defaultValue = "asc", description = "Sets default sorting order. Possible values \"asc\", \"desc\" or null.")
+    public abstract String getSortOrder();
 
-    public void setGroupBy(String groupBy) {
-        getStateHelper().put(PropertyKeys.groupBy, groupBy);
-    }
+    @Property(defaultValue = "false", description = "Makes row groups toggleable.")
+    public abstract boolean isExpandable();
 
-    public String getSortOrder() {
-        return (String) getStateHelper().eval(PropertyKeys.sortOrder, "asc");
-    }
+    @Property(description = "Defines the number of rows the column spans.")
+    public abstract Integer getRowspan();
 
-    public void setSortOrder(String sortOrder) {
-        getStateHelper().put(PropertyKeys.sortOrder, sortOrder);
-    }
+    @Property(description = "Defines the number of columns the column spans.")
+    public abstract Integer getColspan();
 
-    public boolean isExpandable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.expandable, false);
-    }
+    @Property(description = "Custom pluggable sortFunction.")
+    public abstract jakarta.el.MethodExpression getSortFunction();
 
-    public void setExpandable(boolean expandable) {
-        getStateHelper().put(PropertyKeys.expandable, expandable);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public Integer getRowspan() {
-        return (Integer) getStateHelper().eval(PropertyKeys.rowspan, null);
-    }
-
-    public void setRowspan(Integer rowspan) {
-        getStateHelper().put(PropertyKeys.rowspan, rowspan);
-    }
-
-    public Integer getColspan() {
-        return (Integer) getStateHelper().eval(PropertyKeys.colspan, null);
-    }
-
-    public void setColspan(Integer colspan) {
-        getStateHelper().put(PropertyKeys.colspan, colspan);
-    }
-
-    public jakarta.el.MethodExpression getSortFunction() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
-    }
-
-    public void setSortFunction(jakarta.el.MethodExpression sortFunction) {
-        getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
-    }
-
-    public boolean isExpanded() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.expanded, true);
-    }
-
-    public void setExpanded(boolean expanded) {
-        getStateHelper().put(PropertyKeys.expanded, expanded);
-    }
-
+    @Property(defaultValue = "true", description = "Boolean value to specify whether the row group will be rendered expanded or closed.")
+    public abstract boolean isExpanded();
 }

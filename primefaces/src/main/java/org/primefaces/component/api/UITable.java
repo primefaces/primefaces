@@ -24,7 +24,7 @@
 package org.primefaces.component.api;
 
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.column.Column;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
@@ -239,7 +239,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             }
 
             if (filterValue != null && filterValue.getClass().isArray()) {
-                ValueExpression columnFilterValueVE = column.getValueExpression(ColumnBase.PropertyKeys.filterValue.toString());
+                ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
                 if (columnFilterValueVE != null && List.class.isAssignableFrom(columnFilterValueVE.getType(context.getELContext()))) {
                     filterValue = Arrays.asList((Object[]) filterValue);
                 }

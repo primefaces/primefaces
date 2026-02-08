@@ -23,30 +23,26 @@
  */
 package org.primefaces.component.rating;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.RateEvent;
 
 import jakarta.faces.component.UIInput;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class RatingBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "rate", event = RateEvent.class, description = "Fires when a rating is selected.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "cancel", event = RateEvent.class, description = "Fires when the rating is canceled.")
+})
+public abstract class RatingBase extends UIInput implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.RatingRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        stars,
-        disabled,
-        readonly,
-        onRate,
-        style,
-        styleClass,
-        cancel,
-        tabindex
-    }
 
     public RatingBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -57,75 +53,21 @@ public abstract class RatingBase extends UIInput implements Widget, ClientBehavi
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "5", description = "Number of stars to display.")
+    public abstract int getStars();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Disables user interaction.")
+    public abstract boolean isDisabled();
 
-    public int getStars() {
-        return (Integer) getStateHelper().eval(PropertyKeys.stars, 5);
-    }
+    @Property(description = "Disables user interaction without adding disabled visuals.")
+    public abstract boolean isReadonly();
 
-    public void setStars(int stars) {
-        getStateHelper().put(PropertyKeys.stars, stars);
-    }
+    @Property(description = "Client side callback to execute when rate happens.")
+    public abstract String getOnRate();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(defaultValue = "true", description = "When enabled, displays a cancel icon to reset rating value.")
+    public abstract boolean isCancel();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public boolean isReadonly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
-    }
-
-    public void setReadonly(boolean readonly) {
-        getStateHelper().put(PropertyKeys.readonly, readonly);
-    }
-
-    public String getOnRate() {
-        return (String) getStateHelper().eval(PropertyKeys.onRate, null);
-    }
-
-    public void setOnRate(String onRate) {
-        getStateHelper().put(PropertyKeys.onRate, onRate);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isCancel() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cancel, true);
-    }
-
-    public void setCancel(boolean cancel) {
-        getStateHelper().put(PropertyKeys.cancel, cancel);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
+    @Property(defaultValue = "0", description = "Position of the output in the tabbing order.")
+    public abstract String getTabindex();
 }
