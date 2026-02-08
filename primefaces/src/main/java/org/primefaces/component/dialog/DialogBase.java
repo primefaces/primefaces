@@ -27,7 +27,6 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
@@ -51,7 +50,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "resizeStart", event = ResizeEvent.class, description = "Fires when dialog resize starts."),
     @FacesBehaviorEvent(name = "resizeStop", event = ResizeEvent.class, description = "Fires when dialog resize stops.")
 })
-public abstract class DialogBase extends UIPanel implements Widget, RTLAware, StyleAware, PrimeClientBehaviorHolder {
+public abstract class DialogBase extends UIPanel implements Widget, RTLAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

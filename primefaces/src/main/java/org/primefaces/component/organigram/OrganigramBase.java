@@ -27,7 +27,6 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.organigram.OrganigramNodeCollapseEvent;
@@ -45,7 +44,7 @@ import jakarta.faces.component.UIComponentBase;
     @FacesBehaviorEvent(name = "dragdrop", event = OrganigramNodeDragDropEvent.class, description = "Fires when a node is dragged and dropped."),
     @FacesBehaviorEvent(name = "contextmenu", event = OrganigramNodeSelectEvent.class, description = "Fires when context menu is triggered on a node.")
 })
-public abstract class OrganigramBase extends UIComponentBase implements Widget, PrimeClientBehaviorHolder, StyleAware {
+public abstract class OrganigramBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

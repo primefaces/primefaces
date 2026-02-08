@@ -28,7 +28,6 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
@@ -41,7 +40,7 @@ import jakarta.faces.event.BehaviorEvent;
     @FacesBehaviorEvent(name = "save", event = BehaviorEvent.class, description = "Fires when inplace is saved."),
     @FacesBehaviorEvent(name = "cancel", event = BehaviorEvent.class, description = "Fires when inplace is cancelled.")
 })
-public abstract class InplaceBase extends UIComponentBase implements Widget, StyleAware, PrimeClientBehaviorHolder {
+public abstract class InplaceBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -29,7 +29,6 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.DialogReturnAware;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.event.SelectEvent;
@@ -45,7 +44,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = DialogReturnAware.EVENT_DIALOG_RETURN, event = SelectEvent.class, description = "Fires when a dialog returns a value.")
 })
 public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem,
-        StyleAware, PrimeClientBehaviorHolder {
+        StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

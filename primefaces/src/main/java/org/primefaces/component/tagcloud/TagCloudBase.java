@@ -27,19 +27,17 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
 
 import jakarta.faces.component.UIOutput;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "select", event = SelectEvent.class, description = "Fires when a tag is selected.", defaultEvent = true)
 })
-public abstract class TagCloudBase extends UIOutput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, StyleAware {
+public abstract class TagCloudBase extends UIOutput implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

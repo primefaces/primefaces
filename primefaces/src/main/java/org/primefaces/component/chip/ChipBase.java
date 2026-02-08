@@ -27,12 +27,10 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesComponentBase
@@ -40,7 +38,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "select", event = AjaxBehaviorEvent.class, description = "Fires when the chip gets selected.", defaultEvent = true),
     @FacesBehaviorEvent(name = "close", event = AjaxBehaviorEvent.class, description = "Fires when the chip gets closed."),
 })
-public abstract class ChipBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, StyleAware {
+public abstract class ChipBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

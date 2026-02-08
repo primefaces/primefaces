@@ -27,7 +27,6 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
@@ -38,7 +37,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "idle", event = AjaxBehaviorEvent.class, description = "Fires when the user goes idle."),
     @FacesBehaviorEvent(name = "active", event = AjaxBehaviorEvent.class, description = "Fires when the user becomes active again.")
 })
-public abstract class IdleMonitorBase extends UIComponentBase implements Widget, PrimeClientBehaviorHolder {
+public abstract class IdleMonitorBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

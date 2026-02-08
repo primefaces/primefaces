@@ -27,7 +27,6 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
@@ -40,7 +39,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "complete", event = AjaxBehaviorEvent.class, description = "Fires when progress bar completes.", defaultEvent = true),
     @FacesBehaviorEvent(name = "progress", event = AjaxBehaviorEvent.class, description = "Fires during progress bar updates.")
 })
-public abstract class ProgressBarBase extends UIComponentBase implements Widget, StyleAware, PrimeClientBehaviorHolder {
+public abstract class ProgressBarBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
