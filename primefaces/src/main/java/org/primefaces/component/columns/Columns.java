@@ -24,7 +24,6 @@
 package org.primefaces.component.columns;
 
 import org.primefaces.cdk.api.FacesComponentDescription;
-import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.util.ComponentTraversalUtils;
