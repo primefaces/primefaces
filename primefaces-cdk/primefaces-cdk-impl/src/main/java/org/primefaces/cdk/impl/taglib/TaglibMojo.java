@@ -146,6 +146,36 @@ public class TaglibMojo extends AbstractMojo {
         }
     }
 
+    private List<Class<?>> findAnnotatedClasses(Class<? extends Annotation> annotation) throws MojoExecutionException {
+        getLog().info("Scanning for @" + annotation.getSimpleName() + " annotated classes...");
+
+        try {
+            Collection<Class<?>> projectClasses = getAllProjectClasses();
+
+            List<Class<?>> foundClasses = new ArrayList<>();
+            for (Class<?> c : projectClasses) {
+                try {
+                    if (c.getAnnotation(annotation) != null) {
+                        foundClasses.add(c);
+                    }
+                }
+                catch (Throwable e) {
+                    // Skip classes that can't be processed due to missing dependencies
+                    getLog().warn("Skipping class " + c.getName() + " during annotation scan: " + e.getMessage());
+                }
+            }
+
+            Collection<String> classNames = foundClasses.stream().map(Class::getName).collect(Collectors.toList());
+            getLog().info("Found classes: " + String.join(",", classNames));
+
+            return foundClasses;
+        }
+        catch (Exception e) {
+            getLog().error("Error while scanning", e);
+            throw new MojoExecutionException("Error while scanning", e);
+        }
+    }
+
     private List<FunctionInfo> findFunctionInfos() throws MojoExecutionException {
         getLog().info("Scanning for @" + Function.class.getName() + " annotated methods...");
 
@@ -154,9 +184,15 @@ public class TaglibMojo extends AbstractMojo {
             List<FunctionInfo> allFunctions = new ArrayList<>();
 
             for (Class<?> clazz : projectClasses) {
-                List<FunctionInfo> functions = TaglibUtils.getFunctionInfos(clazz);
-                if (!functions.isEmpty()) {
-                    allFunctions.addAll(functions);
+                try {
+                    List<FunctionInfo> functions = TaglibUtils.getFunctionInfos(clazz);
+                    if (!functions.isEmpty()) {
+                        allFunctions.addAll(functions);
+                    }
+                }
+                catch (Throwable e) {
+                    // Skip classes that can't be processed due to missing dependencies
+                    getLog().debug("Skipping class " + clazz.getName() + " during function scan: " + e.getMessage());
                 }
             }
 
@@ -164,27 +200,6 @@ public class TaglibMojo extends AbstractMojo {
             getLog().info("Found functions: " + String.join(",", classNames));
 
             return allFunctions;
-        }
-        catch (Exception e) {
-            getLog().error("Error while scanning", e);
-            throw new MojoExecutionException("Error while scanning", e);
-        }
-    }
-
-    private List<Class<?>> findAnnotatedClasses(Class<? extends Annotation> annotation) throws MojoExecutionException {
-        getLog().info("Scanning for @" + annotation.getSimpleName() + " annotated classes...");
-
-        try {
-            Collection<Class<?>> projectClasses = getAllProjectClasses();
-
-            List<Class<?>> foundClasses = projectClasses.stream()
-                    .filter(c -> c.getAnnotation(annotation) != null)
-                    .collect(Collectors.toList());
-
-            Collection<String> classNames = foundClasses.stream().map(Class::getName).collect(Collectors.toList());
-            getLog().info("Found classes: " + String.join(",", classNames));
-
-            return foundClasses;
         }
         catch (Exception e) {
             getLog().error("Error while scanning", e);
@@ -355,8 +370,8 @@ public class TaglibMojo extends AbstractMojo {
                             Class<?> clazz = loadClass(currentFile);
                             classes.add(clazz);
                         }
-                        catch (MojoExecutionException e) {
-                            throw new RuntimeException(e);
+                        catch (Throwable e) {
+                            getLog().warn("Skipping class " + currentFile + " due to missing dependencies: " + e.getMessage());
                         }
                     });
             return classes;

@@ -110,7 +110,7 @@ public final class TaglibUtils {
             StringBuilder signature = new StringBuilder();
             signature.append(method.getReturnType().getName());
             signature.append(" ");
-            signature.append(functionName);
+            signature.append(method.getName());
             signature.append("(");
 
             Class<?>[] paramTypes = method.getParameterTypes();
@@ -218,6 +218,12 @@ public final class TaglibUtils {
         }
         if (propertyInfo.getType() == null) {
             switch (name) {
+                case "id":
+                    propertyInfo.setType(String.class);
+                    break;
+                case "rendered":
+                    propertyInfo.setType(boolean.class);
+                    break;
                 case "binding":
                     propertyInfo.setType(UIComponent.class);
                     break;
