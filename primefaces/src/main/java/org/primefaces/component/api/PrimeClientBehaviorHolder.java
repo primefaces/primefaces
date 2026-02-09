@@ -32,6 +32,7 @@ import java.util.Set;
 
 import jakarta.faces.event.BehaviorEvent;
 
+@Deprecated
 public interface PrimeClientBehaviorHolder extends org.primefaces.cdk.api.component.PrimeClientBehaviorHolder {
 
     Set<String> DEFAULT_SELECT_EVENT_NAMES =
