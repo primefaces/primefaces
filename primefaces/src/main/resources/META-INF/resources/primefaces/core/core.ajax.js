@@ -380,9 +380,10 @@ if (!PrimeFaces.ajax) {
              * @param {string} errorMessage The error message.
              */
             handleError: function(errorName, errorMessage) {
+                var exceptionHandlers = [];
                 if (errorName) {
                     // try to invoke specific AjaxExceptionHandler
-                    var exceptionHandlers = PrimeFaces.getWidgetsByType(PrimeFaces.widget.AjaxExceptionHandler);
+                    exceptionHandlers = PrimeFaces.getWidgetsByType(PrimeFaces.widget.AjaxExceptionHandler);
                     for (var exceptionHandler of exceptionHandlers) {
                         if (exceptionHandler.handles(errorName)) {
                             exceptionHandler.handle(errorName, errorMessage);
