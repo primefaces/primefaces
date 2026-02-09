@@ -338,9 +338,6 @@
         </profile>
         <profile>
             <id>tomee</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <build>
                 <filters>
                     <filter>${basedir}/src/main/resources/filters/tomee.properties</filter>
