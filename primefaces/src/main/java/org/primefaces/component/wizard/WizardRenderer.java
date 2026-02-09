@@ -166,7 +166,7 @@ public class WizardRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext facesContext, Wizard wizard) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = wizard.getClientId(facesContext);
-        String styleClass = wizard.getStyleClass() == null ? "ui-wizard ui-widget" : "ui-wizard ui-widget" + wizard.getStyleClass();
+        String styleClass = wizard.getStyleClass() == null ? "ui-wizard ui-widget" : "ui-wizard ui-widget " + wizard.getStyleClass();
 
         writer.startElement("div", wizard);
         writer.writeAttribute("id", clientId, "id");
