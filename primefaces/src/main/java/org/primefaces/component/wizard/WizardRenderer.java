@@ -164,7 +164,10 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
     protected void encodeMarkup(FacesContext facesContext, Wizard component) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = component.getClientId(facesContext);
-        String styleClass = component.getStyleClass() == null ? "ui-wizard ui-widget" : "ui-wizard ui-widget" + component.getStyleClass();
+        String styleClass = getStyleClassBuilder(facesContext)
+                .add("ui-wizard ui-widget")
+                .add(component.getStyleClass())
+                .build();
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
@@ -240,10 +243,10 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
                 String title = tab.getTitle();
                 UIComponent titleFacet = tab.getFacet("title");
                 boolean active = (!currentFound) && (currentStep == null || tab.getId().equals(currentStep));
-                String titleStyleClass = active ? Wizard.ACTIVE_STEP_CLASS : Wizard.STEP_CLASS;
-                if (tab.getTitleStyleClass() != null) {
-                    titleStyleClass = titleStyleClass + " " + tab.getTitleStyleClass();
-                }
+                String titleStyleClass = getStyleClassBuilder(context)
+                        .add(active, Wizard.ACTIVE_STEP_CLASS, Wizard.STEP_CLASS)
+                        .add(tab.getTitleStyleClass())
+                        .build();
 
                 if (active) {
                     currentFound = true;
