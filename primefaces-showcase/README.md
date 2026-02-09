@@ -22,7 +22,7 @@ cd primefaces-showcase
 #### for a EE Application Server
 
 ```
-mvn clean package                             -- create war file (under target directory)
+mvn clean package -Pee                        -- create war file (under target directory)
 ```
 
 #### for a Servlet Container with Mojarra 4.0
