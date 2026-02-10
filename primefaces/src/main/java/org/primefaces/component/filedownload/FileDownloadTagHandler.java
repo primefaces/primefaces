@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.filedownload;
 
+import org.primefaces.cdk.api.FacesTagHandler;
+import org.primefaces.cdk.api.Property;
+
 import java.io.IOException;
 
 import jakarta.el.ELException;
@@ -37,11 +40,24 @@ import jakarta.faces.view.facelets.TagAttribute;
 import jakarta.faces.view.facelets.TagConfig;
 import jakarta.faces.view.facelets.TagHandler;
 
+@FacesTagHandler("Traditionally, dynamic binary data was presented to the client by writing a servlet or filter to stream the data."
+        + " FileDownload simplifies this process.")
 public class FileDownloadTagHandler extends TagHandler {
 
+    @Property(description = "A streamed content instance.", required = true)
     private final TagAttribute value;
+
+    @Property(description = "Specifies display mode (non-ajax), valid values are \"attachment\" and \"inline\".",
+            defaultValue = "attachment",
+            type = String.class)
     private final TagAttribute contentDisposition;
+
+    @Property(description = "Defines setting cookie key for monitorDownload method on client side.",
+            type = String.class)
     private final TagAttribute monitorKey;
+
+    @Property(description = "Controls the 'no-store' attribute on the cache control header. Default false is to include 'no-store'.",
+            type = Boolean.class)
     private final TagAttribute store;
 
     public FileDownloadTagHandler(TagConfig tagConfig) {

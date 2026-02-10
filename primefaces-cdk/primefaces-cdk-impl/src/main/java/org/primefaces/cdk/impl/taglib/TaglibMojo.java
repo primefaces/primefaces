@@ -23,6 +23,7 @@
  */
 package org.primefaces.cdk.impl.taglib;
 
+import org.primefaces.cdk.api.FacesTagHandler;
 import org.primefaces.cdk.api.Function;
 
 import java.io.File;
@@ -113,10 +114,12 @@ public class TaglibMojo extends AbstractMojo {
             // Find all component and behavior classes
             List<Class<?>> componentClasses = findAnnotatedClasses(FacesComponent.class);
             List<Class<?>> behaviorClasses = findAnnotatedClasses(FacesBehavior.class);
+            List<Class<?>> tagHandlerClasses = findAnnotatedClasses(FacesTagHandler.class);
             List<FunctionInfo> functionInfos = findFunctionInfos();
 
             getLog().info("Found " + componentClasses.size() + " component classes");
             getLog().info("Found " + behaviorClasses.size() + " behavior classes");
+            getLog().info("Found " + tagHandlerClasses.size() + " TagHandler classes");
 
             getLog().info("Processing components...");
             List<ComponentInfo> componentInfos = componentClasses.stream()
@@ -130,8 +133,14 @@ public class TaglibMojo extends AbstractMojo {
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
+            getLog().info("Processing tagHandlers...");
+            List<TagHandlerInfo> tagHandlerInfos = tagHandlerClasses.stream()
+                    .map(clazz -> processTagHandlerClass(clazz))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
             // Generate the taglib XML
-            Document document = generateTaglibXml(functionInfos, componentInfos, behaviorInfos);
+            Document document = generateTaglibXml(functionInfos, componentInfos, behaviorInfos, tagHandlerInfos);
 
             // Save the taglib XML to file
             File taglibFile = new File(outputDirectory, shortName + ".taglib.xml");
@@ -244,7 +253,25 @@ public class TaglibMojo extends AbstractMojo {
         }
     }
 
-    private Document generateTaglibXml(List<FunctionInfo> functionInfos, List<ComponentInfo> componentInfos, List<BehaviorInfo> behaviorInfos) {
+    private TagHandlerInfo processTagHandlerClass(Class<?> tagHandlerClass) {
+        try {
+            getLog().debug("Processing @FacesTagHandler class: " + tagHandlerClass.getName());
+
+            TagHandlerInfo behaviorInfo = TaglibUtils.getTagHandlerInfo(tagHandlerClass);
+
+            getLog().info("Processing tagHandler: " + behaviorInfo.getTagHandlerClass().getName()
+                    + ", tag: " + behaviorInfo.getTagName());
+
+            return behaviorInfo;
+        }
+        catch (Exception e) {
+            getLog().error("Error processing tagHandler class: " + tagHandlerClass.getName(), e);
+            return null;
+        }
+    }
+
+    private Document generateTaglibXml(List<FunctionInfo> functionInfos, List<ComponentInfo> componentInfos, List<BehaviorInfo> behaviorInfos,
+                                       List<TagHandlerInfo> tagHandlerInfos) {
         Document document = DocumentHelper.createDocument();
         Element faceletTaglib = document.addElement("facelet-taglib")
                 .addAttribute("xmlns", "https://jakarta.ee/xml/ns/jakartaee")
@@ -320,6 +347,28 @@ public class TaglibMojo extends AbstractMojo {
 
             // Add attributes for each behavior attribute
             for (PropertyInfo propertyInfo : behaviorInfo.getProperties()) {
+                Element attribute = tag.addElement("attribute");
+                if (propertyInfo.getDescription() != null && !propertyInfo.getDescription().isEmpty()) {
+                    attribute.addElement("description").addCDATA(propertyInfo.getDescription());
+                }
+                attribute.addElement("name").addText(propertyInfo.getName());
+                attribute.addElement("required").addText(String.valueOf(propertyInfo.isRequired()));
+                attribute.addElement("type").addText(propertyInfo.getType().getName());
+            }
+        }
+
+        // Add a tag for each tagHandler
+        for (TagHandlerInfo tagHandlerInfo : tagHandlerInfos) {
+            Element tag = faceletTaglib.addElement("tag");
+            if (tagHandlerInfo.getDescription() != null) {
+                tag.addElement("description").addCDATA(tagHandlerInfo.getDescription());
+            }
+            tag.addElement("tag-name").addText(tagHandlerInfo.getTagName());
+
+            tag.addElement("handler-class").addText(tagHandlerInfo.getTagHandlerClass().getName());
+
+            // Add attributes for each behavior attribute
+            for (PropertyInfo propertyInfo : tagHandlerInfo.getProperties()) {
                 Element attribute = tag.addElement("attribute");
                 if (propertyInfo.getDescription() != null && !propertyInfo.getDescription().isEmpty()) {
                     attribute.addElement("description").addCDATA(propertyInfo.getDescription());

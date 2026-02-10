@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.export;
 
+import org.primefaces.cdk.api.FacesTagHandler;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.el.ELException;
 import jakarta.el.MethodExpression;
 import jakarta.el.ValueExpression;
@@ -34,22 +37,54 @@ import jakarta.faces.view.facelets.TagAttribute;
 import jakarta.faces.view.facelets.TagConfig;
 import jakarta.faces.view.facelets.TagHandler;
 
+@FacesTagHandler("DataExporter is handy for exporting data listed using a PrimeFaces Datatable to various formats such as excel, pdf, csv and xml.")
 public class DataExporterTagHandler extends TagHandler {
 
+    @Property(description = "Search expression to resolve one or multiple target components.", required = true, type = String.class)
     private final TagAttribute target;
+
+    @Property(description = "Export type: \"xls\", \"xlsx\", \"xlsxstream\", \"pdf\", \"csv\", \"xml\".", required = true, type = String.class)
     private final TagAttribute type;
+
+    @Property(description = "Filename of the generated export file", type = String.class, implicitDefaultValue = "The target component id.")
     private final TagAttribute fileName;
+
+    @Property(description = "Exports only current page instead of whole dataset.", type = Boolean.class)
     private final TagAttribute pageOnly;
+
+    @Property(description = "When enabled, only selection would be exported.", type = Boolean.class)
     private final TagAttribute selectionOnly;
+
+    @Property(description = "When enabled, only visible data would be exported.", defaultValue = "false", type = Boolean.class)
     private final TagAttribute visibleOnly;
+
+    @Property(description = "When enabled, the header will be exported.", defaultValue = "true", type = Boolean.class)
     private final TagAttribute exportHeader;
+
+    @Property(description = "When enabled, the footer will be exported..", defaultValue = "true", type = Boolean.class)
     private final TagAttribute exportFooter;
+
+    @Property(description = "PreProcessor for the exported document.", type = jakarta.el.MethodExpression.class)
     private final TagAttribute preProcessor;
+
+    @Property(description = "PostProcessor for the exported document.", type = jakarta.el.MethodExpression.class)
     private final TagAttribute postProcessor;
+
+    @Property(description = "Character encoding to use.", type = String.class)
     private final TagAttribute encoding;
+
+    @Property(description = "Options object to customize document.", type = org.primefaces.component.export.ExporterOptions.class)
     private final TagAttribute options;
+
+    @Property(description = "OnTableRender to be used to set the options of exported table.", type = jakarta.el.MethodExpression.class)
     private final TagAttribute onTableRender;
+
+    @Property(description = "Row processor for the exported document.", type = jakarta.el.MethodExpression.class)
     private final TagAttribute onRowExport;
+
+    @Property(description = "Control how many items are fetched at a time when DataTable#lazy is enabled."
+            + " Retrieve the entire underlying dataset in smaller, manageable chunks rather than all at once.",
+            type = Integer.class)
     private final TagAttribute bufferSize;
 
     public DataExporterTagHandler(TagConfig tagConfig) {
@@ -90,7 +125,6 @@ public class DataExporterTagHandler extends TagHandler {
         MethodExpression postProcessorME = null;
         ValueExpression optionsVE = null;
         MethodExpression onTableRenderME = null;
-        ValueExpression exporterVE = null;
         MethodExpression onRowExportME = null;
         ValueExpression bufferSizeVE = null;
 

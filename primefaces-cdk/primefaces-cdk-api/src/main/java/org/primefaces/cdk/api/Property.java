@@ -94,4 +94,6 @@ public @interface Property {
      * @return true if methods should call super, false otherwise
      */
     boolean callSuper() default false;
+
+    Class<?> type() default Object.class;
 }

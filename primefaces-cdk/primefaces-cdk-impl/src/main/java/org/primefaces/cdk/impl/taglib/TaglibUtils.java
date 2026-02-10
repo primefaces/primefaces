@@ -27,6 +27,7 @@ import org.primefaces.cdk.api.FacesBehaviorDescription;
 import org.primefaces.cdk.api.FacesBehaviorHandler;
 import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesTagHandler;
 import org.primefaces.cdk.api.Function;
 import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
@@ -55,6 +56,12 @@ public final class TaglibUtils {
 
     }
 
+    public enum TagType {
+        BEHAVIOR,
+        COMPONENT,
+        TAG_HANDLER
+    }
+
     public static String getRendererType(Class<?> componentClass) throws IllegalAccessException {
         String rendererType = null;
         try {
@@ -74,6 +81,9 @@ public final class TaglibUtils {
         if (name.endsWith("Behavior")) {
             name = name.substring(0, name.length() - "Behavior".length());
         }
+        if (name.endsWith("TagHandler")) {
+            name = name.substring(0, name.length() - "TagHandler".length());
+        }
         return name;
     }
 
@@ -87,6 +97,10 @@ public final class TaglibUtils {
         return annotation == null ? null : annotation.value();
     }
 
+    private static String getTagHandlerDescription(Class<?> tagHandlerClass) {
+        FacesTagHandler annotation = tagHandlerClass.getAnnotation(FacesTagHandler.class);
+        return annotation == null ? null : annotation.value();
+    }
 
     private static String getComponentType(Class<?> componentClass) {
         FacesComponent annotation = componentClass.getAnnotation(FacesComponent.class);
@@ -145,8 +159,8 @@ public final class TaglibUtils {
                 getTagName(componentClass),
                 getComponentHandlerClass(componentClass));
 
-        findAllProperties(componentClass, true).stream()
-                .map(property -> TaglibUtils.findPropertyInfo(componentClass, property))
+        findAllProperties(componentClass, TagType.COMPONENT).stream()
+                .map(property -> TaglibUtils.findPropertyInfo(componentClass, property, TagType.COMPONENT))
                 .filter(Objects::nonNull)
                 .forEach(propertyInfo -> info.getProperties().add(propertyInfo));
 
@@ -161,8 +175,21 @@ public final class TaglibUtils {
                 getTagName(behaviorClass),
                 getBehaviorHandlerClass(behaviorClass));
 
-        findAllProperties(behaviorClass, false).stream()
-                .map(property -> TaglibUtils.findPropertyInfo(behaviorClass, property))
+        findAllProperties(behaviorClass, TagType.BEHAVIOR).stream()
+                .map(property -> TaglibUtils.findPropertyInfo(behaviorClass, property, TagType.BEHAVIOR))
+                .filter(Objects::nonNull)
+                .forEach(propertyInfo -> info.getProperties().add(propertyInfo));
+
+        return info;
+    }
+
+    public static TagHandlerInfo getTagHandlerInfo(Class<?> tagHandlerClass) throws IllegalAccessException {
+        TagHandlerInfo info = new TagHandlerInfo(tagHandlerClass,
+                getTagHandlerDescription(tagHandlerClass),
+                getTagName(tagHandlerClass));
+
+        findAllProperties(tagHandlerClass, TagType.TAG_HANDLER).stream()
+                .map(property -> TaglibUtils.findPropertyInfo(tagHandlerClass, property, TagType.TAG_HANDLER))
                 .filter(Objects::nonNull)
                 .forEach(propertyInfo -> info.getProperties().add(propertyInfo));
 
@@ -196,16 +223,26 @@ public final class TaglibUtils {
         return annotation == null ? null : annotation.value();
     }
 
-    private static PropertyInfo findPropertyInfo(Class<?> clazz, String name) {
-        Method getter = findGetter(clazz, name);
-        if (getter == null && !("id".equals(name) || "binding".equals(name)  || "rendered".equals(name) )) {
-            return null;
+    private static PropertyInfo findPropertyInfo(Class<?> clazz, String name, TagType tagType) {
+        Property property = findProperty(clazz, name, tagType);
+
+        Class<?> type = null;
+        if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR) {
+            Method getter = findGetter(clazz, name);
+            if (getter == null && !("id".equals(name) || "binding".equals(name)  || "rendered".equals(name) )) {
+                return null;
+            }
+            if (getter != null) {
+                type = getter.getReturnType();
+            }
+        }
+        else if (tagType == TagType.TAG_HANDLER) {
+            type = property.type();
         }
 
-        Property property = findProperty(clazz, name);
         PropertyInfo propertyInfo = new PropertyInfo(name,
                 property == null ? null : property.description(),
-                getter == null ? null : getter.getReturnType(),
+                type,
                 property == null ? false : property.required(),
                 property == null ? null : property.defaultValue(),
                 property == null ? null : property.implicitDefaultValue());
@@ -241,14 +278,24 @@ public final class TaglibUtils {
         return propertyInfo;
     }
 
-    private static Property findProperty(Class<?> clazz, String name) {
+    private static Property findProperty(Class<?> clazz, String name, TagType tagType) {
         Class<?> current = clazz;
 
         while (current != null && current != Object.class) {
-            for (Method method : current.getDeclaredMethods()) {
-                Property property = method.getAnnotation(Property.class);
-                if (property != null && isGetterForProperty(method, name)) {
-                    return property;
+            if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR) {
+                for (Method method : current.getDeclaredMethods()) {
+                    Property property = method.getAnnotation(Property.class);
+                    if (property != null && isGetterForProperty(method, name)) {
+                        return property;
+                    }
+                }
+            }
+            else if (tagType == TagType.TAG_HANDLER) {
+                for (Field field : current.getDeclaredFields()) {
+                    Property property = field.getAnnotation(Property.class);
+                    if (property != null && field.getName().equals(name)) {
+                        return property;
+                    }
                 }
             }
             current = current.getSuperclass();
@@ -294,9 +341,9 @@ public final class TaglibUtils {
         return false;
     }
 
-    private static List<String> findAllProperties(Class<?> clazz, boolean component) {
+    private static List<String> findAllProperties(Class<?> clazz, TagType tagType) {
         List<String> properties = new ArrayList<>();
-        if (component) {
+        if (tagType == TagType.COMPONENT) {
             properties.add("id");
             properties.add("rendered");
             properties.add("binding");
@@ -305,24 +352,34 @@ public final class TaglibUtils {
         Class<?> cls = clazz;
         while (cls != null && !cls.equals(Object.class)) {
             // Look for nested PropertyKeys enum
-            for (Class<?> innerClass : cls.getDeclaredClasses()) {
-                if (innerClass.isEnum() && innerClass.getSimpleName().equals("PropertyKeys")) {
-                    Object[] enumConstants = innerClass.getEnumConstants();
-                    if (enumConstants == null) {
-                        continue;
-                    }
-
-                    for (Object enumConstant : enumConstants) {
-                        String propertyName = ((Enum<?>) enumConstant).name();
-                        if (enumConstant instanceof PrimePropertyKeys) {
-                            propertyName = ((PrimePropertyKeys) enumConstant).getName();
-                        }
-
-                        if (properties.contains(propertyName)) {
+            if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR) {
+                for (Class<?> innerClass : cls.getDeclaredClasses()) {
+                    if (innerClass.isEnum() && innerClass.getSimpleName().equals("PropertyKeys")) {
+                        Object[] enumConstants = innerClass.getEnumConstants();
+                        if (enumConstants == null) {
                             continue;
                         }
 
-                        properties.add(propertyName);
+                        for (Object enumConstant : enumConstants) {
+                            String propertyName = ((Enum<?>) enumConstant).name();
+                            if (enumConstant instanceof PrimePropertyKeys) {
+                                propertyName = ((PrimePropertyKeys) enumConstant).getName();
+                            }
+
+                            if (properties.contains(propertyName)) {
+                                continue;
+                            }
+
+                            properties.add(propertyName);
+                        }
+                    }
+                }
+            }
+            else if (tagType == TagType.TAG_HANDLER) {
+                for (Field field : cls.getDeclaredFields()) {
+                    Property property = field.getAnnotation(Property.class);
+                    if (property != null) {
+                        properties.add(field.getName());
                     }
                 }
             }

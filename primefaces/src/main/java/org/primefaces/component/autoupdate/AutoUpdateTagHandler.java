@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.autoupdate;
 
+import org.primefaces.cdk.api.FacesTagHandler;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 
@@ -42,20 +44,25 @@ import jakarta.faces.view.facelets.TagAttribute;
 import jakarta.faces.view.facelets.TagConfig;
 import jakarta.faces.view.facelets.TagHandler;
 
+@FacesTagHandler("AutoUpdate is a TagHandler to mark the parent component to be updated at every AJAX request."
+        + " AutoUpdate is ignored if the trigger (p:commandButton, p:ajax...) of AJAX request has the attribute ignoreAutoUpdate set to 'true'")
 public class AutoUpdateTagHandler extends TagHandler {
 
     private static final Logger LOGGER = Logger.getLogger(AutoUpdateTagHandler.class.getName());
 
-    private final TagAttribute disabledAttribute;
-    private final TagAttribute onAttribute;
+    @Property(description = "If autoUpdate should be disabled.", type = Boolean.class, defaultValue = "false")
+    private final TagAttribute disabled;
+
+    @Property(description = "Defines the observer event, which will trigger the auto update.", type = String.class)
+    private final TagAttribute on;
 
     private Lazy<ProjectStage> projectStage = new Lazy<>(() -> FacesContext.getCurrentInstance().getApplication().getProjectStage());
 
     public AutoUpdateTagHandler(TagConfig tagConfig) {
         super(tagConfig);
 
-        disabledAttribute = getAttribute("disabled");
-        onAttribute = getAttribute("on");
+        disabled = getAttribute("disabled");
+        on = getAttribute("on");
     }
 
     @Override
@@ -73,18 +80,18 @@ public class AutoUpdateTagHandler extends TagHandler {
         }
 
         String on = null;
-        if (onAttribute != null) {
-            on = onAttribute.getValue(faceletContext);
+        if (this.on != null) {
+            on = this.on.getValue(faceletContext);
         }
 
-        if (disabledAttribute == null) {
+        if (disabled == null) {
             // enabled
             AutoUpdateListener.subscribe(parent, on);
         }
         else {
-            if (disabledAttribute.isLiteral()) {
+            if (disabled.isLiteral()) {
                 // static
-                if (!disabledAttribute.getBoolean(faceletContext)) {
+                if (!disabled.getBoolean(faceletContext)) {
                     // enabled
                     AutoUpdateListener.subscribe(parent, on);
                 }
@@ -92,7 +99,7 @@ public class AutoUpdateTagHandler extends TagHandler {
             else {
                 // dynamic
                 AutoUpdateListener.subscribe(parent,
-                        disabledAttribute.getValueExpression(faceletContext, Boolean.class),
+                        disabled.getValueExpression(faceletContext, Boolean.class),
                         on);
             }
         }

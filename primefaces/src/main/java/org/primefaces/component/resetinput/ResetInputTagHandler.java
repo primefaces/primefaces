@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.resetinput;
 
+import org.primefaces.cdk.api.FacesTagHandler;
+import org.primefaces.cdk.api.Property;
+
 import java.io.IOException;
 
 import jakarta.el.ELException;
@@ -38,9 +41,14 @@ import jakarta.faces.view.facelets.TagConfig;
 import jakarta.faces.view.facelets.TagException;
 import jakarta.faces.view.facelets.TagHandler;
 
+@FacesTagHandler("Input components keep their local values at state when validation fails." +
+        " ResetInput is used to clear the cached values from state so that components retrieve their values from the backing bean model instead.")
 public class ResetInputTagHandler extends TagHandler {
 
+    @Property(description = "Comma or white-space separated list of component ids.", required = true)
     private final TagAttribute target;
+
+    @Property(description = "Whether to assign null values to bound values as well.", type = Boolean.class)
     private final TagAttribute clearModel;
 
     public ResetInputTagHandler(TagConfig tagConfig) {
