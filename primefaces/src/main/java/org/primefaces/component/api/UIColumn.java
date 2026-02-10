@@ -57,7 +57,7 @@ public interface UIColumn {
     /**
      * Used to extract bean's property from a value expression in static columns (e.g. "#{car.year}" = year)
      */
-    Pattern STATIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+\\.([\\w.]+)}$");
+    Pattern STATIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+(?:\\.|\\[')([\\w.]+)(?:'\\])?}$");
 
     /**
      * Used to extract UIColumn#field if not defined. Supports strictly two kind of expressions:
