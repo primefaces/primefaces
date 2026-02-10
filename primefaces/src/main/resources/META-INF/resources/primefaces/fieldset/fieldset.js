@@ -66,6 +66,7 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
                 if(e.key === 'Enter') {
                     $this.toggle(e);
                     e.preventDefault();
+                    e.stopPropagation();
                 }
             });
         }
