@@ -375,7 +375,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 $this.jq.removeClass('ui-state-hover');
                 $this.triggers.removeClass('ui-state-hover');
             }
-        }).on('mousedown.selectCheckboxMenu', function(e) {
+        }).on('click.selectCheckboxMenu', function(e) {
             if (!$this.disabled) {
                 if ($this.cfg.multiple && $(e.target).is('.ui-selectcheckboxmenu-token-icon')) {
                     return;
@@ -387,7 +387,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
                 $this.togglePanel();
             }
-        }).on('click.selectCheckboxMenu', function(e) {
+
             $this.keyboardTarget.trigger('focus');
             e.preventDefault();
         });
