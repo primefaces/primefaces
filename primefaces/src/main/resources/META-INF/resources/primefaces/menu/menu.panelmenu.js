@@ -356,7 +356,8 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
 
         panel.attr('aria-hidden', true).slideUp(animate ? 400 : 0, 'easeInOutCirc');
 
-        this.removeAsExpanded(panel);
+
+        this.updateExpandedNodes();
     },
 
     /**
@@ -376,7 +377,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         else {
             panel.attr('aria-hidden', false).slideDown('normal', 'easeInOutCirc');
 
-            this.addAsExpanded(panel);
+            this.updateExpandedNodes();
         }
     },
 
@@ -393,7 +394,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         submenu.children('.ui-menu-list').show();
 
         if(!restoring) {
-            this.addAsExpanded(submenu);
+            this.updateExpandedNodes();
         }
     },
 
@@ -408,7 +409,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         submenuLink.find('> .ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
         submenu.children('.ui-menu-list').hide();
 
-        this.removeAsExpanded(submenu);
+        this.updateExpandedNodes();
     },
 
     /**
@@ -437,60 +438,67 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
             expandedNodeIds = localStorage.getItem(this.stateKey);
         }
 
-        if(expandedNodeIds) {
-            this.collapseAll();
-            this.expandedNodes = expandedNodeIds.split(',');
-
-            for(var i = 0 ; i < this.expandedNodes.length; i++) {
-                var element = $(PrimeFaces.escapeClientId(this.expandedNodes[i]).replace(/\|/g,"\\|"));
-                if(element.is('div.ui-panelmenu-content'))
-                    this.expandRootSubmenu(element.prev(), true);
-                else if(element.is('li.ui-menu-parent'))
-                    this.expandTreeItem(element, true);
-            }
-        }
-        else {
-            this.expandedNodes = [];
-            var activeHeaders = this.headers.filter('.ui-state-active'),
-            activeTreeSubmenus = this.jq.find('.ui-menu-parent > .ui-menu-list:not(.ui-helper-hidden)');
-
-            for(var j = 0; j < activeHeaders.length; j++) {
-                this.expandedNodes.push(activeHeaders.eq(j).next().attr('id'));
-            }
-
-            for(var k = 0; k < activeTreeSubmenus.length; k++) {
-                this.expandedNodes.push(activeTreeSubmenus.eq(k).parent().attr('id'));
-            }
-        }
-        this.saveState();
-    },
-
-    /**
-     * Callback invoked after a menu item was collapsed. Saves the current UI state in an HTML5 Local Store.
-     * @param {JQuery} element Element that was collapsed.
-     * @private
-     */
-    removeAsExpanded: function(element) {
-        if (!this.expandedNodes) {
+        // if no stateKey is found at all its initial state from server side
+        if (expandedNodeIds === null) {
             return;
         }
-        var id = element.attr('id');
 
-        this.expandedNodes = $.grep(this.expandedNodes, function(value) {
-            return value != id;
-        });
+        // state key was found but its empty so all nodes are collapsed
+        if (expandedNodeIds.length === 0) {
+            this.collapseAll();
+            return;
+        }
 
-        this.saveState();
+        // state key was found and its not empty so we need to expand the nodes
+        this.collapseAll();
+        this.expandedNodes = expandedNodeIds.split(',');
+
+        for (var i = 0; i < this.expandedNodes.length; i++) {
+            var expandedNode = this.expandedNodes[i];
+            var element = $(PrimeFaces.escapeClientId(expandedNode).replace(/\|/g, "\\|"));
+            if (element.is('div.ui-panelmenu-content')) {
+                this.expandRootSubmenu(element.prev(), true);
+            }
+            else if (element.is('li.ui-menu-parent')) {
+                this.expandTreeItem(element, true);
+            }
+        }
+
+        this.updateExpandedNodes();
     },
 
     /**
-     * Callback invoked after a menu item was expanded. Saves the current UI state in an HTML5 Local Store.
-     * @param {JQuery} element Element that was expanded.
+     * Recalculates and updates the list of currently expanded menu nodes.
+     *
+     * This method examines the DOM to find all expanded root headers and tree submenu items, collects
+     * their IDs, and updates the {@link PanelMenu.expandedNodes} array. After updating the expanded nodes,
+     * the method persists the state via {@link saveState}.
+     *
+     * Expanded nodes are determined as follows:
+     * - Any panel header element (`this.headers`) that has the `ui-state-active` class is considered expanded;
+     *   its associated content panel ID (the header's next sibling's `id` attribute) is added.
+     * - Any sub-menu panel (`.ui-menu-list`) that is visible (does not have `ui-helper-hidden`), whose parent
+     *   is a menu parent node (`.ui-menu-parent`), will have that parent's `id` attribute added.
      * @private
      */
-    addAsExpanded: function(element) {
-        this.expandedNodes.push(element.attr('id'));
+    updateExpandedNodes: function() {
+        this.expandedNodes = [];
 
+        // Find all active root panel headers and expanded submenus.
+        const activeHeaders = this.headers.filter('.ui-state-active'),
+            activeTreeSubmenus = this.jq.find('.ui-menu-parent > .ui-menu-list:not(.ui-helper-hidden)');
+
+        // Collect IDs of expanded panel headers.
+        for (let j = 0; j < activeHeaders.length; j++) {
+            this.expandedNodes.push(activeHeaders.eq(j).next().attr('id'));
+        }
+
+        // Collect IDs of expanded submenu parents.
+        for (let k = 0; k < activeTreeSubmenus.length; k++) {
+            this.expandedNodes.push(activeTreeSubmenus.eq(k).parent().attr('id'));
+        }
+
+        // Save the current expanded state.
         this.saveState();
     },
 
