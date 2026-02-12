@@ -379,9 +379,9 @@ public class AnnotationProcessor extends AbstractProcessor {
                 if (!propsMap.containsKey(propName)) {
                     String returnType = getter.getReturnType().toString();
                     Property annotation = getter.getAnnotation(Property.class);
-                    ExecutableElement setterFound = findAbstractSetter(classElement, propName, getter.getReturnType());
+                    ExecutableElement setter = findSetter(classElement, propName, getter.getReturnType());
 
-                    PropertyInfo info = new PropertyInfo(propName, returnType, getter, setterFound, annotation);
+                    PropertyInfo info = new PropertyInfo(propName, returnType, getter, setter, annotation);
                     propsMap.put(propName, info);
                 }
             }
@@ -696,8 +696,8 @@ public class AnnotationProcessor extends AbstractProcessor {
      * Finds an abstract setter method in the class hierarchy.
      * Returns null if a concrete setter exists (no generation needed).
      */
-    private ExecutableElement findAbstractSetter(TypeElement classElement, String propertyName,
-                                                 TypeMirror getterType) {
+    private ExecutableElement findSetter(TypeElement classElement, String propertyName,
+                                         TypeMirror getterType) {
         String expectedSetterName = "set" + capitalize(propertyName);
 
         TypeElement current = classElement;
@@ -712,9 +712,6 @@ public class AnnotationProcessor extends AbstractProcessor {
                 String paramType = method.getParameters().get(0).asType().toString();
                 if (!paramType.equals(getterType.toString())) continue;
 
-                if (!method.getModifiers().contains(Modifier.ABSTRACT)) {
-                    return null; // Concrete setter exists
-                }
                 return method;
             }
 
@@ -1261,7 +1258,7 @@ public class AnnotationProcessor extends AbstractProcessor {
      * Writes a property getter method with StateHelper access or super call.
      */
     private void writeGetter(PrintWriter w, PropertyInfo p) {
-        if (p.getGetterElement() == null || p.isCallSuper() || p.isHide()) return;
+        if (!p.isGenerateGetter() || p.getGetterElement() == null || p.isCallSuper() || p.isHide()) return;
 
         String type = p.getType();
         String methodName = p.getGetterElement().getSimpleName().toString();

@@ -26,6 +26,7 @@ package org.primefaces.cdk.impl.subclass;
 import org.primefaces.cdk.api.Property;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 
 public class PropertyInfo {
 
@@ -33,6 +34,7 @@ public class PropertyInfo {
     private final String type;
     private final ExecutableElement getterElement;
     private final ExecutableElement setterElement;
+    private final boolean generateGetter;
     private final boolean generateSetter;
     private final String description;
     private final String defaultValue;
@@ -52,7 +54,8 @@ public class PropertyInfo {
         this.implicitDefaultValue = annotation.implicitDefaultValue();
         this.required = annotation.required();
         this.callSuper = annotation.callSuper();
-        this.generateSetter = true;
+        this.generateGetter = getterElement.getModifiers().contains(Modifier.ABSTRACT);
+        this.generateSetter = setterElement == null || setterElement.getModifiers().contains(Modifier.ABSTRACT);
         this.hide = annotation.hide();
     }
 
@@ -69,6 +72,7 @@ public class PropertyInfo {
         this.callSuper = false;
         // in this case, this is an extracted property from a parent component without @Property annotation
         // -> skip generation
+        this.generateGetter = false;
         this.generateSetter = false;
         this.hide = false;
     }
@@ -99,6 +103,10 @@ public class PropertyInfo {
 
     public boolean isRequired() {
         return required;
+    }
+
+    public boolean isGenerateGetter() {
+        return generateGetter;
     }
 
     public boolean isGenerateSetter() {
