@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.signature;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.el.ValueExpression;
 import jakarta.faces.application.ResourceDependency;
@@ -31,7 +31,7 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Signature.COMPONENT_TYPE, namespace = Signature.COMPONENT_FAMILY)
-@FacesComponentDescription("Signature is used to draw a signature as an input.")
+@FacesComponentInfo(description = "Signature is used to draw a signature as an input.")
 @ResourceDependency(library = "primefaces", name = "signature/signature.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

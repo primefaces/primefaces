@@ -309,7 +309,6 @@
         </extensions>
 
         <plugins>
-            <!--
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>primefaces-cdk-impl</artifactId>
@@ -335,7 +334,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

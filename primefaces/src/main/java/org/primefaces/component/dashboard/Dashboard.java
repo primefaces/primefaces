@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.dashboard;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.model.dashboard.DashboardModel;
 import org.primefaces.model.dashboard.DashboardWidget;
@@ -38,7 +38,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Dashboard.COMPONENT_TYPE, namespace = Dashboard.COMPONENT_FAMILY)
-@FacesComponentDescription("Dashboard provides a portal like layout with drag-drop based reorder capabilities.")
+@FacesComponentInfo(description = "Dashboard provides a portal like layout with drag-drop based reorder capabilities.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

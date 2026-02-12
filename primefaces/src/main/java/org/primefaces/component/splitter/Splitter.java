@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.splitter;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.SplitterResizeEvent;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Splitter.COMPONENT_TYPE, namespace = Splitter.COMPONENT_FAMILY)
-@FacesComponentDescription("Splitter is utilized to separate and resize panels.")
+@FacesComponentInfo(description = "Splitter is utilized to separate and resize panels.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.row;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Row.COMPONENT_TYPE, namespace = Row.COMPONENT_FAMILY)
-@FacesComponentDescription("Row is a helper component for datatable.")
+@FacesComponentInfo(description = "Row is a helper component for datatable.")
 public class Row extends RowBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Row";

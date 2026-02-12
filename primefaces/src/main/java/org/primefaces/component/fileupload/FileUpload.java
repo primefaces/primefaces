@@ -23,8 +23,8 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FilesUploadEvent;
 import org.primefaces.model.file.UploadedFile;
@@ -45,7 +45,8 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.validator.ValidatorException;
 
 @FacesComponent(value = FileUpload.COMPONENT_TYPE, namespace = FileUpload.COMPONENT_FAMILY)
-@FacesComponentDescription("FileUpload provides an advanced file upload mechanism with drag drop support, multiple file selection, and progress tracking.")
+@FacesComponentInfo(description =
+        "FileUpload provides an advanced file upload mechanism with drag drop support, multiple file selection, and progress tracking.")
 @FacesComponentHandler(FileUploadHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.css")

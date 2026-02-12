@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.selectonemenu;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
@@ -47,7 +47,7 @@ import jakarta.faces.validator.Validator;
 import jakarta.faces.validator.ValidatorException;
 
 @FacesComponent(value = SelectOneMenu.COMPONENT_TYPE, namespace = SelectOneMenu.COMPONENT_FAMILY)
-@FacesComponentDescription("SelectOneMenu is an extended version of the standard Faces SelectOneMenu.")
+@FacesComponentInfo(description = "SelectOneMenu is an extended version of the standard Faces SelectOneMenu.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

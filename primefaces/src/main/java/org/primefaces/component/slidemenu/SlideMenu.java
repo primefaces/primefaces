@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.slidemenu;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = SlideMenu.COMPONENT_TYPE, namespace = SlideMenu.COMPONENT_FAMILY)
-@FacesComponentDescription("SlideMenu is used to display nested submenus with sliding animation.")
+@FacesComponentInfo(description = "SlideMenu is used to display nested submenus with sliding animation.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

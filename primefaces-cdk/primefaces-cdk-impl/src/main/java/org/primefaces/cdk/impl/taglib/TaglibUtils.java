@@ -23,20 +23,22 @@
  */
 package org.primefaces.cdk.impl.taglib;
 
-import org.primefaces.cdk.api.FacesBehaviorDescription;
 import org.primefaces.cdk.api.FacesBehaviorHandler;
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesBehaviorInfo;
 import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.cdk.api.FacesTagHandler;
 import org.primefaces.cdk.api.Function;
 import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.impl.CdkUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,6 +78,16 @@ public final class TaglibUtils {
     }
 
     private static String getTagName(Class<?> clazz) {
+        FacesBehaviorInfo behaviorInfo = clazz.getAnnotation(FacesBehaviorInfo.class);
+        if (behaviorInfo != null && !behaviorInfo.name().isEmpty()) {
+            return behaviorInfo.name();
+        }
+
+        FacesComponentInfo componentInfo = clazz.getAnnotation(FacesComponentInfo.class);
+        if (componentInfo != null && !componentInfo.name().isEmpty()) {
+            return componentInfo.name();
+        }
+
         String name = String.valueOf(clazz.getSimpleName().charAt(0)).toLowerCase() +
                 clazz.getSimpleName().substring(1);
         if (name.endsWith("Behavior")) {
@@ -88,13 +100,13 @@ public final class TaglibUtils {
     }
 
     private static String getComponentDescription(Class<?> componentClass) {
-        FacesComponentDescription annotation = componentClass.getAnnotation(FacesComponentDescription.class);
-        return annotation == null ? null : annotation.value();
+        FacesComponentInfo annotation = componentClass.getAnnotation(FacesComponentInfo.class);
+        return annotation == null ? null : annotation.description();
     }
 
     private static String getBehaviorDescription(Class<?> behaviorClass) {
-        FacesBehaviorDescription annotation = behaviorClass.getAnnotation(FacesBehaviorDescription.class);
-        return annotation == null ? null : annotation.value();
+        FacesBehaviorInfo annotation = behaviorClass.getAnnotation(FacesBehaviorInfo.class);
+        return annotation == null ? null : annotation.description();
     }
 
     private static String getTagHandlerDescription(Class<?> tagHandlerClass) {
@@ -159,10 +171,10 @@ public final class TaglibUtils {
                 getTagName(componentClass),
                 getComponentHandlerClass(componentClass));
 
-        findAllProperties(componentClass, TagType.COMPONENT).stream()
-                .map(property -> TaglibUtils.findPropertyInfo(componentClass, property, TagType.COMPONENT))
-                .filter(Objects::nonNull)
-                .forEach(propertyInfo -> info.getProperties().add(propertyInfo));
+        for (Map.Entry<String, PrimePropertyKeys> value : findAllProperties(componentClass, TagType.COMPONENT).entrySet()) {
+            PropertyInfo pi = TaglibUtils.findPropertyInfo(componentClass, value.getKey(), value.getValue(), TagType.COMPONENT);
+            info.getProperties().add(pi);
+        }
 
         return info;
     }
@@ -175,10 +187,10 @@ public final class TaglibUtils {
                 getTagName(behaviorClass),
                 getBehaviorHandlerClass(behaviorClass));
 
-        findAllProperties(behaviorClass, TagType.BEHAVIOR).stream()
-                .map(property -> TaglibUtils.findPropertyInfo(behaviorClass, property, TagType.BEHAVIOR))
-                .filter(Objects::nonNull)
-                .forEach(propertyInfo -> info.getProperties().add(propertyInfo));
+        for (Map.Entry<String, PrimePropertyKeys> value : findAllProperties(behaviorClass, TagType.BEHAVIOR).entrySet()) {
+            PropertyInfo pi = TaglibUtils.findPropertyInfo(behaviorClass, value.getKey(), value.getValue(), TagType.BEHAVIOR);
+            info.getProperties().add(pi);
+        }
 
         return info;
     }
@@ -188,10 +200,10 @@ public final class TaglibUtils {
                 getTagHandlerDescription(tagHandlerClass),
                 getTagName(tagHandlerClass));
 
-        findAllProperties(tagHandlerClass, TagType.TAG_HANDLER).stream()
-                .map(property -> TaglibUtils.findPropertyInfo(tagHandlerClass, property, TagType.TAG_HANDLER))
-                .filter(Objects::nonNull)
-                .forEach(propertyInfo -> info.getProperties().add(propertyInfo));
+        for (Map.Entry<String, PrimePropertyKeys> value : findAllProperties(tagHandlerClass, TagType.TAG_HANDLER).entrySet()) {
+            PropertyInfo pi = TaglibUtils.findPropertyInfo(tagHandlerClass, value.getKey(), value.getValue(), TagType.TAG_HANDLER);
+            info.getProperties().add(pi);
+        }
 
         return info;
     }
@@ -223,30 +235,47 @@ public final class TaglibUtils {
         return annotation == null ? null : annotation.value();
     }
 
-    private static PropertyInfo findPropertyInfo(Class<?> clazz, String name, TagType tagType) {
-        Property property = findProperty(clazz, name, tagType);
+    private static PropertyInfo findPropertyInfo(Class<?> clazz, String name, PrimePropertyKeys ppk, TagType tagType) {
 
         Class<?> type = null;
-        if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR) {
-            Method getter = findGetter(clazz, name);
-            if (getter == null && !("id".equals(name) || "binding".equals(name)  || "rendered".equals(name) )) {
-                return null;
+        String description = null;
+        boolean required = false;
+        String defaultValue = null;
+        String implicitDefaultValue = null;
+        boolean remove = false;
+
+        if (ppk != null) {
+            type = ppk.getType();
+            description = ppk.getDescription();
+            required = ppk.isRequired();
+            defaultValue = ppk.getDefaultValue();
+            implicitDefaultValue = ppk.getImplicitDefaultValue();
+        }
+        else {
+            Property property = findProperty(clazz, name, tagType);
+            if (property != null) {
+                type = property.type();
+                description = property.description();
+                required = property.required();
+                defaultValue = property.defaultValue();
+                implicitDefaultValue = property.implicitDefaultValue();
+                remove = property.hide();
             }
-            if (getter != null) {
-                type = getter.getReturnType();
+
+            if (type == null) {
+                if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR) {
+                    Method getter = findGetter(clazz, name);
+                    if (getter == null && !("id".equals(name) || "binding".equals(name) || "rendered".equals(name))) {
+                        return null;
+                    }
+                    if (getter != null) {
+                        type = getter.getReturnType();
+                    }
+                }
             }
         }
-        else if (tagType == TagType.TAG_HANDLER) {
-            type = property.type();
-        }
 
-        PropertyInfo propertyInfo = new PropertyInfo(name,
-                property == null ? null : property.description(),
-                type,
-                property == null ? false : property.required(),
-                property == null ? null : property.defaultValue(),
-                property == null ? null : property.implicitDefaultValue());
-
+        PropertyInfo propertyInfo = new PropertyInfo(name, description, type, required, defaultValue, implicitDefaultValue, remove);
         if (propertyInfo.getDescription() == null) {
             switch (name) {
                 case "id":
@@ -341,12 +370,12 @@ public final class TaglibUtils {
         return false;
     }
 
-    private static List<String> findAllProperties(Class<?> clazz, TagType tagType) {
-        List<String> properties = new ArrayList<>();
+    private static Map<String, PrimePropertyKeys> findAllProperties(Class<?> clazz, TagType tagType) {
+        Map<String, PrimePropertyKeys> properties = new HashMap<>();
         if (tagType == TagType.COMPONENT) {
-            properties.add("id");
-            properties.add("rendered");
-            properties.add("binding");
+            properties.put("id", null);
+            properties.put("rendered", null);
+            properties.put("binding", null);
         }
 
         Class<?> cls = clazz;
@@ -366,11 +395,15 @@ public final class TaglibUtils {
                                 propertyName = ((PrimePropertyKeys) enumConstant).getName();
                             }
 
-                            if (properties.contains(propertyName)) {
+                            if (properties.containsKey(propertyName) || CdkUtils.shouldIgnoreProperty(cls, propertyName)) {
                                 continue;
                             }
-
-                            properties.add(propertyName);
+                            if (enumConstant instanceof PrimePropertyKeys) {
+                                properties.put(propertyName, (PrimePropertyKeys) enumConstant);
+                            }
+                            else {
+                                properties.put(propertyName, null);
+                            }
                         }
                     }
                 }
@@ -379,7 +412,7 @@ public final class TaglibUtils {
                 for (Field field : cls.getDeclaredFields()) {
                     Property property = field.getAnnotation(Property.class);
                     if (property != null) {
-                        properties.add(field.getName());
+                        properties.put(field.getName(), null);
                     }
                 }
             }

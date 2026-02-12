@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.inputnumber;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.LocaleUtils;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = InputNumber.COMPONENT_TYPE, namespace = InputNumber.COMPONENT_FAMILY)
-@FacesComponentDescription("InputNumber is an extension to the InputText with optimized handling for numbers.")
+@FacesComponentInfo(description = "InputNumber is an extension to the InputText with optimized handling for numbers.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

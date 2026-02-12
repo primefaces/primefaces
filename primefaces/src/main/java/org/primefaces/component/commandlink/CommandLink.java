@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.commandlink;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.api.DialogReturnAware;
 
 import jakarta.faces.application.ResourceDependency;
@@ -32,7 +32,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = CommandLink.COMPONENT_TYPE, namespace = CommandLink.COMPONENT_FAMILY)
-@FacesComponentDescription("CommandLink extends standard Faces commandLink with extra PrimeFaces capabilities.")
+@FacesComponentInfo(description = "CommandLink extends standard Faces commandLink with extra PrimeFaces capabilities.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

@@ -31,13 +31,15 @@ public class PropertyInfo {
     private boolean required;
     private String defaultValue;
     private String implicitDefaultValue;
+    private boolean hide;
 
-    public PropertyInfo(String name, String description, Class<?> type, boolean required, String defaultValue, String implicitDefaultValue) {
+    public PropertyInfo(String name, String description, Class<?> type, boolean required, String defaultValue, String implicitDefaultValue, boolean hide) {
         this.name = name;
         this.description = description;
         this.type = type;
         this.required = required;
         this.defaultValue = defaultValue;
+        this.hide = hide;
     }
 
     public String getName() {
@@ -82,6 +84,14 @@ public class PropertyInfo {
 
     public void setImplicitDefaultValue(String implicitDefaultValue) {
         this.implicitDefaultValue = implicitDefaultValue;
+    }
+
+    public boolean isHide() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
     }
 
     @Override

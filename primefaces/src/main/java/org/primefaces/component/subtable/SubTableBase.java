@@ -24,6 +24,7 @@
 package org.primefaces.component.subtable;
 
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 
 import jakarta.faces.component.UIData;
 
@@ -45,5 +46,11 @@ public abstract class SubTableBase extends UIData {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    @Override
+    @Property(hide = true)
+    public boolean isRowStatePreserved() {
+        return super.isRowStatePreserved();
     }
 }

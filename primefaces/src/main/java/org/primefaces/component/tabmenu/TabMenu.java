@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.tabmenu;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = TabMenu.COMPONENT_TYPE, namespace = TabMenu.COMPONENT_FAMILY)
-@FacesComponentDescription("TabMenu is a navigation component that displays menuitems as tabs.")
+@FacesComponentInfo(description = "TabMenu is a navigation component that displays menuitems as tabs.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

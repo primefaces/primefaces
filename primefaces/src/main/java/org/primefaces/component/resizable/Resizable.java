@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.resizable;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.ResizeEvent;
 
 import java.util.Map;
@@ -35,7 +35,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Resizable.COMPONENT_TYPE, namespace = Resizable.COMPONENT_FAMILY)
-@FacesComponentDescription("Resizable component that has the ability to make a component resizable."
+@FacesComponentInfo(description = "Resizable component that has the ability to make a component resizable."
         + " It can be used on various components like resize an input field, panels, menus, images and more.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

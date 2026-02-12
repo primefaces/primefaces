@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.columntoggler;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
 import org.primefaces.event.ColumnToggleEvent;
@@ -42,7 +42,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = ColumnToggler.COMPONENT_TYPE, namespace = ColumnToggler.COMPONENT_FAMILY)
-@FacesComponentDescription("ColumnToggler is a helper component for datatable to toggle visibility of columns.")
+@FacesComponentInfo(description = "ColumnToggler is a helper component for datatable to toggle visibility of columns.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.speeddial;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = SpeedDial.COMPONENT_TYPE, namespace = SpeedDial.COMPONENT_FAMILY)
-@FacesComponentDescription("When pressed, a floating action button can display multiple primary actions that can be performed on a page.")
+@FacesComponentInfo(description = "When pressed, a floating action button can display multiple primary actions that can be performed on a page.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

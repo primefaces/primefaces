@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.headerrow;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = HeaderRow.COMPONENT_TYPE, namespace = HeaderRow.COMPONENT_FAMILY)
-@FacesComponentDescription("HeaderRow is a helper component for row grouping.")
+@FacesComponentInfo(description = "HeaderRow is a helper component for row grouping.")
 public class HeaderRow extends HeaderRowBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.HeaderRow";

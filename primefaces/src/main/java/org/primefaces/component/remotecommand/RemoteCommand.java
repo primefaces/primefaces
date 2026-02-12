@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.remotecommand;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = RemoteCommand.COMPONENT_TYPE, namespace = RemoteCommand.COMPONENT_FAMILY)
-@FacesComponentDescription("RemoteCommand provides a way to execute Faces backing bean methods directly from javascript.")
+@FacesComponentInfo(description = "RemoteCommand provides a way to execute Faces backing bean methods directly from javascript.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

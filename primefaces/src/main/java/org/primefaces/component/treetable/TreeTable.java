@@ -24,8 +24,8 @@
 package org.primefaces.component.treetable;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -71,7 +71,7 @@ import jakarta.faces.event.PhaseId;
 import jakarta.faces.event.PostRestoreStateEvent;
 
 @FacesComponent(value = TreeTable.COMPONENT_TYPE, namespace = TreeTable.COMPONENT_FAMILY)
-@FacesComponentDescription("TreeTable is is used for displaying hierarchical data in tabular format.")
+@FacesComponentInfo(description = "TreeTable is is used for displaying hierarchical data in tabular format.")
 @FacesComponentHandler(TreeTableHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

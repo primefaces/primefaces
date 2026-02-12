@@ -43,6 +43,45 @@ public abstract class ColumnsBase extends PrimeUIData implements UIColumn, Style
         return COMPONENT_FAMILY;
     }
 
+    @Property(description = "Name of iterator to refer each column index.")
+    public String getColumnIndexVar() {
+        return getRowIndexVar();
+    }
+
+    public void setColumnIndexVar(String columnIndexVar) {
+        super.setRowIndexVar(columnIndexVar);
+    }
+
+    @Override
+    @Property(hide = true)
+    public String getRowIndexVar() {
+        return super.getRowIndexVar();
+    }
+
+    @Override
+    @Property(hide = true)
+    public int getFirst() {
+        return super.getFirst();
+    }
+
+    @Override
+    @Property(hide = true)
+    public boolean isLazy() {
+        return super.isLazy();
+    }
+
+    @Override
+    @Property(hide = true)
+    public int getRows() {
+        return super.getRows();
+    }
+
+    @Override
+    @Property(hide = true)
+    public boolean isRowStatePreserved() {
+        return super.isRowStatePreserved();
+    }
+
     @Property(description = "Property to be used for sorting.")
     public abstract Object getSortBy();
 

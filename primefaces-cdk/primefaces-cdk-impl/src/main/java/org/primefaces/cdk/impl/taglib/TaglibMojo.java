@@ -40,6 +40,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -311,6 +312,10 @@ public class TaglibMojo extends AbstractMojo {
 
             // Add attributes for each property
             for (PropertyInfo propertyInfo : componentInfo.getProperties()) {
+                if (propertyInfo.isHide()) {
+                    continue;
+                }
+
                 Element attribute = tag.addElement("attribute");
                 String description = propertyInfo.getDescription() == null ? "" : propertyInfo.getDescription();
                 if (propertyInfo.getImplicitDefaultValue() != null && !propertyInfo.getImplicitDefaultValue().isEmpty()) {
@@ -322,7 +327,7 @@ public class TaglibMojo extends AbstractMojo {
                 attribute.addElement("description").addCDATA(description);
                 attribute.addElement("name").addText(propertyInfo.getName());
                 attribute.addElement("required").addText(String.valueOf(propertyInfo.isRequired()));
-                attribute.addElement("type").addText(propertyInfo.getType().getName());
+                attribute.addElement("type").addText(getAttributeType(propertyInfo.getType()).getName());
             }
         }
 
@@ -347,13 +352,17 @@ public class TaglibMojo extends AbstractMojo {
 
             // Add attributes for each behavior attribute
             for (PropertyInfo propertyInfo : behaviorInfo.getProperties()) {
+                if (propertyInfo.isHide()) {
+                    continue;
+                }
+
                 Element attribute = tag.addElement("attribute");
                 if (propertyInfo.getDescription() != null && !propertyInfo.getDescription().isEmpty()) {
                     attribute.addElement("description").addCDATA(propertyInfo.getDescription());
                 }
                 attribute.addElement("name").addText(propertyInfo.getName());
                 attribute.addElement("required").addText(String.valueOf(propertyInfo.isRequired()));
-                attribute.addElement("type").addText(propertyInfo.getType().getName());
+                attribute.addElement("type").addText(getAttributeType(propertyInfo.getType()).getName());
             }
         }
 
@@ -369,17 +378,37 @@ public class TaglibMojo extends AbstractMojo {
 
             // Add attributes for each behavior attribute
             for (PropertyInfo propertyInfo : tagHandlerInfo.getProperties()) {
+                if (propertyInfo.isHide()) {
+                    continue;
+                }
+
                 Element attribute = tag.addElement("attribute");
                 if (propertyInfo.getDescription() != null && !propertyInfo.getDescription().isEmpty()) {
                     attribute.addElement("description").addCDATA(propertyInfo.getDescription());
                 }
                 attribute.addElement("name").addText(propertyInfo.getName());
                 attribute.addElement("required").addText(String.valueOf(propertyInfo.isRequired()));
-                attribute.addElement("type").addText(propertyInfo.getType().getName());
+                attribute.addElement("type").addText(getAttributeType(propertyInfo.getType()).getName());
             }
         }
 
         return document;
+    }
+
+    public Class<?> getAttributeType(Class<?> type) {
+        Map<Class<?>, Class<?>> primitivesToWrapper = Map.of(
+                boolean.class, Boolean.class,
+                int.class, Integer.class,
+                long.class, Long.class,
+                double.class, Double.class,
+                float.class, Float.class,
+                short.class, Short.class,
+                byte.class, Byte.class,
+                char.class, Character.class,
+                void.class, Void.class
+        );
+
+        return primitivesToWrapper.getOrDefault(type, type);
     }
 
     @SuppressWarnings("unchecked")

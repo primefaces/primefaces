@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.texteditor;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = TextEditor.COMPONENT_TYPE, namespace = TextEditor.COMPONENT_FAMILY)
-@FacesComponentDescription("Editor is an input component with rich text editing capabilities.")
+@FacesComponentInfo(description = "Editor is an input component with rich text editing capabilities.")
 @ResourceDependency(library = "primefaces", name = "texteditor/texteditor.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

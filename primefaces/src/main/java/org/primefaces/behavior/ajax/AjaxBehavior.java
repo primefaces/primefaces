@@ -23,8 +23,8 @@
  */
 package org.primefaces.behavior.ajax;
 
-import org.primefaces.cdk.api.FacesBehaviorDescription;
 import org.primefaces.cdk.api.FacesBehaviorHandler;
+import org.primefaces.cdk.api.FacesBehaviorInfo;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -37,7 +37,7 @@ import jakarta.faces.event.AjaxBehaviorListener;
 
 @FacesBehavior(AjaxBehavior.BEHAVIOR_ID)
 @FacesBehaviorHandler(AjaxBehaviorHandler.class)
-@FacesBehaviorDescription("AjaxBehavior is an extension to standard f:ajax.")
+@FacesBehaviorInfo(description = "AjaxBehavior is an extension to standard f:ajax.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

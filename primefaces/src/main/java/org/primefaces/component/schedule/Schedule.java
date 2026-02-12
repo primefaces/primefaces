@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.schedule;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
@@ -49,7 +49,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Schedule.COMPONENT_TYPE, namespace = Schedule.COMPONENT_FAMILY)
-@FacesComponentDescription("Schedule provides an Outlook Calendar, iCal like Faces component to manage events."
+@FacesComponentInfo(description = "Schedule provides an Outlook Calendar, iCal like Faces component to manage events."
     + " Schedule is highly customizable featuring various views (month, day, week), built-in I18N, drag-drop, resize, customizable event dialog and skinning.")
 @ResourceDependency(library = "primefaces", name = "schedule/schedule.css")
 @ResourceDependency(library = "primefaces", name = "components.css")

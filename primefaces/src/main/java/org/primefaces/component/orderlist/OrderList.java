@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.orderlist;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
@@ -41,7 +41,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = OrderList.COMPONENT_TYPE, namespace = OrderList.COMPONENT_FAMILY)
-@FacesComponentDescription("OrderList is used to reorder a list via drag and drop.")
+@FacesComponentInfo(description = "OrderList is used to reorder a list via drag and drop.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

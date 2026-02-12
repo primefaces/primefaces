@@ -23,8 +23,8 @@
  */
 package org.primefaces.component.photocam;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.CaptureEvent;
 
 import jakarta.el.MethodExpression;
@@ -35,7 +35,7 @@ import jakarta.faces.event.AbortProcessingException;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = PhotoCam.COMPONENT_TYPE, namespace = PhotoCam.COMPONENT_FAMILY)
-@FacesComponentDescription("PhotoCam is a component to capture photos from user's webcam.")
+@FacesComponentInfo(description = "PhotoCam is a component to capture photos from user's webcam.")
 @FacesComponentHandler(PhotoCamHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

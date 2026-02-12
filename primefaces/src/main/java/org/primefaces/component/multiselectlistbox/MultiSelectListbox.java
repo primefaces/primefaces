@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.multiselectlistbox;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
@@ -37,7 +37,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = MultiSelectListbox.COMPONENT_TYPE, namespace = MultiSelectListbox.COMPONENT_FAMILY)
-@FacesComponentDescription("MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child relationship.")
+@FacesComponentInfo(description = "MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child relationship.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

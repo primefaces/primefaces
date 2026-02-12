@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.selectmanybutton;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = SelectManyButton.COMPONENT_TYPE, namespace = SelectManyButton.COMPONENT_FAMILY)
-@FacesComponentDescription("SelectManyButton is a multi select component using button user interface.")
+@FacesComponentInfo(description = "SelectManyButton is a multi select component using button user interface.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.knob;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Knob.COMPONENT_TYPE, namespace = Knob.COMPONENT_FAMILY)
-@FacesComponentDescription("Knob is a form component to define a number with a dial.")
+@FacesComponentInfo(description = "Knob is a form component to define a number with a dial.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

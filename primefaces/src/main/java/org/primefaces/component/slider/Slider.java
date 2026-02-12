@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.slider;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.SlideEndEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
@@ -43,7 +43,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Slider.COMPONENT_TYPE, namespace = Slider.COMPONENT_FAMILY)
-@FacesComponentDescription("Slider is used to provide input with various customization options like orientation, display modes and skinning.")
+@FacesComponentInfo(description = "Slider is used to provide input with various customization options like orientation, display modes and skinning.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

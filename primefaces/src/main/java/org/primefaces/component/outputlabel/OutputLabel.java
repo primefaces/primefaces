@@ -23,12 +23,13 @@
  */
 package org.primefaces.component.outputlabel;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = OutputLabel.COMPONENT_TYPE, namespace = OutputLabel.COMPONENT_FAMILY)
-@FacesComponentDescription("OutputLabel is an extended version of standard Faces outputLabel component with enhanced features like required field indicator.")
+@FacesComponentInfo(description =
+        "OutputLabel is an extended version of standard Faces outputLabel component with enhanced features like required field indicator.")
 public class OutputLabel extends OutputLabelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OutputLabel";

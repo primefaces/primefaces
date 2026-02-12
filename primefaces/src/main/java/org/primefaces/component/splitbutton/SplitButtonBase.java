@@ -52,6 +52,12 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
         return COMPONENT_FAMILY;
     }
 
+    @Override
+    @Property(hide = true)
+    public String getImage() {
+        return super.getImage();
+    }
+
     @Property(description = "A method expression or a string outcome to process when command is executed.", callSuper = true)
     public MethodExpression getAction() {
         return super.getActionExpression();

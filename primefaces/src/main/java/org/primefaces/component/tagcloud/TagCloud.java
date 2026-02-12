@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.tagcloud;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
@@ -37,7 +37,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = TagCloud.COMPONENT_TYPE, namespace = TagCloud.COMPONENT_FAMILY)
-@FacesComponentDescription("TagCloud displays a collection of tag with different strengths.")
+@FacesComponentInfo(description = "TagCloud displays a collection of tag with different strengths.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

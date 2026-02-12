@@ -24,8 +24,8 @@
 package org.primefaces.component.datatable;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -99,7 +99,7 @@ import jakarta.faces.model.IterableDataModel;
 import jakarta.faces.model.ListDataModel;
 
 @FacesComponent(value = DataTable.COMPONENT_TYPE, namespace = DataTable.COMPONENT_FAMILY)
-@FacesComponentDescription("DataTable is an enhanced version of the standard Datatable that provides built-in solutions to many commons use cases"
+@FacesComponentInfo(description = "DataTable is an enhanced version of the standard Datatable that provides built-in solutions to many commons use cases"
         + " like paging, sorting, selection, lazy loading, filtering and more.")
 @FacesComponentHandler(DataTableHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")

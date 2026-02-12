@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.effect;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Effect.COMPONENT_TYPE, namespace = Effect.COMPONENT_FAMILY)
-@FacesComponentDescription("Effect component is based on the jQuery UI effects library.")
+@FacesComponentInfo(description = "Effect component is based on the jQuery UI effects library.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

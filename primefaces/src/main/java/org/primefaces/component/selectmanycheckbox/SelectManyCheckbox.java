@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.selectmanycheckbox;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = SelectManyCheckbox.COMPONENT_TYPE, namespace = SelectManyCheckbox.COMPONENT_FAMILY)
-@FacesComponentDescription("SelectManyCheckbox is an extended version of the standard Faces SelectManyCheckbox.")
+@FacesComponentInfo(description = "SelectManyCheckbox is an extended version of the standard Faces SelectManyCheckbox.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

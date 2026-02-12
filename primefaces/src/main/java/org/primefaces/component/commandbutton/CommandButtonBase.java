@@ -54,6 +54,12 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
     }
 
     @Override
+    @Property(hide = true)
+    public String getImage() {
+        return super.getImage();
+    }
+
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

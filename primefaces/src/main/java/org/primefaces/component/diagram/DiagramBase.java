@@ -27,6 +27,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
@@ -61,4 +62,34 @@ public abstract class DiagramBase extends PrimeUIData implements Widget, StyleAw
 
     @Facet(description = "Allows customer rendering of HTML in the element.")
     public abstract UIComponent getElementFacet();
+
+    @Override
+    @Property(hide = true)
+    public String getRowIndexVar() {
+        return super.getRowIndexVar();
+    }
+
+    @Override
+    @Property(hide = true)
+    public int getFirst() {
+        return super.getFirst();
+    }
+
+    @Override
+    @Property(hide = true)
+    public boolean isLazy() {
+        return super.isLazy();
+    }
+
+    @Override
+    @Property(hide = true)
+    public int getRows() {
+        return super.getRows();
+    }
+
+    @Override
+    @Property(hide = true)
+    public boolean isRowStatePreserved() {
+        return super.isRowStatePreserved();
+    }
 }

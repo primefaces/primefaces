@@ -21,16 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.barcode;
+package org.primefaces.cdk.api;
 
-import org.primefaces.cdk.api.FacesComponentInfo;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import jakarta.faces.component.FacesComponent;
+/**
+ * Provides a description for a Faces component.
+ *
+ * <p>Use this annotation to document the purpose and functionality of
+ * a component class. The description can be used for taglib, documentation
+ * or other metadata purposes.</p>
+ *
+ * <p>Example:</p>
+ * <pre>{@code
+ * @FacesComponent(...)
+ * @FacesComponentInfo(description = "A text input component with enhanced features")
+ * public class InputText extends InputTextBaseImpl {
+ *
+ * }
+ * }</pre>
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+public @interface FacesComponentInfo {
 
-@FacesComponent(value = Barcode.COMPONENT_TYPE, namespace = Barcode.COMPONENT_FAMILY)
-@FacesComponentInfo(description =
-        "Barcode component is used to display various barcode formats QR Code, Code 128, Code 39, EAN-13, UPC-A, ITF-14, and DataMatrix.")
-public class Barcode extends BarcodeBaseImpl {
+    /**
+     * The name of the component.
+     *
+     * @return the component name
+     */
+    String name() default "";
 
-    public static final String COMPONENT_TYPE = "org.primefaces.component.Barcode";
+    /**
+     * The description text for the component.
+     *
+     * @return the component description
+     */
+    String description();
 }

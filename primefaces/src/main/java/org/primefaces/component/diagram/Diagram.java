@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.diagram;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
@@ -41,7 +41,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Diagram.COMPONENT_TYPE, namespace = Diagram.COMPONENT_FAMILY)
-@FacesComponentDescription("Diagram is a component to create visual elements and connect them on a web page.")
+@FacesComponentInfo(description = "Diagram is a component to create visual elements and connect them on a web page.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "diagram/diagram.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

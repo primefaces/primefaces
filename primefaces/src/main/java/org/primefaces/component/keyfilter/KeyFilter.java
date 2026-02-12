@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.keyfilter;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = KeyFilter.COMPONENT_TYPE, namespace = KeyFilter.COMPONENT_FAMILY)
-@FacesComponentDescription("KeyFilter restricts input based on a regular expression, mask or custom JavaScript function.")
+@FacesComponentInfo(description = "KeyFilter restricts input based on a regular expression, mask or custom JavaScript function.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

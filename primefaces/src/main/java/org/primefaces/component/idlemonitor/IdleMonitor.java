@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.idlemonitor;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = IdleMonitor.COMPONENT_TYPE, namespace = IdleMonitorBase.COMPONENT_FAMILY)
-@FacesComponentDescription("IdleMonitor watches user actions on a page and notify callbacks in case they go idle or active again.")
+@FacesComponentInfo(description = "IdleMonitor watches user actions on a page and notify callbacks in case they go idle or active again.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "idlemonitor/idlemonitor.js")

@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.subtable;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.api.ColumnAware;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.model.ColumnMeta;
@@ -36,7 +36,7 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.event.PhaseId;
 
 @FacesComponent(value = SubTable.COMPONENT_TYPE, namespace = SubTable.COMPONENT_FAMILY)
-@FacesComponentDescription("SubTable is a helper component of datatable used for grouping.")
+@FacesComponentInfo(description = "SubTable is a helper component of datatable used for grouping.")
 public class SubTable extends SubTableBaseImpl implements ColumnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";

@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.selectonebutton;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = SelectOneButton.COMPONENT_TYPE, namespace = SelectOneButton.COMPONENT_FAMILY)
-@FacesComponentDescription("SelectOneButton is an input component to do a single select.")
+@FacesComponentInfo(description = "SelectOneButton is an input component to do a single select.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

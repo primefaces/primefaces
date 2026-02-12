@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.megamenu;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = MegaMenu.COMPONENT_TYPE, namespace = MegaMenu.COMPONENT_FAMILY)
-@FacesComponentDescription("MegaMenu is a horizontal navigation component that displays submenus together.")
+@FacesComponentInfo(description = "MegaMenu is a horizontal navigation component that displays submenus together.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.calendar;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
@@ -49,7 +49,7 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 
 @FacesComponent(value = Calendar.COMPONENT_TYPE, namespace = Calendar.COMPONENT_FAMILY)
-@FacesComponentDescription("Calendar is an input component used to provide a date.")
+@FacesComponentInfo(description = "Calendar is an input component used to provide a date.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

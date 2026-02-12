@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
@@ -42,7 +42,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = SelectCheckboxMenu.COMPONENT_TYPE, namespace = SelectCheckboxMenu.COMPONENT_FAMILY)
-@FacesComponentDescription("SelectCheckboxMenu is a multi select component that displays options in an overlay.")
+@FacesComponentInfo(description = "SelectCheckboxMenu is a multi select component that displays options in an overlay.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

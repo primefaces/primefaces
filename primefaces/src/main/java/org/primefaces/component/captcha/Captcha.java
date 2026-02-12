@@ -24,7 +24,7 @@
 package org.primefaces.component.captcha;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MessageFactory;
@@ -50,7 +50,7 @@ import jakarta.faces.context.FacesContext;
 import org.json.JSONObject;
 
 @FacesComponent(value = Captcha.COMPONENT_TYPE, namespace = Captcha.COMPONENT_FAMILY)
-@FacesComponentDescription("Captcha is a form validation component based on Recaptcha/hCaptcha API.")
+@FacesComponentInfo(description = "Captcha is a form validation component based on Recaptcha/hCaptcha API.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")

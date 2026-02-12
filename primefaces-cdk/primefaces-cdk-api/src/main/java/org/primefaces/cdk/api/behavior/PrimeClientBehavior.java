@@ -24,6 +24,7 @@
 package org.primefaces.cdk.api.behavior;
 
 import org.primefaces.cdk.api.PrimePropertyKeys;
+import org.primefaces.cdk.api.Property;
 
 import jakarta.el.ValueExpression;
 import jakarta.faces.component.StateHelper;
@@ -36,6 +37,15 @@ public abstract class PrimeClientBehavior extends ClientBehaviorBase {
 
     public PrimeClientBehavior() {
         super();
+    }
+
+    @Property(description = "A String identifying the type of event the Ajax action will apply to."
+            + " If specified, it must be one of the events supported by the component the Ajax behavior is being applied to."
+            + " For HTML components this would be the set of supported DOM events for the component, plus \"action\" for Faces ActionSource"
+            + " components and \"valueChange\" for Faces EditableValueHolder components. If not specified, the default event is determined for the component."
+            + " The DOM event name is the actual DOM event name (for example: \"click\") as opposed to (for example: \"onclick\").")
+    public String getEvent() {
+        throw new IllegalArgumentException(); // just for documentation
     }
 
     public StateHelper getStateHelper() {

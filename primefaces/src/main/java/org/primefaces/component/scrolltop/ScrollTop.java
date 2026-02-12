@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.scrolltop;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ScrollTop.COMPONENT_TYPE, namespace = ScrollTop.COMPONENT_FAMILY)
-@FacesComponentDescription("ScrollTop gets displayed after a certain scroll position and used to navigates to the top of the page quickly.")
+@FacesComponentInfo(description = "ScrollTop gets displayed after a certain scroll position and used to navigates to the top of the page quickly.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

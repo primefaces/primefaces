@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.link;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.ComponentUtils;
 
 import java.util.List;
@@ -33,7 +33,7 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Link.COMPONENT_TYPE, namespace = Link.COMPONENT_FAMILY)
-@FacesComponentDescription("Link is an extended version of standard JSF link component with enhanced features.")
+@FacesComponentInfo(description = "Link is an extended version of standard JSF link component with enhanced features.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

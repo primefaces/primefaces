@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.imagecompare;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ImageCompare.COMPONENT_TYPE, namespace = ImageCompare.COMPONENT_FAMILY)
-@FacesComponentDescription("ImageCompare provides a user interface to compare two images.")
+@FacesComponentInfo(description = "ImageCompare provides a user interface to compare two images.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

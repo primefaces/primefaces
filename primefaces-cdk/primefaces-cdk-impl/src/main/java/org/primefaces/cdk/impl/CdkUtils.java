@@ -21,37 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.api;
+package org.primefaces.cdk.impl;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.Set;
 
-/**
- * Provides a description for a Faces component.
- *
- * <p>Use this annotation to document the purpose and functionality of
- * a behavior class. The description can be used for taglib, documentation
- * or other metadata purposes.</p>
- *
- * <p>Example:</p>
- * <pre>{@code
- * @FacesBehavior(...)
- * @FacesBehaviorDescription("...")
- * public class AjaxBehavior extends AjaxBehaviorBaseImpl {
- *
- * }
- * }</pre>
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-public @interface FacesBehaviorDescription {
+public final class CdkUtils {
 
-    /**
-     * The description text for the component.
-     *
-     * @return the component description
-     */
-    String value();
+    private CdkUtils() {
+    }
+
+    public static boolean shouldIgnoreProperty(Class<?> clazz, String property) {
+        return shouldIgnoreProperty(clazz.getName(), property);
+    }
+
+    public static boolean shouldIgnoreProperty(String clazz, String property) {
+        Set<String> properties = Set.of("attributes", "behaviors", "rendererType", "bindings", "passThroughAttributes", "systemEventListeners", "valid",
+                "actionExpression", "methodBindingActionListener", "localValueSet", "saved", "lastId", "rowIndex");
+        return properties.contains(property);
+    }
+
 }

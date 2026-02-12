@@ -96,4 +96,6 @@ public @interface Property {
     boolean callSuper() default false;
 
     Class<?> type() default Object.class;
+
+    boolean hide() default false;
 }

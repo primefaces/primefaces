@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.menuitem;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.util.ComponentUtils;
 
@@ -39,7 +39,7 @@ import jakarta.faces.event.ActionEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = UIMenuItem.COMPONENT_TYPE, namespace = UIMenuItem.COMPONENT_FAMILY)
-@FacesComponentDescription("MenuItem is a component that represents a menu item.")
+@FacesComponentInfo(name = "menuitem", description = "MenuItem is a component that represents a menu item.")
 public class UIMenuItem extends UIMenuItemBaseImpl implements DialogReturnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UIMenuItem";

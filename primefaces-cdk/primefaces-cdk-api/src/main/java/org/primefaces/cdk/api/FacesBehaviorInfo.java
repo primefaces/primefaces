@@ -32,26 +32,33 @@ import java.lang.annotation.Target;
  * Provides a description for a Faces component.
  *
  * <p>Use this annotation to document the purpose and functionality of
- * a component class. The description can be used for taglib, documentation
+ * a behavior class. The description can be used for taglib, documentation
  * or other metadata purposes.</p>
  *
  * <p>Example:</p>
  * <pre>{@code
- * @FacesComponent(...)
- * @FacesComponentDescription("A text input component with enhanced features")
- * public class InputText extends InputTextBaseImpl {
+ * @FacesBehavior(...)
+ * @FacesBehaviorInfo(description = "...")
+ * public class AjaxBehavior extends AjaxBehaviorBaseImpl {
  *
  * }
  * }</pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface FacesComponentDescription {
+public @interface FacesBehaviorInfo {
+
+    /**
+     * The name of the component.
+     *
+     * @return the component name
+     */
+    String name() default "";
 
     /**
      * The description text for the component.
      *
      * @return the component description
      */
-    String value();
+    String description();
 }

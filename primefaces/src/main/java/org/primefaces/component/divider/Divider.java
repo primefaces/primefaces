@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.divider;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Divider.COMPONENT_TYPE, namespace = Divider.COMPONENT_FAMILY)
-@FacesComponentDescription("Divider is used to separate contents.")
+@FacesComponentInfo(description = "Divider is used to separate contents.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Divider extends DividerBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Divider";

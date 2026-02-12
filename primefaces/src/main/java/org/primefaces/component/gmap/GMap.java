@@ -24,7 +24,7 @@
 package org.primefaces.component.gmap;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.map.GeocodeEvent;
 import org.primefaces.event.map.MarkerDragEvent;
 import org.primefaces.event.map.OverlaySelectEvent;
@@ -52,7 +52,8 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = GMap.COMPONENT_TYPE, namespace = GMap.COMPONENT_FAMILY)
-@FacesComponentDescription("GMap component is built on Google Maps API Version 3 and is highly integrated with Faces and enhanced with AJAX capabilities.")
+@FacesComponentInfo(name = "gmap",
+        description = "GMap component is built on Google Maps API Version 3 and is highly integrated with Faces and enhanced with AJAX capabilities.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")

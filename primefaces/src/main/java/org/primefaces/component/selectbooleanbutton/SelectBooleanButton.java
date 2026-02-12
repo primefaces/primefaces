@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.selectbooleanbutton;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 
@@ -31,7 +31,7 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = SelectBooleanButton.COMPONENT_TYPE, namespace = SelectBooleanButton.COMPONENT_FAMILY)
-@FacesComponentDescription("SelectBooleanButton is used to select a binary decision with a toggle button.")
+@FacesComponentInfo(description = "SelectBooleanButton is used to select a binary decision with a toggle button.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

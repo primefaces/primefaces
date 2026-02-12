@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.chart;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.ItemSelectEvent;
 
 import java.util.Map;
@@ -35,7 +35,7 @@ import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Chart.COMPONENT_TYPE, namespace = Chart.COMPONENT_FAMILY)
-@FacesComponentDescription("Chart.js component using raw JSON or XDev model.")
+@FacesComponentInfo(description = "Chart.js component using raw JSON or XDev model.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")

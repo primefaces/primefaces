@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.clock;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import java.util.Map;
 
@@ -32,7 +32,7 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Clock.COMPONENT_TYPE, namespace = Clock.COMPONENT_FAMILY)
-@FacesComponentDescription("Clock displays server or client datetime live.")
+@FacesComponentInfo(description = "Clock displays server or client datetime live.")
 @ResourceDependency(library = "primefaces", name = "clock/clock.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

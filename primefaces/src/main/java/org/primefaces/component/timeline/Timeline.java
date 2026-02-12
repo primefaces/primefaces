@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.timeline;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.timeline.TimelineAddEvent;
 import org.primefaces.event.timeline.TimelineDragDropEvent;
 import org.primefaces.event.timeline.TimelineLazyLoadEvent;
@@ -46,7 +46,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Timeline.COMPONENT_TYPE, namespace = Timeline.COMPONENT_FAMILY)
-@FacesComponentDescription("Timeline is an interactive visualization chart to visualize events in time.")
+@FacesComponentInfo(description = "Timeline is an interactive visualization chart to visualize events in time.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

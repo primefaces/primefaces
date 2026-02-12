@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.rating;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.RateEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -38,7 +38,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Rating.COMPONENT_TYPE, namespace = Rating.COMPONENT_FAMILY)
-@FacesComponentDescription("Rating component features a star based rating system.")
+@FacesComponentInfo(description = "Rating component features a star based rating system.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

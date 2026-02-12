@@ -23,7 +23,7 @@
  */
 package org.primefaces.behavior.printer;
 
-import org.primefaces.cdk.api.FacesBehaviorDescription;
+import org.primefaces.cdk.api.FacesBehaviorInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -36,7 +36,7 @@ import jakarta.faces.context.FacesContext;
 import org.json.JSONObject;
 
 @FacesBehavior(PrinterBehavior.BEHAVIOR_ID)
-@FacesBehaviorDescription("Printer allows sending a specific Faces component to the printer, not the whole page.")
+@FacesBehaviorInfo(description = "Printer allows sending a specific Faces component to the printer, not the whole page.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "printer/printer.js")

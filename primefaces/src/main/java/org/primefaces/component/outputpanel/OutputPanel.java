@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.outputpanel;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = OutputPanel.COMPONENT_TYPE, namespace = OutputPanel.COMPONENT_FAMILY)
-@FacesComponentDescription("OutputPanel is a container component with deferred loading and layout options.")
+@FacesComponentInfo(description = "OutputPanel is a container component with deferred loading and layout options.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.contextmenu;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ContextMenu.COMPONENT_TYPE, namespace = ContextMenu.COMPONENT_FAMILY)
-@FacesComponentDescription("ContextMenu provides an overlay menu displayed on mouse right-click event.")
+@FacesComponentInfo(description = "ContextMenu provides an overlay menu displayed on mouse right-click event.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

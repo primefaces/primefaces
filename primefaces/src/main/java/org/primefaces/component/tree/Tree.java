@@ -24,8 +24,8 @@
 package org.primefaces.component.tree;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.cdk.api.FacesComponentDescription;
 import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
@@ -52,7 +52,7 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 
 @FacesComponent(value = Tree.COMPONENT_TYPE, namespace = Tree.COMPONENT_FAMILY)
-@FacesComponentDescription("Tree is is used for displaying hierarchical data and creating site navigations.")
+@FacesComponentInfo(description = "Tree is is used for displaying hierarchical data and creating site navigations.")
 @FacesComponentHandler(TreeHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.commandbutton;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -34,7 +34,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = CommandButton.COMPONENT_TYPE, namespace = CommandButton.COMPONENT_FAMILY)
-@FacesComponentDescription("CommandButton is an extended version of standard Faces commandButton with ajax and skinning features.")
+@FacesComponentInfo(description = "CommandButton is an extended version of standard Faces commandButton with ajax and skinning features.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

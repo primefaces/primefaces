@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.selectoneradio;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.LangUtils;
 
 import java.util.List;
@@ -34,7 +34,7 @@ import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = SelectOneRadio.COMPONENT_TYPE, namespace = SelectOneRadio.COMPONENT_FAMILY)
-@FacesComponentDescription("SelectOneRadio is an extended version of the standard SelectOneRadio.")
+@FacesComponentInfo(description = "SelectOneRadio is an extended version of the standard SelectOneRadio.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

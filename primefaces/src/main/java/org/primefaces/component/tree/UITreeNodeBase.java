@@ -23,9 +23,12 @@
  */
 package org.primefaces.component.tree;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIColumn;
 
-
+@FacesComponentBase
 public abstract class UITreeNodeBase extends UIColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -49,52 +52,22 @@ public abstract class UITreeNodeBase extends UIColumn {
         return COMPONENT_FAMILY;
     }
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "default");
-    }
+    @Property(defaultValue = "default", description = "Type of the tree node.")
+    public abstract String getType();
 
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
+    @Property(description = "Style class of the component.")
+    public abstract String getStyleClass();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(description = "Icon of the tree node as a css class.")
+    public abstract String getIcon();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Icon to display when the node is expanded as a css class.")
+    public abstract String getExpandedIcon();
 
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
+    @Property(description = "Icon to display when the node is collapsed as a css class.")
+    public abstract String getCollapsedIcon();
 
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
-    public String getExpandedIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.expandedIcon, null);
-    }
-
-    public void setExpandedIcon(String expandedIcon) {
-        getStateHelper().put(PropertyKeys.expandedIcon, expandedIcon);
-    }
-
-    public String getCollapsedIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.collapsedIcon, null);
-    }
-
-    public void setCollapsedIcon(String collapsedIcon) {
-        getStateHelper().put(PropertyKeys.collapsedIcon, collapsedIcon);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
+    @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
+    public abstract String getAriaLabel();
 
 }

@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.progressbar;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
@@ -33,7 +33,7 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 
 @FacesComponent(value = ProgressBar.COMPONENT_TYPE, namespace = ProgressBar.COMPONENT_FAMILY)
-@FacesComponentDescription("ProgressBar is a process status indicator component.")
+@FacesComponentInfo(description = "ProgressBar is a process status indicator component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

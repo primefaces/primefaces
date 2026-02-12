@@ -34,6 +34,7 @@ import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.cdk.api.component.PrimeClientBehaviorHolder;
 import org.primefaces.cdk.api.component.PrimeComponent;
+import org.primefaces.cdk.impl.CdkUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -386,16 +387,17 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
         }
 
-        List<String> ignores = getPropertiesToIgnore();
+        boolean isBehavior = isBehaviorClass(classElement);
+
         Set<PropertyInfo> inheritedPropertyKeys = collectInheritedPropertyKeys(classElement);
 
         // Add inherited property keys that aren't already defined
         for (PropertyInfo inheritedKey : inheritedPropertyKeys) {
-            if (!propsMap.containsKey(inheritedKey.getName()) && !ignores.contains(inheritedKey.getName())) {
+            if (!propsMap.containsKey(inheritedKey.getName())) {
                 propsMap.put(inheritedKey.getName(), inheritedKey);
             }
         }
-        if (!propsMap.containsKey("id")) {
+        if (!isBehavior && !propsMap.containsKey("id")) {
             propsMap.put("id", new PropertyInfo("id", "java.lang.String", null, null,
                     "Unique identifier of the component in a namingContainer.", "", "", false));
         }
@@ -416,7 +418,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
         }
 
-        boolean isBehavior = isBehaviorClass(classElement);
+
         List<BehaviorEventInfo> behaviorEventInfos = behaviorEventTargets.getOrDefault(classElement, new ArrayList<>());
 
         // Scan PrimeComponent interface for additional properties/facets
@@ -873,6 +875,10 @@ public class AnnotationProcessor extends AbstractProcessor {
                         for (Object constant : enumConstants) {
                             String keyName = ((Enum<?>) constant).name();
 
+                            if (CdkUtils.shouldIgnoreProperty(clazz, keyName)) {
+                                continue;
+                            }
+
                             // Try to find getter method for this property
                             String returnType = findPropertyReturnType(clazz, typeElement, keyName);
 
@@ -906,6 +912,10 @@ public class AnnotationProcessor extends AbstractProcessor {
                 for (Element enumConstant : enumElement.getEnclosedElements()) {
                     if (enumConstant.getKind() == ElementKind.ENUM_CONSTANT) {
                         String keyName = enumConstant.getSimpleName().toString();
+
+                        if (CdkUtils.shouldIgnoreProperty(element.getQualifiedName().toString(), keyName)) {
+                            continue;
+                        }
 
                         // Try to find getter method for this property
                         String returnType = findPropertyReturnTypeFromElement(element, keyName);
@@ -979,6 +989,10 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("    public enum PropertyKeys implements " + PrimePropertyKeys.class.getName() + " {");
         for (int i = 0; i < props.size(); i++) {
             PropertyInfo prop = props.get(i);
+            if (prop.isHide()) {
+                continue;
+            }
+
             String type = prop.getType() + ".class";
             type = type.replaceAll("<[^>]+>", "");
             String description = prop.getDescription().replace("\"", "\\\"");
@@ -1247,8 +1261,7 @@ public class AnnotationProcessor extends AbstractProcessor {
      * Writes a property getter method with StateHelper access or super call.
      */
     private void writeGetter(PrintWriter w, PropertyInfo p) {
-        if (p.getGetterElement() == null) return;
-        if (p.isCallSuper()) return;
+        if (p.getGetterElement() == null || p.isCallSuper() || p.isHide()) return;
 
         String type = p.getType();
         String methodName = p.getGetterElement().getSimpleName().toString();
@@ -1305,12 +1318,7 @@ public class AnnotationProcessor extends AbstractProcessor {
      * Writes a property setter method with StateHelper access or super call.
      */
     private void writeSetter(PrintWriter w, PropertyInfo p) {
-        if (!p.isGenerateSetter()) {
-            return;
-        }
-        if (p.isCallSuper()) {
-            return;
-        }
+        if (!p.isGenerateSetter() || p.isCallSuper() || p.isHide()) return;
 
         String setterName = "set" + capitalize(p.getName());
         String type = p.getType();
@@ -1548,8 +1556,4 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
     }
 
-    protected List<String> getPropertiesToIgnore() {
-        return Arrays.asList("attributes", "behaviors", "rendererType", "bindings", "passThroughAttributes", "systemEventListeners", "valid",
-                "actionExpression", "methodBindingActionListener");
-    }
 }

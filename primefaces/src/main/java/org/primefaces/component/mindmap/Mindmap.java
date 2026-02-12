@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.mindmap;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.mindmap.MindmapNode;
 import org.primefaces.util.Constants;
@@ -37,7 +37,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Mindmap.COMPONENT_TYPE, namespace = Mindmap.COMPONENT_FAMILY)
-@FacesComponentDescription("MindMap is an interactive mindmapping component.")
+@FacesComponentInfo(description = "MindMap is an interactive mindmapping component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

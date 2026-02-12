@@ -23,8 +23,8 @@
  */
 package org.primefaces.behavior.confirm;
 
-import org.primefaces.cdk.api.FacesBehaviorDescription;
 import org.primefaces.cdk.api.FacesBehaviorHandler;
+import org.primefaces.cdk.api.FacesBehaviorInfo;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
@@ -39,7 +39,7 @@ import org.json.JSONObject;
 
 @FacesBehavior(ConfirmBehavior.BEHAVIOR_ID)
 @FacesBehaviorHandler(ConfirmBehaviorHandler.class)
-@FacesBehaviorDescription("Confirm is a behavior element used to integrate with global confirm dialog.")
+@FacesBehaviorInfo(description = "Confirm is a behavior element used to integrate with global confirm dialog.")
 public class ConfirmBehavior extends ConfirmBehaviorBaseImpl {
 
     public static final String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";

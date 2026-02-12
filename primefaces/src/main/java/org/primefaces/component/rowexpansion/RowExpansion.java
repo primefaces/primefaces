@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.rowexpansion;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = RowExpansion.COMPONENT_TYPE, namespace = RowExpansion.COMPONENT_FAMILY)
-@FacesComponentDescription("RowExpansion is a helper component of datatable used to implement expandable rows.")
+@FacesComponentInfo(description = "RowExpansion is a helper component of datatable used to implement expandable rows.")
 public class RowExpansion extends RowExpansionBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowExpansion";

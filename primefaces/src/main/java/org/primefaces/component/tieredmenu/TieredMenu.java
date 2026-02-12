@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.tieredmenu;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = TieredMenu.COMPONENT_TYPE, namespace = TieredMenu.COMPONENT_FAMILY)
-@FacesComponentDescription("TieredMenu is used to display nested submenus with overlays.")
+@FacesComponentInfo(description = "TieredMenu is used to display nested submenus with overlays.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

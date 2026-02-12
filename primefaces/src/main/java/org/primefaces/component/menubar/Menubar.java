@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.menubar;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Menubar.COMPONENT_TYPE, namespace = Menubar.COMPONENT_FAMILY)
-@FacesComponentDescription("Menubar is a horizontal navigation component.")
+@FacesComponentInfo(description = "Menubar is a horizontal navigation component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

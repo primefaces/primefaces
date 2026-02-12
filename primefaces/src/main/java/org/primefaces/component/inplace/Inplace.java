@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.inplace;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import java.util.Iterator;
 
@@ -34,7 +34,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Inplace.COMPONENT_TYPE, namespace = Inplace.COMPONENT_FAMILY)
-@FacesComponentDescription("Inplace provides an easy way to edit content inplace with a custom input.")
+@FacesComponentInfo(description = "Inplace provides an easy way to edit content inplace with a custom input.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

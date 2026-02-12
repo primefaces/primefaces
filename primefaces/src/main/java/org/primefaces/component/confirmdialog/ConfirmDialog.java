@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.confirmdialog;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ConfirmDialog.COMPONENT_TYPE, namespace = ConfirmDialog.COMPONENT_FAMILY)
-@FacesComponentDescription("ConfirmDialog is a dialog component used to display confirmation messages.")
+@FacesComponentInfo(description = "ConfirmDialog is a dialog component used to display confirmation messages.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

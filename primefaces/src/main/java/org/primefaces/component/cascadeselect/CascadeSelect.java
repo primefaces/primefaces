@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.cascadeselect;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
 
@@ -35,7 +35,7 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.render.Renderer;
 
 @FacesComponent(value = CascadeSelect.COMPONENT_TYPE, namespace = CascadeSelect.COMPONENT_FAMILY)
-@FacesComponentDescription("CascadeSelect displays a nested structure of options.")
+@FacesComponentInfo(description = "CascadeSelect displays a nested structure of options.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

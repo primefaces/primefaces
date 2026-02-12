@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.staticmessage;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = StaticMessage.COMPONENT_TYPE, namespace = StaticMessage.COMPONENT_FAMILY)
-@FacesComponentDescription("Display a message without the use of a FacesMessage.")
+@FacesComponentInfo(description = "Display a message without the use of a FacesMessage.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class StaticMessage extends StaticMessageBaseImpl {
 

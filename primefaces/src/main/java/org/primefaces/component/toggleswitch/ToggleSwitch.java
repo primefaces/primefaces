@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.toggleswitch;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ToggleSwitch.COMPONENT_TYPE, namespace = ToggleSwitch.COMPONENT_FAMILY)
-@FacesComponentDescription("ToggleSwitch is used to select a boolean value.")
+@FacesComponentInfo(description = "ToggleSwitch is used to select a boolean value.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

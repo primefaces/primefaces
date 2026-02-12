@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.panelgrid;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = PanelGrid.COMPONENT_TYPE, namespace = PanelGrid.COMPONENT_FAMILY)
-@FacesComponentDescription("PanelGrid is a component to display data in a grid layout with support for different layout modes.")
+@FacesComponentInfo(description = "PanelGrid is a component to display data in a grid layout with support for different layout modes.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class PanelGrid extends PanelGridBaseImpl {
 

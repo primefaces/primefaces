@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.confirmpopup;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ConfirmPopup.COMPONENT_TYPE, namespace = ConfirmPopup.COMPONENT_FAMILY)
-@FacesComponentDescription("ConfirmPopup is a popup component used to display confirmation messages.")
+@FacesComponentInfo(description = "ConfirmPopup is a popup component used to display confirmation messages.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

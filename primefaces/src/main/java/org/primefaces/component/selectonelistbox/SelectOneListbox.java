@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.selectonelistbox;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
@@ -39,7 +39,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = SelectOneListbox.COMPONENT_TYPE, namespace = SelectOneListbox.COMPONENT_FAMILY)
-@FacesComponentDescription("SelectOneListbox is an extended version of the standard Faces selectOneListbox component.")
+@FacesComponentInfo(description = "SelectOneListbox is an extended version of the standard Faces selectOneListbox component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
