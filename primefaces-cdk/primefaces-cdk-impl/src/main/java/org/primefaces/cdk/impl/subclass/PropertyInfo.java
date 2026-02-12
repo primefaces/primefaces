@@ -55,7 +55,8 @@ public class PropertyInfo {
         this.required = annotation.required();
         this.callSuper = annotation.callSuper();
         this.generateGetter = getterElement.getModifiers().contains(Modifier.ABSTRACT);
-        this.generateSetter = setterElement == null || setterElement.getModifiers().contains(Modifier.ABSTRACT);
+        this.generateSetter = generateGetter // PropertyKey might differ (_for vs forValue), always generate setter when generating getter
+                || (setterElement == null || setterElement.getModifiers().contains(Modifier.ABSTRACT));
         this.hide = annotation.hide();
     }
 
