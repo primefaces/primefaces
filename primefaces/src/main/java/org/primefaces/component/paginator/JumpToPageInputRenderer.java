@@ -25,6 +25,7 @@ package org.primefaces.component.paginator;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIPageableData;
+import org.primefaces.util.LocaleUtils;
 
 import java.io.IOException;
 
@@ -39,7 +40,7 @@ public class JumpToPageInputRenderer implements PaginatorElementRenderer {
 
         writer.startElement("input", null);
         writer.writeAttribute("class", UIPageableData.PAGINATOR_JTP_INPUT_CLASS, null);
-        writer.writeAttribute("value", pageable.getPage() + 1, null);
+        writer.writeAttribute("value", LocaleUtils.formatInteger(context, pageable.getPage() + 1), null);
         writer.endElement("input");
     }
 

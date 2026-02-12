@@ -26,6 +26,7 @@ package org.primefaces.util;
 import org.primefaces.cdk.api.Function;
 
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Locale;
 
 import jakarta.faces.component.UIViewRoot;
@@ -196,5 +197,85 @@ public class LocaleUtils {
      */
     public static String calculateLanguage(Locale locale) {
         return locale.getLanguage();
+    }
+
+    /**
+     * Formats an integer value using the current locale from FacesContext.
+     * The formatted number will include locale-specific thousand separators.
+     *
+     * @param context the {@link FacesContext}
+     * @param value the integer value to format
+     * @return the formatted string representation of the integer
+     */
+    public static String formatInteger(FacesContext context, Integer value) {
+        Locale locale = getCurrentLocale(context);
+        return formatInteger(locale, value);
+    }
+
+    /**
+     * Formats an integer value using the current locale.
+     * The formatted number will include locale-specific thousand separators.
+     *
+     * @param value the integer value to format
+     * @return the formatted string representation of the integer
+     */
+    public static String formatInteger(Integer value) {
+        return formatInteger(getCurrentLocale(), value);
+    }
+
+    /**
+     * Formats an integer value using the specified locale.
+     * The formatted number will include locale-specific thousand separators.
+     *
+     * @param locale the {@link Locale} to use for formatting
+     * @param value the integer value to format
+     * @return the formatted string representation of the integer
+     */
+    public static String formatInteger(Locale locale, Integer value) {
+        if (value == null) {
+            return null;
+        }
+        NumberFormat formatter = NumberFormat.getIntegerInstance(locale);
+        return formatter.format(value);
+    }
+
+    /**
+     * Formats a number value using the current locale from FacesContext.
+     * The formatted number will include locale-specific thousand separators and decimal formatting.
+     *
+     * @param context the {@link FacesContext}
+     * @param value the number value to format
+     * @return the formatted string representation of the number
+     */
+    public static String formatNumber(FacesContext context, Number value) {
+        Locale locale = getCurrentLocale(context);
+        return formatNumber(locale, value);
+    }
+
+    /**
+     * Formats a number value using the current locale.
+     * The formatted number will include locale-specific thousand separators and decimal formatting.
+     *
+     * @param value the number value to format
+     * @return the formatted string representation of the number
+     */
+    public static String formatNumber(Number value) {
+        return formatNumber(getCurrentLocale(), value);
+    }
+
+    /**
+     * Formats a number value using the specified locale.
+     * The formatted number will include locale-specific thousand separators and decimal formatting.
+     *
+     * @param locale the {@link Locale} to use for formatting
+     * @param value the number value to format
+     * @return the formatted string representation of the number
+     */
+    public static String formatNumber(Locale locale, Number value) {
+        if (value == null) {
+            return null;
+        }
+        NumberFormat formatter = NumberFormat.getInstance(locale);
+        return formatter.format(value);
     }
 }
