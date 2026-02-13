@@ -45,7 +45,7 @@ public abstract class StickyBase extends UIPanel implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Identifier of the component(s) to make sticky.")
+    @Property(description = "Identifier of the component(s) to make sticky.", required = true)
     public abstract String getTarget();
 
     @Property(defaultValue = "0", description = "Margin to the top of the page during fixed scrolling.")

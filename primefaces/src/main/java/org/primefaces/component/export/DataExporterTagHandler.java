@@ -46,7 +46,7 @@ public class DataExporterTagHandler extends TagHandler {
     @Property(description = "Export type: \"xls\", \"xlsx\", \"xlsxstream\", \"pdf\", \"csv\", \"xml\".", required = true, type = String.class)
     private final TagAttribute type;
 
-    @Property(description = "Filename of the generated export file", type = String.class, implicitDefaultValue = "The target component id.")
+    @Property(description = "Filename of the generated export file", type = String.class, implicitDefaultValue = "The target component id.", required = true)
     private final TagAttribute fileName;
 
     @Property(description = "Exports only current page instead of whole dataset.", type = Boolean.class)

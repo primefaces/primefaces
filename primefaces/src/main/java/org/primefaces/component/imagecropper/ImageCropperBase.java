@@ -44,7 +44,7 @@ public abstract class ImageCropperBase extends PrimeUIInput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Binary data to stream or context relative path.")
+    @Property(description = "Binary data to stream or context relative path.", required = true)
     public abstract Object getImage();
 
     @Property(description = "Alternate text of the image.")
