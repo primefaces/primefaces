@@ -23,27 +23,13 @@
  */
 package org.primefaces.component.api;
 
-import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 
-import jakarta.faces.component.html.HtmlInputTextarea;
+import jakarta.faces.component.UIInput;
 import jakarta.faces.event.ValueChangeListener;
 import jakarta.faces.validator.Validator;
 
-/**
- * Extended {@link HtmlInputTextarea} to allow for new events such as "input" and "paste".
- * Remove if Faces 5.0+ ever implements these events.
- */
-@FacesComponentBase
-public abstract class AbstractPrimeHtmlInputTextArea extends HtmlInputTextarea implements InputAware {
-
-    @Override
-    @Property(description = "Defines the number of columns in the text area.", defaultValue = "0")
-    public abstract int getCols();
-
-    @Override
-    @Property(description = "Defines the number of rows in the text area.", defaultValue = "0")
-    public abstract int getRows();
+public abstract class PrimeUIInput extends UIInput {
 
     @Property(description = "A method expression referring to a method validating the input.")
     public Validator<?> getValidator() {

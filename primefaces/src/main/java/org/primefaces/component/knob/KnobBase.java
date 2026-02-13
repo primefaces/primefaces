@@ -26,15 +26,15 @@ package org.primefaces.component.knob;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
-import jakarta.faces.component.UIInput;
 import jakarta.faces.event.BehaviorEvent;
 
 @FacesComponentBase
 @FacesBehaviorEvent(name = "change", event = BehaviorEvent.class, description = "Fires when the knob value changes.", defaultEvent = true)
-public abstract class KnobBase extends UIInput implements Widget, StyleAware {
+public abstract class KnobBase extends PrimeUIInput implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -125,4 +125,22 @@ public class PropertyInfo {
     public boolean isHide() {
         return hide;
     }
+
+    @Override
+    public String toString() {
+        return "PropertyInfo{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", getterElement=" + getterElement +
+                ", setterElement=" + setterElement +
+                ", generateGetter=" + generateGetter +
+                ", generateSetter=" + generateSetter +
+                ", description='" + description + '\'' +
+                ", defaultValue='" + defaultValue + '\'' +
+                ", implicitDefaultValue='" + implicitDefaultValue + '\'' +
+                ", required=" + required +
+                ", callSuper=" + callSuper +
+                ", hide=" + hide +
+                '}';
+    }
 }

@@ -28,17 +28,17 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
-import jakarta.faces.component.UIInput;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fired when the value changes.", defaultEvent = true)
 })
-public abstract class ToggleSwitchBase extends UIInput implements Widget, StyleAware, InputHolder {
+public abstract class ToggleSwitchBase extends PrimeUIInput implements Widget, StyleAware, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

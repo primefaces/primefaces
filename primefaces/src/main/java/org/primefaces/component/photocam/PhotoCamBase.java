@@ -25,14 +25,14 @@ package org.primefaces.component.photocam;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.el.MethodExpression;
-import jakarta.faces.component.UIInput;
 
 @FacesComponentBase
-public abstract class PhotoCamBase extends UIInput implements Widget, StyleAware {
+public abstract class PhotoCamBase extends PrimeUIInput implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

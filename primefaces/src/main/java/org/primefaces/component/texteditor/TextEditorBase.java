@@ -27,12 +27,12 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import java.util.List;
 
-import jakarta.faces.component.UIInput;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesComponentBase
@@ -53,7 +53,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "mouseup", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is released over the element."),
     @FacesBehaviorEvent(name = "select", event = AjaxBehaviorEvent.class, description = "Fires when some text is selected in the element."),
 })
-public abstract class TextEditorBase extends UIInput implements Widget, StyleAware {
+public abstract class TextEditorBase extends PrimeUIInput implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

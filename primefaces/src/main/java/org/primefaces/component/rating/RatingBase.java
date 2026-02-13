@@ -27,18 +27,17 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.RateEvent;
-
-import jakarta.faces.component.UIInput;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "rate", event = RateEvent.class, description = "Fires when a rating is selected.", defaultEvent = true),
     @FacesBehaviorEvent(name = "cancel", event = RateEvent.class, description = "Fires when the rating is canceled.")
 })
-public abstract class RatingBase extends UIInput implements Widget, StyleAware {
+public abstract class RatingBase extends PrimeUIInput implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
