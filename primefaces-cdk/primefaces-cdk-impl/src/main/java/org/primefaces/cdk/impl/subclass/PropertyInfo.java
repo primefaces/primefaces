@@ -24,6 +24,7 @@
 package org.primefaces.cdk.impl.subclass;
 
 import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.impl.CdkUtils;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -45,7 +46,21 @@ public class PropertyInfo {
 
     PropertyInfo(String name, String type, ExecutableElement getterElement,
                  ExecutableElement setterElement, Property annotation) {
-        this.name = name;
+        if (name.startsWith("_")) {
+            this.name = name.substring(1);
+        }
+        else if (name.endsWith("Val") || name.endsWith("Value")) {
+            String prefix = name.substring(0, name.lastIndexOf("Val"));
+            if (CdkUtils.isJavaKeyword(prefix)) {
+                this.name = prefix;
+            }
+            else {
+                this.name = name;
+            }
+        }
+        else {
+            this.name = name;
+        }
         this.type = type;
         this.getterElement = getterElement;
         this.setterElement = setterElement;
@@ -62,7 +77,21 @@ public class PropertyInfo {
 
     PropertyInfo(String name, String type, ExecutableElement getterElement,
                  ExecutableElement setterElement, String description, String defaultValue, String implicitDefaultValue, boolean required) {
-        this.name = name;
+        if (name.startsWith("_")) {
+            this.name = name.substring(1);
+        }
+        else if (name.endsWith("Val") || name.endsWith("Value")) {
+            String prefix = name.substring(0, name.lastIndexOf("Val"));
+            if (CdkUtils.isJavaKeyword(prefix)) {
+                this.name = prefix;
+            }
+            else {
+                this.name = name;
+            }
+        }
+        else {
+            this.name = name;
+        }
         this.type = type;
         this.getterElement = getterElement;
         this.setterElement = setterElement;

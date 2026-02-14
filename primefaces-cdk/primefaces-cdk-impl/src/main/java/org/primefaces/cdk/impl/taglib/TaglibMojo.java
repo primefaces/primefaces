@@ -312,7 +312,7 @@ public class TaglibMojo extends AbstractMojo {
 
             // Add attributes for each property
             for (PropertyInfo propertyInfo : componentInfo.getProperties()) {
-                if (propertyInfo.isHide()) {
+                if (propertyInfo == null || propertyInfo.isHide()) {
                     continue;
                 }
 

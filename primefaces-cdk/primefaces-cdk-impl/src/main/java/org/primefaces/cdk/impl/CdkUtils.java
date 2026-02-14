@@ -23,6 +23,7 @@
  */
 package org.primefaces.cdk.impl;
 
+import java.util.Arrays;
 import java.util.Set;
 
 public final class CdkUtils {
@@ -40,4 +41,20 @@ public final class CdkUtils {
         return properties.contains(property);
     }
 
+    public static boolean isJavaKeyword(String name) {
+        String[] javaKeywords = {
+            "abstract", "assert", "boolean", "break", "byte",
+            "case", "catch", "char", "class", "const",
+            "continue", "default", "do", "double", "else",
+            "enum", "extends", "final", "finally", "float",
+            "for", "goto", "if", "implements", "import",
+            "instanceof", "int", "interface", "long", "native",
+            "new", "package", "private", "protected", "public",
+            "return", "short", "static", "strictfp", "super",
+            "switch", "synchronized", "this", "throw", "throws",
+            "transient", "try", "void", "volatile", "while",
+            "true", "false", "null"
+        };
+        return Arrays.asList(javaKeywords).contains(name);
+    }
 }

@@ -23,7 +23,11 @@
  */
 package org.primefaces.component.outputpanel;
 
-import org.primefaces.cdk.api.*;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
