@@ -23,6 +23,7 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.WrapperSelectItem;
 import org.primefaces.util.LangUtils;
 
@@ -50,14 +51,10 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
 
-public abstract class SelectRenderer<T extends UIInput> extends InputRenderer<T> {
+public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends InputRenderer<T> {
 
-    protected boolean isHideNoSelection(UIComponent component) {
-        Object attribute = component.getAttributes().get("hideNoSelectionOption");
-        if (attribute instanceof String) {
-            attribute = Boolean.parseBoolean((String) attribute);
-        }
-        return Boolean.TRUE.equals(attribute);
+    protected boolean isHideNoSelection(T component) {
+        return component.isHideNoSelectionOption();
     }
 
     protected void addSelectItem(T component, List<SelectItem> selectItems, SelectItem item, boolean hideNoSelectOption) {

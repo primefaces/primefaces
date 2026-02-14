@@ -28,6 +28,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
@@ -52,7 +53,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "mouseup", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is released over the element."),
     @FacesBehaviorEvent(name = "select", event = AjaxBehaviorEvent.class, description = "Fires when some text is selected in the element.")
 })
-public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements Widget, FlexAware, StyleAware {
+public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements Widget, FlexAware, StyleAware, PrimeSelect {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -73,4 +74,5 @@ public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox impl
     @Override
     @Property(description = "Use modern PrimeFlex-Grid instead of classic Grid CSS.")
     public abstract Boolean getFlex();
+
 }

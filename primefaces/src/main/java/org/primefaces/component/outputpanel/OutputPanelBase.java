@@ -23,10 +23,7 @@
  */
 package org.primefaces.component.outputpanel;
 
-import org.primefaces.cdk.api.FacesBehaviorEvent;
-import org.primefaces.cdk.api.FacesBehaviorEvents;
-import org.primefaces.cdk.api.FacesComponentBase;
-import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.api.*;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
@@ -53,7 +50,7 @@ public abstract class OutputPanelBase extends UIPanel implements Widget, StyleAw
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Facet to render when the panel is loading.")
+    @Facet(description = "Facet to render when the panel is loading.")
     public abstract UIComponent getLoadingFacet();
 
     @Property(defaultValue = "false", description = "When true, panel content is loaded lazily.")

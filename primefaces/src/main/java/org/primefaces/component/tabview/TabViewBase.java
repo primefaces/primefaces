@@ -31,7 +31,7 @@ import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
-import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.UITabPanelImpl;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
@@ -42,7 +42,7 @@ import jakarta.faces.component.UIComponent;
     @FacesBehaviorEvent(name = "tabChange", event = TabChangeEvent.class, description = "Fires when a tab is changed.", defaultEvent = true),
     @FacesBehaviorEvent(name = "tabClose", event = TabCloseEvent.class, description = "Fires when a tab is closed.")
 })
-public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, StyleAware, TouchAware,
+public abstract class TabViewBase extends UITabPanelImpl implements Widget, RTLAware, StyleAware, TouchAware,
         MultiViewStateAware<TabViewState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -99,4 +99,22 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
 
     @Property(defaultValue = "false", description = "When enabled, focuses on the last active tab when the component is rendered.")
     public abstract boolean isFocusOnLastActiveTab();
+
+    @Override
+    @Property(hide = true)
+    public int getOffset() {
+        return super.getOffset();
+    }
+
+    @Override
+    @Property(hide = true)
+    public int getSize() {
+        return super.getSize();
+    }
+
+    @Override
+    @Property(hide = true)
+    public int getStep() {
+        return super.getStep();
+    }
 }
