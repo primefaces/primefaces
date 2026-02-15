@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.impl.taglib;
+package org.primefaces.cdk.impl.container;
 
 public class FunctionInfo {
 
@@ -41,25 +41,31 @@ public class FunctionInfo {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getClazz() {
         return clazz;
+    }
+
+    public void setClazz(String clazz) {
+        this.clazz = clazz;
     }
 
     public String getSignature() {
         return signature;
     }
 
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    @Override
-    public String toString() {
-        return "FunctionInfo{" +
-                "name='" + name + '\'' +
-                ", clazz='" + clazz + '\'' +
-                ", signature='" + signature + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

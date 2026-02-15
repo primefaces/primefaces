@@ -21,34 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.subtable;
+package org.primefaces.cdk.impl.subclass;
 
-import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 
-import jakarta.faces.component.UIData;
+public interface AdditionalPropertiesInterface {
 
-@FacesComponentBase
-public abstract class SubTableBase extends UIData {
-
-    public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.SubTableRenderer";
-
-    protected enum InternalPropertyKeys {
-        columnMeta
-    }
-
-    public SubTableBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    @Override
-    @Property(hide = true)
-    public abstract boolean isRowStatePreserved();
+    @Property(description = "test")
+    String getFor();
 }

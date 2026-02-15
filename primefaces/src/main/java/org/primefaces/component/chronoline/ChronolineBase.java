@@ -53,31 +53,21 @@ public abstract class ChronolineBase extends PrimeUIData implements StyleAware {
 
     @Override
     @Property(hide = true)
-    public String getRowIndexVar() {
-        return super.getRowIndexVar();
-    }
+    public abstract String getRowIndexVar();
 
     @Override
     @Property(hide = true)
-    public int getFirst() {
-        return super.getFirst();
-    }
+    public abstract int getFirst();
 
     @Override
     @Property(hide = true)
-    public boolean isLazy() {
-        return super.isLazy();
-    }
+    public abstract boolean isLazy();
 
     @Override
     @Property(hide = true)
-    public int getRows() {
-        return super.getRows();
-    }
+    public abstract int getRows();
 
     @Override
     @Property(hide = true)
-    public boolean isRowStatePreserved() {
-        return super.isRowStatePreserved();
-    }
+    public abstract boolean isRowStatePreserved();
 }

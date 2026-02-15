@@ -102,4 +102,6 @@ public interface PrimePropertyKeys {
      * @return the implicit default value as a string
      */
     String getImplicitDefaultValue();
+
+    boolean isHidden();
 }
