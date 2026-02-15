@@ -25,6 +25,7 @@ package org.primefaces.component.dialog;
 
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.RTLAware;
@@ -38,6 +39,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
+@FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "close", event = CloseEvent.class, description = "Fires when dialog is closed.", defaultEvent = true),
     @FacesBehaviorEvent(name = "minimize", event = AjaxBehaviorEvent.class, description = "Fires when dialog is minimized."),
