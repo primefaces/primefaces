@@ -49,10 +49,10 @@ public abstract class FeedReaderBase extends UIComponentBase {
     @Facet(description = "Content to display when an error occurs while parsing the feed.")
     public abstract UIComponent getErrorFacet();
 
-    @Property(description = "URL of the RSS feed.")
+    @Property(description = "URL of the RSS feed.", required = true)
     public abstract String getValue();
 
-    @Property(description = "Name of the request-scoped variable used to reference each feed item.")
+    @Property(description = "Name of the request-scoped variable used to reference each feed item.", required = true)
     public abstract String getVar();
 
     @Property(defaultValue = "Integer.MAX_VALUE", description = "Maximum number of feed items to display.")

@@ -49,10 +49,10 @@ public abstract class ColumnTogglerBase extends UIComponentBase implements Widge
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "A search expression resolving to a component to get attached to.")
+    @Property(description = "A search expression resolving to a component to get attached to.", required = true)
     public abstract String getTrigger();
 
-    @Property(description = "A search expression resolving to a DataTable component whose columns to be toggled.")
+    @Property(description = "A search expression resolving to a DataTable component whose columns to be toggled.", required = true)
     public abstract String getDatasource();
 
     @Property(defaultValue = "true", description = "Whether to show the select all checkbox.")

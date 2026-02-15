@@ -52,6 +52,6 @@ public abstract class TagCloudBase extends UIOutput implements Widget, StyleAwar
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Data model for the tag cloud component.")
+    @Property(description = "Data model for the tag cloud component.", required = true)
     public abstract org.primefaces.model.tagcloud.TagCloudModel getModel();
 }

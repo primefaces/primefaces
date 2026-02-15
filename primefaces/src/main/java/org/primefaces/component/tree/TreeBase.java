@@ -29,7 +29,7 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.UITree;
+import org.primefaces.component.api.UITreeImpl;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
@@ -49,7 +49,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "contextMenu", event = NodeSelectEvent.class, description = "Fires when context menu is invoked on a node."),
     @FacesBehaviorEvent(name = "filter", event = AjaxBehaviorEvent.class, description = "Fires when data is filtered.")
 })
-public abstract class TreeBase extends UITree implements Widget, RTLAware, StyleAware {
+public abstract class TreeBase extends UITreeImpl implements Widget, RTLAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -62,6 +62,11 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Style
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    @Override
+    public Object getLocalSelectedNodes() {
+        return getStateHelper().get(UITreeImpl.PropertyKeys.selection);
     }
 
     @Property(defaultValue = "false", description = "Specifies the ajax/client toggleMode.")

@@ -67,13 +67,13 @@ public abstract class GMapBase extends UIComponentBase implements Widget, StyleA
     @Property(description = "An org.primefaces.model.MapModel instance.")
     public abstract org.primefaces.model.map.MapModel getModel();
 
-    @Property(description = "There are four types of maps available: roadmap, satellite, hybrid, and terrain.")
+    @Property(description = "There are four types of maps available: roadmap, satellite, hybrid, and terrain.", required = true)
     public abstract String getType();
 
-    @Property(description = "Center point of the map.")
+    @Property(description = "Center point of the map.", required = true)
     public abstract String getCenter();
 
-    @Property(defaultValue = "8", description = "Defines the initial zoom level.")
+    @Property(defaultValue = "8", description = "Defines the initial zoom level.", required = true)
     public abstract int getZoom();
 
     @Property(defaultValue = "false", description = "Controls street view support.")

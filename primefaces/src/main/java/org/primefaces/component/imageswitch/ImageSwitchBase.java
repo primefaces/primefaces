@@ -46,7 +46,7 @@ public abstract class ImageSwitchBase extends UIComponentBase implements Widget,
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Name of the effect for transition.")
+    @Property(description = "Name of the effect for transition.", required = true)
     public abstract String getEffect();
 
     @Property(defaultValue = "500", description = "Speed of the effect in milliseconds.")

@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -65,6 +67,7 @@ import jakarta.faces.event.PhaseId;
 import jakarta.faces.event.PostValidateEvent;
 import jakarta.faces.event.PreValidateEvent;
 
+@FacesComponentBase
 public abstract class UITree extends UIComponentBase implements NamingContainer {
 
     public static final String SEPARATOR = "_";
@@ -83,18 +86,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     private List<TreeNode<?>> preselection;
 
     public enum PropertyKeys {
-        var,
-        selectionMode,
-        selection,
         saved,
-        value,
-        required,
-        requiredMessage,
-        skipChildren,
-        showUnselectableCheckbox,
-        nodeVar,
-        propagateSelectionDown,
-        propagateSelectionUp;
     }
 
     public String getRowKey() {
@@ -161,97 +153,44 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return rowNode;
     }
 
-    public java.lang.String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
+    public abstract Object getLocalSelectedNodes();
 
-    public void setVar(java.lang.String _var) {
-        getStateHelper().put(PropertyKeys.var, _var);
-    }
+    @Property(description = "Name of the request-scoped variable that'll be used to refer each treenode data during rendering.")
+    public abstract String getVar();
 
-    public java.lang.String getNodeVar() {
-        return (String) getStateHelper().eval(PropertyKeys.nodeVar, null);
-    }
+    @Property(description = "Name of the request-scoped variable that'll be used to refer current treenode using EL.")
+    public abstract String getNodeVar();
 
-    public void setNodeVar(java.lang.String _nodeVar) {
-        getStateHelper().put(PropertyKeys.nodeVar, _nodeVar);
-    }
+    @Property(description = "A TreeNode instance as the backing model.", required = true)
+    public abstract TreeNode<?> getValue();
 
-    public TreeNode<?> getValue() {
-        return (TreeNode<?>) getStateHelper().eval(PropertyKeys.value, null);
-    }
+    @Property(description = "Defines the selectionMode, valid values are \"single\", \"multiple\" and \"checkbox\".")
+    public abstract String getSelectionMode();
 
-    public void setValue(TreeNode<?> _value) {
-        getStateHelper().put(PropertyKeys.value, _value);
-    }
+    @Property(description = "TreeNode array to reference the selections.")
+    public abstract Object getSelection();
 
-    public java.lang.String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
-    }
+    public abstract void setSelection(Object selection);
 
-    public void setSelectionMode(java.lang.String _selectionMode) {
-        getStateHelper().put(PropertyKeys.selectionMode, _selectionMode);
-    }
+    @Property(description = "Validation constraint for selection.")
+    public abstract boolean isRequired();
 
-    public java.lang.Object getSelection() {
-        return getStateHelper().eval(PropertyKeys.selection, null);
-    }
+    @Property(description = "Message for required selection validation.")
+    public abstract String getRequiredMessage();
 
-    public void setSelection(java.lang.Object _selection) {
-        getStateHelper().put(PropertyKeys.selection, _selection);
-    }
+    @Property(defaultValue = "false",
+        description = "Ignores processing of children during lifecycle, improves performance if table only has output components.")
+    public abstract boolean isSkipChildren();
 
-    public boolean isRequired() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.required, false);
-    }
+    @Property(defaultValue = "false",
+        description = "Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node.")
+    public abstract boolean isShowUnselectableCheckbox();
 
-    public void setRequired(boolean _required) {
-        getStateHelper().put(PropertyKeys.required, _required);
-    }
+    @Property(defaultValue = "true", description = "Defines downwards selection propagation for checkbox mode.")
+    public abstract boolean isPropagateSelectionDown();
 
-    public java.lang.String getRequiredMessage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.requiredMessage, null);
-    }
-
-    public void setRequiredMessage(java.lang.String _requiredMessage) {
-        getStateHelper().put(PropertyKeys.requiredMessage, _requiredMessage);
-    }
-
-    public boolean isSkipChildren() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
-    }
-
-    public void setSkipChildren(boolean _skipChildren) {
-        getStateHelper().put(PropertyKeys.skipChildren, _skipChildren);
-    }
-
-    public boolean isShowUnselectableCheckbox() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showUnselectableCheckbox, false);
-    }
-
-    public void setShowUnselectableCheckbox(boolean _showUnselectableCheckbox) {
-        getStateHelper().put(PropertyKeys.showUnselectableCheckbox, _showUnselectableCheckbox);
-    }
-
-    public Object getLocalSelectedNodes() {
-        return getStateHelper().get(PropertyKeys.selection);
-    }
-
-    public boolean isPropagateSelectionDown() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionDown, true);
-    }
-
-    public void setPropagateSelectionDown(boolean _propagateSelectionDown) {
-        getStateHelper().put(PropertyKeys.propagateSelectionDown, _propagateSelectionDown);
-    }
-
-    public boolean isPropagateSelectionUp() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionUp, true);
-    }
-
-    public void setPropagateSelectionUp(boolean _propagateSelectionUp) {
-        getStateHelper().put(PropertyKeys.propagateSelectionUp, _propagateSelectionUp);
-    }
+    @Property(defaultValue = "true", description = "Defines upwards selection propagation for checkbox mode.")
+    public abstract boolean isPropagateSelectionUp();
 
     protected TreeNode<?> findTreeNode(TreeNode<?> searchRoot, String rowKey) {
         if (rowKey == null || searchRoot == null) {
@@ -342,7 +281,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public void initPreselection() {
-        ValueExpression ve = getValueExpression(UITree.PropertyKeys.selection.toString());
+        ValueExpression ve = getValueExpression("selection");
         if (ve != null) {
             if (preselection != null) {
                 if (isSelectionEnabled()) {
@@ -595,7 +534,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         boolean propagateSelectionDown = isPropagateSelectionDown();
         boolean propagateSelectionUp = isPropagateSelectionUp();
 
-        ValueExpression selectionVE = getValueExpression(UITree.PropertyKeys.selection.toString());
+        ValueExpression selectionVE = getValueExpression("selection");
         if (selectionVE != null) {
             Class<?> selectionType = getSelectionType();
             Object selection = getLocalSelectedNodes();
@@ -1153,7 +1092,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public Class<?> getSelectionType() {
-        ValueExpression selectionVE = getValueExpression(UITree.PropertyKeys.selection.toString());
+        ValueExpression selectionVE = getValueExpression("selection");
         return selectionVE == null ? null : selectionVE.getType(getFacesContext().getELContext());
     }
 

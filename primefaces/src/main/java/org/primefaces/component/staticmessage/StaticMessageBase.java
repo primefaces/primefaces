@@ -56,7 +56,7 @@ public abstract class StaticMessageBase extends UIComponentBase implements Widge
     @Property(description = "Defines whether html would be escaped or not.", defaultValue = "true")
     public abstract boolean isEscape();
 
-    @Property(description = "The severity of the message: success, info, error, warn, fatal.")
+    @Property(description = "The severity of the message: success, info, error, warn, fatal.", required = true)
     public abstract String getSeverity();
 
     @Property(description = "The message summary.")

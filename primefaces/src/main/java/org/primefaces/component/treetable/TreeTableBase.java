@@ -30,7 +30,7 @@ import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UITable;
-import org.primefaces.component.api.UITree;
+import org.primefaces.component.api.UITreeImpl;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.ColumnResizeEvent;
@@ -63,7 +63,7 @@ import org.primefaces.model.TreeNode;
     @FacesBehaviorEvent(name = "cellEditCancel", event = CellEditEvent.class, description = "Fired when cell edit is cancelled"),
     @FacesBehaviorEvent(name = "page", event = PageEvent.class, description = "Fired when pagination occurs")
 })
-public abstract class TreeTableBase extends UITree implements Widget, Pageable, StyleAware, UITable<TreeTableState> {
+public abstract class TreeTableBase extends UITreeImpl implements Widget, Pageable, StyleAware, UITable<TreeTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -84,6 +84,11 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    @Override
+    public Object getLocalSelectedNodes() {
+        return getStateHelper().get(UITreeImpl.PropertyKeys.selection);
     }
 
     @Override
@@ -108,8 +113,6 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
 
     @Property(description = "Style class of the table element.")
     public abstract String getTableStyleClass();
-
-
 
     @Property(defaultValue = "false", description = "Defines if columns can be resized or not.")
     public abstract boolean isResizableColumns();
