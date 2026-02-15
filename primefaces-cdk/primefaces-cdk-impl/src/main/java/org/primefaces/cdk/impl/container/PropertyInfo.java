@@ -42,8 +42,8 @@ public class PropertyInfo {
         this.annotation = annotation;
         this.getterElement = getterElement;
         this.setterElement = setterElement;
-        this.generateGetter = true;
-        this.generateSetter = true;
+        this.generateGetter = false;
+        this.generateSetter = false;
         this.typeName = typeName;
     }
 
@@ -52,8 +52,6 @@ public class PropertyInfo {
         this.annotation = annotation;
         this.getterElement = null;
         this.setterElement = null;
-        // in this case, this is an extracted property from a parent component without @Property annotation
-        // -> skip generation
         this.generateGetter = false;
         this.generateSetter = false;
         this.typeName = null;

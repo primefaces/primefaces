@@ -159,21 +159,21 @@ public class AnnotationProcessor extends AbstractProcessor {
         // Inject synthetic "id" property for components (not behaviors) when absent.
         if (!isBehavior) {
             if (!propsMap.containsKey("id")) {
-                Property property = new PropertyLiteral( "Unique identifier of the component in a namingContainer.",
+                Property property = new PropertyLiteral("Unique identifier of the component in a namingContainer.",
                         false,
                         "",
                         "generated", false, String.class, false);
                 propsMap.put("id", new PropertyInfo("id", property));
             }
             if (!propsMap.containsKey("binding")) {
-                Property property = new PropertyLiteral( "An EL expression referring to a server side UIComponent instance in a backing bean.",
+                Property property = new PropertyLiteral("An EL expression referring to a server side UIComponent instance in a backing bean.",
                         false,
                         "",
                         "generated", false, UIComponent.class, false);
                 propsMap.put("binding", new PropertyInfo("binding", property));
             }
             if (!propsMap.containsKey("rendered")) {
-                Property property = new PropertyLiteral( "Unique identifier of the component in a namingContainer.",
+                Property property = new PropertyLiteral("Unique identifier of the component in a namingContainer.",
                         false,
                         "",
                         "generated", false, Boolean.class, false);
