@@ -34,9 +34,9 @@ import org.primefaces.cdk.impl.container.PropertyInfo;
 import org.primefaces.cdk.impl.literal.FacesBehaviorEventLiteral;
 import org.primefaces.cdk.impl.literal.PropertyLiteral;
 
+import java.lang.reflect.Method;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -106,19 +106,6 @@ public class HierarchyScanner {
             HierarchyScannerResult nodeResult = scanSingleNode(node);
 
             for (PropertyInfo p : nodeResult.getProperties()) {
-                // we need to generate getter/setter if not yet implemented
-                if (node.getKind() == ElementKind.INTERFACE
-                        || p.getGetterElement() == null
-                        || p.getGetterElement().getModifiers().contains(Modifier.ABSTRACT)) {
-                    p.setGenerateGetter(true);
-                }
-                if (p.isGenerateGetter()
-                        || node.getKind() == ElementKind.INTERFACE
-                        || p.getSetterElement() == null
-                        || p.getSetterElement().getModifiers().contains(Modifier.ABSTRACT)) {
-                    p.setGenerateSetter(true);
-                }
-
                 PropertyInfo before = mergedProperties.get(p.getName());
                 if (before != null) {
                     // Back-fill blank metadata from the parent before the child wins.
@@ -206,11 +193,10 @@ public class HierarchyScanner {
      * Tries the {@code PropertyKeys} reflection strategy first, then the {@code @Property} annotation strategy.
      */
     private List<PropertyInfo> scanProperties(TypeElement element) {
-        List<PropertyInfo> result = new ArrayList<>();
         String className = element.getQualifiedName().toString();
         try {
             Class<?> clazz = Class.forName(className, false, processorClassLoader);
-            result.addAll(scanPropertyKeysViaReflection(clazz, element));
+            return scanPropertyKeysViaReflection(clazz, element);
         }
         catch (ClassNotFoundException ignored) {
             // in-round source — fall through to annotation scan
@@ -219,7 +205,7 @@ public class HierarchyScanner {
             messager.printMessage(Diagnostic.Kind.WARNING,
                     "Reflection failed for " + className + ": " + e.getMessage());
         }
-        return scanPropertyAnnotations(element, result);
+        return scanPropertyAnnotations(element);
     }
 
     /**
@@ -231,19 +217,42 @@ public class HierarchyScanner {
      * @return list of {@link PropertyInfo}, or {@code null} if no {@code PropertyKeys} enum exists
      */
     private List<PropertyInfo> scanPropertyKeysViaReflection(Class<?> clazz, TypeElement typeElement) {
+        List<PropertyInfo> result = new ArrayList<>();
+
+        for (Method method : clazz.getDeclaredMethods()) {
+            Property property = method.getAnnotation(Property.class);
+            if (property == null) {
+                continue;
+            }
+
+            String propertyName = extractPropertyName(method.getName());
+            PropertyInfo propertyInfo = new PropertyInfo(propertyName, property, null, null,
+                    method.getReturnType().getName());
+
+            if (clazz.isInterface()
+                    || java.lang.reflect.Modifier.isAbstract(method.getModifiers())) {
+                propertyInfo.setGenerateGetter(true);
+            }
+            if (propertyInfo.isGenerateGetter()
+                    || clazz.isInterface()) {
+                propertyInfo.setGenerateSetter(true);
+            }
+
+            result.add(propertyInfo);
+        }
+
+        messager.printMessage(Diagnostic.Kind.NOTE,
+                "Found " + result.size() + " @Properties in " + clazz.getName() + " via reflection");
+
         for (Class<?> inner : clazz.getDeclaredClasses()) {
             if (!inner.isEnum() || !"PropertyKeys".equals(inner.getSimpleName())) {
                 continue;
             }
 
-            List<PropertyInfo> result = new ArrayList<>();
             Object[] constants = inner.getEnumConstants();
             if (constants == null) {
-                return result;
+                continue;
             }
-
-            messager.printMessage(Diagnostic.Kind.NOTE,
-                    "Found " + constants.length + " PropertyKeys in " + clazz.getName() + " via reflection");
 
             for (Object constant : constants) {
                 String keyName = ((Enum<?>) constant).name();
@@ -265,10 +274,9 @@ public class HierarchyScanner {
 
                 result.add(new PropertyInfo(propertyName, property, getterElement, null, returnType));
             }
-
-            return result;
         }
-        return Collections.emptyList();
+
+        return result;
     }
 
     /**
@@ -319,7 +327,8 @@ public class HierarchyScanner {
     /**
      * Scans {@code @Property}-annotated getters via the Element API.
      */
-    private List<PropertyInfo> scanPropertyAnnotations(TypeElement element, List<PropertyInfo> result) {
+    private List<PropertyInfo> scanPropertyAnnotations(TypeElement element) {
+        List<PropertyInfo> result = new ArrayList<>();
         for (Element enclosed : element.getEnclosedElements()) {
             if (enclosed.getKind() != ElementKind.METHOD) {
                 continue;
@@ -339,18 +348,25 @@ public class HierarchyScanner {
 
             String propName = extractPropertyName(methodName);
             ExecutableElement setter = findSetterInElement(element, propName, method.getReturnType());
-            PropertyInfo propertyInfo = result.stream().filter(p -> p.getName().equals(propName)).findFirst().orElse(null);
-            if (propertyInfo == null) {
-                result.add(new PropertyInfo(propName,
-                        new PropertyLiteral(annotation.description(), annotation.required(), annotation.defaultValue(),
-                                annotation.implicitDefaultValue(), annotation.callSuper(), null, annotation.hide()),
-                        method, setter, method.getReturnType().toString()));
+
+            PropertyInfo propertyInfo = new PropertyInfo(propName,
+                    new PropertyLiteral(annotation.description(), annotation.required(), annotation.defaultValue(),
+                            annotation.implicitDefaultValue(), annotation.callSuper(), null, annotation.hide()),
+                    method, setter, method.getReturnType().toString());
+
+            if (element.getKind() == ElementKind.INTERFACE
+                    || propertyInfo.getGetterElement() == null
+                    || propertyInfo.getGetterElement().getModifiers().contains(Modifier.ABSTRACT)) {
+                propertyInfo.setGenerateGetter(true);
             }
-            else {
-                propertyInfo.setGetterElement(method);
-                propertyInfo.setSetterElement(setter);
-                propertyInfo.setTypeName(method.getReturnType().toString());
+            if (propertyInfo.isGenerateGetter()
+                    || element.getKind() == ElementKind.INTERFACE
+                    || propertyInfo.getSetterElement() == null
+                    || propertyInfo.getSetterElement().getModifiers().contains(Modifier.ABSTRACT)) {
+                propertyInfo.setGenerateSetter(true);
             }
+
+            result.add(propertyInfo);
         }
 
         return result;

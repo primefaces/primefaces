@@ -44,7 +44,6 @@ import com.google.testing.compile.CompilationSubject;
 import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -410,7 +409,6 @@ class HierarchyScannerTest {
      * already exists — but the interface description must be preserved.
      */
     @Test
-    @Disabled
     void threeLevelHierarchy_concreteGetterSilentlyInherited_noGetterGenerated() {
         JavaFileObject base = JavaFileObjects.forSourceString(
                 "org.primefaces.cdk.impl.subclass.Base",
