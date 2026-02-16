@@ -81,7 +81,7 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
             writer.writeAttribute("class", component.getStyleClass(), "styleClass");
         }
 
-        UIComponent menuFacet = component.getFacet("menu");
+        UIComponent menuFacet = component.getMenuFacet();
         if (FacetUtils.shouldRenderFacet(menuFacet)) {
             writer.startElement("div", null);
             StringBuilder cssMenu = new StringBuilder("timeline-menu");
@@ -132,7 +132,7 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
             groupsContent = new HashMap<>();
         }
 
-        UIComponent groupFacet = component.getFacet("group");
+        UIComponent groupFacet = component.getGroupFacet();
         int groupsSize = groups.size();
         if (groupFacet != null || groupsSize > 0) {
             if (groupsSize > 0) {
@@ -154,7 +154,7 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
         }
 
         writer.write(",data:[");
-        UIComponent eventTitleFacet = component.getFacet("eventTitle");
+        UIComponent eventTitleFacet = component.getEventTitleFacet();
         int size = events != null ? events.size() : 0;
         for (int i = 0; i < size; i++) {
             // encode events
@@ -196,7 +196,7 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
         if (component.getExtender() != null) {
             wb.nativeAttr("extender", component.getExtender());
         }
-        UIComponent menuFacet = component.getFacet("menu");
+        UIComponent menuFacet = component.getMenuFacet();
         if (FacetUtils.shouldRenderFacet(menuFacet)) {
             wb.attr("isMenuPresent", Boolean.TRUE);
         }
@@ -304,7 +304,7 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
             wb.attr("rtl", Boolean.TRUE);
         }
 
-        UIComponent loadingFacet = component.getFacet("loading");
+        UIComponent loadingFacet = component.getLoadingFacet();
         if (FacetUtils.shouldRenderFacet(loadingFacet)) {
             String loading = encodeAllToString(context, writer, fswHtml, loadingFacet);
             // writing facet content's

@@ -156,7 +156,7 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 
         for (UIComponent child : column.getChildren()) {
             if (child instanceof CellEditor) {
-                UIComponent inputFacet = child.getFacet("input");
+                UIComponent inputFacet = ((CellEditor) child).getInputFacet();
 
                 List<Object> values = new ArrayList<>(1);
 

@@ -167,7 +167,7 @@ public class DataListRenderer extends DataRenderer<DataList> {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId(context);
         boolean isDefinition = list.isDefinition();
-        UIComponent definitionFacet = list.getFacet("description");
+        UIComponent definitionFacet = list.getDescriptionFacet();
         boolean renderDefinition = isDefinition && FacetUtils.shouldRenderFacet(definitionFacet);
         String itemType = list.getItemType();
         String listClass = DataList.LIST_CLASS;

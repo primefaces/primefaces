@@ -24,8 +24,10 @@
 package org.primefaces.component.subtable;
 
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIData;
 
 @FacesComponentBase
@@ -53,4 +55,10 @@ public abstract class SubTableBase extends UIData {
     public boolean isRowStatePreserved() {
         return super.isRowStatePreserved();
     }
+
+    @Facet(description = "Header content of the subtable.")
+    public abstract UIComponent getHeaderFacet();
+
+    @Facet(description = "Footer content of the subtable.")
+    public abstract UIComponent getFooterFacet();
 }

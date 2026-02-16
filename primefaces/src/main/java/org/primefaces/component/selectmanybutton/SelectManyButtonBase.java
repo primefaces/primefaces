@@ -26,11 +26,13 @@ package org.primefaces.component.selectmanybutton;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UISelectMany;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
@@ -52,6 +54,9 @@ public abstract class SelectManyButtonBase extends UISelectMany implements Widge
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Custom content of the selectmanybutton.")
+    public abstract UIComponent getCustomFacet();
 
     @Property(description = "Flag indicating whether the component should be disabled.",
             defaultValue = "false")

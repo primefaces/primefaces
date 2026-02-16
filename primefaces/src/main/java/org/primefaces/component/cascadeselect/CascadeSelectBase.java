@@ -26,6 +26,7 @@ package org.primefaces.component.cascadeselect;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeSelect;
@@ -33,6 +34,7 @@ import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UISelectOne;
 
 @FacesComponentBase
@@ -53,6 +55,9 @@ public abstract class CascadeSelectBase extends UISelectOne implements Widget, I
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Content of the cascade select.")
+    public abstract UIComponent getContentFacet();
 
     @Property(description = "Name of the iterator variable that references each element in the data set.")
     public abstract String getVar();

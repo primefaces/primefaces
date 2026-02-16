@@ -389,13 +389,13 @@ public class TreeTable extends TreeTableBaseImpl {
 
     @Override
     public UIComponent getHeader() {
-        return getFacet("header");
+        return getHeaderFacet();
 
     }
 
     @Override
     public UIComponent getFooter() {
-        return getFacet("footer");
+        return getFooterFacet();
     }
 
     public void calculateFirst() {

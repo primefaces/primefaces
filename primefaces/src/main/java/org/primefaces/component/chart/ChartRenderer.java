@@ -97,7 +97,7 @@ public class ChartRenderer extends CoreRenderer<Chart> {
      * Allow value to be a property or a facet of raw JSON.
      */
     protected String renderConfig(FacesContext context, Chart component) throws IOException {
-        UIComponent facet = component.getFacet("value");
+        UIComponent facet = component.getValueFacet();
         if (FacetUtils.shouldRenderFacet(facet)) {
             // swap writers
             ResponseWriter originalWriter = context.getResponseWriter();

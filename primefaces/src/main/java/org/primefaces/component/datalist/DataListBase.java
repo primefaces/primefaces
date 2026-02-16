@@ -26,6 +26,7 @@ package org.primefaces.component.datalist;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.component.api.StyleAware;
@@ -33,6 +34,8 @@ import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.data.PageEvent;
+
+import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
@@ -55,6 +58,9 @@ public abstract class DataListBase extends UIPageableData
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Description content of the datalist.")
+    public abstract UIComponent getDescriptionFacet();
 
     @Property(defaultValue = "unordered", description = "Type of the list, valid values are \"unordered\", \"ordered\" and \"definition\".")
     public abstract String getType();

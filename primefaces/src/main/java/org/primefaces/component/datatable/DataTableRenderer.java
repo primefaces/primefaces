@@ -1094,7 +1094,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.startElement("td", null);
             writer.writeAttribute("colspan", table.getColumnsCountWithSpan(), null);
 
-            UIComponent emptyFacet = table.getFacet("emptyMessage");
+            UIComponent emptyFacet = table.getEmptyMessageFacet();
             if (FacetUtils.shouldRenderFacet(emptyFacet, table.isRenderEmptyFacets())) {
                 emptyFacet.encodeAll(context);
             }

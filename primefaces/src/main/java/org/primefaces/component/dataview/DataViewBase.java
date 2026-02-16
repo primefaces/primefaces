@@ -26,6 +26,7 @@ package org.primefaces.component.dataview;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.MultiViewStateAware;
@@ -33,6 +34,8 @@ import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.data.PageEvent;
+
+import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
@@ -53,6 +56,12 @@ public abstract class DataViewBase extends UIPageableData
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Header content of the dataview.")
+    public abstract UIComponent getHeaderFacet();
+
+    @Facet(description = "Empty message content of the dataview.")
+    public abstract UIComponent getEmptyMessageFacet();
 
     @Property(defaultValue = "list", description = "Layout of the items, valid values are \"list\" and \"grid\".")
     public abstract String getLayout();

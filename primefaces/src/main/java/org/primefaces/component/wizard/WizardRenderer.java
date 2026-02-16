@@ -241,7 +241,7 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
             if (child instanceof Tab && child.isRendered()) {
                 Tab tab = (Tab) child;
                 String title = tab.getTitle();
-                UIComponent titleFacet = tab.getFacet("title");
+                UIComponent titleFacet = tab.getTitleFacet();
                 boolean active = (!currentFound) && (currentStep == null || tab.getId().equals(currentStep));
                 String titleStyleClass = getStyleClassBuilder(context)
                         .add(active, Wizard.ACTIVE_STEP_CLASS, Wizard.STEP_CLASS)

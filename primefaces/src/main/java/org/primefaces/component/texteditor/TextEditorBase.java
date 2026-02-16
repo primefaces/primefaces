@@ -26,6 +26,7 @@ package org.primefaces.component.texteditor;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.StyleAware;
@@ -33,6 +34,7 @@ import org.primefaces.component.api.Widget;
 
 import java.util.List;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesComponentBase
@@ -67,6 +69,9 @@ public abstract class TextEditorBase extends PrimeUIInput implements Widget, Sty
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Toolbar content of the texteditor.")
+    public abstract UIComponent getToolbarFacet();
 
     @Property(description = "Height of the editor.")
     public abstract String getHeight();
