@@ -24,13 +24,12 @@
 package org.primefaces.component.video;
 
 import org.primefaces.cdk.api.FacesComponentInfo;
-import org.primefaces.component.api.UIMediaBaseImpl;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Video.COMPONENT_TYPE, namespace = Video.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "Video is a media component that embeds a video player.")
-public class Video extends UIMediaBaseImpl {
+public class Video extends VideoBaseImpl {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String DEFAULT_RENDERER = "org.primefaces.component.VideoRenderer";
