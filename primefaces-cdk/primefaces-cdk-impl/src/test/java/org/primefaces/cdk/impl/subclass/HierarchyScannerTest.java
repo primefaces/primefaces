@@ -377,8 +377,7 @@ class HierarchyScannerTest {
 
         PropertyInfo forProp = findPropertyByName(result, "for");
         Assertions.assertNotNull(forProp);
-        Assertions.assertTrue(forProp.isGenerateGetter(), "getter must be generated for abstract ancestor");
-        Assertions.assertNotNull(forProp.getGetterElement(), "getterElement must be set");
+        Assertions.assertFalse(forProp.isImplementedGetterExists());
     }
 
     /**
@@ -399,7 +398,7 @@ class HierarchyScannerTest {
         PropertyInfo forProp = findPropertyByName(result, "for");
         Assertions.assertNotNull(forProp);
         Assertions.assertTrue(forProp.getAnnotation().hide(), "hide=true from BaseClassOverrideProperty must win");
-        Assertions.assertTrue(forProp.isGenerateGetter(),     "abstract re-declaration must generate getter");
+        Assertions.assertFalse(forProp.isImplementedGetterExists(),     "abstract re-declaration must generate getter");
     }
 
     /**
@@ -422,8 +421,24 @@ class HierarchyScannerTest {
         Assertions.assertNotNull(forProp);
         Assertions.assertEquals("test", forProp.getAnnotation().description(),
                 "description from AdditionalPropertiesInterface must win");
-        Assertions.assertFalse(forProp.isGenerateGetter(), "concrete SuperBaseClass getter must suppress generation");
-        Assertions.assertFalse(forProp.isGenerateSetter(), "concrete SuperBaseClass setter must suppress generation");
+        Assertions.assertTrue(forProp.isGetterExists(), "concrete SuperBaseClass getter must suppress generation");
+        Assertions.assertTrue(forProp.isSetterExists(), "concrete SuperBaseClass setter must suppress generation");
+    }
+
+    @Test
+    void asdasd() {
+        JavaFileObject base = JavaFileObjects.forSourceString(
+                "org.primefaces.cdk.impl.subclass.Base",
+                "package org.primefaces.cdk.impl.subclass;\n"
+                        + "public abstract class Base extends SuperBaseClass implements AdditionalPropertiesInterface {\n"
+                        + "}\n");
+
+        HierarchyScannerResult result = compile("org.primefaces.cdk.impl.subclass.Base", base);
+
+        PropertyInfo forProp = findPropertyByName(result, "for");
+        Assertions.assertNotNull(forProp);
+        Assertions.assertTrue(forProp.isGetterExists(), "concrete SuperBaseClass getter must suppress generation");
+        Assertions.assertTrue(forProp.isSetterExists(), "concrete SuperBaseClass setter must suppress generation");
     }
 
     private Set<String> propertyNames(HierarchyScannerResult result) {

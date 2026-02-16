@@ -67,6 +67,6 @@ public abstract class OutputPanelBase extends UIPanel implements Widget, StyleAw
     public abstract String getLayout();
 
     @Property(description = "Whether the panel content is loaded.")
-    public abstract Boolean isLoaded();
+    public abstract Boolean getLoaded();
 
 }

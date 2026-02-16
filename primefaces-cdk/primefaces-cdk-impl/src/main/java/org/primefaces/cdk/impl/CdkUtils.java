@@ -100,4 +100,11 @@ public final class CdkUtils {
             default:                return "";
         }
     }
+
+    /**
+     * Capitalises the first character of {@code s}.
+     */
+    public static String capitalize(String s) {
+        return (s == null || s.isEmpty()) ? s : Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
 }

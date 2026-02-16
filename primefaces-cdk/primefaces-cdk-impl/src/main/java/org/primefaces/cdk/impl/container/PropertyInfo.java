@@ -25,35 +25,25 @@ package org.primefaces.cdk.impl.container;
 
 import org.primefaces.cdk.api.Property;
 
-import javax.lang.model.element.ExecutableElement;
-
 public class PropertyInfo {
 
     private String name;
     private Property annotation;
-    private ExecutableElement getterElement;
-    private ExecutableElement setterElement;
-    private boolean generateGetter;
-    private boolean generateSetter;
+    private boolean getterExists;
+    private boolean implementedGetterExists;
+    private boolean setterExists;
+    private boolean implementedSetterExists;
     private String typeName;
 
-    public PropertyInfo(String name, Property annotation, ExecutableElement getterElement, ExecutableElement setterElement, String typeName) {
+    public PropertyInfo(String name, Property annotation, String typeName) {
         this.name = name;
         this.annotation = annotation;
-        this.getterElement = getterElement;
-        this.setterElement = setterElement;
-        this.generateGetter = false;
-        this.generateSetter = false;
         this.typeName = typeName;
     }
 
     public PropertyInfo(String name, Property annotation) {
         this.name = name;
         this.annotation = annotation;
-        this.getterElement = null;
-        this.setterElement = null;
-        this.generateGetter = false;
-        this.generateSetter = false;
         this.typeName = null;
     }
 
@@ -73,36 +63,36 @@ public class PropertyInfo {
         this.annotation = annotation;
     }
 
-    public ExecutableElement getGetterElement() {
-        return getterElement;
+    public boolean isGetterExists() {
+        return getterExists;
     }
 
-    public void setGetterElement(ExecutableElement getterElement) {
-        this.getterElement = getterElement;
+    public void setGetterExists(boolean getterExists) {
+        this.getterExists = getterExists;
     }
 
-    public ExecutableElement getSetterElement() {
-        return setterElement;
+    public boolean isSetterExists() {
+        return setterExists;
     }
 
-    public void setSetterElement(ExecutableElement setterElement) {
-        this.setterElement = setterElement;
+    public void setSetterExists(boolean setterExists) {
+        this.setterExists = setterExists;
     }
 
-    public boolean isGenerateGetter() {
-        return generateGetter;
+    public boolean isImplementedGetterExists() {
+        return implementedGetterExists;
     }
 
-    public void setGenerateGetter(boolean generateGetter) {
-        this.generateGetter = generateGetter;
+    public void setImplementedGetterExists(boolean implementedGetterExists) {
+        this.implementedGetterExists = implementedGetterExists;
     }
 
-    public boolean isGenerateSetter() {
-        return generateSetter;
+    public boolean isImplementedSetterExists() {
+        return implementedSetterExists;
     }
 
-    public void setGenerateSetter(boolean generateSetter) {
-        this.generateSetter = generateSetter;
+    public void setImplementedSetterExists(boolean implementedSetterExists) {
+        this.implementedSetterExists = implementedSetterExists;
     }
 
     public String getTypeName() {
@@ -111,5 +101,16 @@ public class PropertyInfo {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    @Override
+    public String toString() {
+        return "PropertyInfo{" +
+                "name='" + name + '\'' +
+                ", annotation=" + annotation +
+                ", getterExists=" + getterExists +
+                ", setterExists=" + setterExists +
+                ", typeName='" + typeName + '\'' +
+                '}';
     }
 }

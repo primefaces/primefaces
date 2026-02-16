@@ -34,5 +34,6 @@ public class SuperBaseClass {
     }
 
     public void setFor(String value) {
+
     }
 }
