@@ -335,30 +335,6 @@ public class HierarchyScanner {
     }
 
     /**
-     * Returns the {@link ExecutableElement} for the getter of {@code propertyName}, or {@code null} if not declared here.
-     */
-    private ExecutableElement findGetterElement(TypeElement element, String propertyName) {
-        String[] names = {
-            "get" + CdkUtils.capitalize(propertyName),
-            "is" + CdkUtils.capitalize(propertyName)
-        };
-        for (Element enclosed : element.getEnclosedElements()) {
-            if (enclosed.getKind() != ElementKind.METHOD) {
-                continue;
-            }
-            ExecutableElement method = (ExecutableElement) enclosed;
-            if (method.getParameters().isEmpty()) {
-                for (String name : names) {
-                    if (name.equals(method.getSimpleName().toString())) {
-                        return method;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
      * Scans {@code @Property}-annotated getters via the Element API.
      */
     private List<PropertyInfo> scanPropertyAnnotations(TypeElement element) {
