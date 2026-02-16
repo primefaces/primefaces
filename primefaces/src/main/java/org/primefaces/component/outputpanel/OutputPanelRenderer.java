@@ -119,8 +119,8 @@ public class OutputPanelRenderer extends CoreRenderer<OutputPanel> {
         if (!component.isDeferred()) {
             return false;
         }
-        if (component.isLoaded() != null) {
-            return !component.isLoaded();
+        if (component.getLoaded() != null) {
+            return !component.getLoaded();
         }
         return !context.getPartialViewContext().isAjaxRequest();
     }

@@ -36,7 +36,7 @@ import org.primefaces.cdk.api.Property;
  *   <li>{@link #getCounter()} - Returns the id of the label component where the character count is displayed.</li>
  *   <li>{@link #getCounterTemplate()} - Returns the template string for the counter display; supports placeholders
  *   such as <code>{0}</code> for remaining/entered characters and <code>{1}</code> for total length.</li>
- *   <li>{@link #getCountBytesAsChars()} - Determines whether to count bytes (UTF-8/16) instead of characters.</li>
+ *   <li>{@link #isCountBytesAsChars()} - Determines whether to count bytes (UTF-8/16) instead of characters.</li>
  * </ul>
  */
 public interface CountCharactersAware {
@@ -48,5 +48,5 @@ public interface CountCharactersAware {
     String getCounterTemplate();
 
     @Property(description = "Specifies whether to count bytes (UTF-8/16) instead of characters.", defaultValue = "false")
-    boolean getCountBytesAsChars();
+    boolean isCountBytesAsChars();
 }

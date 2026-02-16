@@ -128,7 +128,7 @@ public class InputTextareaRenderer extends InputRenderer<InputTextarea> {
 
             wb.attr("counter", counterComponent.getClientId(context))
                     .attr("counterTemplate", component.getCounterTemplate(), null)
-                    .attr("countBytesAsChars", component.getCountBytesAsChars());
+                    .attr("countBytesAsChars", component.isCountBytesAsChars());
         }
 
         if (component.getCompleteMethod() != null) {

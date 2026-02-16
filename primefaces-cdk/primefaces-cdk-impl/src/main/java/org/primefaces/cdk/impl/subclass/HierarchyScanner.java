@@ -106,6 +106,7 @@ public class HierarchyScanner {
             HierarchyScannerResult nodeResult = scanSingleNode(node);
 
             for (PropertyInfo p : nodeResult.getProperties()) {
+
                 PropertyInfo before = mergedProperties.get(p.getName());
                 if (before != null) {
                     // Back-fill blank metadata from the parent before the child wins.
@@ -120,6 +121,16 @@ public class HierarchyScanner {
                                 p.getAnnotation().callSuper(),
                                 p.getAnnotation().type(),
                                 p.getAnnotation().hide()));
+                    }
+
+                    if (!p.isGetterExists() && before.isImplementedGetterExists()) {
+                        p.setGetterExists(true);
+                        p.setImplementedGetterExists(true);
+                    }
+
+                    if (!p.isSetterExists() && before.isImplementedSetterExists()) {
+                        p.setSetterExists(true);
+                        p.setImplementedSetterExists(true);
                     }
                 }
 
@@ -216,33 +227,31 @@ public class HierarchyScanner {
      *
      * @return list of {@link PropertyInfo}, or {@code null} if no {@code PropertyKeys} enum exists
      */
-    private List<PropertyInfo> scanPropertyKeysViaReflection(Class<?> clazz, TypeElement typeElement) {
+    private List<PropertyInfo> scanPropertyKeysViaReflection(Class<?> clazz, TypeElement typeElement) throws ClassNotFoundException {
         List<PropertyInfo> result = new ArrayList<>();
 
-        for (Method method : clazz.getDeclaredMethods()) {
-            Property property = method.getAnnotation(Property.class);
+        for (Method getter : clazz.getDeclaredMethods()) {
+            Property property = getter.getAnnotation(Property.class);
             if (property == null) {
                 continue;
             }
 
-            String propertyName = extractPropertyName(method.getName());
-            PropertyInfo propertyInfo = new PropertyInfo(propertyName, property, null, null,
-                    method.getReturnType().getName());
+            String propertyName = extractPropertyName(getter.getName());
+            PropertyInfo propertyInfo = new PropertyInfo(propertyName, property, getter.getReturnType().getName());
 
-            if (clazz.isInterface()
-                    || java.lang.reflect.Modifier.isAbstract(method.getModifiers())) {
-                propertyInfo.setGenerateGetter(true);
-            }
-            if (propertyInfo.isGenerateGetter()
-                    || clazz.isInterface()) {
-                propertyInfo.setGenerateSetter(true);
-            }
+            Method setter = getSetter(clazz, propertyName, getter.getReturnType());
+
+            propertyInfo.setGetterExists(true);
+            propertyInfo.setImplementedGetterExists(!clazz.isInterface()
+                    && !java.lang.reflect.Modifier.isAbstract(getter.getModifiers()));
+
+            propertyInfo.setSetterExists(setter != null);
+            propertyInfo.setImplementedSetterExists(setter != null
+                    && !clazz.isInterface()
+                    && !java.lang.reflect.Modifier.isAbstract(setter.getModifiers()));
 
             result.add(propertyInfo);
         }
-
-        messager.printMessage(Diagnostic.Kind.NOTE,
-                "Found " + result.size() + " @Properties in " + clazz.getName() + " via reflection");
 
         for (Class<?> inner : clazz.getDeclaredClasses()) {
             if (!inner.isEnum() || !"PropertyKeys".equals(inner.getSimpleName())) {
@@ -261,43 +270,68 @@ public class HierarchyScanner {
                 }
 
                 String propertyName = escapePropertyName(keyName);
-                String returnType = resolveReturnTypeViaReflection(clazz, typeElement, propertyName);
+
+                Method getter = getGetter(clazz, propertyName);
+                if (getter == null) {
+                    continue;
+                }
+
+                Method setter = getSetter(clazz, propertyName, getter.getReturnType());
+
                 Property property = new PropertyLiteral(
                         CdkUtils.getWellKnownDescription(propertyName),
                         false,
                         CdkUtils.getWellKnownDefaultValue(propertyName),
                         "", false, null, false);
 
-                ExecutableElement getterElement = isGetterConcrete(clazz, propertyName)
-                        ? null
-                        : findGetterElement(typeElement, propertyName);
+                PropertyInfo propertyInfo = new PropertyInfo(propertyName, property, getter.getReturnType().getName());
 
-                result.add(new PropertyInfo(propertyName, property, getterElement, null, returnType));
+                propertyInfo.setGetterExists(true);
+                propertyInfo.setImplementedGetterExists(!clazz.isInterface()
+                        && !java.lang.reflect.Modifier.isAbstract(getter.getModifiers()));
+
+                propertyInfo.setSetterExists(setter != null);
+                propertyInfo.setImplementedSetterExists(setter != null
+                        && !clazz.isInterface()
+                        && !java.lang.reflect.Modifier.isAbstract(setter.getModifiers()));
+
+                result.add(propertyInfo);
             }
         }
+
+        //messager.printMessage(Diagnostic.Kind.NOTE,
+        //        "Found " + result.size() + " @Properties in " + clazz.getName() + " via reflection");
 
         return result;
     }
 
-    /**
-     * Returns {@code true} if a concrete (non-abstract) getter for {@code propertyName}
-     * exists anywhere in the {@code clazz} superclass chain.
-     */
-    private boolean isGetterConcrete(Class<?> clazz, String propertyName) {
+    private Method getGetter(Class<?> clazz, String propertyName) {
         String[] names = {
-            "get" + capitalize(propertyName),
-            "is" + capitalize(propertyName)
+            "get" + CdkUtils.capitalize(propertyName),
+            "is" + CdkUtils.capitalize(propertyName)
         };
         for (Class<?> c = clazz; c != null && !Object.class.equals(c); c = c.getSuperclass()) {
             for (String name : names) {
                 try {
-                    return !java.lang.reflect.Modifier.isAbstract(c.getDeclaredMethod(name).getModifiers());
+                    return c.getDeclaredMethod(name);
                 }
                 catch (NoSuchMethodException ignored) {
                 }
             }
         }
-        return false;
+        return null;
+    }
+
+    private Method getSetter(Class<?> clazz, String propertyName, Class<?> type) {
+        String name = "set" + CdkUtils.capitalize(propertyName);
+        for (Class<?> c = clazz; c != null && !Object.class.equals(c); c = c.getSuperclass()) {
+            try {
+                return c.getDeclaredMethod(name, type);
+            }
+            catch (NoSuchMethodException ignored) {
+            }
+        }
+        return null;
     }
 
     /**
@@ -305,8 +339,8 @@ public class HierarchyScanner {
      */
     private ExecutableElement findGetterElement(TypeElement element, String propertyName) {
         String[] names = {
-            "get" + capitalize(propertyName),
-            "is" + capitalize(propertyName)
+            "get" + CdkUtils.capitalize(propertyName),
+            "is" + CdkUtils.capitalize(propertyName)
         };
         for (Element enclosed : element.getEnclosedElements()) {
             if (enclosed.getKind() != ElementKind.METHOD) {
@@ -333,13 +367,13 @@ public class HierarchyScanner {
             if (enclosed.getKind() != ElementKind.METHOD) {
                 continue;
             }
-            ExecutableElement method = (ExecutableElement) enclosed;
-            Property annotation = method.getAnnotation(Property.class);
+            ExecutableElement getter = (ExecutableElement) enclosed;
+            Property annotation = getter.getAnnotation(Property.class);
             if (annotation == null) {
                 continue;
             }
 
-            String methodName = method.getSimpleName().toString();
+            String methodName = getter.getSimpleName().toString();
             if (!isGetterName(methodName)) {
                 messager.printMessage(Diagnostic.Kind.WARNING,
                         "@Property on non-getter '" + methodName + "' in " + element.getQualifiedName() + " — ignored");
@@ -347,24 +381,21 @@ public class HierarchyScanner {
             }
 
             String propName = extractPropertyName(methodName);
-            ExecutableElement setter = findSetterInElement(element, propName, method.getReturnType());
+            ExecutableElement setter = findSetterInElement(element, propName, getter.getReturnType());
 
             PropertyInfo propertyInfo = new PropertyInfo(propName,
                     new PropertyLiteral(annotation.description(), annotation.required(), annotation.defaultValue(),
                             annotation.implicitDefaultValue(), annotation.callSuper(), null, annotation.hide()),
-                    method, setter, method.getReturnType().toString());
+                    getter.getReturnType().toString());
 
-            if (element.getKind() == ElementKind.INTERFACE
-                    || propertyInfo.getGetterElement() == null
-                    || propertyInfo.getGetterElement().getModifiers().contains(Modifier.ABSTRACT)) {
-                propertyInfo.setGenerateGetter(true);
-            }
-            if (propertyInfo.isGenerateGetter()
-                    || element.getKind() == ElementKind.INTERFACE
-                    || propertyInfo.getSetterElement() == null
-                    || propertyInfo.getSetterElement().getModifiers().contains(Modifier.ABSTRACT)) {
-                propertyInfo.setGenerateSetter(true);
-            }
+            propertyInfo.setGetterExists(true);
+            propertyInfo.setImplementedGetterExists(element.getKind() != ElementKind.INTERFACE
+                    && !getter.getModifiers().contains(Modifier.ABSTRACT));
+
+            propertyInfo.setSetterExists(setter != null);
+            propertyInfo.setImplementedSetterExists(setter != null
+                    && element.getKind() != ElementKind.INTERFACE
+                    && !setter.getModifiers().contains(Modifier.ABSTRACT));
 
             result.add(propertyInfo);
         }
@@ -491,8 +522,8 @@ public class HierarchyScanner {
      */
     private String resolveReturnTypeViaReflection(Class<?> clazz, TypeElement typeElement, String propertyName) {
         String[] names = {
-            "get" + capitalize(propertyName),
-            "is" + capitalize(propertyName)
+            "get" + CdkUtils.capitalize(propertyName),
+            "is" + CdkUtils.capitalize(propertyName)
         };
         for (Class<?> c = clazz; c != null && !Object.class.equals(c); c = c.getSuperclass()) {
             for (String name : names) {
@@ -511,8 +542,8 @@ public class HierarchyScanner {
      */
     private String resolveReturnTypeViaElementApi(TypeElement element, String propertyName) {
         String[] names = {
-            "get" + capitalize(propertyName),
-            "is" + capitalize(propertyName)
+            "get" + CdkUtils.capitalize(propertyName),
+            "is" + CdkUtils.capitalize(propertyName)
         };
         for (Element enclosed : element.getEnclosedElements()) {
             if (enclosed.getKind() != ElementKind.METHOD) {
@@ -535,7 +566,7 @@ public class HierarchyScanner {
      * Returns {@code null} if absent — the generator walks the full hierarchy separately.
      */
     private ExecutableElement findSetterInElement(TypeElement element, String propertyName, TypeMirror getterReturnType) {
-        String expectedName = "set" + capitalize(propertyName);
+        String expectedName = "set" + CdkUtils.capitalize(propertyName);
         for (Element enclosed : element.getEnclosedElements()) {
             if (enclosed.getKind() != ElementKind.METHOD) {
                 continue;
@@ -611,12 +642,5 @@ public class HierarchyScanner {
      */
     static String decap(String s) {
         return (s == null || s.isEmpty()) ? s : Character.toLowerCase(s.charAt(0)) + s.substring(1);
-    }
-
-    /**
-     * Capitalises the first character of {@code s}.
-     */
-    static String capitalize(String s) {
-        return (s == null || s.isEmpty()) ? s : Character.toUpperCase(s.charAt(0)) + s.substring(1);
     }
 }

@@ -62,7 +62,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
@@ -212,46 +211,6 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     /**
-     * Walks the full class hierarchy (superclasses only — interfaces don't have setters)
-     * to find a setter matching {@code propertyName} and {@code getterType}.
-     */
-    private ExecutableElement findSetter(TypeElement rootClass, String propertyName,
-                                         TypeMirror getterType) {
-        String expectedName = "set" + HierarchyScanner.capitalize(propertyName);
-        TypeElement current = rootClass;
-
-        while (current != null
-                && !current.getQualifiedName().toString().equals("java.lang.Object")) {
-
-            for (Element enclosed : current.getEnclosedElements()) {
-                if (enclosed.getKind() != ElementKind.METHOD) {
-                    continue;
-                }
-                ExecutableElement method = (ExecutableElement) enclosed;
-                if (!method.getSimpleName().toString().equals(expectedName)) {
-                    continue;
-                }
-                if (method.getParameters().size() != 1) {
-                    continue;
-                }
-                if (method.getParameters().get(0).asType().toString()
-                        .equals(getterType.toString())) {
-                    return method;
-                }
-            }
-
-            TypeMirror sup = current.getSuperclass();
-            if (sup == null || sup.toString().equals("java.lang.Object")) {
-                break;
-            }
-            Element supElement = processingEnv.getTypeUtils().asElement(sup);
-            current = (supElement instanceof TypeElement) ? (TypeElement) supElement : null;
-        }
-
-        return null;
-    }
-
-    /**
      * Scans the {@link PrimeComponent} interface for {@code @Property} and {@code @Facet}
      * annotations that every component must expose, adding any that are not already present.
      */
@@ -281,9 +240,8 @@ public class AnnotationProcessor extends AbstractProcessor {
             if (propertyAnnotation != null) {
                 String propName = HierarchyScanner.extractPropertyName(methodName);
                 if (!propsMap.containsKey(propName)) {
-                    propsMap.put(propName, new PropertyInfo(propName,
-                            propertyAnnotation,
-                            method, null, method.getReturnType().toString()));
+                    propsMap.put(propName,
+                            new PropertyInfo(propName, propertyAnnotation, method.getReturnType().toString()));
                 }
             }
 
@@ -385,7 +343,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("    public enum PropertyKeys implements " + PrimePropertyKeys.class.getName() + " {");
         for (int i = 0; i < props.size(); i++) {
             PropertyInfo prop = props.get(i);
-            String type = prop.getAnnotation().type() == null ? prop.getTypeName() : prop.getAnnotation().type().getName();
+            String type = prop.getTypeName() == null ? prop.getAnnotation().type().getName() : prop.getTypeName();
             String description = prop.getAnnotation().description().replace("\"", "\\\"");
             String defaultValue = prop.getAnnotation().defaultValue().replace("\"", "\\\"");
             if (defaultValue.isEmpty()) {
@@ -590,12 +548,17 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void writeGetter(PrintWriter w, PropertyInfo p) {
-        if (!p.isGenerateGetter() || p.getGetterElement() == null
-                || p.getAnnotation().callSuper()) {
+        if (p.isImplementedGetterExists() || p.getAnnotation().callSuper()) {
             return;
         }
-        String type = p.getAnnotation().type() == null ? p.getTypeName() : p.getAnnotation().type().toString();
-        String methodName = p.getGetterElement().getSimpleName().toString();
+        if ("id".equals(p.getName()) || "binding".equals(p.getName()) || "rendered".equals(p.getName())) {
+            return;
+        }
+
+        String type = p.getTypeName() == null ? p.getAnnotation().type().getName() : p.getTypeName();
+        String methodName = "boolean".equals(type)
+                ? "is" + CdkUtils.capitalize(p.getName())
+                : "get" + CdkUtils.capitalize(p.getName());
         String defaultValue = p.getAnnotation().defaultValue();
         if (defaultValue == null || defaultValue.isBlank()) {
             defaultValue = getDefaultValueForPrimitive(type);
@@ -619,16 +582,17 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void writeSetter(PrintWriter w, PropertyInfo p) {
-        if (!p.isGenerateSetter() || p.getAnnotation().callSuper()) {
+        if (p.isImplementedSetterExists() || p.getAnnotation().callSuper()) {
             return;
         }
-        String setterName = "set" + HierarchyScanner.capitalize(p.getName());
-        String type = p.getAnnotation().type() == null ? p.getTypeName() : p.getAnnotation().type().toString();
+        if ("id".equals(p.getName()) || "binding".equals(p.getName()) || "rendered".equals(p.getName())) {
+            return;
+        }
+
+        String setterName = "set" + CdkUtils.capitalize(p.getName());
+        String type = p.getTypeName() == null ? p.getAnnotation().type().getName() : p.getTypeName();
         String param = escapeKeyword(p.getName());
 
-        if (p.getSetterElement() != null) {
-            w.println("    @Override");
-        }
         w.println("    public void " + setterName + "(" + type + " " + param + ") {");
         w.println("        getStateHelper().put(PropertyKeys." + escapeKeyword(p.getName())
                 + ", " + param + ");");
