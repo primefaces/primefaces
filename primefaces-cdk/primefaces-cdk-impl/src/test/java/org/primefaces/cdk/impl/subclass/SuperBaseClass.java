@@ -21,32 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.media;
+package org.primefaces.cdk.impl.subclass;
 
-import org.primefaces.cdk.api.FacesComponentBase;
-import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.UIMediaBase;
+public class SuperBaseClass {
 
-@FacesComponentBase
-public abstract class MediaBase extends UIMediaBase {
-
-    public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.MediaRenderer";
-
-    public MediaBase() {
-        setRendererType(DEFAULT_RENDERER);
+    enum PropertyKeys {
+        _for
     }
 
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
+    public String getFor() {
+        return null;
     }
 
-    @Property(description = "Zoom level for PDF viewer.")
-    public abstract String getZoom();
+    public void setFor(String value) {
 
-    @Property(description = "View mode for PDF viewer.")
-    public abstract String getView();
-
+    }
 }

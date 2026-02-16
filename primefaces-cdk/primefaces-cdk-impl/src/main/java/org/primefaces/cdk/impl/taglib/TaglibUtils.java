@@ -32,6 +32,11 @@ import org.primefaces.cdk.api.Function;
 import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.cdk.impl.CdkUtils;
+import org.primefaces.cdk.impl.container.BehaviorInfo;
+import org.primefaces.cdk.impl.container.ComponentInfo;
+import org.primefaces.cdk.impl.container.FunctionInfo;
+import org.primefaces.cdk.impl.container.TagHandlerInfo;
+import org.primefaces.cdk.impl.literal.PropertyLiteral;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -43,7 +48,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import jakarta.faces.component.FacesComponent;
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.FacesBehavior;
 import jakarta.faces.view.facelets.ComponentHandler;
 import jakarta.faces.view.facelets.TagHandler;
@@ -163,7 +167,7 @@ public final class TaglibUtils {
         return functions;
     }
 
-    public static ComponentInfo getComponentInfo(Class<?> componentClass) throws IllegalAccessException {
+    public static ComponentInfo getComponentInfo(Class<?> componentClass) throws IllegalAccessException, ClassNotFoundException {
         ComponentInfo info = new ComponentInfo(componentClass,
                 getComponentDescription(componentClass),
                 getComponentType(componentClass),
@@ -171,15 +175,12 @@ public final class TaglibUtils {
                 getTagName(componentClass),
                 getComponentHandlerClass(componentClass));
 
-        for (Map.Entry<String, PrimePropertyKeys> value : findAllProperties(componentClass, TagType.COMPONENT).entrySet()) {
-            PropertyInfo pi = TaglibUtils.findPropertyInfo(componentClass, value.getKey(), value.getValue(), TagType.COMPONENT);
-            info.getProperties().add(pi);
-        }
+        info.setProperties(findAllProperties(componentClass, TagType.COMPONENT));
 
         return info;
     }
 
-    public static BehaviorInfo getBehaviorInfo(Class<?> behaviorClass) throws IllegalAccessException {
+    public static BehaviorInfo getBehaviorInfo(Class<?> behaviorClass) throws IllegalAccessException, ClassNotFoundException {
         BehaviorInfo info = new BehaviorInfo(behaviorClass,
                 getBehaviorDescription(behaviorClass),
                 getBehaviorId(behaviorClass),
@@ -187,23 +188,17 @@ public final class TaglibUtils {
                 getTagName(behaviorClass),
                 getBehaviorHandlerClass(behaviorClass));
 
-        for (Map.Entry<String, PrimePropertyKeys> value : findAllProperties(behaviorClass, TagType.BEHAVIOR).entrySet()) {
-            PropertyInfo pi = TaglibUtils.findPropertyInfo(behaviorClass, value.getKey(), value.getValue(), TagType.BEHAVIOR);
-            info.getProperties().add(pi);
-        }
+        info.setProperties(findAllProperties(behaviorClass, TagType.BEHAVIOR));
 
         return info;
     }
 
-    public static TagHandlerInfo getTagHandlerInfo(Class<?> tagHandlerClass) throws IllegalAccessException {
+    public static TagHandlerInfo getTagHandlerInfo(Class<?> tagHandlerClass) throws IllegalAccessException, ClassNotFoundException {
         TagHandlerInfo info = new TagHandlerInfo(tagHandlerClass,
                 getTagHandlerDescription(tagHandlerClass),
                 getTagName(tagHandlerClass));
 
-        for (Map.Entry<String, PrimePropertyKeys> value : findAllProperties(tagHandlerClass, TagType.TAG_HANDLER).entrySet()) {
-            PropertyInfo pi = TaglibUtils.findPropertyInfo(tagHandlerClass, value.getKey(), value.getValue(), TagType.TAG_HANDLER);
-            info.getProperties().add(pi);
-        }
+        info.setProperties(findAllProperties(tagHandlerClass, TagType.TAG_HANDLER));
 
         return info;
     }
@@ -235,190 +230,46 @@ public final class TaglibUtils {
         return annotation == null ? null : annotation.value();
     }
 
-    private static PropertyInfo findPropertyInfo(Class<?> clazz, String name, PrimePropertyKeys ppk, TagType tagType) {
+    private static Map<String, Property> findAllProperties(Class<?> clazz, TagType tagType) throws ClassNotFoundException {
+        Map<String, Property> properties = new HashMap<>();
 
-        Class<?> type = null;
-        String description = null;
-        boolean required = false;
-        String defaultValue = null;
-        String implicitDefaultValue = null;
-        boolean remove = false;
-
-        if (ppk != null) {
-            type = ppk.getType();
-            description = ppk.getDescription();
-            required = ppk.isRequired();
-            defaultValue = ppk.getDefaultValue();
-            implicitDefaultValue = ppk.getImplicitDefaultValue();
-        }
-        else {
-            Property property = findProperty(clazz, name, tagType);
-            if (property != null) {
-                type = property.type();
-                description = property.description();
-                required = property.required();
-                defaultValue = property.defaultValue();
-                implicitDefaultValue = property.implicitDefaultValue();
-                remove = property.hide();
-            }
-
-            if (type == null) {
-                if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR) {
-                    Method getter = findGetter(clazz, name);
-                    if (getter == null && !("id".equals(name) || "binding".equals(name) || "rendered".equals(name))) {
+        if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR) {
+            // Superclass = BaseImpl
+            for (Class<?> inner : clazz.getSuperclass().getDeclaredClasses()) {
+                if (inner.getSimpleName().equals("PropertyKeys")) {
+                    Object[] enumConstants = inner.getEnumConstants();
+                    if (enumConstants == null) {
                         return null;
                     }
-                    if (getter != null) {
-                        type = getter.getReturnType();
-                    }
-                }
-            }
-        }
 
-        PropertyInfo propertyInfo = new PropertyInfo(name, description, type, required, defaultValue, implicitDefaultValue, remove);
-        if (propertyInfo.getDescription() == null) {
-            switch (name) {
-                case "id":
-                    propertyInfo.setDescription("Unique identifier of the component in a namingContainer.");
-                    propertyInfo.setImplicitDefaultValue("generated");
-                    break;
-                case "binding":
-                    propertyInfo.setDescription("An el expression referring to a server side UIComponent instance in a backing bean.");
-                    break;
-                case "rendered":
-                    propertyInfo.setDescription("Boolean value to specify the rendering of the component, when set to false component will not be rendered.");
-                    break;
-            }
-        }
-        if (propertyInfo.getType() == null) {
-            switch (name) {
-                case "id":
-                    propertyInfo.setType(String.class);
-                    break;
-                case "rendered":
-                    propertyInfo.setType(boolean.class);
-                    break;
-                case "binding":
-                    propertyInfo.setType(UIComponent.class);
-                    break;
-            }
-        }
+                    for (Object enumConstant : enumConstants) {
+                        String propertyName = ((Enum<?>) enumConstant).name();
+                        if (enumConstant instanceof PrimePropertyKeys) {
+                            propertyName = ((PrimePropertyKeys) enumConstant).getName();
+                        }
 
-        return propertyInfo;
-    }
-
-    private static Property findProperty(Class<?> clazz, String name, TagType tagType) {
-        Class<?> current = clazz;
-
-        while (current != null && current != Object.class) {
-            if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR) {
-                for (Method method : current.getDeclaredMethods()) {
-                    Property property = method.getAnnotation(Property.class);
-                    if (property != null && isGetterForProperty(method, name)) {
-                        return property;
-                    }
-                }
-            }
-            else if (tagType == TagType.TAG_HANDLER) {
-                for (Field field : current.getDeclaredFields()) {
-                    Property property = field.getAnnotation(Property.class);
-                    if (property != null && field.getName().equals(name)) {
-                        return property;
-                    }
-                }
-            }
-            current = current.getSuperclass();
-        }
-
-        return null;
-    }
-
-    private static Method findGetter(Class<?> clazz, String name) {
-        Class<?> current = clazz;
-
-        while (current != null && current != Object.class) {
-            for (Method method : current.getDeclaredMethods()) {
-                if (isGetterForProperty(method, name)) {
-                    return method;
-                }
-            }
-            current = current.getSuperclass();
-        }
-
-        return null;
-    }
-
-    private static boolean isGetterForProperty(Method method, String propertyName) {
-        String methodName = method.getName();
-
-        // Handle "is" prefix for boolean getters
-        if (methodName.startsWith("is") && methodName.length() > 2) {
-            String extracted = methodName.substring(2);
-            if (extracted.equalsIgnoreCase(propertyName)) {
-                return true;
-            }
-        }
-
-        // Handle "get" prefix for regular getters
-        if (methodName.startsWith("get") && methodName.length() > 3) {
-            String extracted = methodName.substring(3);
-            if (extracted.equalsIgnoreCase(propertyName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static Map<String, PrimePropertyKeys> findAllProperties(Class<?> clazz, TagType tagType) {
-        Map<String, PrimePropertyKeys> properties = new HashMap<>();
-        if (tagType == TagType.COMPONENT) {
-            properties.put("id", null);
-            properties.put("rendered", null);
-            properties.put("binding", null);
-        }
-
-        Class<?> cls = clazz;
-        while (cls != null && !cls.equals(Object.class)) {
-            // Look for nested PropertyKeys enum
-            if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR) {
-                for (Class<?> innerClass : cls.getDeclaredClasses()) {
-                    if (innerClass.isEnum() && innerClass.getSimpleName().equals("PropertyKeys")) {
-                        Object[] enumConstants = innerClass.getEnumConstants();
-                        if (enumConstants == null) {
+                        if (properties.containsKey(propertyName) || CdkUtils.shouldIgnoreProperty(clazz, propertyName)) {
                             continue;
                         }
 
-                        for (Object enumConstant : enumConstants) {
-                            String propertyName = ((Enum<?>) enumConstant).name();
-                            if (enumConstant instanceof PrimePropertyKeys) {
-                                propertyName = ((PrimePropertyKeys) enumConstant).getName();
-                            }
-
-                            if (properties.containsKey(propertyName) || CdkUtils.shouldIgnoreProperty(cls, propertyName)) {
-                                continue;
-                            }
-                            if (enumConstant instanceof PrimePropertyKeys) {
-                                properties.put(propertyName, (PrimePropertyKeys) enumConstant);
-                            }
-                            else {
-                                properties.put(propertyName, null);
-                            }
-                        }
+                        properties.put(propertyName,
+                                PropertyLiteral.fromPropertyKeys((PrimePropertyKeys) enumConstant));
                     }
                 }
             }
-            else if (tagType == TagType.TAG_HANDLER) {
+        }
+
+        if (tagType == TagType.TAG_HANDLER) {
+            Class<?> cls = clazz;
+            while (cls != null && !cls.equals(Object.class)) {
                 for (Field field : cls.getDeclaredFields()) {
                     Property property = field.getAnnotation(Property.class);
                     if (property != null) {
-                        properties.put(field.getName(), null);
+                        properties.put(field.getName(), property);
                     }
                 }
+                cls = cls.getSuperclass();
             }
-
-            // Move up to the superclass
-            cls = cls.getSuperclass();
         }
 
         return properties;

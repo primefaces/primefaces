@@ -21,32 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.media;
+package org.primefaces.cdk.impl.container;
 
-import org.primefaces.cdk.api.FacesComponentBase;
-import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.UIMediaBase;
+import org.primefaces.cdk.api.Facet;
 
-@FacesComponentBase
-public abstract class MediaBase extends UIMediaBase {
+import javax.lang.model.element.ExecutableElement;
 
-    public static final String COMPONENT_FAMILY = "org.primefaces.component";
+public class FacetInfo {
 
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.MediaRenderer";
+    private final String name;
+    private final String returnType;
+    private final ExecutableElement getterElement;
+    private final Facet annotation;
 
-    public MediaBase() {
-        setRendererType(DEFAULT_RENDERER);
+    public FacetInfo(String name, String returnType, ExecutableElement getterElement, Facet annotation) {
+        this.name = name;
+        this.returnType = returnType;
+        this.getterElement = getterElement;
+        this.annotation = annotation;
     }
 
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
+    public String getName() {
+        return name;
     }
 
-    @Property(description = "Zoom level for PDF viewer.")
-    public abstract String getZoom();
+    public String getReturnType() {
+        return returnType;
+    }
 
-    @Property(description = "View mode for PDF viewer.")
-    public abstract String getView();
+    public ExecutableElement getGetterElement() {
+        return getterElement;
+    }
 
+    public Facet getAnnotation() {
+        return annotation;
+    }
 }

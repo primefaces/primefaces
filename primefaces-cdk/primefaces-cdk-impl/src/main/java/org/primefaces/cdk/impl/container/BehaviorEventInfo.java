@@ -21,32 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.media;
+package org.primefaces.cdk.impl.container;
 
-import org.primefaces.cdk.api.FacesComponentBase;
-import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.UIMediaBase;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
 
-@FacesComponentBase
-public abstract class MediaBase extends UIMediaBase {
+public class BehaviorEventInfo {
 
-    public static final String COMPONENT_FAMILY = "org.primefaces.component";
+    private String name;
+    private FacesBehaviorEvent annotation;
+    private String eventClassName;
 
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.MediaRenderer";
-
-    public MediaBase() {
-        setRendererType(DEFAULT_RENDERER);
+    public BehaviorEventInfo(String name, FacesBehaviorEvent annotation, String eventClassName) {
+        this.name = name;
+        this.annotation = annotation;
+        this.eventClassName = eventClassName;
     }
 
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
+    public String getName() {
+        return name;
     }
 
-    @Property(description = "Zoom level for PDF viewer.")
-    public abstract String getZoom();
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    @Property(description = "View mode for PDF viewer.")
-    public abstract String getView();
+    public FacesBehaviorEvent getAnnotation() {
+        return annotation;
+    }
 
+    public void setAnnotation(FacesBehaviorEvent annotation) {
+        this.annotation = annotation;
+    }
+
+    public String getEventClassName() {
+        return eventClassName;
+    }
+
+    public void setEventClassName(String eventClassName) {
+        this.eventClassName = eventClassName;
+    }
 }

@@ -48,9 +48,7 @@ public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widg
 
     @Override
     @Property(hide = true)
-    public String getImage() {
-        return super.getImage();
-    }
+    public abstract String getImage();
 
     @Property(defaultValue = "false", description = "Disables button.")
     @Override

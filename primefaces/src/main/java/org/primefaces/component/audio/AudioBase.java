@@ -21,45 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.impl.taglib;
+package org.primefaces.component.audio;
 
-public class FunctionInfo {
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.component.api.UIMediaBase;
 
-    private String name;
-    private String clazz;
-    private String signature;
-    private String description;
+@FacesComponentBase
+public abstract class AudioBase extends UIMediaBase {
 
-    public FunctionInfo(String name, String clazz, String signature, String description) {
-        this.name = name;
-        this.clazz = clazz;
-        this.signature = signature;
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getClazz() {
-        return clazz;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public String toString() {
-        return "FunctionInfo{" +
-                "name='" + name + '\'' +
-                ", clazz='" + clazz + '\'' +
-                ", signature='" + signature + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }

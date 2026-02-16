@@ -25,6 +25,11 @@ package org.primefaces.cdk.impl.taglib;
 
 import org.primefaces.cdk.api.FacesTagHandler;
 import org.primefaces.cdk.api.Function;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.impl.container.BehaviorInfo;
+import org.primefaces.cdk.impl.container.ComponentInfo;
+import org.primefaces.cdk.impl.container.FunctionInfo;
+import org.primefaces.cdk.impl.container.TagHandlerInfo;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -260,7 +265,7 @@ public class TaglibMojo extends AbstractMojo {
 
             TagHandlerInfo behaviorInfo = TaglibUtils.getTagHandlerInfo(tagHandlerClass);
 
-            getLog().info("Processing tagHandler: " + behaviorInfo.getTagHandlerClass().getName()
+            getLog().info("Processing tagHandler: " + behaviorInfo.getClazz().getName()
                     + ", tag: " + behaviorInfo.getTagName());
 
             return behaviorInfo;
@@ -311,24 +316,7 @@ public class TaglibMojo extends AbstractMojo {
             }
 
             // Add attributes for each property
-            for (PropertyInfo propertyInfo : componentInfo.getProperties()) {
-                if (propertyInfo == null || propertyInfo.isHide()) {
-                    continue;
-                }
-
-                Element attribute = tag.addElement("attribute");
-                String description = propertyInfo.getDescription() == null ? "" : propertyInfo.getDescription();
-                if (propertyInfo.getImplicitDefaultValue() != null && !propertyInfo.getImplicitDefaultValue().isEmpty()) {
-                    description += "Default is " + propertyInfo.getImplicitDefaultValue() + ".";
-                }
-                else if (propertyInfo.getDefaultValue() != null && !propertyInfo.getDefaultValue().isEmpty()) {
-                    description += "Default is " + propertyInfo.getDefaultValue() + ".";
-                }
-                attribute.addElement("description").addCDATA(description);
-                attribute.addElement("name").addText(propertyInfo.getName());
-                attribute.addElement("required").addText(String.valueOf(propertyInfo.isRequired()));
-                attribute.addElement("type").addText(getAttributeType(propertyInfo.getType()).getName());
-            }
+            writeProperties(tag, componentInfo.getProperties());
         }
 
         // Add a tag for each behavior
@@ -350,20 +338,7 @@ public class TaglibMojo extends AbstractMojo {
                 behavior.addElement("behavior-renderer-type").addText(behaviorInfo.getRendererType());
             }
 
-            // Add attributes for each behavior attribute
-            for (PropertyInfo propertyInfo : behaviorInfo.getProperties()) {
-                if (propertyInfo.isHide()) {
-                    continue;
-                }
-
-                Element attribute = tag.addElement("attribute");
-                if (propertyInfo.getDescription() != null && !propertyInfo.getDescription().isEmpty()) {
-                    attribute.addElement("description").addCDATA(propertyInfo.getDescription());
-                }
-                attribute.addElement("name").addText(propertyInfo.getName());
-                attribute.addElement("required").addText(String.valueOf(propertyInfo.isRequired()));
-                attribute.addElement("type").addText(getAttributeType(propertyInfo.getType()).getName());
-            }
+            writeProperties(tag, behaviorInfo.getProperties());
         }
 
         // Add a tag for each tagHandler
@@ -374,25 +349,34 @@ public class TaglibMojo extends AbstractMojo {
             }
             tag.addElement("tag-name").addText(tagHandlerInfo.getTagName());
 
-            tag.addElement("handler-class").addText(tagHandlerInfo.getTagHandlerClass().getName());
+            tag.addElement("handler-class").addText(tagHandlerInfo.getClazz().getName());
 
-            // Add attributes for each behavior attribute
-            for (PropertyInfo propertyInfo : tagHandlerInfo.getProperties()) {
-                if (propertyInfo.isHide()) {
-                    continue;
-                }
-
-                Element attribute = tag.addElement("attribute");
-                if (propertyInfo.getDescription() != null && !propertyInfo.getDescription().isEmpty()) {
-                    attribute.addElement("description").addCDATA(propertyInfo.getDescription());
-                }
-                attribute.addElement("name").addText(propertyInfo.getName());
-                attribute.addElement("required").addText(String.valueOf(propertyInfo.isRequired()));
-                attribute.addElement("type").addText(getAttributeType(propertyInfo.getType()).getName());
-            }
+            writeProperties(tag, tagHandlerInfo.getProperties());
         }
 
         return document;
+    }
+
+    void writeProperties(Element tag, Map<String, Property> properties) {
+        for (Map.Entry<String, Property> propertyInfo : properties.entrySet()) {
+            Property property = propertyInfo.getValue();
+            if (property.hide()) {
+                continue;
+            }
+
+            Element attribute = tag.addElement("attribute");
+            String description = property.description() == null ? "" : property.description();
+            if (property.implicitDefaultValue() != null && !property.implicitDefaultValue().isEmpty()) {
+                description += "Default is " + property.implicitDefaultValue() + ".";
+            }
+            else if (property.defaultValue() != null && !property.defaultValue().isEmpty()) {
+                description += "Default is " + property.defaultValue() + ".";
+            }
+            attribute.addElement("description").addCDATA(description);
+            attribute.addElement("name").addText(propertyInfo.getKey());
+            attribute.addElement("required").addText(String.valueOf(property.required()));
+            attribute.addElement("type").addText(getAttributeType(property.type()).getName());
+        }
     }
 
     public Class<?> getAttributeType(Class<?> type) {

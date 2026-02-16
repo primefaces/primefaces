@@ -24,13 +24,12 @@
 package org.primefaces.component.audio;
 
 import org.primefaces.cdk.api.FacesComponentInfo;
-import org.primefaces.component.api.UIMediaBaseImpl;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Audio.COMPONENT_TYPE, namespace = Audio.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "Audio is a media component that embeds an audio player.")
-public class Audio extends UIMediaBaseImpl {
+public class Audio extends AudioBaseImpl {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AudioRenderer";

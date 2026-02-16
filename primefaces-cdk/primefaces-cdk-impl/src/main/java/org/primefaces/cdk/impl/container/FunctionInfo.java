@@ -21,32 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.media;
+package org.primefaces.cdk.impl.container;
 
-import org.primefaces.cdk.api.FacesComponentBase;
-import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.UIMediaBase;
+public class FunctionInfo {
 
-@FacesComponentBase
-public abstract class MediaBase extends UIMediaBase {
+    private String name;
+    private String clazz;
+    private String signature;
+    private String description;
 
-    public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.MediaRenderer";
-
-    public MediaBase() {
-        setRendererType(DEFAULT_RENDERER);
+    public FunctionInfo(String name, String clazz, String signature, String description) {
+        this.name = name;
+        this.clazz = clazz;
+        this.signature = signature;
+        this.description = description;
     }
 
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
+    public String getName() {
+        return name;
     }
 
-    @Property(description = "Zoom level for PDF viewer.")
-    public abstract String getZoom();
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    @Property(description = "View mode for PDF viewer.")
-    public abstract String getView();
+    public String getClazz() {
+        return clazz;
+    }
 
+    public void setClazz(String clazz) {
+        this.clazz = clazz;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

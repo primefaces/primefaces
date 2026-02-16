@@ -54,7 +54,7 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget, To
     public abstract org.primefaces.model.menu.MenuModel getModel();
 
     @Property(defaultValue = "false", description = "If true, prevents menu from being shown")
-    public abstract Boolean isDisabled();
+    public abstract boolean isDisabled();
 
     @Property(description = "Specific type of tree nodes to attach to.")
     public abstract String getNodeType();
