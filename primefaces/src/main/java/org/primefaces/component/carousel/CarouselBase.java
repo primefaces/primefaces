@@ -109,4 +109,19 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
     @Property(description = "Client side callback to execute when a page is changed.")
     public abstract String getOnPageChange();
 
+    @Override
+    @Property(hide = true)
+    public abstract boolean isDynamic();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getOffset();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getSize();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getStep();
 }

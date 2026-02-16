@@ -21,26 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.impl.taglib;
+package org.primefaces.cdk.impl.container;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.primefaces.cdk.api.Property;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TagHandlerInfo {
 
-    private final Class<?> tagHandlerClass;
+    private Class<?> clazz;
     private String description;
     private String tagName;
-    private List<PropertyInfo> properties = new ArrayList<>();
+    private Map<String, Property> properties = new HashMap<>();
 
-    public TagHandlerInfo(Class<?> tagHandlerClass, String description, String tagName) {
-        this.tagHandlerClass = tagHandlerClass;
+    public TagHandlerInfo(Class<?> clazz, String description, String tagName) {
+        this.clazz = clazz;
         this.description = description;
         this.tagName = tagName;
     }
 
-    public Class<?> getTagHandlerClass() {
-        return tagHandlerClass;
+    public Class<?> getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(Class<?> clazz) {
+        this.clazz = clazz;
     }
 
     public String getDescription() {
@@ -59,21 +65,11 @@ public class TagHandlerInfo {
         this.tagName = tagName;
     }
 
-    public List<PropertyInfo> getProperties() {
+    public Map<String, Property> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<PropertyInfo> properties) {
+    public void setProperties(Map<String, Property> properties) {
         this.properties = properties;
-    }
-
-    @Override
-    public String toString() {
-        return "BehaviorInfo{" +
-                "tagHandlerClass=" + tagHandlerClass +
-                ", description='" + description + '\'' +
-                ", tagName='" + tagName + '\'' +
-                ", properties=" + properties +
-                '}';
     }
 }

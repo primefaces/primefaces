@@ -102,4 +102,14 @@ public interface PrimePropertyKeys {
      * @return the implicit default value as a string
      */
     String getImplicitDefaultValue();
+
+    /**
+     * Whether this property is hidden from the generated taglib.
+     *
+     * <p>Hidden properties are still fully generated (getter, setter, StateHelper entry),
+     * but are excluded from taglib output.</p>
+     *
+     * @return true if the property should be omitted from the taglib, false otherwise
+     */
+    boolean isHidden();
 }

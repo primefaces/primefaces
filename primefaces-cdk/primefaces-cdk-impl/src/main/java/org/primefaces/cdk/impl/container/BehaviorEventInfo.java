@@ -21,34 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.subtable;
+package org.primefaces.cdk.impl.container;
 
-import org.primefaces.cdk.api.FacesComponentBase;
-import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
 
-import jakarta.faces.component.UIData;
+public class BehaviorEventInfo {
 
-@FacesComponentBase
-public abstract class SubTableBase extends UIData {
+    private String name;
+    private FacesBehaviorEvent annotation;
+    private String eventClassName;
 
-    public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.SubTableRenderer";
-
-    protected enum InternalPropertyKeys {
-        columnMeta
+    public BehaviorEventInfo(String name, FacesBehaviorEvent annotation, String eventClassName) {
+        this.name = name;
+        this.annotation = annotation;
+        this.eventClassName = eventClassName;
     }
 
-    public SubTableBase() {
-        setRendererType(DEFAULT_RENDERER);
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    @Property(hide = true)
-    public abstract boolean isRowStatePreserved();
+    public FacesBehaviorEvent getAnnotation() {
+        return annotation;
+    }
+
+    public void setAnnotation(FacesBehaviorEvent annotation) {
+        this.annotation = annotation;
+    }
+
+    public String getEventClassName() {
+        return eventClassName;
+    }
+
+    public void setEventClassName(String eventClassName) {
+        this.eventClassName = eventClassName;
+    }
 }

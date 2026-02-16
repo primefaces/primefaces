@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.StyleAware;
-import org.primefaces.component.api.UITabPanelImpl;
+import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.List;
 import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
-public abstract class GalleriaBase extends UITabPanelImpl implements Widget, StyleAware {
+public abstract class GalleriaBase extends UITabPanel implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -130,25 +130,17 @@ public abstract class GalleriaBase extends UITabPanelImpl implements Widget, Sty
 
     @Override
     @Property(hide = true)
-    public boolean isDynamic() {
-        return super.isDynamic();
-    }
+    public abstract boolean isDynamic();
 
     @Override
     @Property(hide = true)
-    public int getOffset() {
-        return super.getOffset();
-    }
+    public abstract int getOffset();
 
     @Override
     @Property(hide = true)
-    public int getSize() {
-        return super.getSize();
-    }
+    public abstract int getSize();
 
     @Override
     @Property(hide = true)
-    public int getStep() {
-        return super.getStep();
-    }
+    public abstract int getStep();
 }

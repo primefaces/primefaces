@@ -21,34 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.subtable;
+package org.primefaces.cdk.impl.container;
 
-import org.primefaces.cdk.api.FacesComponentBase;
-import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.api.Facet;
 
-import jakarta.faces.component.UIData;
+import javax.lang.model.element.ExecutableElement;
 
-@FacesComponentBase
-public abstract class SubTableBase extends UIData {
+public class FacetInfo {
 
-    public static final String COMPONENT_FAMILY = "org.primefaces.component";
+    private final String name;
+    private final String returnType;
+    private final ExecutableElement getterElement;
+    private final Facet annotation;
 
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.SubTableRenderer";
-
-    protected enum InternalPropertyKeys {
-        columnMeta
+    public FacetInfo(String name, String returnType, ExecutableElement getterElement, Facet annotation) {
+        this.name = name;
+        this.returnType = returnType;
+        this.getterElement = getterElement;
+        this.annotation = annotation;
     }
 
-    public SubTableBase() {
-        setRendererType(DEFAULT_RENDERER);
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
+    public String getReturnType() {
+        return returnType;
     }
 
-    @Override
-    @Property(hide = true)
-    public abstract boolean isRowStatePreserved();
+    public ExecutableElement getGetterElement() {
+        return getterElement;
+    }
+
+    public Facet getAnnotation() {
+        return annotation;
+    }
 }
