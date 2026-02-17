@@ -79,4 +79,10 @@ public abstract class ChronolineBase extends PrimeUIData implements StyleAware {
     @Override
     @Property(hide = true)
     public abstract boolean isRowStatePreserved();
+
+    @Override
+    @Property(description = "Value of the data component.", required = true)
+    public Object getValue() {
+        return super.getValue();
+    }
 }
