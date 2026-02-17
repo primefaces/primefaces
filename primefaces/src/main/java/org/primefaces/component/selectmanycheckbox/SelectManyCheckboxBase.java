@@ -26,12 +26,14 @@ package org.primefaces.component.selectmanycheckbox;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.html.HtmlSelectManyCheckbox;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
@@ -67,6 +69,9 @@ public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox impl
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Custom content of the selectmanycheckbox.")
+    public abstract UIComponent getCustomFacet();
 
     @Property(defaultValue = "12", description = "Defines the number of columns in grid layout.")
     public abstract int getColumns();

@@ -26,6 +26,7 @@ package org.primefaces.component.timeline;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
@@ -40,6 +41,7 @@ import org.primefaces.model.timeline.TimelineModel;
 
 import java.time.LocalDateTime;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
 
 @FacesComponentBase
@@ -70,6 +72,18 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Group content of the timeline.")
+    public abstract UIComponent getGroupFacet();
+
+    @Facet(description = "Event title content of the timeline.")
+    public abstract UIComponent getEventTitleFacet();
+
+    @Facet(description = "Loading content of the timeline.")
+    public abstract UIComponent getLoadingFacet();
+
+    @Facet(description = "Menu content of the timeline.")
+    public abstract UIComponent getMenuFacet();
 
     @Property(description = "Name of the request-scoped variable for underlaying object in the TimelineEvent for each iteration.")
     public abstract String getVar();

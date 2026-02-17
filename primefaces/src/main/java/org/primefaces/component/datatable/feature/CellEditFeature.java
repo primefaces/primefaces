@@ -68,10 +68,10 @@ public class CellEditFeature implements DataTableFeature {
         }
 
         if (table.isCellEditCancelRequest(context) || table.isCellEditInitRequest(context)) {
-            column.getCellEditor().getFacet("input").encodeAll(context);
+            column.getCellEditor().getInputFacet().encodeAll(context);
         }
         else {
-            column.getCellEditor().getFacet("output").encodeAll(context);
+            column.getCellEditor().getOutputFacet().encodeAll(context);
         }
 
         if (column.isDynamic()) {

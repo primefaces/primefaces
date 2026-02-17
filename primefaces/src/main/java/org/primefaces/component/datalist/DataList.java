@@ -160,7 +160,7 @@ public class DataList extends DataListBaseImpl {
     @Override
     protected void processFacets(FacesContext context, PhaseId phaseId) {
         if (getFacetCount() > 0) {
-            UIComponent descriptionFacet = getFacet("description");
+            UIComponent descriptionFacet = getDescriptionFacet();
             for (UIComponent facet : getFacets().values()) {
                 if (facet.equals(descriptionFacet)) {
                     continue;
@@ -173,7 +173,7 @@ public class DataList extends DataListBaseImpl {
     @Override
     protected void processChildren(FacesContext context, PhaseId phaseId) {
         boolean definition = isDefinition();
-        UIComponent descriptionFacet = definition ? getFacet("description") : null;
+        UIComponent descriptionFacet = definition ? getDescriptionFacet() : null;
         int childCount = getChildCount();
         List<UIComponent> children = childCount > 0 ? getIterableChildren() : null;
 

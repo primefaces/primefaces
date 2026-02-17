@@ -24,8 +24,10 @@
 package org.primefaces.component.celleditor;
 
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
 
 @FacesComponentBase
@@ -43,6 +45,12 @@ public abstract class CellEditorBase extends UIComponentBase {
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Output content of the cell editor.")
+    public abstract UIComponent getOutputFacet();
+
+    @Facet(description = "Input content of the cell editor.")
+    public abstract UIComponent getInputFacet();
 
     @Property(description = "Prevents hidden content to be shown.")
     public abstract boolean isDisabled();

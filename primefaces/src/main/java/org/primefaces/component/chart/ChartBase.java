@@ -26,11 +26,13 @@ package org.primefaces.component.chart;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.ItemSelectEvent;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
 
 @FacesComponentBase
@@ -51,6 +53,9 @@ public abstract class ChartBase extends UIComponentBase implements Widget, Style
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Content of the chart.")
+    public abstract UIComponent getValueFacet();
 
     @Property(description = "Chart model data as a JSON string, either generated from an XDEV model object or provided as raw JSON configuration.")
     public abstract String getValue();

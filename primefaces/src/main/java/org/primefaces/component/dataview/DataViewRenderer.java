@@ -140,7 +140,7 @@ public class DataViewRenderer extends DataRenderer<DataView> {
 
     protected void encodeHeader(FacesContext context, DataView component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent fHeader = component.getFacet("header");
+        UIComponent fHeader = component.getHeaderFacet();
         boolean isRenderFacet = FacetUtils.shouldRenderFacet(fHeader);
 
         if (isRenderFacet || hasLayoutOptions(context, component)) {
@@ -242,7 +242,7 @@ public class DataViewRenderer extends DataRenderer<DataView> {
 
         if (component.getRowCount() == 0) {
             ResponseWriter writer = context.getResponseWriter();
-            UIComponent emptyFacet = component.getFacet("emptyMessage");
+            UIComponent emptyFacet = component.getEmptyMessageFacet();
             if (FacetUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }

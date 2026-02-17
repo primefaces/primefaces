@@ -26,6 +26,7 @@ package org.primefaces.component.datagrid;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.MultiViewStateAware;
@@ -33,6 +34,8 @@ import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.data.PageEvent;
+
+import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
@@ -53,6 +56,9 @@ public abstract class DataGridBase extends UIPageableData
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Empty content of the grid.")
+    public abstract UIComponent getEmptyFacet();
 
     @Property(defaultValue = "3", description = "Number of columns of grid.")
     public abstract int getColumns();

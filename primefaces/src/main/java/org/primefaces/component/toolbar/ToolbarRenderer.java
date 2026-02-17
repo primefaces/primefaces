@@ -145,7 +145,7 @@ public class ToolbarRenderer extends CoreRenderer<Toolbar> {
             return false;
         }
         else {
-            return FacetUtils.shouldRenderFacet(component.getFacet("left")) || FacetUtils.shouldRenderFacet(component.getFacet("right"));
+            return FacetUtils.shouldRenderFacet(component.getLeftFacet()) || FacetUtils.shouldRenderFacet(component.getRightFacet());
         }
     }
 

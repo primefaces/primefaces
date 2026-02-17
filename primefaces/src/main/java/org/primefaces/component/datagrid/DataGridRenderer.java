@@ -123,7 +123,7 @@ public class DataGridRenderer extends DataRenderer<DataGrid> {
         writer.writeAttribute("class", contentClass, null);
 
         if (empty) {
-            UIComponent emptyFacet = component.getFacet("emptyMessage");
+            UIComponent emptyFacet = component.getEmptyFacet();
             if (FacetUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
