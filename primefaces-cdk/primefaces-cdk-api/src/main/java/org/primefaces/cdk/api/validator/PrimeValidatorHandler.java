@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.validate.base;
+package org.primefaces.cdk.api.validator;
 
 import jakarta.faces.view.facelets.MetaRuleset;
 import jakarta.faces.view.facelets.ValidatorConfig;

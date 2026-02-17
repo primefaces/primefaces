@@ -30,6 +30,7 @@ import org.primefaces.cdk.impl.container.BehaviorInfo;
 import org.primefaces.cdk.impl.container.ComponentInfo;
 import org.primefaces.cdk.impl.container.FunctionInfo;
 import org.primefaces.cdk.impl.container.TagHandlerInfo;
+import org.primefaces.cdk.impl.container.ValidatorInfo;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,6 +53,7 @@ import java.util.stream.Stream;
 
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.behavior.FacesBehavior;
+import jakarta.faces.validator.FacesValidator;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -120,11 +122,13 @@ public class TaglibMojo extends AbstractMojo {
             // Find all component and behavior classes
             List<Class<?>> componentClasses = findAnnotatedClasses(FacesComponent.class);
             List<Class<?>> behaviorClasses = findAnnotatedClasses(FacesBehavior.class);
+            List<Class<?>> validatorClasses = findAnnotatedClasses(FacesValidator.class);
             List<Class<?>> tagHandlerClasses = findAnnotatedClasses(FacesTagHandler.class);
             List<FunctionInfo> functionInfos = findFunctionInfos();
 
             getLog().info("Found " + componentClasses.size() + " component classes");
             getLog().info("Found " + behaviorClasses.size() + " behavior classes");
+            getLog().info("Found " + validatorClasses.size() + " validator classes");
             getLog().info("Found " + tagHandlerClasses.size() + " TagHandler classes");
 
             getLog().info("Processing components...");
@@ -139,6 +143,12 @@ public class TaglibMojo extends AbstractMojo {
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
+            getLog().info("Processing validators...");
+            List<ValidatorInfo> validatorInfos = validatorClasses.stream()
+                    .map(clazz -> processValidatorClass(clazz))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
             getLog().info("Processing tagHandlers...");
             List<TagHandlerInfo> tagHandlerInfos = tagHandlerClasses.stream()
                     .map(clazz -> processTagHandlerClass(clazz))
@@ -146,7 +156,7 @@ public class TaglibMojo extends AbstractMojo {
                     .collect(Collectors.toList());
 
             // Generate the taglib XML
-            Document document = generateTaglibXml(functionInfos, componentInfos, behaviorInfos, tagHandlerInfos);
+            Document document = generateTaglibXml(functionInfos, componentInfos, behaviorInfos, validatorInfos, tagHandlerInfos);
 
             // Save the taglib XML to file
             File taglibFile = new File(outputDirectory, shortName + ".taglib.xml");
@@ -259,6 +269,24 @@ public class TaglibMojo extends AbstractMojo {
         }
     }
 
+    private ValidatorInfo processValidatorClass(Class<?> validatorClass) {
+        try {
+            getLog().debug("Processing @FacesValidator class: " + validatorClass.getName());
+
+            ValidatorInfo validatorInfo = TaglibUtils.getValidatorInfo(validatorClass);
+
+            getLog().info("Processing validator: " + validatorInfo.getValidatorClass().getName()
+                    + ", id: " + validatorInfo.getValidatorId()
+                    + ", tag: " + validatorInfo.getTagName());
+
+            return validatorInfo;
+        }
+        catch (Exception e) {
+            getLog().error("Error processing validator class: " + validatorClass.getName(), e);
+            return null;
+        }
+    }
+
     private TagHandlerInfo processTagHandlerClass(Class<?> tagHandlerClass) {
         try {
             getLog().debug("Processing @FacesTagHandler class: " + tagHandlerClass.getName());
@@ -277,7 +305,7 @@ public class TaglibMojo extends AbstractMojo {
     }
 
     private Document generateTaglibXml(List<FunctionInfo> functionInfos, List<ComponentInfo> componentInfos, List<BehaviorInfo> behaviorInfos,
-                                       List<TagHandlerInfo> tagHandlerInfos) {
+                                       List<ValidatorInfo> validatorInfos, List<TagHandlerInfo> tagHandlerInfos) {
         Document document = DocumentHelper.createDocument();
         Element faceletTaglib = document.addElement("facelet-taglib")
                 .addAttribute("xmlns", "https://jakarta.ee/xml/ns/jakartaee")
@@ -339,6 +367,23 @@ public class TaglibMojo extends AbstractMojo {
             }
 
             writeProperties(tag, behaviorInfo.getProperties());
+        }
+
+        // Add a tag for each validator
+        for (ValidatorInfo validatorInfo : validatorInfos) {
+            Element tag = faceletTaglib.addElement("tag");
+            if (validatorInfo.getDescription() != null) {
+                tag.addElement("description").addCDATA(validatorInfo.getDescription());
+            }
+            tag.addElement("tag-name").addText(validatorInfo.getTagName());
+            Element validator = tag.addElement("validator");
+            validator.addElement("validator-id").addText(validatorInfo.getValidatorId());
+
+            if (validatorInfo.getHandlerClass() != null) {
+                validator.addElement("handler-class").addText(validatorInfo.getHandlerClass().getName());
+            }
+
+            writeProperties(tag, validatorInfo.getProperties());
         }
 
         // Add a tag for each tagHandler

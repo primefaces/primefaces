@@ -28,14 +28,17 @@ import org.primefaces.cdk.api.FacesBehaviorInfo;
 import org.primefaces.cdk.api.FacesComponentHandler;
 import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.cdk.api.FacesTagHandler;
+import org.primefaces.cdk.api.FacesValidatorInfo;
 import org.primefaces.cdk.api.Function;
 import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.api.validator.PrimeValidatorHandler;
 import org.primefaces.cdk.impl.CdkUtils;
 import org.primefaces.cdk.impl.container.BehaviorInfo;
 import org.primefaces.cdk.impl.container.ComponentInfo;
 import org.primefaces.cdk.impl.container.FunctionInfo;
 import org.primefaces.cdk.impl.container.TagHandlerInfo;
+import org.primefaces.cdk.impl.container.ValidatorInfo;
 import org.primefaces.cdk.impl.literal.PropertyLiteral;
 
 import java.lang.reflect.Field;
@@ -49,6 +52,7 @@ import java.util.logging.Logger;
 
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.behavior.FacesBehavior;
+import jakarta.faces.validator.FacesValidator;
 import jakarta.faces.view.facelets.ComponentHandler;
 import jakarta.faces.view.facelets.TagHandler;
 
@@ -64,6 +68,7 @@ public final class TaglibUtils {
 
     public enum TagType {
         BEHAVIOR,
+        VALIDATOR,
         COMPONENT,
         TAG_HANDLER
     }
@@ -92,6 +97,11 @@ public final class TaglibUtils {
             return componentInfo.name();
         }
 
+        FacesValidatorInfo validatorInfo = clazz.getAnnotation(FacesValidatorInfo.class);
+        if (validatorInfo != null && !validatorInfo.name().isEmpty()) {
+            return validatorInfo.name();
+        }
+
         String name = String.valueOf(clazz.getSimpleName().charAt(0)).toLowerCase() +
                 clazz.getSimpleName().substring(1);
         if (name.endsWith("Behavior")) {
@@ -110,6 +120,11 @@ public final class TaglibUtils {
 
     private static String getBehaviorDescription(Class<?> behaviorClass) {
         FacesBehaviorInfo annotation = behaviorClass.getAnnotation(FacesBehaviorInfo.class);
+        return annotation == null ? null : annotation.description();
+    }
+
+    private static String getValidatorDescription(Class<?> behaviorClass) {
+        FacesValidatorInfo annotation = behaviorClass.getAnnotation(FacesValidatorInfo.class);
         return annotation == null ? null : annotation.description();
     }
 
@@ -193,6 +208,18 @@ public final class TaglibUtils {
         return info;
     }
 
+    public static ValidatorInfo getValidatorInfo(Class<?> validatorClass) throws IllegalAccessException, ClassNotFoundException {
+        ValidatorInfo info = new ValidatorInfo(validatorClass,
+                getValidatorDescription(validatorClass),
+                getValidatorId(validatorClass),
+                getTagName(validatorClass),
+                PrimeValidatorHandler.class);
+
+        info.setProperties(findAllProperties(validatorClass, TagType.VALIDATOR));
+
+        return info;
+    }
+
     public static TagHandlerInfo getTagHandlerInfo(Class<?> tagHandlerClass) throws IllegalAccessException, ClassNotFoundException {
         TagHandlerInfo info = new TagHandlerInfo(tagHandlerClass,
                 getTagHandlerDescription(tagHandlerClass),
@@ -220,6 +247,23 @@ public final class TaglibUtils {
         }
     }
 
+    private static String getValidatorId(Class<?> validatorClass) {
+        try {
+            FacesValidator annotation = validatorClass.getAnnotation(FacesValidator.class);
+            String value = annotation.value();
+            if (value != null && !value.isEmpty()) {
+                return value;
+            }
+
+            // Fall back to fully qualified class name
+            return validatorClass.getName();
+        }
+        catch (Exception e) {
+            LOG.log(Level.WARNING, "Failed to get validator ID for " + validatorClass.getName(), e);
+            return validatorClass.getName();
+        }
+    }
+
     private static Class<? extends TagHandler> getBehaviorHandlerClass(Class<?> behaviorClass) {
         FacesBehaviorHandler annotation = behaviorClass.getAnnotation(FacesBehaviorHandler.class);
         return annotation == null ? null : annotation.value();
@@ -233,7 +277,7 @@ public final class TaglibUtils {
     private static Map<String, Property> findAllProperties(Class<?> clazz, TagType tagType) throws ClassNotFoundException {
         Map<String, Property> properties = new HashMap<>();
 
-        if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR) {
+        if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR || tagType == TagType.VALIDATOR) {
             // Superclass = BaseImpl
             for (Class<?> inner : clazz.getSuperclass().getDeclaredClasses()) {
                 if (inner.getSimpleName().equals("PropertyKeys")) {

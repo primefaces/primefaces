@@ -21,9 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.validate.base;
+package org.primefaces.cdk.api.validator;
 
-import org.primefaces.el.ValueExpressionStateHelper;
+import org.primefaces.cdk.api.state.ValueExpressionStateHelper;
 
 import jakarta.faces.component.StateHelper;
 import jakarta.faces.view.facelets.FaceletContext;
@@ -39,8 +39,8 @@ public class PrimeValidatorMetaRule extends MetaRule {
 
     @Override
     public Metadata applyRule(String name, TagAttribute attribute, MetadataTarget meta) {
-        if (meta.isTargetInstanceOf(AbstractPrimeValidator.class) && !attribute.isLiteral()) {
-            Class type = meta.getPropertyType(name);
+        if (meta.isTargetInstanceOf(PrimeValidator.class) && !attribute.isLiteral()) {
+            Class<?> type = meta.getPropertyType(name);
             if (type == null) {
                 type = Object.class;
             }
@@ -54,9 +54,9 @@ public class PrimeValidatorMetaRule extends MetaRule {
     static final class ValueExpressionMetadata extends Metadata {
         private final String name;
         private final TagAttribute attr;
-        private final Class type;
+        private final Class<?> type;
 
-        ValueExpressionMetadata(String name, Class type, TagAttribute attr) {
+        ValueExpressionMetadata(String name, Class<?> type, TagAttribute attr) {
             this.name = name;
             this.attr = attr;
             this.type = type;
@@ -64,7 +64,7 @@ public class PrimeValidatorMetaRule extends MetaRule {
 
         @Override
         public void applyMetadata(FaceletContext ctx, Object instance) {
-            StateHelper stateHelper = ((AbstractPrimeValidator) instance).getStateHelper();
+            StateHelper stateHelper = ((PrimeValidator<?>) instance).getStateHelper();
 
             if (stateHelper instanceof ValueExpressionStateHelper) {
                 ((ValueExpressionStateHelper) stateHelper).setBinding(this.name, this.attr.getValueExpression(ctx, type));

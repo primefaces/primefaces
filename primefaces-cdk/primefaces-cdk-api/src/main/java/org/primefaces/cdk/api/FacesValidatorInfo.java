@@ -29,7 +29,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Provides a description for a Faces behavior.
+ * Provides a description for a Faces validator.
  *
  * <p>Use this annotation to document the purpose and functionality of
  * a behavior class. The description can be used for taglib, documentation
@@ -37,28 +37,28 @@ import java.lang.annotation.Target;
  *
  * <p>Example:</p>
  * <pre>{@code
- * @FacesBehavior(...)
- * @FacesBehaviorInfo(description = "...")
- * public class AjaxBehavior extends AjaxBehaviorBaseImpl {
+ * @FacesValidator(...)
+ * @FacesValidatorInfo(description = "...")
+ * public class FileValidator extends FileValidatorBaseImpl {
  *
  * }
  * }</pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface FacesBehaviorInfo {
+public @interface FacesValidatorInfo {
 
     /**
-     * The name of the behavior.
+     * The name of the validator.
      *
-     * @return the component name
+     * @return the validator name
      */
     String name() default "";
 
     /**
-     * The description text for the behavior.
+     * The description text for the validator.
      *
-     * @return the behavior description
+     * @return the validator description
      */
     String description();
 }

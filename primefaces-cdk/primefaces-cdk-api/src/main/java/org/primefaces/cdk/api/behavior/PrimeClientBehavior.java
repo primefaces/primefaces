@@ -25,6 +25,7 @@ package org.primefaces.cdk.api.behavior;
 
 import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.api.state.ValueExpressionStateHelper;
 
 import jakarta.el.ValueExpression;
 import jakarta.faces.component.StateHelper;
