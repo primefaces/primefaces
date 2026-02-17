@@ -24,8 +24,12 @@
 package org.primefaces.component.treetable;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.treetable.feature.FilterFeature;
 import org.primefaces.component.treetable.feature.TreeTableFeatures;
 import org.primefaces.event.CellEditEvent;
@@ -44,12 +48,10 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.TreeNodeChildren;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.MessageFactory;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -63,20 +65,21 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AbortProcessingException;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.ComponentSystemEvent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 import jakarta.faces.event.PostRestoreStateEvent;
 
 @FacesComponent(value = TreeTable.COMPONENT_TYPE, namespace = TreeTable.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "TreeTable is is used for displaying hierarchical data in tabular format.")
+@FacesComponentHandler(TreeTableHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
-public class TreeTable extends TreeTableBase {
+public class TreeTable extends TreeTableBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TreeTable";
 
@@ -89,7 +92,6 @@ public class TreeTable extends TreeTableBase {
     public static final String SORTABLE_COLUMN_HEADER_CLASS = "ui-state-default ui-sortable-column";
     public static final String ROW_CLASS = "ui-widget-content";
     public static final String SELECTED_ROW_CLASS = "ui-widget-content ui-state-highlight ui-selected";
-    public static final String COLUMN_CONTENT_WRAPPER = "ui-tt-c";
     public static final String EXPAND_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-e ui-c";
     public static final String COLLAPSE_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-s ui-c";
     public static final String SCROLLABLE_CONTAINER_CLASS = "ui-treetable-scrollable";
@@ -119,55 +121,23 @@ public class TreeTable extends TreeTableBase {
     public static final String SMALL_SIZE_CLASS = "ui-treetable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-treetable-lg";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("contextMenu", NodeSelectEvent.class)
-            .put("select", NodeSelectEvent.class)
-            .put("dblselect", NodeSelectEvent.class)
-            .put("unselect", NodeUnselectEvent.class)
-            .put("expand", NodeExpandEvent.class)
-            .put("collapse", NodeCollapseEvent.class)
-            .put("colResize", ColumnResizeEvent.class)
-            .put("sort", SortEvent.class)
-            .put("filter", FilterEvent.class)
-            .put("rowEdit", RowEditEvent.class)
-            .put("rowEditInit", RowEditEvent.class)
-            .put("rowEditCancel", RowEditEvent.class)
-            .put("cellEdit", CellEditEvent.class)
-            .put("cellEditInit", CellEditEvent.class)
-            .put("cellEditCancel", CellEditEvent.class)
-            .put("page", PageEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
     private List<UIColumn> columns;
     private List<String> filteredRowKeys = new ArrayList<>();
-    private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
+    private Map<PrimeClientBehaviorEventKeys, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
+        if (isAjaxBehaviorEventSource(event)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
             FacesEvent wrapperEvent = null;
             TreeNode<?> root = getValue();
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if ("expand".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.expand)) {
                 String nodeKey = params.get(clientId + "_expand");
                 setRowKey(root, nodeKey);
                 TreeNode<?> node = getRowNode();
@@ -175,7 +145,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if ("collapse".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.collapse)) {
                 String nodeKey = params.get(clientId + "_collapse");
                 setRowKey(root, nodeKey);
                 TreeNode<?> node = getRowNode();
@@ -184,7 +154,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if ("select".equals(eventName) || "dblselect".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.select, ClientBehaviorEventKeys.dblselect)) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
                 TreeNode<?> node = getRowNode();
@@ -192,7 +162,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
-            else if ("contextMenu".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.contextMenu)) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
                 TreeNode<?> node = getRowNode();
@@ -201,7 +171,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
 
-            else if ("unselect".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.unselect)) {
                 String nodeKey = params.get(clientId + "_instantUnselection");
                 setRowKey(root, nodeKey);
                 TreeNode<?> node = getRowNode();
@@ -209,27 +179,29 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
-            else if ("colResize".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.colResize)) {
                 String columnId = params.get(clientId + "_columnId");
                 int width = Integer.parseInt(params.get(clientId + "_width"));
                 int height = Integer.parseInt(params.get(clientId + "_height"));
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
-            else if ("sort".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.sort)) {
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());
             }
-            else if ("filter".equals(eventName)) {
-                deferredEvents.put("filter", (AjaxBehaviorEvent) event);
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.filter)) {
+                deferredEvents.put(ClientBehaviorEventKeys.filter, (AjaxBehaviorEvent) event);
                 return;
             }
-            else if ("rowEdit".equals(eventName) || "rowEditCancel".equals(eventName) || "rowEditInit".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowEdit,
+                    ClientBehaviorEventKeys.rowEditInit, ClientBehaviorEventKeys.rowEditCancel)) {
                 String nodeKey = params.get(clientId + "_rowEditIndex");
                 setRowKey(root, nodeKey);
                 wrapperEvent = new RowEditEvent<>(this, behaviorEvent.getBehavior(), getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
-            else if ("cellEdit".equals(eventName) || "cellEditCancel".equals(eventName) || "cellEditInit".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.cellEdit,
+                    ClientBehaviorEventKeys.cellEditInit, ClientBehaviorEventKeys.cellEditCancel)) {
                 String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
                 String rowKey = cellInfo[0];
                 int cellIndex = Integer.parseInt(cellInfo[1]);
@@ -250,7 +222,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new CellEditEvent<>(this, behaviorEvent.getBehavior(), column, rowKey);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
-            else if ("page".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.page)) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
@@ -303,7 +275,7 @@ public class TreeTable extends TreeTableBase {
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
 
-            AjaxBehaviorEvent event = deferredEvents.get("filter");
+            AjaxBehaviorEvent event = deferredEvents.get(ClientBehaviorEventKeys.filter);
             if (event != null) {
                 FilterEvent wrappedEvent = new FilterEvent(this, event.getBehavior(), getFilterByAsMap());
                 wrappedEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
@@ -545,6 +517,11 @@ public class TreeTable extends TreeTableBase {
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
         return (Map<String, FilterMeta>) getStateHelper().eval(InternalPropertyKeys.filterByAsMap.name(), () -> initFilterBy(getFacesContext()));
+    }
+
+    @Override
+    public String getEmptyMessage() {
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(getFacesContext(), UIPageableData.EMPTY_MESSAGE));
     }
 
     @Override

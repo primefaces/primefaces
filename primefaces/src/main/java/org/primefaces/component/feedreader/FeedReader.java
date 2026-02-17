@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.feedreader;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = FeedReader.COMPONENT_TYPE, namespace = FeedReader.COMPONENT_FAMILY)
-@FacesComponentDescription("FeedReader is a component that displays content from an RSS feed.")
+@FacesComponentInfo(description = "FeedReader is a component that displays content from an RSS feed.")
 public class FeedReader extends FeedReaderBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.FeedReader";

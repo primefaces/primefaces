@@ -23,27 +23,23 @@
  */
 package org.primefaces.component.progressbar;
 
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 
 @FacesComponent(value = ProgressBar.COMPONENT_TYPE, namespace = ProgressBar.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "ProgressBar is a process status indicator component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class ProgressBar extends ProgressBarBase {
+public class ProgressBar extends ProgressBarBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ProgressBar";
 
@@ -57,36 +53,11 @@ public class ProgressBar extends ProgressBarBase {
     public static final String VALUE_CLASS = "ui-progressbar-value ui-widget-header";
     public static final String LABEL_CLASS = "ui-progressbar-label";
 
-    private static final String DEFAULT_EVENT = "complete";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("start", null)
-            .put("complete", null)
-            .put("progress", null)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
-
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
+        FacesContext context = event.getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context)) {
+        if (isAjaxRequestSource(context)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             behaviorEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);

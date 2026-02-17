@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.spacer;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Spacer.COMPONENT_TYPE, namespace = Spacer.COMPONENT_FAMILY)
-public class Spacer extends SpacerBase {
+@FacesComponentInfo(description = "Spacer is used to put spaces between elements.")
+public class Spacer extends SpacerBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Spacer";
 }

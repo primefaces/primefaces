@@ -23,30 +23,32 @@
  */
 package org.primefaces.component.organigram;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.organigram.OrganigramNodeCollapseEvent;
+import org.primefaces.event.organigram.OrganigramNodeDragDropEvent;
+import org.primefaces.event.organigram.OrganigramNodeExpandEvent;
+import org.primefaces.event.organigram.OrganigramNodeSelectEvent;
 
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class OrganigramBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "select", event = OrganigramNodeSelectEvent.class, description = "Fires when a node is selected.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "expand", event = OrganigramNodeExpandEvent.class, description = "Fires when a node is expanded."),
+    @FacesBehaviorEvent(name = "collapse", event = OrganigramNodeCollapseEvent.class, description = "Fires when a node is collapsed."),
+    @FacesBehaviorEvent(name = "dragdrop", event = OrganigramNodeDragDropEvent.class, description = "Fires when a node is dragged and dropped."),
+    @FacesBehaviorEvent(name = "contextmenu", event = OrganigramNodeSelectEvent.class, description = "Fires when context menu is triggered on a node.")
+})
+public abstract class OrganigramBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.OrganigramRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        value,
-        var,
-        selection,
-        style,
-        styleClass,
-        leafNodeConnectorHeight,
-        zoom,
-        autoScrollToSelection
-    }
 
     public OrganigramBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -57,75 +59,22 @@ public abstract class OrganigramBase extends UIComponentBase implements Widget, 
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "The root node of the organigram.")
+    public abstract org.primefaces.model.OrganigramNode getValue();
 
-    public org.primefaces.model.OrganigramNode getValue() {
-        return (org.primefaces.model.OrganigramNode) getStateHelper().eval(PropertyKeys.value, null);
-    }
+    @Property(description = "Name of the iterator variable used to reference each node in the organigram.")
+    public abstract String getVar();
 
-    public void setValue(org.primefaces.model.OrganigramNode value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
+    @Property(description = "Currently selected node.")
+    public abstract org.primefaces.model.OrganigramNode getSelection();
 
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
+    @Property(defaultValue = "10", description = "Height of the connector for leaf nodes in pixels.")
+    public abstract int getLeafNodeConnectorHeight();
 
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
+    @Property(defaultValue = "false", description = "Enables zoom functionality.")
+    public abstract boolean isZoom();
 
-    public org.primefaces.model.OrganigramNode getSelection() {
-        return (org.primefaces.model.OrganigramNode) getStateHelper().eval(PropertyKeys.selection, null);
-    }
-
-    public void setSelection(org.primefaces.model.OrganigramNode selection) {
-        getStateHelper().put(PropertyKeys.selection, selection);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public int getLeafNodeConnectorHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.leafNodeConnectorHeight, 10);
-    }
-
-    public void setLeafNodeConnectorHeight(int leafNodeConnectorHeight) {
-        getStateHelper().put(PropertyKeys.leafNodeConnectorHeight, leafNodeConnectorHeight);
-    }
-
-    public boolean isZoom() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.zoom, false);
-    }
-
-    public void setZoom(boolean zoom) {
-        getStateHelper().put(PropertyKeys.zoom, zoom);
-    }
-
-    public boolean isAutoScrollToSelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoScrollToSelection, false);
-    }
-
-    public void setAutoScrollToSelection(boolean autoScrollToSelection) {
-        getStateHelper().put(PropertyKeys.autoScrollToSelection, autoScrollToSelection);
-    }
+    @Property(defaultValue = "false", description = "Automatically scrolls to the selected node.")
+    public abstract boolean isAutoScrollToSelection();
 }

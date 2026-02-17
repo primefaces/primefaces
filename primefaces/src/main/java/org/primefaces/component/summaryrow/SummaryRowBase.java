@@ -23,19 +23,17 @@
  */
 package org.primefaces.component.summaryrow;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIComponentBase;
 
-
+@FacesComponentBase
 public abstract class SummaryRowBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SummaryRowRenderer";
-
-    public enum PropertyKeys {
-
-        listener
-    }
 
     public SummaryRowBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -46,12 +44,7 @@ public abstract class SummaryRowBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public jakarta.el.MethodExpression getListener() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
-    }
-
-    public void setListener(jakarta.el.MethodExpression listener) {
-        getStateHelper().put(PropertyKeys.listener, listener);
-    }
+    @Property(description = "Method expression to execute before rendering summary row. (e.g. to calculate totals)")
+    public abstract jakarta.el.MethodExpression getListener();
 
 }

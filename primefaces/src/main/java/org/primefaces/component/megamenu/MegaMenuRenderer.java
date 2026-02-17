@@ -40,6 +40,7 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.List;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.FacesRenderer;
@@ -203,16 +204,25 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
             writer.writeAttribute("class", column.getStyleClass(), null);
         }
 
+        // Render the elements inside the column, which can include MenuElements (like Submenu or Separator) and UIComponents
         if (column.getElementsCount() > 0) {
-            List<MenuElement> columnElements = column.getElements();
-            for (MenuElement element : columnElements) {
-                if (element.isRendered()) {
-                    if (element instanceof Submenu) {
-                        encodeDescendantSubmenu(context, component, (Submenu) element);
+            // Use List<?> as columns may contain various types.
+            List<?> columnElements = column.getElements();
+            for (Object element : columnElements) {
+                if (element instanceof MenuElement) {
+                    MenuElement menuElement = (MenuElement) element;
+                    if (menuElement.isRendered()) {
+                        if (element instanceof Submenu) {
+                            encodeDescendantSubmenu(context, component, (Submenu) element);
+                        }
+                        else if (element instanceof Separator) {
+                            encodeSubmenuSeparator(context, (Separator) element);
+                        }
                     }
-                    else if (element instanceof Separator) {
-                        encodeSubmenuSeparator(context, (Separator) element);
-                    }
+                }
+                // UIComponent support allows for arbitrary component placement in columns.
+                else if (element instanceof UIComponent) {
+                    ((UIComponent) element).encodeAll(context);
                 }
             }
         }

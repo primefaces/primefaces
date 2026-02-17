@@ -23,26 +23,21 @@
  */
 package org.primefaces.component.selectoneradio;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.html.HtmlSelectOneRadio;
 
-public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget, FlexAware, InputHolder {
+@FacesComponentBase
+public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget, FlexAware, InputHolder, PrimeSelect {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectOneRadioRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        columns,
-        unselectable,
-        flex,
-        columnClasses
-    }
 
     public SelectOneRadioBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -53,44 +48,14 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "12", description = "Defines the number of columns in grid layout.")
+    public abstract int getColumns();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "false", description = "Unselectable mode when true clicking a radio again will clear the selection.")
+    public abstract boolean isUnselectable();
 
-    public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 12);
-    }
+    @Property(description = "Comma separated list of column style classes.")
+    public abstract String getColumnClasses();
 
-    public void setColumns(int columns) {
-        getStateHelper().put(PropertyKeys.columns, columns);
-    }
 
-    public boolean isUnselectable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.unselectable, false);
-    }
-
-    public void setUnselectable(boolean unselectable) {
-        getStateHelper().put(PropertyKeys.unselectable, unselectable);
-    }
-
-    @Override
-    public Boolean getFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
-    }
-
-    public void setFlex(Boolean flex) {
-        getStateHelper().put(PropertyKeys.flex, flex);
-    }
-
-    public String getColumnClasses() {
-        return (String) getStateHelper().eval(PropertyKeys.columnClasses, null);
-    }
-
-    public void setColumnClasses(String columnClasses) {
-        getStateHelper().put(PropertyKeys.columnClasses, columnClasses);
-    }
 }

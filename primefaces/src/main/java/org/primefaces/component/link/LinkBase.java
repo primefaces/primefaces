@@ -23,24 +23,18 @@
  */
 package org.primefaces.component.link;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.UIOutcomeTarget;
 
 import jakarta.faces.component.html.HtmlOutcomeTargetLink;
 
-
+@FacesComponentBase
 public abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.LinkRenderer";
-
-    public enum PropertyKeys {
-
-        fragment,
-        disableClientWindow,
-        href,
-        escape
-    }
 
     public LinkBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -51,40 +45,7 @@ public abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcom
         return COMPONENT_FAMILY;
     }
 
-    @Override
-    public String getFragment() {
-        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
-    }
-
-    public void setFragment(String fragment) {
-        getStateHelper().put(PropertyKeys.fragment, fragment);
-    }
-
-    @Override
-    public boolean isDisableClientWindow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
-    }
-
-    @Override
-    public void setDisableClientWindow(boolean disableClientWindow) {
-        getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
-    }
-
-    @Override
-    public String getHref() {
-        return (String) getStateHelper().eval(PropertyKeys.href, null);
-    }
-
-    public void setHref(String href) {
-        getStateHelper().put(PropertyKeys.href, href);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
+    @Property(defaultValue = "true", description = "Escapes HTML content in the link text.")
+    public abstract boolean isEscape();
 
 }

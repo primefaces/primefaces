@@ -23,27 +23,19 @@
  */
 package org.primefaces.component.imageswitch;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class ImageSwitchBase extends UIComponentBase implements Widget {
+@FacesComponentBase
+public abstract class ImageSwitchBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ImageSwitchRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        style,
-        styleClass,
-        effect,
-        speed,
-        slideshowSpeed,
-        slideshowAuto,
-        activeIndex
-    }
 
     public ImageSwitchBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -54,67 +46,18 @@ public abstract class ImageSwitchBase extends UIComponentBase implements Widget 
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Name of the effect for transition.")
+    public abstract String getEffect();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "500", description = "Speed of the effect in milliseconds.")
+    public abstract int getSpeed();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "3000", description = "Slideshow speed in milliseconds.")
+    public abstract int getSlideshowSpeed();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "true", description = "Starts slideshow automatically on page load.")
+    public abstract boolean isSlideshowAuto();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, null);
-    }
-
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
-
-    public int getSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.speed, 500);
-    }
-
-    public void setSpeed(int speed) {
-        getStateHelper().put(PropertyKeys.speed, speed);
-    }
-
-    public int getSlideshowSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.slideshowSpeed, 3000);
-    }
-
-    public void setSlideshowSpeed(int slideshowSpeed) {
-        getStateHelper().put(PropertyKeys.slideshowSpeed, slideshowSpeed);
-    }
-
-    public boolean isSlideshowAuto() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.slideshowAuto, true);
-    }
-
-    public void setSlideshowAuto(boolean slideshowAuto) {
-        getStateHelper().put(PropertyKeys.slideshowAuto, slideshowAuto);
-    }
-
-    public int getActiveIndex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
-    }
-
-    public void setActiveIndex(int activeIndex) {
-        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
-    }
+    @Property(defaultValue = "0", description = "Index of the first image.")
+    public abstract int getActiveIndex();
 }

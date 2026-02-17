@@ -23,20 +23,17 @@
  */
 package org.primefaces.component.row;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.component.api.StyleAware;
+
 import jakarta.faces.component.UIComponentBase;
 
-
-public abstract class RowBase extends UIComponentBase {
+@FacesComponentBase
+public abstract class RowBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.RowRenderer";
-
-    public enum PropertyKeys {
-
-        style,
-        styleClass
-    }
 
     public RowBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -45,22 +42,6 @@ public abstract class RowBase extends UIComponentBase {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
 }

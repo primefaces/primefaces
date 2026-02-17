@@ -7,7 +7,8 @@ Deployable version of **PrimeFaces Showcase** WAR file can be downloaded manuall
 
 ## Prebuilt WAR
 
-The showcase can be downloaded from [Maven](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-showcase).
+The showcase can be downloaded from [Maven](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-showcase).  
+The prebuilt WAR is the version for Servlet Containers (like Tomcat or Jetty) and comes with a Faces and CDI implementation (MyFaces and Weld).
 
 ## Build from sources
 
@@ -21,7 +22,7 @@ cd primefaces-showcase
 #### for a EE Application Server
 
 ```
-mvn clean package                             -- create war file (under target directory)
+mvn clean package -Pee                        -- create war file (under target directory)
 ```
 
 #### for a Servlet Container with Mojarra 4.0

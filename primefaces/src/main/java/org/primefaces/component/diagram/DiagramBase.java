@@ -27,7 +27,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
@@ -45,7 +45,7 @@ import jakarta.faces.component.UIComponent;
     @FacesBehaviorEvent(name = "connectionChange", event = ConnectionChangeEvent.class, description = "Fires when a connection is changed."),
     @FacesBehaviorEvent(name = "positionChange", event = PositionChangeEvent.class, description = "Fires when an element position is changed.")
 })
-public abstract class DiagramBase extends PrimeUIData implements Widget, PrimeClientBehaviorHolder, StyleAware {
+public abstract class DiagramBase extends PrimeUIData implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -62,4 +62,24 @@ public abstract class DiagramBase extends PrimeUIData implements Widget, PrimeCl
 
     @Facet(description = "Allows customer rendering of HTML in the element.")
     public abstract UIComponent getElementFacet();
+
+    @Override
+    @Property(hide = true)
+    public abstract String getRowIndexVar();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getFirst();
+
+    @Override
+    @Property(hide = true)
+    public abstract boolean isLazy();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getRows();
+
+    @Override
+    @Property(hide = true)
+    public abstract boolean isRowStatePreserved();
 }

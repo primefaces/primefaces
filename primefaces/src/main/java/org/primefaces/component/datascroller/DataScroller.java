@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.datascroller;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
@@ -31,7 +31,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.PhaseId;
 
 @FacesComponent(value = DataScroller.COMPONENT_TYPE, namespace = DataScroller.COMPONENT_FAMILY)
-@FacesComponentDescription("DataScroller displays a collection of data featuring on demand loading using scroll.")
+@FacesComponentInfo(description = "DataScroller displays a collection of data featuring on demand loading using scroll.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

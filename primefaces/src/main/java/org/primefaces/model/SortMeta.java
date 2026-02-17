@@ -25,9 +25,8 @@ package org.primefaces.model;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.column.Column;
 import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.component.headerrow.HeaderRowBase;
 import org.primefaces.util.LangUtils;
 
 import java.io.Serializable;
@@ -85,7 +84,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         }
 
         String field = column.getField();
-        ValueExpression sortByVE = column.getValueExpression(ColumnBase.PropertyKeys.sortBy.name());
+        ValueExpression sortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.name());
         if (field == null && sortByVE == null) {
             return null;
         }
@@ -116,7 +115,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
 
     public static SortMeta of(FacesContext context, String var, HeaderRow headerRow) {
         SortOrder order = SortOrder.of(headerRow.getSortOrder());
-        ValueExpression groupByVE = headerRow.getValueExpression(HeaderRowBase.PropertyKeys.groupBy.name());
+        ValueExpression groupByVE = headerRow.getValueExpression(HeaderRow.PropertyKeys.groupBy.name());
 
         if (groupByVE == null && LangUtils.isBlank(headerRow.getField())) {
             throw new FacesException("HeaderRow must have 'groupBy' or 'field' attribute value");

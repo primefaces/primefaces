@@ -53,7 +53,7 @@ public abstract class StaticMessageBase extends UIComponentBase implements Widge
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Defines whether html would be escaped or not, defaults to true.", defaultValue = "true")
+    @Property(description = "Defines whether html would be escaped or not.", defaultValue = "true")
     public abstract boolean isEscape();
 
     @Property(description = "The severity of the message: success, info, error, warn, fatal.")

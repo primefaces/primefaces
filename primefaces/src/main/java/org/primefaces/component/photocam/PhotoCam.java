@@ -23,29 +23,37 @@
  */
 package org.primefaces.component.photocam;
 
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
+import org.primefaces.event.CaptureEvent;
+
 import jakarta.el.MethodExpression;
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = PhotoCam.COMPONENT_TYPE, namespace = PhotoCam.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "PhotoCam is a component to capture photos from user's webcam.")
+@FacesComponentHandler(PhotoCamHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "photocam/photocam.js")
-public class PhotoCam extends PhotoCamBase {
+public class PhotoCam extends PhotoCamBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PhotoCam";
 
     @Override
-    public void broadcast(jakarta.faces.event.FacesEvent event) throws jakarta.faces.event.AbortProcessingException {
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
 
         FacesContext facesContext = getFacesContext();
         MethodExpression me = getListener();
 
-        if (me != null && event instanceof org.primefaces.event.CaptureEvent) {
+        if (me != null && event instanceof CaptureEvent) {
             me.invoke(facesContext.getELContext(), new Object[]{event});
         }
     }

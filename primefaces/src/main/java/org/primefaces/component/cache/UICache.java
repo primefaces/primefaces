@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.cache;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.visit.VisitContext;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = UICache.COMPONENT_TYPE, namespace = UICache.COMPONENT_FAMILY)
-@FacesComponentDescription("Cache component is used to reduce page load time by caching the content after initial rendering.")
+@FacesComponentInfo(name = "cache", description = "Cache component is used to reduce page load time by caching the content after initial rendering.")
 public class UICache extends UICacheBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Cache";

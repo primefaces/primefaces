@@ -25,12 +25,11 @@ package org.primefaces.component.captcha;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.Widget;
 
-import jakarta.faces.component.UIInput;
-
 @FacesComponentBase
-public abstract class CaptchaBase extends UIInput implements Widget {
+public abstract class CaptchaBase extends PrimeUIInput implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

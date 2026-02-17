@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.tree;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = UITreeNode.COMPONENT_TYPE, namespace = UITreeNode.COMPONENT_FAMILY)
-public class UITreeNode extends UITreeNodeBase {
+@FacesComponentInfo(name = "treeNode", description = "TreeNode is used with Tree component to represent a node in tree.")
+public class UITreeNode extends UITreeNodeBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UITreeNode";
 

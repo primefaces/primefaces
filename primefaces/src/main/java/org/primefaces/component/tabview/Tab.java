@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.tabview;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.util.FacetUtils;
 
@@ -32,7 +32,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Tab.COMPONENT_TYPE, namespace = Tab.COMPONENT_FAMILY)
-@FacesComponentDescription("Tab is a generic container component used by other components like TabView and AccordionPanel.")
+@FacesComponentInfo(description = "Tab is a generic container component used by other components like TabView and AccordionPanel.")
 public class Tab extends TabBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tab";

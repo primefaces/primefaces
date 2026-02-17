@@ -307,8 +307,6 @@ the sizeLimit configuration. Following fileUpload limits the size to 1000 bytes 
 </p:fileUpload>
 ```
 
-
-
 ## Skinning
 FileUpload resides in a container element which `style` and `styleClass` options apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of
@@ -331,40 +329,13 @@ For legacy browsers, that do not support HMTL5 features like canvas or file api,
 (iframe is used for transport, detailed file informations are not shown,  GIF animation instead of progress bar).
 It is suggested to offer simple uploader as a fallback.
 
-## Filter Configuration
-
-Filter configuration is required if you are using commons uploader only. Two configuration options
-exist, threshold size and temporary file upload location.
-
-| Parameter Name | Description |
-| --- | --- |
-| thresholdSize | Maximum file size in bytes to keep uploaded files in memory. If a file exceeds this limit, it’ll be temporarily written to disk.
-| uploadDirectory | Disk repository path to keep temporary files that exceeds the threshold size. By default it is System.getProperty("java.io.tmpdir")
-
-An example configuration below defined thresholdSize to be 50kb and uploads to users temporary
-folder.
-
-```xml
-<filter>
-    <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
-    <init-param>
-        <param-name>thresholdSize</param-name>
-        <param-value>51200</param-value>
-    </init-param>
-    <init-param>
-        <param-name>uploadDirectory</param-name>
-        <param-value>/Users/primefaces/temp</param-value>
-    </init-param>
-</filter>
-```
-**Note** that uploadDirectory is used internally, you always need to implement the logic to save the file
-contents yourself in your backing bean.
 
 ## Configuration for Tomcat since June 2025 (>= 9.0.106, >= 10.1.42, >= 11.0.8)
 > maxPartCount limits the total number of parts in a multi-part request and maxPartHeaderSize limits the size of the headers provided with each part.
 
 See https://tomcat.apache.org/tomcat-11.0-doc/config/http.html#Common_Attributes for additional information.
+
+```xml
 
 ## Chunking and Resume
 FileUpload supports chunked upload using the `maxChunkSize` attribute but only in advanced mode!
@@ -398,9 +369,26 @@ If you're running a Servlet 2.5 container, you'll need to add the following list
 </listener>
 ```
 
-Chunks file are put either into directory from Apache Commons or Servlet 3.0, if not defined then into internal temporary upload directory [ServletContext.TMP_DIR](https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html#TEMPDIR). They get removed:
+Chunks file are put either into directory from Servlet 3.0, if not defined then into internal temporary upload directory [ServletContext.TMP_DIR](https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html#TEMPDIR). They get removed:
 1. after the last chunk is uploaded and the merged file is created
 2. when the user aborts the upload.
+
+To configure a custom location for uploaded chunks, you can set the `location` attribute in the `multipart-config` element of your `FacesServlet` in `web.xml`:
+
+```xml
+<servlet>
+    <servlet-name>FacesServlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <multipart-config>
+        <location>/path/to/upload/directory</location>
+        <max-file-size>52428800</max-file-size>
+        <max-request-size>52428800</max-request-size>
+        <file-size-threshold>0</file-size-threshold>
+    </multipart-config>
+</servlet>
+```
+
+If the `location` is not specified in `multipart-config`, the system will default to the temporary directory.
 
 Though it is recommended to run a cron-job that deletes incomplete uploaded files.
 
@@ -420,9 +408,9 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
    If you wish to use your own [FileTypeDetector](https://docs.oracle.com/javase/8/docs/api/java/nio/file/spi/FileTypeDetector.html) or use one which is not registered as a SPI service, then register it in your webapp in `META-INF/services` directory with filename `java.nio.file.spi.FileTypeDetector`.
    Finally, if you need to execute several FileTypeDetector, you can control order of execution over your SPI file.
 4. Consider **enabling virus scanning**. This feature has been introduced with PrimeFaces 7.0 and can be enabled with `p:fileUpload virusScan="true"`. See https://github.com/primefaces/primefaces/issues/4256.
-    * **Built-in implementation**: You may either make use of PrimeFaces' basic built-in implementation, that just searches for the file's hash at VirusTotal. Therefore you have to configure accordingly the context param `primefaces.virusscan.VIRUSTOTAL_KEY` in `web.xml`; a key can be obtained for free at [VirusTotal](https://www.virustotal.com/#/join-us).
-    * **Built-in implementation**: ClamAV Daemon which can send a file over TCP to a running ClamAV service in your network. You have to configure the host/port context params `primefaces.virusscan.CLAMAV_HOST` and `primefaces.virusscan.CLAMAV_PORT` in `web.xml`; More information at [ClamAV API](https://linux.die.net/man/8/clamd).
-    * **Custom implementation**: Or if more sophisticated virus scanning is required, you can just drop in your custom service provider implementation that will be picked up automatically once available in classpath. In your custom implementation you may leverage your system's virus scanner by using its appropriate API for example.
+   * **Built-in implementation**: You may either make use of PrimeFaces' basic built-in implementation, that just searches for the file's hash at VirusTotal. Therefore you have to configure accordingly the context param `primefaces.virusscan.VIRUSTOTAL_KEY` in `web.xml`; a key can be obtained for free at [VirusTotal](https://www.virustotal.com/#/join-us).
+   * **Built-in implementation**: ClamAV Daemon which can send a file over TCP to a running ClamAV service in your network. You have to configure the host/port context params `primefaces.virusscan.CLAMAV_HOST` and `primefaces.virusscan.CLAMAV_PORT` in `web.xml`; More information at [ClamAV API](https://linux.die.net/man/8/clamd).
+   * **Custom implementation**: Or if more sophisticated virus scanning is required, you can just drop in your custom service provider implementation that will be picked up automatically once available in classpath. In your custom implementation you may leverage your system's virus scanner by using its appropriate API for example.
 
       * Implementation skeleton
 

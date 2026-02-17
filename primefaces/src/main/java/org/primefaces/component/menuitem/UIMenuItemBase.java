@@ -23,61 +23,32 @@
  */
 package org.primefaces.component.menuitem;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.Confirmable;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.DialogReturnAware;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.Callbacks;
 
+import jakarta.el.MethodExpression;
 import jakarta.faces.component.UICommand;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.ActionListener;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-
-public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable,
-        ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "click", event = AjaxBehaviorEvent.class, description = "Fires when menu item is clicked.", defaultEvent = true),
+    @FacesBehaviorEvent(name = DialogReturnAware.EVENT_DIALOG_RETURN, event = SelectEvent.class, description = "Fires when a dialog returns a value.")
+})
+public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem,
+        StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
-
-    public enum PropertyKeys {
-
-        url,
-        target,
-        style,
-        styleClass,
-        onclick,
-        update,
-        process,
-        onstart,
-        disabled,
-        oncomplete,
-        onerror,
-        onsuccess,
-        global,
-        delay,
-        timeout,
-        async,
-        ajax,
-        icon,
-        iconPos,
-        partialSubmit,
-        resetValues,
-        ignoreAutoUpdate,
-        title,
-        outcome,
-        includeViewParams,
-        fragment,
-        disableClientWindow,
-        containerStyle,
-        containerStyleClass,
-        partialSubmitFilter,
-        form,
-        escape,
-        rel,
-        ignoreComponentNotFound,
-        ariaLabel,
-        badge
-    }
 
     public UIMenuItemBase() {
         setRendererType(null);
@@ -89,332 +60,103 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
     }
 
     @Override
-    public String getUrl() {
-        return (String) getStateHelper().eval(PropertyKeys.url, null);
-    }
-
-    public void setUrl(String url) {
-        getStateHelper().put(PropertyKeys.url, url);
-    }
+    @Property(description = "The URL to redirect to after the menu item has been clicked. Similar to outcome which allows to specify " +
+        "a navigation case, but the value is not touched (no prepending of the contextPath, not appending the sessionId or windowId), just encoded.")
+    public abstract String getUrl();
 
     @Override
-    public String getTarget() {
-        return (String) getStateHelper().eval(PropertyKeys.target, null);
-    }
-
-    public void setTarget(String target) {
-        getStateHelper().put(PropertyKeys.target, target);
-    }
+    @Property(description = "Target window for the link.")
+    public abstract String getTarget();
 
     @Override
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Client-side javascript callback to execute when menu item is clicked.")
+    public abstract String getOnclick();
 
     @Override
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "false", description = "Disables the component.")
+    public abstract boolean isDisabled();
 
     @Override
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "0", description = "Timeout in milliseconds for ajax request, whereas 0 means no timeout.")
+    public abstract int getTimeout();
 
     @Override
-    public String getOnclick() {
-        return (String) getStateHelper().eval(PropertyKeys.onclick, null);
-    }
-
-    public void setOnclick(String onclick) {
-        getStateHelper().put(PropertyKeys.onclick, onclick);
-    }
+    @Property(defaultValue = "true", description = "Specifies the submit mode, when set to true (default), submit would be made with Ajax.")
+    public abstract boolean isAjax();
 
     @Override
-    public String getUpdate() {
-        return (String) getStateHelper().eval(PropertyKeys.update, null);
-    }
-
-    public void setUpdate(String update) {
-        getStateHelper().put(PropertyKeys.update, update);
-    }
+    @Property(description = "Icon of the menu item.")
+    public abstract String getIcon();
 
     @Override
-    public String getProcess() {
-        return (String) getStateHelper().eval(PropertyKeys.process, null);
-    }
-
-    public void setProcess(String process) {
-        getStateHelper().put(PropertyKeys.process, process);
-    }
+    @Property(defaultValue = "left", description = "Position of the icon, valid values are \"left\" and \"right\".")
+    public abstract String getIconPos();
 
     @Override
-    public String getOnstart() {
-        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
-    }
-
-    public void setOnstart(String onstart) {
-        getStateHelper().put(PropertyKeys.onstart, onstart);
-    }
+    @Property(description = "If true, components which autoUpdate=\"true\" will not be updated for this request. " +
+        "If not specified, or the value is false, no such indication is made.")
+    public abstract boolean isIgnoreAutoUpdate();
 
     @Override
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(description = "Title text of the menu item.")
+    public abstract String getTitle();
 
     @Override
-    public String getOncomplete() {
-        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
-    }
-
-    public void setOncomplete(String oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
-    }
+    @Property(description = "Used to resolve a navigation case.")
+    public abstract String getOutcome();
 
     @Override
-    public String getOnerror() {
-        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
-    }
-
-    public void setOnerror(String onerror) {
-        getStateHelper().put(PropertyKeys.onerror, onerror);
-    }
+    @Property(defaultValue = "false", description = "Whether to include page parameters in target URI.")
+    public abstract boolean isIncludeViewParams();
 
     @Override
-    public String getOnsuccess() {
-        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
-    }
-
-    public void setOnsuccess(String onsuccess) {
-        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
-    }
+    @Property(description = "Identifier of the target page which should be scrolled to.")
+    public abstract String getFragment();
 
     @Override
-    public boolean isGlobal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
-    }
-
-    public void setGlobal(boolean global) {
-        getStateHelper().put(PropertyKeys.global, global);
-    }
+    @Property(defaultValue = "false", description = "Disable appending the on the rendering of this element.")
+    public abstract boolean isDisableClientWindow();
 
     @Override
-    public String getDelay() {
-        return (String) getStateHelper().eval(PropertyKeys.delay, null);
-    }
-
-    public void setDelay(String delay) {
-        getStateHelper().put(PropertyKeys.delay, delay);
-    }
+    @Property(description = "Inline style of the container element.")
+    public abstract String getContainerStyle();
 
     @Override
-    public int getTimeout() {
-        return (Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
-    }
-
-    public void setTimeout(int timeout) {
-        getStateHelper().put(PropertyKeys.timeout, timeout);
-    }
+    @Property(description = "Style class of the container element.")
+    public abstract String getContainerStyleClass();
 
     @Override
-    public boolean isAsync() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.async, false);
-    }
-
-    public void setAsync(boolean async) {
-        getStateHelper().put(PropertyKeys.async, async);
-    }
+    @Property(defaultValue = "true", description = "Defines if label of the component is escaped or not.")
+    public abstract boolean isEscape();
 
     @Override
-    public boolean isAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ajax, true);
-    }
-
-    public void setAjax(boolean ajax) {
-        getStateHelper().put(PropertyKeys.ajax, ajax);
-    }
+    @Property(description = "Relationship between the current document and the linked resource.")
+    public abstract String getRel();
 
     @Override
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
-
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
+    @Property(description = "If true, unresolvable components (ComponentNotFoundException) referenced in the update/process attribute are ignored.")
+    public abstract boolean isIgnoreComponentNotFound();
 
     @Override
-    public String getIconPos() {
-        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
-    }
-
-    public void setIconPos(String iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, iconPos);
-    }
+    @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
+    public abstract String getAriaLabel();
 
     @Override
-    public boolean isPartialSubmit() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
-    }
-
-    public void setPartialSubmit(boolean partialSubmit) {
-        getStateHelper().put(PropertyKeys.partialSubmit, partialSubmit);
-    }
-
-    @Override
-    public boolean isResetValues() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
-    }
-
-    public void setResetValues(boolean resetValues) {
-        getStateHelper().put(PropertyKeys.resetValues, resetValues);
-    }
-
-    @Override
-    public boolean isIgnoreAutoUpdate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
-    }
-
-    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
-        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
-    }
-
-    @Override
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
-
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
-
-    @Override
-    public String getOutcome() {
-        return (String) getStateHelper().eval(PropertyKeys.outcome, null);
-    }
-
-    public void setOutcome(String outcome) {
-        getStateHelper().put(PropertyKeys.outcome, outcome);
-    }
-
-    @Override
-    public boolean isIncludeViewParams() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.includeViewParams, false);
-    }
-
-    public void setIncludeViewParams(boolean includeViewParams) {
-        getStateHelper().put(PropertyKeys.includeViewParams, includeViewParams);
-    }
-
-    @Override
-    public String getFragment() {
-        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
-    }
-
-    public void setFragment(String fragment) {
-        getStateHelper().put(PropertyKeys.fragment, fragment);
-    }
-
-    @Override
-    public boolean isDisableClientWindow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
-    }
-
-    public void setDisableClientWindow(boolean disableClientWindow) {
-        getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
-    }
-
-    @Override
-    public String getContainerStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.containerStyle, null);
-    }
-
-    public void setContainerStyle(String containerStyle) {
-        getStateHelper().put(PropertyKeys.containerStyle, containerStyle);
-    }
-
-    @Override
-    public String getContainerStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.containerStyleClass, null);
-    }
-
-    public void setContainerStyleClass(String containerStyleClass) {
-        getStateHelper().put(PropertyKeys.containerStyleClass, containerStyleClass);
-    }
-
-    @Override
-    public String getPartialSubmitFilter() {
-        return (String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
-    }
-
-    public void setPartialSubmitFilter(String partialSubmitFilter) {
-        getStateHelper().put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
-    }
-
-    @Override
-    public String getForm() {
-        return (String) getStateHelper().eval(PropertyKeys.form, null);
-    }
-
-    public void setForm(String form) {
-        getStateHelper().put(PropertyKeys.form, form);
-    }
-
-    @Override
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    @Override
-    public String getRel() {
-        return (String) getStateHelper().eval(PropertyKeys.rel, null);
-    }
-
-    public void setRel(String rel) {
-        getStateHelper().put(PropertyKeys.rel, rel);
-    }
+    @Property(description = "Badge value to display on the menu item.")
+    public abstract Object getBadge();
 
     @Override
     public Callbacks.SerializableFunction<MenuItem, String> getFunction() {
         return null;
     }
 
-    @Override
-    public boolean isIgnoreComponentNotFound() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+    @Property(description = "A method expression or a string outcome to process when command is executed.", callSuper = true)
+    public MethodExpression getAction() {
+        return super.getActionExpression();
     }
 
-    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
-        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
-    }
-
-    @Override
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
-
-    @Override
-    public Object getBadge() {
-        return getStateHelper().eval(PropertyKeys.badge, null);
-    }
-
-    public void setBadge(Object badge) {
-        getStateHelper().put(PropertyKeys.badge, badge);
+    @Property(description = "An action listener to process when command is executed.", callSuper = true)
+    public ActionListener getActionListener() {
+        return super.getActionListeners()[0];
     }
 }

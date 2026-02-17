@@ -23,12 +23,13 @@
  */
 package org.primefaces.component.barcode;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Barcode.COMPONENT_TYPE, namespace = Barcode.COMPONENT_FAMILY)
-@FacesComponentDescription("Barcode component is used to display various barcode formats QR Code, Code 128, Code 39, EAN-13, UPC-A, ITF-14, and DataMatrix.")
+@FacesComponentInfo(description =
+        "Barcode component is used to display various barcode formats QR Code, Code 128, Code 39, EAN-13, UPC-A, ITF-14, and DataMatrix.")
 public class Barcode extends BarcodeBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Barcode";

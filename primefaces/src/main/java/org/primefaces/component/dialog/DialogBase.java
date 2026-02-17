@@ -25,9 +25,9 @@ package org.primefaces.component.dialog;
 
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
@@ -39,6 +39,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
+@FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "close", event = CloseEvent.class, description = "Fires when dialog is closed.", defaultEvent = true),
     @FacesBehaviorEvent(name = "minimize", event = AjaxBehaviorEvent.class, description = "Fires when dialog is minimized."),
@@ -51,7 +52,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "resizeStart", event = ResizeEvent.class, description = "Fires when dialog resize starts."),
     @FacesBehaviorEvent(name = "resizeStop", event = ResizeEvent.class, description = "Fires when dialog resize stops.")
 })
-public abstract class DialogBase extends UIPanel implements Widget, RTLAware, StyleAware, PrimeClientBehaviorHolder {
+public abstract class DialogBase extends UIPanel implements Widget, RTLAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -66,10 +67,10 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, St
         return COMPONENT_FAMILY;
     }
 
-    @Facet(description = "Allows to place HTML in the header. Alternative to header.")
+    @Facet(description = "Allows custom HTML in the header. Alternative to header.")
     public abstract UIComponent getHeaderFacet();
 
-    @Facet(description = "Allows to place HTML in the footer. Alternative to footer.")
+    @Facet(description = "Allows custom HTML in the footer. Alternative to footer.")
     public abstract UIComponent getFooterFacet();
 
     @Facet(description = "Allows to add custom action to the titlebar.")
@@ -111,7 +112,7 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, St
     @Property(description = "Hide effect to be used when hiding dialog.")
     public abstract String getHideEffect();
 
-    @Property(description = "Position of the dialog relative to the target element.")
+    @Property(implicitDefaultValue = "center", description = "Position of the dialog relative to the target element.")
     public abstract String getMy();
 
     @Property(description = "Position of the target element relative to the dialog.")

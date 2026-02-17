@@ -78,7 +78,7 @@ public class InputTextRenderer extends InputRenderer<InputText> {
             if (counterComponent != null) {
                 wb.attr("counter", counterComponent.getClientId(context))
                         .attr("counterTemplate", inputText.getCounterTemplate(), null)
-                        .attr("countBytesAsChars", inputText.getCountBytesAsChars());
+                        .attr("countBytesAsChars", inputText.isCountBytesAsChars());
             }
         }
 

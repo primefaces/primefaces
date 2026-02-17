@@ -23,50 +23,37 @@
  */
 package org.primefaces.component.tree;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.NodeCollapseEvent;
+import org.primefaces.event.NodeExpandEvent;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.NodeUnselectEvent;
+import org.primefaces.event.TreeDragDropEvent;
 
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "select", event = NodeSelectEvent.class, description = "Fires when a node is selected."),
+    @FacesBehaviorEvent(name = "unselect", event = NodeUnselectEvent.class, description = "Fires when a node is unselected."),
+    @FacesBehaviorEvent(name = "expand", event = NodeExpandEvent.class, description = "Fires when a node is expanded."),
+    @FacesBehaviorEvent(name = "collapse", event = NodeCollapseEvent.class, description = "Fires when a node is collapsed."),
+    @FacesBehaviorEvent(name = "dragdrop", event = TreeDragDropEvent.class, description = "Fires when a node is dragged and dropped."),
+    @FacesBehaviorEvent(name = "contextMenu", event = NodeSelectEvent.class, description = "Fires when context menu is invoked on a node."),
+    @FacesBehaviorEvent(name = "filter", event = AjaxBehaviorEvent.class, description = "Fires when data is filtered.")
+})
+public abstract class TreeBase extends UITree implements Widget, RTLAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TreeRenderer";
-
-    public enum PropertyKeys {
-        animate,
-        cache,
-        datakey,
-        dir,
-        disabled,
-        dragMode,
-        dragdropScope,
-        draggable,
-        dropCopyNode,
-        dropMode,
-        dropRestrict,
-        droppable,
-        dynamic,
-        filterBy,
-        filterDelay,
-        filterEvent,
-        filterFunction,
-        filterMatchMode,
-        filterMode,
-        filterPlaceholder,
-        highlight,
-        multipleDrag,
-        onDrop,
-        onNodeClick,
-        orientation,
-        style,
-        styleClass,
-        tabindex,
-        widgetVar
-    }
 
     public TreeBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -77,236 +64,83 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(defaultValue = "false", description = "Specifies the ajax/client toggleMode.")
+    public abstract boolean isDynamic();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(defaultValue = "true", description = "Specifies caching on dynamically loaded nodes. When set to true expanded nodes will be kept in memory.")
+    public abstract boolean isCache();
 
-    public boolean isDynamic() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
-    }
+    @Property(description = "Javascript event to process when a tree node is clicked.")
+    public abstract String getOnNodeClick();
 
-    public void setDynamic(boolean dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, dynamic);
-    }
+    @Property(defaultValue = "true", description = "Highlights nodes on hover when selection is enabled, set to false to disable highlighting.")
+    public abstract boolean isHighlight();
 
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
-    }
+    @Property(description = "Unique key of the data presented by tree nodes.")
+    public abstract Object getDatakey();
 
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
+    @Property(defaultValue = "false", description = "When enabled, Displays slide effect during toggling of a node.")
+    public abstract boolean isAnimate();
 
-    public String getOnNodeClick() {
-        return (String) getStateHelper().eval(PropertyKeys.onNodeClick, null);
-    }
+    @Property(defaultValue = "vertical", description = "Defines the orientation of the tree, valid values are \"vertical\" and \"horizontal\".")
+    public abstract String getOrientation();
 
-    public void setOnNodeClick(String onNodeClick) {
-        getStateHelper().put(PropertyKeys.onNodeClick, onNodeClick);
-    }
+    @Property(defaultValue = "false", description = "Controls dragging of tree nodes.")
+    public abstract boolean isDraggable();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "false", description = "Controls dropping of tree nodes.")
+    public abstract boolean isDroppable();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Scope key to group a set of tree components for transferring nodes using drag and drop.")
+    public abstract String getDragdropScope();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "self",
+            description = "Defines parent-child relationship when a node is dragged, valid values are \"self\", \"parent\" and \"ancestor\".")
+    public abstract String getDragMode();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "none", description = "Defines parent-child restrictions when a node is dropped valid values are \"none\" and \"sibling\".")
+    public abstract String getDropRestrict();
 
-    public boolean isHighlight() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.highlight, true);
-    }
+    @Property(defaultValue = "move",
+            description = "When enabled and dropMode='move', the copy of the selected nodes can be dropped from a tree to another tree using Shift key.")
+    public abstract String getDropMode();
 
-    public void setHighlight(boolean highlight) {
-        getStateHelper().put(PropertyKeys.highlight, highlight);
-    }
+    @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")
+    public abstract int getTabindex();
 
-    public Object getDatakey() {
-        return getStateHelper().eval(PropertyKeys.datakey, null);
-    }
+    @Property(description = "Property to be used for filtering.")
+    public abstract Object getFilterBy();
 
-    public void setDatakey(Object datakey) {
-        getStateHelper().put(PropertyKeys.datakey, datakey);
-    }
+    @Property(defaultValue = "startsWith", description = "Match mode for filtering.")
+    public abstract String getFilterMatchMode();
 
-    public boolean isAnimate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.animate, false);
-    }
+    @Property(defaultValue = "false", description = "Disables the tree.")
+    public abstract boolean isDisabled();
 
-    public void setAnimate(boolean animate) {
-        getStateHelper().put(PropertyKeys.animate, animate);
-    }
+    @Property(defaultValue = "false", description = "When enabled, the selected multiple nodes can be dragged from a tree to another tree.")
+    public abstract boolean isMultipleDrag();
 
-    public String getOrientation() {
-        return (String) getStateHelper().eval(PropertyKeys.orientation, "vertical");
-    }
+    @Property(defaultValue = "false",
+            description = "When enabled and dropMode='move', the copy of the selected nodes can be dropped from a tree to another tree using Shift key.")
+    public abstract boolean isDropCopyNode();
 
-    public void setOrientation(String orientation) {
-        getStateHelper().put(PropertyKeys.orientation, orientation);
-    }
+    @Property(description = "Method returning whether the dragged node(s) can be dropped on the dropped node.")
+    public abstract jakarta.el.MethodExpression getOnDrop();
 
-    @Override
-    public String getDir() {
-        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
-    }
+    @Property(defaultValue = "lenient", description = "Mode for filtering valid values are \"lenient\" and \"strict\".")
+    public abstract String getFilterMode();
 
-    public void setDir(String dir) {
-        getStateHelper().put(PropertyKeys.dir, dir);
-    }
+    @Property(description = "Custom implementation to filter TreeNodes against a constraint.")
+    public abstract jakarta.el.MethodExpression getFilterFunction();
 
-    public boolean isDraggable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.draggable, false);
-    }
+    @Property(implicitDefaultValue = "keyup", description = "Client side event to invoke filtering."
+            + " If \"enter\" it will only filter after ENTER key is pressed.")
+    public abstract String getFilterEvent();
 
-    public void setDraggable(boolean draggable) {
-        getStateHelper().put(PropertyKeys.draggable, draggable);
-    }
+    @Property(defaultValue = "Integer.MAX_VALUE", implicitDefaultValue = "300",
+            description = "Delay to wait in milliseconds before sending each filter query.")
+    public abstract int getFilterDelay();
 
-    public boolean isDroppable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.droppable, false);
-    }
-
-    public void setDroppable(boolean droppable) {
-        getStateHelper().put(PropertyKeys.droppable, droppable);
-    }
-
-    public String getDragdropScope() {
-        return (String) getStateHelper().eval(PropertyKeys.dragdropScope, null);
-    }
-
-    public void setDragdropScope(String dragdropScope) {
-        getStateHelper().put(PropertyKeys.dragdropScope, dragdropScope);
-    }
-
-    public String getDragMode() {
-        return (String) getStateHelper().eval(PropertyKeys.dragMode, "self");
-    }
-
-    public void setDragMode(String dragMode) {
-        getStateHelper().put(PropertyKeys.dragMode, dragMode);
-    }
-
-    public String getDropRestrict() {
-        return (String) getStateHelper().eval(PropertyKeys.dropRestrict, "none");
-    }
-
-    public void setDropRestrict(String dropRestrict) {
-        getStateHelper().put(PropertyKeys.dropRestrict, dropRestrict);
-    }
-
-    public String getDropMode() {
-        return (String) getStateHelper().eval(PropertyKeys.dropMode, "move");
-    }
-
-    public void setDropMode(String dropMode) {
-        getStateHelper().put(PropertyKeys.dropMode, dropMode);
-    }
-
-    public int getTabindex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.tabindex, 0);
-    }
-
-    public void setTabindex(int tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public Object getFilterBy() {
-        return getStateHelper().eval(PropertyKeys.filterBy, null);
-    }
-
-    public void setFilterBy(Object filterBy) {
-        getStateHelper().put(PropertyKeys.filterBy, filterBy);
-    }
-
-    public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, "startsWith");
-    }
-
-    public void setFilterMatchMode(String filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public boolean isMultipleDrag() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multipleDrag, false);
-    }
-
-    public void setMultipleDrag(boolean multipleDrag) {
-        getStateHelper().put(PropertyKeys.multipleDrag, multipleDrag);
-    }
-
-    public boolean isDropCopyNode() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dropCopyNode, false);
-    }
-
-    public void setDropCopyNode(boolean dropCopyNode) {
-        getStateHelper().put(PropertyKeys.dropCopyNode, dropCopyNode);
-    }
-
-    public jakarta.el.MethodExpression getOnDrop() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.onDrop, null);
-    }
-
-    public void setOnDrop(jakarta.el.MethodExpression onDrop) {
-        getStateHelper().put(PropertyKeys.onDrop, onDrop);
-    }
-
-    public String getFilterMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMode, "lenient");
-    }
-
-    public void setFilterMode(String filterMode) {
-        getStateHelper().put(PropertyKeys.filterMode, filterMode);
-    }
-
-    public jakarta.el.MethodExpression getFilterFunction() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
-    }
-
-    public void setFilterFunction(jakarta.el.MethodExpression filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
-    }
-
-    public String getFilterEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.filterEvent, null);
-    }
-
-    public void setFilterEvent(String filterEvent) {
-        getStateHelper().put(PropertyKeys.filterEvent, filterEvent);
-    }
-
-    public int getFilterDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.filterDelay, Integer.MAX_VALUE);
-    }
-
-    public void setFilterDelay(int filterDelay) {
-        getStateHelper().put(PropertyKeys.filterDelay, filterDelay);
-    }
-
-    public java.lang.String getFilterPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
-    }
-
-    public void setFilterPlaceholder(String filterPlaceholder) {
-        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
-    }
+    @Property(description = "Placeholder for the filter input element.")
+    public abstract java.lang.String getFilterPlaceholder();
 }

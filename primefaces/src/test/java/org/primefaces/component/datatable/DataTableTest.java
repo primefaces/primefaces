@@ -61,6 +61,9 @@ class DataTableTest {
         when(exprVE.getExpressionString()).thenReturn("#{car.wrapper.year}");
         assertEquals("wrapper.year", column.resolveField(context, exprVE));
 
+        when(exprVE.getExpressionString()).thenReturn("#{car['year']}");
+        assertEquals("year", column.resolveField(context, exprVE));
+
         when(exprVE.getExpressionString()).thenReturn("#{car}");
         assertNull(column.resolveField(context, exprVE));
 

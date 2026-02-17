@@ -23,10 +23,16 @@
  */
 package org.primefaces.component.panelgrid;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 
-
-public abstract class PanelGridBase extends UIPanel {
+@FacesComponentBase
+public abstract class PanelGridBase extends UIPanel implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -37,18 +43,6 @@ public abstract class PanelGridBase extends UIPanel {
     public static final String LAYOUT_FLEX = "flex";
     public static final String LAYOUT_TAILWIND = "tailwind";
 
-    public enum PropertyKeys {
-
-        columns,
-        style,
-        contentStyle,
-        styleClass,
-        contentStyleClass,
-        columnClasses,
-        layout,
-        role
-    }
-
     public PanelGridBase() {
         setRendererType(DEFAULT_RENDERER);
     }
@@ -58,68 +52,27 @@ public abstract class PanelGridBase extends UIPanel {
         return COMPONENT_FAMILY;
     }
 
-    public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 12);
-    }
+    @Facet(description = "Allows custom HTML in the header.")
+    public abstract UIComponent getHeaderFacet();
 
-    public void setColumns(int columns) {
-        getStateHelper().put(PropertyKeys.columns, columns);
-    }
+    @Facet(description = "Allows custom HTML in the footer.")
+    public abstract UIComponent getFooterFacet();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "12", description = "Number of columns to display.")
+    public abstract int getColumns();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Inline style of the content area.")
+    public abstract String getContentStyle();
 
-    public String getContentStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.contentStyle, null);
-    }
+    @Property(description = "Style class of the content area.")
+    public abstract String getContentStyleClass();
 
-    public void setContentStyle(String contentStyle) {
-        getStateHelper().put(PropertyKeys.contentStyle, contentStyle);
-    }
+    @Property(description = "Comma separated list of CSS classes to apply to columns.")
+    public abstract String getColumnClasses();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "grid", description = "Layout mode, valid values are \"grid\", \"tabular\", \"flex\" and \"tailwind\".")
+    public abstract String getLayout();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getContentStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, null);
-    }
-
-    public void setContentStyleClass(String contentStyleClass) {
-        getStateHelper().put(PropertyKeys.contentStyleClass, contentStyleClass);
-    }
-
-    public String getColumnClasses() {
-        return (String) getStateHelper().eval(PropertyKeys.columnClasses, null);
-    }
-
-    public void setColumnClasses(String columnClasses) {
-        getStateHelper().put(PropertyKeys.columnClasses, columnClasses);
-    }
-
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, LAYOUT_GRID);
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
-    }
-
-    public String getRole() {
-        return (String) getStateHelper().eval(PropertyKeys.role, "grid");
-    }
-
-    public void setRole(String role) {
-        getStateHelper().put(PropertyKeys.role, role);
-    }
-
+    @Property(defaultValue = "grid", description = "ARIA role attribute.")
+    public abstract String getRole();
 }

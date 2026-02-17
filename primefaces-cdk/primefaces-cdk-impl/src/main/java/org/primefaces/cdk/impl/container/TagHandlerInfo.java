@@ -21,33 +21,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.accordionpanel;
+package org.primefaces.cdk.impl.container;
 
-import org.primefaces.event.TabEvent;
-import org.primefaces.facelets.MethodRule;
+import org.primefaces.cdk.api.Property;
 
-import jakarta.faces.view.facelets.ComponentConfig;
-import jakarta.faces.view.facelets.ComponentHandler;
-import jakarta.faces.view.facelets.MetaRule;
-import jakarta.faces.view.facelets.MetaRuleset;
+import java.util.HashMap;
+import java.util.Map;
 
-public class AccordionPanelComponentHandler extends ComponentHandler {
+public class TagHandlerInfo {
 
-    private static final MetaRule TABCHANGE_CONTROLLER = new MethodRule(AccordionPanel.PropertyKeys.tabController.name(),
-            Boolean.class,
-            new Class[]{TabEvent.class});
+    private Class<?> clazz;
+    private String description;
+    private String tagName;
+    private Map<String, Property> properties = new HashMap<>();
 
-    public AccordionPanelComponentHandler(ComponentConfig config) {
-        super(config);
+    public TagHandlerInfo(Class<?> clazz, String description, String tagName) {
+        this.clazz = clazz;
+        this.description = description;
+        this.tagName = tagName;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected MetaRuleset createMetaRuleset(Class type) {
-        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+    public Class<?> getClazz() {
+        return clazz;
+    }
 
-        metaRuleset.addRule(TABCHANGE_CONTROLLER);
+    public void setClazz(Class<?> clazz) {
+        this.clazz = clazz;
+    }
 
-        return metaRuleset;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
+    public Map<String, Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, Property> properties) {
+        this.properties = properties;
     }
 }

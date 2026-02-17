@@ -23,23 +23,17 @@
  */
 package org.primefaces.component.rowtoggler;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIComponentBase;
 
-
+@FacesComponentBase
 public abstract class RowTogglerBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.RowTogglerRenderer";
-
-    public enum PropertyKeys {
-
-        expandLabel,
-        collapseLabel,
-        expandIcon,
-        collapseIcon,
-        tabindex;
-    }
 
     public RowTogglerBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -50,44 +44,21 @@ public abstract class RowTogglerBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getExpandLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.expandLabel, null);
-    }
+    @Property(description = "Expand text to display instead of icon to.")
+    public abstract String getExpandLabel();
 
-    public void setExpandLabel(String expandLabel) {
-        getStateHelper().put(PropertyKeys.expandLabel, expandLabel);
-    }
+    @Property(description = "Collapse text to display instead of icon.")
+    public abstract String getCollapseLabel();
 
-    public String getCollapseLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.collapseLabel, null);
-    }
+    @Property(description = "Icon to expand rowExpansion",
+            defaultValue = "ui-icon-circle-triangle-e")
+    public abstract String getExpandIcon();
 
-    public void setCollapseLabel(String collapseLabel) {
-        getStateHelper().put(PropertyKeys.collapseLabel, collapseLabel);
-    }
+    @Property(description = "Icon to collapse rowExpansion",
+            defaultValue = "ui-icon-circle-triangle-s")
+    public abstract String getCollapseIcon();
 
-    public String getExpandIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.expandIcon, "ui-icon-circle-triangle-e");
-    }
-
-    public void setExpandIcon(String expandIcon) {
-        getStateHelper().put(PropertyKeys.expandIcon, expandIcon);
-    }
-
-    public String getCollapseIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.collapseIcon, "ui-icon-circle-triangle-s");
-    }
-
-    public void setCollapseIcon(String collapseIcon) {
-        getStateHelper().put(PropertyKeys.collapseIcon, collapseIcon);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
+    @Property(description = "Position of the element in the tabbing order.",
+            defaultValue = "0")
+    public abstract String getTabindex();
 }

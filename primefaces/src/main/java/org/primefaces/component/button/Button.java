@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.button;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -35,7 +35,7 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Button.COMPONENT_TYPE, namespace = Button.COMPONENT_FAMILY)
-@FacesComponentDescription("Button is an extension to the standard h:button component with skinning capabilities.")
+@FacesComponentInfo(description = "Button is an extension to the standard h:button component with skinning capabilities.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.toolbar;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ToolbarGroup.COMPONENT_TYPE, namespace = ToolbarGroup.COMPONENT_FAMILY)
-@FacesComponentDescription("ToolbarbarGroup is a helper component for Toolbar component to define placeholders.")
+@FacesComponentInfo(description = "ToolbarbarGroup is a helper component for Toolbar component to define placeholders.")
 public class ToolbarGroup extends ToolbarGroupBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ToolbarGroup";

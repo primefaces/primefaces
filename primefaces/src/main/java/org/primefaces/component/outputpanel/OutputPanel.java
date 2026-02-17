@@ -23,49 +23,25 @@
  */
 package org.primefaces.component.outputpanel;
 
-import org.primefaces.util.MapBuilder;
-
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
-import jakarta.faces.event.BehaviorEvent;
 
 @FacesComponent(value = OutputPanel.COMPONENT_TYPE, namespace = OutputPanel.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "OutputPanel is a container component with deferred loading and layout options.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class OutputPanel extends OutputPanelBase {
+public class OutputPanel extends OutputPanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OutputPanel";
 
     public static final String CONTAINER_CLASS = "ui-outputpanel ui-widget";
     public static final String LOADING_CLASS = "ui-outputpanel-loading ui-icon pi pi-spin pi-spinner";
-    private static final String DEFAULT_EVENT = "load";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("load", null)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
 
     public boolean isContentLoadRequest(FacesContext context) {
         String clientId = getClientId(context);

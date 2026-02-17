@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.stack;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Stack.COMPONENT_TYPE, namespace = Stack.COMPONENT_FAMILY)
-@FacesComponentDescription("Stack is a navigation component that mimics the stacks feature in Mac OS X.")
+@FacesComponentInfo(description = "Stack is a navigation component that mimics the stacks feature in Mac OS X.")
 @ResourceDependency(library = "primefaces", name = "stack/stack.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

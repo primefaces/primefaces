@@ -303,9 +303,10 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
     /**
      * Collapses all siblings of the given header column.
      * @param header The header column that was clicked. 
+     * @param animate Whether to animate the collapse.
      */
-    private collapseActiveSibling(header: JQuery): void {
-        this.collapseRootSubmenu(header.parent().siblings().children('.ui-panelmenu-header.ui-state-active').eq(0));
+    private collapseActiveSibling(header: JQuery, animate = true): void {
+        this.collapseRootSubmenu(header.parent().siblings().children('.ui-panelmenu-header.ui-state-active').eq(0), animate);
     }
 
     /**
@@ -380,16 +381,17 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
     /**
      * Collapses the given accordion panel, hiding the menu entries it contains.
      * @param header A menu panel to collapse.
+     * @param animate Whether to animate the collapse.
      */
-    collapseRootSubmenu(header: JQuery): void {
+    collapseRootSubmenu(header: JQuery, animate = true): void {
         var panel = header.next();
 
         header.attr('aria-expanded', "false").removeClass('ui-state-active').addClass('ui-state-hover')
             .children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
 
-        panel.attr('aria-hidden', "true").slideUp(400, 'easeInOutCirc');
+        panel.attr('aria-hidden', "true").slideUp(animate ? 400 : 0, 'easeInOutCirc');
 
-        this.removeAsExpanded(panel);
+        this.updateExpandedNodes();
     }
 
     /**
@@ -409,7 +411,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         else {
             panel.attr('aria-hidden', "false").slideDown(400, 'easeInOutCirc');
 
-            this.addAsExpanded(panel);
+            this.updateExpandedNodes();
         }
     }
 
@@ -426,7 +428,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         submenu.children('.ui-menu-list').show();
 
         if(!restoring) {
-            this.addAsExpanded(submenu);
+            this.updateExpandedNodes();
         }
     }
 
@@ -441,7 +443,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         submenuLink.find('> .ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
         submenu.children('.ui-menu-list').hide();
 
-        this.removeAsExpanded(submenu);
+        this.updateExpandedNodes();
     }
 
     /**
@@ -449,9 +451,9 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      * between page reloads.
      */
     private saveState(): void {
-        if(this.cfg.stateful) {
-            const expandedNodeIds = this.expandedNodes.join(',');
-
+        if(this.cfg.stateful && this.expandedNodes) {
+            const uniqueExpandedNodes = Array.from(new Set(this.expandedNodes));
+            const expandedNodeIds = uniqueExpandedNodes.join(',');
             localStorage.setItem(this.stateKey, expandedNodeIds);
         }
     }
@@ -467,54 +469,65 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
             expandedNodeIds = localStorage.getItem(this.stateKey);
         }
 
-        if (expandedNodeIds) {
-            this.collapseAll();
-            this.expandedNodes = expandedNodeIds.split(',');
+        // if no stateKey is found at all its initial state from server side
+        if (expandedNodeIds === null) {
+            return;
+        }
 
-            for (const expandedNode of this.expandedNodes) {
-                const element = $(PrimeFaces.escapeClientId(expandedNode).replace(/\|/g,"\\|"));
-                if(element.is('div.ui-panelmenu-content')) {
-                    this.expandRootSubmenu(element.prev(), true);
-                }
-                else if(element.is('li.ui-menu-parent')) {
-                    this.expandTreeItem(element, true);
-                }
+        // state key was found but its empty so all nodes are collapsed
+        if (expandedNodeIds.length === 0) {
+            this.collapseAll();
+            return;
+        }
+
+        // state key was found and its not empty so we need to expand the nodes
+        this.collapseAll();
+        this.expandedNodes = expandedNodeIds.split(',');
+
+        for (const expandedNode of this.expandedNodes) {
+            const element = $(PrimeFaces.escapeClientId(expandedNode).replace(/\|/g, "\\|"));
+            if (element.is('div.ui-panelmenu-content')) {
+                this.expandRootSubmenu(element.prev(), true);
+            }
+            else if (element.is('li.ui-menu-parent')) {
+                this.expandTreeItem(element, true);
             }
         }
-        else {
-            this.expandedNodes = [];
-            const activeHeaders = this.headers.filter('.ui-state-active'),
+
+        this.updateExpandedNodes();
+    }
+
+    /**
+     * Recalculates and updates the list of currently expanded menu nodes.
+     *
+     * This method examines the DOM to find all expanded root headers and tree submenu items, collects
+     * their IDs, and updates the {@link PanelMenu.expandedNodes} array. After updating the expanded nodes,
+     * the method persists the state via {@link saveState}.
+     *
+     * Expanded nodes are determined as follows:
+     * - Any panel header element (`this.headers`) that has the `ui-state-active` class is considered expanded;
+     *   its associated content panel ID (the header's next sibling's `id` attribute) is added.
+     * - Any sub-menu panel (`.ui-menu-list`) that is visible (does not have `ui-helper-hidden`), whose parent
+     *   is a menu parent node (`.ui-menu-parent`), will have that parent's `id` attribute added.
+     */
+    private updateExpandedNodes(): void {
+        this.expandedNodes = [];
+
+        // Find all active root panel headers and expanded submenus.
+        const activeHeaders = this.headers.filter('.ui-state-active'),
             activeTreeSubmenus = this.jq.find('.ui-menu-parent > .ui-menu-list:not(.ui-helper-hidden)');
 
-            for(let j = 0; j < activeHeaders.length; j++) {
-                this.expandedNodes.push(activeHeaders.eq(j).next().attr('id') ?? "");
-            }
-
-            for(let k = 0; k < activeTreeSubmenus.length; k++) {
-                this.expandedNodes.push(activeTreeSubmenus.eq(k).parent().attr('id') ?? "");
-            }
+        // Collect IDs of expanded panel headers.
+        for (let j = 0; j < activeHeaders.length; j++) {
+            this.expandedNodes.push(activeHeaders.eq(j).next().attr('id') ?? "");
         }
-    }
 
-    /**
-     * Callback invoked after a menu item was collapsed. Saves the current UI state in an HTML5 Local Store.
-     * @param element Element that was collapsed.
-     */
-    private removeAsExpanded(element: JQuery): void {
-        const id = element.attr('id');
+        // Collect IDs of expanded submenu parents.
+        for (let k = 0; k < activeTreeSubmenus.length; k++) {
+            this.expandedNodes.push(activeTreeSubmenus.eq(k).parent().attr('id') ?? "");
+        }
 
-        this.expandedNodes = this.expandedNodes.filter((value) => value != id);
-
-        this.saveState();
-    }
-
-    /**
-     * Callback invoked after a menu item was expanded. Saves the current UI state in an HTML5 Local Store.
-     * @param element Element that was expanded.
-     */
-    private addAsExpanded(element: JQuery): void {
-        this.expandedNodes.push(element.attr('id') ?? "");
-
+        // Save the current expanded state.
         this.saveState();
     }
 
@@ -534,8 +547,8 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         let $this = this;
         $this.headers.filter('.ui-state-active').each(function() {
             const header = $(this);
-            $this.collapseActiveSibling(header);
-            $this.collapseRootSubmenu(header);
+            $this.collapseActiveSibling(header, false);
+            $this.collapseRootSubmenu(header, false);
             header.removeClass('ui-state-hover');
         });
 

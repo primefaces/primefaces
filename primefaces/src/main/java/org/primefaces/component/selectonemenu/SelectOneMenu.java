@@ -23,19 +23,17 @@
  */
 package org.primefaces.component.selectonemenu;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.application.ResourceDependency;
@@ -49,12 +47,13 @@ import jakarta.faces.validator.Validator;
 import jakarta.faces.validator.ValidatorException;
 
 @FacesComponent(value = SelectOneMenu.COMPONENT_TYPE, namespace = SelectOneMenu.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "SelectOneMenu is an extended version of the standard Faces SelectOneMenu.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class SelectOneMenu extends SelectOneMenuBase {
+public class SelectOneMenu extends SelectOneMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneMenu";
 
@@ -75,21 +74,8 @@ public class SelectOneMenu extends SelectOneMenuBase {
     public static final String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
 
-    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "clear", "blur", "change", "valueChange", "click",
-            "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select");
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
     public boolean isDynamicLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_dynamicload");
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return "valueChange";
     }
 
     public List<Column> getColumns() {
@@ -107,24 +93,21 @@ public class SelectOneMenu extends SelectOneMenuBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        if (event instanceof AjaxBehaviorEvent) {
-            FacesContext context = getFacesContext();
+        if (isAjaxBehaviorEventSource(event)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if ("itemSelect".equals(eventName)) {
-                Renderer renderer = ComponentUtils.getUnwrappedRenderer(
-                        context,
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.itemSelect)) {
+                Renderer<?> renderer = ComponentUtils.getUnwrappedRenderer(
+                        event.getFacesContext(),
                         "jakarta.faces.SelectOne",
                         "jakarta.faces.Menu");
 
-                Object item = renderer.getConvertedValue(context, this, getSubmittedValue());
+                Object item = renderer.getConvertedValue(event.getFacesContext(), this, getSubmittedValue());
                 SelectEvent<?> selectEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), item);
                 selectEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(selectEvent);
             }
-            else if ("clear".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.clear)) {
                 behaviorEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(behaviorEvent);
             }

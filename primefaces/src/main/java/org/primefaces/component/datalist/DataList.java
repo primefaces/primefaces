@@ -24,7 +24,7 @@
 package org.primefaces.component.datalist;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.api.IterationStatus;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.data.PageEvent;
@@ -50,7 +50,7 @@ import jakarta.faces.event.PhaseId;
 import jakarta.faces.model.DataModel;
 
 @FacesComponent(value = DataList.COMPONENT_TYPE, namespace = DataList.COMPONENT_FAMILY)
-@FacesComponentDescription("DataList presents a collection of data in list layout with several display types. AJAX Pagination is a built-in feature "
+@FacesComponentInfo(description = "DataList presents a collection of data in list layout with several display types. AJAX Pagination is a built-in feature "
         + "and paginator UI is fully customizable via various options like paginatorTemplate, rowsPerPageOptions, pageLinks and more.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

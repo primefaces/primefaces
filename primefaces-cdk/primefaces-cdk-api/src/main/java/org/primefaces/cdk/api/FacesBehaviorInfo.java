@@ -38,7 +38,7 @@ import java.lang.annotation.Target;
  * <p>Example:</p>
  * <pre>{@code
  * @FacesBehavior(...)
- * @FacesBehaviorDescription("...")
+ * @FacesBehaviorInfo(description = "...")
  * public class AjaxBehavior extends AjaxBehaviorBaseImpl {
  *
  * }
@@ -46,12 +46,19 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface FacesBehaviorDescription {
+public @interface FacesBehaviorInfo {
+
+    /**
+     * The name of the component.
+     *
+     * @return the component name
+     */
+    String name() default "";
 
     /**
      * The description text for the component.
      *
      * @return the component description
      */
-    String value();
+    String description();
 }

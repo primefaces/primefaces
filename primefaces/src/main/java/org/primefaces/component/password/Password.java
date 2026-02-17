@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.password;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
@@ -35,7 +35,7 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Password.COMPONENT_TYPE, namespace = Password.COMPONENT_FAMILY)
-@FacesComponentDescription("Password is an extended version of standard inputSecret component with theme integration and strength indicator.")
+@FacesComponentInfo(description = "Password is an extended version of standard inputSecret component with theme integration and strength indicator.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

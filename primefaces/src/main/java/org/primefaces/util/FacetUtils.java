@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.cdk.api.Function;
+
 import jakarta.faces.component.ContextCallback;
 import jakarta.faces.component.EditableValueHolder;
 import jakarta.faces.component.UIComponent;
@@ -74,6 +76,7 @@ public class FacetUtils {
      * @param facet The Facet component to check
      * @return true when facet and one of the first level children is rendered.
      */
+    @Function(description = "Returns true when facet and one of the first level children is rendered.")
     public static boolean shouldRenderFacet(UIComponent facet) {
         return shouldRenderFacet(facet, false);
     }

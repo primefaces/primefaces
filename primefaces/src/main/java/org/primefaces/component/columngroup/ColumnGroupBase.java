@@ -33,11 +33,6 @@ public abstract class ColumnGroupBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public enum PropertyKeys {
-
-        type
-    }
-
     public ColumnGroupBase() {
         setRendererType(null);
     }

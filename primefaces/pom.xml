@@ -309,6 +309,33 @@
         </extensions>
 
         <plugins>
+            <!--
+            <plugin>
+                <groupId>org.primefaces</groupId>
+                <artifactId>primefaces-cdk-impl</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-taglib</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <uri>primefaces-test</uri>
+                            <shortName>pf-test</shortName>
+                            <displayName>PrimeFaces</displayName>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.json</groupId>
+                        <artifactId>json</artifactId>
+                        <version>20251224</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

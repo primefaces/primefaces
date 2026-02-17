@@ -21,45 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.impl.taglib;
+package org.primefaces.cdk.api;
 
-public class FunctionInfo {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    private String name;
-    private String clazz;
-    private String signature;
-    private String description;
+import jakarta.faces.view.facelets.ComponentHandler;
 
-    public FunctionInfo(String name, String clazz, String signature, String description) {
-        this.name = name;
-        this.clazz = clazz;
-        this.signature = signature;
-        this.description = description;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.TYPE })
+@Inherited
+public @interface FacesComponentHandler {
 
-    public String getName() {
-        return name;
-    }
-
-    public String getClazz() {
-        return clazz;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public String toString() {
-        return "FunctionInfo{" +
-                "name='" + name + '\'' +
-                ", clazz='" + clazz + '\'' +
-                ", signature='" + signature + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
+    Class<? extends ComponentHandler> value();
 }

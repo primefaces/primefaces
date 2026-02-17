@@ -27,19 +27,17 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIPanel;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "command", event = AjaxBehaviorEvent.class, description = "", defaultEvent = true)
 })
-public abstract class TerminalBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, StyleAware {
+public abstract class TerminalBase extends UIPanel implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

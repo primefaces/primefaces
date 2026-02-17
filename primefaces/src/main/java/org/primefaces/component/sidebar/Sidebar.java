@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.sidebar;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.util.ComponentUtils;
 
@@ -34,7 +34,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Sidebar.COMPONENT_TYPE, namespace = Sidebar.COMPONENT_FAMILY)
-@FacesComponentDescription("Sidebar is a panel component displayed as an overlay.")
+@FacesComponentInfo(description = "Sidebar is a panel component displayed as an overlay.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

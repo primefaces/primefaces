@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.datepicker;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
@@ -57,7 +57,7 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
 
 @FacesComponent(value = DatePicker.COMPONENT_TYPE, namespace = DatePicker.COMPONENT_FAMILY)
-@FacesComponentDescription("DatePicker is an input component used to select a date.")
+@FacesComponentInfo(description = "DatePicker is an input component used to select a date.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -95,7 +95,7 @@ public class DatePicker extends DatePickerBaseImpl {
     @Override
     public boolean isReadonlyInput() {
         return (boolean) getStateHelper().eval(PropertyKeys.readonlyInput,
-                () -> "week".equals(getView()) ? true : false);
+                () -> "week".equals(getView()));
     }
 
     public Boolean isShowTimeWithoutDefault() {

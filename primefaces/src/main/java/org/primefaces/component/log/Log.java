@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.log;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Log.COMPONENT_TYPE, namespace = Log.COMPONENT_FAMILY)
-@FacesComponentDescription("Log component is a visual console to display logs of PrimeFaces. Using log client side API, you can also use the component.")
+@FacesComponentInfo(description = "Log component is a visual console to display logs of PrimeFaces. Using log client side API, you can also use the component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "log/log.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

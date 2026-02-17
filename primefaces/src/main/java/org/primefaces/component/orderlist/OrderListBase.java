@@ -23,37 +23,32 @@
  */
 package org.primefaces.component.orderlist;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.PrimeUIInput;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
-import jakarta.faces.component.UIInput;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, FlexAware {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "select", event = SelectEvent.class, description = "Fires when an item is selected."),
+    @FacesBehaviorEvent(name = "unselect", event = UnselectEvent.class, description = "Fires when an item is unselected."),
+    @FacesBehaviorEvent(name = "reorder", event = AjaxBehaviorEvent.class, description = "Fires when items are reordered.")
+})
+public abstract class OrderListBase extends PrimeUIInput implements Widget, FlexAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.OrderListRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        var,
-        itemLabel,
-        itemValue,
-        style,
-        styleClass,
-        disabled,
-        effect,
-        moveUpLabel,
-        moveTopLabel,
-        moveDownLabel,
-        moveBottomLabel,
-        controlsLocation,
-        responsive,
-        flex
-    }
 
     public OrderListBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -64,124 +59,40 @@ public abstract class OrderListBase extends UIInput implements Widget, ClientBeh
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Facet(description = "Caption of the list.")
+    public abstract UIComponent getCaptionFacet();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Name of the iterator variable used to reference each data in the list.")
+    public abstract String getVar();
 
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
+    @Property(description = "Label of the item.")
+    public abstract String getItemLabel();
 
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
+    @Property(description = "Value of the item.")
+    public abstract Object getItemValue();
 
-    public String getItemLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
-    }
+    @Property(defaultValue = "false", description = "Disables the component.")
+    public abstract boolean isDisabled();
 
-    public void setItemLabel(String itemLabel) {
-        getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
-    }
+    @Property(description = "Effect to use when moving items.")
+    public abstract String getEffect();
 
-    public Object getItemValue() {
-        return getStateHelper().eval(PropertyKeys.itemValue, null);
-    }
+    @Property(defaultValue = "Move Up", description = "Label for move up button.")
+    public abstract String getMoveUpLabel();
 
-    public void setItemValue(Object itemValue) {
-        getStateHelper().put(PropertyKeys.itemValue, itemValue);
-    }
+    @Property(defaultValue = "Move Top", description = "Label for move top button.")
+    public abstract String getMoveTopLabel();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(defaultValue = "Move Down", description = "Label for move down button.")
+    public abstract String getMoveDownLabel();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "Move Bottom", description = "Label for move bottom button.")
+    public abstract String getMoveBottomLabel();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "left", description = "Location of the controls, valid values are \"left\" and \"right\".")
+    public abstract String getControlsLocation();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(defaultValue = "false", description = "In responsive mode, the layout of OrderList is optimized for smaller screens.")
+    public abstract boolean isResponsive();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, null);
-    }
-
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
-
-    public String getMoveUpLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.moveUpLabel, "Move Up");
-    }
-
-    public void setMoveUpLabel(String moveUpLabel) {
-        getStateHelper().put(PropertyKeys.moveUpLabel, moveUpLabel);
-    }
-
-    public String getMoveTopLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.moveTopLabel, "Move Top");
-    }
-
-    public void setMoveTopLabel(String moveTopLabel) {
-        getStateHelper().put(PropertyKeys.moveTopLabel, moveTopLabel);
-    }
-
-    public String getMoveDownLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.moveDownLabel, "Move Down");
-    }
-
-    public void setMoveDownLabel(String moveDownLabel) {
-        getStateHelper().put(PropertyKeys.moveDownLabel, moveDownLabel);
-    }
-
-    public String getMoveBottomLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.moveBottomLabel, "Move Bottom");
-    }
-
-    public void setMoveBottomLabel(String moveBottomLabel) {
-        getStateHelper().put(PropertyKeys.moveBottomLabel, moveBottomLabel);
-    }
-
-    public String getControlsLocation() {
-        return (String) getStateHelper().eval(PropertyKeys.controlsLocation, "left");
-    }
-
-    public void setControlsLocation(String controlsLocation) {
-        getStateHelper().put(PropertyKeys.controlsLocation, controlsLocation);
-    }
-
-    public boolean isResponsive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
-    }
-
-    public void setResponsive(boolean responsive) {
-        getStateHelper().put(PropertyKeys.responsive, responsive);
-    }
-
-    @Override
-    public Boolean getFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
-    }
-
-    public void setFlex(Boolean flex) {
-        getStateHelper().put(PropertyKeys.flex, flex);
-    }
 }

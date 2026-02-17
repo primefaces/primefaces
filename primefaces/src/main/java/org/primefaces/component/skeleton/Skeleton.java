@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.skeleton;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Skeleton.COMPONENT_TYPE, namespace = Skeleton.COMPONENT_FAMILY)
-@FacesComponentDescription("Skeleton is a placeholder to display instead of the actual content.")
+@FacesComponentInfo(description = "Skeleton is a placeholder to display instead of the actual content.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Skeleton extends SkeletonBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Skeleton";

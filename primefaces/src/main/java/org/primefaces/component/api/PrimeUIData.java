@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -51,7 +52,7 @@ import jakarta.faces.event.PhaseId;
 /**
  * Enhanced version of the Faces UIData.
  */
-public class PrimeUIData extends UIDataPatch {
+public abstract class PrimeUIData extends UIDataPatch {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeUIData.class.getName());
 
@@ -60,6 +61,31 @@ public class PrimeUIData extends UIDataPatch {
         lazy,
     }
 
+    @Override
+    @Property(description = "Keeps state of its children on a per-row basis.")
+    public boolean isRowStatePreserved() {
+        return super.isRowStatePreserved();
+    }
+
+    @Override
+    @Property(description = "Number of rows to display per page. Default value is 0 meaning to display all data available.")
+    public int getRows() {
+        return super.getRows();
+    }
+
+    @Property(description = "Index of the first data to display.")
+    public int getFirst() {
+        return super.getFirst();
+    }
+
+    @Override
+    @Property(description = "Name of the iterator variable that references each element in the data set.")
+    public String getVar() {
+        return super.getVar();
+    }
+
+    @Property(description = "Defines if lazy loading is enabled for the data component.",
+            implicitDefaultValue = "True, if the value-binding is instance of LazyDataModel.")
     public boolean isLazy() {
         return (boolean) getStateHelper().eval(PropertyKeys.lazy, () -> {
             boolean lazy = false;
@@ -97,6 +123,7 @@ public class PrimeUIData extends UIDataPatch {
         getStateHelper().put(PropertyKeys.lazy, lazy);
     }
 
+    @Property(description = "Name of iterator to refer each row index.")
     public String getRowIndexVar() {
         return (String) getStateHelper().eval(PropertyKeys.rowIndexVar, null);
     }

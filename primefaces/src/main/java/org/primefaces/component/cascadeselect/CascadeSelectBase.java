@@ -28,20 +28,18 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
 
 import jakarta.faces.component.UISelectOne;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected.", defaultEvent = true)
 })
-public abstract class CascadeSelectBase extends UISelectOne implements Widget, InputHolder, ClientBehaviorHolder,
-        PrimeClientBehaviorHolder, StyleAware {
+public abstract class CascadeSelectBase extends UISelectOne implements Widget, InputHolder, StyleAware, PrimeSelect {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

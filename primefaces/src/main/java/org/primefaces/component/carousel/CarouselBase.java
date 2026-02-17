@@ -25,9 +25,9 @@ package org.primefaces.component.carousel;
 
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
@@ -39,10 +39,11 @@ import java.util.List;
 
 import jakarta.faces.component.UIComponent;
 
+@FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "pageChange", event = PageChangeEvent.class, description = "Fires when a page is changed.", defaultEvent = true)
 })
-public abstract class CarouselBase extends UITabPanel implements Widget, PrimeClientBehaviorHolder, TouchAware, StyleAware {
+public abstract class CarouselBase extends UITabPanel implements Widget, TouchAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -57,10 +58,10 @@ public abstract class CarouselBase extends UITabPanel implements Widget, PrimeCl
         return COMPONENT_FAMILY;
     }
 
-    @Facet(description = "Allows to place HTML in the header. Alternative to headerText.")
+    @Facet(description = "Allows custom HTML in the header. Alternative to headerText.")
     public abstract UIComponent getHeaderFacet();
 
-    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
+    @Facet(description = "Allows custom HTML in the footer. Alternative to footerText.")
     public abstract UIComponent getFooterFacet();
 
     @Property(defaultValue = "0", description = "Index of the first page.")
@@ -108,4 +109,19 @@ public abstract class CarouselBase extends UITabPanel implements Widget, PrimeCl
     @Property(description = "Client side callback to execute when a page is changed.")
     public abstract String getOnPageChange();
 
+    @Override
+    @Property(hide = true)
+    public abstract boolean isDynamic();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getOffset();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getSize();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getStep();
 }

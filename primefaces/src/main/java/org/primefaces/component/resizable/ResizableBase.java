@@ -23,53 +23,25 @@
  */
 package org.primefaces.component.resizable;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.ResizeEvent;
 
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class ResizableBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "resize", event = ResizeEvent.class, description = "Fires when resizing is done.",
+            defaultEvent = true)
+})
+public abstract class ResizableBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ResizableRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        forValue("for"),
-        aspectRatio,
-        proxy,
-        handles,
-        ghost,
-        animate,
-        effect,
-        effectDuration,
-        maxWidth,
-        maxHeight,
-        minWidth,
-        minHeight,
-        containment,
-        grid,
-        onStart,
-        onResize,
-        onStop;
-
-        private String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
-    }
 
     public ResizableBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -80,147 +52,66 @@ public abstract class ResizableBase extends UIComponentBase implements Widget, C
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Identifier of the target component to make resizable.")
+    public abstract String getFor();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Defines if aspectRatio should be kept or not.",
+            defaultValue = "false")
+    public abstract boolean isAspectRatio();
 
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
+    @Property(description = "Displays proxy element instead of actual element.",
+            defaultValue = "false")
+    public abstract boolean isProxy();
 
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
+    @Property(description = "Specifies the resize handles.")
+    public abstract String getHandles();
 
-    public boolean isAspectRatio() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.aspectRatio, false);
-    }
+    @Property(description = "In ghost mode, resize helper is displayed as the original element with less opacity.",
+            defaultValue = "false")
+    public abstract boolean isGhost();
 
-    public void setAspectRatio(boolean aspectRatio) {
-        getStateHelper().put(PropertyKeys.aspectRatio, aspectRatio);
-    }
+    @Property(description = "Enables animation.",
+            defaultValue = "false")
+    public abstract boolean isAnimate();
 
-    public boolean isProxy() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.proxy, false);
-    }
+    @Property(description = "Effect to use in animation. Default is swing.",
+            defaultValue = "swing")
+    public abstract String getEffect();
 
-    public void setProxy(boolean proxy) {
-        getStateHelper().put(PropertyKeys.proxy, proxy);
-    }
+    @Property(description = "Effect duration of animation. Default is normal.",
+            defaultValue = "normal")
+    public abstract String getEffectDuration();
 
-    public String getHandles() {
-        return (String) getStateHelper().eval(PropertyKeys.handles, null);
-    }
+    @Property(description = "Maximum width boundary in pixels. Default is max integer value.",
+            defaultValue = "Integer.MAX_VALUE")
+    public abstract int getMaxWidth();
 
-    public void setHandles(String handles) {
-        getStateHelper().put(PropertyKeys.handles, handles);
-    }
+    @Property(description = "Maximum height boundary in pixels. Default is max integer value.",
+            defaultValue = "Integer.MAX_VALUE")
+    public abstract int getMaxHeight();
 
-    public boolean isGhost() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ghost, false);
-    }
+    @Property(description = "Minimum width boundary in pixels. Default is min integer value.",
+            defaultValue = "Integer.MIN_VALUE")
+    public abstract int getMinWidth();
 
-    public void setGhost(boolean ghost) {
-        getStateHelper().put(PropertyKeys.ghost, ghost);
-    }
+    @Property(description = "Maximum height boundary in pixels. Default is min integer value.",
+            defaultValue = "Integer.MIN_VALUE")
+    public abstract int getMinHeight();
 
-    public boolean isAnimate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.animate, false);
-    }
+    @Property(description = "Sets resizable boundaries as the parents size.",
+            defaultValue = "false")
+    public abstract boolean isContainment();
 
-    public void setAnimate(boolean animate) {
-        getStateHelper().put(PropertyKeys.animate, animate);
-    }
+    @Property(description = "Snaps resizing to grid structure.",
+            defaultValue = "1")
+    public abstract int getGrid();
 
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, "swing");
-    }
+    @Property(description = "Client side callback to execute when resizing begins.")
+    public abstract String getOnStart();
 
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
+    @Property(description = "Client side callback to execute during resizing.")
+    public abstract String getOnResize();
 
-    public String getEffectDuration() {
-        return (String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
-    }
-
-    public void setEffectDuration(String effectDuration) {
-        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
-    }
-
-    public int getMaxWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxWidth, Integer.MAX_VALUE);
-    }
-
-    public void setMaxWidth(int maxWidth) {
-        getStateHelper().put(PropertyKeys.maxWidth, maxWidth);
-    }
-
-    public int getMaxHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxHeight, Integer.MAX_VALUE);
-    }
-
-    public void setMaxHeight(int maxHeight) {
-        getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
-    }
-
-    public int getMinWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minWidth, Integer.MIN_VALUE);
-    }
-
-    public void setMinWidth(int minWidth) {
-        getStateHelper().put(PropertyKeys.minWidth, minWidth);
-    }
-
-    public int getMinHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minHeight, Integer.MIN_VALUE);
-    }
-
-    public void setMinHeight(int minHeight) {
-        getStateHelper().put(PropertyKeys.minHeight, minHeight);
-    }
-
-    public boolean isContainment() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.containment, false);
-    }
-
-    public void setContainment(boolean containment) {
-        getStateHelper().put(PropertyKeys.containment, containment);
-    }
-
-    public int getGrid() {
-        return (Integer) getStateHelper().eval(PropertyKeys.grid, 1);
-    }
-
-    public void setGrid(int grid) {
-        getStateHelper().put(PropertyKeys.grid, grid);
-    }
-
-    public String getOnStart() {
-        return (String) getStateHelper().eval(PropertyKeys.onStart, null);
-    }
-
-    public void setOnStart(String onStart) {
-        getStateHelper().put(PropertyKeys.onStart, onStart);
-    }
-
-    public String getOnResize() {
-        return (String) getStateHelper().eval(PropertyKeys.onResize, null);
-    }
-
-    public void setOnResize(String onResize) {
-        getStateHelper().put(PropertyKeys.onResize, onResize);
-    }
-
-    public String getOnStop() {
-        return (String) getStateHelper().eval(PropertyKeys.onStop, null);
-    }
-
-    public void setOnStop(String onStop) {
-        getStateHelper().put(PropertyKeys.onStop, onStop);
-    }
+    @Property(description = "Client side callback to execute after resizing end.")
+    public abstract String getOnStop();
 }

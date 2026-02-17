@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.chronoline;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Chronoline.COMPONENT_TYPE, namespace = Chronoline.COMPONENT_FAMILY)
-@FacesComponentDescription("Chronoline visualizes a series of chained events.")
+@FacesComponentInfo(description = "Chronoline visualizes a series of chained events.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Chronoline extends ChronolineBaseImpl {
 

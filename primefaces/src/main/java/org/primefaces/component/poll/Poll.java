@@ -24,7 +24,8 @@
 package org.primefaces.component.poll;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.el.MethodExpression;
 import jakarta.el.ValueExpression;
@@ -33,7 +34,9 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Poll.COMPONENT_TYPE, namespace = Poll.COMPONENT_FAMILY)
-@FacesComponentDescription("Poll is an AJAX component that has the ability to send periodical AJAX requests and execute listeners on Faces backing beans.")
+@FacesComponentInfo(description =
+        "Poll is an AJAX component that has the ability to send periodical AJAX requests and execute listeners on Faces backing beans.")
+@FacesComponentHandler(PollHandler.class)
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

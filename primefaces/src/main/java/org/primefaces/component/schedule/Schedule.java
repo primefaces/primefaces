@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.schedule;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
@@ -30,14 +31,11 @@ import org.primefaces.event.schedule.ScheduleEntryResizeEvent;
 import org.primefaces.event.schedule.ScheduleRangeEvent;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
@@ -48,10 +46,11 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Schedule.COMPONENT_TYPE, namespace = Schedule.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Schedule provides an Outlook Calendar, iCal like Faces component to manage events."
+    + " Schedule is highly customizable featuring various views (month, day, week), built-in I18N, drag-drop, resize, customizable event dialog and skinning.")
 @ResourceDependency(library = "primefaces", name = "schedule/schedule.css")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "moment/moment.js")
@@ -61,31 +60,9 @@ import jakarta.faces.event.FacesEvent;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "schedule/schedule.js")
-public class Schedule extends ScheduleBase {
+public class Schedule extends ScheduleBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Schedule";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("dateSelect", SelectEvent.class)
-            .put("dateDblSelect", SelectEvent.class)
-            .put("eventSelect", SelectEvent.class)
-            .put("eventDblSelect", SelectEvent.class)
-            .put("eventMove", ScheduleEntryMoveEvent.class)
-            .put("eventResize", ScheduleEntryResizeEvent.class)
-            .put("viewChange", SelectEvent.class)
-            .put("rangeSelect", ScheduleRangeEvent.class)
-            .build();
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     Locale calculateLocale(FacesContext facesContext) {
         return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
@@ -102,12 +79,12 @@ public class Schedule extends ScheduleBase {
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
 
-        if (ComponentUtils.isRequestSource(this, context)) {
+        if (isAjaxBehaviorEventSource(event)) {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
 
-            if ("dateSelect".equals(eventName) || "dateDblSelect".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.dateSelect, ClientBehaviorEventKeys.dateDblSelect)) {
                 String selectedDateStr = params.get(clientId + "_selectedDate");
                 ZoneId zoneId = CalendarUtils.calculateZoneId(this.getTimeZone());
                 LocalDateTime selectedDate =  CalendarUtils.toLocalDateTime(zoneId, selectedDateStr);
@@ -116,7 +93,7 @@ public class Schedule extends ScheduleBase {
 
                 wrapperEvent = selectEvent;
             }
-            if ("rangeSelect".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rangeSelect)) {
                 String startDateStr = params.get(clientId + "_startDate");
                 String endDateStr = params.get(clientId + "_endDate");
                 ZoneId zoneId = CalendarUtils.calculateZoneId(this.getTimeZone());
@@ -126,13 +103,13 @@ public class Schedule extends ScheduleBase {
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
                 wrapperEvent = selectEvent;
             }
-            else if ("eventSelect".equals(eventName) || "eventDblSelect".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.eventSelect, ClientBehaviorEventKeys.eventDblSelect)) {
                 String selectedEventId = params.get(clientId + "_selectedEventId");
                 ScheduleEvent<?> selectedEvent = getValue().getEvent(selectedEventId);
 
                 wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), selectedEvent);
             }
-            else if ("eventMove".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.eventMove)) {
                 String movedEventId = params.get(clientId + "_movedEventId");
                 ScheduleEvent<?> movedEvent = getValue().getEvent(movedEventId);
                 int yearDelta = Double.valueOf(params.get(clientId + "_yearDelta")).intValue();
@@ -152,7 +129,7 @@ public class Schedule extends ScheduleBase {
                 wrapperEvent = new ScheduleEntryMoveEvent(this, behaviorEvent.getBehavior(), movedEvent,
                         yearDelta, monthDelta, dayDelta, minuteDelta);
             }
-            else if ("eventResize".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.eventResize)) {
                 String resizedEventId = params.get(clientId + "_resizedEventId");
                 ScheduleEvent<?> resizedEvent = getValue().getEvent(resizedEventId);
 
@@ -178,7 +155,7 @@ public class Schedule extends ScheduleBase {
                         startDeltaYear, startDeltaMonth, startDeltaDay, startDeltaMinute,
                         endDeltaYear, endDeltaMonth, endDeltaDay, endDeltaMinute);
             }
-            else if ("viewChange".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.viewChange)) {
                 wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), getView());
             }
 
@@ -205,7 +182,7 @@ public class Schedule extends ScheduleBase {
 
         ELContext elContext = getFacesContext().getELContext();
         ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
-                getValueExpression(PropertyKeys.view.toString()), true);
+                getValueExpression(PropertyKeys.view), true);
         if (expr != null) {
             if (!expr.isReadOnly(elContext)) {
                 expr.setValue(elContext, getView());

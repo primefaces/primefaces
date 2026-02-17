@@ -35,8 +35,8 @@ import jakarta.faces.component.UIComponentBase;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
-    @FacesBehaviorEvent(name = "select", event = SelectEvent.class),
-    @FacesBehaviorEvent(name = "dblselect", event = SelectEvent.class)
+    @FacesBehaviorEvent(name = "select", event = SelectEvent.class, description = "Fires when a node is selected.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "dblselect", event = SelectEvent.class, description = "Fires when a node is double-clicked.")
 })
 public abstract class MindmapBase extends UIComponentBase implements Widget, StyleAware {
 

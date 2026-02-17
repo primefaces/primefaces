@@ -94,4 +94,25 @@ public @interface Property {
      * @return true if methods should call super, false otherwise
      */
     boolean callSuper() default false;
+
+    /**
+     * Manually overrides the property type used in taglib generation.
+     *
+     * <p>For Components and Behaviors the type is automatically extracted from the getter
+     * return type and this attribute can be left at its default. For TagHandlers, where no
+     * getter return type is available, the type must be specified explicitly.</p>
+     *
+     * @return the explicit property type, or {@code Object.class} to use the inferred type
+     */
+    Class<?> type() default Object.class;
+
+    /**
+     * Whether this property should be omitted from the generated taglib.
+     *
+     * <p>Hidden properties are still fully generated (getter, setter, StateHelper entry),
+     * but are excluded from taglib output.</p>
+     *
+     * @return true if the property should be omitted from the taglib, false otherwise
+     */
+    boolean hide() default false;
 }

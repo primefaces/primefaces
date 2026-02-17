@@ -23,16 +23,20 @@
  */
 package org.primefaces.component.notificationbar;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = NotificationBar.COMPONENT_TYPE, namespace = NotificationBar.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "NotificationBar is a component to display notification messages at the top or bottom of the page.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class NotificationBar extends NotificationBarBase {
+public class NotificationBar extends NotificationBarBaseImpl {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String COMPONENT_TYPE = "org.primefaces.component.NotificationBar";
 
     public static final String STYLE_CLASS = "ui-notificationbar ui-widget ui-widget-content";

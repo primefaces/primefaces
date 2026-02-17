@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.spinner;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.LocaleUtils;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Spinner.COMPONENT_TYPE, namespace = Spinner.COMPONENT_FAMILY)
-@FacesComponentDescription("Spinner is an input component to provide a numerical input via increment and decrement buttons.")
+@FacesComponentInfo(description = "Spinner is an input component to provide a numerical input via increment and decrement buttons.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

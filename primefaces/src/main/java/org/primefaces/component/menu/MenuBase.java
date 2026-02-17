@@ -53,11 +53,11 @@ public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMe
     public abstract String getTrigger();
 
     @Override
-    @Property(description = "Corner of menu to align with trigger element.")
+    @Property(implicitDefaultValue = "left top", description = "Corner of menu to align with trigger element.")
     public abstract String getMy();
 
     @Override
-    @Property(description = "Corner of trigger to align with menu element.")
+    @Property(implicitDefaultValue = "left bottom", description = "Corner of trigger to align with menu element.")
     public abstract String getAt();
 
     @Property(defaultValue = "false", description = "Defines positioning type of menu, either static or overlay.")

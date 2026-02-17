@@ -28,7 +28,6 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.ToggleEvent;
@@ -40,7 +39,7 @@ import jakarta.faces.component.UIPanel;
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "toggle", event = ToggleEvent.class, description = "Fires when fieldset is toggled.", defaultEvent = true)
 })
-public abstract class FieldsetBase extends UIPanel implements Widget, PrimeClientBehaviorHolder, StyleAware {
+public abstract class FieldsetBase extends UIPanel implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

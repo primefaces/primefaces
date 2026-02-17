@@ -23,35 +23,26 @@
  */
 package org.primefaces.component.toggleswitch;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.PrimeUIInput;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
-import jakarta.faces.component.UIInput;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, InputHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fired when the value changes.", defaultEvent = true)
+})
+public abstract class ToggleSwitchBase extends PrimeUIInput implements Widget, StyleAware, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ToggleSwitchRenderer";
-
-    public enum PropertyKeys {
-
-        ariaLabel,
-        disabled,
-        label,
-        offIcon,
-        onblur,
-        onchange,
-        onfocus,
-        onIcon,
-        readonly,
-        style,
-        styleClass,
-        tabindex,
-        widgetVar,
-    }
 
     public ToggleSwitchBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -62,110 +53,35 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "User presentable name.")
+    public abstract String getLabel();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
+    public abstract String getAriaLabel();
 
-    public String getLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.label, null);
-    }
+    @Property(defaultValue = "false", description = "Disables or enables the switch.")
+    public abstract boolean isDisabled();
 
-    public void setLabel(String label) {
-        getStateHelper().put(PropertyKeys.label, label);
-    }
+    @Property(description = "Client side callback to execute on value change event.")
+    public abstract String getOnchange();
 
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
+    @Property(description = "The tabindex attribute specifies the tab order of an element when the \"tab\" button is used for navigating.")
+    public abstract String getTabindex();
 
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
+    @Property(description = "Client side callback to execute when component receives focus.")
+    public abstract String getOnfocus();
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
+    @Property(description = "Client side callback to execute when component loses focus.")
+    public abstract String getOnblur();
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
+    @Property(description = "The icon representing the \"On\" position.")
+    public abstract String getOnIcon();
 
-    public String getOnchange() {
-        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
-    }
+    @Property(description = "The icon representing the \"Off\" position.")
+    public abstract String getOffIcon();
 
-    public void setOnchange(String onchange) {
-        getStateHelper().put(PropertyKeys.onchange, onchange);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public String getOnfocus() {
-        return (String) getStateHelper().eval(PropertyKeys.onfocus, null);
-    }
-
-    public void setOnfocus(String onfocus) {
-        getStateHelper().put(PropertyKeys.onfocus, onfocus);
-    }
-
-    public String getOnblur() {
-        return (String) getStateHelper().eval(PropertyKeys.onblur, null);
-    }
-
-    public void setOnblur(String onblur) {
-        getStateHelper().put(PropertyKeys.onblur, onblur);
-    }
-
-    public String getOnIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.onIcon, null);
-    }
-
-    public void setOnIcon(String onIcon) {
-        getStateHelper().put(PropertyKeys.onIcon, onIcon);
-    }
-
-    public String getOffIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.offIcon, null);
-    }
-
-    public void setOffIcon(String offIcon) {
-        getStateHelper().put(PropertyKeys.offIcon, offIcon);
-    }
-
-    public boolean isReadonly() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
-
-    }
-
-    public void setReadonly(boolean readonly) {
-        getStateHelper().put(PropertyKeys.readonly, readonly);
-    }
+    @Property(defaultValue = "false", description = "Flag indicating that this component will prevent changes by the user.")
+    public abstract boolean isReadonly();
 
     @Override
     public String getInputClientId() {

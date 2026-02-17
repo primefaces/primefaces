@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.blockui;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = BlockUI.COMPONENT_TYPE, namespace = BlockUI.COMPONENT_FAMILY)
-@FacesComponentDescription("BlockUI is used to block interactivity of Jakarta Faces components with optional ajax integration.")
+@FacesComponentInfo(description = "BlockUI is used to block interactivity of Jakarta Faces components with optional ajax integration.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

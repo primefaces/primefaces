@@ -23,45 +23,33 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.PrimeSelect;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleSelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 import jakarta.faces.component.html.HtmlSelectManyCheckbox;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, InputHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "toggleSelect", event = ToggleSelectEvent.class, description = "Fires when the selectAll checkbox is toggled."),
+    @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fires when the element's value changes.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected."),
+    @FacesBehaviorEvent(name = "itemUnselect", event = UnselectEvent.class, description = "Fires when an item is unselected.")
+})
+public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, InputHolder, StyleAware, PrimeSelect {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectCheckboxMenuRenderer";
-
-    public enum PropertyKeys {
-
-        appendTo,
-        caseSensitive,
-        dynamic,
-        emptyLabel,
-        filter,
-        filterFunction,
-        filterMatchMode,
-        filterNormalize,
-        filterPlaceholder,
-        labelSeparator,
-        multiple,
-        onHide,
-        onShow,
-        panelStyle,
-        panelStyleClass,
-        scrollHeight,
-        selectedLabel,
-        showHeader,
-        showSelectAll,
-        tabindex,
-        title,
-        updateLabel,
-        var,
-        widgetVar
-    }
 
     public SelectCheckboxMenuBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -72,199 +60,86 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Defines the maximum height of the scrollable area.",
+            defaultValue = "200")
+    public abstract String getScrollHeight();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Client side callback to execute when overlay is displayed.")
+    public abstract String getOnShow();
 
-    public String getScrollHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.scrollHeight, "200");
-    }
+    @Property(description = "Client side callback to execute when overlay is hidden.")
+    public abstract String getOnHide();
 
-    public void setScrollHeight(String scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
+    @Property(description = "Renders an input field as a filter when enabled.",
+            defaultValue = "false")
+    public abstract boolean isFilter();
 
-    public String getOnShow() {
-        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
-    }
+    @Property(description = "Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.")
+    public abstract String getFilterMatchMode();
 
-    public void setOnShow(String onShow) {
-        getStateHelper().put(PropertyKeys.onShow, onShow);
-    }
+    @Property(description = "Client side function to use in custom filterMatchMode.")
+    public abstract String getFilterFunction();
 
-    public String getOnHide() {
-        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
-    }
+    @Property(description = "Placeholder text to show when filter input is empty.")
+    public abstract String getFilterPlaceholder();
 
-    public void setOnHide(String onHide) {
-        getStateHelper().put(PropertyKeys.onHide, onHide);
-    }
+    @Property(description = "Defines if filtering would be case sensitive.",
+            defaultValue = "false")
+    public abstract boolean isCaseSensitive();
 
-    public boolean isFilter() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
-    }
+    @Property(description = "Defines if filtering would be done using normalized values (accents will be removed from characters).",
+            defaultValue = "false")
+    public abstract boolean isFilterNormalize();
 
-    public void setFilter(boolean filter) {
-        getStateHelper().put(PropertyKeys.filter, filter);
-    }
+    @Property(description = "Inline style of the dropdown panel container element.")
+    public abstract String getPanelStyle();
 
-    public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
-    }
+    @Property(description = "Style class of the dropdown panel container element.")
+    public abstract String getPanelStyleClass();
 
-    public void setFilterMatchMode(String filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
-    }
+    @Property(description = "Name of iterator to be used in custom content display.")
+    public abstract String getVar();
 
-    public String getFilterFunction() {
-        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
-    }
-
-    public void setFilterFunction(String filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
-    }
-
-    public java.lang.String getFilterPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
-    }
-
-    public void setFilterPlaceholder(String filterPlaceholder) {
-        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
-    }
-
-    public boolean isCaseSensitive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
-    }
-
-    public void setCaseSensitive(boolean caseSensitive) {
-        getStateHelper().put(PropertyKeys.caseSensitive, caseSensitive);
-    }
-
-    public String getPanelStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.panelStyle, null);
-    }
-
-    public void setPanelStyle(String panelStyle) {
-        getStateHelper().put(PropertyKeys.panelStyle, panelStyle);
-    }
-
-    public String getVar() {
-        return (String) getStateHelper().eval(SelectCheckboxMenuBase.PropertyKeys.var, null);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(SelectCheckboxMenuBase.PropertyKeys.var, var);
-    }
-
-    public String getPanelStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
-    }
-
-    public void setPanelStyleClass(String panelStyleClass) {
-        getStateHelper().put(PropertyKeys.panelStyleClass, panelStyleClass);
-    }
-
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
-    }
-
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
+    @Property(description = "Appends the overlay to the element defined by search expression.",
+            defaultValue = "@(body)")
+    public abstract String getAppendTo();
 
     @Override
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
-    }
+    @Property(description = "Position of the element in the tabbing order.")
+    public abstract String getTabindex();
 
     @Override
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
+    @Property(description = "Advisory tooltip information.")
+    public abstract String getTitle();
 
-    @Override
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
+    @Property(description = "When enabled, the header of panel is displayed.",
+            defaultValue = "true")
+    public abstract boolean isShowHeader();
 
-    @Override
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
+    @Property(description = "When enabled, the \"Select All\" checkbox option is displayed.",
+            defaultValue = "true")
+    public abstract boolean isShowSelectAll();
 
-    public boolean isShowHeader() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showHeader, true);
-    }
+    @Property(description = "When enabled, the label is updated on every change, else it statically displays the 'selectedLabel'.",
+            defaultValue = "false")
+    public abstract boolean isUpdateLabel();
 
-    public void setShowHeader(boolean showHeader) {
-        getStateHelper().put(PropertyKeys.showHeader, showHeader);
-    }
+    @Property(description = "Enables multiple selection mode.",
+            defaultValue = "false")
+    public abstract boolean isMultiple();
 
-    public boolean isShowSelectAll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showSelectAll, true);
-    }
+    @Property(description = "Defines if dynamic loading is enabled for the element's panel."
+            + " If the value is \"true\", the overlay is not rendered on page load to improve performance.",
+            defaultValue = "false")
+    public abstract boolean isDynamic();
 
-    public void setShowSelectAll(boolean showSelectAll) {
-        getStateHelper().put(PropertyKeys.showSelectAll, showSelectAll);
-    }
+    @Property(description = "Separator for joining item lables if updateLabel is set to true.",
+            defaultValue = ", ")
+    public abstract String getLabelSeparator();
 
-    public boolean isUpdateLabel() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.updateLabel, false);
-    }
+    @Property(description = "Label to be shown in updateLabel mode when no item is selected. If not set the label is shown.")
+    public abstract String getEmptyLabel();
 
-    public void setUpdateLabel(boolean updateLabel) {
-        getStateHelper().put(PropertyKeys.updateLabel, updateLabel);
-    }
-
-    public boolean isMultiple() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
-    }
-
-    public void setMultiple(boolean multiple) {
-        getStateHelper().put(PropertyKeys.multiple, multiple);
-    }
-
-    public boolean isDynamic() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
-    }
-
-    public void setDynamic(boolean dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, dynamic);
-    }
-
-    public String getLabelSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.labelSeparator, ", ");
-    }
-
-    public void setLabelSeparator(String labelSeparator) {
-        getStateHelper().put(PropertyKeys.labelSeparator, labelSeparator);
-    }
-
-    public String getEmptyLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyLabel, null);
-    }
-
-    public void setEmptyLabel(String emptyLabel) {
-        getStateHelper().put(PropertyKeys.emptyLabel, emptyLabel);
-    }
-
-    public String getSelectedLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.selectedLabel, null);
-    }
-
-    public void setSelectedLabel(String selectedLabel) {
-        getStateHelper().put(PropertyKeys.selectedLabel, selectedLabel);
-    }
-
-    public boolean isFilterNormalize() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
-    }
-
-    public void setFilterNormalize(boolean filterNormalize) {
-        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
-    }
+    @Property(description = "Label to be shown in updateLabel mode when one or more items are selected. If not set the label is shown.")
+    public abstract String getSelectedLabel();
 }

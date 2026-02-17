@@ -23,25 +23,19 @@
  */
 package org.primefaces.component.scrolltop;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIComponentBase;
 
-public abstract class ScrollTopBase extends UIComponentBase implements Widget {
+@FacesComponentBase
+public abstract class ScrollTopBase extends UIComponentBase implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ScrollTopRenderer";
-
-    public enum PropertyKeys {
-        widgetVar,
-        target,
-        threshold,
-        icon,
-        behavior,
-        style,
-        styleClass,
-    }
 
     public ScrollTopBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -52,60 +46,19 @@ public abstract class ScrollTopBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public String getTarget() {
-        return (String) getStateHelper().eval(PropertyKeys.target, "window");
-    }
+    @Property(description = "Target of the ScrollTop, valid values are \"window\" and \"parent\".",
+            defaultValue = "window")
+    public abstract String getTarget();
 
-    public void setTarget(String target) {
-        getStateHelper().put(PropertyKeys.target, target);
-    }
+    @Property(description = "Defines the threshold value of the vertical scroll position of the target to toggle the visibility.",
+            defaultValue = "400")
+    public abstract String getThreshold();
 
-    public String getThreshold() {
-        return (String) getStateHelper().eval(PropertyKeys.threshold, "400");
-    }
+    @Property(description = "Icon to display.",
+            defaultValue = "pi pi-chevron-up")
+    public abstract String getIcon();
 
-    public void setThreshold(String threshold) {
-        getStateHelper().put(PropertyKeys.threshold, threshold);
-    }
-
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, "pi pi-chevron-up");
-    }
-
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
-    public String getBehavior() {
-        return (String) getStateHelper().eval(PropertyKeys.behavior, "smooth");
-    }
-
-    public void setBehavior(String behavior) {
-        getStateHelper().put(PropertyKeys.behavior, behavior);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    @Override
-    public java.lang.String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar);
-    }
-
-    public void setWidgetVar(java.lang.String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Defines the scrolling behavior, \"smooth\" adds an animation and \"auto\" scrolls with a jump.",
+            defaultValue = "smooth")
+    public abstract String getBehavior();
 }

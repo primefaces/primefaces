@@ -23,37 +23,40 @@
  */
 package org.primefaces.cdk.impl.subclass;
 
-import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.impl.container.BehaviorEventInfo;
+import org.primefaces.cdk.impl.container.FacetInfo;
+import org.primefaces.cdk.impl.container.PropertyInfo;
 
-import javax.lang.model.element.ExecutableElement;
+import java.util.Collections;
+import java.util.List;
 
-public class FacetInfo {
+public final class HierarchyScannerResult {
 
-    private final String name;
-    private final String returnType;
-    private final ExecutableElement getterElement;
-    private final Facet annotation;
+    private final List<PropertyInfo> properties;
+    private final List<FacetInfo> facets;
+    private final List<BehaviorEventInfo> behaviorEvents;
 
-    FacetInfo(String name, String returnType, ExecutableElement getterElement, Facet annotation) {
-        this.name = name;
-        this.returnType = returnType;
-        this.getterElement = getterElement;
-        this.annotation = annotation;
+    public HierarchyScannerResult(List<PropertyInfo> properties,
+                                  List<FacetInfo> facets,
+                                  List<BehaviorEventInfo> behaviorEvents) {
+        this.properties = Collections.unmodifiableList(properties);
+        this.facets = Collections.unmodifiableList(facets);
+        this.behaviorEvents = Collections.unmodifiableList(behaviorEvents);
     }
 
-    public String getName() {
-        return name;
+    public static HierarchyScannerResult empty() {
+        return new HierarchyScannerResult(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
     }
 
-    public String getReturnType() {
-        return returnType;
+    public List<PropertyInfo> getProperties() {
+        return properties;
     }
 
-    public ExecutableElement getGetterElement() {
-        return getterElement;
+    public List<FacetInfo> getFacets() {
+        return facets;
     }
 
-    public Facet getAnnotation() {
-        return annotation;
+    public List<BehaviorEventInfo> getBehaviorEvents() {
+        return behaviorEvents;
     }
 }

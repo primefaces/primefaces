@@ -49,10 +49,10 @@ public abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAw
         return COMPONENT_FAMILY;
     }
 
-    @Facet(description = "Allows to place HTML in the header. Alternative to header.")
+    @Facet(description = "Allows custom HTML in the header. Alternative to header.")
     public abstract UIComponent getHeaderFacet();
 
-    @Facet(description = "Allows to place HTML in the message area. Alternative to message.")
+    @Facet(description = "Allows custom HTML in the message area. Alternative to message.")
     public abstract UIComponent getMessageFacet();
 
     @Property(description = "Message text to display.")

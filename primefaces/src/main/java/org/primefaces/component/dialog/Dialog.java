@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.dialog;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.MoveEvent;
@@ -40,7 +40,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Dialog.COMPONENT_TYPE, namespace = Dialog.COMPONENT_FAMILY)
-@FacesComponentDescription("Dialog is a container component to display content in an overlay window.")
+@FacesComponentInfo(description = "Dialog is a container component to display content in an overlay window.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

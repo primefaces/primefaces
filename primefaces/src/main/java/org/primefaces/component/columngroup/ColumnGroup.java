@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.columngroup;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ColumnGroup.COMPONENT_TYPE, namespace = ColumnGroup.COMPONENT_FAMILY)
-@FacesComponentDescription("ColumnGroup is used by datatable for grouping.")
+@FacesComponentInfo(description = "ColumnGroup is used by datatable for grouping.")
 public class ColumnGroup extends ColumnGroupBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColumnGroup";

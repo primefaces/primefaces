@@ -329,35 +329,6 @@ For legacy browsers, that do not support HMTL5 features like canvas or file api,
 (iframe is used for transport, detailed file informations are not shown,  GIF animation instead of progress bar).
 It is suggested to offer simple uploader as a fallback.
 
-## Filter Configuration
-
-Filter configuration is required if you are using commons uploader only. Two configuration options
-exist, threshold size and temporary file upload location.
-
-| Parameter Name | Description |
-| --- | --- |
-| thresholdSize | Maximum file size in bytes to keep uploaded files in memory. If a file exceeds this limit, it’ll be temporarily written to disk.
-| uploadDirectory | Disk repository path to keep temporary files that exceeds the threshold size. By default it is System.getProperty("java.io.tmpdir")
-
-An example configuration below defined thresholdSize to be 50kb and uploads to users temporary
-folder.
-
-```xml
-<filter>
-    <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
-    <init-param>
-        <param-name>thresholdSize</param-name>
-        <param-value>51200</param-value>
-    </init-param>
-    <init-param>
-        <param-name>uploadDirectory</param-name>
-        <param-value>/Users/primefaces/temp</param-value>
-    </init-param>
-</filter>
-```
-**Note** that uploadDirectory is used internally, you always need to implement the logic to save the file
-contents yourself in your backing bean.
 
 ## Configuration for Tomcat since June 2025 (>= 9.0.106, >= 10.1.42, >= 11.0.8)
 > maxPartCount limits the total number of parts in a multi-part request and maxPartHeaderSize limits the size of the headers provided with each part.
@@ -398,9 +369,26 @@ If you're running a Servlet 2.5 container, you'll need to add the following list
 </listener>
 ```
 
-Chunks file are put either into directory from Apache Commons or Servlet 3.0, if not defined then into internal temporary upload directory [ServletContext.TMP_DIR](https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html#TEMPDIR). They get removed:
+Chunks file are put either into directory from Servlet 3.0, if not defined then into internal temporary upload directory [ServletContext.TMP_DIR](https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html#TEMPDIR). They get removed:
 1. after the last chunk is uploaded and the merged file is created
 2. when the user aborts the upload.
+
+To configure a custom location for uploaded chunks, you can set the `location` attribute in the `multipart-config` element of your `FacesServlet` in `web.xml`:
+
+```xml
+<servlet>
+    <servlet-name>FacesServlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <multipart-config>
+        <location>/path/to/upload/directory</location>
+        <max-file-size>52428800</max-file-size>
+        <max-request-size>52428800</max-request-size>
+        <file-size-threshold>0</file-size-threshold>
+    </multipart-config>
+</servlet>
+```
+
+If the `location` is not specified in `multipart-config`, the system will default to the temporary directory.
 
 Though it is recommended to run a cron-job that deletes incomplete uploaded files.
 

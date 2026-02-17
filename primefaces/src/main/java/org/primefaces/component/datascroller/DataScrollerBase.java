@@ -27,19 +27,17 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "load", event = AjaxBehaviorEvent.class, defaultEvent = true, description = "Fired when the data is loaded.")
 })
-public abstract class DataScrollerBase extends PrimeUIData implements Widget, StyleAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class DataScrollerBase extends PrimeUIData implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -25,6 +25,7 @@ package org.primefaces.component.panel;
 
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
@@ -37,6 +38,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
+@FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "toggle", event = ToggleEvent.class, description = "Fires when panel is toggled.", defaultEvent = true),
     @FacesBehaviorEvent(name = "close", event = CloseEvent.class, description = "Fires when panel is closed.")
@@ -60,10 +62,10 @@ public abstract class PanelBase extends UIPanel implements Widget, ClientBehavio
     @Facet(description = "Built-in support to display a fully customizable popup menu, an icon to display the menu is placed at top-right corner")
     public abstract UIComponent getOptionsFacet();
 
-    @Facet(description = "Allows to place HTML in the header. Alternative to headerText.")
+    @Facet(description = "Allows custom HTML in the header. Alternative to headerText.")
     public abstract UIComponent getHeaderFacet();
 
-    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
+    @Facet(description = "Allows custom HTML in the footer. Alternative to footerText.")
     public abstract UIComponent getFooterFacet();
 
     @Facet(description = "Allows to add custom action to the titlebar.")

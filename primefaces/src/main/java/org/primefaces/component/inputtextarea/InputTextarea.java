@@ -23,7 +23,8 @@
  */
 package org.primefaces.component.inputtextarea;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.LangUtils;
@@ -41,7 +42,8 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = InputTextarea.COMPONENT_TYPE, namespace = InputTextarea.COMPONENT_FAMILY)
-@FacesComponentDescription("InputTextarea is an extension to standard inputTextarea with autoComplete, autoResize, and remaining characters counter.")
+@FacesComponentInfo(description = "InputTextarea is an extension to standard inputTextarea with autoComplete, autoResize, and remaining characters counter.")
+@FacesComponentHandler(InputTextareaHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

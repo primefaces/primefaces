@@ -23,7 +23,8 @@
  */
 package org.primefaces.component.api;
 
-import org.primefaces.component.column.ColumnBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.column.Column;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
@@ -238,7 +239,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             }
 
             if (filterValue != null && filterValue.getClass().isArray()) {
-                ValueExpression columnFilterValueVE = column.getValueExpression(ColumnBase.PropertyKeys.filterValue.toString());
+                ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
                 if (columnFilterValueVE != null && List.class.isAssignableFrom(columnFilterValueVE.getType(context.getELContext()))) {
                     filterValue = Arrays.asList((Object[]) filterValue);
                 }
@@ -254,6 +255,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         return getFilterByAsMap().get(column.getColumnKey()).getFilterValue();
     }
 
+    @Property(description = "Property to be used for filtering.")
     Object getFilterBy();
 
     void setFilterBy(Object filterBy);
@@ -274,18 +276,24 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 .collect(Collectors.toMap(FilterMeta::getField, Function.identity()));
     }
 
+    @Property(description = "Value of the global filter to use when filtering by default.")
     String getGlobalFilter();
 
     void setGlobalFilter(String globalFilter);
 
+    @Property(description = "Custom implementation to globally filter a value against a constraint.")
     MethodExpression getGlobalFilterFunction();
 
     void setGlobalFilterFunction(MethodExpression globalFilterFunction);
 
+    @Property(defaultValue = "false",
+            description = "When true this will hide all column filters and allow all columns to be filtered by global filter only.")
     boolean isGlobalFilterOnly();
 
     void setGlobalFilterOnly(boolean globalFilterOnly);
 
+    @Property(defaultValue = "false",
+            description = "Defines if filtering would be done using normalized values (accents will be removed from characters).")
     boolean isFilterNormalize();
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
@@ -423,6 +431,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         return isFilterByAsMapDefined() && !getFilterByAsMap().isEmpty();
     }
 
+    @Property(description = "Property to be used for sorting.")
     Object getSortBy();
 
     void setSortBy(Object sortBy);
@@ -589,5 +598,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     List<UIComponent> getChildren();
 
+    @Property(implicitDefaultValue = "The view locale", description = "Locale to be used in features such as sorting.")
     Object getDataLocale();
 }

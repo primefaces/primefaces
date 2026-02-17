@@ -85,9 +85,9 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeTailwindFacet(context, component, columns, "header", PanelGrid.HEADER_CLASS);
+        encodeTailwindFacet(context, component, columns, component.getHeaderFacet(), PanelGrid.HEADER_CLASS);
         encodeTailwindBody(context, component, columns);
-        encodeTailwindFacet(context, component, columns, "footer", PanelGrid.FOOTER_CLASS);
+        encodeTailwindFacet(context, component, columns, component.getFooterFacet(), PanelGrid.FOOTER_CLASS);
 
         writer.endElement("div");
     }
@@ -158,8 +158,7 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
         writer.endElement("div");
     }
 
-    public void encodeTailwindFacet(FacesContext context, PanelGrid component, int columns, String facetName, String styleClass) throws IOException {
-        UIComponent facet = component.getFacet(facetName);
+    public void encodeTailwindFacet(FacesContext context, PanelGrid component, int columns, UIComponent facet, String styleClass) throws IOException {
         if (FacetUtils.shouldRenderFacet(facet)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
@@ -219,8 +218,8 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
             writer.writeAttribute("role", component.getRole(), null);
         }
 
-        encodeTableFacet(context, component, columns, "header", "thead", PanelGrid.HEADER_CLASS);
-        encodeTableFacet(context, component, columns, "footer", "tfoot", PanelGrid.FOOTER_CLASS);
+        encodeTableFacet(context, component, columns, component.getHeaderFacet(), "thead", PanelGrid.HEADER_CLASS);
+        encodeTableFacet(context, component, columns, component.getFooterFacet(), "tfoot", PanelGrid.FOOTER_CLASS);
         encodeTableBody(context, component, columns);
 
         writer.endElement("table");
@@ -248,7 +247,7 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeGridFacet(context, component, columns, "header", PanelGrid.HEADER_CLASS);
+        encodeGridFacet(context, component, columns, component.getHeaderFacet(), PanelGrid.HEADER_CLASS);
 
         if (PanelGrid.LAYOUT_FLEX.equalsIgnoreCase(layout)) {
             encodeFlexGridBody(context, component, columns);
@@ -257,7 +256,7 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
             encodeGridBody(context, component, columns);
         }
 
-        encodeGridFacet(context, component, columns, "footer", PanelGrid.FOOTER_CLASS);
+        encodeGridFacet(context, component, columns, component.getFooterFacet(), PanelGrid.FOOTER_CLASS);
 
         writer.endElement("div");
     }
@@ -556,10 +555,9 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
         writer.endElement("div");
     }
 
-    public void encodeTableFacet(FacesContext context, PanelGrid component, int columns, String facetName, String tag, String styleClass)
+    public void encodeTableFacet(FacesContext context, PanelGrid component, int columns, UIComponent facet, String tag, String styleClass)
             throws IOException {
 
-        UIComponent facet = component.getFacet(facetName);
         if (FacetUtils.shouldRenderFacet(facet)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement(tag, null);
@@ -606,8 +604,7 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
         }
     }
 
-    public void encodeGridFacet(FacesContext context, PanelGrid component, int columns, String facetName, String styleClass) throws IOException {
-        UIComponent facet = component.getFacet(facetName);
+    public void encodeGridFacet(FacesContext context, PanelGrid component, int columns, UIComponent facet, String styleClass) throws IOException {
         if (FacetUtils.shouldRenderFacet(facet)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);

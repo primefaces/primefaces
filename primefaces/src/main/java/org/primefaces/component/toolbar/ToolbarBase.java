@@ -35,12 +35,6 @@ public abstract class ToolbarBase extends UIComponentBase implements StyleAware 
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ToolbarRenderer";
 
-    public enum PropertyKeys {
-
-        style,
-        styleClass
-    }
-
     public ToolbarBase() {
         setRendererType(DEFAULT_RENDERER);
     }

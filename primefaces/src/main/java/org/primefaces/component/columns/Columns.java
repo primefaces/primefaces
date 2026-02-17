@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.columns;
 
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -38,7 +40,9 @@ import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Columns.COMPONENT_TYPE, namespace = Columns.COMPONENT_FAMILY)
-public class Columns extends ColumnsBase {
+@FacesComponentInfo(description = "Columns is used by datatable to create columns dynamically.")
+@FacesComponentHandler(ColumnsHandler.class)
+public class Columns extends ColumnsBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Columns";
 
@@ -57,14 +61,6 @@ public class Columns extends ColumnsBase {
     @Override
     public boolean isDynamic() {
         return true;
-    }
-
-    public java.lang.String getColumnIndexVar() {
-        return super.getRowIndexVar();
-    }
-
-    public void setColumnIndexVar(String _columnIndexVar) {
-        super.setRowIndexVar(_columnIndexVar);
     }
 
     @Override
@@ -120,5 +116,10 @@ public class Columns extends ColumnsBase {
         cellEditor = null;
 
         return super.saveState(context);
+    }
+
+    @Override
+    public String getFilterMatchMode() {
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, DEFAULT_FILTER_MATCH_MODE.operator());
     }
 }

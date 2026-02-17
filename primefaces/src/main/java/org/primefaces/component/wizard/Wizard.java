@@ -23,7 +23,8 @@
  */
 package org.primefaces.component.wizard;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.FlowEvent;
@@ -41,8 +42,9 @@ import jakarta.faces.event.AbortProcessingException;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Wizard.COMPONENT_TYPE, namespace = Wizard.COMPONENT_FAMILY)
-@FacesComponentDescription("Wizard provides an enhanced UI to implement a workflow easily in a single page. "
+@FacesComponentInfo(description = "Wizard provides an enhanced UI to implement a workflow easily in a single page. "
         + "Wizard consists of several child tab components where each tab represents a step in the process.")
+@FacesComponentHandler(WizardHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

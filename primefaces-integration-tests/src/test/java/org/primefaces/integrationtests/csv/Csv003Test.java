@@ -35,6 +35,7 @@ import org.primefaces.selenium.component.Messages;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Assertions;
@@ -51,7 +52,7 @@ public class Csv003Test extends AbstractPrimePageTest {
     public void datePastInvalid(Page page) {
         // Arrange
         assertMessage(page.msgDatePast, "");
-        page.datePast.setValue(LocalTime.now().plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        page.datePast.setValue(LocalTime.now(ZoneId.of("UTC")).plusHours(1).format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         // Act
         page.btnSave.click();
@@ -66,7 +67,7 @@ public class Csv003Test extends AbstractPrimePageTest {
     public void datePastValid(Page page) {
         // Arrange
         assertMessage(page.msgDatePast, "");
-        page.datePast.setValue(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        page.datePast.setValue(LocalTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         // Act
         page.btnSave.click();
@@ -126,7 +127,7 @@ public class Csv003Test extends AbstractPrimePageTest {
     public void dateFutureInvalid(Page page) {
         // Arrange
         assertMessage(page.msgDateFuture, "");
-        page.dateFuture.setValue(LocalDateTime.now().minusHours(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        page.dateFuture.setValue(LocalDateTime.now(ZoneId.of("UTC")).minusHours(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         // Act
         page.btnSave.click();
@@ -141,7 +142,7 @@ public class Csv003Test extends AbstractPrimePageTest {
     public void dateFutureValid(Page page) {
         // Arrange
         assertMessage(page.msgDateFuture, "");
-        page.dateFuture.setValue(LocalDateTime.now().plusHours(6).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        page.dateFuture.setValue(LocalDateTime.now(ZoneId.of("UTC")).plusHours(6).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         // Act
         page.btnSave.click();

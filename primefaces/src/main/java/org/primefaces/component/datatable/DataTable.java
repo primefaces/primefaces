@@ -24,6 +24,9 @@
 package org.primefaces.component.datatable;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
@@ -58,7 +61,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.ELUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,7 +88,6 @@ import jakarta.faces.component.visit.VisitContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AbortProcessingException;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.ComponentSystemEvent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PhaseId;
@@ -98,13 +99,16 @@ import jakarta.faces.model.IterableDataModel;
 import jakarta.faces.model.ListDataModel;
 
 @FacesComponent(value = DataTable.COMPONENT_TYPE, namespace = DataTable.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "DataTable is an enhanced version of the standard Datatable that provides built-in solutions to many commons use cases"
+        + " like paging, sorting, selection, lazy loading, filtering and more.")
+@FacesComponentHandler(DataTableHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class DataTable extends DataTableBase {
+public class DataTable extends DataTableBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
 
@@ -181,39 +185,9 @@ public class DataTable extends DataTableBase {
 
     private static final Logger LOGGER = Logger.getLogger(DataTable.class.getName());
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("page", PageEvent.class)
-            .put("sort", SortEvent.class)
-            .put("filter", FilterEvent.class)
-            .put("rowSelect", SelectEvent.class)
-            .put("rowUnselect", UnselectEvent.class)
-            .put("rowEdit", RowEditEvent.class)
-            .put("rowEditInit", RowEditEvent.class)
-            .put("rowEditCancel", RowEditEvent.class)
-            .put("colResize", ColumnResizeEvent.class)
-            .put("toggleSelect", ToggleSelectEvent.class)
-            .put("colReorder", null)
-            .put("contextMenu", SelectEvent.class)
-            .put("rowSelectRadio", SelectEvent.class)
-            .put("rowSelectCheckbox", SelectEvent.class)
-            .put("rowUnselectCheckbox", UnselectEvent.class)
-            .put("rowDblselect", SelectEvent.class)
-            .put("rowToggle", ToggleEvent.class)
-            .put("cellEditInit", CellEditEvent.class)
-            .put("cellEdit", CellEditEvent.class)
-            .put("rowReorder", ReorderEvent.class)
-            .put("tap", SelectEvent.class)
-            .put("taphold", SelectEvent.class)
-            .put("cellEditCancel", CellEditEvent.class)
-            .put("virtualScroll", PageEvent.class)
-            .put("liveScroll", PageEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
     private boolean reset = false;
     private List<UIColumn> columns;
-    private final Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
+    private final Map<PrimeClientBehaviorEventKeys, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
     protected enum InternalPropertyKeys {
         filterByAsMap,
@@ -339,7 +313,7 @@ public class DataTable extends DataTableBase {
         FilterFeature feature = DataTableFeatures.filterFeature();
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
-            AjaxBehaviorEvent event = deferredEvents.get("filter");
+            AjaxBehaviorEvent event = deferredEvents.get(ClientBehaviorEventKeys.filter);
             if (event != null) {
                 FilterEvent wrappedEvent = new FilterEvent(this, event.getBehavior(), getFilterByAsMap());
                 wrappedEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
@@ -389,16 +363,16 @@ public class DataTable extends DataTableBase {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if ("rowSelect".equals(eventName) || "rowSelectRadio".equals(eventName) || "contextMenu".equals(eventName)
-                    || "rowSelectCheckbox".equals(eventName) || "rowDblselect".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowSelect, ClientBehaviorEventKeys.rowSelectRadio,
+                    ClientBehaviorEventKeys.contextMenu, ClientBehaviorEventKeys.rowSelectCheckbox, ClientBehaviorEventKeys.rowDblselect)) {
                 String rowKey = params.get(clientId + "_instantSelectedRowKey");
                 wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), getRowData(rowKey));
             }
-            else if ("rowUnselect".equals(eventName) || "rowUnselectCheckbox".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowUnselect, ClientBehaviorEventKeys.rowUnselectCheckbox)) {
                 String rowKey = params.get(clientId + "_instantUnselectedRowKey");
                 wrapperEvent = new UnselectEvent<>(this, behaviorEvent.getBehavior(), getRowData(rowKey));
             }
-            else if ("page".equals(eventName) || "virtualScroll".equals(eventName) || "liveScroll".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.page, ClientBehaviorEventKeys.virtualScroll, ClientBehaviorEventKeys.liveScroll)) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
@@ -415,36 +389,36 @@ public class DataTable extends DataTableBase {
 
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page, rowsPerPage);
             }
-            else if ("sort".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.sort)) {
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());
             }
-            else if ("filter".equals(eventName)) {
-                deferredEvents.put("filter", (AjaxBehaviorEvent) event);
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.filter)) {
+                deferredEvents.put(ClientBehaviorEventKeys.filter, (AjaxBehaviorEvent) event);
                 return;
             }
-            else if ("rowEdit".equals(eventName) || "rowEditCancel".equals(eventName) || "rowEditInit".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowEdit, ClientBehaviorEventKeys.rowEditInit, ClientBehaviorEventKeys.rowEditCancel)) {
                 loadLazyDataIfRequired();
 
                 int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
                 setRowIndex(rowIndex);
                 wrapperEvent = new RowEditEvent<>(this, behaviorEvent.getBehavior(), getRowData());
             }
-            else if ("colResize".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.colResize)) {
                 String columnId = params.get(clientId + "_columnId");
                 int width = Double.valueOf(params.get(clientId + "_width")).intValue();
                 int height = Double.valueOf(params.get(clientId + "_height")).intValue();
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
-            else if ("toggleSelect".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.toggleSelect)) {
                 boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));
 
                 wrapperEvent = new ToggleSelectEvent(this, behaviorEvent.getBehavior(), checked);
             }
-            else if ("colReorder".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.colReorder)) {
                 wrapperEvent = behaviorEvent;
             }
-            else if ("rowToggle".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowToggle)) {
                 loadLazyDataIfRequired();
 
                 boolean expansion = params.containsKey(clientId + "_rowExpansion");
@@ -454,7 +428,8 @@ public class DataTable extends DataTableBase {
 
                 wrapperEvent = new ToggleEvent(this, behaviorEvent.getBehavior(), visibility, getRowData());
             }
-            else if ("cellEdit".equals(eventName) || "cellEditCancel".equals(eventName) || "cellEditInit".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.cellEdit, ClientBehaviorEventKeys.cellEditInit,
+                    ClientBehaviorEventKeys.cellEditCancel)) {
                 String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
                 int rowIndex = Integer.parseInt(cellInfo[0]);
                 int cellIndex = Integer.parseInt(cellInfo[1]);
@@ -478,13 +453,13 @@ public class DataTable extends DataTableBase {
 
                 wrapperEvent = new CellEditEvent<>(this, behaviorEvent.getBehavior(), rowIndex, column, rowKey);
             }
-            else if ("rowReorder".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowReorder)) {
                 int fromIndex = Integer.parseInt(params.get(clientId + "_fromIndex"));
                 int toIndex = Integer.parseInt(params.get(clientId + "_toIndex"));
 
                 wrapperEvent = new ReorderEvent(this, behaviorEvent.getBehavior(), fromIndex, toIndex);
             }
-            else if ("tap".equals(eventName) || "taphold".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.tap, ClientBehaviorEventKeys.taphold)) {
                 String rowkey = params.get(clientId + "_rowkey");
                 wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), getRowData(rowkey));
             }
@@ -604,16 +579,6 @@ public class DataTable extends DataTableBase {
 
     public RowExpansion getRowExpansion() {
         return ComponentTraversalUtils.firstChild(RowExpansion.class, this);
-    }
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
     }
 
     public SubTable getSubTable() {
@@ -935,6 +900,7 @@ public class DataTable extends DataTableBase {
         return iterableChildren;
     }
 
+    @Override
     public List<?> getFilteredValue() {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
         if (ve != null) {
@@ -1208,5 +1174,29 @@ public class DataTable extends DataTableBase {
         // see https://github.com/primefaces/primefaces/issues/2154
         return getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE
                 && (!isNestedWithinIterator() || columns.stream().noneMatch(DynamicColumn.class::isInstance));
+    }
+
+    @Override
+    public String getSelectionMode() {
+        return (String) getStateHelper().eval(PropertyKeys.selectionMode, () -> {
+            // if not set by xhtml, we need to check the type of the value binding
+            Class<?> type = ELUtils.getType(getFacesContext(),
+                    getValueExpression(PropertyKeys.selection.toString()),
+                    this::getSelection);
+            if (type != null) {
+                String selectionMode = "single";
+                if (Collection.class.isAssignableFrom(type) || type.isArray()) {
+                    selectionMode = "multiple";
+                }
+
+                // remember in ViewState, to not do the same check again
+                setSelectionMode(selectionMode);
+
+                return selectionMode;
+            }
+            else {
+                return null;
+            }
+        });
     }
 }

@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.colorpicker;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.LocaleUtils;
 
 import java.util.Locale;
@@ -33,7 +33,7 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = ColorPicker.COMPONENT_TYPE, namespace = ColorPicker.COMPONENT_FAMILY)
-@FacesComponentDescription("ColorPicker is an input component with a color palette.")
+@FacesComponentInfo(description = "ColorPicker is an input component with a color palette.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "colorpicker/colorpicker.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

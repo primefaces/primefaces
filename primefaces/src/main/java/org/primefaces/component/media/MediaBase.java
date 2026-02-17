@@ -25,10 +25,10 @@ package org.primefaces.component.media;
 
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.UIMediaBaseImpl;
+import org.primefaces.component.api.UIMediaBase;
 
 @FacesComponentBase
-public abstract class MediaBase extends UIMediaBaseImpl {
+public abstract class MediaBase extends UIMediaBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

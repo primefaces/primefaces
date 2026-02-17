@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.growl;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Growl.COMPONENT_TYPE, namespace = Growl.COMPONENT_FAMILY)
-@FacesComponentDescription("Growl is based on the Mac's growl notification widget and used to display FacesMessages similar to h:messages.")
+@FacesComponentInfo(description = "Growl is based on the Mac's growl notification widget and used to display FacesMessages similar to h:messages.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

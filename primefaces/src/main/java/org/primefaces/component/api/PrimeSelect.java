@@ -21,37 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.api;
+package org.primefaces.component.api;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.primefaces.cdk.api.Property;
 
-/**
- * Provides a description for a Faces component.
- *
- * <p>Use this annotation to document the purpose and functionality of
- * a component class. The description can be used for taglib, documentation
- * or other metadata purposes.</p>
- *
- * <p>Example:</p>
- * <pre>{@code
- * @FacesComponent(...)
- * @FacesComponentDescription("A text input component with enhanced features")
- * public class InputText extends InputTextBaseImpl {
- *
- * }
- * }</pre>
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-public @interface FacesComponentDescription {
+import jakarta.faces.event.ValueChangeListener;
+import jakarta.faces.validator.Validator;
 
-    /**
-     * The description text for the component.
-     *
-     * @return the component description
-     */
-    String value();
+public interface PrimeSelect {
+
+    @Property(description = "Flag indicating that, if this component is activated by the user, The \"no selection option\", if any, must be hidden.",
+        defaultValue = "false")
+    boolean isHideNoSelectionOption();
+
+    @Property(description = "A method expression referring to a method validating the input.")
+    Validator<?> getValidator();
+
+    @Property(description = "A method binding expression referring to a method for handling a valuchangeevent.")
+    ValueChangeListener getValueChangeListener();
 }

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.radiobutton;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 
 import jakarta.faces.application.ResourceDependency;
@@ -31,11 +32,12 @@ import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = RadioButton.COMPONENT_TYPE, namespace = RadioButton.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "RadioButton is a helper component of SelectOneRadio to implement custom layouts.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class RadioButton extends RadioButtonBase {
+public class RadioButton extends RadioButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RadioButton";
 

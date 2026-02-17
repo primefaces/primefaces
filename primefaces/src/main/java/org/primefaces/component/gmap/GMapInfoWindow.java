@@ -23,12 +23,13 @@
  */
 package org.primefaces.component.gmap;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = GMapInfoWindow.COMPONENT_TYPE, namespace = GMapInfoWindowBase.COMPONENT_FAMILY)
-@FacesComponentDescription("GMapInfoWindow component is used with GMap component to open a window on map when an overlay is selected.")
+@FacesComponentInfo(name = "gmapInfoWindow",
+        description = "GMapInfoWindow component is used with GMap component to open a window on map when an overlay is selected.")
 public class GMapInfoWindow extends GMapInfoWindowBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.GMapInfoWindow";

@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.dnd;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Draggable.COMPONENT_TYPE, namespace = Draggable.COMPONENT_FAMILY)
-@FacesComponentDescription("Draggable is a component that makes its child elements draggable.")
+@FacesComponentInfo(description = "Draggable is a component that makes its child elements draggable.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

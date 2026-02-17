@@ -23,6 +23,7 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.cdk.api.Function;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.RTLAware;
@@ -619,19 +620,23 @@ public class ComponentUtils {
     }
 
 
+    @Function(name = "dynamicColumnValue", description = "Gets the value of the current column."
+            + " This is only required when p:columns and field is used with a nested expression like user.name.")
     public static Object getDynamicColumnValue(UIComponent component) {
         org.primefaces.component.api.UIColumn column =
                 ComponentTraversalUtils.closest(org.primefaces.component.api.UIColumn.class, component);
-        UITable table =
+        UITable<?> table =
                 ComponentTraversalUtils.closest(UITable.class, (UIComponent) column);
 
         return table.getFieldValue(FacesContext.getCurrentInstance(), column);
     }
 
+    @Function(name = "dynamicColumnValueAsString", description = "Gets the value of the current column converted to string."
+            + " This is only required when p:columns and field is used with a nested expression like user.name.")
     public static String getDynamicColumnValueAsString(UIComponent component) {
         org.primefaces.component.api.UIColumn column =
                 ComponentTraversalUtils.closest(org.primefaces.component.api.UIColumn.class, component);
-        UITable table =
+        UITable<?> table =
                 ComponentTraversalUtils.closest(UITable.class, (UIComponent) column);
 
         return table.getConvertedFieldValue(FacesContext.getCurrentInstance(), column);

@@ -24,7 +24,7 @@
 package org.primefaces.component.dataview;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
@@ -44,7 +44,7 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.model.DataModel;
 
 @FacesComponent(value = DataView.COMPONENT_TYPE, namespace = DataView.COMPONENT_FAMILY)
-@FacesComponentDescription("DataView displays data in grid or list layout.")
+@FacesComponentInfo(description = "DataView displays data in grid or list layout.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

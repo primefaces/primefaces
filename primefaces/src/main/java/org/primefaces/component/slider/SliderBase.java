@@ -23,54 +23,25 @@
  */
 package org.primefaces.component.slider;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeUIInput;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.SlideEndEvent;
 
-import jakarta.faces.component.UIInput;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
-
-public abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, TouchAware {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "slideEnd", event = SlideEndEvent.class, description = "Fired when slide ends.", defaultEvent = true)
+})
+public abstract class SliderBase extends PrimeUIInput implements Widget, TouchAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SliderRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        forValue("for"),
-        display,
-        minValue,
-        maxValue,
-        style,
-        styleClass,
-        animate,
-        type,
-        step,
-        disabled,
-        readonly,
-        onSlideStart,
-        onSlide,
-        onSlideEnd,
-        range,
-        displayTemplate,
-        touchable;
-
-        private String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
-    }
 
     public SliderBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -81,148 +52,52 @@ public abstract class SliderBase extends UIInput implements Widget, ClientBehavi
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Id of the input text that the slider will be used for.")
+    public abstract String getFor();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(description = "Id of the component to display the slider value.")
+    public abstract String getDisplay();
 
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
+    @Property(description = "Minimum value of the slider.", defaultValue = "0.0")
+    public abstract double getMinValue();
 
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
+    @Property(description = "Maximum value of the slider.", defaultValue = "100.0")
+    public abstract double getMaxValue();
 
-    public String getDisplay() {
-        return (String) getStateHelper().eval(PropertyKeys.display, null);
-    }
+    @Property(description = "Boolean value to enable/disable the animated move when background of slider is clicked.",
+            defaultValue = "true")
+    public abstract boolean isAnimate();
 
-    public void setDisplay(String display) {
-        getStateHelper().put(PropertyKeys.display, display);
-    }
+    @Property(description = "Sets the type of the slider, \"horizontal\" or \"vertical\".",
+            defaultValue = "horizontal")
+    public abstract String getType();
 
-    public double getMinValue() {
-        return (Double) getStateHelper().eval(PropertyKeys.minValue, 0.0);
-    }
+    @Property(description = "Fixed pixel increments that the slider move in.",
+            defaultValue = "1.0")
+    public abstract double getStep();
 
-    public void setMinValue(double minValue) {
-        getStateHelper().put(PropertyKeys.minValue, minValue);
-    }
+    @Property(description = "Disables or enables the component.",
+            defaultValue = "false")
+    public abstract boolean isDisabled();
 
-    public double getMaxValue() {
-        return (Double) getStateHelper().eval(PropertyKeys.maxValue, 100.0);
-    }
+    @Property(description = "Flag indicating that this component will prevent changes by the user.",
+            defaultValue = "false")
+    public abstract boolean isReadonly();
 
-    public void setMaxValue(double maxValue) {
-        getStateHelper().put(PropertyKeys.maxValue, maxValue);
-    }
+    @Property(description = "Client side callback to execute when slide begins.")
+    public abstract String getOnSlideStart();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(description = "Client side callback to execute during sliding.")
+    public abstract String getOnSlide();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Client side callback to execute when slide ends.")
+    public abstract String getOnSlideEnd();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(description = "When set `true`, two handles are provided for selection a range."
+            + " Another types `false` for disable range style and `max` for shows range handle to the slider max.",
+            defaultValue = "min")
+    public abstract String getRange();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isAnimate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.animate, true);
-    }
-
-    public void setAnimate(boolean animate) {
-        getStateHelper().put(PropertyKeys.animate, animate);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "horizontal");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    public double getStep() {
-        return (Double) getStateHelper().eval(PropertyKeys.step, 1.0);
-    }
-
-    public void setStep(double step) {
-        getStateHelper().put(PropertyKeys.step, step);
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public String getOnSlideStart() {
-        return (String) getStateHelper().eval(PropertyKeys.onSlideStart, null);
-    }
-
-    public void setOnSlideStart(String onSlideStart) {
-        getStateHelper().put(PropertyKeys.onSlideStart, onSlideStart);
-    }
-
-    public String getOnSlide() {
-        return (String) getStateHelper().eval(PropertyKeys.onSlide, null);
-    }
-
-    public void setOnSlide(String onSlide) {
-        getStateHelper().put(PropertyKeys.onSlide, onSlide);
-    }
-
-    public String getOnSlideEnd() {
-        return (String) getStateHelper().eval(PropertyKeys.onSlideEnd, null);
-    }
-
-    public void setOnSlideEnd(String onSlideEnd) {
-        getStateHelper().put(PropertyKeys.onSlideEnd, onSlideEnd);
-    }
-
-    public String getRange() {
-        return (String) getStateHelper().eval(PropertyKeys.range, "min");
-    }
-
-    public void setRange(String range) {
-        getStateHelper().put(PropertyKeys.range, range);
-    }
-
-    public String getDisplayTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.displayTemplate, null);
-    }
-
-    public void setDisplayTemplate(String displayTemplate) {
-        getStateHelper().put(PropertyKeys.displayTemplate, displayTemplate);
-    }
-
-    public boolean isReadonly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
-    }
-
-    public void setReadonly(boolean readonly) {
-        getStateHelper().put(PropertyKeys.readonly, readonly);
-    }
-
-    @Override
-    public Boolean getTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
-    }
-
-    public void setTouchable(Boolean touchable) {
-        getStateHelper().put(PropertyKeys.touchable, touchable);
-    }
+    @Property(description = "String template to use when updating the display. Valid placeholders are {value}, {min} and {max}.")
+    public abstract String getDisplayTemplate();
 }

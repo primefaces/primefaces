@@ -25,10 +25,10 @@ package org.primefaces.component.tabview;
 
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.TouchAware;
@@ -39,11 +39,12 @@ import org.primefaces.event.TabCloseEvent;
 
 import jakarta.faces.component.UIComponent;
 
+@FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "tabChange", event = TabChangeEvent.class, description = "Fires when a tab is changed.", defaultEvent = true),
     @FacesBehaviorEvent(name = "tabClose", event = TabCloseEvent.class, description = "Fires when a tab is closed.")
 })
-public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, StyleAware, TouchAware, PrimeClientBehaviorHolder,
+public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, StyleAware, TouchAware,
         MultiViewStateAware<TabViewState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -59,7 +60,7 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
         return COMPONENT_FAMILY;
     }
 
-    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
+    @Facet(description = "Allows custom HTML in the footer. Alternative to footerText.")
     public abstract UIComponent getFooterFacet();
 
     @Facet(description = "Allows to add custom action to the tab header.")
@@ -100,4 +101,16 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
 
     @Property(defaultValue = "false", description = "When enabled, focuses on the last active tab when the component is rendered.")
     public abstract boolean isFocusOnLastActiveTab();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getOffset();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getSize();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getStep();
 }

@@ -21,36 +21,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.impl.taglib;
+package org.primefaces.cdk.impl.container;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.primefaces.cdk.api.Property;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import jakarta.faces.view.facelets.ComponentHandler;
 
 public class ComponentInfo {
 
-    private final Class<?> componentClass;
+    private Class<?> componentClass;
     private String description;
     private String componentType;
     private String rendererType;
     private String tagName;
-    private List<PropertyInfo> properties;
+    private Class<? extends ComponentHandler> handlerClass;
+    private Map<String, Property> properties;
 
     public ComponentInfo(Class<?> componentClass, String description, String componentType, String rendererType,
-                         String tagName) {
+                         String tagName, Class<? extends ComponentHandler> handlerClass) {
         this.componentClass = componentClass;
         this.description = description;
         this.componentType = componentType;
         this.rendererType = rendererType;
         this.tagName = tagName;
-        this.properties = new ArrayList<>();
+        this.handlerClass = handlerClass;
+        this.properties = new HashMap<>();
     }
 
     public Class<?> getComponentClass() {
         return componentClass;
     }
 
+    public void setComponentClass(Class<?> componentClass) {
+        this.componentClass = componentClass;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getComponentType() {
@@ -77,24 +91,19 @@ public class ComponentInfo {
         this.tagName = tagName;
     }
 
-    public List<PropertyInfo> getProperties() {
+    public Class<? extends ComponentHandler> getHandlerClass() {
+        return handlerClass;
+    }
+
+    public void setHandlerClass(Class<? extends ComponentHandler> handlerClass) {
+        this.handlerClass = handlerClass;
+    }
+
+    public Map<String, Property> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<PropertyInfo> properties) {
+    public void setProperties(Map<String, Property> properties) {
         this.properties = properties;
     }
-
-    @Override
-    public String toString() {
-        return "ComponentInfo{" +
-                "componentClass='" + componentClass + '\'' +
-                ", description='" + description + '\'' +
-                ", componentType='" + componentType + '\'' +
-                ", rendererType='" + rendererType + '\'' +
-                ", tagName='" + tagName + '\'' +
-                ", properties=" + properties.size() +
-                '}';
-    }
-
 }

@@ -28,14 +28,11 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.data.PageEvent;
-
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
@@ -44,7 +41,7 @@ import jakarta.faces.component.behavior.ClientBehaviorHolder;
     @FacesBehaviorEvent(name = "taphold", event = SelectEvent.class),
 })
 public abstract class DataListBase extends UIPageableData
-        implements Widget, StyleAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataListState> {
+        implements Widget, StyleAware, MultiViewStateAware<DataListState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

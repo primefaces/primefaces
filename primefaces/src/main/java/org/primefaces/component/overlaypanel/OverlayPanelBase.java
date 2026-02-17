@@ -23,55 +23,27 @@
  */
 package org.primefaces.component.overlaypanel;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
 import jakarta.faces.component.UIPanel;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class OverlayPanelBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "show", event = AjaxBehaviorEvent.class, description = "Fires when overlay panel is shown.", defaultEvent = true),
+    @FacesBehaviorEvent(name = "hide", event = AjaxBehaviorEvent.class, description = "Fires when overlay panel is hidden."),
+    @FacesBehaviorEvent(name = "loadContent", event = AjaxBehaviorEvent.class, description = "Fires when overlay panel content is loaded.")
+})
+public abstract class OverlayPanelBase extends UIPanel implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.OverlayPanelRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        style,
-        styleClass,
-        forValue("for"),
-        showEvent,
-        hideEvent,
-        appendTo,
-        onShow,
-        onHide,
-        my,
-        at,
-        collision,
-        dynamic,
-        dismissable,
-        showCloseIcon,
-        modal,
-        blockScroll,
-        showDelay,
-        autoHide,
-        cache;
-
-        private String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
-    }
 
     public OverlayPanelBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -82,163 +54,54 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget, Client
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Property(description = "Target component to attach overlay panel to.")
+    public abstract String getFor();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Property(implicitDefaultValue = "click", description = "Event name to show the overlay panel.")
+    public abstract String getShowEvent();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Property(implicitDefaultValue = "click", description = "Event name to hide the overlay panel.")
+    public abstract String getHideEvent();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(description = "Component to append overlay panel to.")
+    public abstract String getAppendTo();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(description = "Client-side callback to execute when overlay panel is shown.")
+    public abstract String getOnShow();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Client-side callback to execute when overlay panel is hidden.")
+    public abstract String getOnHide();
 
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
+    @Property(implicitDefaultValue = "left top", description = "Position of the overlay panel relative to the target.")
+    public abstract String getMy();
 
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
+    @Property(implicitDefaultValue = "left bottom", description = "Position of the target element.")
+    public abstract String getAt();
 
-    public String getShowEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.showEvent, null);
-    }
+    @Property(implicitDefaultValue = "flip", description = "When the overlay panel collides with the viewport, it will be repositioned.")
+    public abstract String getCollision();
 
-    public void setShowEvent(String showEvent) {
-        getStateHelper().put(PropertyKeys.showEvent, showEvent);
-    }
+    @Property(defaultValue = "false", description = "When true, overlay panel content is loaded dynamically.")
+    public abstract boolean isDynamic();
 
-    public String getHideEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.hideEvent, null);
-    }
+    @Property(defaultValue = "true", description = "When true, overlay panel can be dismissed by clicking outside of it.")
+    public abstract boolean isDismissable();
 
-    public void setHideEvent(String hideEvent) {
-        getStateHelper().put(PropertyKeys.hideEvent, hideEvent);
-    }
+    @Property(defaultValue = "false", description = "When true, displays a close icon.")
+    public abstract boolean isShowCloseIcon();
 
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
-    }
+    @Property(defaultValue = "false", description = "When true, overlay panel is displayed as modal.")
+    public abstract boolean isModal();
 
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
+    @Property(defaultValue = "false", description = "When true, blocks scrolling when overlay panel is shown.")
+    public abstract boolean isBlockScroll();
 
-    public String getOnShow() {
-        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
-    }
+    @Property(defaultValue = "0", description = "Delay in milliseconds before showing the overlay panel.")
+    public abstract int getShowDelay();
 
-    public void setOnShow(String onShow) {
-        getStateHelper().put(PropertyKeys.onShow, onShow);
-    }
+    @Property(defaultValue = "true", description = "When true, overlay panel automatically hides when clicking outside.")
+    public abstract boolean isAutoHide();
 
-    public String getOnHide() {
-        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
-    }
-
-    public void setOnHide(String onHide) {
-        getStateHelper().put(PropertyKeys.onHide, onHide);
-    }
-
-    public String getMy() {
-        return (String) getStateHelper().eval(PropertyKeys.my, null);
-    }
-
-    public void setMy(String my) {
-        getStateHelper().put(PropertyKeys.my, my);
-    }
-
-    public String getAt() {
-        return (String) getStateHelper().eval(PropertyKeys.at, null);
-    }
-
-    public void setAt(String at) {
-        getStateHelper().put(PropertyKeys.at, at);
-    }
-
-    public String getCollision() {
-        return (String) getStateHelper().eval(PropertyKeys.collision, null);
-    }
-
-    public void setCollision(String collision) {
-        getStateHelper().put(PropertyKeys.collision, collision);
-    }
-
-    public boolean isDynamic() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
-    }
-
-    public void setDynamic(boolean dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, dynamic);
-    }
-
-    public boolean isDismissable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dismissable, true);
-    }
-
-    public void setDismissable(boolean dismissable) {
-        getStateHelper().put(PropertyKeys.dismissable, dismissable);
-    }
-
-    public boolean isShowCloseIcon() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showCloseIcon, false);
-    }
-
-    public void setShowCloseIcon(boolean showCloseIcon) {
-        getStateHelper().put(PropertyKeys.showCloseIcon, showCloseIcon);
-    }
-
-    public boolean isModal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.modal, false);
-    }
-
-    public void setModal(boolean modal) {
-        getStateHelper().put(PropertyKeys.modal, modal);
-    }
-
-    public boolean isBlockScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
-    }
-
-    public void setBlockScroll(boolean blockScroll) {
-        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
-    }
-
-    public int getShowDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.showDelay, 0);
-    }
-
-    public void setShowDelay(int showDelay) {
-        getStateHelper().put(PropertyKeys.showDelay, showDelay);
-    }
-
-    public boolean isAutoHide() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoHide, true);
-    }
-
-    public void setAutoHide(boolean autoHide) {
-        getStateHelper().put(PropertyKeys.autoHide, autoHide);
-    }
-
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
-    }
-
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
+    @Property(defaultValue = "true", description = "When true, overlay panel content is cached.")
+    public abstract boolean isCache();
 }

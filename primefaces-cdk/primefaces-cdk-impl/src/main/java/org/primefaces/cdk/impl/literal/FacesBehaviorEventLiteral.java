@@ -21,41 +21,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.impl.subclass;
+package org.primefaces.cdk.impl.literal;
 
-public class BehaviorEventInfo {
+import org.primefaces.cdk.api.FacesBehaviorEvent;
 
-    private final String name;
-    private final String eventClass;
-    private final String description;
-    private final boolean implicit;
-    private final boolean defaultEvent;
+import java.lang.annotation.Annotation;
 
-    public BehaviorEventInfo(String name, String eventClass, String description, boolean implicit, boolean defaultEvent) {
+import jakarta.faces.event.BehaviorEvent;
+
+public class FacesBehaviorEventLiteral implements FacesBehaviorEvent {
+
+    private String name;
+    private Class<? extends jakarta.faces.event.BehaviorEvent> event;
+    private String description;
+    private boolean implicit;
+    private boolean defaultEvent;
+
+    public FacesBehaviorEventLiteral(String name, Class<? extends BehaviorEvent> event, String description,
+                                     boolean implicit, boolean defaultEvent) {
         this.name = name;
-        this.eventClass = eventClass;
+        this.event = event;
         this.description = description;
         this.implicit = implicit;
         this.defaultEvent = defaultEvent;
     }
 
-    public String getName() {
+    @Override
+    public String name() {
         return name;
     }
 
-    public String getEventClass() {
-        return eventClass;
+    @Override
+    public Class<? extends BehaviorEvent> event() {
+        return event;
     }
 
-    public String getDescription() {
+    @Override
+    public String description() {
         return description;
     }
 
-    public boolean isImplicit() {
+    @Override
+    public boolean implicit() {
         return implicit;
     }
 
-    public boolean isDefaultEvent() {
+    @Override
+    public boolean defaultEvent() {
         return defaultEvent;
+    }
+
+    @Override
+    public Class<? extends Annotation> annotationType() {
+        return FacesBehaviorEvent.class;
     }
 }

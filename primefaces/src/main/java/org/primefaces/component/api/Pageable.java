@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
+
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
@@ -30,34 +32,49 @@ public interface Pageable {
 
     String getClientId(FacesContext context);
 
+    @Property(implicitDefaultValue = "i18n", description = "Text to display when there is no data to display.", callSuper = true)
+    String getEmptyMessage();
+
+    @Property(defaultValue = "false", description = "Enables pagination.")
+    boolean isPaginator();
+
+    @Property(defaultValue = "bottom", description = "Position of the paginator.")
     String getPaginatorPosition();
 
+    @Property(defaultValue = "({currentPage} of {totalPages})", description = "Template of the currentPageReport UI.")
     String getCurrentPageReportTemplate();
 
+    @Property(defaultValue = "0", description = "Number of rows to display per page. 0 means to display all data available.", callSuper = true)
     int getRows();
 
     int getRowCount();
 
     int getPage();
 
+    @Property(defaultValue = "10", description = "Maximum number of page links to display.")
     int getPageLinks();
 
+    @Property(defaultValue = "true", description = "Defines if paginator should be hidden if total data count is less than number of rows per page.")
     boolean isPaginatorAlwaysVisible();
 
     Object getFooter();
 
     Object getHeader();
 
+    @Property(defaultValue = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}",
+            description = "Template of the paginator.")
     String getPaginatorTemplate();
 
     UIComponent getFacet(String element);
 
     int getPageCount();
 
+    @Property(defaultValue = "0", description = "Index of the first data to display.", callSuper = true)
     int getFirst();
 
     int getRowsToRender();
 
+    @Property(description = "Template of the rowsPerPage dropdown.")
     String getRowsPerPageTemplate();
 
 }

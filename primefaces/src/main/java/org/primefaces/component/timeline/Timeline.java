@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.timeline;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.timeline.TimelineAddEvent;
 import org.primefaces.event.timeline.TimelineDragDropEvent;
 import org.primefaces.event.timeline.TimelineLazyLoadEvent;
@@ -31,23 +32,21 @@ import org.primefaces.event.timeline.TimelineRangeEvent;
 import org.primefaces.event.timeline.TimelineSelectEvent;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.LocaleUtils;
 import org.primefaces.visit.UIDataContextCallback;
 
 import java.time.ZoneId;
-import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Timeline.COMPONENT_TYPE, namespace = Timeline.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Timeline is an interactive visualization chart to visualize events in time.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -56,48 +55,22 @@ import jakarta.faces.event.FacesEvent;
 @ResourceDependency(library = "primefaces", name = "moment/moment.js")
 @ResourceDependency(library = "primefaces", name = "timeline/timeline.css")
 @ResourceDependency(library = "primefaces", name = "timeline/timeline.js")
-public class Timeline extends TimelineBase {
+public class Timeline extends TimelineBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Timeline";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("add", TimelineAddEvent.class)
-            .put("change", TimelineModificationEvent.class)
-            .put("changed", TimelineModificationEvent.class)
-            .put("edit", TimelineModificationEvent.class)
-            .put("delete", TimelineModificationEvent.class)
-            .put("select", TimelineSelectEvent.class)
-            .put("rangechange", TimelineRangeEvent.class)
-            .put("rangechanged", TimelineRangeEvent.class)
-            .put("lazyload", TimelineLazyLoadEvent.class)
-            .put("drop", TimelineDragDropEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if (ComponentUtils.isRequestSource(this, context)) {
+        if (isAjaxBehaviorEventSource(event)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             ZoneId zoneId = CalendarUtils.calculateZoneId(getTimeZone());
 
-            if ("add".equals(eventName)) {
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.add)) {
                 // preset start / end date and the group
                 TimelineAddEvent te =
                         new TimelineAddEvent(this, behaviorEvent.getBehavior(),
@@ -110,7 +83,7 @@ public class Timeline extends TimelineBase {
 
                 return;
             }
-            else if ("change".equals(eventName) || "changed".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.change, ClientBehaviorEventKeys.changed)) {
                 TimelineEvent<Object> clonedEvent = null;
                 TimelineEvent<Object> timelineEvent = getValue().getEvent(params.get(clientId + "_eventId"));
 
@@ -128,7 +101,7 @@ public class Timeline extends TimelineBase {
 
                 return;
             }
-            else if ("edit".equals(eventName) || "delete".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.edit, ClientBehaviorEventKeys.delete)) {
                 TimelineEvent<Object> clonedEvent = null;
                 TimelineEvent<Object> timelineEvent = getValue().getEvent(params.get(clientId + "_eventId"));
 
@@ -142,7 +115,7 @@ public class Timeline extends TimelineBase {
 
                 return;
             }
-            else if ("select".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.select)) {
                 TimelineEvent<Object> timelineEvent = getValue().getEvent(params.get(clientId + "_eventId"));
                 TimelineSelectEvent<Object> te = new TimelineSelectEvent<>(this, behaviorEvent.getBehavior(), timelineEvent);
                 te.setPhaseId(behaviorEvent.getPhaseId());
@@ -150,7 +123,7 @@ public class Timeline extends TimelineBase {
 
                 return;
             }
-            else if ("rangechange".equals(eventName) || "rangechanged".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rangechange, ClientBehaviorEventKeys.rangechanged)) {
                 TimelineRangeEvent te =
                         new TimelineRangeEvent(this, behaviorEvent.getBehavior(),
                                 CalendarUtils.toLocalDateTime(zoneId, params.get(clientId + "_startDate")),
@@ -160,7 +133,7 @@ public class Timeline extends TimelineBase {
 
                 return;
             }
-            else if ("lazyload".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.lazyload)) {
                 TimelineLazyLoadEvent te =
                         new TimelineLazyLoadEvent(this, behaviorEvent.getBehavior(),
                                 CalendarUtils.toLocalDateTime(zoneId, params.get(clientId + "_startDateFirst")),
@@ -172,7 +145,7 @@ public class Timeline extends TimelineBase {
 
                 return;
             }
-            else if ("drop".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.drop)) {
                 Object data = null;
                 final String dragId = params.get(clientId + "_dragId");
                 final String uiDataId = params.get(clientId + "_uiDataId");
@@ -198,5 +171,9 @@ public class Timeline extends TimelineBase {
         }
 
         super.queueEvent(event);
+    }
+
+    public Locale calculateLocale(FacesContext facesContext) {
+        return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
     }
 }

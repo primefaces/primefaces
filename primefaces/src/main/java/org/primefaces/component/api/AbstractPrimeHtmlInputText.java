@@ -27,6 +27,8 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 
 import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.event.ValueChangeListener;
+import jakarta.faces.validator.Validator;
 
 /**
  * Extended {@link HtmlInputText} to allow for new events such as "input" and "paste".
@@ -35,16 +37,29 @@ import jakarta.faces.component.html.HtmlInputText;
 @FacesComponentBase
 public abstract class AbstractPrimeHtmlInputText extends HtmlInputText implements InputAware {
 
+    @Override
     @Property(description = "Alternate textual description of the input field.")
     public abstract String getAlt();
 
+    @Override
     @Property(description = "Controls browser autocomplete behavior. Possible values are 'on', 'off', and 'new-password'.")
     public abstract String getAutocomplete();
 
+    @Override
     @Property(description = "Number of characters used to determine the width of the input element.", defaultValue = "Integer.MIN_VALUE")
     public abstract int getSize();
 
+    @Override
     @Property(description = "Input field type.", defaultValue = "text")
     public abstract String getType();
 
+    @Property(description = "A method expression referring to a method validating the input.")
+    public Validator<?> getValidator() {
+        throw new UnsupportedOperationException("Only for documentation purpose.");
+    }
+
+    @Property(description = "A method binding expression referring to a method for handling a valuchangeevent.")
+    public ValueChangeListener getValueChangeListener() {
+        throw new UnsupportedOperationException("Only for documentation purpose.");
+    }
 }

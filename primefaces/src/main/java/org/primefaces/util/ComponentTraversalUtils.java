@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.cdk.api.Function;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -123,6 +125,8 @@ public class ComponentTraversalUtils {
      * @param base The base component to start the traversal.
      * @return The component or null.
      */
+    @Function(name = "resolveFirstComponentWithId", description = " \tReturns the first UIComponent with the same id (not clientId!) as the requested id."
+            + " This method ignores any algorithm or NamingContainers.")
     public static UIComponent firstWithId(String id, UIComponent base) {
         if (id.equals(base.getId())) {
             return base;

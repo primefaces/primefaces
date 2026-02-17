@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.dataview;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = DataViewGridItem.COMPONENT_TYPE, namespace = DataViewGridItem.COMPONENT_FAMILY)
-@FacesComponentDescription("dataViewGridItem is a helper component for DataView to add grid items.")
+@FacesComponentInfo(description = "dataViewGridItem is a helper component for DataView to add grid items.")
 public class DataViewGridItem extends DataViewGridItemBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataViewGridItem";

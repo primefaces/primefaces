@@ -23,109 +23,63 @@
  */
 package org.primefaces.component.datatable;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.UITable;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ELUtils;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.ColumnResizeEvent;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.ReorderEvent;
+import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.event.ToggleSelectEvent;
+import org.primefaces.event.UnselectEvent;
+import org.primefaces.event.data.FilterEvent;
+import org.primefaces.event.data.PageEvent;
+import org.primefaces.event.data.SortEvent;
 
-import java.util.Collection;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-import jakarta.el.MethodExpression;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
-
-public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, ClientBehaviorHolder,
-        PrimeClientBehaviorHolder, UITable<DataTableState> {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "page", event = PageEvent.class, description = "Fired when pagination occurs"),
+    @FacesBehaviorEvent(name = "sort", event = SortEvent.class, description = "Fired when column sorting is applied"),
+    @FacesBehaviorEvent(name = "filter", event = FilterEvent.class, description = "Fired when data is filtered"),
+    @FacesBehaviorEvent(name = "rowSelect", event = SelectEvent.class, description = "Fired when a row is selected"),
+    @FacesBehaviorEvent(name = "rowUnselect", event = UnselectEvent.class, description = "Fired when a row is unselected"),
+    @FacesBehaviorEvent(name = "rowEdit", event = RowEditEvent.class, description = "Fired when row edit is completed"),
+    @FacesBehaviorEvent(name = "rowEditInit", event = RowEditEvent.class, description = "Fired when row edit is initiated"),
+    @FacesBehaviorEvent(name = "rowEditCancel", event = RowEditEvent.class, description = "Fired when row edit is cancelled"),
+    @FacesBehaviorEvent(name = "colResize", event = ColumnResizeEvent.class, description = "Fired when a column is resized"),
+    @FacesBehaviorEvent(name = "toggleSelect", event = ToggleSelectEvent.class, description = "Fired when selectAll checkbox is toggled"),
+    @FacesBehaviorEvent(name = "colReorder", event = AjaxBehaviorEvent.class, description = "Fired when a column is reordered"),
+    @FacesBehaviorEvent(name = "contextMenu", event = NodeSelectEvent.class, description = "Fired when context menu is invoked on a node"),
+    @FacesBehaviorEvent(name = "rowSelectRadio", event = SelectEvent.class, description = "Fired when a row is selected using radio button"),
+    @FacesBehaviorEvent(name = "rowSelectCheckbox", event = SelectEvent.class, description = "Fired when a row is selected using checkbox"),
+    @FacesBehaviorEvent(name = "rowUnselectCheckbox", event = SelectEvent.class, description = "Fired when a row is unselected using checkbox"),
+    @FacesBehaviorEvent(name = "rowDblselect", event = SelectEvent.class, description = "Fired when a row is double-clicked"),
+    @FacesBehaviorEvent(name = "rowToggle", event = ToggleEvent.class, description = "Fired when a row is expanded or collapsed"),
+    @FacesBehaviorEvent(name = "cellEdit", event = CellEditEvent.class, description = "Fired when cell edit is completed"),
+    @FacesBehaviorEvent(name = "cellEditInit", event = CellEditEvent.class, description = "Fired when cell edit is initiated"),
+    @FacesBehaviorEvent(name = "cellEditCancel", event = CellEditEvent.class, description = "Fired when cell edit is cancelled"),
+    @FacesBehaviorEvent(name = "rowReorder", event = ReorderEvent.class, description = "Fired when a row is reordered"),
+    @FacesBehaviorEvent(name = "tap", event = SelectEvent.class, description = "Fired when a node is selected"),
+    @FacesBehaviorEvent(name = "taphold", event = SelectEvent.class, description = "Fired when a node is double-clicked"),
+    @FacesBehaviorEvent(name = "virtualScroll", event = PageEvent.class, description = "Fired when a node is expanded"),
+    @FacesBehaviorEvent(name = "liveScroll", event = PageEvent.class, description = "Fired when a node is collapsed")
+})
+public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, StyleAware, UITable<DataTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DataTableRenderer";
-
-    public enum PropertyKeys {
-
-        allowUnsorting,
-        ariaRowLabel,
-        caseSensitiveSort,
-        cellEditMode,
-        cellNavigation,
-        cellSeparator,
-        clientCache,
-        dataLocale,
-        dir,
-        disableContextMenuIfEmpty,
-        selectionDisabled,
-        selectionTextDisabled,
-        draggableColumns,
-        draggableRows,
-        draggableRowsFunction,
-        editInitEvent,
-        editMode,
-        editable,
-        editingRow,
-        escapeText,
-        expandedRow,
-        exportTag,
-        exportRowTag,
-        filterBy,
-        filterDelay,
-        filterEvent,
-        filterNormalize,
-        filteredValue,
-        frozenColumns,
-        frozenColumnsAlignment,
-        frozenRows,
-        globalFilter,
-        globalFilterFunction,
-        globalFilterOnly,
-        liveResize,
-        liveScroll,
-        liveScrollBuffer,
-        multiViewState,
-        nativeElements,
-        onExpandStart,
-        onRowClick,
-        reflow,
-        renderEmptyFacets,
-        resizableColumns,
-        resizeMode,
-        rowDragSelector,
-        rowEditMode,
-        rowExpandMode,
-        rowHover,
-        rowKey,
-        rowSelector,
-        rowStyleClass,
-        rowTitle,
-        saveOnCellBlur,
-        scrollHeight,
-        scrollRows,
-        scrollWidth,
-        scrollable,
-        selectAllFilteredOnly,
-        selection,
-        selectionMode,
-        selectionPageOnly,
-        selectionRowMode,
-        skipChildren,
-        sortBy,
-        sortMode,
-        stickyHeader,
-        stickyTopAt,
-        style,
-        styleClass,
-        summary,
-        tabindex,
-        tableStyle,
-        tableStyleClass,
-        virtualScroll,
-        stripedRows,
-        showGridlines,
-        size,
-        widgetVar,
-        partialUpdate,
-        showSelectAll
-    }
 
     public DataTableBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -136,667 +90,217 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public boolean isScrollable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.scrollable, false);
-    }
-
-    public void setScrollable(boolean scrollable) {
-        getStateHelper().put(PropertyKeys.scrollable, scrollable);
-    }
-
-    public String getScrollHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.scrollHeight, null);
-    }
-
-    public void setScrollHeight(String scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
-
-    public String getScrollWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.scrollWidth, null);
-    }
-
-    public void setScrollWidth(String scrollWidth) {
-        getStateHelper().put(PropertyKeys.scrollWidth, scrollWidth);
-    }
-
-    public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, () -> {
-            // if not set by xhtml, we need to check the type of the value binding
-            Class<?> type = ELUtils.getType(getFacesContext(),
-                    getValueExpression(PropertyKeys.selection.toString()),
-                    this::getSelection);
-            if (type != null) {
-                String selectionMode = "single";
-                if (Collection.class.isAssignableFrom(type) || type.isArray()) {
-                    selectionMode = "multiple";
-                }
-
-                // remember in ViewState, to not do the same check again
-                setSelectionMode(selectionMode);
-
-                return selectionMode;
-            }
-            else {
-                return null;
-            }
-        });
-    }
-
-    public void setSelectionMode(String selectionMode) {
-        getStateHelper().put(PropertyKeys.selectionMode, selectionMode);
-    }
-
-    public Object getSelection() {
-        return getStateHelper().eval(PropertyKeys.selection, null);
-    }
-
-    public void setSelection(Object selection) {
-        getStateHelper().put(PropertyKeys.selection, selection);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isLiveScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.liveScroll, false);
-    }
-
-    public void setLiveScroll(boolean liveScroll) {
-        getStateHelper().put(PropertyKeys.liveScroll, liveScroll);
-    }
-
-    public String getRowStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.rowStyleClass, null);
-    }
-
-    public void setRowStyleClass(String rowStyleClass) {
-        getStateHelper().put(PropertyKeys.rowStyleClass, rowStyleClass);
-    }
-
-    public String getRowTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.rowTitle, null);
-    }
-
-    public void setRowTitle(String rowTitle) {
-        getStateHelper().put(PropertyKeys.rowTitle, rowTitle);
-    }
-
-    public String getOnExpandStart() {
-        return (String) getStateHelper().eval(PropertyKeys.onExpandStart, null);
-    }
-
-    public void setOnExpandStart(String onExpandStart) {
-        getStateHelper().put(PropertyKeys.onExpandStart, onExpandStart);
-    }
-
-    public boolean isResizableColumns() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.resizableColumns, false);
-    }
-
-    public void setResizableColumns(boolean resizableColumns) {
-        getStateHelper().put(PropertyKeys.resizableColumns, resizableColumns);
-    }
-
-    public int getScrollRows() {
-        return (Integer) getStateHelper().eval(PropertyKeys.scrollRows, 0);
-    }
-
-    public void setScrollRows(int scrollRows) {
-        getStateHelper().put(PropertyKeys.scrollRows, scrollRows);
-    }
-
-    public String getRowKey() {
-        return (String) getStateHelper().eval(PropertyKeys.rowKey, null);
-    }
-
-    public void setRowKey(String rowKey) {
-        getStateHelper().put(PropertyKeys.rowKey, rowKey);
-    }
-
-    public String getFilterEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.filterEvent, null);
-    }
-
-    public void setFilterEvent(String filterEvent) {
-        getStateHelper().put(PropertyKeys.filterEvent, filterEvent);
-    }
-
-    public int getFilterDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.filterDelay, Integer.MAX_VALUE);
-    }
-
-    public void setFilterDelay(int filterDelay) {
-        getStateHelper().put(PropertyKeys.filterDelay, filterDelay);
-    }
-
-    public String getTableStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.tableStyle, null);
-    }
-
-    public void setTableStyle(String tableStyle) {
-        getStateHelper().put(PropertyKeys.tableStyle, tableStyle);
-    }
-
-    public String getTableStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.tableStyleClass, null);
-    }
-
-    public void setTableStyleClass(String tableStyleClass) {
-        getStateHelper().put(PropertyKeys.tableStyleClass, tableStyleClass);
-    }
-
-    public boolean isDraggableColumns() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.draggableColumns, false);
-    }
-
-    public void setDraggableColumns(boolean draggableColumns) {
-        getStateHelper().put(PropertyKeys.draggableColumns, draggableColumns);
-    }
-
-    public boolean isEditable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.editable, false);
-    }
-
-    public void setEditable(boolean editable) {
-        getStateHelper().put(PropertyKeys.editable, editable);
-    }
-
-    public String getSortMode() {
-        return (String) getStateHelper().eval(PropertyKeys.sortMode, "multiple");
-    }
-
-    public void setSortMode(String sortMode) {
-        getStateHelper().put(PropertyKeys.sortMode, sortMode);
-    }
-
-    @Override
-    public Object getSortBy() {
-        return getStateHelper().eval(PropertyKeys.sortBy, null);
-    }
-
-    @Override
-    public void setSortBy(Object sortBy) {
-        getStateHelper().put(PropertyKeys.sortBy, sortBy);
-    }
-
-    public boolean isAllowUnsorting() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, false);
-    }
-
-    public void setAllowUnsorting(boolean allowUnsorting) {
-        getStateHelper().put(PropertyKeys.allowUnsorting, allowUnsorting);
-    }
-
-    public String getEditMode() {
-        return (String) getStateHelper().eval(PropertyKeys.editMode, "row");
-    }
-
-    public void setEditMode(String editMode) {
-        getStateHelper().put(PropertyKeys.editMode, editMode);
-    }
-
-    public boolean isEditingRow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.editingRow, false);
-    }
-
-    public void setEditingRow(boolean editingRow) {
-        getStateHelper().put(PropertyKeys.editingRow, editingRow);
-    }
-
-    public String getCellSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.cellSeparator, null);
-    }
-
-    public void setCellSeparator(String cellSeparator) {
-        getStateHelper().put(PropertyKeys.cellSeparator, cellSeparator);
-    }
-
-    public String getSummary() {
-        return (String) getStateHelper().eval(PropertyKeys.summary, null);
-    }
-
-    public void setSummary(String summary) {
-        getStateHelper().put(PropertyKeys.summary, summary);
-    }
-
-    public int getFrozenRows() {
-        return (Integer) getStateHelper().eval(PropertyKeys.frozenRows, 0);
-    }
-
-    public void setFrozenRows(int frozenRows) {
-        getStateHelper().put(PropertyKeys.frozenRows, frozenRows);
-    }
-
-    @Override
-    public String getDir() {
-        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
-    }
-
-    public void setDir(String dir) {
-        getStateHelper().put(PropertyKeys.dir, dir);
-    }
-
-    public boolean isLiveResize() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.liveResize, false);
-    }
-
-    public void setLiveResize(boolean liveResize) {
-        getStateHelper().put(PropertyKeys.liveResize, liveResize);
-    }
-
-    public boolean isStickyHeader() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.stickyHeader, false);
-    }
-
-    public void setStickyHeader(boolean stickyHeader) {
-        getStateHelper().put(PropertyKeys.stickyHeader, stickyHeader);
-    }
-
-    public boolean isExpandedRow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.expandedRow, false);
-    }
-
-    public void setExpandedRow(boolean expandedRow) {
-        getStateHelper().put(PropertyKeys.expandedRow, expandedRow);
-    }
-
-    public boolean isSelectionDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.selectionDisabled, false);
-    }
-
-    public void setSelectionDisabled(boolean selectionDisabled) {
-        getStateHelper().put(PropertyKeys.selectionDisabled, selectionDisabled);
-    }
-
-    public String getSelectionRowMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionRowMode, "new");
-    }
-
-    public void setSelectionRowMode(String rowSelectMode) {
-        getStateHelper().put(PropertyKeys.selectionRowMode, rowSelectMode);
-    }
-
-    public String getRowExpandMode() {
-        return (String) getStateHelper().eval(PropertyKeys.rowExpandMode, "multiple");
-    }
-
-    public void setRowExpandMode(String rowExpandMode) {
-        getStateHelper().put(PropertyKeys.rowExpandMode, rowExpandMode);
-    }
-
-    @Override public Object getDataLocale() {
-        return getStateHelper().eval(PropertyKeys.dataLocale, null);
-    }
-
-    public void setDataLocale(Object dataLocale) {
-        getStateHelper().put(PropertyKeys.dataLocale, dataLocale);
-    }
-
-    public boolean isNativeElements() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.nativeElements, false);
-    }
-
-    public void setNativeElements(boolean nativeElements) {
-        getStateHelper().put(PropertyKeys.nativeElements, nativeElements);
-    }
-
-    public int getFrozenColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.frozenColumns, 0);
-    }
-
-    public void setFrozenColumns(int frozenColumns) {
-        getStateHelper().put(PropertyKeys.frozenColumns, frozenColumns);
-    }
-
-    public String getFrozenColumnsAlignment() {
-        return (String) getStateHelper().eval(PropertyKeys.frozenColumnsAlignment, "left");
-    }
-
-    public void setFrozenColumnsAlignment(String alignFrozenColumnsRight) {
-        getStateHelper().put(PropertyKeys.frozenColumnsAlignment, alignFrozenColumnsRight);
-    }
-
-    public boolean isDraggableRows() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.draggableRows, false);
-    }
-
-    public void setDraggableRows(boolean draggableRows) {
-        getStateHelper().put(PropertyKeys.draggableRows, draggableRows);
-    }
-
-    public boolean isSkipChildren() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
-    }
-
-    public void setSkipChildren(boolean skipChildren) {
-        getStateHelper().put(PropertyKeys.skipChildren, skipChildren);
-    }
-
-    public boolean isSelectionTextDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.selectionTextDisabled, true);
-    }
-
-    public void setSelectionTextDisabled(boolean selectionTextDisabled) {
-        getStateHelper().put(PropertyKeys.selectionTextDisabled, selectionTextDisabled);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public boolean isReflow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.reflow, false);
-    }
-
-    public void setReflow(boolean reflow) {
-        getStateHelper().put(PropertyKeys.reflow, reflow);
-    }
-
-    public int getLiveScrollBuffer() {
-        return (Integer) getStateHelper().eval(PropertyKeys.liveScrollBuffer, 0);
-    }
-
-    public void setLiveScrollBuffer(int liveScrollBuffer) {
-        getStateHelper().put(PropertyKeys.liveScrollBuffer, liveScrollBuffer);
-    }
-
-    public boolean isRowHover() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.rowHover, false);
-    }
-
-    public void setRowHover(boolean rowHover) {
-        getStateHelper().put(PropertyKeys.rowHover, rowHover);
-    }
-
-    public String getResizeMode() {
-        return (String) getStateHelper().eval(PropertyKeys.resizeMode, "fit");
-    }
-
-    public void setResizeMode(String resizeMode) {
-        getStateHelper().put(PropertyKeys.resizeMode, resizeMode);
-    }
-
-    public String getAriaRowLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaRowLabel, null);
-    }
-
-    public void setAriaRowLabel(String ariaRowLabel) {
-        getStateHelper().put(PropertyKeys.ariaRowLabel, ariaRowLabel);
-    }
-
-    public boolean isSaveOnCellBlur() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.saveOnCellBlur, true);
-    }
-
-    public void setSaveOnCellBlur(boolean saveOnCellBlur) {
-        getStateHelper().put(PropertyKeys.saveOnCellBlur, saveOnCellBlur);
-    }
-
-    public boolean isClientCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.clientCache, false);
-    }
-
-    public void setClientCache(boolean clientCache) {
-        getStateHelper().put(PropertyKeys.clientCache, clientCache);
-    }
-
-    @Override
-    public boolean isMultiViewState() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
-    }
-
-    public void setMultiViewState(boolean multiViewState) {
-        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
-    }
-
-    @Override
-    public Object getFilterBy() {
-        return getStateHelper().eval(PropertyKeys.filterBy);
-    }
-
-    @Override
-    public void setFilterBy(Object filterBy) {
-        getStateHelper().put(PropertyKeys.filterBy, filterBy);
-    }
-
-    @Override
-    public String getGlobalFilter() {
-        return (String) getStateHelper().eval(PropertyKeys.globalFilter, null);
-    }
-
-    @Override
-    public void setGlobalFilter(String globalFilter) {
-        getStateHelper().put(PropertyKeys.globalFilter, globalFilter);
-    }
-
-    @Override
-    public boolean isGlobalFilterOnly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.globalFilterOnly, false);
-    }
-
-    @Override
-    public void setGlobalFilterOnly(boolean globalFilterOnly) {
-        getStateHelper().put(PropertyKeys.globalFilterOnly, globalFilterOnly);
-    }
-
-    public String getCellEditMode() {
-        return (String) getStateHelper().eval(PropertyKeys.cellEditMode, "eager");
-    }
-
-    public void setCellEditMode(String cellEditMode) {
-        getStateHelper().put(PropertyKeys.cellEditMode, cellEditMode);
-    }
-
-    public boolean isVirtualScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.virtualScroll, false);
-    }
-
-    public void setVirtualScroll(boolean virtualScroll) {
-        getStateHelper().put(PropertyKeys.virtualScroll, virtualScroll);
-    }
-
-    public boolean isStripedRows() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.stripedRows, false);
-    }
-
-    public void setStripedRows(boolean stripedRows) {
-        getStateHelper().put(PropertyKeys.stripedRows, stripedRows);
-    }
-
-    public boolean isShowGridlines() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showGridlines, false);
-    }
-
-    public void setShowGridlines(boolean showGridlines) {
-        getStateHelper().put(PropertyKeys.showGridlines, showGridlines);
-    }
-
-    public String getSize() {
-        return (String) getStateHelper().eval(PropertyKeys.size, "regular");
-    }
-
-    public void setSize(String size) {
-        getStateHelper().put(PropertyKeys.size, size);
-    }
-
-    public String getRowDragSelector() {
-        return (String) getStateHelper().eval(PropertyKeys.rowDragSelector, null);
-    }
-
-    public void setRowDragSelector(String rowDragSelector) {
-        getStateHelper().put(PropertyKeys.rowDragSelector, rowDragSelector);
-    }
-
-    public jakarta.el.MethodExpression getDraggableRowsFunction() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.draggableRowsFunction, null);
-    }
-
-    public void setDraggableRowsFunction(jakarta.el.MethodExpression draggableRowsFunction) {
-        getStateHelper().put(PropertyKeys.draggableRowsFunction, draggableRowsFunction);
-    }
-
-    public String getOnRowClick() {
-        return (String) getStateHelper().eval(PropertyKeys.onRowClick, null);
-    }
-
-    public void setOnRowClick(String onRowClick) {
-        getStateHelper().put(PropertyKeys.onRowClick, onRowClick);
-    }
-
-    public String getEditInitEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.editInitEvent, "click");
-    }
-
-    public void setEditInitEvent(String editInitEvent) {
-        getStateHelper().put(PropertyKeys.editInitEvent, editInitEvent);
-    }
-
-    public String getRowSelector() {
-        return (String) getStateHelper().eval(PropertyKeys.rowSelector, null);
-    }
-
-    public void setRowSelector(String rowSelector) {
-        getStateHelper().put(PropertyKeys.rowSelector, rowSelector);
-    }
-
-    public boolean isDisableContextMenuIfEmpty() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableContextMenuIfEmpty, false);
-    }
-
-    public void setDisableContextMenuIfEmpty(boolean disableContextMenuIfEmpty) {
-        getStateHelper().put(PropertyKeys.disableContextMenuIfEmpty, disableContextMenuIfEmpty);
-    }
-
-    public boolean isEscapeText() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escapeText, true);
-    }
-
-    public void setEscapeText(boolean escapeText) {
-        getStateHelper().put(PropertyKeys.escapeText, escapeText);
-    }
-
-    public String getRowEditMode() {
-        return (String) getStateHelper().eval(PropertyKeys.rowEditMode, "eager");
-    }
-
-    public void setRowEditMode(String rowEditMode) {
-        getStateHelper().put(PropertyKeys.rowEditMode, rowEditMode);
-    }
-
-    public String getStickyTopAt() {
-        return (String) getStateHelper().eval(PropertyKeys.stickyTopAt, null);
-    }
-
-    public void setStickyTopAt(String stickyTopAt) {
-        getStateHelper().put(PropertyKeys.stickyTopAt, stickyTopAt);
-    }
-
-    @Override
-    public MethodExpression getGlobalFilterFunction() {
-        return (MethodExpression) getStateHelper().eval(PropertyKeys.globalFilterFunction, null);
-    }
-
-    @Override
-    public void setGlobalFilterFunction(MethodExpression globalFilterFunction) {
-        getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
-    }
-
-    public boolean isRenderEmptyFacets() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.renderEmptyFacets, false);
-    }
-
-    public void setRenderEmptyFacets(boolean renderEmptyFacets) {
-        getStateHelper().put(PropertyKeys.renderEmptyFacets, renderEmptyFacets);
-    }
-
-    public boolean isSelectionPageOnly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.selectionPageOnly, true);
-    }
-
-    public void setSelectionPageOnly(boolean selectionPageOnly) {
-        getStateHelper().put(PropertyKeys.selectionPageOnly, selectionPageOnly);
-    }
-
-    public boolean isPartialUpdate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.partialUpdate, true);
-    }
-
-    public void setPartialUpdate(boolean partialUpdate) {
-        getStateHelper().put(PropertyKeys.partialUpdate, partialUpdate);
-    }
-
-    public boolean isShowSelectAll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showSelectAll, true);
-    }
-
-    public void setShowSelectAll(boolean showSelectAll) {
-        getStateHelper().put(PropertyKeys.showSelectAll, showSelectAll);
-    }
-
-    public String getExportRowTag() {
-        return (String) getStateHelper().eval(PropertyKeys.exportRowTag, null);
-    }
-
-    public void setExportRowTag(String exportRowTag) {
-        getStateHelper().put(PropertyKeys.exportRowTag, exportRowTag);
-    }
-
-    public String getExportTag() {
-        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
-    }
-
-    public void setExportTag(String exportTag) {
-        getStateHelper().put(PropertyKeys.exportTag, exportTag);
-    }
-
-    public boolean isSelectAllFilteredOnly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.selectAllFilteredOnly, false);
-    }
-
-    public void setSelectAllFilteredOnly(boolean selectAllFilteredOnly) {
-        getStateHelper().put(PropertyKeys.selectAllFilteredOnly, selectAllFilteredOnly);
-    }
-
-    public Boolean isCellNavigation() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cellNavigation, null);
-    }
-
-    public void setCellNavigation(boolean cellNavigation) {
-        getStateHelper().put(PropertyKeys.cellNavigation, cellNavigation);
-    }
-
-    @Override
-    public boolean isFilterNormalize() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
-    }
-
-    public void setFilterNormalize(boolean filterNormalize) {
-        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
-    }
+    @Property(description = "List to keep the filtered data if filtering is enabled.")
+    public abstract Object getFilteredValue();
+
+    @Property(defaultValue = "false", description = "Makes data scrollable with fixed header.")
+    public abstract boolean isScrollable();
+
+    @Property(description = "Height for scrollable data.")
+    public abstract String getScrollHeight();
+
+    @Property(description = "Width for scrollable data.")
+    public abstract String getScrollWidth();
+
+    @Property(implicitDefaultValue = "Detected though the \"selection\" value expression.",
+            description = "Enables data selection, valid values are \"single\" and \"multiple\".")
+    public abstract String getSelectionMode();
+
+    @Property(description = "Reference to the selection data.")
+    public abstract Object getSelection();
+
+    @Property(defaultValue = "false", description = "Enables live scrolling.")
+    public abstract boolean isLiveScroll();
+
+    @Property(description = "Style class for each row.")
+    public abstract String getRowStyleClass();
+
+    @Property(description = "Title for each row.")
+    public abstract String getRowTitle();
+
+    @Property(description = "Client side callback to execute before row expansion.")
+    public abstract String getOnExpandStart();
+
+    @Property(description = "Decides whether datatable columns are resizable or not.")
+    public abstract boolean isResizableColumns();
+
+    @Property(defaultValue = "0", description = "Number of rows to display in virtual scrolling mode.")
+    public abstract int getScrollRows();
+
+    @Property(description = "Unique identifier of row data.")
+    public abstract String getRowKey();
+
+    @Property(implicitDefaultValue = "keyup", description = "Client side event to invoke filtering."
+            + " If \"enter\" it will only filter after ENTER key is pressed.")
+    public abstract String getFilterEvent();
+
+    @Property(defaultValue = "Integer.MAX_VALUE", implicitDefaultValue = "300",
+            description = "Delay to wait in milliseconds before sending each filter query.")
+    public abstract int getFilterDelay();
+
+    @Property(description = "Inline style of the table element.")
+    public abstract String getTableStyle();
+
+    @Property(description = "Style class of the table element.")
+    public abstract String getTableStyleClass();
+
+    @Property(description = "Decides whether datatable columns can be reordered using dragdrop.")
+    public abstract boolean isDraggableColumns();
+
+    @Property(defaultValue = "false", description = "Controls incell editing.")
+    public abstract boolean isEditable();
+
+    @Property(defaultValue = "multiple", description = "Defines sorting mode, valid values are \"single\" and \"multiple\".")
+    public abstract String getSortMode();
+
+    @Property(defaultValue = "false", description = "Defines whether columns are allowed to be unsorted.")
+    public abstract boolean isAllowUnsorting();
+
+    @Property(defaultValue = "row", description = "Defines edit mode, valid values are \"row\" and \"cell\".")
+    public abstract String getEditMode();
+
+    @Property(defaultValue = "false", description = "Defines if cell editors of row should be displayed as editable or not. False means display mode.")
+    public abstract boolean isEditingRow();
+
+    @Property(description = "Separator text to use in output mode of editable cells with multiple components.")
+    public abstract String getCellSeparator();
+
+    @Property(description = "Summary attribute for WCAG.")
+    public abstract String getSummary();
+
+    @Property(defaultValue = "0", description = "Number of rows to freeze starting from the beginning.")
+    public abstract int getFrozenRows();
+
+    @Property(defaultValue = "false", description = "Columns are resized live in this mode without using a resize helper.")
+    public abstract boolean isLiveResize();
+
+    @Property(defaultValue = "false", description = "Sticky header stays in window viewport during scrolling.")
+    public abstract boolean isStickyHeader();
+
+    @Property(defaultValue = "false", description = "Defines if row should be rendered as expanded by default.")
+    public abstract boolean isExpandedRow();
+
+    @Property(defaultValue = "false", description = "Disables row selection when true.")
+    public abstract boolean isSelectionDisabled();
+
+    @Property(defaultValue = "new", description = "Indicates how rows of a DataTable may be selected, when clicking on the row"
+            + " itself (not the checkbox / radiobutton from p:column)."
+            + " The value `new` always unselects other rows, `add` preserves the currently selected rows, and `none` disables row selection.")
+    public abstract String getSelectionRowMode();
+
+    @Property(defaultValue = "multiple", description = "Defines row expand mode, valid values are \"single\" and \"multiple\".")
+    public abstract String getRowExpandMode();
+
+    @Property(defaultValue = "false", description = "In native mode, treetable uses native checkboxes.")
+    public abstract boolean isNativeElements();
+
+    @Property(defaultValue = "0", description = "Number of columns to freeze")
+    public abstract int getFrozenColumns();
+
+    @Property(defaultValue = "left", description = "Defines the alignment of frozen columns, valid values are 'left' and 'right'.")
+    public abstract String getFrozenColumnsAlignment();
+
+    @Property(defaultValue = "false", description = "When enabled, rows can be reordered using dragdrop.")
+    public abstract boolean isDraggableRows();
+
+    @Property(defaultValue = "false",
+            description = "Ignores processing of children during lifecycle, improves performance if table only has output components.")
+    public abstract boolean isSkipChildren();
+
+    @Property(defaultValue = "true", description = "Disables text selection on row click.")
+    public abstract boolean isSelectionTextDisabled();
+
+    @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")
+    public abstract String getTabindex();
+
+    @Property(defaultValue = "false", description = "Reflow mode is a responsive mode to display columns as stacked depending on screen size.")
+    public abstract boolean isReflow();
+
+    @Property(defaultValue = "0", description = "Percentage height of the buffer between the bottom of the page and the scroll position to initiate"
+            + " the load for the new chunk. Value is defined in integer.")
+    public abstract int getLiveScrollBuffer();
+
+    @Property(defaultValue = "false", description = "Adds hover effect to rows, default is false. Hover is always on when selection is enabled.")
+    public abstract boolean isRowHover();
+
+    @Property(implicitDefaultValue = "fit", description = "Defines the resize behavior, valid values are \"fit\" and expand.")
+    public abstract String getResizeMode();
+
+    @Property(description = "Label to read by screen readers on checkbox and radio selection.")
+    public abstract String getAriaRowLabel();
+
+    @Property(defaultValue = "true", description = "Saves the changes in cell editing on blur, when set to false changes are discarded.")
+    public abstract boolean isSaveOnCellBlur();
+
+    @Property(defaultValue = "false", description = "Caches the next page asynchronously.")
+    public abstract boolean isClientCache();
+
+    @Property(defaultValue = "eager", description = "Defines the cell edit behavior, valid values are \"eager\" and \"lazy\".")
+    public abstract String getCellEditMode();
+
+    @Property(defaultValue = "false", description = "Loads data on demand as the scrollbar gets close to the bottom.")
+    public abstract boolean isVirtualScroll();
+
+    @Property(defaultValue = "false", description = "Whether to display striped rows to visually separate content.")
+    public abstract boolean isStripedRows();
+
+    @Property(defaultValue = "false", description = "When enables, cell borders are displayed.")
+    public abstract boolean isShowGridlines();
+
+    @Property(defaultValue = "regular", description = "Size of the table content, valid values are \"small\", \"regular\" and \"large\".")
+    public abstract String getSize();
+
+    @Property(implicitDefaultValue = "td,span:not(.ui-c)", description = "Defines the element used to reorder rows using dragdrop.")
+    public abstract String getRowDragSelector();
+
+    @Property(description = "Method expression to execute after dragging row.")
+    public abstract jakarta.el.MethodExpression getDraggableRowsFunction();
+
+    @Property(description = "Client side callback to execute after clicking row.")
+    public abstract String getOnRowClick();
+
+    @Property(defaultValue = "click", description = "Defines a client side event to open cell on editable table.")
+    public abstract String getEditInitEvent();
+
+    @Property(description = "Client side check if rowclick triggered row click event not a clickable element in row content.")
+    public abstract String getRowSelector();
+
+    @Property(defaultValue = "false", description = "Decides whether to disable context menu or not if a table has no records.")
+    public abstract boolean isDisableContextMenuIfEmpty();
+
+    @Property(defaultValue = "true", description = "Defines if headerText and footerText values on columns are escaped or not.")
+    public abstract boolean isEscapeText();
+
+    @Property(defaultValue = "eager", description = "Defines the row edit behavior, valid values are \"eager\" and \"lazy\".")
+    public abstract String getRowEditMode();
+
+    @Property(description = "Selector to position on the page according to other fixing elements on the top of the table.")
+    public abstract String getStickyTopAt();
+
+    @Property(defaultValue = "false", description = "Render facets even if their children are not rendered.")
+    public abstract boolean isRenderEmptyFacets();
+
+    @Property(defaultValue = "true", description = "When using paginator and checkbox selection mode the select all checkbox in header"
+            + " will select the current page if true or all rows if false.")
+    public abstract boolean isSelectionPageOnly();
+
+    @Property(defaultValue = "true", description = "When disabled, it updates the whole table instead of updating a specific field such"
+            + " as body element in the client requests of the dataTable.")
+    public abstract boolean isPartialUpdate();
+
+    @Property(defaultValue = "true", description = "Whether to show the select all checkbox inside the column's header.")
+    public abstract boolean isShowSelectAll();
+
+    @Property(description = "If XML data exporter in use, this allows customization of the row tag in the XML.")
+    public abstract String getExportRowTag();
+
+    @Property(description = "If XML data exporter in use, this allows customization of the document tag in the XML.")
+    public abstract String getExportTag();
+
+    @Property(defaultValue = "false", description = "When enabled, toggle select will only apply on filtered items.")
+    public abstract boolean isSelectAllFilteredOnly();
+
+    @Property(defaultValue = "true", description = "Enables cell navigation with the keyboard for WCAG and screen reader compliance.")
+    public abstract boolean isCellNavigation();
+
 }

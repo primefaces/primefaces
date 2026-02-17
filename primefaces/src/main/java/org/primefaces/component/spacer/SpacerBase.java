@@ -23,23 +23,18 @@
  */
 package org.primefaces.component.spacer;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
+
 import jakarta.faces.component.UIComponentBase;
 
-
-public abstract class SpacerBase extends UIComponentBase {
+@FacesComponentBase
+public abstract class SpacerBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SpacerRenderer";
-
-    public enum PropertyKeys {
-
-        width,
-        height,
-        title,
-        style,
-        styleClass
-    }
 
     public SpacerBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -50,44 +45,12 @@ public abstract class SpacerBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.width, "1");
-    }
+    @Property(defaultValue = "1", description = "Width of the space.")
+    public abstract String getWidth();
 
-    public void setWidth(String width) {
-        getStateHelper().put(PropertyKeys.width, width);
-    }
+    @Property(defaultValue = "1", description = "Height of the space.")
+    public abstract String getHeight();
 
-    public String getHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.height, "1");
-    }
-
-    public void setHeight(String height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
-
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
-
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
+    @Property(description = "Advisory tooltip information.")
+    public abstract String getTitle();
 }

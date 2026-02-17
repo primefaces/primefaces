@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.dnd;
 
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 
@@ -38,7 +38,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Droppable.COMPONENT_TYPE, namespace = Droppable.COMPONENT_FAMILY)
-@FacesComponentDescription("Droppable is a component that makes its child elements accept draggable elements.")
+@FacesComponentInfo(description = "Droppable is a component that makes its child elements accept draggable elements.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

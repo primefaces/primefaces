@@ -23,65 +23,19 @@
  */
 package org.primefaces.component.column;
 
-import org.primefaces.model.SortMeta;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.model.menu.MenuColumn;
 
 import jakarta.faces.component.UIColumn;
 
-public abstract class ColumnBase extends UIColumn implements org.primefaces.component.api.UIColumn, MenuColumn {
+@FacesComponentBase
+public abstract class ColumnBase extends UIColumn implements org.primefaces.component.api.UIColumn, MenuColumn, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ColumnRenderer";
-
-    public enum PropertyKeys {
-
-        ariaHeaderText,
-        caseSensitiveSort,
-        colspan,
-        converter,
-        displayPriority,
-        draggable,
-        exportFooterValue,
-        exportFunction,
-        exportHeaderValue,
-        exportValue,
-        exportColspan,
-        exportRowspan,
-        exportable,
-        exportTag,
-        field,
-        filterBy,
-        filterFunction,
-        filterMatchMode,
-        filterMaxLength,
-        filterPosition,
-        filterPlaceholder,
-        filterStyle,
-        filterStyleClass,
-        filterValue,
-        filterable,
-        footerText,
-        groupRow,
-        headerText,
-        nullSortOrder,
-        resizable,
-        responsivePriority,
-        rowspan,
-        selectRow,
-        selectionBox,
-        sortBy,
-        sortFunction,
-        sortOrder,
-        sortPriority,
-        sortable,
-        style,
-        styleClass,
-        title,
-        toggleable,
-        visible,
-        width
-    }
 
     public ColumnBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -92,408 +46,158 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         return COMPONENT_FAMILY;
     }
 
-    @Override
-    public Object getSortBy() {
-        return getStateHelper().eval(PropertyKeys.sortBy, null);
-    }
-
-    public void setSortBy(Object sortBy) {
-        getStateHelper().put(PropertyKeys.sortBy, sortBy);
-    }
-
-    @Override
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    @Override
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    @Override
-    public jakarta.el.MethodExpression getSortFunction() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
-    }
-
-    public void setSortFunction(jakarta.el.MethodExpression sortFunction) {
-        getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
-    }
-
-    @Override
-    public Object getFilterBy() {
-        return getStateHelper().eval(PropertyKeys.filterBy, null);
-    }
-
-    public void setFilterBy(Object filterBy) {
-        getStateHelper().put(PropertyKeys.filterBy, filterBy);
-    }
-
-    @Override
-    public String getFilterStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.filterStyle, null);
-    }
-
-    public void setFilterStyle(String filterStyle) {
-        getStateHelper().put(PropertyKeys.filterStyle, filterStyle);
-    }
-
-    @Override
-    public String getFilterStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.filterStyleClass, null);
-    }
-
-    public void setFilterStyleClass(String filterStyleClass) {
-        getStateHelper().put(PropertyKeys.filterStyleClass, filterStyleClass);
-    }
-
-    @Override
-    public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, DEFAULT_FILTER_MATCH_MODE.operator());
-    }
-
-    public void setFilterMatchMode(String filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
-    }
-
-    @Override
-    public String getFilterPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.filterPosition, "bottom");
-    }
-
-    @Override
-    public String getFilterPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
-    }
-
-    public void setFilterPlaceholder(String filterPlaceholder) {
-        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
-    }
-
-    public void setFilterPosition(String filterPosition) {
-        getStateHelper().put(PropertyKeys.filterPosition, filterPosition);
-    }
-
-    @Override
-    public int getRowspan() {
-        return (Integer) getStateHelper().eval(PropertyKeys.rowspan, 1);
-    }
-
-    public void setRowspan(int rowspan) {
-        getStateHelper().put(PropertyKeys.rowspan, rowspan);
-    }
-
-    @Override
-    public int getColspan() {
-        return (Integer) getStateHelper().eval(PropertyKeys.colspan, 1);
-    }
-
-    public void setColspan(int colspan) {
-        getStateHelper().put(PropertyKeys.colspan, colspan);
-    }
-
-    @Override
-    public Object getConverter() {
-        return getStateHelper().eval(PropertyKeys.converter, null);
-    }
-
-    public void setConverter(Object converter) {
-        getStateHelper().put(PropertyKeys.converter, converter);
-    }
-
-    @Override
-    public String getHeaderText() {
-        return (String) getStateHelper().eval(PropertyKeys.headerText, null);
-    }
-
-    public void setHeaderText(String headerText) {
-        getStateHelper().put(PropertyKeys.headerText, headerText);
-    }
-
-    @Override
-    public String getFooterText() {
-        return (String) getStateHelper().eval(PropertyKeys.footerText, null);
-    }
-
-    public void setFooterText(String footerText) {
-        getStateHelper().put(PropertyKeys.footerText, footerText);
-    }
-
-    @Override
-    public boolean isSelectionBox() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.selectionBox, false);
-    }
-
-    public void setSelectionBox(boolean selectionBox) {
-        getStateHelper().put(PropertyKeys.selectionBox, selectionBox);
-    }
-
-    @Override
-    public int getFilterMaxLength() {
-        return (Integer) getStateHelper().eval(PropertyKeys.filterMaxLength, Integer.MAX_VALUE);
-    }
-
-    public void setFilterMaxLength(int filterMaxLength) {
-        getStateHelper().put(PropertyKeys.filterMaxLength, filterMaxLength);
-    }
-
-    @Override
-    public boolean isResizable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.resizable, true);
-    }
-
-    public void setResizable(boolean resizable) {
-        getStateHelper().put(PropertyKeys.resizable, resizable);
-    }
-
-    @Override
-    public boolean isExportable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.exportable, true);
-    }
-
-    public void setExportable(boolean exportable) {
-        getStateHelper().put(PropertyKeys.exportable, exportable);
-    }
-
-    @Override
-    public Object getFilterValue() {
-        return getStateHelper().eval(PropertyKeys.filterValue, null);
-    }
-
-    public void setFilterValue(Object filterValue) {
-        getStateHelper().put(PropertyKeys.filterValue, filterValue);
-    }
-
-    @Override
-    public String getWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.width, null);
-    }
-
-    public void setWidth(String width) {
-        getStateHelper().put(PropertyKeys.width, width);
-    }
-
-    @Override
-    public boolean isToggleable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, true);
-    }
-
-    public void setToggleable(boolean toggleable) {
-        getStateHelper().put(PropertyKeys.toggleable, toggleable);
-    }
-
-    @Override
-    public boolean isDraggable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
-    }
-
-    public void setDraggable(boolean draggable) {
-        getStateHelper().put(PropertyKeys.draggable, draggable);
-    }
-
-    @Override
-    public jakarta.el.MethodExpression getFilterFunction() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
-    }
-
-    public void setFilterFunction(jakarta.el.MethodExpression filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
-    }
-
-    @Override
-    public String getField() {
-        return (String) getStateHelper().eval(PropertyKeys.field, null);
-    }
-
-    public void setField(String field) {
-        getStateHelper().put(PropertyKeys.field, field);
-    }
-
-    @Override
-    public int getResponsivePriority() {
-        return (Integer) getStateHelper().eval(PropertyKeys.responsivePriority, 0);
-    }
-
-    public void setResponsivePriority(int responsivePriority) {
-        getStateHelper().put(PropertyKeys.responsivePriority, responsivePriority);
-    }
-
-    @Override
-    public boolean isSortable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.sortable, true);
-    }
-
-    public void setSortable(boolean sortable) {
-        getStateHelper().put(PropertyKeys.sortable, sortable);
-    }
-
-    @Override
-    public boolean isFilterable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filterable, true);
-    }
-
-    public void setFilterable(boolean filterable) {
-        getStateHelper().put(PropertyKeys.filterable, filterable);
-    }
-
-    @Override
-    public boolean isVisible() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.visible, true);
-    }
-
-    public void setVisible(boolean visible) {
-        getStateHelper().put(PropertyKeys.visible, visible);
-    }
-
-    @Override
-    public boolean isSelectRow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.selectRow, true);
-    }
-
-    public void setSelectRow(boolean selectRow) {
-        getStateHelper().put(PropertyKeys.selectRow, selectRow);
-    }
-
-    @Override
-    public String getAriaHeaderText() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaHeaderText, null);
-    }
-
-    public void setAriaHeaderText(String ariaHeaderText) {
-        getStateHelper().put(PropertyKeys.ariaHeaderText, ariaHeaderText);
-    }
-
-    @Override
-    public jakarta.el.MethodExpression getExportFunction() {
-        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.exportFunction, null);
-    }
-
-    public void setExportFunction(jakarta.el.MethodExpression exportFunction) {
-        getStateHelper().put(PropertyKeys.exportFunction, exportFunction);
-    }
-
-    @Override
-    public boolean isGroupRow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.groupRow, false);
-    }
-
-    public void setGroupRow(boolean groupRow) {
-        getStateHelper().put(PropertyKeys.groupRow, groupRow);
-    }
-
-    @Override
-    public Object getExportValue() {
-        return getStateHelper().eval(PropertyKeys.exportValue, null);
-    }
-
-    public void setExportValue(Object exportValue) {
-        getStateHelper().put(PropertyKeys.exportValue, exportValue);
-    }
-
-    @Override
-    public int getExportRowspan() {
-        return (Integer) getStateHelper().eval(PropertyKeys.exportRowspan, 0);
-    }
-
-    public void setExportRowspan(int exportRowspan) {
-        getStateHelper().put(PropertyKeys.exportRowspan, exportRowspan);
-    }
-
-    @Override
-    public int getExportColspan() {
-        return (Integer) getStateHelper().eval(PropertyKeys.exportColspan, 0);
-    }
-
-    public void setExportColspan(int exportColspan) {
-        getStateHelper().put(PropertyKeys.exportColspan, exportColspan);
-    }
-
-    @Override
-    public Object getExportHeaderValue() {
-        return getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
-    }
-
-    public void setExportHeaderValue(Object exportHeaderValue) {
-        getStateHelper().put(PropertyKeys.exportHeaderValue, exportHeaderValue);
-    }
-
-    @Override
-    public Object getExportFooterValue() {
-        return getStateHelper().eval(PropertyKeys.exportFooterValue, null);
-    }
-
-    public void setExportFooterValue(Object exportFooterValue) {
-        getStateHelper().put(PropertyKeys.exportFooterValue, exportFooterValue);
-    }
-
-    @Override
-    public String getSortOrder() {
-        return (String) getStateHelper().eval(PropertyKeys.sortOrder, null);
-    }
-
-    public void setSortOrder(String sortOrder) {
-        getStateHelper().put(PropertyKeys.sortOrder, sortOrder);
-    }
-
-    @Override
-    public int getSortPriority() {
-        return (Integer) getStateHelper().eval(PropertyKeys.sortPriority, SortMeta.MIN_PRIORITY);
-    }
-
-    public void setSortPriority(int sortPriority) {
-        getStateHelper().put(PropertyKeys.sortPriority, sortPriority);
-    }
-
-    @Override
-    public int getNullSortOrder() {
-        return (Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
-    }
-
-    public void setNullSortOrder(int nullSortOrder) {
-        getStateHelper().put(PropertyKeys.nullSortOrder, nullSortOrder);
-    }
-
-    @Override
-    public boolean isCaseSensitiveSort() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
-    }
-
-    public void setCaseSensitiveSort(boolean caseSensitiveSort) {
-        getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
-    }
-
-    @Override
-    public int getDisplayPriority() {
-        return (Integer) getStateHelper().eval(PropertyKeys.displayPriority, 0);
-    }
-
-    public void setDisplayPriority(int displayPriority) {
-        getStateHelper().put(PropertyKeys.displayPriority, displayPriority);
-    }
-
-    @Override
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
-
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
-
-    @Override
-    public String getExportTag() {
-        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
-    }
-
-    public void setExportTag(String exportTag) {
-        getStateHelper().put(PropertyKeys.exportTag, exportTag);
-    }
+    @Property(description = "Property to be used for sorting.")
+    public abstract Object getSortBy();
+
+    @Property(description = "Custom pluggable sortFunction.")
+    public abstract jakarta.el.MethodExpression getSortFunction();
+
+    @Property(description = "Property to be used for filtering.")
+    public abstract Object getFilterBy();
+
+    @Property(description = "Inline style of the filter element.")
+    public abstract String getFilterStyle();
+
+    @Property(description = "Style class of the filter element.")
+    public abstract String getFilterStyleClass();
+
+    @Property(description = "Match mode for filtering.",
+            implicitDefaultValue = "startsWith")
+    public abstract String getFilterMatchMode();
+
+    @Property(description = "Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.",
+            defaultValue = "bottom")
+    public abstract String getFilterPosition();
+
+    @Property(description = "Placeholder for plain input text style filters.")
+    public abstract String getFilterPlaceholder();
+
+    @Property(description = "Defines the number of rows the column spans.",
+            defaultValue = "1")
+    public abstract int getRowspan();
+
+    @Property(description = "Defines the number of columns the column spans.",
+            defaultValue = "1")
+    public abstract int getColspan();
+
+    @Property(description = "An EL expression or a literal text that defines a converter for the component."
+            + " When it's an EL expression, it's resolved to a converter instance."
+            + " In case it's a static text, it must refer to a converter id.")
+    public abstract Object getConverter();
+
+    @Property(description = "Shortcut for header facet.")
+    public abstract String getHeaderText();
+
+    @Property(description = "Shortcut for footer facet.")
+    public abstract String getFooterText();
+
+    @Property(description = "Indicates whether or not the column should contain a radiobutton or checkbox for selection",
+            defaultValue = "false")
+    public abstract boolean isSelectionBox();
+
+    @Property(description = "Maximum number of characters for an input filter.",
+            defaultValue = "Integer.MAX_VALUE")
+    public abstract int getFilterMaxLength();
+
+    @Property(description = "Specifies resizable feature at column level. Datatable's resizableColumns must be enabled to use this option.",
+            defaultValue = "true")
+    public abstract boolean isResizable();
+
+    @Property(description = "Defines if the column should be exported by dataexporter.",
+            defaultValue = "true")
+    public abstract boolean isExportable();
+
+    @Property(description = "Value of the filter field.")
+    public abstract Object getFilterValue();
+
+    @Property(description = "Width of the column in pixels or percentage.")
+    public abstract String getWidth();
+
+    @Property(description = "Defines if column is toggleable by columnToggler component. Default value is true and a false value marks the column as static.",
+            defaultValue = "true")
+    public abstract boolean isToggleable();
+
+    @Property(description = "Defines if column is draggable if draggableColumns is set. Default true.",
+            defaultValue = "true")
+    public abstract boolean isDraggable();
+
+    @Property(description = "Custom implementation to filter a value against a constraint.")
+    public abstract jakarta.el.MethodExpression getFilterFunction();
+
+    @Property(description = "Name of the field associated to bean \"var\".")
+    public abstract String getField();
+
+    @Property(description = "Responsive priority of the column, lower values have more priority.",
+            defaultValue = "0")
+    public abstract int getResponsivePriority();
+
+    @Property(description = "Boolean value to mark column as sortable.",
+            defaultValue = "true")
+    public abstract boolean isSortable();
+
+    @Property(description = "Boolean value to mark column as filterable.",
+            defaultValue = "true")
+    public abstract boolean isFilterable();
+
+    @Property(description = "Controls the visibility of the column.",
+            defaultValue = "true")
+    public abstract boolean isVisible();
+
+    @Property(description = "Whether clicking the column selects the row when datatable has row selection enabled.",
+            defaultValue = "true")
+    public abstract boolean isSelectRow();
+
+    @Property(description = "Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified."
+            + " Only necessary when the column header is not human readable (e.g. empty header or icon-only header).")
+    public abstract String getAriaHeaderText();
+
+    @Property(description = "Custom pluggable exportFunction.")
+    public abstract jakarta.el.MethodExpression getExportFunction();
+
+    @Property(description = "Specifies whether to group rows based on the column data.",
+            defaultValue = "false")
+    public abstract boolean isGroupRow();
+
+    @Property(description = "Defines the value of the cell to be exported if something other than the cell contents or exportFunction.")
+    public abstract Object getExportValue();
+
+    @Property(description = "Defines the number of rows the column spans to be exported.",
+            defaultValue = "0")
+    public abstract int getExportRowspan();
+
+    @Property(description = "Defines the number of columns the column spans to be exported.",
+            defaultValue = "0")
+    public abstract int getExportColspan();
+
+    @Property(description = "Defines if the header value of column to be exported.")
+    public abstract Object getExportHeaderValue();
+
+    @Property(description = "Defines if the footer value of column to be exported.")
+    public abstract Object getExportFooterValue();
+
+    @Property(description = "Sets default sorting order. Possible values \"asc\", \"desc\" or null")
+    public abstract String getSortOrder();
+
+    @Property(description = "Sets default sorting priority over the other columns. Lower values have more priority.",
+            defaultValue = "org.primefaces.model.SortMeta.MIN_PRIORITY")
+    public abstract int getSortPriority();
+
+    @Property(description = "Defines where the null values are placed in ascending sort order."
+            + " \"1\" means null values are placed at the end in ascending mode and at beginning in descending mode. Set to \"-1\" for the opposite behavior.",
+            defaultValue = "1")
+    public abstract int getNullSortOrder();
+
+    @Property(description = "Case sensitivity for sorting, insensitive by default.",
+            defaultValue = "false")
+    public abstract boolean isCaseSensitiveSort();
+
+    @Property(description = "Defines the display priority, in which order the columns should be displayed.",
+            defaultValue = "0")
+    public abstract int getDisplayPriority();
+
+    @Property(description = "Advisory tooltip information.")
+    public abstract String getTitle();
+
+    @Property(description = "If XML data exporter in use, this allows customization of the column tag in the XML.")
+    public abstract String getExportTag();
 }

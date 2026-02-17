@@ -23,88 +23,44 @@
  */
 package org.primefaces.component.timeline;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.event.timeline.TimelineAddEvent;
+import org.primefaces.event.timeline.TimelineDragDropEvent;
+import org.primefaces.event.timeline.TimelineLazyLoadEvent;
+import org.primefaces.event.timeline.TimelineModificationEvent;
+import org.primefaces.event.timeline.TimelineRangeEvent;
+import org.primefaces.event.timeline.TimelineSelectEvent;
 import org.primefaces.model.timeline.TimelineModel;
-import org.primefaces.util.LocaleUtils;
 
 import java.time.LocalDateTime;
-import java.util.Locale;
 
 import jakarta.faces.component.UIComponentBase;
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
-import jakarta.faces.context.FacesContext;
 
-
-public abstract class TimelineBase extends UIComponentBase implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "add", event = TimelineAddEvent.class, description = "Fired when a new item is added to the timeline."),
+    @FacesBehaviorEvent(name = "change", event = TimelineModificationEvent.class, description = "Fired when an item is being modified."),
+    @FacesBehaviorEvent(name = "changed", event = TimelineModificationEvent.class, description = "Fired when an item has been modified."),
+    @FacesBehaviorEvent(name = "edit", event = TimelineModificationEvent.class, description = "Fired when an item is being edited."),
+    @FacesBehaviorEvent(name = "delete", event = TimelineModificationEvent.class, description = "Fired when an item is deleted."),
+    @FacesBehaviorEvent(name = "select", event = TimelineSelectEvent.class, description = "Fired when an item is selected on the timeline.",
+            defaultEvent = true),
+    @FacesBehaviorEvent(name = "rangechange", event = TimelineRangeEvent.class, description = "Fired when the visible range is changing."),
+    @FacesBehaviorEvent(name = "rangechanged", event = TimelineRangeEvent.class, description = "Fired when the visible range has been changed."),
+    @FacesBehaviorEvent(name = "lazyload", event = TimelineLazyLoadEvent.class, description = "Fired when lazy loading is triggered to fetch events."),
+    @FacesBehaviorEvent(name = "drop", event = TimelineDragDropEvent.class, description = "Fired when a draggable item is dropped onto the timeline.")
+})
+public abstract class TimelineBase extends UIComponentBase implements Widget, RTLAware, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TimelineRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        style,
-        styleClass,
-        var,
-        value,
-        varGroup,
-        locale,
-        timeZone,
-        clientTimeZone,
-        height,
-        minHeight,
-        maxHeight,
-        horizontalScroll,
-        verticalScroll,
-        width,
-        responsive,
-        orientationAxis,
-        orientationItem,
-        editable,
-        editableAdd,
-        editableRemove,
-        editableGroup,
-        editableTime,
-        editableOverrideItems,
-        selectable,
-        zoomable,
-        moveable,
-        start,
-        end,
-        min,
-        max,
-        zoomKey,
-        zoomMin,
-        zoomMax,
-        preloadFactor,
-        eventMargin,
-        eventHorizontalMargin,
-        eventVerticalMargin,
-        eventMarginAxis,
-        eventStyle,
-        groupsOrder,
-        groupStyle,
-        snap,
-        stackEvents,
-        showCurrentTime,
-        showMajorLabels,
-        showMinorLabels,
-        showNested,
-        clickToUse,
-        showTooltips,
-        tooltipFollowMouse,
-        tooltipOverflowMethod,
-        tooltipDelay,
-        dropHoverStyleClass,
-        dropActiveStyleClass,
-        dropAccept,
-        dropScope,
-        dir,
-        extender
-    }
 
     public TimelineBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -115,482 +71,237 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
-
-    @SuppressWarnings("unchecked")
-    public TimelineModel<Object, Object> getValue() {
-        return (TimelineModel<Object, Object>) getStateHelper().eval(PropertyKeys.value, null);
-    }
-
-    public void setValue(TimelineModel<Object, Object> value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
-
-    public String getVarGroup() {
-        return (String) getStateHelper().eval(PropertyKeys.varGroup, null);
-    }
-
-    public void setVarGroup(String varGroup) {
-        getStateHelper().put(PropertyKeys.varGroup, varGroup);
-    }
-
-    public Object getLocale() {
-        return getStateHelper().eval(PropertyKeys.locale, null);
-    }
-
-    public void setLocale(Object locale) {
-        getStateHelper().put(PropertyKeys.locale, locale);
-    }
-
-    public Locale calculateLocale(FacesContext facesContext) {
-        return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
-    }
-
-    public Object getTimeZone() {
-        return getStateHelper().eval(PropertyKeys.timeZone, null);
-    }
-
-    public void setTimeZone(Object timeZone) {
-        getStateHelper().put(PropertyKeys.timeZone, timeZone);
-    }
-
-    public Object getClientTimeZone() {
-        return getStateHelper().eval(PropertyKeys.clientTimeZone, null);
-    }
-
-    public void setClientTimeZone(Object clientTimeZone) {
-        getStateHelper().put(PropertyKeys.clientTimeZone, clientTimeZone);
-    }
-
-    public String getHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.height, null);
-    }
-
-    public void setHeight(String height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
-
-    public Integer getMinHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minHeight, null);
-    }
-
-    public void setMinHeight(Integer minHeight) {
-        getStateHelper().put(PropertyKeys.minHeight, minHeight);
-    }
-
-    public Integer getMaxHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxHeight, null);
-    }
-
-    public void setMaxHeight(Integer maxHeight) {
-        getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
-    }
-
-    public boolean isHorizontalScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.horizontalScroll, false);
-    }
+    @Property(description = "Name of the request-scoped variable for underlaying object in the TimelineEvent for each iteration.")
+    public abstract String getVar();
+
+    @Property(description = "An instance of TimelineModel representing the backing model.", required = true)
+    public abstract TimelineModel<Object, Object> getValue();
+
+    @Property(description = "Name of the request-scoped variable for underlaying object in the TimelineGroup for each iteration.")
+    public abstract String getVarGroup();
 
-    public void setHorizontalScroll(boolean horizontalScroll) {
-        getStateHelper().put(PropertyKeys.horizontalScroll, horizontalScroll);
-    }
+    @Property(description = "User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.",
+            implicitDefaultValue = "View Locale.")
+    public abstract Object getLocale();
 
-    public boolean isVerticalScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.verticalScroll, false);
-    }
+    @Property(implicitDefaultValue = "Server's time zone.",
+            description = "Target time zone to convert start / end dates of TimelineEvent's in server side."
+                    + " The attribute can be either a String, TimeZone object or null.")
+    public abstract Object getTimeZone();
 
-    public void setVerticalScroll(boolean verticalScroll) {
-        getStateHelper().put(PropertyKeys.verticalScroll, verticalScroll);
-    }
+    @Property(description = "Time zone the user would like to see dates in UI. The attribute can be either a String or TimeZone object or null.",
+            implicitDefaultValue = "Browser's time zone.")
+    public abstract Object getClientTimeZone();
 
-    public String getWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.width, "100%");
-    }
-
-    public void setWidth(String width) {
-        getStateHelper().put(PropertyKeys.width, width);
-    }
-
-    public boolean isResponsive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, true);
-    }
-
-    public void setResponsive(boolean responsive) {
-        getStateHelper().put(PropertyKeys.responsive, responsive);
-    }
-
-    public String getOrientationAxis() {
-        return (String) getStateHelper().eval(PropertyKeys.orientationAxis, "bottom");
-    }
-
-    public void setOrientationAxis(String orientationAxis) {
-        getStateHelper().put(PropertyKeys.orientationAxis, orientationAxis);
-    }
-
-    public String getOrientationItem() {
-        return (String) getStateHelper().eval(PropertyKeys.orientationItem, "bottom");
-    }
-
-    public void setOrientationItem(String orientationItem) {
-        getStateHelper().put(PropertyKeys.orientationItem, orientationItem);
-    }
-
-    public boolean isEditable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.editable, false);
-    }
-
-    public void setEditable(boolean editable) {
-        getStateHelper().put(PropertyKeys.editable, editable);
-    }
-
-    public boolean isEditableAdd() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.editableAdd, isEditable());
-    }
-
-    public void setEditableAdd(boolean editableAdd) {
-        getStateHelper().put(PropertyKeys.editableAdd, editableAdd);
-    }
-
-    public boolean isEditableRemove() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.editableRemove, isEditable());
-    }
-
-    public void setEditableRemove(boolean editableRemove) {
-        getStateHelper().put(PropertyKeys.editableRemove, editableRemove);
-    }
-
-    public boolean isEditableGroup() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.editableGroup, isEditable());
-    }
-
-    public void setEditableGroup(boolean editableUpdateGroup) {
-        getStateHelper().put(PropertyKeys.editableGroup, editableUpdateGroup);
-    }
-
-    public boolean isEditableTime() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.editableTime, isEditable());
-    }
-
-    public void setEditableTime(boolean editableTime) {
-        getStateHelper().put(PropertyKeys.editableTime, editableTime);
-    }
-
-    public boolean isEditableOverrideItems() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.editableOverrideItems, false);
-    }
-
-    public void setEditableOverrideItems(boolean editableOverrideItems) {
-        getStateHelper().put(PropertyKeys.editableOverrideItems, editableOverrideItems);
-    }
-
-    public boolean isSelectable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.selectable, true);
-    }
-
-    public void setSelectable(boolean selectable) {
-        getStateHelper().put(PropertyKeys.selectable, selectable);
-    }
-
-    public boolean isZoomable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.zoomable, true);
-    }
-
-    public void setZoomable(boolean zoomable) {
-        getStateHelper().put(PropertyKeys.zoomable, zoomable);
-    }
-
-    public boolean isMoveable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.moveable, true);
-    }
-
-    public void setMoveable(boolean moveable) {
-        getStateHelper().put(PropertyKeys.moveable, moveable);
-    }
-
-    public LocalDateTime getStart() {
-        return (LocalDateTime) getStateHelper().eval(PropertyKeys.start, null);
-    }
-
-    public void setStart(LocalDateTime  start) {
-        getStateHelper().put(PropertyKeys.start, start);
-    }
-
-    public LocalDateTime getEnd() {
-        return (LocalDateTime) getStateHelper().eval(PropertyKeys.end, null);
-    }
-
-    public void setEnd(LocalDateTime end) {
-        getStateHelper().put(PropertyKeys.end, end);
-    }
-
-    public LocalDateTime getMin() {
-        return (LocalDateTime) getStateHelper().eval(PropertyKeys.min, null);
-    }
-
-    public void setMin(LocalDateTime min) {
-        getStateHelper().put(PropertyKeys.min, min);
-    }
-
-    public LocalDateTime  getMax() {
-        return (LocalDateTime) getStateHelper().eval(PropertyKeys.max, null);
-    }
-
-    public void setMax(LocalDateTime max) {
-        getStateHelper().put(PropertyKeys.max, max);
-    }
-
-    public String getZoomKey() {
-        return (String) getStateHelper().eval(PropertyKeys.zoomKey, null);
-    }
-
-    public void setZoomKey(String zoomKey) {
-        getStateHelper().put(PropertyKeys.zoomKey, zoomKey);
-    }
-
-    public Long getZoomMin() {
-        return (Long) getStateHelper().eval(PropertyKeys.zoomMin, 10L);
-    }
-
-    public void setZoomMin(Long zoomMin) {
-        getStateHelper().put(PropertyKeys.zoomMin, zoomMin);
-    }
-
-    public Long getZoomMax() {
-        return (Long) getStateHelper().eval(PropertyKeys.zoomMax, 315360000000000L);
-    }
-
-    public void setZoomMax(Long zoomMax) {
-        getStateHelper().put(PropertyKeys.zoomMax, zoomMax);
-    }
-
-    public Float getPreloadFactor() {
-        return (Float) getStateHelper().eval(PropertyKeys.preloadFactor, 0.0f);
-    }
-
-    public void setPreloadFactor(Float preloadFactor) {
-        getStateHelper().put(PropertyKeys.preloadFactor, preloadFactor);
-    }
-
-    public int getEventMargin() {
-        return (Integer) getStateHelper().eval(PropertyKeys.eventMargin, 10);
-    }
-
-    public void setEventMargin(int eventMargin) {
-        getStateHelper().put(PropertyKeys.eventMargin, eventMargin);
-    }
-
-    public int getEventHorizontalMargin() {
-        return (Integer) getStateHelper().eval(PropertyKeys.eventHorizontalMargin, getEventMargin());
-    }
-
-    public void setEventHorizontalMargin(int eventHorizontalMargin) {
-        getStateHelper().put(PropertyKeys.eventHorizontalMargin, eventHorizontalMargin);
-    }
-
-    public int getEventVerticalMargin() {
-        return (Integer) getStateHelper().eval(PropertyKeys.eventVerticalMargin, getEventMargin());
-    }
-
-    public void setEventVerticalMargin(int eventVerticalMargin) {
-        getStateHelper().put(PropertyKeys.eventVerticalMargin, eventVerticalMargin);
-    }
-
-    public int getEventMarginAxis() {
-        return (Integer) getStateHelper().eval(PropertyKeys.eventMarginAxis, 10);
-    }
-
-    public void setEventMarginAxis(int eventMarginAxis) {
-        getStateHelper().put(PropertyKeys.eventMarginAxis, eventMarginAxis);
-    }
-
-    public String getEventStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.eventStyle, null);
-    }
-
-    public void setEventStyle(String eventStyle) {
-        getStateHelper().put(PropertyKeys.eventStyle, eventStyle);
-    }
-
-    public boolean isGroupsOrder() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.groupsOrder, true);
-    }
-
-    public void setGroupsOrder(boolean groupsOrder) {
-        getStateHelper().put(PropertyKeys.groupsOrder, groupsOrder);
-    }
-
-    public String getGroupStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.groupStyle, null);
-    }
-
-    public void setGroupStyle(String groupStyle) {
-        getStateHelper().put(PropertyKeys.groupStyle, groupStyle);
-    }
-
-    public String getSnap() {
-        return (String) getStateHelper().eval(PropertyKeys.snap, null);
-    }
-
-    public String setSnap(String snap) {
-        return (String) getStateHelper().put(PropertyKeys.snap, snap);
-    }
-
-    public boolean isStackEvents() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.stackEvents, true);
-    }
-
-    public void setStackEvents(boolean stackEvents) {
-        getStateHelper().put(PropertyKeys.stackEvents, stackEvents);
-    }
-
-    public boolean isShowCurrentTime() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showCurrentTime, true);
-    }
-
-    public void setShowCurrentTime(boolean showCurrentTime) {
-        getStateHelper().put(PropertyKeys.showCurrentTime, showCurrentTime);
-    }
-
-    public boolean isShowMajorLabels() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showMajorLabels, true);
-    }
-
-    public void setShowMajorLabels(boolean showMajorLabels) {
-        getStateHelper().put(PropertyKeys.showMajorLabels, showMajorLabels);
-    }
-
-    public boolean isShowMinorLabels() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showMinorLabels, true);
-    }
-
-    public void setShowMinorLabels(boolean showMinorLabels) {
-        getStateHelper().put(PropertyKeys.showMinorLabels, showMinorLabels);
-    }
-
-    public boolean isShowNested() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showNested, true);
-    }
-
-    public void setShowNested(boolean showNested) {
-        getStateHelper().put(PropertyKeys.showNested, showNested);
-    }
-
-    public boolean isClickToUse() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.clickToUse, Boolean.FALSE);
-    }
-
-    public void setClickToUse(boolean clickToUse) {
-        getStateHelper().put(PropertyKeys.clickToUse, clickToUse);
-    }
-
-    public boolean isShowTooltips() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showTooltips, Boolean.TRUE);
-    }
-
-    public void setShowTooltips(boolean showTooltips) {
-        getStateHelper().put(PropertyKeys.showTooltips, showTooltips);
-    }
-
-    public boolean isTooltipFollowMouse() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.tooltipFollowMouse, Boolean.FALSE);
-    }
-
-    public void setTooltipFollowMouse(boolean tooltipFollowMouse) {
-        getStateHelper().put(PropertyKeys.tooltipFollowMouse, tooltipFollowMouse);
-    }
-
-    public String getTooltipOverflowMethod() {
-        return (String) getStateHelper().eval(PropertyKeys.tooltipOverflowMethod, "flip");
-    }
-
-    public void setTooltipOverflowMethod(String tooltipOverflowMethod) {
-        getStateHelper().put(PropertyKeys.tooltipOverflowMethod, tooltipOverflowMethod);
-    }
-
-    public int getTooltipDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.tooltipDelay, 500);
-    }
-
-    public void setTooltipDelay(int tooltipDelay) {
-        getStateHelper().put(PropertyKeys.tooltipDelay, tooltipDelay);
-    }
-
-    public String getDropHoverStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.dropHoverStyleClass, null);
-    }
-
-    public void setDropHoverStyleClass(String dropHoverStyleClass) {
-        getStateHelper().put(PropertyKeys.dropHoverStyleClass, dropHoverStyleClass);
-    }
-
-    public String getDropActiveStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.dropActiveStyleClass, null);
-    }
-
-    public void setDropActiveStyleClass(String dropActiveStyleClass) {
-        getStateHelper().put(PropertyKeys.dropActiveStyleClass, dropActiveStyleClass);
-    }
-
-    public String getDropAccept() {
-        return (String) getStateHelper().eval(PropertyKeys.dropAccept, null);
-    }
-
-    public void setDropAccept(String dropAccept) {
-        getStateHelper().put(PropertyKeys.dropAccept, dropAccept);
-    }
-
-    public String getDropScope() {
-        return (String) getStateHelper().eval(PropertyKeys.dropScope, null);
-    }
-
-    public void setDropScope(String dropScope) {
-        getStateHelper().put(PropertyKeys.dropScope, dropScope);
-    }
-
-    @Override
-    public String getDir() {
-        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
-    }
-
-    public void setDir(String dir) {
-        getStateHelper().put(PropertyKeys.dir, dir);
-    }
-
-    public String getExtender() {
-        return (String) getStateHelper().eval(PropertyKeys.extender, null);
-    }
-
-    public void setExtender(String extender) {
-        getStateHelper().put(PropertyKeys.extender, extender);
-    }
+    @Property(description = "The height of the timeline in pixels or as a percentage. When height is undefined or null, the height of the timeline is"
+            + " automatically adjusted to fit the contents. It is possible to set a maximum height using option maxHeight to prevent the timeline"
+            + " from getting too high in case of automatically calculated height.")
+    public abstract String getHeight();
+
+    @Property(description = "Specifies a minimum height for the Timeline in pixels.")
+    public abstract Integer getMinHeight();
+
+    @Property(description = "Specifies the maximum height for the Timeline in pixels.")
+    public abstract Integer getMaxHeight();
+
+    @Property(description = "Specifies the horizontal scrollable.", defaultValue = "false")
+    public abstract boolean isHorizontalScroll();
+
+    @Property(description = "Specifies the vertical scrollable.", defaultValue = "false")
+    public abstract boolean isVerticalScroll();
+
+    @Property(description = "The width of the timeline in pixels or as a percentage.", defaultValue = "100%")
+    public abstract String getWidth();
+
+    @Property(description = "Check if the timeline container is resized, and if so, resize the timeline. Useful when the webpage (browser window) or"
+            + " a layout pane / unit containing the timeline component is resized.",
+            defaultValue = "true")
+    public abstract boolean isResponsive();
+
+    @Property(description = "Orientation of the timeline axis: 'top', 'bottom', 'both', or 'none'. If orientation is 'bottom', the time axis is drawn"
+            + " at the bottom. When 'top', the axis is drawn on top. When 'both', two axes are drawn, both on top and at the bottom."
+            + " In case of 'none', no axis is drawn at all.", defaultValue = "bottom")
+    public abstract String getOrientationAxis();
+
+    @Property(description = "Orientation of the timeline items: 'top' or 'bottom'."
+            + " Determines whether items are aligned to the top or bottom of the Timeline.",
+            defaultValue = "bottom")
+    public abstract String getOrientationItem();
+
+    @Property(description = "If true, the items in the timeline can be manipulated. Only applicable when option selectable is true.",
+            defaultValue = "false")
+    public abstract boolean isEditable();
+
+    @Property(description = "If true, new items can be created by double tapping an empty space in the Timeline. Takes precedence over editable.",
+            defaultValue = "isEditable()")
+    public abstract boolean isEditableAdd();
+
+    @Property(description = "If true, items can be deleted by first selecting them, and then clicking the delete button on the top right of the item."
+            + " Takes precedence over editable.",
+            defaultValue = "isEditable()")
+    public abstract boolean isEditableRemove();
+
+    @Property(description = "If true, items can be dragged from one group to another. Only applicable when the Timeline has groups."
+            + " Takes precedence over editable.",
+            defaultValue = "isEditable()")
+    public abstract boolean isEditableGroup();
+
+    @Property(description = "If true, items can be dragged to another moment in time. Takes precedence over editable.",
+            defaultValue = "isEditable()")
+    public abstract boolean isEditableTime();
+
+    @Property(description = "If true, TimelineEvent specific editables properties are overridden by timeline settings.",
+            defaultValue = "false")
+    public abstract boolean isEditableOverrideItems();
+
+    @Property(description = "If true, events on the timeline are selectable. Selectable events can fire AJAX \"select\" events.",
+            defaultValue = "true")
+    public abstract boolean isSelectable();
+
+    @Property(description = "If true, the timeline is zoomable. When the timeline is zoomed, AJAX \"rangechange\" events are fired.",
+            defaultValue = "true")
+    public abstract boolean isZoomable();
+
+    @Property(description = "If true, the timeline is movable. When the timeline is moved, AJAX \"rangechange\" events are fired.",
+            defaultValue = "true")
+    public abstract boolean isMoveable();
+
+    @Property(description = "The initial start date for the axis of the timeline."
+            + " If not provided, the earliest date present in the events is taken as start date.")
+    public abstract LocalDateTime getStart();
+
+    @Property(description = "The initial end date for the axis of the timeline."
+            + " If not provided, the latest date present in the events is taken as end date.")
+    public abstract LocalDateTime getEnd();
+
+    @Property(description = "Set a minimum Date for the visible range. It will not be possible to move beyond this minimum.")
+    public abstract LocalDateTime getMin();
+
+    @Property(description = "Set a maximum Date for the visible range. It will not be possible to move beyond this maximum.")
+    public abstract LocalDateTime getMax();
+
+    @Property(description = "Specifies whether the Timeline is only zoomed when an additional key is down."
+            + " Available values are '' (does not apply), 'altKey', 'ctrlKey', 'shiftKey' or 'metaKey'. Only applicable when option moveable is set true.")
+    public abstract String getZoomKey();
+
+    @Property(description = "Set a minimum zoom interval for the visible range in milliseconds. It will not be possible to zoom in further than this minimum.",
+            defaultValue = "10L")
+    public abstract Long getZoomMin();
+
+    @Property(description = "Set a maximum zoom interval for the visible range in milliseconds. It will not be possible to zoom out further than this maximum."
+            + " Default value equals 315360000000000 ms (about 10000 years).", defaultValue = "315360000000000L")
+    public abstract Long getZoomMax();
+
+    @Property(description = "Preload factor is a positive float value or 0 which can be used for lazy loading of events."
+            + " When the lazy loading feature is active, the calculated time range for preloading will be multiplicated by the preload factor."
+            + " The result of this multiplication specifies the additional time range which will be considered for the preloading during moving / zooming too."
+            + " For example, if the calculated time range for preloading is 5 days and the preload factor is 0.2, the result is 5 * 0.2 = 1 day."
+            + " That means, 1 day backwards and / or 1 day onwards will be added to the original calculated time range."
+            + " The event's area to be preloaded is wider then. This helps to avoid frequently, time-consuming fetching of events.",
+            defaultValue = "0.0f")
+    public abstract Float getPreloadFactor();
+
+    @Property(description = "The minimal margin in pixels between events.",
+            defaultValue = "10")
+    public abstract int getEventMargin();
+
+    @Property(description = "The minimal horizontal margin in pixels between items. Takes precedence over eventMargin property.",
+            defaultValue = "getEventMargin()")
+    public abstract int getEventHorizontalMargin();
+
+    @Property(description = "The minimal vertical margin in pixels between items. Takes precedence over eventMargin property.",
+            defaultValue = "getEventMargin()")
+    public abstract int getEventVerticalMargin();
+
+    @Property(description = "The minimal margin in pixels between events and the horizontal axis.",
+            defaultValue = "10")
+    public abstract int getEventMarginAxis();
+
+    @Property(description = "Specifies the default type for the timeline items. Choose from 'box', 'point' and 'range'."
+            + " If undefined, the Timeline will auto detect the type from the items data: if a start and end date is available,"
+            + " a 'range' will be created, and else, a 'box' is created.")
+    public abstract String getEventStyle();
+
+    @Property(description = "Allows to customize the way groups are ordered."
+            + " When true (default), groups will be ordered by content alphabetically (when the list of groups is missing)"
+            + " or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available)."
+            + " When false, groups will not be ordered at all.", defaultValue = "true")
+    public abstract boolean isGroupsOrder();
+
+    @Property(description = "A css text string to apply custom styling for an individual group label, for example \"color: red; background-color: pink;\".")
+    public abstract String getGroupStyle();
+
+    @Property(description = "When moving items on the Timeline, they will be snapped to nice dates like full hours or days, depending on the current scale."
+            + " The snap function can be replaced with a custom javascript function, or can be set to null to disable snapping."
+            + " The signature of the snap function is: function snap(date: Date, scale: string, step: number) : Date or number."
+            + " The parameter scale can be can be 'millisecond', 'second', 'minute', 'hour', 'weekday, 'week', 'day, 'month, or 'year'."
+            + " The parameter step is a number like 1, 2, 4, 5.")
+    public abstract String getSnap();
+
+    @Property(description = "If true, the events are stacked above each other to prevent overlapping events.",
+            defaultValue = "true")
+    public abstract boolean isStackEvents();
+
+    @Property(description = "If true, the timeline shows a red, vertical line displaying the current time.",
+            defaultValue = "true")
+    public abstract boolean isShowCurrentTime();
+
+    @Property(description = "By default, the timeline shows both minor and major date labels on the horizontal axis."
+            + " For example the minor labels show minutes and the major labels show hours. When \"showMajorLabels\" is false, no major labels are shown.",
+            defaultValue = "true")
+    public abstract boolean isShowMajorLabels();
+
+    @Property(description = "By default, the timeline shows both minor and major date labels on the horizontal axis."
+            + " For example the minor labels show minutes and the major labels show hours."
+            + " When \"showMinorLabels\" is false, no minor labels are shown."
+            + " When both \"showMajorLabels\" and \"showMinorLabels\" are false, no horizontal axis will be visible.",
+            defaultValue = "true")
+    public abstract boolean isShowMinorLabels();
+
+    @Property(description = "By default, the timeline shows nested groups without collapsed. When \"showNested\" is false,"
+            + " all nested groups shown as collapsed. If \"showNested\" is set different in TimelineGroup model, it will override this.",
+            defaultValue = "true")
+    public abstract boolean isShowNested();
+
+    @Property(description = "When a Timeline is configured to be clickToUse, it will react to mouse and touch events only when active."
+            + " When active, a blue shadow border is displayed around the Timeline. The Timeline is set active by clicking on it,"
+            + " and is changed to inactive again by clicking outside the Timeline or by pressing the ESC key.",
+            defaultValue = "false")
+    public abstract boolean isClickToUse();
+
+    @Property(description = "If true, items with titles will display a tooltip. If false, item tooltips are prevented from showing.",
+            defaultValue = "true")
+    public abstract boolean isShowTooltips();
+
+    @Property(description = "If true, tooltips will follow the mouse as they move around in the item.",
+            defaultValue = "false")
+    public abstract boolean isTooltipFollowMouse();
+
+    @Property(description = "Set how the tooltip should act if it is about to overflow out of the timeline. Choose from 'cap', 'flip' and 'none'."
+            + " If it is set to 'cap', the tooltip will just cap its position to inside to timeline."
+            + " If set to 'flip', the position of the tooltip will flip around the cursor so that a corner is at the cursor, and the rest of it is visible."
+            + " If set to 'none', the tooltip will be positioned independently of the timeline, so parts of the tooltip could possibly be hidden"
+            + " or stick ouf of the timeline, depending how CSS overflow is defined for the timeline (by default it's hidden).",
+            defaultValue = "flip")
+    public abstract String getTooltipOverflowMethod();
+
+    @Property(description = "Set a value (in ms) that the tooltip is delayed before showing.",
+            defaultValue = "500")
+    public abstract int getTooltipDelay();
+
+    @Property(description = "Style class to apply when an acceptable draggable is dragged over.")
+    public abstract String getDropHoverStyleClass();
+
+    @Property(description = "Style class to apply when an acceptable draggable is being dragged over.")
+    public abstract String getDropActiveStyleClass();
+
+    @Property(description = "Selector to define the accepted draggables.")
+    public abstract String getDropAccept();
+
+    @Property(description = "Scope key to match draggables and droppables.")
+    public abstract String getDropScope();
+
+    @Property(description = "Name of javascript function to extend the options of the underlying timeline javascript component.")
+    public abstract String getExtender();
 
 }

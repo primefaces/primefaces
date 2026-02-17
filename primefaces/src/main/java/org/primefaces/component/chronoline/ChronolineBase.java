@@ -51,4 +51,23 @@ public abstract class ChronolineBase extends PrimeUIData implements StyleAware {
     @Property(description = "Orientation of the chronoline, valid values are \"vertical\" and \"horizontal\".", defaultValue = "vertical")
     public abstract String getLayout();
 
+    @Override
+    @Property(hide = true)
+    public abstract String getRowIndexVar();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getFirst();
+
+    @Override
+    @Property(hide = true)
+    public abstract boolean isLazy();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getRows();
+
+    @Override
+    @Property(hide = true)
+    public abstract boolean isRowStatePreserved();
 }

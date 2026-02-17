@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.importenum;
 
+import org.primefaces.cdk.api.FacesTagHandler;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.LangUtils;
 
@@ -43,20 +45,32 @@ import jakarta.faces.view.facelets.TagHandler;
 /**
  * {@link TagHandler} for the <code>ImportEnum</code> component.
  */
+@FacesTagHandler("Utility tag to import enums.")
 public class ImportEnumTagHandler extends TagHandler {
+
     private static final String DEFAULT_ALL_SUFFIX = "ALL_VALUES";
     private static final Logger LOG = Logger.getLogger(ImportEnumTagHandler.class.getName());
 
-    private final TagAttribute typeTagAttribute;
-    private final TagAttribute varTagAttribute;
-    private final TagAttribute allSuffixTagAttribute;
+    @Property(description = "The enum class.", required = true, type = String.class)
+    private final TagAttribute type;
+
+    @Property(description = "The EL variable which can be used to obtain the constants.",
+            defaultValue = "Name of the class without package.",
+            type = String.class)
+    private final TagAttribute var;
+
+    @Property(description = "Deprecated. Use the key ALL_VALUES to access all values, which is and was always available."
+            + "The suffix mapping for an array with all enum values.",
+            type = String.class,
+            defaultValue = "ALL_VALUES")
+    private final TagAttribute allSuffix;
 
     public ImportEnumTagHandler(TagConfig config) {
         super(config);
 
-        typeTagAttribute = super.getRequiredAttribute("type");
-        varTagAttribute = super.getAttribute("var");
-        allSuffixTagAttribute = super.getAttribute("allSuffix");
+        type = super.getRequiredAttribute("type");
+        var = super.getAttribute("var");
+        allSuffix = super.getAttribute("allSuffix");
     }
 
     @Override
@@ -64,17 +78,17 @@ public class ImportEnumTagHandler extends TagHandler {
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
-        Class<?> type = getClassFromAttribute(typeTagAttribute, ctx);
+        Class<?> type = getClassFromAttribute(this.type, ctx);
         Map<String, Object> enumValues = getEnumValues(facesContext, type,
-                allSuffixTagAttribute == null ? null : allSuffixTagAttribute.getValue(ctx));
+                allSuffix == null ? null : allSuffix.getValue(ctx));
 
         // Create alias/var expression
         String var;
-        if (varTagAttribute == null) {
+        if (this.var == null) {
             var = type.getSimpleName(); // fall back to class name
         }
         else {
-            var = varTagAttribute.getValue(ctx);
+            var = this.var.getValue(ctx);
         }
 
         ctx.setAttribute(var, enumValues);

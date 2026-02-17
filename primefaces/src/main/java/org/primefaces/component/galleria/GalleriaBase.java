@@ -26,7 +26,6 @@ package org.primefaces.component.galleria;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
@@ -36,7 +35,7 @@ import java.util.List;
 import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
-public abstract class GalleriaBase extends UITabPanel implements Widget, PrimeClientBehaviorHolder, StyleAware {
+public abstract class GalleriaBase extends UITabPanel implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -51,19 +50,19 @@ public abstract class GalleriaBase extends UITabPanel implements Widget, PrimeCl
         return COMPONENT_FAMILY;
     }
 
-    @Facet(description = "Allows to place HTML in the header. Alternative to headerText.")
+    @Facet(description = "Allows custom HTML in the header. Alternative to headerText.")
     public abstract UIComponent getHeaderFacet();
 
-    @Facet(description = "Allows to place HTML in the footer. Alternative to footerText.")
+    @Facet(description = "Allows custom HTML in the footer. Alternative to footerText.")
     public abstract UIComponent getFooterFacet();
 
-    @Facet(description = "Allows to place HTML in the caption. Alternative to caption.")
+    @Facet(description = "Allows custom HTML in the caption. Alternative to caption.")
     public abstract UIComponent getCaptionFacet();
 
-    @Facet(description = "Allows to place HTML in the thumbnail. Alternative to thumbnail.")
+    @Facet(description = "Allows custom HTML in the thumbnail. Alternative to thumbnail.")
     public abstract UIComponent getThumbnailFacet();
 
-    @Facet(description = "Allows to place HTML in the indicator. Alternative to indicator.")
+    @Facet(description = "Allows custom HTML in the indicator. Alternative to indicator.")
     public abstract UIComponent getIndicatorFacet();
 
     @Property(description = "Value binding expression to a data model.")
@@ -128,4 +127,20 @@ public abstract class GalleriaBase extends UITabPanel implements Widget, PrimeCl
 
     @Property(defaultValue = "0", description = "Specifies the tab order of element in tab navigation.")
     public abstract String getTabindex();
+
+    @Override
+    @Property(hide = true)
+    public abstract boolean isDynamic();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getOffset();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getSize();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getStep();
 }

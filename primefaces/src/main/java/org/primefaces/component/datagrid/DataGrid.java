@@ -24,7 +24,7 @@
 package org.primefaces.component.datagrid;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
@@ -43,7 +43,7 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.model.DataModel;
 
 @FacesComponent(value = DataGrid.COMPONENT_TYPE, namespace = DataGrid.COMPONENT_FAMILY)
-@FacesComponentDescription("DataGrid displays a collection of data in grid layout. "
+@FacesComponentInfo(description = "DataGrid displays a collection of data in grid layout. "
         + " AJAX Pagination is a built-in feature and paginator UI is fully customizable via various options"
         + " like paginatorTemplate, rowPerPageOptions, pageLinks and more.")
 @ResourceDependency(library = "primefaces", name = "components.css")
