@@ -45,7 +45,7 @@ public abstract class DefaultCommandBase extends UIComponentBase implements Widg
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Identifier of the default command component.")
+    @Property(description = "Identifier of the default command component.", required = true)
     public abstract String getTarget();
 
     @Property(description = "Identifier of the grouping component to enable multiple default commands in a form.")
