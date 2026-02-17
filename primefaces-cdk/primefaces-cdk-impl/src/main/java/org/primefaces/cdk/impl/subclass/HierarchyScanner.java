@@ -107,21 +107,31 @@ public class HierarchyScanner {
 
             for (PropertyInfo p : nodeResult.getProperties()) {
 
+                // merge with parent PropertyInfo
                 PropertyInfo before = mergedProperties.get(p.getName());
                 if (before != null) {
-                    // Back-fill blank metadata from the parent before the child wins.
-                    if (p.getAnnotation().description().isBlank()
-                            || p.getAnnotation().defaultValue().isBlank()
-                            || p.getAnnotation().implicitDefaultValue().isBlank()) {
-                        p.setAnnotation(new PropertyLiteral(
-                                before.getAnnotation().description(),
-                                p.getAnnotation().required(),
-                                before.getAnnotation().defaultValue(),
-                                before.getAnnotation().implicitDefaultValue(),
-                                p.getAnnotation().callSuper(),
-                                p.getAnnotation().type(),
-                                p.getAnnotation().hide()));
+                    String description = before.getAnnotation().description();
+                    String defaultValue = before.getAnnotation().defaultValue();
+                    String implicitDefaultValue = before.getAnnotation().implicitDefaultValue();
+
+                    if (!p.getAnnotation().description().isBlank()) {
+                        description = p.getAnnotation().description();
                     }
+                    if (!p.getAnnotation().defaultValue().isBlank()) {
+                        defaultValue = p.getAnnotation().defaultValue();
+                    }
+                    if (!p.getAnnotation().implicitDefaultValue().isBlank()) {
+                        implicitDefaultValue = p.getAnnotation().implicitDefaultValue();
+                    }
+
+                    p.setAnnotation(new PropertyLiteral(
+                            description,
+                            p.getAnnotation().required(),
+                            defaultValue,
+                            implicitDefaultValue,
+                            p.getAnnotation().callSuper(),
+                            p.getAnnotation().type(),
+                            p.getAnnotation().hide()));
 
                     if (!p.isGetterExists() && before.isImplementedGetterExists()) {
                         p.setGetterExists(true);
