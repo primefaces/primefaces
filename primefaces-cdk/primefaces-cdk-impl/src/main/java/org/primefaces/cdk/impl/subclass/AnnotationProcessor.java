@@ -548,7 +548,7 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void writeGetter(PrintWriter w, PropertyInfo p) {
-        if ((p.isImplementedSetterExists() && p.isImplementedGetterExists()) || p.getAnnotation().callSuper()) {
+        if (p.isImplementedGetterExists() || p.getAnnotation().callSuper()) {
             return;
         }
         if ("id".equals(p.getName()) || "binding".equals(p.getName()) || "rendered".equals(p.getName())) {
