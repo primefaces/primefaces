@@ -107,21 +107,31 @@ public class HierarchyScanner {
 
             for (PropertyInfo p : nodeResult.getProperties()) {
 
+                // merge with parent PropertyInfo
                 PropertyInfo before = mergedProperties.get(p.getName());
                 if (before != null) {
-                    // Back-fill blank metadata from the parent before the child wins.
-                    if (p.getAnnotation().description().isBlank()
-                            || p.getAnnotation().defaultValue().isBlank()
-                            || p.getAnnotation().implicitDefaultValue().isBlank()) {
-                        p.setAnnotation(new PropertyLiteral(
-                                before.getAnnotation().description(),
-                                p.getAnnotation().required(),
-                                before.getAnnotation().defaultValue(),
-                                before.getAnnotation().implicitDefaultValue(),
-                                p.getAnnotation().callSuper(),
-                                p.getAnnotation().type(),
-                                p.getAnnotation().hide()));
+                    String description = before.getAnnotation().description();
+                    String defaultValue = before.getAnnotation().defaultValue();
+                    String implicitDefaultValue = before.getAnnotation().implicitDefaultValue();
+
+                    if (!p.getAnnotation().description().isBlank()) {
+                        description = p.getAnnotation().description();
                     }
+                    if (!p.getAnnotation().defaultValue().isBlank()) {
+                        defaultValue = p.getAnnotation().defaultValue();
+                    }
+                    if (!p.getAnnotation().implicitDefaultValue().isBlank()) {
+                        implicitDefaultValue = p.getAnnotation().implicitDefaultValue();
+                    }
+
+                    p.setAnnotation(new PropertyLiteral(
+                            description,
+                            p.getAnnotation().required(),
+                            defaultValue,
+                            implicitDefaultValue,
+                            p.getAnnotation().callSuper(),
+                            p.getAnnotation().type(),
+                            p.getAnnotation().hide()));
 
                     if (!p.isGetterExists() && before.isImplementedGetterExists()) {
                         p.setGetterExists(true);
@@ -230,6 +240,7 @@ public class HierarchyScanner {
     private List<PropertyInfo> scanPropertyKeysViaReflection(Class<?> clazz, TypeElement typeElement) throws ClassNotFoundException {
         List<PropertyInfo> result = new ArrayList<>();
 
+        // Scan for @Property-annotated getters
         for (Method getter : clazz.getDeclaredMethods()) {
             Property property = getter.getAnnotation(Property.class);
             if (property == null) {
@@ -253,6 +264,7 @@ public class HierarchyScanner {
             result.add(propertyInfo);
         }
 
+        // Scan for PropertyKeys enum and look up getter/setter for each key
         for (Class<?> inner : clazz.getDeclaredClasses()) {
             if (!inner.isEnum() || !"PropertyKeys".equals(inner.getSimpleName())) {
                 continue;
@@ -339,6 +351,8 @@ public class HierarchyScanner {
      */
     private List<PropertyInfo> scanPropertyAnnotations(TypeElement element) {
         List<PropertyInfo> result = new ArrayList<>();
+
+        // Scan for @Property-annotated getters
         for (Element enclosed : element.getEnclosedElements()) {
             if (enclosed.getKind() != ElementKind.METHOD) {
                 continue;
@@ -376,7 +390,75 @@ public class HierarchyScanner {
             result.add(propertyInfo);
         }
 
+        // Scan for PropertyKeys enum and look up getter/setter for each key
+        for (Element inner : element.getEnclosedElements()) {
+            if (inner.getKind() != ElementKind.ENUM || !"PropertyKeys".equals(inner.getSimpleName().toString())) {
+                continue;
+            }
+
+            TypeElement propertyKeysEnum = (TypeElement) inner;
+            for (Element enumConstant : propertyKeysEnum.getEnclosedElements()) {
+                if (enumConstant.getKind() != ElementKind.ENUM_CONSTANT) {
+                    continue;
+                }
+
+                String keyName = enumConstant.getSimpleName().toString();
+                if (CdkUtils.shouldIgnoreProperty(element.toString(), keyName)) {
+                    continue;
+                }
+
+                String propertyName = escapePropertyName(keyName);
+
+                ExecutableElement getter = findGetterInElement(element, propertyName);
+                if (getter == null) {
+                    continue;
+                }
+
+                ExecutableElement setter = findSetterInElement(element, propertyName, getter.getReturnType());
+
+                PropertyLiteral property = new PropertyLiteral(
+                        CdkUtils.getWellKnownDescription(propertyName),
+                        false,
+                        CdkUtils.getWellKnownDefaultValue(propertyName),
+                        "", false, null, false);
+
+                PropertyInfo propertyInfo = new PropertyInfo(propertyName, property, getter.getReturnType().toString());
+
+                propertyInfo.setGetterExists(true);
+                propertyInfo.setImplementedGetterExists(element.getKind() != ElementKind.INTERFACE
+                        && !getter.getModifiers().contains(Modifier.ABSTRACT));
+
+                propertyInfo.setSetterExists(setter != null);
+                propertyInfo.setImplementedSetterExists(setter != null
+                        && element.getKind() != ElementKind.INTERFACE
+                        && !setter.getModifiers().contains(Modifier.ABSTRACT));
+
+                result.add(propertyInfo);
+            }
+        }
+
         return result;
+    }
+
+    /**
+     * Finds a getter method for the given property name in the element.
+     */
+    private ExecutableElement findGetterInElement(TypeElement element, String propName) {
+        String getterName = "get" + CdkUtils.capitalize(propName);
+        String booleanGetterName = "is" + CdkUtils.capitalize(propName);
+
+        for (Element enclosed : element.getEnclosedElements()) {
+            if (enclosed.getKind() != ElementKind.METHOD) {
+                continue;
+            }
+            ExecutableElement method = (ExecutableElement) enclosed;
+            String name = method.getSimpleName().toString();
+            if ((name.equals(getterName) || name.equals(booleanGetterName))
+                    && method.getParameters().isEmpty()) {
+                return method;
+            }
+        }
+        return null;
     }
 
     /**

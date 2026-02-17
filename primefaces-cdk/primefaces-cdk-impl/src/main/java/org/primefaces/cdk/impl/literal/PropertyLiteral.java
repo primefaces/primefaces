@@ -93,4 +93,17 @@ public class PropertyLiteral implements Property {
     public Class<? extends Annotation> annotationType() {
         return Property.class;
     }
+
+    @Override
+    public String toString() {
+        return "PropertyLiteral{" +
+                "description='" + description + '\'' +
+                ", required=" + required +
+                ", defaultValue='" + defaultValue + '\'' +
+                ", implicitDefaultValue='" + implicitDefaultValue + '\'' +
+                ", callSuper=" + callSuper +
+                ", type=" + type +
+                ", hide=" + hide +
+                '}';
+    }
 }
