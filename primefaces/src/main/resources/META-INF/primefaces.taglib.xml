@@ -116,7 +116,7 @@
         <tag-name>validateFile</tag-name>
         <validator>
             <validator-id>primefaces.File</validator-id>
-            <handler-class>org.primefaces.validate.base.PrimeValidatorHandler</handler-class>
+            <handler-class>org.primefaces.cdk.api.validator.PrimeValidatorHandler</handler-class>
         </validator>
         <attribute>
             <description>
