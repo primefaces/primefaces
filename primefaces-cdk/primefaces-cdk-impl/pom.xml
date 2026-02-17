@@ -31,6 +31,23 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- Test  -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.testing.compile</groupId>
+            <artifactId>compile-testing</artifactId>
+            <version>0.23.0</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -67,6 +84,9 @@
                 <configuration>
                     <!-- Don't process the processor itself -->
                     <proc>none</proc>
+                    <compilerArgs>
+                        <arg>-proc:none</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

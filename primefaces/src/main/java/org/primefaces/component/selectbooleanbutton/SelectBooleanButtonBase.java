@@ -27,6 +27,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
@@ -51,7 +52,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "mouseup", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is released over the element."),
     @FacesBehaviorEvent(name = "select", event = AjaxBehaviorEvent.class, description = "Fires when some text is selected in the element.")
 })
-public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox implements Widget, StyleAware {
+public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox implements Widget, StyleAware, PrimeSelect {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -83,4 +84,5 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
 
     @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
     public abstract String getAriaLabel();
+
 }

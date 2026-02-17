@@ -21,41 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.impl.subclass;
+package org.primefaces.component.api;
 
-public class BehaviorEventInfo {
+import org.primefaces.cdk.api.Property;
 
-    private final String name;
-    private final String eventClass;
-    private final String description;
-    private final boolean implicit;
-    private final boolean defaultEvent;
+import jakarta.faces.event.ValueChangeListener;
+import jakarta.faces.validator.Validator;
 
-    public BehaviorEventInfo(String name, String eventClass, String description, boolean implicit, boolean defaultEvent) {
-        this.name = name;
-        this.eventClass = eventClass;
-        this.description = description;
-        this.implicit = implicit;
-        this.defaultEvent = defaultEvent;
-    }
+public interface PrimeSelect {
 
-    public String getName() {
-        return name;
-    }
+    @Property(description = "Flag indicating that, if this component is activated by the user, The \"no selection option\", if any, must be hidden.",
+        defaultValue = "false")
+    boolean isHideNoSelectionOption();
 
-    public String getEventClass() {
-        return eventClass;
-    }
+    @Property(description = "A method expression referring to a method validating the input.")
+    Validator<?> getValidator();
 
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean isImplicit() {
-        return implicit;
-    }
-
-    public boolean isDefaultEvent() {
-        return defaultEvent;
-    }
+    @Property(description = "A method binding expression referring to a method for handling a valuchangeevent.")
+    ValueChangeListener getValueChangeListener();
 }

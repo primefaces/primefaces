@@ -29,6 +29,7 @@ import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.TabChangeEvent;
@@ -39,7 +40,7 @@ import org.primefaces.event.TabCloseEvent;
     @FacesBehaviorEvent(name = "tabChange", event = TabChangeEvent.class, description = "Fires when a tab is changed.", defaultEvent = true),
     @FacesBehaviorEvent(name = "tabClose", event = TabCloseEvent.class, description = "Fires when a tab is closed.")
 })
-public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware,
+public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, StyleAware,
         MultiViewStateAware<AccordionState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -60,12 +61,6 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
 
     @Property(defaultValue = "0", description = "Index of the active tab.")
     public abstract String getActiveIndex();
-
-    @Property(description = "Style of the accordion panel.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the accordion panel.")
-    public abstract String getStyleClass();
 
     @Property(description = "Client side callback to execute when a tab is changed.")
     public abstract String getOnTabChange();
@@ -93,4 +88,16 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
 
     @Property(description = "Scrolls the active tab into view. Valid values are start, center, end, nearest.")
     public abstract String getScrollIntoView();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getOffset();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getSize();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getStep();
 }

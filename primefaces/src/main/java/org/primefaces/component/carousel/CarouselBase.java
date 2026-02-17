@@ -25,6 +25,7 @@ package org.primefaces.component.carousel;
 
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.StyleAware;
@@ -38,6 +39,7 @@ import java.util.List;
 
 import jakarta.faces.component.UIComponent;
 
+@FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "pageChange", event = PageChangeEvent.class, description = "Fires when a page is changed.", defaultEvent = true)
 })
@@ -107,4 +109,19 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
     @Property(description = "Client side callback to execute when a page is changed.")
     public abstract String getOnPageChange();
 
+    @Override
+    @Property(hide = true)
+    public abstract boolean isDynamic();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getOffset();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getSize();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getStep();
 }

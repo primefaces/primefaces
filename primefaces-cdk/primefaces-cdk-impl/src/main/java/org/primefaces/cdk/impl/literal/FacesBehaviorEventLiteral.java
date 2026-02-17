@@ -21,45 +21,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.impl.taglib;
+package org.primefaces.cdk.impl.literal;
 
-public class FunctionInfo {
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+
+import java.lang.annotation.Annotation;
+
+import jakarta.faces.event.BehaviorEvent;
+
+public class FacesBehaviorEventLiteral implements FacesBehaviorEvent {
 
     private String name;
-    private String clazz;
-    private String signature;
+    private Class<? extends jakarta.faces.event.BehaviorEvent> event;
     private String description;
+    private boolean implicit;
+    private boolean defaultEvent;
 
-    public FunctionInfo(String name, String clazz, String signature, String description) {
+    public FacesBehaviorEventLiteral(String name, Class<? extends BehaviorEvent> event, String description,
+                                     boolean implicit, boolean defaultEvent) {
         this.name = name;
-        this.clazz = clazz;
-        this.signature = signature;
+        this.event = event;
         this.description = description;
+        this.implicit = implicit;
+        this.defaultEvent = defaultEvent;
     }
 
-    public String getName() {
+    @Override
+    public String name() {
         return name;
     }
 
-    public String getClazz() {
-        return clazz;
+    @Override
+    public Class<? extends BehaviorEvent> event() {
+        return event;
     }
 
-    public String getSignature() {
-        return signature;
-    }
-
-    public String getDescription() {
+    @Override
+    public String description() {
         return description;
     }
 
     @Override
-    public String toString() {
-        return "FunctionInfo{" +
-                "name='" + name + '\'' +
-                ", clazz='" + clazz + '\'' +
-                ", signature='" + signature + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    public boolean implicit() {
+        return implicit;
+    }
+
+    @Override
+    public boolean defaultEvent() {
+        return defaultEvent;
+    }
+
+    @Override
+    public Class<? extends Annotation> annotationType() {
+        return FacesBehaviorEvent.class;
     }
 }

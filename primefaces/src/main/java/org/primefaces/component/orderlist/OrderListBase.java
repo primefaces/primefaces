@@ -26,6 +26,7 @@ package org.primefaces.component.orderlist;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.PrimeUIInput;
@@ -58,7 +59,7 @@ public abstract class OrderListBase extends PrimeUIInput implements Widget, Flex
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Caption of the list.")
+    @Facet(description = "Caption of the list.")
     public abstract UIComponent getCaptionFacet();
 
     @Property(description = "Name of the iterator variable used to reference each data in the list.")

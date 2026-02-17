@@ -28,6 +28,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
@@ -35,7 +36,6 @@ import org.primefaces.event.UnselectEvent;
 
 import jakarta.faces.component.html.HtmlSelectOneListbox;
 import jakarta.faces.event.AjaxBehaviorEvent;
-
 
 @FacesComponentBase
 @FacesBehaviorEvents({
@@ -59,7 +59,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "itemUnselect", event = UnselectEvent.class, description = "Fires when an item is unselected."),
     @FacesBehaviorEvent(name = "clear", event = AjaxBehaviorEvent.class, description = "Fires when the selection is cleared.")
 })
-public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widget, InputHolder, StyleAware {
+public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widget, InputHolder, StyleAware, PrimeSelect {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -98,4 +98,5 @@ public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implemen
     @Property(description = "Defines the height of the scrollable area.",
             defaultValue = "Integer.MAX_VALUE")
     public abstract int getScrollHeight();
+
 }

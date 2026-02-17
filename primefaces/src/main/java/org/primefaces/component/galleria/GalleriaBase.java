@@ -127,4 +127,20 @@ public abstract class GalleriaBase extends UITabPanel implements Widget, StyleAw
 
     @Property(defaultValue = "0", description = "Specifies the tab order of element in tab navigation.")
     public abstract String getTabindex();
+
+    @Override
+    @Property(hide = true)
+    public abstract boolean isDynamic();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getOffset();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getSize();
+
+    @Override
+    @Property(hide = true)
+    public abstract int getStep();
 }

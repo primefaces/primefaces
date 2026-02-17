@@ -50,7 +50,5 @@ public abstract class SubTableBase extends UIData {
 
     @Override
     @Property(hide = true)
-    public boolean isRowStatePreserved() {
-        return super.isRowStatePreserved();
-    }
+    public abstract boolean isRowStatePreserved();
 }

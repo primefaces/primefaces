@@ -35,7 +35,9 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.Callbacks;
 
+import jakarta.el.MethodExpression;
 import jakarta.faces.component.UICommand;
+import jakarta.faces.event.ActionListener;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesComponentBase
@@ -146,5 +148,15 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
     @Override
     public Callbacks.SerializableFunction<MenuItem, String> getFunction() {
         return null;
+    }
+
+    @Property(description = "A method expression or a string outcome to process when command is executed.", callSuper = true)
+    public MethodExpression getAction() {
+        return super.getActionExpression();
+    }
+
+    @Property(description = "An action listener to process when command is executed.", callSuper = true)
+    public ActionListener getActionListener() {
+        return super.getActionListeners()[0];
     }
 }

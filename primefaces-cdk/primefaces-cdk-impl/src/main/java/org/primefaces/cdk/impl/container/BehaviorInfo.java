@@ -21,22 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.cdk.impl.taglib;
+package org.primefaces.cdk.impl.container;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.primefaces.cdk.api.Property;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.faces.view.facelets.TagHandler;
 
 public class BehaviorInfo {
 
-    private final Class<?> behaviorClass;
+    private Class<?> behaviorClass;
     private String description;
     private String behaviorId;
     private String rendererType;
     private String tagName;
     private Class<? extends TagHandler> handlerClass;
-    private List<PropertyInfo> properties = new ArrayList<>();
+    private Map<String, Property> properties = new HashMap<>();
 
     public BehaviorInfo(Class<?> behaviorClass, String description, String behaviorId, String rendererType,
                         String tagName, Class<? extends TagHandler> handlerClass) {
@@ -52,8 +54,16 @@ public class BehaviorInfo {
         return behaviorClass;
     }
 
+    public void setBehaviorClass(Class<?> behaviorClass) {
+        this.behaviorClass = behaviorClass;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getBehaviorId() {
@@ -88,24 +98,11 @@ public class BehaviorInfo {
         this.handlerClass = handlerClass;
     }
 
-    public List<PropertyInfo> getProperties() {
+    public Map<String, Property> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<PropertyInfo> properties) {
+    public void setProperties(Map<String, Property> properties) {
         this.properties = properties;
-    }
-
-    @Override
-    public String toString() {
-        return "BehaviorInfo{" +
-                "behaviorClass=" + behaviorClass +
-                ", description='" + description + '\'' +
-                ", behaviorId='" + behaviorId + '\'' +
-                ", rendererType='" + rendererType + '\'' +
-                ", tagName='" + tagName + '\'' +
-                ", handlerClass='" + handlerClass + '\'' +
-                ", properties=" + properties +
-                '}';
     }
 }

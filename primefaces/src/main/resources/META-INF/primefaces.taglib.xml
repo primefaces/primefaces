@@ -30428,7 +30428,7 @@
             <description>
                 <![CDATA[Placeholder for the filter input element.]]>
             </description>
-            <name>sourceFilterPlaceholder</name>
+            <name>filterPlaceholder</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

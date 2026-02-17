@@ -269,7 +269,15 @@
                 Mode for filtering valid values are lenient and strict. Default is lenient.
             </td>
                         </tr>
-                        <tr id="highlight" class="rowColor">
+                        <tr id="filterPlaceholder" class="rowColor">
+                            <td class="colFirst"><a href="#filterPlaceholder"><code>filterPlaceholder</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                Placeholder for the filter input element.
+            </td>
+                        </tr>
+                        <tr id="highlight" class="altColor">
                             <td class="colFirst"><a href="#highlight"><code>highlight</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -277,7 +285,7 @@
                 Highlights nodes on hover when selection is enabled, set to false to disable highlighting.
             </td>
                         </tr>
-                        <tr id="id" class="altColor">
+                        <tr id="id" class="rowColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -285,7 +293,7 @@
                 Unique identifier of the component in a namingContainer.
             </td>
                         </tr>
-                        <tr id="multipleDrag" class="rowColor">
+                        <tr id="multipleDrag" class="altColor">
                             <td class="colFirst"><a href="#multipleDrag"><code>multipleDrag</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -293,7 +301,7 @@
                 When enabled, the selected multiple nodes can be dragged from a tree to another tree.
             </td>
                         </tr>
-                        <tr id="nodeVar" class="altColor">
+                        <tr id="nodeVar" class="rowColor">
                             <td class="colFirst"><a href="#nodeVar"><code>nodeVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -301,7 +309,7 @@
                 Name of the request-scoped variable that'll be used to refer current treenode using EL.
             </td>
                         </tr>
-                        <tr id="onDrop" class="rowColor">
+                        <tr id="onDrop" class="altColor">
                             <td class="colFirst"><a href="#onDrop"><code>onDrop</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.el.MethodExpression</code>)
@@ -309,7 +317,7 @@
                 Method returning whether the dragged node(s) can be dropped on the dropped node.
             </td>
                         </tr>
-                        <tr id="onNodeClick" class="altColor">
+                        <tr id="onNodeClick" class="rowColor">
                             <td class="colFirst"><a href="#onNodeClick"><code>onNodeClick</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -317,7 +325,7 @@
                 Javascript event to process when a tree node is clicked.
             </td>
                         </tr>
-                        <tr id="orientation" class="rowColor">
+                        <tr id="orientation" class="altColor">
                             <td class="colFirst"><a href="#orientation"><code>orientation</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -325,7 +333,7 @@
                 Defines the orientation of the tree, valid values are, "vertical" (default) and horizontal.
             </td>
                         </tr>
-                        <tr id="propagateSelectionDown" class="altColor">
+                        <tr id="propagateSelectionDown" class="rowColor">
                             <td class="colFirst"><a href="#propagateSelectionDown"><code>propagateSelectionDown</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -333,7 +341,7 @@
                 Defines upwards selection propagation for checkbox mode, default is true.
             </td>
                         </tr>
-                        <tr id="propagateSelectionUp" class="rowColor">
+                        <tr id="propagateSelectionUp" class="altColor">
                             <td class="colFirst"><a href="#propagateSelectionUp"><code>propagateSelectionUp</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -341,7 +349,7 @@
                 Defines upwards selection propagation for checkbox mode, default is true.
             </td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -349,7 +357,7 @@
                 Boolean value to specify the rendering of the component, when set to false component will not be rendered.
             </td>
                         </tr>
-                        <tr id="required" class="rowColor">
+                        <tr id="required" class="altColor">
                             <td class="colFirst"><a href="#required"><code>required</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -357,7 +365,7 @@
                 Validation constraint for selection.
             </td>
                         </tr>
-                        <tr id="requiredMessage" class="altColor">
+                        <tr id="requiredMessage" class="rowColor">
                             <td class="colFirst"><a href="#requiredMessage"><code>requiredMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -365,7 +373,7 @@
                 Message for required selection validation.
             </td>
                         </tr>
-                        <tr id="selection" class="rowColor">
+                        <tr id="selection" class="altColor">
                             <td class="colFirst"><a href="#selection"><code>selection</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
@@ -373,7 +381,7 @@
                 TreeNode array to reference the selections.
             </td>
                         </tr>
-                        <tr id="selectionMode" class="altColor">
+                        <tr id="selectionMode" class="rowColor">
                             <td class="colFirst"><a href="#selectionMode"><code>selectionMode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -381,7 +389,7 @@
                 Defines the selectionMode, valid values are "single", "multiple" and "checkbox".
             </td>
                         </tr>
-                        <tr id="showUnselectableCheckbox" class="rowColor">
+                        <tr id="showUnselectableCheckbox" class="altColor">
                             <td class="colFirst"><a href="#showUnselectableCheckbox"><code>showUnselectableCheckbox</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -389,20 +397,12 @@
                 Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node. Default is false.
             </td>
                         </tr>
-                        <tr id="skipChildren" class="altColor">
+                        <tr id="skipChildren" class="rowColor">
                             <td class="colFirst"><a href="#skipChildren"><code>skipChildren</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">
                 Ignores processing of children during lifecycle, improves performance if table only has output components, default is false.
-            </td>
-                        </tr>
-                        <tr id="sourceFilterPlaceholder" class="rowColor">
-                            <td class="colFirst"><a href="#sourceFilterPlaceholder"><code>sourceFilterPlaceholder</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
-                                <br>
-                                (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">
-                Placeholder for the filter input element.
             </td>
                         </tr>
                         <tr id="style" class="altColor">

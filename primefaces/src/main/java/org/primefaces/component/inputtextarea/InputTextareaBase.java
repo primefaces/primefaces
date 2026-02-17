@@ -25,6 +25,7 @@ package org.primefaces.component.inputtextarea;
 
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputTextArea;
 import org.primefaces.component.api.CountCharactersAware;
@@ -35,6 +36,7 @@ import org.primefaces.event.SelectEvent;
 import jakarta.el.MethodExpression;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
+@FacesComponentBase
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected."),
     @FacesBehaviorEvent(name = "query", event = AjaxBehaviorEvent.class, description = "Fires when a search query is triggered.")
