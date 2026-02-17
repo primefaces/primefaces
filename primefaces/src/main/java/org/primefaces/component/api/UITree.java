@@ -87,6 +87,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     public enum PropertyKeys {
         saved,
+        selection
     }
 
     public String getRowKey() {
@@ -281,7 +282,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public void initPreselection() {
-        ValueExpression ve = getValueExpression("selection");
+        ValueExpression ve = getValueExpression(PropertyKeys.selection.name());
         if (ve != null) {
             if (preselection != null) {
                 if (isSelectionEnabled()) {
@@ -534,7 +535,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         boolean propagateSelectionDown = isPropagateSelectionDown();
         boolean propagateSelectionUp = isPropagateSelectionUp();
 
-        ValueExpression selectionVE = getValueExpression("selection");
+        ValueExpression selectionVE = getValueExpression(PropertyKeys.selection.name());
         if (selectionVE != null) {
             Class<?> selectionType = getSelectionType();
             Object selection = getLocalSelectedNodes();
@@ -1092,7 +1093,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public Class<?> getSelectionType() {
-        ValueExpression selectionVE = getValueExpression("selection");
+        ValueExpression selectionVE = getValueExpression(PropertyKeys.selection.name());
         return selectionVE == null ? null : selectionVE.getType(getFacesContext().getELContext());
     }
 
