@@ -84,6 +84,12 @@ public abstract class PrimeUIData extends UIDataPatch {
         return super.getVar();
     }
 
+    @Override
+    @Property(description = "Datasource of the component.", required = true)
+    public Object getValue() {
+        return super.getValue();
+    }
+
     @Property(description = "Defines if lazy loading is enabled for the data component.",
             implicitDefaultValue = "True, if the value-binding is instance of LazyDataModel.")
     public boolean isLazy() {

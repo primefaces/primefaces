@@ -121,8 +121,6 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
     @Property(description = "Style class of the table element.")
     public abstract String getTableStyleClass();
 
-
-
     @Property(defaultValue = "false", description = "Defines if columns can be resized or not.")
     public abstract boolean isResizableColumns();
 

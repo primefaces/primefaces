@@ -45,6 +45,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -135,24 +136,28 @@ public class TaglibMojo extends AbstractMojo {
             List<ComponentInfo> componentInfos = componentClasses.stream()
                     .map(clazz -> processComponentClass(clazz))
                     .filter(Objects::nonNull)
+                    .sorted(Comparator.comparing(ComponentInfo::getTagName))
                     .collect(Collectors.toList());
 
             getLog().info("Processing behaviors...");
             List<BehaviorInfo> behaviorInfos = behaviorClasses.stream()
                     .map(clazz -> processBehaviorClass(clazz))
                     .filter(Objects::nonNull)
+                    .sorted(Comparator.comparing(BehaviorInfo::getTagName))
                     .collect(Collectors.toList());
 
             getLog().info("Processing validators...");
             List<ValidatorInfo> validatorInfos = validatorClasses.stream()
                     .map(clazz -> processValidatorClass(clazz))
                     .filter(Objects::nonNull)
+                    .sorted(Comparator.comparing(ValidatorInfo::getTagName))
                     .collect(Collectors.toList());
 
             getLog().info("Processing tagHandlers...");
             List<TagHandlerInfo> tagHandlerInfos = tagHandlerClasses.stream()
                     .map(clazz -> processTagHandlerClass(clazz))
                     .filter(Objects::nonNull)
+                    .sorted(Comparator.comparing(TagHandlerInfo::getTagName))
                     .collect(Collectors.toList());
 
             // Generate the taglib XML
@@ -307,8 +312,7 @@ public class TaglibMojo extends AbstractMojo {
     private Document generateTaglibXml(List<FunctionInfo> functionInfos, List<ComponentInfo> componentInfos, List<BehaviorInfo> behaviorInfos,
                                        List<ValidatorInfo> validatorInfos, List<TagHandlerInfo> tagHandlerInfos) {
         Document document = DocumentHelper.createDocument();
-        Element faceletTaglib = document.addElement("facelet-taglib")
-                .addAttribute("xmlns", "https://jakarta.ee/xml/ns/jakartaee")
+        Element faceletTaglib = document.addElement("facelet-taglib", "https://jakarta.ee/xml/ns/jakartaee")
                 .addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance")
                 .addAttribute("xsi:schemaLocation", "https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-facelettaglibrary_4_0.xsd")
                 .addAttribute("version", "4.0");
