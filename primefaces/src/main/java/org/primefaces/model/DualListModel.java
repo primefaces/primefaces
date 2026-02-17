@@ -32,10 +32,12 @@ public class DualListModel<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<T> source = new ArrayList<>();
-    private List<T> target = new ArrayList<>();
+    private List<T> source;
+    private List<T> target;
 
     public DualListModel() {
+        this.source = new ArrayList<>();
+        this.target = new ArrayList<>();
     }
 
     public DualListModel(List<T> source, List<T> target) {
