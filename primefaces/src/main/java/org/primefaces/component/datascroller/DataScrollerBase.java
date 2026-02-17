@@ -26,11 +26,13 @@ package org.primefaces.component.datascroller;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesComponentBase
@@ -51,6 +53,15 @@ public abstract class DataScrollerBase extends PrimeUIData implements Widget, St
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Header content of the datascroller.")
+    public abstract UIComponent getHeaderFacet();
+
+    @Facet(description = "Loader content of the datascroller.")
+    public abstract UIComponent getLoaderFacet();
+
+    @Facet(description = "Loading content of the datascroller.")
+    public abstract UIComponent getLoadingFacet();
 
     @Property(defaultValue = "0", description = "Number of items to fetch.")
     public abstract int getChunkSize();

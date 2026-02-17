@@ -26,6 +26,7 @@ package org.primefaces.component.selectcheckboxmenu;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeSelect;
@@ -35,6 +36,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.html.HtmlSelectManyCheckbox;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
@@ -59,6 +61,9 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Footer content of the selectcheckboxmenu.")
+    public abstract UIComponent getFooterFacet();
 
     @Property(description = "Defines the maximum height of the scrollable area.",
             defaultValue = "200")

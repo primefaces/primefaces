@@ -77,9 +77,9 @@ public class DataScrollerRenderer extends CoreRenderer<DataScroller> {
         String clientId = component.getClientId(context);
         boolean inline = component.getMode().equals("inline");
         boolean isLazy = component.isLazy();
-        UIComponent header = component.getFacet("header");
-        UIComponent loader = component.getFacet("loader");
-        UIComponent loading = component.getFacet("loading");
+        UIComponent header = component.getHeaderFacet();
+        UIComponent loader = component.getLoaderFacet();
+        UIComponent loading = component.getLoadingFacet();
         String containerClass = inline ? DataScroller.INLINE_CONTAINER_CLASS : DataScroller.CONTAINER_CLASS;
 
         String style = component.getStyle();
@@ -181,7 +181,7 @@ public class DataScrollerRenderer extends CoreRenderer<DataScroller> {
     }
 
     protected void encodeScript(FacesContext context, DataScroller component, int chunkSize) throws IOException {
-        String loadEvent = component.getFacet("loader") == null ? "scroll" : "manual";
+        String loadEvent = component.getLoaderFacet() == null ? "scroll" : "manual";
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DataScroller", component)

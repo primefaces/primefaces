@@ -501,7 +501,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
             }
         }
         else if (component instanceof CellEditor) {
-            return getComponentValue(context, component.getFacet("output"));
+            return getComponentValue(context, ((CellEditor) component).getOutputFacet());
         }
         else if (component instanceof HtmlGraphicImage) {
             return (String) component.getAttributes().get("alt");

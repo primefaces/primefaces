@@ -26,11 +26,13 @@ package org.primefaces.component.selectonebutton;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UISelectOne;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
@@ -52,6 +54,9 @@ public abstract class SelectOneButtonBase extends UISelectOne implements Widget,
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Custom content of the selectonebutton.")
+    public abstract UIComponent getCustomFacet();
 
     @Property(description = "Disables or enables the component.",
             defaultValue = "false")

@@ -24,8 +24,10 @@
 package org.primefaces.component.toolbar;
 
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.component.api.StyleAware;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
 
 @FacesComponentBase
@@ -43,5 +45,11 @@ public abstract class ToolbarBase extends UIComponentBase implements StyleAware 
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Left content of the toolbar.")
+    public abstract UIComponent getLeftFacet();
+
+    @Facet(description = "Right content of the toolbar.")
+    public abstract UIComponent getRightFacet();
 
 }

@@ -66,7 +66,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
     protected void encodeMarkup(FacesContext context, SelectOneRadio component) throws IOException {
         String layout = component.getLayout();
         if (LangUtils.isEmpty(layout)) {
-            layout = FacetUtils.shouldRenderFacet(component.getFacet("custom")) ? "custom" : "lineDirection";
+            layout = FacetUtils.shouldRenderFacet(component.getCustomFacet()) ? "custom" : "lineDirection";
         }
         boolean custom = "custom".equals(layout);
 
@@ -83,7 +83,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
 
     protected void encodeScript(FacesContext context, SelectOneRadio component) throws IOException {
         String layout = component.getLayout();
-        if (LangUtils.isEmpty(layout) && FacetUtils.shouldRenderFacet(component.getFacet("custom"))) {
+        if (LangUtils.isEmpty(layout) && FacetUtils.shouldRenderFacet(component.getCustomFacet())) {
             layout = "custom";
         }
         boolean custom = "custom".equals(layout);
@@ -190,7 +190,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
     }
 
     protected void encodeCustomLayout(FacesContext context, SelectOneRadio component) throws IOException {
-        UIComponent customFacet = component.getFacet("custom");
+        UIComponent customFacet = component.getCustomFacet();
         if (FacetUtils.shouldRenderFacet(customFacet)) {
             ResponseWriter writer = context.getResponseWriter();
             String style = component.getStyle();

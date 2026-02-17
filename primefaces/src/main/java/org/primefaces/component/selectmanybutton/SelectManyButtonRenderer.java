@@ -64,7 +64,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButto
     protected void encodeMarkup(FacesContext context, SelectManyButton component) throws IOException {
         String layout = component.getLayout();
         if (LangUtils.isEmpty(layout)) {
-            layout = FacetUtils.shouldRenderFacet(component.getFacet("custom")) ? "custom" : null;
+            layout = FacetUtils.shouldRenderFacet(component.getCustomFacet()) ? "custom" : null;
         }
         boolean custom = "custom".equals(layout);
 
@@ -183,7 +183,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButto
     }
 
     protected void encodeCustomLayout(FacesContext context, SelectManyButton component) throws IOException {
-        UIComponent customFacet = component.getFacet("custom");
+        UIComponent customFacet = component.getCustomFacet();
         if (FacetUtils.shouldRenderFacet(customFacet)) {
             ResponseWriter writer = context.getResponseWriter();
             String style = component.getStyle();
@@ -278,7 +278,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButto
 
     protected void encodeScript(FacesContext context, SelectManyButton component) throws IOException {
         String layout = component.getLayout();
-        if (LangUtils.isEmpty(layout) && FacetUtils.shouldRenderFacet(component.getFacet("custom"))) {
+        if (LangUtils.isEmpty(layout) && FacetUtils.shouldRenderFacet(component.getCustomFacet())) {
             layout = "custom";
         }
         boolean custom = "custom".equals(layout);

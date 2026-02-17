@@ -24,9 +24,12 @@
 package org.primefaces.component.chronoline;
 
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.StyleAware;
+
+import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
 public abstract class ChronolineBase extends PrimeUIData implements StyleAware {
@@ -43,6 +46,12 @@ public abstract class ChronolineBase extends PrimeUIData implements StyleAware {
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Opposite content of the chronoline.")
+    public abstract UIComponent getOppositeFacet();
+
+    @Facet(description = "Marker content of the chronoline.")
+    public abstract UIComponent getMarkerFacet();
 
     @Property(description = "Position of the chronoline bar relative to the content. Valid values are \"left\", \"right\" for vertical layout and \"top\", "
             + "\"bottom\" for horizontal layout.", defaultValue = "left")

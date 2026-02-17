@@ -44,7 +44,7 @@ public class CellEditorRenderer extends CoreRenderer<CellEditor> {
         boolean isLazyEdit = false;
 
         if (component.isDisabled()) {
-            component.getFacet("output").encodeAll(context);
+            component.getOutputFacet().encodeAll(context);
             return;
         }
 
@@ -77,14 +77,14 @@ public class CellEditorRenderer extends CoreRenderer<CellEditor> {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_OUTPUT_CLASS, null);
-        component.getFacet("output").encodeAll(context);
+        component.getOutputFacet().encodeAll(context);
         writer.endElement("div");
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);
 
         if (!isLazyEdit) {
-            component.getFacet("input").encodeAll(context);
+            component.getInputFacet().encodeAll(context);
         }
         writer.endElement("div");
 

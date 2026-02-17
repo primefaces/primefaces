@@ -811,13 +811,13 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
                 .attr("queryMode", component.getQueryMode())
                 .attr("completeEndpoint", component.getCompleteEndpoint())
                 .attr("moreText", component.getMoreText())
-                .attr("hasFooter", FacetUtils.shouldRenderFacet(component.getFacet("footer")));
+                .attr("hasFooter", FacetUtils.shouldRenderFacet(component.getFooterFacet()));
 
         if (component.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", component.getCacheTimeout());
         }
 
-        if (FacetUtils.shouldRenderFacet(component.getFacet("itemtip"))) {
+        if (FacetUtils.shouldRenderFacet(component.getItemtipFacet())) {
             wb.attr("itemtip", true, false)
                     .attr("itemtipMyPosition", component.getItemtipMyPosition(), null)
                     .attr("itemtipAtPosition", component.getItemtipAtPosition(), null);
