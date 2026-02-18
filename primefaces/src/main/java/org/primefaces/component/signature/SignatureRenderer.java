@@ -112,7 +112,7 @@ public class SignatureRenderer extends InputRenderer<Signature> {
                 .attr("fontFamily", signature.getFontFamily(), null)
                 .attr("fontSize", signature.getFontSize(), 40)
                 .attr("ariaLabel", signature.getAriaLabel(), null)
-                .attr("ariaLabelledBy", signature.getLabelledBy(), null)
+                .attr("ariaLabelledBy", signature.getAriaLabelledBy(), null)
                 .attr("tabindex", signature.getTabindex(), "0")
                 .callback("onchange", "function()", signature.getOnchange());
 

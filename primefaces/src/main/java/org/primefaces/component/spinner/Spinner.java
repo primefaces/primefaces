@@ -62,26 +62,6 @@ public class Spinner extends SpinnerBaseImpl {
     }
 
     @Override
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
-    }
-
-    @Override
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
-    }
-
-    @Override
-    public String getAriaDescribedBy() {
-        return (String) getStateHelper().get("ariaDescribedBy");
-    }
-
-    @Override
-    public void setAriaDescribedBy(String ariaDescribedBy) {
-        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
-    }
-
-    @Override
     public String getDecimalSeparator() {
         return (String) getStateHelper().eval(PropertyKeys.decimalSeparator,
             () -> LocaleUtils.getDecimalSeparator(getFacesContext()));

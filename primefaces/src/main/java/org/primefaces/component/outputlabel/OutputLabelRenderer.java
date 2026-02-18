@@ -211,7 +211,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
             if (target instanceof InputHolder) {
                 InputHolder inputHolder = ((InputHolder) target);
                 state.setClientId(inputHolder.getInputClientId());
-                inputHolder.setLabelledBy(clientId);
+                inputHolder.setAriaLabelledBy(clientId);
             }
             else {
                 state.setClientId(target.getClientId(context));

@@ -115,7 +115,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
                 .add(SelectOneRadio.STYLE_CLASS)
                 .add(component.isReadonly(), "ui-state-readonly")
                 .build();
-        String labelledBy = component.getLabelledBy();
+        String labelledBy = component.getAriaLabelledBy();
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
@@ -199,7 +199,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer<SelectOneRadio> {
                     .add(SelectOneRadio.STYLE_CLASS)
                     .add(component.isReadonly(), "ui-state-readonly")
                     .build();
-            String labelledBy = component.getLabelledBy();
+            String labelledBy = component.getAriaLabelledBy();
             writer.startElement("span", component);
             writer.writeAttribute("id", component.getClientId(context), "id");
             writer.writeAttribute("role", "radiogroup", null);

@@ -98,14 +98,4 @@ public class CascadeSelect extends CascadeSelectBaseImpl {
         return getClientId(getFacesContext()) + "_panel";
     }
 
-    @Override
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
-    }
-
-    @Override
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
-    }
-
 }

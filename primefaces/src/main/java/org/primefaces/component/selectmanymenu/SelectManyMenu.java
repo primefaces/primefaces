@@ -69,26 +69,6 @@ public class SelectManyMenu extends SelectManyMenuBaseImpl {
     }
 
     @Override
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
-    }
-
-    @Override
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
-    }
-
-    @Override
-    public String getAriaDescribedBy() {
-        return (String) getStateHelper().get("ariaDescribedBy");
-    }
-
-    @Override
-    public void setAriaDescribedBy(String ariaDescribedBy) {
-        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
-    }
-
-    @Override
     public void queueEvent(FacesEvent event) {
         if (isAjaxBehaviorEvent(event)) {
             FacesContext context = getFacesContext();

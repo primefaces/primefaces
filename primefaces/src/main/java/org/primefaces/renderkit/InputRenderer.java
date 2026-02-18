@@ -143,7 +143,7 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
 
         if (component instanceof InputHolder) {
             InputHolder inputHolder = ((InputHolder) component);
-            String labelledBy = inputHolder.getLabelledBy();
+            String labelledBy = inputHolder.getAriaLabelledBy();
             if (LangUtils.isNotBlank(labelledBy)) {
                 writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
             }
