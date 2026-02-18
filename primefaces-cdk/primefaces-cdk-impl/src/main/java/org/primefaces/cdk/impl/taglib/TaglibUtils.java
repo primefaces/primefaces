@@ -44,9 +44,9 @@ import org.primefaces.cdk.impl.literal.PropertyLiteral;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -275,7 +275,7 @@ public final class TaglibUtils {
     }
 
     private static Map<String, Property> findAllProperties(Class<?> clazz, TagType tagType) throws ClassNotFoundException {
-        Map<String, Property> properties = new HashMap<>();
+        Map<String, Property> properties = new TreeMap<>(); // sorted by property name
 
         if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR || tagType == TagType.VALIDATOR) {
             // Superclass = BaseImpl
