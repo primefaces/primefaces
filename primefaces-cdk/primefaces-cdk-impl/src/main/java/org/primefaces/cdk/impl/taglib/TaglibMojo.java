@@ -409,7 +409,7 @@ public class TaglibMojo extends AbstractMojo {
     void writeProperties(Element tag, Map<String, Property> properties) {
         for (Map.Entry<String, Property> propertyInfo : properties.entrySet()) {
             Property property = propertyInfo.getValue();
-            if (property.hide()) {
+            if (property.internal()) {
                 continue;
             }
 

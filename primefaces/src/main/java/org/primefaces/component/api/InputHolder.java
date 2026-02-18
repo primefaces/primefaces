@@ -43,7 +43,7 @@ public interface InputHolder {
     /**
      * @return Client id of the label for aria
      */
-    @Property(hide = true)
+    @Property(internal = true)
     String getAriaLabelledBy();
 
     /**

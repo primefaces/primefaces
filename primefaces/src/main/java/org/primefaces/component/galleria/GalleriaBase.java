@@ -129,18 +129,18 @@ public abstract class GalleriaBase extends UITabPanel implements Widget, StyleAw
     public abstract String getTabindex();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract boolean isDynamic();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getOffset();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getSize();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getStep();
 }

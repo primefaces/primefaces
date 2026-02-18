@@ -88,12 +88,11 @@ public @interface Property {
     String implicitDefaultValue() default "";
 
     /**
-     * Whether the generated getter and setter should call super.getXXX() and super.setXXX()
-     * instead of using StateHelper directly.
+     * Whether a getter/setter should be generated.
      *
-     * @return true if methods should call super, false otherwise
+     * @return true if a getter/setter should NOT be generated
      */
-    boolean callSuper() default false;
+    boolean skipAccessors() default false;
 
     /**
      * Manually overrides the property type used in taglib generation.
@@ -107,12 +106,12 @@ public @interface Property {
     Class<?> type() default Object.class;
 
     /**
-     * Whether this property should be omitted from the generated taglib.
+     * Whether this property should handled as internal and be omitted from the generated taglib.
      *
-     * <p>Hidden properties are still fully generated (getter, setter, StateHelper entry),
+     * <p>Internal properties are still fully generated (getter, setter, StateHelper entry),
      * but are excluded from taglib output.</p>
      *
      * @return true if the property should be omitted from the taglib, false otherwise
      */
-    boolean hide() default false;
+    boolean internal() default false;
 }

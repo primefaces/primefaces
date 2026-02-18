@@ -54,7 +54,7 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
     }
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract String getImage();
 
     @Override
@@ -62,12 +62,12 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "A method expression or a string outcome to process when command is executed.", callSuper = true)
+    @Property(description = "A method expression or a string outcome to process when command is executed.", skipAccessors = true)
     public MethodExpression getAction() {
         return super.getActionExpression();
     }
 
-    @Property(description = "An action listener to process when command is executed.", callSuper = true)
+    @Property(description = "An action listener to process when command is executed.", skipAccessors = true)
     public ActionListener getActionListener() {
         return super.getActionListeners()[0];
     }

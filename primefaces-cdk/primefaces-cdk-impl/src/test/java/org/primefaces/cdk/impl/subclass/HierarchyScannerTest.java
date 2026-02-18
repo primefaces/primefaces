@@ -159,9 +159,9 @@ class HierarchyScannerTest {
         Assertions.assertTrue(propertyNames(result).contains("value"), "expected own 'value'");
     }
 
-    /** Child re-declares a property with {@code hide=true} — child definition wins. */
+    /** Child re-declares a property with {@code internal=true} — child definition wins. */
     @Test
-    void child_hideTrue_overridesParentDefinition() {
+    void child_internalTrue_overridesParentDefinition() {
         JavaFileObject parent = JavaFileObjects.forSourceString(
                 "com.example.ParentBase",
                 "package com.example;\n"
@@ -175,7 +175,7 @@ class HierarchyScannerTest {
                 "package com.example;\n"
                         + "import org.primefaces.cdk.api.Property;\n"
                         + "public abstract class ChildBase extends ParentBase {\n"
-                        + "    @Property(description = \"Hidden\", hide = true)\n"
+                        + "    @Property(description = \"Hidden\", internal = true)\n"
                         + "    public abstract String getWidgetVar();\n"
                         + "}\n");
 
@@ -183,7 +183,7 @@ class HierarchyScannerTest {
 
         PropertyInfo widgetVar = findPropertyByName(result, "widgetVar");
         Assertions.assertNotNull(widgetVar, "widgetVar must be present");
-        Assertions.assertTrue(widgetVar.getAnnotation().hide(), "child hide=true must win");
+        Assertions.assertTrue(widgetVar.getAnnotation().internal(), "child internal=true must win");
     }
 
     /** Interface {@code @Property} is picked up when no {@code PropertyKeys} enum is present. */
@@ -382,11 +382,11 @@ class HierarchyScannerTest {
 
     /**
      * {@code BaseClassOverrideProperty} re-declares {@code getFor()} as abstract with
-     * {@code @Property(hide=true)}, breaking the concrete chain from {@code SuperBaseClass}.
-     * Getter must be generated and {@code hide=true} must win.
+     * {@code @Property(internal=true)}, breaking the concrete chain from {@code SuperBaseClass}.
+     * Getter must be generated and {@code internal=true} must win.
      */
     @Test
-    void threeLevelHierarchy_abstractRedeclarationWithHide_getterIsGenerated() {
+    void threeLevelHierarchy_abstractRedeclarationWithInternal_getterIsGenerated() {
         JavaFileObject base = JavaFileObjects.forSourceString(
                 "org.primefaces.cdk.impl.subclass.Base",
                 "package org.primefaces.cdk.impl.subclass;\n"
@@ -397,7 +397,7 @@ class HierarchyScannerTest {
 
         PropertyInfo forProp = findPropertyByName(result, "for");
         Assertions.assertNotNull(forProp);
-        Assertions.assertTrue(forProp.getAnnotation().hide(), "hide=true from BaseClassOverrideProperty must win");
+        Assertions.assertTrue(forProp.getAnnotation().internal(), "internal=true from BaseClassOverrideProperty must win");
         Assertions.assertFalse(forProp.isImplementedGetterExists(),     "abstract re-declaration must generate getter");
     }
 

@@ -374,7 +374,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             w.print("        " + escapeKeyword(prop.getName())
                     + "(\"" + prop.getName() + "\", " + type.replaceAll("<[^>]+>", "") + ".class"
                     + ", \"" + description + "\", " + required
-                    + ", \"" + defaultValue + "\", \"" + implicitDefaultValue + "\", " + prop.getAnnotation().hide() + ")");
+                    + ", \"" + defaultValue + "\", \"" + implicitDefaultValue + "\", " + prop.getAnnotation().internal() + ")");
             w.println(i < props.size() - 1 ? "," : "");
         }
         w.println(";");
@@ -565,7 +565,7 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void writeGetter(PrintWriter w, PropertyInfo p) {
-        if (p.isImplementedGetterExists() || p.getAnnotation().callSuper()) {
+        if (p.isImplementedGetterExists() || p.getAnnotation().skipAccessors()) {
             return;
         }
         if ("id".equals(p.getName()) || "binding".equals(p.getName()) || "rendered".equals(p.getName())) {
@@ -599,7 +599,7 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void writeSetter(PrintWriter w, PropertyInfo p) {
-        if ((p.isImplementedSetterExists() && p.isImplementedGetterExists()) || p.getAnnotation().callSuper()) {
+        if ((p.isImplementedSetterExists() && p.isImplementedGetterExists()) || p.getAnnotation().skipAccessors()) {
             return;
         }
         if ("id".equals(p.getName()) || "binding".equals(p.getName()) || "rendered".equals(p.getName())) {

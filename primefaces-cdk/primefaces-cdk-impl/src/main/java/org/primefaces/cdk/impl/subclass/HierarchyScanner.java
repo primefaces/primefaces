@@ -129,9 +129,9 @@ public class HierarchyScanner {
                             p.getAnnotation().required(),
                             defaultValue,
                             implicitDefaultValue,
-                            p.getAnnotation().callSuper(),
+                            p.getAnnotation().skipAccessors(),
                             p.getAnnotation().type(),
-                            p.getAnnotation().hide()));
+                            p.getAnnotation().internal()));
 
                     if (!p.isGetterExists() && before.isImplementedGetterExists()) {
                         p.setGetterExists(true);
@@ -375,7 +375,7 @@ public class HierarchyScanner {
 
             PropertyInfo propertyInfo = new PropertyInfo(propName,
                     new PropertyLiteral(annotation.description(), annotation.required(), annotation.defaultValue(),
-                            annotation.implicitDefaultValue(), annotation.callSuper(), null, annotation.hide()),
+                            annotation.implicitDefaultValue(), annotation.skipAccessors(), null, annotation.internal()),
                     getter.getReturnType().toString());
 
             propertyInfo.setGetterExists(true);

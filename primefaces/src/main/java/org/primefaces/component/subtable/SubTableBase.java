@@ -51,7 +51,7 @@ public abstract class SubTableBase extends UIData {
     }
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract boolean isRowStatePreserved();
 
     @Facet(description = "Header content of the subtable.")

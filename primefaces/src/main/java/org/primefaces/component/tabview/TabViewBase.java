@@ -103,14 +103,14 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
     public abstract boolean isFocusOnLastActiveTab();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getOffset();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getSize();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getStep();
 }

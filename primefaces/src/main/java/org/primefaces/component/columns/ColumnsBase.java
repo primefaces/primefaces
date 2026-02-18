@@ -53,23 +53,23 @@ public abstract class ColumnsBase extends PrimeUIData implements UIColumn, Style
     }
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract String getRowIndexVar();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getFirst();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract boolean isLazy();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getRows();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract boolean isRowStatePreserved();
 
     @Property(description = "Property to be used for sorting.")

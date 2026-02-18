@@ -75,35 +75,35 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 })
 public interface InputAware extends StyleAware, RTLAware {
 
-    @Property(description = "Specifies a shortcut key to activate or focus the element.", callSuper = true)
+    @Property(description = "Specifies a shortcut key to activate or focus the element.", skipAccessors = true)
     String getAccesskey();
 
     @Property(description = "Identifies the element(s) that describe the object, enhancing accessibility.")
     String getAriaDescribedBy();
 
-    @Property(description = "Specifies a converter instance to be used with the component.", callSuper = true)
+    @Property(description = "Specifies a converter instance to be used with the component.", skipAccessors = true)
     @SuppressWarnings("rawtypes")
     Converter getConverter();
 
-    @Property(description = "Custom message to display when conversion fails.", callSuper = true)
+    @Property(description = "Custom message to display when conversion fails.", skipAccessors = true)
     String getConverterMessage();
 
-    @Property(description = "Indicates whether the input is disabled.", defaultValue = "false", callSuper = true)
+    @Property(description = "Indicates whether the input is disabled.", defaultValue = "false", skipAccessors = true)
     boolean isDisabled();
 
-    @Property(description = "Should component process its value immediately in the Apply Request Values phase.", defaultValue = "false", callSuper = true)
+    @Property(description = "Should component process its value immediately in the Apply Request Values phase.", defaultValue = "false", skipAccessors = true)
     boolean isImmediate();
 
-    @Property(description = "Indicates whether the local value of the component has been set.", defaultValue = "false", callSuper = true)
+    @Property(description = "Indicates whether the local value of the component has been set.", defaultValue = "false", skipAccessors = true)
     boolean isLocalValueSet();
 
     @Property(description = "Specifies the type of data expected in the input, aiding virtual keyboards.")
     String getInputmode();
 
-    @Property(description = "Defines a label for the input element.", callSuper = true)
+    @Property(description = "Defines a label for the input element.", skipAccessors = true)
     String getLabel();
 
-    @Property(description = "Specifies the language of the element's content.", callSuper = true)
+    @Property(description = "Specifies the language of the element's content.", skipAccessors = true)
     String getLang();
 
     @Property(description = "Defines the maximum number of characters allowed in the input.", defaultValue = "Integer.MIN_VALUE")
@@ -205,30 +205,30 @@ public interface InputAware extends StyleAware, RTLAware {
     @Property(description = "Specifies a short hint describing the expected value of the input.")
     String getPlaceholder();
 
-    @Property(description = "Indicates whether the input is read-only.", defaultValue = "false", callSuper = true)
+    @Property(description = "Indicates whether the input is read-only.", defaultValue = "false", skipAccessors = true)
     boolean isReadonly();
 
-    @Property(description = "Custom message to display when the required validation fails.", callSuper = true)
+    @Property(description = "Custom message to display when the required validation fails.", skipAccessors = true)
     String getRequiredMessage();
 
-    @Property(description = "Specifies that the input must be filled out before submitting the form.", defaultValue = "false", callSuper = true)
+    @Property(description = "Specifies that the input must be filled out before submitting the form.", defaultValue = "false", skipAccessors = true)
     boolean isRequired();
 
-    @Property(description = "Defines the role of the element for accessibility purposes.", callSuper = true)
+    @Property(description = "Defines the role of the element for accessibility purposes.", skipAccessors = true)
     String getRole();
 
-    @Property(description = "Sets the tab order of the element.", callSuper = true)
+    @Property(description = "Sets the tab order of the element.", skipAccessors = true)
     String getTabindex();
 
-    @Property(description = "Provides additional information about the element, typically displayed as a tooltip.", callSuper = true)
+    @Property(description = "Provides additional information about the element, typically displayed as a tooltip.", skipAccessors = true)
     String getTitle();
 
-    @Property(description = "Indicates whether the input's value is valid.", defaultValue = "true", callSuper = true)
+    @Property(description = "Indicates whether the input's value is valid.", defaultValue = "true", skipAccessors = true)
     boolean isValid();
 
-    @Property(description = "Custom message to display when validation fails.", callSuper = true)
+    @Property(description = "Custom message to display when validation fails.", skipAccessors = true)
     String getValidatorMessage();
 
-    @Property(description = "Holds the current value of the input.", callSuper = true)
+    @Property(description = "Holds the current value of the input.", skipAccessors = true)
     Object getValue();
 }
