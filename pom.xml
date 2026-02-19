@@ -433,7 +433,7 @@
             <dependency>
                 <groupId>com.github.librepdf</groupId>
                 <artifactId>openpdf</artifactId>
-                <version>1.4.2</version>
+                <version>3.0.1</version>
             </dependency>
 
             <!-- FeedReader -->
