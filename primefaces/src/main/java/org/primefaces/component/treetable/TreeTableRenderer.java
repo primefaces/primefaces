@@ -320,7 +320,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         boolean hasPaginator = component.isPaginator();
         String paginatorPosition = component.getPaginatorPosition();
 
-        encodeFacet(context, component, component.getFacet("header"), TreeTable.HEADER_CLASS);
+        encodeFacet(context, component, component.getHeaderFacet(), TreeTable.HEADER_CLASS);
 
         if (component.isPaginator() && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, component, "top");
@@ -345,7 +345,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
             encodePaginatorMarkup(context, component, "bottom");
         }
 
-        encodeFacet(context, component, component.getFacet("footer"), TreeTable.FOOTER_CLASS);
+        encodeFacet(context, component, component.getFooterFacet(), TreeTable.FOOTER_CLASS);
     }
 
     protected void encodeThead(FacesContext context, TreeTable component) throws IOException {
@@ -430,7 +430,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
         boolean empty = (root == null || root.getChildCount() == 0);
-        UIComponent emptyFacet = component.getFacet("emptyMessage");
+        UIComponent emptyFacet = component.getEmptyMessageFacet();
 
         if (!dataOnly) {
             writer.startElement("tbody", null);

@@ -34,19 +34,19 @@ public class PropertyLiteral implements Property {
     private final boolean required;
     private final String defaultValue;
     private final String implicitDefaultValue;
-    private final boolean callSuper;
+    private final boolean skipAccessors;
     private final Class<?> type;
-    private final boolean hide;
+    private final boolean internal;
 
-    public PropertyLiteral(String description, boolean required, String defaultValue, String implicitDefaultValue, boolean callSuper,
-                           Class<?> type, boolean hide) {
+    public PropertyLiteral(String description, boolean required, String defaultValue, String implicitDefaultValue, boolean skipAccessors,
+                           Class<?> type, boolean internal) {
         this.description = description;
         this.required = required;
         this.defaultValue = defaultValue;
         this.implicitDefaultValue = implicitDefaultValue;
-        this.callSuper = callSuper;
+        this.skipAccessors = skipAccessors;
         this.type = type;
-        this.hide = hide;
+        this.internal = internal;
     }
 
     public static PropertyLiteral fromPropertyKeys(PrimePropertyKeys key) {
@@ -75,8 +75,8 @@ public class PropertyLiteral implements Property {
     }
 
     @Override
-    public boolean callSuper() {
-        return callSuper;
+    public boolean skipAccessors() {
+        return skipAccessors;
     }
 
     @Override
@@ -85,12 +85,25 @@ public class PropertyLiteral implements Property {
     }
 
     @Override
-    public boolean hide() {
-        return hide;
+    public boolean internal() {
+        return internal;
     }
 
     @Override
     public Class<? extends Annotation> annotationType() {
         return Property.class;
+    }
+
+    @Override
+    public String toString() {
+        return "PropertyLiteral{" +
+                "description='" + description + '\'' +
+                ", required=" + required +
+                ", defaultValue='" + defaultValue + '\'' +
+                ", implicitDefaultValue='" + implicitDefaultValue + '\'' +
+                ", callSuper=" + skipAccessors +
+                ", type=" + type +
+                ", hide=" + internal +
+                '}';
     }
 }

@@ -26,6 +26,7 @@ package org.primefaces.component.selectonemenu;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeSelect;
@@ -35,6 +36,7 @@ import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.html.HtmlSelectOneMenu;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
@@ -73,6 +75,9 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Footer content of the selectonemenu.")
+    public abstract UIComponent getFooterFacet();
 
     @Property(description = "Inline style of the dropdown panel container element.")
     public abstract String getPanelStyle();

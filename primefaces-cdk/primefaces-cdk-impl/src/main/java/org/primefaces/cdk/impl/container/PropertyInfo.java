@@ -109,7 +109,9 @@ public class PropertyInfo {
                 "name='" + name + '\'' +
                 ", annotation=" + annotation +
                 ", getterExists=" + getterExists +
+                ", implementedGetterExists=" + implementedGetterExists +
                 ", setterExists=" + setterExists +
+                ", implementedSetterExists=" + implementedSetterExists +
                 ", typeName='" + typeName + '\'' +
                 '}';
     }

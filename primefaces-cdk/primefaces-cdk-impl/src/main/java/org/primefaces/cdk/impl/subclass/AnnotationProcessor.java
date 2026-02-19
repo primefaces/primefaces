@@ -26,6 +26,7 @@ package org.primefaces.cdk.impl.subclass;
 import org.primefaces.cdk.api.FacesBehaviorBase;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.FacesValidatorBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.cdk.api.PrimeFacetKeys;
@@ -95,7 +96,8 @@ import jakarta.faces.component.UIComponent;
     "org.primefaces.cdk.api.FacesBehaviorBase",
     "org.primefaces.cdk.api.FacesBehaviorEvent",
     "org.primefaces.cdk.api.FacesBehaviorEvents",
-    "org.primefaces.cdk.api.FacesComponentBase"
+    "org.primefaces.cdk.api.FacesComponentBase",
+    "org.primefaces.cdk.api.FacesValidatorBase"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class AnnotationProcessor extends AbstractProcessor {
@@ -132,6 +134,12 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
         }
 
+        for (Element e : roundEnv.getElementsAnnotatedWith(FacesValidatorBase.class)) {
+            if (e.getKind() == ElementKind.CLASS && e.getModifiers().contains(Modifier.ABSTRACT)) {
+                componentsToGenerate.add((TypeElement) e);
+            }
+        }
+
         for (TypeElement classElement : componentsToGenerate) {
             generateComponent(classElement);
         }
@@ -147,6 +155,7 @@ public class AnnotationProcessor extends AbstractProcessor {
     private void generateComponent(TypeElement classElement) {
         HierarchyScannerResult hierarchyScannerResult = scanner.scan(classElement);
         boolean isBehavior = isBehaviorClass(classElement);
+        boolean isValidator = isValidatorClass(classElement);
 
         // --- Properties ---
         // Start from the scan result and key by name for override/injection logic.
@@ -156,7 +165,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         // Inject synthetic "id" property for components (not behaviors) when absent.
-        if (!isBehavior) {
+        if (!isBehavior && !isValidator) {
             if (!propsMap.containsKey("id")) {
                 Property property = new PropertyLiteral("Unique identifier of the component in a namingContainer.",
                         false,
@@ -201,7 +210,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         List<BehaviorEventInfo> events = hierarchyScannerResult.getBehaviorEvents();
 
         try {
-            generateImplementation(classElement, props, facets, events, isBehavior);
+            generateImplementation(classElement, props, facets, events, !isBehavior && !isValidator);
         }
         catch (IOException ioe) {
             messager.printMessage(Diagnostic.Kind.ERROR,
@@ -260,17 +269,25 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     /**
-     * Returns {@code true} if {@code classElement} represents a JSF behavior
+     * Returns {@code true} if {@code classElement} represents a Fasce behavior
      * (detected by name convention: simple name contains "Behavior").
      */
     private boolean isBehaviorClass(TypeElement classElement) {
         return classElement.getSimpleName().toString().contains("Behavior");
     }
 
+    /**
+     * Returns {@code true} if {@code classElement} represents a Fasce validator
+     * (detected by name convention: simple name contains "Validator").
+     */
+    private boolean isValidatorClass(TypeElement classElement) {
+        return classElement.getSimpleName().toString().contains("Validator");
+    }
+
     private void generateImplementation(TypeElement classElement, List<PropertyInfo> props,
                                         List<FacetInfo> facets,
                                         List<BehaviorEventInfo> behaviorEventInfos,
-                                        boolean isBehavior) throws IOException {
+                                        boolean isComponent) throws IOException {
         String pkg = processingEnv.getElementUtils()
                 .getPackageOf(classElement).getQualifiedName().toString();
         String baseName = classElement.getSimpleName().toString();
@@ -281,9 +298,9 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         try (PrintWriter w = new PrintWriter(source.openWriter())) {
             writePackageAndImports(w, pkg, hasEvents);
-            writeClassDeclaration(w, genName, baseName, isBehavior, hasEvents);
+            writeClassDeclaration(w, genName, baseName, isComponent, hasEvents);
             writePropertyKeys(w, props);
-            writeFacetKeys(w, facets, isBehavior);
+            writeFacetKeys(w, facets, isComponent);
             writeClientBehaviorEventKeys(w, behaviorEventInfos, hasEvents);
             writePropertyMethods(w, props);
             writeFacetMethods(w, facets);
@@ -315,7 +332,7 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void writeClassDeclaration(PrintWriter w, String genName, String baseName,
-                                       boolean isBehavior, boolean hasEvents) {
+                                       boolean isComponent, boolean hasEvents) {
         w.println("/**");
         w.println(" * Generated implementation of " + baseName + ".");
         w.println(" * Generated by PrimeFaces CDK.");
@@ -323,13 +340,13 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("@Generated(value = \"" + AnnotationProcessor.class.getName()
                 + "\", date = \"" + new Date() + "\")");
         w.print("public abstract class " + genName + " extends " + baseName);
-        if (!isBehavior || hasEvents) {
+        if (isComponent || hasEvents) {
             w.print(" implements ");
-            if (!isBehavior) {
+            if (isComponent) {
                 w.print(PrimeComponent.class.getName());
             }
             if (hasEvents) {
-                if (!isBehavior) {
+                if (isComponent) {
                     w.print(", ");
                 }
                 w.print(PrimeClientBehaviorHolder.class.getName());
@@ -357,7 +374,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             w.print("        " + escapeKeyword(prop.getName())
                     + "(\"" + prop.getName() + "\", " + type.replaceAll("<[^>]+>", "") + ".class"
                     + ", \"" + description + "\", " + required
-                    + ", \"" + defaultValue + "\", \"" + implicitDefaultValue + "\", " + prop.getAnnotation().hide() + ")");
+                    + ", \"" + defaultValue + "\", \"" + implicitDefaultValue + "\", " + prop.getAnnotation().internal() + ")");
             w.println(i < props.size() - 1 ? "," : "");
         }
         w.println(";");
@@ -397,8 +414,8 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println();
     }
 
-    private void writeFacetKeys(PrintWriter w, List<FacetInfo> facets, boolean isBehavior) {
-        if (isBehavior) {
+    private void writeFacetKeys(PrintWriter w, List<FacetInfo> facets, boolean isComponent) {
+        if (!isComponent) {
             return;
         }
         w.println("    public enum FacetKeys implements " + PrimeFacetKeys.class.getName() + " {");
@@ -548,7 +565,7 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void writeGetter(PrintWriter w, PropertyInfo p) {
-        if ((p.isImplementedSetterExists() && p.isImplementedGetterExists()) || p.getAnnotation().callSuper()) {
+        if (p.isImplementedGetterExists() || p.getAnnotation().skipAccessors()) {
             return;
         }
         if ("id".equals(p.getName()) || "binding".equals(p.getName()) || "rendered".equals(p.getName())) {
@@ -582,7 +599,7 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void writeSetter(PrintWriter w, PropertyInfo p) {
-        if ((p.isImplementedSetterExists() && p.isImplementedGetterExists()) || p.getAnnotation().callSuper()) {
+        if ((p.isImplementedSetterExists() && p.isImplementedGetterExists()) || p.getAnnotation().skipAccessors()) {
             return;
         }
         if ("id".equals(p.getName()) || "binding".equals(p.getName()) || "rendered".equals(p.getName())) {

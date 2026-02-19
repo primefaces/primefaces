@@ -26,6 +26,7 @@ package org.primefaces.component.treetable;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.StyleAware;
@@ -43,6 +44,8 @@ import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.TreeNode;
+
+import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
@@ -86,6 +89,15 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
         return COMPONENT_FAMILY;
     }
 
+    @Facet(description = "Header content of the treetable.")
+    public abstract UIComponent getHeaderFacet();
+
+    @Facet(description = "Footer content of the treetable.")
+    public abstract UIComponent getFooterFacet();
+
+    @Facet(description = "Empty message content of the treetable.")
+    public abstract UIComponent getEmptyMessageFacet();
+
     @Override
     @Property(defaultValue = "0", description = "Number of rows to display per page. 0 means to display all data available.")
     public abstract int getRows();
@@ -108,8 +120,6 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
 
     @Property(description = "Style class of the table element.")
     public abstract String getTableStyleClass();
-
-
 
     @Property(defaultValue = "false", description = "Defines if columns can be resized or not.")
     public abstract boolean isResizableColumns();

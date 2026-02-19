@@ -261,6 +261,14 @@
                             <version>3.2</version>
                         </dependency>
                     </dependencies>
+					<configuration>
+					<includes>
+					   <include>\target\classes\META-INF\primefaces.taglib.xml</include>
+					</includes>
+					<excludes>
+					   <exclude>src\main</exclude>
+					</excludes>
+					</configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.cyclonedx</groupId>
@@ -309,7 +317,6 @@
         </extensions>
 
         <plugins>
-            <!--
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>primefaces-cdk-impl</artifactId>
@@ -321,8 +328,8 @@
                         </goals>
                         <phase>process-classes</phase>
                         <configuration>
-                            <uri>primefaces-test</uri>
-                            <shortName>pf-test</shortName>
+                            <uri>http://primefaces.org/ui</uri>
+                            <shortName>primefaces</shortName>
                             <displayName>PrimeFaces</displayName>
                         </configuration>
                     </execution>
@@ -335,7 +342,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -612,7 +618,7 @@
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
-                    <minimizeJar>true</minimizeJar>
+                    <minimizeJar>false</minimizeJar>
                     <createSourcesJar>false</createSourcesJar>
                     <shadeSourcesContent>true</shadeSourcesContent>
                     <relocations>
@@ -664,7 +670,7 @@
                                 <exclude>META-INF/*.SF</exclude>
                                 <exclude>META-INF/*.DSA</exclude>
                                 <exclude>META-INF/*.RSA</exclude>
-								<exclude>META-INF/versions/**</exclude>
+                                <exclude>META-INF/versions/**</exclude>
                             </excludes>
                         </filter>
                     </filters>
@@ -693,7 +699,7 @@
                 <executions>
                     <execution>
                         <id>minify-xml</id>
-                        <phase>process-resources</phase>
+                        <phase>process-classes</phase>
                         <goals>
                             <goal>transform</goal>
                         </goals>
@@ -721,7 +727,7 @@
                 <executions>
                     <execution>
                         <id>rename-xml-file</id>
-                        <phase>process-resources</phase>
+                        <phase>process-classes</phase>
                         <configuration>
                             <target>
                                 <copy file="${project.build.directory}/classes/META-INF/primefaces.taglib.xml" tofile="${project.build.directory}/classes/META-INF/primefaces.urn.taglib.xml"/>

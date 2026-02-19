@@ -70,10 +70,10 @@ public class CellEditFeature implements TreeTableFeature {
         }
 
         if (isCellEditCancelRequest(context, clientId) || isCellEditInitRequest(context, clientId)) {
-            column.getCellEditor().getFacet("input").encodeAll(context);
+            column.getCellEditor().getInputFacet().encodeAll(context);
         }
         else {
-            column.getCellEditor().getFacet("output").encodeAll(context);
+            column.getCellEditor().getOutputFacet().encodeAll(context);
         }
 
         if (column.isDynamic()) {

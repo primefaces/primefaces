@@ -28,6 +28,6 @@ import org.primefaces.cdk.api.Property;
 public abstract class BaseClassOverrideProperty extends SuperBaseClass {
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract String getFor();
 }

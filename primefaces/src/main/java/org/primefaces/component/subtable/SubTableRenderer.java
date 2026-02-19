@@ -57,7 +57,7 @@ public class SubTableRenderer extends CoreRenderer<SubTable> {
 
     public void encodeHeader(FacesContext context, SubTable component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent header = component.getFacet("header");
+        UIComponent header = component.getHeaderFacet();
 
         if (FacetUtils.shouldRenderFacet(header)) {
             writer.startElement("tr", null);
@@ -147,7 +147,7 @@ public class SubTableRenderer extends CoreRenderer<SubTable> {
 
     public void encodeFooter(FacesContext context, SubTable component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent footer = component.getFacet("footer");
+        UIComponent footer = component.getFooterFacet();
 
         if (FacetUtils.shouldRenderFacet(footer)) {
             writer.startElement("tr", null);

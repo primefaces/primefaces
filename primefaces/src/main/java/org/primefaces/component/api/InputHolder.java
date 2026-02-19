@@ -43,14 +43,15 @@ public interface InputHolder {
     /**
      * @return Client id of the label for aria
      */
-    String getLabelledBy();
+    @Property(internal = true)
+    String getAriaLabelledBy();
 
     /**
      * Sets the id of the label for aria.
      *
      * @param id the id
      */
-    void setLabelledBy(String id);
+    void setAriaLabelledBy(String id);
 
     /**
      * @return The aria-describedby attribute is used to define a component id that describes the current element for accessibility.

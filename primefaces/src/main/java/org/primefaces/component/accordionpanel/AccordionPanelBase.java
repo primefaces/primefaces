@@ -90,14 +90,14 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
     public abstract String getScrollIntoView();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getOffset();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getSize();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getStep();
 }

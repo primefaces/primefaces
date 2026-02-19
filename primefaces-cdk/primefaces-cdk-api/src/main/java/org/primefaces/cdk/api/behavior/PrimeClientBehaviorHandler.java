@@ -24,6 +24,7 @@
 package org.primefaces.cdk.api.behavior;
 
 import org.primefaces.cdk.api.PrimePropertyKeys;
+import org.primefaces.cdk.api.state.ValueExpressionStateHelper;
 import org.primefaces.cdk.api.utils.ReflectionUtils;
 
 import java.beans.BeanDescriptor;

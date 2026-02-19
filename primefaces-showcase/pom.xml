@@ -266,6 +266,7 @@
                     <noSourceMap>true</noSourceMap>
                     <style>COMPRESSED</style>
                     <quiet>false</quiet>
+                    <version>${dart-sass.version}</version>
                 </configuration>
             </plugin>
             <plugin>

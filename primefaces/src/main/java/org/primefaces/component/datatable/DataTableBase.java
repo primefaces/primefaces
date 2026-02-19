@@ -26,6 +26,7 @@ package org.primefaces.component.datatable;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
@@ -45,6 +46,7 @@ import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.event.AjaxBehaviorEvent;
 
 @FacesComponentBase
@@ -89,6 +91,9 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Facet(description = "Empty message content of the datatable.")
+    public abstract UIComponent getEmptyMessageFacet();
 
     @Property(description = "List to keep the filtered data if filtering is enabled.")
     public abstract Object getFilteredValue();

@@ -59,11 +59,6 @@
         <validator-class>org.primefaces.validate.RegexValidator</validator-class>
     </validator>
 
-    <validator>
-        <validator-id>primefaces.File</validator-id>
-        <validator-class>org.primefaces.validate.FileValidator</validator-class>
-    </validator>
-
     <converter>
         <converter-id>jakarta.faces.Integer</converter-id>
         <converter-class>org.primefaces.convert.IntegerConverter</converter-class>

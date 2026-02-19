@@ -85,7 +85,7 @@ public class TextEditorRenderer extends InputRenderer<TextEditor> {
         String valueToRender = sanitizeHtml(context, component, ComponentUtils.getValueToRender(context, component));
         String inputId = clientId + "_input";
         String editorId = clientId + "_editor";
-        UIComponent toolbar = component.getFacet("toolbar");
+        UIComponent toolbar = component.getToolbarFacet();
 
         String style = getStyleBuilder(context)
                 .add(component.getStyle())

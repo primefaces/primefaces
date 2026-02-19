@@ -68,7 +68,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
         ResponseWriter writer = context.getResponseWriter();
         String layout = component.getLayout();
         if (LangUtils.isEmpty(layout)) {
-            layout = FacetUtils.shouldRenderFacet(component.getFacet("custom")) ? "custom" : "lineDirection";
+            layout = FacetUtils.shouldRenderFacet(component.getCustomFacet()) ? "custom" : "lineDirection";
         }
         boolean custom = ("custom".equals(layout));
 

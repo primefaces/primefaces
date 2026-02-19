@@ -157,10 +157,10 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
             TimelineModel<Object, Object> model = timeline.getValue();
             List<TimelineGroup<Object>> groups = timelineRenderer.calculateGroupsFromModel(model);
-            UIComponent groupFacet = timeline.getFacet("group");
+            UIComponent groupFacet = timeline.getGroupFacet();
             // buffer for groups' content
             Map<String, String> groupsContent = new HashMap<>();
-            UIComponent eventTitleFacet = timeline.getFacet("eventTitle");
+            UIComponent eventTitleFacet = timeline.getEventTitleFacet();
 
             ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
 

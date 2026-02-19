@@ -24,9 +24,12 @@
 package org.primefaces.component.chronoline;
 
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.StyleAware;
+
+import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
 public abstract class ChronolineBase extends PrimeUIData implements StyleAware {
@@ -44,6 +47,12 @@ public abstract class ChronolineBase extends PrimeUIData implements StyleAware {
         return COMPONENT_FAMILY;
     }
 
+    @Facet(description = "Opposite content of the chronoline.")
+    public abstract UIComponent getOppositeFacet();
+
+    @Facet(description = "Marker content of the chronoline.")
+    public abstract UIComponent getMarkerFacet();
+
     @Property(description = "Position of the chronoline bar relative to the content. Valid values are \"left\", \"right\" for vertical layout and \"top\", "
             + "\"bottom\" for horizontal layout.", defaultValue = "left")
     public abstract String getAlign();
@@ -52,22 +61,28 @@ public abstract class ChronolineBase extends PrimeUIData implements StyleAware {
     public abstract String getLayout();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract String getRowIndexVar();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getFirst();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract boolean isLazy();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getRows();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract boolean isRowStatePreserved();
+
+    @Override
+    @Property(description = "Value of the data component.", required = true)
+    public Object getValue() {
+        return super.getValue();
+    }
 }

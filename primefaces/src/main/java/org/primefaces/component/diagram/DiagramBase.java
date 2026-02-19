@@ -64,22 +64,22 @@ public abstract class DiagramBase extends PrimeUIData implements Widget, StyleAw
     public abstract UIComponent getElementFacet();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract String getRowIndexVar();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getFirst();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract boolean isLazy();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getRows();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract boolean isRowStatePreserved();
 }

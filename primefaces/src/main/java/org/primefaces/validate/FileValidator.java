@@ -23,6 +23,7 @@
  */
 package org.primefaces.validate;
 
+import org.primefaces.cdk.api.FacesValidatorInfo;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.NativeUploadedFile;
@@ -32,7 +33,6 @@ import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
-import org.primefaces.validate.base.AbstractPrimeValidator;
 import org.primefaces.virusscan.VirusException;
 
 import java.util.HashMap;
@@ -47,24 +47,19 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.html.HtmlInputFile;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.validator.FacesValidator;
 import jakarta.faces.validator.ValidatorException;
 import jakarta.servlet.http.Part;
 
-public class FileValidator extends AbstractPrimeValidator implements ClientValidator {
+@FacesValidator(value = FileValidator.VALIDATOR_ID)
+@FacesValidatorInfo(name = "validateFile",
+        description = "`p:validateFile` is a validator which can be used to validate single and multiple files, either of `p:fileUpload` or `h:inputFile`.")
+public class FileValidator extends FileValidatorBaseImpl implements ClientValidator {
 
     public static final String VALIDATOR_ID = "primefaces.File";
     public static final String FILE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.FILE_LIMIT";
     public static final String ALLOW_TYPES_MESSAGE_ID = "primefaces.FileValidator.ALLOW_TYPES";
     public static final String SIZE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.SIZE_LIMIT";
-
-    public enum PropertyKeys {
-        allowTypes,
-        fileLimit,
-        sizeLimit,
-        contentType,
-        virusScan,
-        allowMediaTypes
-    }
 
     private static final Logger LOGGER = Logger.getLogger(FileValidator.class.getName());
 
@@ -247,51 +242,4 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         return Objects.hash(getStateHelper());
     }
 
-    public Integer getFileLimit() {
-        return (Integer) getStateHelper().eval(PropertyKeys.fileLimit, null);
-    }
-
-    public void setFileLimit(Integer fileLimit) {
-        getStateHelper().put(PropertyKeys.fileLimit, fileLimit);
-    }
-
-    public Long getSizeLimit() {
-        return (Long) getStateHelper().eval(PropertyKeys.sizeLimit, null);
-    }
-
-    public void setSizeLimit(Long sizeLimit) {
-        getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
-    }
-
-    public String getAllowTypes() {
-        return (String) getStateHelper().eval(PropertyKeys.allowTypes, null);
-    }
-
-    public void setAllowTypes(String allowTypes) {
-        getStateHelper().put(PropertyKeys.allowTypes, allowTypes);
-    }
-
-    public Boolean getContentType() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.contentType, null);
-    }
-
-    public void setContentType(Boolean contentType) {
-        getStateHelper().put(PropertyKeys.contentType, contentType);
-    }
-
-    public Boolean getVirusScan() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.virusScan, null);
-    }
-
-    public void setVirusScan(Boolean virusScan) {
-        getStateHelper().put(PropertyKeys.virusScan, virusScan);
-    }
-
-    public String getAllowMediaTypes() {
-        return (String) getStateHelper().eval(PropertyKeys.allowMediaTypes, null);
-    }
-
-    public void setAllowMediaTypes(String allowMediaTypes) {
-        getStateHelper().put(PropertyKeys.allowMediaTypes, allowMediaTypes);
-    }
 }

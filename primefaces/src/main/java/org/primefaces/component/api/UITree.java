@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -161,6 +162,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return rowNode;
     }
 
+    @Property(description = "Name of the request-scoped variable that'll be used to refer each treenode data during rendering.")
     public java.lang.String getVar() {
         return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
@@ -169,6 +171,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         getStateHelper().put(PropertyKeys.var, _var);
     }
 
+    @Property(description = "Name of the request-scoped variable that'll be used to refer current treenode using EL.")
     public java.lang.String getNodeVar() {
         return (String) getStateHelper().eval(PropertyKeys.nodeVar, null);
     }
@@ -177,6 +180,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         getStateHelper().put(PropertyKeys.nodeVar, _nodeVar);
     }
 
+    @Property(description = "A TreeNode instance as the backing model.", required = true)
     public TreeNode<?> getValue() {
         return (TreeNode<?>) getStateHelper().eval(PropertyKeys.value, null);
     }
@@ -185,6 +189,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         getStateHelper().put(PropertyKeys.value, _value);
     }
 
+    @Property(description = "Defines the selectionMode, valid values are \"single\", \"multiple\" and \"checkbox\".")
     public java.lang.String getSelectionMode() {
         return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
     }
@@ -193,6 +198,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         getStateHelper().put(PropertyKeys.selectionMode, _selectionMode);
     }
 
+    @Property(description = "TreeNode array to reference the selections.")
     public java.lang.Object getSelection() {
         return getStateHelper().eval(PropertyKeys.selection, null);
     }
@@ -201,6 +207,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         getStateHelper().put(PropertyKeys.selection, _selection);
     }
 
+    @Property(description = "Validation constraint for selection.")
     public boolean isRequired() {
         return (Boolean) getStateHelper().eval(PropertyKeys.required, false);
     }
@@ -217,6 +224,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         getStateHelper().put(PropertyKeys.requiredMessage, _requiredMessage);
     }
 
+    @Property(defaultValue = "false",
+            description = "Ignores processing of children during lifecycle, improves performance if table only has output components.")
     public boolean isSkipChildren() {
         return (Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
     }
@@ -225,6 +234,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         getStateHelper().put(PropertyKeys.skipChildren, _skipChildren);
     }
 
+    @Property(defaultValue = "false",
+            description = "Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node.")
     public boolean isShowUnselectableCheckbox() {
         return (Boolean) getStateHelper().eval(PropertyKeys.showUnselectableCheckbox, false);
     }
@@ -237,6 +248,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return getStateHelper().get(PropertyKeys.selection);
     }
 
+    @Property(defaultValue = "true", description = "Defines downwards selection propagation for checkbox mode.")
     public boolean isPropagateSelectionDown() {
         return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionDown, true);
     }
@@ -245,6 +257,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         getStateHelper().put(PropertyKeys.propagateSelectionDown, _propagateSelectionDown);
     }
 
+    @Property(defaultValue = "true", description = "Defines upwards selection propagation for checkbox mode.")
     public boolean isPropagateSelectionUp() {
         return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionUp, true);
     }

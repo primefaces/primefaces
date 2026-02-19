@@ -79,9 +79,15 @@ public abstract class PrimeUIData extends UIDataPatch {
     }
 
     @Override
-    @Property(description = "Name of the iterator variable that references each element in the data set.")
+    @Property(description = "Name of the iterator variable that references each element in the data set.", required = true)
     public String getVar() {
         return super.getVar();
+    }
+
+    @Override
+    @Property(description = "Datasource of the component.", required = true)
+    public Object getValue() {
+        return super.getValue();
     }
 
     @Property(description = "Defines if lazy loading is enabled for the data component.",

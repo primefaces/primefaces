@@ -32,7 +32,7 @@ public interface Pageable {
 
     String getClientId(FacesContext context);
 
-    @Property(implicitDefaultValue = "i18n", description = "Text to display when there is no data to display.", callSuper = true)
+    @Property(implicitDefaultValue = "i18n", description = "Text to display when there is no data to display.", skipAccessors = true)
     String getEmptyMessage();
 
     @Property(defaultValue = "false", description = "Enables pagination.")
@@ -44,7 +44,7 @@ public interface Pageable {
     @Property(defaultValue = "({currentPage} of {totalPages})", description = "Template of the currentPageReport UI.")
     String getCurrentPageReportTemplate();
 
-    @Property(defaultValue = "0", description = "Number of rows to display per page. 0 means to display all data available.", callSuper = true)
+    @Property(defaultValue = "0", description = "Number of rows to display per page. 0 means to display all data available.", skipAccessors = true)
     int getRows();
 
     int getRowCount();
@@ -69,7 +69,7 @@ public interface Pageable {
 
     int getPageCount();
 
-    @Property(defaultValue = "0", description = "Index of the first data to display.", callSuper = true)
+    @Property(defaultValue = "0", description = "Index of the first data to display.", skipAccessors = true)
     int getFirst();
 
     int getRowsToRender();

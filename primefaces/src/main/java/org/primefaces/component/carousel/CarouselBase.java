@@ -110,18 +110,18 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
     public abstract String getOnPageChange();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract boolean isDynamic();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getOffset();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getSize();
 
     @Override
-    @Property(hide = true)
+    @Property(internal = true)
     public abstract int getStep();
 }

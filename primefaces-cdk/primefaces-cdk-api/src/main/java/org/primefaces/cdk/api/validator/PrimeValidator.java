@@ -21,16 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.validate.base;
+package org.primefaces.cdk.api.validator;
 
-import org.primefaces.el.ValueExpressionStateHelper;
+import org.primefaces.cdk.api.PrimePropertyKeys;
+import org.primefaces.cdk.api.state.ValueExpressionStateHelper;
 
 import jakarta.faces.component.PartialStateHolder;
 import jakarta.faces.component.StateHelper;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.validator.Validator;
 
-public abstract class AbstractPrimeValidator implements Validator, PartialStateHolder {
+public abstract class PrimeValidator<T> implements Validator<T>, PartialStateHolder {
     private StateHelper stateHelper;
 
     private boolean transientFlag = false;
@@ -113,6 +114,7 @@ public abstract class AbstractPrimeValidator implements Validator, PartialStateH
                 clearInitialState();
             }
         }
-
     }
+
+    public abstract PrimePropertyKeys[] getPropertyKeys();
 }
