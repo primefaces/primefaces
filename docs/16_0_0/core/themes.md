@@ -59,8 +59,16 @@ You can include it via:
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-themes</artifactId>
-    <version></version>
+    <version>...</version>
 </dependency>
+```
+
+Themes are always prefixed with `primefaces-`. So for example `primefaces-material-indigo-light` is the `material-indigo-light` theme.
+```xml
+<context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>material-indigo-light</param-value>
+</context-param>
 ```
 
 ### Creating your own Theme
