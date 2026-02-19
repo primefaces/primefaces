@@ -69,16 +69,3 @@ You can fork and customize theme sources in the [`primefaces-themes`](https://gi
 * `themes` defines `.scss` variables (e.g. colors, fonts, additional styles, etc.) that will be used by `theme-base`.
 
 See [PrimeFaces Theme template](https://github.com/jungm/primefaces-theme-template) for a community-built template to create your own theme that does not require you to fork the entire base theme.
-
-## Designer
-
-PrimeTek also offers a [Theme Designer](https://www.primefaces.org/designer/primefaces) tool. 
-Designer API is a SASS based theme engine to create PrimeFaces themes easily featuring over 500 variables, 
-a demo application and a base sample theme. Whether you have your own style guide or just need a custom theme, 
-Designer API is the right tool to design and bring them to existence.
-
-## Legacy Themes
-
-PrimeFaces originally supported JQuery ThemeRoller themes but these are not really supported anymore and newer components like ToggleSwitch may not work at all.
-However, many older PrimeFaces applications still may use these themes. JQuery has an [on-line tool](https://jqueryui.com/themeroller/) to build your own theme.
-PrimeFaces also has a JAR of pre-built ThemeRoller themes you can find on [GitHub](https://github.com/primefaces/themes).
