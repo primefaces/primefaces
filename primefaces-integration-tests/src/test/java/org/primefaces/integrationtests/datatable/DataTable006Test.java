@@ -260,8 +260,8 @@ class DataTable006Test extends AbstractDataTableTest {
         dataTable.selectPage(2);
         page.submit.click();
 
-        // Assert - only 1 record unselected should leave first page selections only
-        assertSelections(page.messages, "2,3");
+        // Assert - with selectionPageOnly=false, all rows except unselected one should remain selected
+        assertSelections(page.messages, "2,3,4,5");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }
 
@@ -281,25 +281,32 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, true);
         assertSelections(page.messages,
-                "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,"
-                        + "2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3");
+                "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
-        // Act - unselect one row
+        // Act - unselect one row (row 2)
         dataTable.getCell(1, 0).getWebElement().click();
         page.submit.click();
 
-        // Assert - only 1 record unselected
+        // Assert - only 1 record unselected (row 2), all others remain selected (74 rows)
         assertSelectAllCheckbox(dataTable, false);
-        assertSelections(page.messages, "1,3");
+        assertSelections(page.messages,
+                "1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
-        // Act - reselect all record, unselect one and move to next page
+        // Act - reselect all, unselect one (row 1) and move to next page
         dataTable.toggleSelectAllCheckBox();
         dataTable.getCell(0, 0).getWebElement().click();
         dataTable.selectPage(2);
         page.submit.click();
 
-        // Assert - only 1 record unselected should leave first page selections only
-        assertSelections(page.messages, "2,3");
+        // Assert - with @all and !1 deselection marker, all 74 rows remain selected (all except row 1)
+        assertSelections(page.messages,
+                "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }
 
@@ -363,6 +370,41 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelections(page.messages, "");
         assertSelectAllCheckbox(dataTable, false);
+        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("DataTable: selection - reselect deselected row with selectionPageOnly='false'")
+    void reselectDeselectedRow(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleSelectPageOnly.click();
+
+        // Act - select all
+        dataTable.toggleSelectAllCheckBox();
+        page.submit.click();
+
+        // Assert - all rows selected
+        assertSelectAllCheckbox(dataTable, true);
+        assertSelections(page.messages, "1,2,3,4,5");
+
+        // Act - deselect row 2
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - row 2 deselected
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages, "1,3,4,5");
+
+        // Act - reselect row 2 (the one we just deselected)
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - row 2 is reselected, all 5 rows should now be selected again
+        // Note: selectAll checkbox remains unchecked because we manually reselected rather than using toggle all
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages, "1,2,3,4,5");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }
 

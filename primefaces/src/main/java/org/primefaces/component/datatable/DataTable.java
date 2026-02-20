@@ -633,6 +633,21 @@ public class DataTable extends DataTableBaseImpl {
         getStateHelper().put(InternalPropertyKeys.selectedRowKeys, selectedRowKeys);
     }
 
+    /**
+     * Checks if the DataTable's data is already loaded and available.
+     * For non-lazy tables, this always returns true.
+     * For lazy tables, this checks if the data model has been initialized and contains wrapped data.
+     *
+     * @return true if the table is non-lazy or if the lazy data model is loaded, false otherwise
+     */
+    public boolean isLazyDataLoaded() {
+        if (!isLazy()) {
+            return true;
+        }
+        DataModel<?> model = getDataModel();
+        return model != null && model.getWrappedData() != null;
+    }
+
     public String getSelectedRowKeysAsString() {
         return getSelectedRowKeys()
                 .stream()
@@ -958,7 +973,15 @@ public class DataTable extends DataTableBaseImpl {
         if (getFacesContext().isPostback()) {
             return;
         }
-        DataTableFeatures.selectionFeature().decodeSelection(getFacesContext(), this, rowKeys);
+        // Store rowKeys for later resolution after model loading
+        // This is critical for lazy tables where data is not yet loaded
+        setSelectedRowKeys(rowKeys);
+
+        // For non-lazy tables or lazy tables with data already loaded, apply selection immediately
+        // For lazy tables without data, selection will be applied in decodeSelectionRowKeys after model loading
+        if (isLazyDataLoaded()) {
+            DataTableFeatures.selectionFeature().decodeSelection(getFacesContext(), this, rowKeys);
+        }
     }
 
     public void updateExpansionWithMVS(Set<String> rowKeys) {
