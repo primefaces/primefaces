@@ -69,7 +69,8 @@ public final class CdkUtils {
         switch (name) {
             case "id":              return "Unique identifier of the component in a namingContainer.";
             case "rendered":        return "Boolean value to specify the rendering of the component, when set to false component will not be rendered.";
-            case "binding":         return "An EL expression referring to a server side UIComponent instance in a backing bean.";
+            case "binding":         return "EL expression referring to a server side UIComponent instance in a backing bean.";
+            case "converter":       return "EL expression resolves to a converter instance or literal converter ID defining a component converter.";
             case "ariaLabel":       return "The aria-label attribute is used to define a string that labels the current element for accessibility.";
             case "accesskey":       return "Access key to transfer focus to the input element.";
             case "dir":             return "Direction indication for text that does not inherit directionality.";
@@ -97,6 +98,7 @@ public final class CdkUtils {
             case "onchange":        return "Fires when the value of an element has been changed.";
             case "width":           return "Specifies the width of an element.";
             case "height":          return "Specifies the height of an element.";
+            case "value":           return "Value of the component.";
             default:                return "";
         }
     }
