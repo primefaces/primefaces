@@ -261,14 +261,14 @@
                             <version>3.2</version>
                         </dependency>
                     </dependencies>
-					<configuration>
-					<includes>
-					   <include>\target\classes\META-INF\primefaces.taglib.xml</include>
-					</includes>
-					<excludes>
-					   <exclude>src\main</exclude>
-					</excludes>
-					</configuration>
+                    <configuration>
+                       <includes>
+                           <include>\target\classes\META-INF\primefaces.taglib.xml</include>
+                       </includes>
+                       <excludes>
+                           <exclude>src\main</exclude>
+                       </excludes>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.cyclonedx</groupId>

@@ -134,16 +134,19 @@ public final class TaglibUtils {
 
     private static String getDescription(Class<?> clazz) {
         FacesComponentInfo facesComponentInfo = clazz.getAnnotation(FacesComponentInfo.class);
-        if (facesComponentInfo != null) facesComponentInfo.description();
+        if (facesComponentInfo != null) return facesComponentInfo.description();
 
         FacesBehaviorInfo facesBehaviorInfo = clazz.getAnnotation(FacesBehaviorInfo.class);
-        if (facesBehaviorInfo != null) facesBehaviorInfo.description();
+        if (facesBehaviorInfo != null) return facesBehaviorInfo.description();
 
         FacesValidatorInfo facesValidatorInfo = clazz.getAnnotation(FacesValidatorInfo.class);
-        if (facesValidatorInfo != null) facesValidatorInfo.description();
+        if (facesValidatorInfo != null) return facesValidatorInfo.description();
+
+        FacesConverterInfo facesConverterInfo = clazz.getAnnotation(FacesConverterInfo.class);
+        if (facesConverterInfo != null) return facesConverterInfo.description();
 
         FacesTagHandler facesTagHandler = clazz.getAnnotation(FacesTagHandler.class);
-        if (facesTagHandler != null) facesTagHandler.description();
+        if (facesTagHandler != null) return facesTagHandler.description();
 
         return null;
     }
@@ -303,7 +306,7 @@ public final class TaglibUtils {
     private static Map<String, Property> findAllProperties(Class<?> clazz, TagType tagType) throws ClassNotFoundException {
         Map<String, Property> properties = new TreeMap<>(); // sorted by property name
 
-        if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR || tagType == TagType.VALIDATOR) {
+        if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR || tagType == TagType.VALIDATOR || tagType == TagType.CONVERTER) {
             // Superclass = BaseImpl
             for (Class<?> inner : clazz.getSuperclass().getDeclaredClasses()) {
                 if (inner.getSimpleName().equals("PropertyKeys")) {
