@@ -23,12 +23,12 @@
  */
 package org.primefaces.cdk.api.converter;
 
+import jakarta.faces.view.facelets.ConverterConfig;
+import jakarta.faces.view.facelets.ConverterHandler;
 import jakarta.faces.view.facelets.MetaRuleset;
-import jakarta.faces.view.facelets.ValidatorConfig;
-import jakarta.faces.view.facelets.ValidatorHandler;
 
-public class PrimeConverterHandler extends ValidatorHandler {
-    public PrimeConverterHandler(ValidatorConfig config) {
+public class PrimeConverterHandler extends ConverterHandler {
+    public PrimeConverterHandler(ConverterConfig config) {
         super(config);
     }
 
