@@ -114,19 +114,13 @@ public class PanelRenderer extends CoreRenderer<Panel> {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        String styleClass = component.getStyleClass() == null ? Panel.PANEL_CLASS : Panel.PANEL_CLASS + " " + component.getStyleClass();
-
-        if (collapsed) {
-            styleClass += " ui-hidden-container";
-
-            if (component.getToggleOrientation().equals("horizontal")) {
-                styleClass += " ui-panel-collapsed-h";
-            }
-        }
-
-        if (!visible) {
-            styleClass += " ui-helper-hidden";
-        }
+        String styleClass = getStyleClassBuilder(context)
+            .add(Panel.PANEL_CLASS)
+            .add(component.getStyleClass())
+            .add(collapsed, Panel.PANEL_COLLAPSED_CLASS)
+            .add(collapsed && "horizontal".equals(component.getToggleOrientation()), Panel.PANEL_COLLAPSED_HORIZONTAL_CLASS)
+            .add(!visible, "ui-helper-hidden")
+            .build();
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
@@ -183,9 +177,14 @@ public class PanelRenderer extends CoreRenderer<Panel> {
         String clientId = component.getClientId(context);
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(headerFacet, component.isRenderEmptyFacets());
 
+        String styleClass = getStyleClassBuilder(context)
+            .add(Panel.PANEL_TITLEBAR_CLASS)
+            .add(component.isToggleableHeader(), Panel.PANEL_TITLEBAR_TOGGLEABLE_CLASS)
+            .build();
+
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context) + "_header", null);
-        writer.writeAttribute("class", Panel.PANEL_TITLEBAR_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
         if (component.isToggleable()) {
             writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
             writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(!component.isCollapsed()), null);
