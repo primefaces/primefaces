@@ -384,7 +384,9 @@ PrimeFaces.widget.Calendar = class Calendar extends PrimeFaces.widget.BaseWidget
                 closeText: localeSettings.aria.close,
                 prevText: localeSettings.aria.previous,
                 nextText: localeSettings.aria.next,
-                currentText: localeSettings.today
+                currentText: localeSettings.today,
+                amNames: [localeSettings.am],
+                pmNames: [localeSettings.pm]
             });
         }
     }
