@@ -385,7 +385,9 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 closeText: localeSettings.aria.close,
                 prevText: localeSettings.aria.previous,
                 nextText: localeSettings.aria.next,
-                currentText: localeSettings.today
+                currentText: localeSettings.today,
+                amNames: [localeSettings.am],
+                pmNames: [localeSettings.pm]
             });
         }
     },
