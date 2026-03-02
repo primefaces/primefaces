@@ -114,19 +114,13 @@ public class PanelRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        String styleClass = panel.getStyleClass() == null ? Panel.PANEL_CLASS : Panel.PANEL_CLASS + " " + panel.getStyleClass();
-
-        if (collapsed) {
-            styleClass += " ui-hidden-container";
-
-            if (panel.getToggleOrientation().equals("horizontal")) {
-                styleClass += " ui-panel-collapsed-h";
-            }
-        }
-
-        if (!visible) {
-            styleClass += " ui-helper-hidden";
-        }
+        String styleClass = getStyleClassBuilder(context)
+            .add(Panel.PANEL_CLASS)
+            .add(panel.getStyleClass())
+            .add(collapsed, Panel.PANEL_COLLAPSED_CLASS)
+            .add(collapsed && "horizontal".equals(panel.getToggleOrientation()), Panel.PANEL_COLLAPSED_HORIZONTAL_CLASS)
+            .add(!visible, "ui-helper-hidden")
+            .build();
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
@@ -183,9 +177,14 @@ public class PanelRenderer extends CoreRenderer {
         String clientId = panel.getClientId(context);
         boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
 
+        String styleClass = getStyleClassBuilder(context)
+            .add(Panel.PANEL_TITLEBAR_CLASS)
+            .add(panel.isToggleableHeader(), Panel.PANEL_TITLEBAR_TOGGLEABLE_CLASS)
+            .build();
+
         writer.startElement("div", null);
         writer.writeAttribute("id", panel.getClientId(context) + "_header", null);
-        writer.writeAttribute("class", Panel.PANEL_TITLEBAR_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
         if (panel.isToggleable()) {
             writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
             writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(!panel.isCollapsed()), null);
