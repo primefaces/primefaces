@@ -97,7 +97,7 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
     @Property(description = "When enabled, click event can be added to disabled button.")
     public abstract boolean isRenderDisabledClick();
 
-    @Property(defaultValue = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
+    @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
     public abstract String getAriaLabel();
 
     @Property(defaultValue = "true", description = "If true, the button will be disabled during Ajax requests triggered by the button.")
