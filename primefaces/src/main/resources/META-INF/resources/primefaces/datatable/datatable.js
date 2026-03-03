@@ -5867,9 +5867,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         // reset the position and column widths if scrollable
         if(this.scrollBody) {
-            // reset scroll position to left-top.
-            this.scrollBody.scrollTop(0).scrollLeft(0); 
-
             // reset the column widths if the first row exists
             const firstRow = this.firstRow();
             if (firstRow.length && this.isAutoLayout()) {
