@@ -44,6 +44,10 @@ public abstract class ColumnTogglerBase extends UIComponentBase implements Widge
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ColumnTogglerRenderer";
 
+    public ColumnTogglerBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
