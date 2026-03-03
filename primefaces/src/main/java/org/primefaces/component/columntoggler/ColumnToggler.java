@@ -36,6 +36,7 @@ import org.primefaces.util.MapBuilder;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
@@ -90,7 +91,8 @@ public class ColumnToggler extends ColumnTogglerBase {
             Visibility visibility = Visibility.valueOf(params.get(clientId + "_visibility"));
             int index = Integer.parseInt(params.get(clientId + "_index"));
 
-            UIColumn column = ((UITable) getDataSourceComponent()).getColumns().get(index);
+            UIColumn column = ((UITable) getDataSourceComponent()).getColumns().stream().filter(UIColumn::isRendered)
+                .collect(Collectors.toList()).get(index);
             super.queueEvent(new ColumnToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), column, visibility, index));
         }
         else if (event instanceof AjaxBehaviorEvent && "close".equals(eventName)) {
