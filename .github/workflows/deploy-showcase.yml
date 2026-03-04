@@ -27,7 +27,7 @@ jobs:
       - name: Build Showcase
         run: mvn clean install -f primefaces-showcase -P tomee -T1C --batch-mode --show-version
       - name: Log in to Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
