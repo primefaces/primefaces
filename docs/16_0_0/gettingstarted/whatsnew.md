@@ -26,6 +26,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
     * Added new `dragDrop` attribute to be able to disable drag and drop capabilities.
 * SelectOneButton
     * Added new `layout="custom"` to allow complete control over rendering
+* SelectOneMenu
+    * Added new `panelAutoSize="true"` option to always align the overlay panel's width with the select menu.
 * SelectManyButton
     * Added new `layout="custom"` to allow complete control over rendering
 * SplitButton

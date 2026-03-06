@@ -85,6 +85,7 @@
  * which is replaced with the value of the currently selected item.
  * @prop {boolean} cfg.syncTooltip Updates the title of the component with the description of the selected item.
  * @prop {boolean} cfg.renderPanelContentOnClient Renders panel content on client.
+ * @prop {boolean} cfg.panelAutoSize Automatically adjusts the width of the overlay panel to match the width of the select menu.
  */
 PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.DeferredWidget {
 
@@ -115,6 +116,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
 
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === undefined ? 'auto' : this.cfg.autoWidth;
+        this.cfg.panelAutoSize = this.cfg.panelAutoSize === undefined ? false : this.cfg.panelAutoSize;
         this.cfg.dynamic = !!this.cfg.dynamic;
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
         this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
@@ -278,7 +280,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      * @private
      */
     alignPanelWidth() {
-        if(!this.panelWidthAdjusted) {
+        if(this.cfg.panelAutoSize || !this.panelWidthAdjusted) {
             var jqWidth = this.jq.outerWidth();
 
             /* Ensures that the width of a potential scrollbar is considered in the following panel width calculation */
@@ -287,7 +289,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 this.itemsWrapper.css({'overflow': 'scroll'});
             }
 
-            if(this.panel.outerWidth() < jqWidth) {
+            if(this.cfg.panelAutoSize || this.panel.outerWidth() < jqWidth) {
                 this.panel.outerWidth(jqWidth);
             }
             else {
