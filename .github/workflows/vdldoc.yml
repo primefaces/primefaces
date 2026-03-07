@@ -33,16 +33,16 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-      - name: Generate TagLib
-        run: mvn clean install -pl primefaces -am -DskipTests
+      - name: Build PrimeFaces
+        run: mvn -B clean install -pl primefaces -am -DskipTests
 
       - name: Generate VDL Documentation
         working-directory: primefaces
-        run: mvn vdldoc:vdldoc --batch-mode --show-version
+        run: mvn install vdldoc:vdldoc -DskipTests -Dcheckstyle.skip --batch-mode --show-version
 
       - name: Copy VDL Documentation
         run: |
-          rsync -av --delete primefaces/target/site/vdldoc/ docs/vdldoc/
+          rsync -av primefaces/target/site/vdldoc/ docs/vdldoc/
 
       - name: Check for changes
         id: check-changes
