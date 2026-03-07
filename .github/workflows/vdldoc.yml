@@ -33,11 +33,8 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-      - name: Generate TagLib
-        run: mvn clean install -pl primefaces -am -DskipTests
-
-      - name: Generate VDL Documentation
-        run: mvn vdldoc:vdldoc -pl primefaces --batch-mode --show-version
+      - name: Generate TagLib and VDL Documentation
+        run: mvn clean install vdldoc:vdldoc -pl primefaces -am -DskipTests
 
       - name: Copy VDL Documentation
         run: |
