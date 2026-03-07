@@ -37,12 +37,12 @@ jobs:
         run: mvn clean install -pl primefaces -am -DskipTests
 
       - name: Generate VDL Documentation
-        working-directory: primefaces
-        run: mvn vdldoc:vdldoc --batch-mode --show-version
+        run: mvn vdldoc:vdldoc -pl primefaces --batch-mode --show-version
 
       - name: Copy VDL Documentation
+        working-directory: primefaces
         run: |
-          rsync -av primefaces/target/site/vdldoc/ docs/vdldoc/
+          rsync -av target/site/vdldoc/ docs/vdldoc/
 
       - name: Check for changes
         id: check-changes
