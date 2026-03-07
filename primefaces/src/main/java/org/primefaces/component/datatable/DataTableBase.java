@@ -286,7 +286,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     public abstract boolean isRenderEmptyFacets();
 
     @Property(defaultValue = "true", description = "When using paginator and checkbox selection mode the select all checkbox in header"
-            + " will select the current page if true or all rows if false.")
+            + " will select the current page if true or all rows if false."
+            + " When false, individual row unselections after 'select all' are preserved even across page navigation.")
     public abstract boolean isSelectionPageOnly();
 
     @Property(defaultValue = "true", description = "When disabled, it updates the whole table instead of updating a specific field such"
