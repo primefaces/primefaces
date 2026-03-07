@@ -40,9 +40,8 @@ jobs:
         run: mvn vdldoc:vdldoc -pl primefaces --batch-mode --show-version
 
       - name: Copy VDL Documentation
-        working-directory: primefaces
         run: |
-          rsync -av primefaces/target/site/vdldoc/ docs/vdldoc/
+          cp -r primefaces/target/site/vdldoc/* docs/vdldoc/
 
       - name: Check for changes
         id: check-changes
