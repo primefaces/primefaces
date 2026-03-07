@@ -34,7 +34,7 @@ jobs:
           git config --local user.name "GitHub Action"
 
       - name: Generate TagLib and VDL Documentation
-        run: mvn clean install vdldoc:vdldoc -pl primefaces -am -DskipTests
+        run: mvn -B -pl primefaces -am clean package vdldoc:vdldoc -DskipTests
 
       - name: Copy VDL Documentation
         run: |
