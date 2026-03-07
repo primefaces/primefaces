@@ -38,7 +38,7 @@ jobs:
 
       - name: Generate VDL Documentation
         working-directory: primefaces
-        run: mvn -B vdldoc:vdldoc
+        run: mvn -B install vdldoc:vdldoc
 
       - name: Copy VDL Documentation
         run: |
