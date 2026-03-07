@@ -38,7 +38,7 @@ jobs:
 
       - name: Generate VDL Documentation
         working-directory: primefaces
-        run: mvn install vdldoc:vdldoc -DskipTests -Dcheckstyle.skip --batch-mode --show-version
+        run: mvn package vdldoc:vdldoc -DskipTests -Dcheckstyle.skip --batch-mode --show-version
 
       - name: Copy VDL Documentation
         run: |
