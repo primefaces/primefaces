@@ -42,7 +42,7 @@ jobs:
       - name: Copy VDL Documentation
         working-directory: primefaces
         run: |
-          rsync -av target/site/vdldoc/ docs/vdldoc/
+          rsync -av primefaces/target/site/vdldoc/ docs/vdldoc/
 
       - name: Check for changes
         id: check-changes
