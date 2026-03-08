@@ -263,10 +263,10 @@
                     </dependencies>
                     <configuration>
                        <includes>
-                           <include>\target\classes\META-INF\primefaces.taglib.xml</include>
+                           <include>/target/classes/META-INF/primefaces.taglib.xml</include>
                        </includes>
                        <excludes>
-                           <exclude>src\main</exclude>
+                           <exclude>src/main</exclude>
                        </excludes>
                     </configuration>
                 </plugin>
