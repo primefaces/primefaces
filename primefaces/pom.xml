@@ -262,12 +262,10 @@
                         </dependency>
                     </dependencies>
                     <configuration>
+					   <srcDirectory>${project.build.outputDirectory}</srcDirectory>
                        <includes>
-                           <include>/target/classes/META-INF/primefaces.taglib.xml</include>
+                           <include>**/primefaces.taglib.xml</include>
                        </includes>
-                       <excludes>
-                           <exclude>src/main</exclude>
-                       </excludes>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -815,7 +813,7 @@
                 <maven.test.skip>true</maven.test.skip>
             </properties>
             <build>
-                <defaultGoal>package vdldoc:vdldoc</defaultGoal>
+                <defaultGoal>clean package</defaultGoal>
                 <plugins>
                     <plugin>
                         <groupId>com.github.matinh.vdldoc</groupId>
