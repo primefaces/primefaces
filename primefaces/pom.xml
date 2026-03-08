@@ -808,16 +808,14 @@
         </profile>
         <!-- GitHub Actions Profile to run VDL and others only in CI pipeline-->
         <profile>
-            <id>ci</id>
-            <activation>
-                <property>
-                    <name>env.CI</name>
-                </property>
-            </activation>
+            <id>vdl</id>
             <properties>
                 <vdl.skip>false</vdl.skip>
+                <checkstyle.skip>true</checkstyle.skip>
+                <maven.test.skip>true</maven.test.skip>
             </properties>
             <build>
+                <defaultGoal>package vdldoc:vdldoc</defaultGoal>
                 <plugins>
                     <plugin>
                         <groupId>com.github.matinh.vdldoc</groupId>

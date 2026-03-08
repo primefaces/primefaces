@@ -33,8 +33,12 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-      - name: Generate VDL Documentation
+      - name: Build PrimeFaces
         run: mvn -B -T1C --no-transfer-progress clean install -pl primefaces -am -DskipTests -Dcheckstyle.skip
+
+      - name: Generate VDL Documentation
+        working-directory: primefaces
+        run: mvn -B -T1C --no-transfer-progress -Pvdl
 
       - name: Copy VDL Documentation
         run: |
