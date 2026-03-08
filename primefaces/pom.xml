@@ -17,7 +17,6 @@
     <name>PrimeFaces</name>
 
     <properties>
-        <jakarta.jar.skip>false</jakarta.jar.skip>
         <cyclonedx.skip>true</cyclonedx.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
         <mockito.version>5.22.0</mockito.version>
@@ -27,6 +26,7 @@
         <frontend.directory>${basedir}/src/main/frontend</frontend.directory>
         <frontend.node.env>development</frontend.node.env>
         <sonar.skip>false</sonar.skip>
+        <vdl.skip>true</vdl.skip>
     </properties>
 
     <dependencies>
@@ -789,11 +789,11 @@
                 <maven.test.skip>true</maven.test.skip>
                 <maven.javadoc.skip>true</maven.javadoc.skip>
                 <maven.source.skip>true</maven.source.skip>
-                <jakarta.jar.skip>false</jakarta.jar.skip>
                 <checkstyle.skip>true</checkstyle.skip>
                 <xml.formatter.skip>true</xml.formatter.skip>
                 <frontend.node.env>development</frontend.node.env>
                 <cyclonedx.skip>true</cyclonedx.skip>
+                <vdl.skip>true</vdl.skip>
                 <license.skipCheckLicense>true</license.skipCheckLicense>
                 <license.skipAddThirdParty>true</license.skipAddThirdParty>
                 <license.skipAggregateDownloadLicenses>true</license.skipAggregateDownloadLicenses>
@@ -804,6 +804,38 @@
             <id>debug</id>
             <build>
                  <finalName>${project.artifactId}-debug-${project.version}</finalName>
+            </build>
+        </profile>
+        <!-- GitHub Actions Profile to run VDL and others only in CI pipeline-->
+        <profile>
+            <id>ci</id>
+            <activation>
+                <property>
+                    <name>env.CI</name>
+                </property>
+            </activation>
+            <properties>
+                <vdl.skip>false</vdl.skip>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.matinh.vdldoc</groupId>
+                        <artifactId>vdldoc-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-vdl</id>
+                                <phase>process-classes</phase>
+                                <configuration>
+                                    <skip>${vdl.skip}</skip>
+                                </configuration>
+                                <goals>
+                                    <goal>vdldoc</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
         <profile>
