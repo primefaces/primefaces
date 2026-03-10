@@ -6,7 +6,7 @@ on:
     branches: [ master, main ]
 
 env:
-  JAVA_VERSION: '11'
+  JAVA_VERSION: '21'
   JAVA_DISTRO: 'temurin'
   BRANCH: 'master'
 
