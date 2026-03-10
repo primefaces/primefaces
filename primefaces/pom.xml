@@ -258,7 +258,7 @@
                         <dependency>
                             <groupId>org.omnifaces</groupId>
                             <artifactId>vdldoc</artifactId>
-                            <version>3.2</version>
+                            <version>4.0</version>
                         </dependency>
                     </dependencies>
                     <configuration>
