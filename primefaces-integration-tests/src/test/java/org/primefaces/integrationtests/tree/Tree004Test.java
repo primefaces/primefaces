@@ -266,6 +266,59 @@ class Tree004Test extends AbstractTreeTest {
         assertConfiguration(tree.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(5)
+    @DisplayName("Tree: Filter to empty")
+    void filterToEmpty(Page page) {
+        // Arrange
+        Tree tree = page.tree;
+        assertNotNull(tree);
+
+        List<TreeNode> children = tree.getChildren();
+
+        assertNotNull(children);
+        assertEquals(3, children.size());
+
+        TreeNode first = children.get(0);
+        assertEquals("Documents", first.getLabelText());
+
+        assertTrue(children.get(0).getWebElement().isDisplayed());
+        assertTrue(children.get(1).getWebElement().isDisplayed());
+        assertTrue(children.get(2).getWebElement().isDisplayed());
+
+        // Act
+        WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
+        PrimeSelenium.guardAjax(filter).sendKeys("Blah");
+
+        // Assert
+        children = tree.getChildren();
+
+        assertNotNull(children);
+        assertEquals(3, children.size());
+
+        // L1
+        assertFalse(children.get(0).getWebElement().isDisplayed());
+        assertFalse(children.get(1).getWebElement().isDisplayed());
+        assertFalse(children.get(2).getWebElement().isDisplayed());
+        // L2
+        assertFalse(children.get(1).getChildren().get(0).getWebElement().isDisplayed());
+        assertFalse(children.get(1).getChildren().get(1).getWebElement().isDisplayed());
+        assertFalse(children.get(1).getChildren().get(2).getWebElement().isDisplayed());
+
+        // Act
+        filter.clear();
+        PrimeSelenium.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
+
+        // Assert
+        children = tree.getChildren();
+
+        assertTrue(children.get(0).getWebElement().isDisplayed());
+        assertTrue(children.get(1).getWebElement().isDisplayed());
+        assertTrue(children.get(2).getWebElement().isDisplayed());
+
+        assertConfiguration(tree.getWidgetConfiguration());
+    }
+
     public static class Page extends AbstractPrimePage {
 
         @FindBy(id = "form:tree")
