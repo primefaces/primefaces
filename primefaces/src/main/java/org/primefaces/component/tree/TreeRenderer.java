@@ -263,6 +263,10 @@ public class TreeRenderer extends CoreRenderer {
             tree.getFilteredRowKeys().clear();
             if (LangUtils.isNotBlank(filteredValue)) {
                 encodeFilteredNodes(context, tree, tree.getValue(), filteredValue, filterLocale);
+                if (tree.getFilteredRowKeys().isEmpty()) {
+                    // PF #14763 Force filtering so no match shows none not all
+                    tree.getFilteredRowKeys().add("");
+                }
             }
 
             if (root != null && root.getRowKey() == null) {
