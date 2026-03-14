@@ -137,6 +137,10 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
             defaultValue = "false")
     public abstract boolean isAlwaysDisplayLabel();
 
+    @Property(description = "Automatically adjusts the width of the overlay panel to match the width of the select menu.",
+            defaultValue = "false")
+    public abstract boolean isPanelAutoSize();
+
     @Property(description = "Displays label of the element in a custom template. Valid placeholder is {0}.")
     public abstract String getLabelTemplate();
 
