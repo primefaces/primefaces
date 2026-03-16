@@ -239,6 +239,8 @@ public class TaglibMojo extends AbstractMojo {
             Collection<String> classNames = allFunctions.stream().map(FunctionInfo::getName).collect(Collectors.toList());
             getLog().info("Found functions: " + String.join(",", classNames));
 
+            allFunctions.sort(Comparator.comparing(FunctionInfo::getName));
+
             return allFunctions;
         }
         catch (Exception e) {
