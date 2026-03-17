@@ -58,7 +58,7 @@ public class InputMaskRenderer extends InputRenderer {
 
         if (submittedValue != null) {
             String mask = inputMask.getMask();
-            if ( LangUtils.isNotBlank(mask) ) {
+            if (LangUtils.isNotBlank(mask)) {
 
                 // #6469/#11958 strip mask characters in case of optional values
                 if (isMaskOptional(mask)) {
