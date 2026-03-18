@@ -304,12 +304,6 @@ public class LangUtils {
 
     @SafeVarargs
     public static <E> Set<E> newLinkedHashSet(E... elements) {
-        if (elements.length == 0) {
-            return Collections.emptySet();
-        }
-        else if (elements.length == 1) {
-            return Collections.singleton(elements[0]);
-        }
         Set<E> set = new LinkedHashSet<>(calculateHashMapCapacity(elements.length));
         Collections.addAll(set, elements);
         return set;
