@@ -25,6 +25,7 @@ package org.primefaces.application.resource;
 
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.AgentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 import java.io.IOException;
@@ -34,6 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -41,19 +44,33 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 
+
 public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     private static final String SCRIPT_TAG = "script";
     private static final String BODY_TAG = "body";
     private static final String HTML_TAG = "html";
     private static final String TYPE_ATTRIBUTE = "type";
+    private static final Pattern TRACKING_SUFFIX_PATTERN = Pattern.compile("_\\d+$");
+
+    // Map containing all the replacements for the merged script
+    private static final Map<String, String> SCRIPT_REPLACE = Map.of(
+            ";;", ";",
+            "PrimeFaces.settings", "pf.settings",
+            "PrimeFaces.cw", "pf.cw",
+            "PrimeFaces.ab", "pf.ab",
+            "window.PrimeFaces", "pf"
+    );
+
+    // Pattern of all search words in OR
+    private static final Pattern SCRIPT_SEARCH = Pattern.compile(SCRIPT_REPLACE.keySet().stream().map(Pattern::quote).collect(Collectors.joining("|")));
 
     private final MoveScriptsToBottomState state;
+    private final Map<String, String> includeAttributes;
+    private final StringBuilder inline;
 
     private boolean inScript;
     private String scriptType;
-    private Map<String, String> includeAttributes;
-    private StringBuilder inline;
     private boolean scriptsRendered;
 
     private boolean foundHtmlElement;
@@ -72,7 +89,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         foundBodyElement = false;
 
         includeAttributes = new LinkedHashMap<>(6);
-        inline = new StringBuilder(75);
+        inline = new StringBuilder(256);
     }
 
     @Override
@@ -217,8 +234,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             for (Entry<String, List<Map<String, String>>> entry : state.getIncludes().entrySet()) {
 
                 List<Map<String, String>> includes = entry.getValue();
-                for (int i = 0; i < includes.size(); i++) {
-                    Map<String, String> attributes = includes.get(i);
+                for (Map<String, String> attributes : includes) {
                     attributes.put(TYPE_ATTRIBUTE, entry.getKey());
                     getWrapped().startElement(SCRIPT_TAG, null);
                     for (Entry<String, String> attribute : attributes.entrySet()) {
@@ -238,7 +254,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             // write inline scripts
             for (Map.Entry<String, List<String>> entry : state.getInlines().entrySet()) {
                 // strip tracking _0, _1, _2 etc off the end of the string
-                String type = entry.getKey().replaceAll("_\\d+$", "");
+                String type = TRACKING_SUFFIX_PATTERN.matcher(entry.getKey()).replaceAll(Constants.EMPTY_STRING);
                 List<String> inlines = entry.getValue();
 
                 String id = UUID.randomUUID().toString();
@@ -273,47 +289,47 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     }
 
     protected String mergeAndMinimizeInlineScripts(String id, String type, List<String> inlines, boolean deferred) {
-        StringBuilder script = new StringBuilder(inlines.size() * 100);
+        final boolean isJavascriptScript = RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type);
+
+        final StringBuilder script = new StringBuilder(inlines.size() * 100);
         for (int i = 0; i < inlines.size(); i++) {
             if (i > 0) {
-                script.append("\n");
+                script.append('\n');
             }
-            script.append(inlines.get(i));
+            // trim the single inline script! (for example <script> console.log('hello'); </script>)
+            // otherwise at the end of the merge you will get "console.log('hello'); ;"
+            script.append( inlines.get(i).trim() );
 
             // append ; only if this is JS code
-            if (RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type)) {
-                script.append(";");
+            if (isJavascriptScript) {
+                script.append(';');
             }
         }
 
-        String minimized = script.toString();
+        if (isJavascriptScript && LangUtils.isNotBlank(script)) {
+            // search and replace PrimeFaces with pf
+            // (single-pass multiple replace with StringBuilder)
+            LangUtils.replace(script, SCRIPT_SEARCH, SCRIPT_REPLACE);
 
-        if (LangUtils.isNotBlank(minimized)) {
-            if (RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type)) {
-                minimized = minimized.replace(";;", ";");
+            // 2. Costruzione finale (Prepending e Appending)
+            script.insert(0, "var pf=window.PrimeFaces;");
 
-                if (minimized.contains("PrimeFaces")) {
-                    minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
-                        .replace("PrimeFaces.cw", "pf.cw")
-                        .replace("PrimeFaces.ab", "pf.ab")
-                        .replace("window.PrimeFaces", "pf");
+            // Check finale per il punto e virgola
+            if ( script.length() > 0 && script.charAt(script.length() - 1) != ';') script.append(';');
 
-                    minimized = "var pf=window.PrimeFaces;" + minimized;
-                }
+            // Aggiunta rimozione elemento
+            script.append("document.getElementById('").append(id).append("').remove();");
 
-                if (!minimized.endsWith(";")) {
-                    minimized += ";";
-                }
-                minimized += "document.getElementById('" + id + "').remove();";
-
-                // deferred scripts have to wait until scripts are loaded before it can execute inline
-                if (deferred) {
-                    minimized = String.format("document.addEventListener(\"DOMContentLoaded\", function() {%s});", minimized);
-                }
+            // deferred scripts have to wait until scripts are loaded before it can execute inline
+            if (deferred) {
+                // Prepend: add the event listener
+                script.insert(0, "document.addEventListener(\"DOMContentLoaded\", function() {");
+                // Append: close the function call
+                script.append("});");
             }
         }
 
-        return minimized;
+        return script.toString();
     }
 
     @Override
