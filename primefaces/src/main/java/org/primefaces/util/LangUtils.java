@@ -65,7 +65,7 @@ public class LangUtils {
         return !isEmpty(value);
     }
 
-    public static boolean isBlank(String str) {
+    public static boolean isBlank(CharSequence str) {
         if (str == null) {
             return true;
         }
@@ -83,7 +83,7 @@ public class LangUtils {
         return true;
     }
 
-    public static boolean isNotBlank(String value) {
+    public static boolean isNotBlank(CharSequence value) {
         return !isBlank(value);
     }
 
