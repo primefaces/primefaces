@@ -311,13 +311,13 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             // (single-pass multiple replace with StringBuilder)
             LangUtils.replace(script, SCRIPT_SEARCH, SCRIPT_REPLACE);
 
-            // 2. Costruzione finale (Prepending e Appending)
+            // pf declaration
             script.insert(0, "var pf=window.PrimeFaces;");
 
-            // Check finale per il punto e virgola
+            // insert ';' if needed
             if ( script.length() > 0 && script.charAt(script.length() - 1) != ';') script.append(';');
 
-            // Aggiunta rimozione elemento
+            // remove script
             script.append("document.getElementById('").append(id).append("').remove();");
 
             // deferred scripts have to wait until scripts are loaded before it can execute inline
