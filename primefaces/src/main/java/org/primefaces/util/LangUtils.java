@@ -44,7 +44,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.faces.FacesException;
@@ -58,11 +57,11 @@ public class LangUtils {
     private LangUtils() {
     }
 
-    public static boolean isEmpty(CharSequence value) {
-        return value == null || value.length() == 0; // todo: change to isEmpty() when on Java 15+
+    public static boolean isEmpty(String value) {
+        return value == null || value.isEmpty();
     }
 
-    public static boolean isNotEmpty(CharSequence value) {
+    public static boolean isNotEmpty(String value) {
         return !isEmpty(value);
     }
 
@@ -209,48 +208,6 @@ public class LangUtils {
         }
 
         return str.substring(start, end);
-    }
-
-    /**
-     * Multiple search & replace with single pass on a {@link StringBuilder}.
-     * returns true if something has been replaced.
-     *
-     * @param input the input {@link StringBuilder}
-     * @param search the search {@link Pattern} (ideally with more than one search pattern in OR).
-     * @param replacements the {@link Map} containing multiple replacements.
-     * @return true if at least one replacement occurred.
-     */
-    public static boolean replace(StringBuilder input, Pattern search, Map<String, String> replacements) {
-        if (input == null || LangUtils.isEmpty(input) || search == null || replacements == null || replacements.isEmpty()) {
-            return false;
-        }
-
-        Matcher matcher = search.matcher(input);
-
-        // NO match -> SKIP and return false
-        if (!matcher.find()) return false;
-
-        // temp StringBuilder with 10% more capacity for replacements
-        StringBuilder temp = new StringBuilder(input.length() * 11 / 10);
-
-        // matcher.find() has been called
-        // we need a do {...} while
-        do {
-            String key = matcher.group();
-            String replacement = replacements.get(key);
-            if (replacement != null) {
-                matcher.appendReplacement(temp, Matcher.quoteReplacement(replacement));
-            }
-        }
-        while (matcher.find());
-
-        // append the rest
-        matcher.appendTail(temp);
-
-        // replace the content into the input and return
-        input.setLength(0);
-        input.append(temp);
-        return true;
     }
 
     public static boolean contains(Object[] array, Object object) {

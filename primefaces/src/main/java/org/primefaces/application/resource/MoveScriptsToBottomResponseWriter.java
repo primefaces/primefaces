@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -52,18 +51,6 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private static final String HTML_TAG = "html";
     private static final String TYPE_ATTRIBUTE = "type";
     private static final Pattern TRACKING_SUFFIX_PATTERN = Pattern.compile("_\\d+$");
-
-    // Map containing all the replacements for the merged script
-    private static final Map<String, String> SCRIPT_REPLACE = Map.of(
-            ";;", ";",
-            "PrimeFaces.settings", "pf.settings",
-            "PrimeFaces.cw", "pf.cw",
-            "PrimeFaces.ab", "pf.ab",
-            "window.PrimeFaces", "pf"
-    );
-
-    // Pattern of all search words in OR
-    private static final Pattern SCRIPT_SEARCH = Pattern.compile(SCRIPT_REPLACE.keySet().stream().map(Pattern::quote).collect(Collectors.joining("|")));
 
     private final MoveScriptsToBottomState state;
     private final Map<String, String> includeAttributes;
@@ -290,42 +277,63 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     }
 
     protected String mergeAndMinimizeInlineScripts(String id, String type, List<String> inlines, boolean deferred) {
-        final boolean isJavascriptScript = RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type);
+        if (inlines == null || inlines.isEmpty()) {
+            return Constants.EMPTY_STRING;
+        }
 
-        final StringBuilder script = new StringBuilder(inlines.size() * 100);
+        boolean isJavascriptScript = RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type);
+        boolean hasPrimeFaces = false;
+
+        StringBuilder script = new StringBuilder(inlines.size() * 128 + 128);
         for (int i = 0; i < inlines.size(); i++) {
-            if (i > 0) {
-                script.append('\n');
-            }
             // trim the single inline script! (for example <script> console.log('hello'); </script>)
             // otherwise at the end of the merge you will get "console.log('hello'); ;"
-            script.append( inlines.get(i).trim() );
+            String inline = inlines.get(i).trim();
 
-            // append ; only if this is JS code
-            if (isJavascriptScript) {
-                script.append(';');
+            if (LangUtils.isNotEmpty(inline)) {
+                if (i > 0) {
+                    script.append('\n');
+                }
+
+                if (isJavascriptScript) {
+                    if (inline.contains("PrimeFaces")) {
+                        hasPrimeFaces = true;
+                        inline = inline.replace("PrimeFaces.settings", "pf.settings")
+                                .replace("PrimeFaces.cw", "pf.cw")
+                                .replace("PrimeFaces.ab", "pf.ab")
+                                .replace("window.PrimeFaces", "pf");
+                    }
+
+                    script.append(inline);
+
+                    if (!inline.endsWith(";")) {
+                        script.append(';');
+                    }
+                }
+                else {
+                    script.append(inline);
+                }
             }
         }
 
-        if (isJavascriptScript && LangUtils.isNotBlank(script)) {
-            // search and replace PrimeFaces with pf
-            // (single-pass multiple replace with StringBuilder)
-            LangUtils.replace(script, SCRIPT_SEARCH, SCRIPT_REPLACE);
+        if (LangUtils.isBlank(script)) {
+            return Constants.EMPTY_STRING;
+        }
 
-            // pf declaration
-            script.insert(0, "var pf=window.PrimeFaces;");
+        if (isJavascriptScript) {
+            if (hasPrimeFaces) {
+                script.insert(0, "var pf=window.PrimeFaces;");
+            }
 
-            // insert ';' if needed
-            if ( script.length() > 0 && script.charAt(script.length() - 1) != ';') script.append(';');
+            if (script.charAt(script.length() - 1) != ';') {
+                script.append(';');
+            }
 
-            // remove script
             script.append("document.getElementById('").append(id).append("').remove();");
 
             // deferred scripts have to wait until scripts are loaded before it can execute inline
             if (deferred) {
-                // Prepend: add the event listener
                 script.insert(0, "document.addEventListener(\"DOMContentLoaded\", function() {");
-                // Append: close the function call
                 script.append("});");
             }
         }
