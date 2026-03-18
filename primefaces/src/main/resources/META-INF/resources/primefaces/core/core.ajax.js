@@ -1661,4 +1661,9 @@ if (!PrimeFaces.ajax) {
             });
         }
     });
+
+    $(document).on('pfAjaxError', function(e, xhr, settings, error){
+        // this is very likely a connection error
+        PrimeFaces.ajax.Utils.handleError("", "AJAX failure");
+    });
 }
