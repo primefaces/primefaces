@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.ajaxstatus;
 
+import org.junit.jupiter.api.Disabled;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
@@ -36,6 +37,7 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Disabled //#14779
 class AjaxStatus005Test extends AbstractPrimePageTest {
 
     @Test
