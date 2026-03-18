@@ -51,7 +51,7 @@ import javax.xml.bind.DatatypeConverter;
 
 public class LangUtils {
 
-    public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+    public static final Object[] EMPTY_OBJECT_ARRAY = {};
     private static final Pattern CAPITAL_CASE = Pattern.compile("(?<=.)(?=\\p{Lu})");
 
     private LangUtils() {
@@ -289,12 +289,28 @@ public class LangUtils {
     }
 
     @SafeVarargs
-    public static final <T> List<T> unmodifiableList(T... args) {
+    public static <T> List<T> unmodifiableList(T... args) {
+        // List.of is immutable and for 0, 1 and 2 elements is faster
+        if (args.length < 3) {
+            return List.of(args);
+        }
         return Collections.unmodifiableList(Arrays.asList(args));
     }
 
+    public static int calculateHashMapCapacity(int numMappings) {
+        // same as -> (int) Math.ceil(numMappings / 0.75d) but faster (no floating point ops, no cast)
+        return (numMappings * 4 + 2) / 3;
+    }
+
+    @SafeVarargs
     public static <E> Set<E> newLinkedHashSet(E... elements) {
-        Set<E> set = new LinkedHashSet<>(elements.length);
+        if (elements.length == 0) {
+            return Collections.emptySet();
+        }
+        else if (elements.length == 1) {
+            return Collections.singleton(elements[0]);
+        }
+        Set<E> set = new LinkedHashSet<>(calculateHashMapCapacity(elements.length));
         Collections.addAll(set, elements);
         return set;
     }
