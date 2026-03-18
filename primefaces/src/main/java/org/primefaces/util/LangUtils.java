@@ -290,10 +290,6 @@ public class LangUtils {
 
     @SafeVarargs
     public static <T> List<T> unmodifiableList(T... args) {
-        // List.of is immutable and for 0, 1 and 2 elements is faster
-        if (args.length < 3) {
-            return List.of(args);
-        }
         return Collections.unmodifiableList(Arrays.asList(args));
     }
 
