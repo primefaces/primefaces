@@ -1766,4 +1766,9 @@ export function globalAjaxSetup(): void {
             });
         }
     });
+
+    $(document).on('pfAjaxError', function(e, xhr, settings, error){
+        // this is very likely a connection error
+        ajax.Utils.handleError("", "AJAX failure");
+    });
 }
