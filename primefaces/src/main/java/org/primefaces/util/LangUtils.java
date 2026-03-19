@@ -293,14 +293,10 @@ public class LangUtils {
         return Collections.unmodifiableList(Arrays.asList(args));
     }
 
-    public static int calculateHashMapCapacity(int numMappings) {
-        // same as -> (int) Math.ceil(numMappings / 0.75d) but faster (no floating point ops, no cast)
-        return (numMappings * 4 + 2) / 3;
-    }
-
     @SafeVarargs
     public static <E> Set<E> newLinkedHashSet(E... elements) {
-        Set<E> set = new LinkedHashSet<>(calculateHashMapCapacity(elements.length));
+        int size = (int) Math.ceil(elements.length / 0.75);
+        Set<E> set = new LinkedHashSet<>(size);
         Collections.addAll(set, elements);
         return set;
     }
