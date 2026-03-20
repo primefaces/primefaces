@@ -23,7 +23,9 @@
  */
 package org.primefaces.util;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class HTML {
 
@@ -235,6 +237,38 @@ public class HTML {
         "onvolumechange",
         "onwaiting"
     );
+
+    public static final Set<String> BOOLEAN_HTML_ATTRS = Collections.unmodifiableSet(Set.of(
+            "allowfullscreen",
+            "alpha",
+            "async",
+            "autofocus",
+            "autoplay",
+            "checked",
+            "controls",
+            "default",
+            "defer",
+            "disabled",
+            "formnovalidate",
+            "headingreset",
+            "inert",
+            "ismap",
+            "itemscope",
+            "loop",
+            "multiple",
+            "muted",
+            "nomodule",
+            "novalidate",
+            "open",
+            "playsinline",
+            "readonly",
+            "required",
+            "reversed",
+            "selected",
+            "shadowrootclonable",
+            "shadowrootcustomelementregistry",
+            "shadowrootdelegatesfocus",
+            "shadowrootserializable"));
 
     public static final List<String> COMMON_EVENTS = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT);
 
