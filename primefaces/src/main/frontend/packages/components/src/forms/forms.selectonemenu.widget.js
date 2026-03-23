@@ -45,7 +45,6 @@
  * @prop {number} optGroupsSize The number of option groups.
  * @prop {JQuery} panel The DOM element for the overlay panel with the available selectable options.
  * @prop {JQuery} panelId ID of the DOM element for the overlay panel with the available selectable options.
- * @prop {number} panelWidthAdjusted The adjusted width of the overlay panel.
  * @prop {JQuery} preShowValue The DOM element for the selected option that is shown before the overlay panel is brought.
  * @prop {JQuery} labeledBy The DOM element for the label connected to he SelectOneMenu.
  * up.
@@ -264,7 +263,6 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh(cfg) {
-        this.panelWidthAdjusted = false;
         this.items = null;
 
         super.refresh(cfg);
@@ -278,26 +276,22 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      * @private
      */
     alignPanelWidth() {
-        if(!this.panelWidthAdjusted) {
-            var jqWidth = this.jq.outerWidth();
+        var jqWidth = this.jq.outerWidth();
 
-            /* Ensures that the width of a potential scrollbar is considered in the following panel width calculation */
-            let hasVerticalScrollbar = this.itemsWrapper[0].scrollHeight > this.itemsWrapper[0].clientHeight;
-            if (hasVerticalScrollbar) {
-                this.itemsWrapper.css({'overflow': 'scroll'});
-            }
-
-            if(this.panel.outerWidth() < jqWidth) {
-                this.panel.outerWidth(jqWidth);
-            }
-            else {
-                this.panel.outerWidth(this.panel.outerWidth());
-            }
-
-            this.itemsWrapper.css({'overflow': ''});
-
-            this.panelWidthAdjusted = true;
+        /* Ensures that the width of a potential scrollbar is considered in the following panel width calculation */
+        let hasVerticalScrollbar = this.itemsWrapper[0].scrollHeight > this.itemsWrapper[0].clientHeight;
+        if (hasVerticalScrollbar) {
+            this.itemsWrapper.css({'overflow': 'scroll'});
         }
+
+        if(this.panel.outerWidth() < jqWidth) {
+            this.panel.outerWidth(jqWidth);
+        }
+        else {
+            this.panel.outerWidth(this.panel.outerWidth());
+        }
+
+        this.itemsWrapper.css({'overflow': ''});
     }
 
     /**
