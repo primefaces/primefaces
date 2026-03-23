@@ -53,7 +53,7 @@ import jakarta.xml.bind.DatatypeConverter;
 
 public class LangUtils {
 
-    public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+    public static final Object[] EMPTY_OBJECT_ARRAY = {};
     private static final Pattern CAPITAL_CASE = Pattern.compile("(?<=.)(?=\\p{Lu})");
     private static final Pattern DIACRITICS_PATTERN = Pattern.compile("\\p{M}");
 
@@ -296,8 +296,10 @@ public class LangUtils {
         return Collections.unmodifiableList(Arrays.asList(args));
     }
 
+    @SafeVarargs
     public static <E> Set<E> newLinkedHashSet(E... elements) {
-        Set<E> set = new LinkedHashSet<>(elements.length);
+        int size = (int) Math.ceil(elements.length / 0.75);
+        Set<E> set = new LinkedHashSet<>(size);
         Collections.addAll(set, elements);
         return set;
     }
