@@ -29,7 +29,6 @@ import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.LangUtils;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -77,7 +76,7 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
 
     @Override
     public String getUploadDirectory(HttpServletRequest request) {
-        return Collections.list(request.getAttributeNames()).stream()
+        return LangUtils.stream(request.getAttributeNames())
                 .map(request::getAttribute)
                 .filter(MultipartConfigElement.class::isInstance)
                 .map(MultipartConfigElement.class::cast)
