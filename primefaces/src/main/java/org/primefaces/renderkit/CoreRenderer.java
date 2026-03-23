@@ -227,7 +227,7 @@ public abstract class CoreRenderer extends Renderer {
                         }
                     }
                 }
-                else if (shouldRenderAttribute(eventValue)) {
+                else if (shouldRenderAttribute(domEvent, eventValue)) {
                     builder.append(eventValue);
                 }
 
@@ -269,9 +269,9 @@ public abstract class CoreRenderer extends Renderer {
                 throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (shouldRenderAttribute(value)) {
+        if (shouldRenderAttribute(attribute, value)) {
             String stringValue = value.toString();
-            if ("true".equalsIgnoreCase(stringValue)) {
+            if (HTML.BOOLEAN_HTML_ATTRS.contains(attribute) && "true".equalsIgnoreCase(stringValue)) {
                 writer.writeAttribute(attribute, true, attribute);
             }
             else {
@@ -465,10 +465,11 @@ public abstract class CoreRenderer extends Renderer {
      *   <li>All other types: always render (returns {@code true}).</li>
      * </ul>
      *
+     * @param attribute the HTML attribute
      * @param value the value to check for rendering suitability
      * @return {@code true} if the value should be rendered, {@code false} otherwise
      */
-    protected boolean shouldRenderAttribute(Object value) {
+    protected boolean shouldRenderAttribute(String attribute, Object value) {
         if (value == null) {
             return false;
         }
@@ -498,9 +499,10 @@ public abstract class CoreRenderer extends Renderer {
                 return number.shortValue() != Short.MIN_VALUE;
             }
         }
-        else if (value instanceof String) {
+        else if (value instanceof String && "false".equalsIgnoreCase((String) value)
+                && HTML.BOOLEAN_HTML_ATTRS.contains(attribute)) {
             // #14390: passthrough attribute with "false" should be treated like boolean false
-            return !"false".equalsIgnoreCase((String) value);
+            return false;
         }
 
         return true;
