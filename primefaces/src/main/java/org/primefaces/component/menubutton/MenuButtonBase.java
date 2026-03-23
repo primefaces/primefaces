@@ -99,4 +99,7 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget, Sty
     @Property(description = "Icon class to display in place of the button label. If specified, the icon will be shown instead of the value (label).")
     public abstract String getButtonIcon();
 
+    @Property(description = "Defines the size of the button, valid values are \"small\" and \"large\".")
+    public abstract String getSize();
+
 }

@@ -155,6 +155,86 @@ body {
         height: $buttonIconOnlyWidth;
       }
     }
+    
+    &.ui-button-sm {
+      font-size: $buttonFontSizeSm;
+
+      &.ui-button-text-only .ui-button-text {
+        padding: $buttonTextOnlyPaddingSm;
+      }
+
+      &.ui-button-text-icon-left {
+        .ui-button-text { padding: $buttonWithLeftIconPaddingSm; }
+        .ui-icon {
+          font-size: $iconSizeSm;
+          margin-top: math.div(-1 * $iconSizeSm, 2);
+          left: math.div($iconSizeSm, 2);
+        }
+      }
+
+      &.ui-button-text-icon-right {
+        .ui-button-text { padding: $buttonWithRightIconPaddingSm; }
+        .ui-icon {
+          font-size: $iconSizeSm;
+          margin-top: math.div(-1 * $iconSizeSm, 2);
+          right: math.div($iconSizeSm, 2);
+        }
+      }
+
+      &.ui-button-icon-only {
+        width: $buttonIconOnlyWidthSm;
+        .ui-button-text { padding: $buttonIconOnlyPaddingSm; }
+        .ui-icon {
+          font-size: $iconSizeSm;
+          margin-top: math.div(-1 * $iconSizeSm, 2);
+          margin-left: math.div(-1 * $iconSizeSm, 2);
+        }
+        
+        &.rounded-button {
+          height: $buttonIconOnlyWidthSm;
+        }
+      }
+    }
+
+    &.ui-button-lg {
+      font-size: $buttonFontSizeLg;
+
+      &.ui-button-text-only .ui-button-text {
+        padding: $buttonTextOnlyPaddingLg;
+      }
+
+      &.ui-button-text-icon-left {
+        .ui-button-text { padding: $buttonWithLeftIconPaddingLg; }
+        .ui-icon {
+          font-size: $iconSizeLg;
+          margin-top: math.div(-1 * $iconSizeLg, 2);
+          left: math.div($iconSizeLg, 2);
+        }
+      }
+
+      &.ui-button-text-icon-right {
+        .ui-button-text { padding: $buttonWithRightIconPaddingLg; }
+        .ui-icon {
+          font-size: $iconSizeLg;
+          margin-top: math.div(-1 * $iconSizeLg, 2);
+          right: math.div($iconSizeLg, 2);
+        }
+      }
+
+      &.ui-button-icon-only {
+        width: $buttonIconOnlyWidthLg;
+        .ui-button-text { padding: $buttonIconOnlyPaddingLg; }
+        .ui-icon {
+          font-size: $iconSizeLg;
+          margin-top: math.div(-1 * $iconSizeLg, 2);
+          margin-left: math.div(-1 * $iconSizeLg, 2);
+        }
+        
+        &.rounded-button {
+          height: $buttonIconOnlyWidthLg;
+        }
+      }
+    }
 
     .ui-icon-triangle-1-s {
       @include icon-override("\e902");

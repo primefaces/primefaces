@@ -43,7 +43,7 @@ MenuButton displays different commands in a popup menu.
 | toggleEvent | hover | String | Event to toggle the submenus, valid values are "hover" and "click".
 | value | null | String | Label of the button
 | widgetVar | null | String | Name of the client side widget
-
+| size | null | String | Defines the size of the button, valid values are `small` and `large`.
 
 ## Getting started with the MenuButton
 MenuButton consists of one ore more menuitems. Following menubutton example has three

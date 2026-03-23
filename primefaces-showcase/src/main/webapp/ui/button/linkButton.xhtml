@@ -5,6 +5,14 @@
                 xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
+    <ui:define name="head">
+        <style>
+            body .ui-button.ui-linkbutton {
+                margin-right: 1rem;
+            }
+        </style>
+    </ui:define>
+
     <ui:define name="title">
         Link Button
     </ui:define>
@@ -18,35 +26,38 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <p:linkButton outcome="productDetail" value="Bookmark" style="margin-right:20px;">
+            <p:linkButton outcome="productDetail" value="Bookmark">
                 <f:param name="productId" value="10"/>
             </p:linkButton>
 
-            <p:linkButton outcome="productDetail" value="Bookmark new tab" style="margin-right:20px;" target="_blank">
+            <p:linkButton outcome="productDetail" value="Bookmark new tab" target="_blank">
                 <f:param name="productId" value="10"/>
             </p:linkButton>
 
-            <p:linkButton outcome="productDetail" value="With Icon" icon="pi pi-star" style="margin-right:20px;">
+            <p:linkButton outcome="productDetail" value="With Icon" icon="pi pi-star">
                 <f:param name="productId" value="20"/>
             </p:linkButton>
 
-            <p:linkButton outcome="productDetail" icon="pi pi-star" style="margin-right:20px;" title="Icon Only">
+            <p:linkButton outcome="productDetail" icon="pi pi-star" title="Icon Only">
                 <f:param name="productId" value="30"/>
             </p:linkButton>
 
-            <p:linkButton outcome="productDetail" value="With Icon" disabled="true" style="margin-right:20px;">
+            <p:linkButton outcome="productDetail" value="With Icon" disabled="true">
                 <f:param name="productId" value="40"/>
             </p:linkButton>
 
-            <p:linkButton outcome="productDetail" value="Bookmark" icon="pi pi-star" disabled="true"
-                          style="margin-right:20px;">
+            <p:linkButton outcome="productDetail" value="Bookmark" icon="pi pi-star" disabled="true">
                 <f:param name="productId" value="50"/>
             </p:linkButton>
 
-            <p:linkButton outcome="productDetail" icon="pi pi-star" style="margin-right:20px;" disabled="true"
-                          title="Icon Only">
+            <p:linkButton outcome="productDetail" icon="pi pi-star" disabled="true" title="Icon Only">
                 <f:param name="productId" value="60"/>
             </p:linkButton>
+            
+            <h5 id="sizes">Sizes</h5>
+            <p:linkButton outcome="productDetail" value="Small" size="small"/>
+            <p:linkButton outcome="productDetail" value="Normal"/>
+            <p:linkButton outcome="productDetail" value="Large" size="large" />
         </div>
     </ui:define>
 
