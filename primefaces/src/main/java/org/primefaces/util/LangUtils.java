@@ -36,7 +36,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -45,11 +44,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import javax.faces.FacesException;
 import javax.xml.bind.DatatypeConverter;
@@ -302,14 +297,6 @@ public class LangUtils {
         Set<E> set = new LinkedHashSet<>(elements.length);
         Collections.addAll(set, elements);
         return set;
-    }
-
-    public static <T> Stream<T> stream(Enumeration<T> enumeration) {
-        if (enumeration == null) {
-            return Stream.empty();
-        }
-
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(enumeration.asIterator(), Spliterator.ORDERED), false);
     }
 
     public static boolean isClassAvailable(String name) {
