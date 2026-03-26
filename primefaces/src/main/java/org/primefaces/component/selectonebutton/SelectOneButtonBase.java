@@ -78,4 +78,8 @@ public abstract class SelectOneButtonBase extends UISelectOne implements Widget,
     @Property(description = "Unselectable mode when true allows the button to be unselected.",
             defaultValue = "true")
     public abstract boolean isUnselectable();
+
+    @Property(description = "Defines the size of the button, valid values are \"small\" and \"large\".")
+    public abstract String getSize();
+
 }

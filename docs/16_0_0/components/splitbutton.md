@@ -84,6 +84,7 @@ SplitButton displays a command by default and additional ones in an overlay.
 | filterPlaceholder | null | String | Placeholder displayed in the filter input field before the user enters a value in an HTML5 browser.
 | filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
 | filterInputAutoFocus | true | Boolean | Defines if filter input should receive focus when overlay popup is displayed. Default is true.
+| size | null | String | Defines the size of the button, valid values are `small` and `large`.
 
 ## Getting started with SplitButton
 SplitButton usage is similar to a regular commandButton. Additional commands are placed inside

@@ -59,6 +59,7 @@ href | null | String | Resource to link to.
 escape | true | Boolean | Defines if label of the component is escaped or not.
 icon | null | String | Icon of the button.
 iconPos | left | String | Position of the button icon.
+size | null | String | Defines the size of the button, valid values are `small` and `large`.
 
 ## Getting Started with LinkButton
 Usage is the same as standard h:link, an outcome is necessary to navigate using GET requests.

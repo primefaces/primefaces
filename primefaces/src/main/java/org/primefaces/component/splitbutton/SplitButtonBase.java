@@ -114,4 +114,8 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
     @Property(defaultValue = "false", description = "Defines if dynamic loading is enabled for the element's panel."
             + " If the value is \"true\", the overlay is not rendered on page load to improve performance.")
     public abstract boolean isDynamic();
+
+    @Property(description = "Defines the size of the button, valid values are \"small\" and \"large\".")
+    public abstract String getSize();
+
 }

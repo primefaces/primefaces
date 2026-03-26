@@ -156,6 +156,25 @@ $plainButtonTextColor:$textSecondaryColor !default;
 $plainButtonHoverBgColor:$shade200 !default;
 $plainButtonActiveBgColor:$shade300 !default;
 
+//button sizes
+$buttonFontSizeSm: 0.875rem !default;
+$buttonFontSizeLg: 1.25rem !default;
+
+$iconSizeSm: 0.875rem !default;
+$iconSizeLg: 1.25rem !default;
+
+$buttonTextOnlyPaddingSm: .375rem .563rem !default;
+$buttonWithLeftIconPaddingSm: .375rem .563rem .375rem 1.5rem !default;
+$buttonWithRightIconPaddingSm: .375rem 1.5rem .375rem .563rem !default;
+$buttonIconOnlyPaddingSm: .375rem 0 !default;
+$buttonIconOnlyWidthSm: 1.768rem !default;
+
+$buttonTextOnlyPaddingLg: .625rem .938rem !default;
+$buttonWithLeftIconPaddingLg: .625rem .938rem .625rem 2.5rem !default;
+$buttonWithRightIconPaddingLg: .625rem 2.5rem .625rem .938rem !default;
+$buttonIconOnlyPaddingLg: .625rem 0 !default;
+$buttonIconOnlyWidthLg: 2.946rem !default;
+
 //button severities
 $secondaryButtonBg:#6c757d !default;
 $secondaryButtonTextColor:#ffffff !default;

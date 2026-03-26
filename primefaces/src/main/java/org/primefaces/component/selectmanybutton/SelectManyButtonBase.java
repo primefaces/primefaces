@@ -73,4 +73,7 @@ public abstract class SelectManyButtonBase extends UISelectMany implements Widge
 
     @Property(description = "Position of the element in the tabbing order.")
     public abstract String getTabindex();
+
+    @Property(description = "Defines the size of the button, valid values are \"small\" and \"large\".")
+    public abstract String getSize();
 }

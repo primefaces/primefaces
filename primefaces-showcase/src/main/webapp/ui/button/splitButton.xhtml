@@ -129,6 +129,25 @@
                     <p:menuitem value="Delete" action="#{buttonView.sleepAndDelete}" update="messages" icon="pi pi-times"/>
                 </p:splitButton>
 
+                <h5 id="sizes">Sizes</h5>
+                <p:splitButton value="Small" icon="pi pi-save" size="small">
+                    <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:divider />
+                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                </p:splitButton>
+                <p:splitButton value="Normal" icon="pi pi-save">
+                    <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:divider />
+                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                </p:splitButton>
+                <p:splitButton value="Large" icon="pi pi-save" size="large">
+                    <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:divider />
+                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                </p:splitButton>
             </h:form>
         </div>
     </ui:define>

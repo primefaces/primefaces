@@ -32,6 +32,7 @@ onchange | null | String | Callback to execute on value change.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 required | false | Boolean | Marks component as required
 requiredMessage | null | String | Message to be displayed when required field validation fails.
+size | null | String | Defines the size of the button, valid values are `small` and `large`.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
 tabindex | 0 | String | Position of the element in the tabbing order.

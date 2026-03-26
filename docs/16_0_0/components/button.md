@@ -57,6 +57,7 @@ Button is an extension to the standard h:button component with skinning capabili
 | escape | true | Boolean | Defines whether label would be escaped or not.
 | inline | false | Boolean | Displays as inline instead of 100% width, mobile only.
 | disableClientWindow | false | Boolean | Disable appending the ClientWindow on the rendering of this element.
+| size | null | String | Defines the size of the button, valid values are `small` and `large`.
 
 ## Getting Started with Button
 p:button usage is same as standard h:button, an outcome is necessary to navigate using GET
