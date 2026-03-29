@@ -105,6 +105,8 @@ public class BadgeRenderer extends CoreRenderer<Badge> {
                     .add("success".equals(severity), Badge.SEVERITY_SUCCESS_CLASS)
                     .add("warning".equals(severity), Badge.SEVERITY_WARNING_CLASS)
                     .add("danger".equals(severity), Badge.SEVERITY_DANGER_CLASS)
+                    .add("secondary".equals(severity), Badge.SEVERITY_SECONDARY_CLASS)
+                    .add("help".equals(severity), Badge.SEVERITY_HELP_CLASS)
                     .build();
 
         if (renderChildren) {
