@@ -27,6 +27,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.OutputLabel;
 import org.primefaces.selenium.component.SelectBooleanCheckbox;
 import org.primefaces.selenium.component.SelectOneMenu;
 
@@ -250,6 +251,21 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
         assertEquals("SelectOneMenu", selectOneMenu.getAssignedLabelText());
     }
 
+    @Test
+    @Order(12)
+    @DisplayName("SelectOneMenu: ensure aria-labelledby is set from OutputLabel")
+    void ariaLabelledBy(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+        OutputLabel outputLabel = page.outputLabel;
+
+        // Act
+
+        // Assert
+        assertEquals(outputLabel.getId(), selectOneMenu.getLabel().getDomAttribute("aria-labelledby"));
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
@@ -261,6 +277,10 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
+        @FindBy(id = "form:outputlabel")
+        OutputLabel outputLabel;
+
         @FindBy(id = "form:selectonemenu")
         SelectOneMenu selectOneMenu;
 
