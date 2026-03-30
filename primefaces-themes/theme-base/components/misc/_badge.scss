@@ -39,6 +39,16 @@ body {
       color: $dangerButtonTextColor;
     }
 
+    &.ui-badge-secondary {
+      background: $secondaryButtonBg;
+      color: $secondaryButtonTextColor;
+    }
+
+    &.ui-badge-help {
+      background: $helpButtonBg;
+      color: $helpButtonTextColor;
+    }
+
     &.ui-badge-lg {
       font-size: 1.5 * $badgeFontSize;
       min-width: 1.5 * $badgeMinWidth;
