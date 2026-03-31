@@ -299,6 +299,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
             renderPassThruAttributes(context, component, HTML.TAB_INDEX);
             renderDomEvents(context, component, HTML.BLUR_FOCUS_EVENTS);
 
+            String labelledBy = component.getAriaLabelledBy();
+            if (LangUtils.isNotBlank(labelledBy)) {
+                writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
+            }
+
             String label = component.getLabel();
             if (label != null) {
                 writer.writeText(label, null);
