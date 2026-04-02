@@ -22549,6 +22549,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines whether html would be escaped or not for tooltip content and more. Default is true.]]>
+            </description>
+            <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute> 
+        <attribute>
+            <description>
                 <![CDATA[Style of the main container element of schedule.]]>
             </description>
             <name>style</name>

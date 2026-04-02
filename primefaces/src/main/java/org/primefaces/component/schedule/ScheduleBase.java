@@ -76,6 +76,7 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, RT
         slotEventOverlap,
         urlTarget,
         noOpener,
+        escape,
         dir,
         height
     }
@@ -167,6 +168,14 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, RT
 
     public void setDraggable(boolean draggable) {
         getStateHelper().put(PropertyKeys.draggable, draggable);
+    }
+
+    public boolean isEscape() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     public boolean isResizable() {

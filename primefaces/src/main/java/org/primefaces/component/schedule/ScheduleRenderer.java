@@ -181,6 +181,7 @@ public class ScheduleRenderer extends CoreRenderer {
         wb.init("Schedule", schedule)
                 .attr("urlTarget", schedule.getUrlTarget(), "_blank")
                 .attr("noOpener", schedule.isNoOpener(), true)
+                .attr("escape", schedule.isEscape(), true)
                 .attr("locale", locale.toString())
                 .attr("tooltip", schedule.isTooltip(), false);
 
