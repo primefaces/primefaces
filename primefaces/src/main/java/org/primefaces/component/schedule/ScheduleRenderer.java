@@ -179,6 +179,7 @@ public class ScheduleRenderer extends CoreRenderer<Schedule> {
         wb.init("Schedule", component)
                 .attr("urlTarget", component.getUrlTarget(), "_blank")
                 .attr("noOpener", component.isNoOpener(), true)
+                .attr("escape", component.isEscape(), true)
                 .attr("locale", locale.toString())
                 .attr("tooltip", component.isTooltip(), false);
 
