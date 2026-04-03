@@ -40,6 +40,12 @@
                  <scope>import</scope>
                  <type>pom</type>
             </dependency>   
+        
+            <dependency>
+                <groupId>org.ehcache</groupId>
+                <artifactId>ehcache</artifactId>
+                <version>3.12.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
