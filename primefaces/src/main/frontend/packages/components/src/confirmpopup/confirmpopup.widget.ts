@@ -374,7 +374,10 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
 
         const beforeShow = () => {
             if (msg.beforeShow) {
-                PrimeFaces.csp.eval(msg.beforeShow);
+                const beforeShowResult = PrimeFaces.csp.evalResult(msg.beforeShow);
+                if (beforeShowResult === false) {
+                    return;
+                }
             }
 
             const iconClass = msg.icon || this.icon.data('p-icon');
