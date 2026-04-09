@@ -1530,7 +1530,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                         .add(checked, "ui-state-active")
                         .build();
             String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
-            Object rowKey = isHeaderCheckbox ? "head" : component.getRowKey();
+            String rowKey = isHeaderCheckbox ? "head" : component.getRowKey();
 
             writer.startElement("div", null);
             writer.writeAttribute("class", styleClass, "styleClass");
