@@ -4794,6 +4794,10 @@ var AutoNumeric = /*#__PURE__*/function () {
           this._historyTableRedo();
           this._triggerEvent(AutoNumeric.events["native"].input, e.target); //TODO instead of adding the event here, generate it from the `_historyTableRedo()` function?
           this.onGoingRedo = true;
+
+          // if lastVal is updated in the undo branch, it should be update here too, otherwise backspace could delete two chars (enter 1234, ctrl-z, ctrl-y, backspace)
+          this.lastVal = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementValue(e.target);
+          this.throwInput = true;
           return;
         } else if (e.ctrlKey && !e.shiftKey) {
           if (this.onGoingRedo) {
@@ -4805,6 +4809,9 @@ var AutoNumeric = /*#__PURE__*/function () {
             this._historyTableUndo();
             this._triggerEvent(AutoNumeric.events["native"].input, e.target); //TODO instead of adding the event here, generate it from the `_historyTableRedo()` function?
 
+            // lastVal should be updated to properly detect change in the delete/backspace handler above
+            this.lastVal = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementValue(e.target);
+            this.throwInput = true;
             return;
           }
         }
@@ -4814,6 +4821,10 @@ var AutoNumeric = /*#__PURE__*/function () {
         this._historyTableRedo();
         this._triggerEvent(AutoNumeric.events["native"].input, e.target); //TODO instead of adding the event here, generate it from the `_historyTableRedo()` function?
         this.onGoingRedo = true;
+
+        // if lastVal is updated in the undo branch, it should be update here too, otherwise backspace could delete two chars (enter 1234, ctrl-z, ctrl-y, backspace)
+        this.lastVal = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementValue(e.target);
+        this.throwInput = true;
         return;
       }
       if (this.onGoingRedo && (e.ctrlKey || e.shiftKey)) {
@@ -4822,7 +4833,8 @@ var AutoNumeric = /*#__PURE__*/function () {
       }
 
       // Manage the Cut event
-      if ((e.ctrlKey || e.metaKey) && (this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.X || this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.x)) {
+      // Also handle the Ctrl-Del event on windows (Delete words to the right of the cursor) 
+      if ((e.ctrlKey || e.metaKey) && (this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.X || this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.x) || e.ctrlKey && this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.Delete) {
         // Save the caret position at the start of the selection
         var caretPosition = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementSelection(this.domElement).start;
         // Convert the remaining 'formatted' numbers in a Js number
@@ -4831,6 +4843,9 @@ var AutoNumeric = /*#__PURE__*/function () {
         this.set(cutNumber);
         // Set back the initial caret position
         this._setCaretPosition(caretPosition);
+
+        // update lastVal to detect change in delete/backspace handler
+        this.lastVal = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementValue(e.target);
       }
 
       // Manage the reformat when hovered with the Alt key pressed
@@ -5099,6 +5114,7 @@ var AutoNumeric = /*#__PURE__*/function () {
 
         // 4. On a 'normal' non-autoNumeric input, an `input` event is sent when a paste is done. We mimic that.
         this._triggerEvent(AutoNumeric.events["native"].input, eventTarget);
+        this.lastVal = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementValue(eventTarget); // fix the 'input event sometimes not raised' issue after value is pasted into an empty input
 
         // 5. Return since the job is done
         return;
@@ -5429,6 +5445,7 @@ var AutoNumeric = /*#__PURE__*/function () {
       if (valueHasBeenSet && initialFormattedValue !== targetValue) {
         // On a 'normal' non-autoNumeric input, an `input` event is sent when a paste is done. We mimic that.
         this._triggerEvent(AutoNumeric.events["native"].input, eventTarget);
+        this.lastVal = targetValue; // update it to avoid deleting an extra char when the pasted content is selected and removed by hitting backspace (see also _onKeyDown)
       }
     }
 
@@ -14237,4 +14254,3 @@ __webpack_exports__ = __webpack_exports__["default"];
 /******/ })()
 ;
 });
-//# sourceMappingURL=autoNumeric.js.map
