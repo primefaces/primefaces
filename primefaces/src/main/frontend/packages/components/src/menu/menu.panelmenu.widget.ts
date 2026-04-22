@@ -422,10 +422,9 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      */
     expandTreeItem(submenu: JQuery, restoring?: boolean): void {
         var submenuLink = submenu.find('> .ui-menuitem-link');
-
         submenuLink.find('> .ui-menuitem-text').attr('aria-expanded', "true");
         submenuLink.find('> .ui-panelmenu-icon').addClass('ui-icon-triangle-1-s');
-        submenu.children('.ui-menu-list').show();
+        submenu.children('.ui-menu-list').removeClass('ui-helper-hidden').show();
 
         if(!restoring) {
             this.updateExpandedNodes();
@@ -438,10 +437,9 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
      */
     collapseTreeItem(submenu: JQuery): void {
         var submenuLink = submenu.find('> .ui-menuitem-link');
-
         submenuLink.find('> .ui-menuitem-text').attr('aria-expanded', "false");
         submenuLink.find('> .ui-panelmenu-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
-        submenu.children('.ui-menu-list').hide();
+        submenu.children('.ui-menu-list').addClass('ui-helper-hidden').hide();
 
         this.updateExpandedNodes();
     }
@@ -553,7 +551,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         });
 
         $this.jq.find('.ui-menu-parent > .ui-menu-list:not(.ui-helper-hidden)').each(function() {
-            $this.collapseTreeItem($(this));
+            $this.collapseTreeItem($(this).parent());
         });
     }
 
