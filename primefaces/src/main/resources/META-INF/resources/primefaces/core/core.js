@@ -492,7 +492,8 @@
             }).on('pfAjaxComplete' + namespace, function(e, xhr, settings, args) {
                 if (isXhrSource.call(this, widget, settings)) {
                     widget.ajaxCount--;
-                    if (widget.ajaxCount > 0 || !args || args.redirect) {
+                    if (widget.ajaxCount > 0 || (args && args.redirect)) {
+               
                         return;
                     }
 
