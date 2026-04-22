@@ -24,5 +24,7 @@
         <exclude name="org.primefaces.component.treetable.export.TreeTableExcelXExporter"/>
         <exclude name="org.primefaces.component.treetable.export.TreeTableExcelXStreamExporter"/>
         <exclude name="org.primefaces.component.treetable.export.TreeTablePDFExporter"/>
+
+        <exclude name="org.primefaces.model.timeline.TimelineEvent"/>
     </scan>
 </beans>
