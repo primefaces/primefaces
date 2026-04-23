@@ -892,9 +892,9 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
             writer.startElement("td", null);
             writer.writeAttribute("colspan", colSize, null);
-            writer.writeText(moreText, "moreText");
             writer.writeAttribute(HTML.ARIA_LABEL, moreText, null);
             writer.writeAttribute("data-item-label", moreText, null);
+            writer.writeText(moreText, "moreText");
             writer.endElement("td");
 
             writer.endElement("tr");
