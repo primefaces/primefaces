@@ -76,10 +76,11 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     _cleanup: function() {
+        this.deleteTimeout();
         this.content.remove();
         this.blocker.remove();
         this.jq.remove();
-        this.target.attr('aria-busy', false);
+        this.restoreTargetState();
         $(document).off('pfAjaxSend.' + this.id + ' pfAjaxUpdated.' + this.id + ' pfAjaxComplete.' + this.id);
     },
 
@@ -215,6 +216,14 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
                 this.content.hide(duration || 0, resetPositionCallback);
         }
 
+        this.restoreTargetState();
+    },
+
+    /**
+     * Restores mouse events and keyboard focus on the target
+     * @private
+     */
+    restoreTargetState: function() {
         // restore mouse events on the target
         this.target.attr('aria-busy', false).css({
             'pointer-events': 'auto',
@@ -301,7 +310,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             var height = currentTarget.outerHeight(),
                 width = currentTarget.outerWidth(),
                 offset = currentTarget.offset();
-           
+
             // Only update blocker CSS if dimensions changed
             var currentBlockerHeight = blocker.height();
             var currentBlockerWidth = blocker.width();
