@@ -77,7 +77,7 @@
                                  onclick="PF('pbAjaxLong').start();PF('startButton3').disable()"
                                  widgetVar="startButton3" actionListener="#{progressBarView.longRunning}" styleClass="mr-2"/>
                 <p:commandButton value="Cancel" action="#{progressBarView.cancel}" onclick="PF('pbAjaxLong').cancel();"
-                                 oncomplete="PF('startButton3').enable()" styleClass="ui-button-outlined"/>
+                                 oncomplete="PF('startButton3').enable()" styleClass="ui-button-outlined" async="true" />
 
                 <p:progressBar widgetVar="pbAjaxLong" ajax="true" value="#{progressBarView.progress2}"
                                labelTemplate="{value}%" styleClass="mt-3" global="false" interval="500">
