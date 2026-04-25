@@ -1,29 +1,30 @@
+body {
+  .ui-autocomplete-dd {
 
-.ui-autocomplete-dd {
-
-  .ui-inputfield {
-    border-right: none;
-  }
-
-  .ui-autocomplete-dropdown.ui-button {
-    border-left: none !important;
-    border: 1px solid $inputBorderColor;
-    background: none;
-
-    .ui-icon {
-      color: $textColor;
+    .ui-inputfield {
+      border-right: none;
     }
-  }
 
-  &:has(.ui-inputfield.ui-state-hover) {
     .ui-autocomplete-dropdown.ui-button {
-      border-color: $inputHoverBorderColor;
+      border-left: none !important;
+      border: 1px solid $inputBorderColor;
+      background: none;
+
+      .ui-icon {
+        color: $textColor;
+      }
     }
-  }
 
-  &:has(.ui-inputfield.ui-state-focus) {
-    .ui-autocomplete-dropdown.ui-button {
-      border-color: $inputFocusBorderColor;
+    &:has(.ui-inputfield.ui-state-hover) {
+      .ui-autocomplete-dropdown.ui-button {
+        border-color: $inputHoverBorderColor;
+      }
+    }
+
+    &:has(.ui-inputfield.ui-state-focus) {
+      .ui-autocomplete-dropdown.ui-button {
+        border-color: $inputFocusBorderColor;
+      }
     }
   }
 }

@@ -74,6 +74,9 @@ $focusOutline:0 none !default;
 $focusOutlineOffset:0 !default;
 $focusShadow: none !default;
 
+//outputlabel
+$outputLabelFontWeight: 500 !default;
+
 //input field
 $inputPadding:0.429rem 0.715rem !default;
 $inputTextFontSize:1rem !default;
@@ -102,7 +105,7 @@ $inputGroupAddonMinWidth:2.357rem !default;
 $inputListMinWidth: 12rem !default;
 $inputListBg: $shade000 !default;
 $inputListBorder: $inputBorder !default;
-$inputListPadding: 0.25rem 0 !default; // v3 list.padding
+$inputListPadding: 0.25rem 0 !default;
 
 $inputListItemPadding: 0.29rem .715rem !default;
 $inputListItemBg:transparent !default;

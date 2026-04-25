@@ -1,2 +1,7 @@
 @import "./extensions/_input";
-@import "./extensions/_outputlabel";
+
+body {
+  .ui-button-icon-primary.ui-icon {
+    line-height: normal;
+  }
+}
