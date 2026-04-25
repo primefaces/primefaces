@@ -24,6 +24,7 @@ $overlayColor: #ffffff !default;
 //global
 $fontFamily: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif !default;
 $fontSize: 1rem !default;
+$lineHeight: 1.2 !default;
 $textColor: $emphasis-high !default;
 $textSecondaryColor: $emphasis-medium !default;
 $borderRadius: 4px !default;
@@ -473,6 +474,7 @@ $datatableHeaderCellBg: #1e1e1e !default;
 $datatableHeaderCellTextColor: $textColor !default;
 $datatableHeaderCellIconColor: $textSecondaryColor !default;
 $datatableHeaderCellFontWeight: 500 !default;
+$datatableHeaderCellFontSize: $fontSize !default;
 $datatableHeaderCellBorder: 1px solid #404040 !default;
 $datatableHeaderCellBorderWidth: 0 0 1px 0 !default;
 $datatableHeaderCellHoverBg: rgba(255, 255, 255, .04) !default;

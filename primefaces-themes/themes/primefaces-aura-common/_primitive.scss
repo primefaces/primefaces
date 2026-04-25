@@ -1,0 +1,173 @@
+// Primitive palette tokens (PrimeUIX v3, packages/themes — presets/aura/base)
+// @see https://github.com/primefaces/primeuix/tree/v3
+
+// --- Emerald (primary / accents) -------------------------------------------------
+$emerald-50: #ecfdf5 !default;
+$emerald-100: #d1fae5 !default;
+$emerald-200: #a7f3d0 !default;
+$emerald-300: #6ee7b7 !default;
+$emerald-400: #34d399 !default;
+$emerald-500: #10b981 !default;
+$emerald-600: #059669 !default;
+$emerald-700: #047857 !default;
+$emerald-800: #065f46 !default;
+$emerald-900: #064e3b !default;
+$emerald-950: #022c22 !default;
+
+// --- Neutrals (slate: light mode surfaces) --------------------------------------
+$slate-50: #f8fafc !default;
+$slate-100: #f1f5f9 !default;
+$slate-200: #e2e8f0 !default;
+$slate-300: #cbd5e1 !default;
+$slate-400: #94a3b8 !default;
+$slate-500: #64748b !default;
+$slate-600: #475569 !default;
+$slate-700: #334155 !default;
+$slate-800: #1e293b !default;
+$slate-900: #0f172a !default;
+$slate-950: #020617 !default;
+
+// --- Neutrals (zinc: dark mode surfaces) ------------------------------------------
+$zinc-50: #fafafa !default;
+$zinc-100: #f4f4f5 !default;
+$zinc-200: #e4e4e7 !default;
+$zinc-300: #d4d4d8 !default;
+$zinc-400: #a1a1aa !default;
+$zinc-500: #71717a !default;
+$zinc-600: #52525b !default;
+$zinc-700: #3f3f46 !default;
+$zinc-800: #27272a !default;
+$zinc-900: #18181b !default;
+$zinc-950: #09090b !default;
+
+$gray-50: #f9fafb !default;
+$gray-100: #f3f4f6 !default;
+$gray-200: #e5e7eb !default;
+$gray-300: #d1d5db !default;
+$gray-400: #9ca3af !default;
+$gray-500: #6b7280 !default;
+$gray-600: #4b5563 !default;
+$gray-700: #374151 !default;
+$gray-800: #1f2937 !default;
+$gray-900: #111827 !default;
+$gray-950: #030712 !default;
+
+$red-50: #fef2f2 !default;
+$red-100: #fee2e2 !default;
+$red-200: #fecaca !default;
+$red-300: #fca5a5 !default;
+$red-400: #f87171 !default;
+$red-500: #ef4444 !default;
+$red-600: #dc2626 !default;
+$red-700: #b91c1c !default;
+$red-800: #991b1b !default;
+$red-900: #7f1d1d !default;
+$red-950: #450a0a !default;
+
+$blue-50: #eff6ff !default;
+$blue-100: #dbeafe !default;
+$blue-200: #bfdbfe !default;
+$blue-300: #93c5fd !default;
+$blue-400: #60a5fa !default;
+$blue-500: #3b82f6 !default;
+$blue-600: #2563eb !default;
+$blue-700: #1d4ed8 !default;
+$blue-800: #1e40af !default;
+$blue-900: #1e3a8a !default;
+$blue-950: #172554 !default;
+
+$green-50: #f0fdf4 !default;
+$green-100: #dcfce7 !default;
+$green-200: #bbf7d0 !default;
+$green-300: #86efac !default;
+$green-400: #4ade80 !default;
+$green-500: #22c55e !default;
+$green-600: #16a34a !default;
+$green-700: #15803d !default;
+$green-800: #166534 !default;
+$green-900: #14532d !default;
+$green-950: #052e16 !default;
+
+$yellow-50: #fefce8 !default;
+$yellow-100: #fef9c3 !default;
+$yellow-200: #fef08a !default;
+$yellow-300: #fde047 !default;
+$yellow-400: #facc15 !default;
+$yellow-500: #eab308 !default;
+$yellow-600: #ca8a04 !default;
+$yellow-700: #a16207 !default;
+$yellow-800: #854d0e !default;
+$yellow-900: #713f12 !default;
+$yellow-950: #422006 !default;
+
+$cyan-50: #ecfeff !default;
+$cyan-100: #cffafe !default;
+$cyan-200: #a5f3fc !default;
+$cyan-300: #67e8f9 !default;
+$cyan-400: #22d3ee !default;
+$cyan-500: #06b6d4 !default;
+$cyan-600: #0891b2 !default;
+$cyan-700: #0e7490 !default;
+$cyan-800: #155e75 !default;
+$cyan-900: #164e63 !default;
+$cyan-950: #083344 !default;
+
+$pink-50: #fdf2f8 !default;
+$pink-100: #fce7f3 !default;
+$pink-200: #fbcfe8 !default;
+$pink-300: #f9a8d4 !default;
+$pink-400: #f472b6 !default;
+$pink-500: #ec4899 !default;
+$pink-600: #db2777 !default;
+$pink-700: #be185d !default;
+$pink-800: #9d174d !default;
+$pink-900: #831843 !default;
+$pink-950: #500724 !default;
+
+$indigo-50: #eef2ff !default;
+$indigo-100: #e0e7ff !default;
+$indigo-200: #c7d2fe !default;
+$indigo-300: #a5b4fc !default;
+$indigo-400: #818cf8 !default;
+$indigo-500: #6366f1 !default;
+$indigo-600: #4f46e5 !default;
+$indigo-700: #4338ca !default;
+$indigo-800: #3730a3 !default;
+$indigo-900: #312e81 !default;
+$indigo-950: #1e1b4b !default;
+
+$teal-50: #f0fdfa !default;
+$teal-100: #ccfbf1 !default;
+$teal-200: #99f6e4 !default;
+$teal-300: #5eead4 !default;
+$teal-400: #2dd4bf !default;
+$teal-500: #14b8a6 !default;
+$teal-600: #0d9488 !default;
+$teal-700: #0f766e !default;
+$teal-800: #115e59 !default;
+$teal-900: #134e4a !default;
+$teal-950: #042f2e !default;
+
+$orange-50: #fff7ed !default;
+$orange-100: #ffedd5 !default;
+$orange-200: #fed7aa !default;
+$orange-300: #fdba74 !default;
+$orange-400: #fb923c !default;
+$orange-500: #f97316 !default;
+$orange-600: #ea580c !default;
+$orange-700: #c2410c !default;
+$orange-800: #9a3412 !default;
+$orange-900: #7c2d12 !default;
+$orange-950: #431407 !default;
+
+$purple-50: #faf5ff !default;
+$purple-100: #f3e8ff !default;
+$purple-200: #e9d5ff !default;
+$purple-300: #d8b4fe !default;
+$purple-400: #c084fc !default;
+$purple-500: #a855f7 !default;
+$purple-600: #9333ea !default;
+$purple-700: #7e22ce !default;
+$purple-800: #6b21a8 !default;
+$purple-900: #581c87 !default;
+$purple-950: #3b0764 !default;

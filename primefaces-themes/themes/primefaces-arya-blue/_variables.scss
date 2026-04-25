@@ -42,6 +42,7 @@ $hoverBg:rgba(255,255,255,.03) !default;
 //general
 $fontSize:1rem !default;
 $fontFamily:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !default;
+$lineHeight: 1.2 !default;
 $textColor:$shade000 !default;
 $textSecondaryColor:$shade100 !default;
 $transitionDuration:.2s !default;
@@ -485,6 +486,7 @@ $datatableHeaderCellPadding:1rem 1rem !default;
 $datatableHeaderCellBg:$shade800 !default;
 $datatableHeaderCellTextColor:$shade000 !default;
 $datatableHeaderCellFontWeight:700 !default;
+$datatableHeaderCellFontSize: $fontSize !default;
 $datatableHeaderCellBorder:1px solid $shade600 !default;
 $datatableHeaderCellBorderWidth:0 0 1px 0 !default;
 $datatableHeaderCellHoverBg:$hoverBg !default;
