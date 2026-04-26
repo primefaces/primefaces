@@ -50,8 +50,8 @@ public class PanelMenu extends PanelMenuBaseImpl {
     public static final String DESCENDANT_SUBMENU_CLASS = "ui-widget ui-menuitem ui-menu-parent";
     public static final String DESCENDANT_SUBMENU_EXPANDED_ICON_CLASS = "ui-panelmenu-icon ui-icon ui-icon-triangle-1-s";
     public static final String DESCENDANT_SUBMENU_COLLAPSED_ICON_CLASS = "ui-panelmenu-icon ui-icon ui-icon-triangle-1-e";
-    public static final String DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS = "ui-menu-list ui-helper-reset";
-    public static final String DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS = "ui-menu-list ui-helper-reset ui-helper-hidden";
+    public static final String DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS = "ui-menu-list";
+    public static final String DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS = "ui-menu-list ui-helper-hidden";
     public static final String PANEL_CLASS = "ui-panelmenu-panel";
     public static final String MENUITEM_LINK_WITH_ICON_CLASS = "ui-menuitem-link ui-menuitem-link-hasicon";
 

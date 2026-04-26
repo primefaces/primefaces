@@ -63,8 +63,8 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBaseImpl {
     public static final String FILTER_CLASS = "ui-selectcheckboxmenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String CLOSER_CLASS = "ui-selectcheckboxmenu-close";
     public static final String ITEMS_WRAPPER_CLASS = "ui-selectcheckboxmenu-items-wrapper";
-    public static final String LIST_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-helper-reset";
-    public static final String TABLE_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-table ui-widget-content ui-widget ui-helper-reset";
+    public static final String LIST_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget";
+    public static final String TABLE_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-table ui-widget-content ui-widget";
     public static final String ITEM_CLASS = "ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-helper-clearfix";
     public static final String ROW_ITEM_GROUP_CLASS = "ui-selectcheckboxmenu-item-group ui-selectcheckboxmenu-row ui-widget-content";
     public static final String ROW_ITEM_CLASS = "ui-selectcheckboxmenu-item ui-selectcheckboxmenu-row ui-widget-content";

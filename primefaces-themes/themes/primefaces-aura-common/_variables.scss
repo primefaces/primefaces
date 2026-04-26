@@ -375,19 +375,20 @@ $inputSwitchBorderWidth:2px !default;
 $inputSwitchBorderRadius:30px !default;
 
 //panel common
-$panelHeaderBorder:1px solid $shade300 !default;
-$panelHeaderBg:$shade100 !default;
+$panelBorderColor: light-dark(light-dark(#e2e8f0,#e4e4e7),light-dark(#334155,#3f3f46)) !default;
+$panelHeaderBorder:1px solid $panelBorderColor !default;
+$panelHeaderBg:$shade000 !default;
 $panelHeaderTextColor:$shade700 !default;
 $panelHeaderFontWeight:700 !default;
-$panelHeaderPadding:1rem !default;
-$panelContentBorder:1px solid $shade300 !default;
+$panelHeaderPadding:1.15rem !default;
+$panelContentBorder:1px solid $panelBorderColor !default;
 $panelContentBg:$shade000 !default;
 $panelContentTextColor:$shade700 !default;
-$panelContentPadding:1rem !default;
-$panelFooterBorder:1px solid $shade300 !default;
+$panelContentPadding:1.15rem !default;
+$panelFooterBorder:1px solid $panelBorderColor !default;
 $panelFooterBg:$shade000 !default;
 $panelFooterTextColor:$shade700 !default;
-$panelFooterPadding:1rem !default;
+$panelFooterPadding:1.15rem !default;
 
 $panelHeaderHoverBg:$shade200 !default;
 $panelHeaderHoverBorderColor:$shade300 !default;

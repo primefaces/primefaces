@@ -279,7 +279,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
     renderItems() {
         var $this = this;
 
-        this.itemContainer = $('<ul id="'+this.id+'_list" class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-helper-reset"></ul>')
+        this.itemContainer = $('<ul id="'+this.id+'_list" class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget"></ul>')
             .appendTo(this.itemContainerWrapper);
 
         //check if inputs must be grouped

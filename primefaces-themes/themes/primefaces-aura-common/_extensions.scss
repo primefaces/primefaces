@@ -4,4 +4,35 @@ body {
   .ui-button-icon-primary.ui-icon {
     line-height: normal;
   }
+
+  .ui-panel {
+    .ui-panel-titlebar {
+      border-bottom: none;
+    }
+    .ui-panel-titlebar + .ui-panel-content {
+      padding-top: 0;
+    }
+    .ui-panel-footer {
+      padding-top: 0;
+    }
+    .ui-panel-content:has(+ .ui-panel-footer) {
+      border-bottom: none;
+    }
+  }
+
+  .ui-accordion {
+    .ui-accordion-header {
+      border-top: none;
+      border-left: none;
+      border-right: none;
+
+      &:first-child {
+        border-top: none;
+      }
+    }
+
+    .ui-accordion-content{
+      border: none;
+    }
+  }
 }

@@ -339,6 +339,7 @@
 .ui-selectonemenu-panel .ui-selectonemenu-list {
     padding: 0.4em;
     border: 0 none;
+    margin: 0;
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-list-item {

@@ -40,7 +40,7 @@ import jakarta.faces.event.FacesEvent;
 @FacesComponentBase
 public abstract class AbstractMenu extends UIPanel implements MenuItemAware, RTLAware {
 
-    public static final String LIST_CLASS = "ui-menu-list ui-helper-reset";
+    public static final String LIST_CLASS = "ui-menu-list";
     public static final String MENU_RTL_CLASS = "ui-menu-rtl";
     public static final String MENUITEM_CLASS = "ui-menuitem ui-widget";
     public static final String MENUITEM_LINK_CLASS = "ui-menuitem-link";
