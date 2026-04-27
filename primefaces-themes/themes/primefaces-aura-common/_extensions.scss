@@ -1,8 +1,21 @@
 @import "./extensions/_input";
 
 body {
-  .ui-button-icon-primary.ui-icon {
-    line-height: normal;
+  .ui-autocomplete.ui-autocomplete-dd {
+
+    .ui-autocomplete-dropdown {
+      .ui-button-text {
+        line-height: normal;
+      }
+    }
+  }
+
+  .ui-calendar {
+    .ui-datepicker-trigger {
+      .ui-button-text {
+        line-height: normal;
+      }
+    }
   }
 
   .ui-panel {
