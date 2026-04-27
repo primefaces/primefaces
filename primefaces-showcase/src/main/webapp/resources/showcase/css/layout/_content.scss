@@ -6,6 +6,10 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) 225px;
 
+    &:not(:has(.layout-submenu)) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
     > * {
         grid-column: 1;
         min-width: 0;

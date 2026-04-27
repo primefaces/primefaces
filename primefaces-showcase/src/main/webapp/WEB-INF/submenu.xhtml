@@ -4,6 +4,11 @@
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:p="primefaces">
 
+    <ui:fragment rendered="#{not empty appSubMenu.subMenuItems
+                            or not empty documentationLink
+                            or not empty widgetLink
+                            or not empty primefacesClientApiLink
+                            or tagLibrary.isTagVdlAvailable(documentationLink)}">
     <div class="layout-submenu">
 
         <!-- RESOURCES -->
@@ -52,5 +57,6 @@
 
 
     </div>
+    </ui:fragment>
 
 </ui:composition>
