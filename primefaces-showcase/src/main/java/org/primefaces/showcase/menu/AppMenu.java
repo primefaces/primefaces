@@ -654,6 +654,15 @@ public class AppMenu {
         return false;
     }
 
+    public MenuItem findMenuItemByUrl(String url) {
+        for (MenuItem item : menuItems) {
+            if (url.equals(item.getUrl())) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     public List<MenuItem> getMenuItems() {
         return menuItems;
     }

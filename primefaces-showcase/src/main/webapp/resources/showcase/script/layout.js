@@ -41,25 +41,7 @@ App = {
         });
 
         this.menuLinks.off('click').on('click', function() {
-            var link = $(this);
-            
-            if (link.hasClass('submenu-link')) {
-                if (link.hasClass('submenu-link-active')) {
-                    $this.activeSubmenus = $.grep($this.activeSubmenus, function (val) {
-                        return val !== link.attr('id');
-                    });
-                    link.removeClass('submenu-link-active').next('.submenu').slideUp('fast');
-                }
-                else {
-                    $this.activeSubmenus.push(link.attr('id'));
-                    link.addClass('submenu-link-active').next('.submenu').slideDown('fast');
-                }
-
-                sessionStorage.setItem('active_submenus', $this.activeSubmenus.join(','));
-            }
-            else {
-                link.addClass('router-link-active');
-            }   
+            sessionStorage.setItem('scroll_position', $this.menu.scrollTop());
         });
 
         this.menu.off('scroll').on('scroll', function() {
@@ -156,22 +138,32 @@ App = {
     },
 
     restoreMenu: function() {
-        var activeRouteLink = this.menuLinks.filter('[href^="' + window.location.pathname + '"]');
-        if (activeRouteLink.length) {
-            activeRouteLink.addClass('router-link-active');
-        }
+        var currentPath = window.location.pathname;
 
-        var activeSubmenus = sessionStorage.getItem('active_submenus');
-        if (activeSubmenus) {
-            this.activeSubmenus = activeSubmenus.split(',');
-            this.activeSubmenus.forEach(function(id) {
-                $('#' + id).addClass('submenu-link-active').next().show();
-            });
-        }
+        // Exact match: the link whose href matches the current page
+        this.menuLinks.filter('[href^="' + currentPath + '"]').addClass('router-link-active');
+
+        // Parent match: a submenu-link is active when the current page
+        // lives under the same directory as its first-child URL
+        this.menuLinks.filter('.submenu-link').each(function() {
+            var href = $(this).attr('href');
+            if (href) {
+                var dir = href.substring(0, href.lastIndexOf('/') + 1);
+                if (currentPath.indexOf(dir) === 0) {
+                    $(this).addClass('router-link-active');
+                }
+            }
+        });
 
         var scrollPosition = sessionStorage.getItem('scroll_position');
         if (scrollPosition) {
             this.menu.scrollTop(parseInt(scrollPosition));
+        } else {
+            // First visit: scroll sidebar so the active link is visible
+            var activeLink = this.menu.find('a.router-link-active:first');
+            if (activeLink.length) {
+                this.menu.scrollTop(activeLink[0].offsetTop - this.menu[0].offsetTop - 100);
+            }
         }
     },
 

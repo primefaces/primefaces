@@ -66,35 +66,10 @@
                             <h1><ui:insert name="title"></ui:insert></h1>
                             <p><ui:insert name="description"></ui:insert></p>
                         </div>
-                        <div class="feature-documentation">
-                            <ui:fragment rendered="#{not empty documentationLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/16_0_0/##{documentationLink}" target="_blank" rel="noopener noreferrer">
-                                    <i class="pi pi-external-link"></i> 
-                                    <span>SERVER API</span>
-                                </a>
-                            </ui:fragment>
-                            <ui:fragment rendered="#{not empty widgetLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.#{widgetLink}.html#{not empty widgetLinkHash ? '#'.concat(widgetLinkHash) : ''}" target="_blank" rel="noopener noreferrer">
-                                    <i class="pi pi-external-link"></i> 
-                                    <span>CLIENT API</span>
-                                </a>
-                            </ui:fragment>
-                            <ui:fragment rendered="#{not empty primefacesClientApiLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/#{primefacesClientApiLink}" target="_blank" rel="noopener noreferrer">
-                                    <i class="pi pi-external-link"></i> 
-                                    <span>CLIENT API</span>
-                                </a>
-                            </ui:fragment>
-                            <ui:fragment rendered="#{tagLibrary.isTagVdlAvailable(documentationLink)}">
-                                <a class="documentation-link"
-                                   href="https://primefaces.github.io/primefaces/vdldoc/primefaces/#{tagLibrary.getTagVdlComponent(documentationLink)}.html"
-                                   target="_blank" rel="noopener noreferrer">
-                                    <i class="pi pi-external-link"></i>
-                                    <span>TAG VDL</span>
-                                </a>
-                            </ui:fragment>
-                        </div>
                     </div>
+
+                    <ui:include src="./submenu.xhtml"></ui:include>
+
                     <div class="content-section implementation">
                         <ui:insert name="implementation"></ui:insert>
                     </div>

@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces">
+
+    <div class="layout-submenu">
+
+        <!-- ON THIS PAGE -->
+        <ui:fragment rendered="#{not empty appSubMenu.subMenuItems}">
+            <div class="submenu-section-title">ON THIS PAGE</div>
+            <ui:repeat value="#{appSubMenu.subMenuItems}" var="sub">
+                <h:link outcome="#{sub.url}" styleClass="#{sub eq appSubMenu.currentMenuItem ? 'active' : ''}">
+                    #{sub.label}
+                </h:link>
+            </ui:repeat>
+        </ui:fragment>
+
+        <!-- RESOURCES -->
+        <ui:fragment rendered="#{not empty documentationLink or not empty widgetLink or not empty primefacesClientApiLink or tagLibrary.isTagVdlAvailable(documentationLink)}">
+            <div class="submenu-section-title">RESOURCES</div>
+
+            <ui:fragment rendered="#{not empty documentationLink}">
+                <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/16_0_0/##{documentationLink}" target="_blank" rel="noopener noreferrer">
+                    <i class="pi pi-external-link"></i>
+                    <span>Server API</span>
+                </a>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{not empty widgetLink}">
+                <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.#{widgetLink}.html#{not empty widgetLinkHash ? '#'.concat(widgetLinkHash) : ''}" target="_blank" rel="noopener noreferrer">
+                    <i class="pi pi-external-link"></i>
+                    <span>Client API</span>
+                </a>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{not empty primefacesClientApiLink}">
+                <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/jsdocs/#{primefacesClientApiLink}" target="_blank" rel="noopener noreferrer">
+                    <i class="pi pi-external-link"></i>
+                    <span>Client API</span>
+                </a>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{tagLibrary.isTagVdlAvailable(documentationLink)}">
+                <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/vdldoc/primefaces/#{tagLibrary.getTagVdlComponent(documentationLink)}.html" target="_blank" rel="noopener noreferrer">
+                    <i class="pi pi-external-link"></i>
+                    <span>Tag VDL</span>
+                </a>
+            </ui:fragment>
+        </ui:fragment>
+
+    </div>
+
+</ui:composition>

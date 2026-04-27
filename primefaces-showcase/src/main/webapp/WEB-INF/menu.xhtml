@@ -36,21 +36,10 @@
                         <h:link outcome="#{menuItem.url}" rendered="#{menuItem.url.startsWith('/') and empty menuItem.menuItems}">
                             #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
                         </h:link>
-                        <p:outputPanel rendered="#{not empty menuItem.menuItems}">
-                            <a id="sl_#{menuItem.label.toLowerCase()}" tabindex="0" class="submenu-link">
-                                #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
-                            </a>
-                            <div class="submenu">
-                                <ul>
-                                    <ui:repeat value="#{menuItem.menuItems}" var="nestedMenuItem">
-                                        <li><h:link outcome="#{nestedMenuItem.url}">
-                                            #{nestedMenuItem.label}
-                                            <p:tag value="#{nestedMenuItem.badge}" styleClass="ml-2" rendered="#{not empty nestedMenuItem.badge}" severity="#{nestedMenuItem.badgeSeverity}"/>
-                                        </h:link></li>
-                                    </ui:repeat>
-                                </ul>
-                            </div>
-                        </p:outputPanel>
+                        <h:link outcome="#{menuItem.menuItems[0].url}" styleClass="submenu-link"
+                                rendered="#{not empty menuItem.menuItems}">
+                            #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
+                        </h:link>
                     </ui:repeat>
                 </h:panelGroup>
                 <h:panelGroup layout="block" class="menu-image" rendered="#{menuCategory.custom}">
