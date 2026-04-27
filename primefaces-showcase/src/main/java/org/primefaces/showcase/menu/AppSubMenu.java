@@ -55,9 +55,10 @@ public class AppSubMenu {
         currentMenuItem = appMenu.findMenuItemByUrl(currentUrl);
         if (currentMenuItem != null) {
             MenuItem parent = currentMenuItem.getParent();
-            // parent is a MenuCategory when the item has no sub-items group above it;
-            // parent is a plain MenuItem (with menuItems != null) when the item is a child of a group like "DatePicker"
-            if (parent != null && parent.getMenuItems() != null) {
+            // Only use parent as the submenu group when it is a plain MenuItem with
+            // children (e.g. "DatePicker"), never when it is a MenuCategory
+            // (top-level grouping like "Data" or "Form").
+            if (parent != null && !(parent instanceof MenuCategory) && parent.getMenuItems() != null) {
                 parentMenuItem = parent;
             }
         }

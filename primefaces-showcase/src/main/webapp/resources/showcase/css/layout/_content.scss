@@ -20,14 +20,16 @@
         overflow-y: auto;
         padding: 2rem 1rem 2rem 1.5rem;
 
-        &::before {
-            content: "ON THIS PAGE";
-            display: block;
+        .submenu-section-title {
             font-size: .75rem;
             font-weight: 700;
             letter-spacing: .08em;
             color: var(--text-color-secondary);
-            margin-bottom: 1rem;
+            margin: 1.25rem 0 .5rem .75rem;
+
+            &:first-child {
+                margin-top: 0;
+            }
         }
 
         a {
@@ -49,6 +51,22 @@
                 color: var(--primary-color);
                 border-left-color: var(--primary-color);
                 font-weight: 600;
+            }
+        }
+
+        .submenu-resource-link {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            border-left: none;
+
+            &:hover {
+                border-left: none;
+            }
+
+            i {
+                font-size: .75rem;
+                flex-shrink: 0;
             }
         }
     }

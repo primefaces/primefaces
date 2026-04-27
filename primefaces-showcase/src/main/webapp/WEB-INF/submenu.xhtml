@@ -6,16 +6,6 @@
 
     <div class="layout-submenu">
 
-        <!-- ON THIS PAGE -->
-        <ui:fragment rendered="#{not empty appSubMenu.subMenuItems}">
-            <div class="submenu-section-title">ON THIS PAGE</div>
-            <ui:repeat value="#{appSubMenu.subMenuItems}" var="sub">
-                <h:link outcome="#{sub.url}" styleClass="#{sub eq appSubMenu.currentMenuItem ? 'active' : ''}">
-                    #{sub.label}
-                </h:link>
-            </ui:repeat>
-        </ui:fragment>
-
         <!-- RESOURCES -->
         <ui:fragment rendered="#{not empty documentationLink or not empty widgetLink or not empty primefacesClientApiLink or tagLibrary.isTagVdlAvailable(documentationLink)}">
             <div class="submenu-section-title">RESOURCES</div>
@@ -48,6 +38,18 @@
                 </a>
             </ui:fragment>
         </ui:fragment>
+
+        <!-- ON THIS PAGE -->
+        <ui:fragment rendered="#{not empty appSubMenu.subMenuItems}">
+            <div class="submenu-section-title">ON THIS PAGE</div>
+            <ui:repeat value="#{appSubMenu.subMenuItems}" var="sub">
+                <h:link outcome="#{sub.url}" styleClass="#{sub eq appSubMenu.currentMenuItem ? 'active' : ''}">
+                    #{sub.label}
+                </h:link>
+            </ui:repeat>
+        </ui:fragment>
+
+
 
     </div>
 
