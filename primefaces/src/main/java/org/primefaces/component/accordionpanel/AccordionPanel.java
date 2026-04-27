@@ -62,9 +62,9 @@ public class AccordionPanel extends AccordionPanelBaseImpl {
     public static final String CONTAINER_CLASS = "ui-accordion ui-widget ui-hidden-container";
     public static final String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-state-default ui-state-active";
     public static final String TAB_HEADER_CLASS = "ui-accordion-header ui-state-default";
-    public static final String TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
-    public static final String TAB_HEADER_ICON_RTL_CLASS = "ui-icon ui-icon-triangle-1-w";
-    public static final String ACTIVE_TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
+    public static final String TAB_HEADER_ICON_CLASS = "ui-accordion-toggler ui-icon ui-icon-triangle-1-n";
+    public static final String TAB_HEADER_ICON_RTL_CLASS = "ui-accordion-toggler ui-icon ui-icon-triangle-1-n";
+    public static final String ACTIVE_TAB_HEADER_ICON_CLASS = "ui-accordion-toggler ui-icon ui-icon-triangle-1-s";
     public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-widget-content";
     public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-widget-content ui-helper-hidden";
 

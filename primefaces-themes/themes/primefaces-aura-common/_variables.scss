@@ -621,15 +621,16 @@ $progressBarBg:#efefef !default;
 $progressBarValueBg:$primaryColor !default;
 
 //menu
-$verticalMenuPadding:.25rem 0 !default;
+$verticalMenuPadding: 0 0 !default;
 $menuBg:$shade000 !default;
 $menuBorder:1px solid $shade300 !default;
+$menuListPadding: 0.25rem 0.25rem !default;
 $menuitemTextColor:$shade700 !default;
 $menuitemIconColor:$shade600 !default;
 $menuitemHoverBg:$shade200 !default;
 $menuitemTextHoverColor:$shade700 !default;
 $menuitemHoverIconColor:$shade700 !default;
-$menuitemPadding: 0.5rem 0.75rem !default; // v3 navigation item
+$menuitemPadding: .35rem .75rem !default;
 $menuitemMargin:0 !default;
 $menuitemBorderRadius:0 !default;
 $menuSeparatorMargin:.25rem 0 !default;

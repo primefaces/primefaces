@@ -12,6 +12,12 @@ body {
       box-shadow: $overlayMenuShadow;
     }
 
+    .ui-menu-list {
+      list-style: none;
+      padding: $menuListPadding;
+      margin: 0;
+    }
+
     &.ui-menu-toggleable {
       .ui-menu-list {
         .ui-widget-header {
@@ -136,6 +142,7 @@ body {
           float: none;
           border-radius: $menuitemBorderRadius;
           transition: $transition;
+          line-height: $lineHeight;
 
           &.ui-state-hover {
             background: $menuitemHoverBg;
