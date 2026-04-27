@@ -52,7 +52,7 @@ public class TagCloud extends TagCloudBaseImpl {
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (isAjaxBehaviorEvent(event)) {
+        if (isAjaxBehaviorEventSource(event)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = getClientId(context);
