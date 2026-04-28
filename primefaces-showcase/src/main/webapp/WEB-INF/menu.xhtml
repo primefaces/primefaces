@@ -8,13 +8,17 @@
         <div class="layout-sidebar-filter ui-fluid ui-input-filled">
             <h:form id="search">
                 <p:autoComplete id="input" placeholder="Search by name..." minQueryLength="1" effect="fade"
-                                panelStyleClass="layout-sidebar-filter-panel" completeMethod="#{appMenu.completeMenuItem}" groupBy="#{menuItem.parent.label}"
+                                panelStyleClass="layout-sidebar-filter-panel" completeMethod="#{appMenu.completeMenuItem}"
                                 var="menuItem" scrollHeight="300" emptyMessage="No results found!" queryDelay="100">
                     <p:column>
                         <h:outputLink value="#{menuItem.url}" rendered="#{not empty menuItem.url and empty menuItem.badge and not menuItem.url.startsWith('/') and empty menuItem.menuItems}">
                             #{menuItem.label}
                         </h:outputLink>
                         <h:link outcome="#{menuItem.url}" rendered="#{menuItem.url.startsWith('/') and empty menuItem.menuItems}" onclick="App.onSearchClick(event, 'sl_#{menuItem.parent.label.toLowerCase()}')">
+                            #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
+                        </h:link>
+                        <h:link outcome="#{menuItem.menuItems[0].url}" styleClass="submenu-link"
+                                rendered="#{not empty menuItem.menuItems}">
                             #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
                         </h:link>
                     </p:column>

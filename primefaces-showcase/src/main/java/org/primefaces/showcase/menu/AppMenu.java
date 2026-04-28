@@ -82,8 +82,25 @@ public class AppMenu {
         ajaxMenuItems.add(new MenuItem("Status", "/ui/ajax/status"));
         ajaxMenuItems.add(new MenuItem("Lifecycle", "/ui/ajax/lifecycle"));
         ajaxMenuItems.add(new MenuItem("Dropdown", "/ui/ajax/dropdown"));
+
+        List<MenuItem> clientSideValidationMenuItems = new ArrayList<>();
+        clientSideValidationMenuItems.add(new MenuItem("Basic", "/ui/csv/basic"));
+        clientSideValidationMenuItems.add(new MenuItem("Bean", "/ui/csv/bean"));
+        clientSideValidationMenuItems.add(new MenuItem("Custom", "/ui/csv/custom"));
+        clientSideValidationMenuItems.add(new MenuItem("Complex", "/ui/csv/complex"));
+        clientSideValidationMenuItems.add(new MenuItem("Event", "/ui/csv/event"));
+        clientSideValidationMenuItems.add(new MenuItem("Immediate", "/ui/csv/immediate"));
+
+        List<MenuItem> dialogFrameworkMenuItems = new ArrayList<>();
+        dialogFrameworkMenuItems.add(new MenuItem("Basic", "/ui/df/basic"));
+        dialogFrameworkMenuItems.add(new MenuItem("Data", "/ui/df/data"));
+        dialogFrameworkMenuItems.add(new MenuItem("Message", "/ui/df/message"));
+        dialogFrameworkMenuItems.add(new MenuItem("Nested", "/ui/df/nested"));
+
         List<MenuItem> coreMenuItems = new ArrayList<>();
         coreMenuItems.add(new MenuItem("AJAX", ajaxMenuItems));
+        coreMenuItems.add(new MenuItem("Client Side Validation", clientSideValidationMenuItems));
+        coreMenuItems.add(new MenuItem("Dialog Framework", dialogFrameworkMenuItems));
         coreMenuItems.add(new MenuItem("Content Security", "https://primefaces.github.io/primefaces/16_0_0/#/core/contentsecuritypolicy"));
         coreMenuItems.add(new MenuItem("Accessiblity", "/accessibility"));
         coreMenuItems.add(new MenuItem("PrimeFlex", "/primeflex/setup"));
@@ -492,35 +509,6 @@ public class AppMenu {
         menuCategories.add(new MenuCategory("File", fileMenuItems));
         //FILE CATEGORY END
 
-        //DRAGDROP CATEGORY START
-        List<MenuItem> dragDropMenuItems = new ArrayList<>();
-        dragDropMenuItems.add(new MenuItem("Draggable", "/ui/dnd/draggable"));
-        dragDropMenuItems.add(new MenuItem("DataView", "/ui/dnd/dataView"));
-        dragDropMenuItems.add(new MenuItem("DataTable", "/ui/dnd/dataTable"));
-        dragDropMenuItems.add(new MenuItem("Custom", "/ui/dnd/custom"));
-        menuCategories.add(new MenuCategory("DragDrop", dragDropMenuItems));
-        //DRAGDROP CATEGORY END
-
-        //CLIENT SIDE VALIDATION CATEGORY START
-        List<MenuItem> clientSideValidationMenuItems = new ArrayList<>();
-        clientSideValidationMenuItems.add(new MenuItem("Basic", "/ui/csv/basic"));
-        clientSideValidationMenuItems.add(new MenuItem("Bean", "/ui/csv/bean"));
-        clientSideValidationMenuItems.add(new MenuItem("Custom", "/ui/csv/custom"));
-        clientSideValidationMenuItems.add(new MenuItem("Complex", "/ui/csv/complex"));
-        clientSideValidationMenuItems.add(new MenuItem("Event", "/ui/csv/event"));
-        clientSideValidationMenuItems.add(new MenuItem("Immediate", "/ui/csv/immediate"));
-        menuCategories.add(new MenuCategory("Client Side Validation", clientSideValidationMenuItems));
-        //CLIENT SIDE VALIDATION CATEGORY END
-
-        //DIALOG FRAMEWORK CATEGORY START
-        List<MenuItem> dialogFrameworkMenuItems = new ArrayList<>();
-        dialogFrameworkMenuItems.add(new MenuItem("Basic", "/ui/df/basic"));
-        dialogFrameworkMenuItems.add(new MenuItem("Data", "/ui/df/data"));
-        dialogFrameworkMenuItems.add(new MenuItem("Message", "/ui/df/message"));
-        dialogFrameworkMenuItems.add(new MenuItem("Nested", "/ui/df/nested"));
-        menuCategories.add(new MenuCategory("Dialog Framework", dialogFrameworkMenuItems));
-        //DIALOG FRAMEWORK CATEGORY END
-
         //MISC CATEGORY START
         List<MenuItem> miscMenuItems = new ArrayList<>();
         miscMenuItems.add(new MenuItem("Avatar", "/ui/misc/avatar"));
@@ -544,6 +532,13 @@ public class AppMenu {
         defaultCommandMenuItems.add(new MenuItem("Basic", "/ui/misc/defaultcommand/basic"));
         defaultCommandMenuItems.add(new MenuItem("Multiple", "/ui/misc/defaultcommand/multiple"));
         miscMenuItems.add(new MenuItem("DefaultCommand", defaultCommandMenuItems));
+
+        List<MenuItem> dragDropMenuItems = new ArrayList<>();
+        dragDropMenuItems.add(new MenuItem("Draggable", "/ui/dnd/draggable"));
+        dragDropMenuItems.add(new MenuItem("DataView", "/ui/dnd/dataView"));
+        dragDropMenuItems.add(new MenuItem("DataTable", "/ui/dnd/dataTable"));
+        dragDropMenuItems.add(new MenuItem("Custom", "/ui/dnd/custom"));
+        miscMenuItems.add(new MenuItem("DragDrop", dragDropMenuItems));
 
         miscMenuItems.add(new MenuItem("Effect", "/ui/misc/effect"));
         miscMenuItems.add(new MenuItem("ExceptionHandler", "/ui/misc/exceptionHandler"));
