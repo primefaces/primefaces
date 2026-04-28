@@ -68,7 +68,12 @@
                         </div>
                     </div>
 
-                    <ui:include src="./submenu.xhtml"></ui:include>
+                    <ui:include src="./submenu.xhtml">
+                        <ui:param name="documentationLink" value="#{documentationLink}" />
+                        <ui:param name="widgetLink" value="#{widgetLink}" />
+                        <ui:param name="tagName" value="#{tagName}" />
+                        <ui:param name="primefacesClientApiLink" value="#{primefacesClientApiLink}" />
+                    </ui:include>
 
                     <div class="content-section implementation">
                         <ui:insert name="implementation"></ui:insert>
