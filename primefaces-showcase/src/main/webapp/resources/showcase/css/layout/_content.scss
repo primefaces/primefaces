@@ -2,7 +2,7 @@
 
 .layout-content {
     margin-left: 250px;
-    padding-top: 70px;
+    padding-top: 60px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 225px;
 
@@ -19,7 +19,7 @@
         grid-column: 2;
         grid-row: 1 / span 100;
         position: sticky;
-        top: 70px;
+        top: 60px;
         max-height: calc(100vh - 70px);
         overflow-y: auto;
         padding: 2rem 1rem 2rem 1.5rem;

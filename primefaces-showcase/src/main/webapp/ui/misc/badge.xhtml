@@ -2,7 +2,6 @@
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
-                xmlns:mycomposites="jakarta.faces.composite/composite"
                 xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
@@ -17,8 +16,6 @@
     <ui:param name="documentationLink" value="/components/badge"/>
 
     <ui:define name="implementation">
-        <mycomposites:componentDocumentation value="#{componentDocumentationController.badge}" rendered="false" />
-
         <div class="card">
             <h:form>
                 <h5 class="mt-0">Numbers</h5>

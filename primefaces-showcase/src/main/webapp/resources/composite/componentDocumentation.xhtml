@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
@@ -8,78 +8,67 @@
       xmlns:composite="jakarta.faces.composite">
 
     <composite:interface>
-        <composite:attribute name="value" type="org.primefaces.showcase.util.ComponentDocumentationController$Component" />
+        <composite:attribute name="value" type="org.primefaces.showcase.util.CDKController$TagInfo"/>
     </composite:interface>
 
     <composite:implementation>
-        #{cc.attrs.value.description}
+
+        #{cc.attrs.value.tag.description}
 
         <p:tabView>
             <p:tab title="Properties">
-                <table>
-                    <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Required</th>
-                            <th scope="col">Default</th>
-                            <th scope="col">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ui:repeat var="prop" value="#{cc.attrs.value.properties}">
-                            <tr>
-                                <td scope="col">#{prop.name}</td>
-                                <td scope="col">#{prop.type.getName()}</td>
-                                <td scope="col">#{prop.required}</td>
-                                <td scope="col">#{componentDocumentationController.resolveDefaultValue(prop)}</td>
-                                <td scope="col">#{prop.description}</td>
-                            </tr>
-                        </ui:repeat>
-                    </tbody>
-                </table>
+                <p:dataTable value="#{cc.attrs.value.properties}" var="prop" stripedRows="true">
+                    <p:column headerText="Name" style="width:200px;">
+                        #{prop.name}
+                    </p:column>
+                    <p:column headerText="Type" style="width:300px;">
+                        #{prop.type.name}
+                    </p:column>
+                    <p:column headerText="Required" style="width:50px;">
+                        #{prop.required}
+                    </p:column>
+                    <p:column headerText="Default" style="width:100px;">
+                        #{componentDocumentationController.resolveDefaultValue(prop)}
+                    </p:column>
+                    <p:column headerText="Description">
+                        #{prop.description}
+                    </p:column>
+                </p:dataTable>
             </p:tab>
+
             <p:tab title="Facets">
-                <table>
-                    <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ui:repeat var="facet" value="#{cc.attrs.value.facets}">
-                            <tr>
-                                <td scope="col">#{facet.name}</td>
-                                <td scope="col">#{facet.description}</td>
-                            </tr>
-                        </ui:repeat>
-                    </tbody>
-                </table>
+                <p:dataTable value="#{cc.attrs.value.facets}" var="facet" stripedRows="true">
+                    <p:column headerText="Name" style="width:200px;">
+                        #{facet.name}
+                    </p:column>
+                    <p:column headerText="Description">
+                        #{facet.description}
+                    </p:column>
+                </p:dataTable>
             </p:tab>
-            <p:tab title="Events" rendered="#{cc.attrs.value.clientBehaviorHolder}">
-                <table>
-                    <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Default</th>
-                            <th scope="col">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ui:repeat var="prop" value="#{cc.attrs.value.clientBehaviorEvents}">
-                            <tr>
-                                <td scope="col">#{prop.name}</td>
-                                <td scope="col">#{prop.type}</td>
-                                <td scope="col">#{prop.defaultEvent}</td>
-                                <td scope="col">#{prop.description}</td>
-                            </tr>
-                        </ui:repeat>
-                    </tbody>
-                </table>
+
+            <p:tab title="Events"
+                   rendered="#{not empty cc.attrs.value.clientBehaviorsEvents}">
+
+                <p:dataTable value="#{cc.attrs.value.clientBehaviorsEvents}"
+                             var="prop"
+                             stripedRows="true">
+                    <p:column headerText="Name" style="width:200px;">
+                        #{prop.name}
+                    </p:column>
+                    <p:column headerText="Type" style="width:300px;">
+                        #{prop.type.name}
+                    </p:column>
+                    <p:column headerText="Default" style="width:50px;">
+                        #{prop.defaultEvent}
+                    </p:column>
+                    <p:column headerText="Description">
+                        #{prop.description}
+                    </p:column>
+                </p:dataTable>
+
             </p:tab>
         </p:tabView>
-    </composite:implementation>
 
+    </composite:implementation>
 </html>

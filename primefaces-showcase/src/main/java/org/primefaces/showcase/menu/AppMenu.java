@@ -47,28 +47,11 @@ public class AppMenu {
         //GENERAL CATEGORY START
         List<MenuItem> generalMenuItems = new ArrayList<>();
         generalMenuItems.add(new MenuItem("Get Started", "/getstarted"));
+        generalMenuItems.add(new MenuItem("Long Term Support (LTS)", "/lts"));
+        generalMenuItems.add(new MenuItem("PRO Support", "/support"));
         generalMenuItems.add(new MenuItem("Documentation", "https://primefaces.github.io/primefaces/16_0_0/#/"));
-        generalMenuItems.add(new MenuItem("Content Security", "https://primefaces.github.io/primefaces/16_0_0/#/core/contentsecuritypolicy"));
         menuCategories.add(new MenuCategory("General", generalMenuItems));
         //GENERAL CATEGORY END
-
-        //SUPPORT CATEGORY START
-        List<MenuItem> supportMenuItems = new ArrayList<>();
-        supportMenuItems.add(new MenuItem("Forum", "https://github.com/orgs/primefaces/discussions"));
-        supportMenuItems.add(new MenuItem("Discord Chat", "https://discord.gg/gzKFYnpmCY"));
-        supportMenuItems.add(new MenuItem("Long Term Support", "/lts"));
-        supportMenuItems.add(new MenuItem("PRO Support", "/support"));
-        menuCategories.add(new MenuCategory("Support", supportMenuItems));
-        //SUPPORT CATEGORY END
-
-        //RESOURCES CATEGORY START
-        List<MenuItem> resourcesMenuItems = new ArrayList<>();
-        resourcesMenuItems.add(new MenuItem("PrimeTV", "https://www.youtube.com/channel/UCTgmp69aBOlLnPEqlUyetWw"));
-        resourcesMenuItems.add(new MenuItem("Source Code", "https://github.com/primefaces/primefaces"));
-        resourcesMenuItems.add(new MenuItem("Store", "https://www.primefaces.org/store"));
-        resourcesMenuItems.add(new MenuItem("Twitter", "https://twitter.com/primefaces?lang=en"));
-        menuCategories.add(new MenuCategory("Resources", resourcesMenuItems));
-        //RESOURCES CATEGORY END
 
         //THEMING CATEGORY START
         List<MenuItem> themingMenuItems = new ArrayList<>();
@@ -78,25 +61,6 @@ public class AppMenu {
         menuCategories.add(new MenuCategory("Theming", themingMenuItems));
         //THEMING CATEGORY END
 
-        //ACCESSIBILITY CATEGORY START
-        List<MenuItem> uiAccessibilityMenuItems = new ArrayList<>();
-        uiAccessibilityMenuItems.add(new MenuItem("Overview", "/accessibility"));
-        menuCategories.add(new MenuCategory("Accessiblity", uiAccessibilityMenuItems));
-        //ACCESSIBILITY CATEGORY END
-
-        //PRIMEFLEX CATEGORY START
-        List<MenuItem> primeFlexMenuItems = new ArrayList<>();
-        primeFlexMenuItems.add(new MenuItem("Setup", "/primeflex/setup"));
-        primeFlexMenuItems.add(new MenuItem("PrimeFlex Site", "https://primeflex.org/"));
-        menuCategories.add(new MenuCategory("PrimeFlex", primeFlexMenuItems));
-        //PRIMEFLEX CATEGORY END
-
-        //PRIMEICONS CATEGORY START
-        List<MenuItem> primeIconsMenuItems = new ArrayList<>();
-        primeIconsMenuItems.add(new MenuItem("Icons v7.0.0", "/icons", "Updated"));
-        menuCategories.add(new MenuCategory("PrimeIcons", primeIconsMenuItems));
-        //PRIMEICONS CATEGORY END
-
         //UIKIT CATEGORY START
         /*
         List<MenuItem> uiKitMenuItems = new ArrayList<>();
@@ -105,23 +69,29 @@ public class AppMenu {
         */
         //UIKIT CATEGORY END
 
-        //AJAX FRAMEWORK CATEGORY START
-        List<MenuItem> ajaxFrameworkMenuItems = new ArrayList<>();
-        ajaxFrameworkMenuItems.add(new MenuItem("Introduction", "/ui/ajax/basic"));
-        ajaxFrameworkMenuItems.add(new MenuItem("Process", "/ui/ajax/process"));
-        ajaxFrameworkMenuItems.add(new MenuItem("PartialSubmit", "/ui/ajax/partialSubmit"));
-        ajaxFrameworkMenuItems.add(new MenuItem("Selector", "/ui/ajax/selector"));
-        ajaxFrameworkMenuItems.add(new MenuItem("Search", "/ui/ajax/search"));
-        ajaxFrameworkMenuItems.add(new MenuItem("Validation", "/ui/ajax/validation"));
-        ajaxFrameworkMenuItems.add(new MenuItem("RemoteCommand", "/ui/ajax/remoteCommand"));
-        ajaxFrameworkMenuItems.add(new MenuItem("Observer", "/ui/ajax/observer"));
-        ajaxFrameworkMenuItems.add(new MenuItem("Poll", "/ui/ajax/poll"));
-        ajaxFrameworkMenuItems.add(new MenuItem("Fragment", "/ui/ajax/fragment"));
-        ajaxFrameworkMenuItems.add(new MenuItem("Status", "/ui/ajax/status"));
-        ajaxFrameworkMenuItems.add(new MenuItem("Lifecycle", "/ui/ajax/lifecycle"));
-        ajaxFrameworkMenuItems.add(new MenuItem("Dropdown", "/ui/ajax/dropdown"));
-        menuCategories.add(new MenuCategory("Ajax Framework", ajaxFrameworkMenuItems));
-        //AJAX FRAMEWORK CATEGORY END
+        //CORE CATEGORY START
+        List<MenuItem> ajaxMenuItems = new ArrayList<>();
+        ajaxMenuItems.add(new MenuItem("Introduction", "/ui/ajax/basic"));
+        ajaxMenuItems.add(new MenuItem("Process", "/ui/ajax/process"));
+        ajaxMenuItems.add(new MenuItem("PartialSubmit", "/ui/ajax/partialSubmit"));
+        ajaxMenuItems.add(new MenuItem("Selector", "/ui/ajax/selector"));
+        ajaxMenuItems.add(new MenuItem("Search", "/ui/ajax/search"));
+        ajaxMenuItems.add(new MenuItem("Validation", "/ui/ajax/validation"));
+        ajaxMenuItems.add(new MenuItem("RemoteCommand", "/ui/ajax/remoteCommand"));
+        ajaxMenuItems.add(new MenuItem("Observer", "/ui/ajax/observer"));
+        ajaxMenuItems.add(new MenuItem("Poll", "/ui/ajax/poll"));
+        ajaxMenuItems.add(new MenuItem("Fragment", "/ui/ajax/fragment"));
+        ajaxMenuItems.add(new MenuItem("Status", "/ui/ajax/status"));
+        ajaxMenuItems.add(new MenuItem("Lifecycle", "/ui/ajax/lifecycle"));
+        ajaxMenuItems.add(new MenuItem("Dropdown", "/ui/ajax/dropdown"));
+        List<MenuItem> coreMenuItems = new ArrayList<>();
+        coreMenuItems.add(new MenuItem("AJAX", ajaxMenuItems));
+        coreMenuItems.add(new MenuItem("Content Security", "https://primefaces.github.io/primefaces/16_0_0/#/core/contentsecuritypolicy"));
+        coreMenuItems.add(new MenuItem("Accessiblity", "/accessibility"));
+        coreMenuItems.add(new MenuItem("PrimeFlex", "/primeflex/setup"));
+        coreMenuItems.add(new MenuItem("PrimeIcons", "/icons"));
+        menuCategories.add(new MenuCategory("Core", coreMenuItems));
+        //CORE FRAMEWORK CATEGORY END
 
         //FORM CATEGORY START
         List<MenuItem> formMenuItems = new ArrayList<>();

@@ -3,7 +3,6 @@
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
                 xmlns:p="primefaces"
-                xmlns:mycomposites="jakarta.faces.composite/composite"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -18,8 +17,6 @@
     <ui:param name="widgetLink" value="Panel-1"/>
 
     <ui:define name="implementation">
-
-        <mycomposites:componentDocumentation value="#{componentDocumentationController.panel}" rendered="false" />
 
         <h:form>
             <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>

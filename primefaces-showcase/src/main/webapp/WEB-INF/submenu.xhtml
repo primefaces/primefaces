@@ -2,18 +2,33 @@
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
                 xmlns:ui="jakarta.faces.facelets"
+                xmlns:mycomposites="jakarta.faces.composite/composite"
                 xmlns:p="primefaces">
 
     <ui:fragment rendered="#{not empty appSubMenu.subMenuItems
                             or not empty documentationLink
                             or not empty widgetLink
                             or not empty primefacesClientApiLink
+                            or not empty tagName
                             or tagLibrary.isTagVdlAvailable(documentationLink)}">
     <div class="layout-submenu">
+
+        <ui:fragment rendered="#{not empty tagName}">
+            <p:dialog widgetVar="currentTagLib" width="1300px" height="800px" appendTo="@(body)" header="Tag: #{tagName}">
+                <mycomposites:componentDocumentation value="#{cdkController.tags[tagName]}" />
+            </p:dialog>
+        </ui:fragment>
 
         <!-- RESOURCES -->
         <ui:fragment rendered="#{not empty documentationLink or not empty widgetLink or not empty primefacesClientApiLink or tagLibrary.isTagVdlAvailable(documentationLink)}">
             <div class="submenu-section-title">RESOURCES</div>
+
+            <ui:fragment rendered="#{not empty tagName}">
+                <a class="submenu-resource-link" onclick="PF('currentTagLib').show(); return;" target="_blank" rel="noopener noreferrer">
+                    <i class="pi pi-external-link"></i>
+                    <span>TagLib</span>
+                </a>
+            </ui:fragment>
 
             <ui:fragment rendered="#{not empty documentationLink}">
                 <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/16_0_0/##{documentationLink}" target="_blank" rel="noopener noreferrer">
