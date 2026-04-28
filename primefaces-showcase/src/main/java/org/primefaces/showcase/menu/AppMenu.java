@@ -36,13 +36,11 @@ import jakarta.inject.Named;
 public class AppMenu {
 
     private List<MenuCategory> menuCategories;
-    private List<MenuItem> menuItems;
 
     // CHECKSTYLE:OFF
     @PostConstruct
     public void init() {
         menuCategories = new ArrayList<>();
-        menuItems = new ArrayList<>();
 
         //GENERAL CATEGORY START
         List<MenuItem> generalMenuItems = new ArrayList<>();
@@ -575,66 +573,53 @@ public class AppMenu {
 
         menuCategories.add(new MenuCategory("Misc", miscMenuItems));
         //MISC CATEGORY END
-
-        for (MenuCategory category : menuCategories) {
-            for (MenuItem menuItem : category.getMenuItems()) {
-                menuItem.setParent(category);
-                if (menuItem.getUrl() != null) {
-                    menuItems.add(menuItem);
-                }
-                if (menuItem.getMenuItems() != null) {
-                    for (MenuItem item : menuItem.getMenuItems()) {
-                        item.setParent(menuItem);
-                        if (item.getUrl() != null) {
-                            menuItems.add(item);
-                        }
-                    }
-                }
-            }
-        }
     }
 
     public List<MenuItem> completeMenuItem(String query) {
-        String queryLowerCase = query.toLowerCase();
-        List<MenuItem> filteredItems = new ArrayList<>();
-        for (MenuItem item : menuItems) {
-            if (item.getUrl() != null
-                    && (item.getLabel().toLowerCase().contains(queryLowerCase) || anyParentContainsQuery(item, queryLowerCase))) {
-                filteredItems.add(item);
-            }
-            else if (item.getBadge() != null) {
-                if (item.getBadge().toLowerCase().contains(queryLowerCase)) {
-                    filteredItems.add(item);
+        String q = query.toLowerCase();
+        List<MenuItem> result = new ArrayList<>();
+
+        for (MenuCategory category : menuCategories) {
+            for (MenuItem item : category.getMenuItems()) {
+                if (item.getLabel() != null
+                        && item.getLabel().toLowerCase().contains(q)) {
+                    result.add(item);
                 }
             }
         }
-        filteredItems.sort(Comparator.comparing(m -> m.getParent().getLabel()));
-        return filteredItems;
-    }
 
-    protected boolean anyParentContainsQuery(MenuItem item, String query) {
-        MenuItem parent = item.getParent();
-        while (parent != null) {
-            if (parent.getLabel().toLowerCase().contains(query)) {
-                return true;
-            }
-            parent = parent.getParent();
-        }
+        result.sort(Comparator.comparing(m -> m.getParent() != null ? m.getParent().getLabel() : ""));
 
-        return false;
+        return result;
     }
 
     public MenuItem findMenuItemByUrl(String url) {
-        for (MenuItem item : menuItems) {
-            if (url.equals(item.getUrl())) {
-                return item;
+        if (url == null) {
+            return null;
+        }
+        for (MenuCategory category : menuCategories) {
+            MenuItem found = findInItems(category.getMenuItems(), url);
+            if (found != null) {
+                return found;
             }
         }
         return null;
     }
 
-    public List<MenuItem> getMenuItems() {
-        return menuItems;
+    private MenuItem findInItems(List<MenuItem> items, String url) {
+        if (items == null) {
+            return null;
+        }
+        for (MenuItem item : items) {
+            if (url.equals(item.getUrl())) {
+                return item;
+            }
+            MenuItem foundInChildren = findInItems(item.getMenuItems(), url);
+            if (foundInChildren != null) {
+                return foundInChildren;
+            }
+        }
+        return null;
     }
 
     public List<MenuCategory> getMenuCategories() {

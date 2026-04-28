@@ -32,8 +32,11 @@ import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
+import lombok.Getter;
+
 @Named
 @RequestScoped
+@Getter
 public class AppSubMenu {
 
     @Inject
@@ -76,25 +79,4 @@ public class AppSubMenu {
         return Collections.emptyList();
     }
 
-    /**
-     * Returns the menu item that exactly matches the current view URL.
-     */
-    public MenuItem getCurrentMenuItem() {
-        return currentMenuItem;
-    }
-
-    /**
-     * Returns the parent group item (e.g. the "DatePicker" MenuItem) when the
-     * current view belongs to a grouped set of sub-pages.
-     */
-    public MenuItem getParentMenuItem() {
-        return parentMenuItem;
-    }
-
-    /**
-     * Convenience check: true when the current view is part of a sub-menu group.
-     */
-    public boolean isHasSubMenuItems() {
-        return parentMenuItem != null && !parentMenuItem.getMenuItems().isEmpty();
-    }
 }
