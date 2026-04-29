@@ -22,7 +22,7 @@
                 <p:tab title="Properties">
                     <p:dataTable value="#{cc.attrs.value.properties}" var="prop" stripedRows="true">
                         <p:column headerText="Name" style="width:200px;" field="name" />
-                        <p:column headerText="Type" style="width:270px;" field="type.name" />
+                        <p:column headerText="Type" style="width:250px;" field="type.name" />
                         <p:column headerText="Required" style="width:50px;">
                             #{prop.required}
                         </p:column>
@@ -47,7 +47,7 @@
                                  var="prop"
                                  stripedRows="true">
                         <p:column headerText="Name" style="width:200px;" field="name"/>
-                        <p:column headerText="Type" style="width:300px;" field="type.name" />
+                        <p:column headerText="Type" style="width:250px;" field="type.name" />
                         <p:column headerText="Default" style="width:50px;">
                             #{prop.defaultEvent}
                         </p:column>

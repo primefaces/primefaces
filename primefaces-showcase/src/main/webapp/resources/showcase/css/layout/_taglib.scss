@@ -3,6 +3,19 @@ body .taglib-component {
     padding: 0.5rem 0;
   }
 
+  .ui-datatable thead th {
+    padding: 0.6rem 0.6rem;
+  }
+
+  .ui-datatable .ui-datatable-data > tr > td {
+    padding: 0.6rem 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .ui-datatable thead th .ui-column-title {
+    font-size: 1.0rem;
+  }
+
   .component-meta {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
