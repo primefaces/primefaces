@@ -72,7 +72,7 @@ public final class TaglibUtils {
     public static String getRendererType(Class<?> componentClass) throws IllegalAccessException {
         String rendererType = null;
         try {
-            Field field = componentClass.getDeclaredField(DEFAULT_RENDERER_NAME);
+            Field field = componentClass.getField(DEFAULT_RENDERER_NAME);
             rendererType = (String) field.get(null);
         }
         catch (NoSuchFieldException e) {
