@@ -86,7 +86,7 @@
     "rangyinputs": "1.2.0",
     "raphael": "2.3.0",
     "typescript": "5.9.3",
-    "uuid": "13.0.0",
+    "uuid": "14.0.0",
     "webcamjs": "patch:webcamjs@npm%3A1.0.26#~/.yarn/patches/webcamjs-npm-1.0.26-e450e6a36f.patch",
     "xss": "1.0.15"
   },
