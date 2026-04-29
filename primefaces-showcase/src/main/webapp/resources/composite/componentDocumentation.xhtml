@@ -22,11 +22,11 @@
                 <p:tab title="Properties">
                     <p:dataTable value="#{cc.attrs.value.properties}" var="prop" stripedRows="true">
                         <p:column headerText="Name" style="width:200px;" field="name" />
-                        <p:column headerText="Type" style="width:300px;" field="type.name" />
+                        <p:column headerText="Type" style="width:270px;" field="type.name" />
                         <p:column headerText="Required" style="width:50px;">
                             #{prop.required}
                         </p:column>
-                        <p:column headerText="Default" style="width:100px;">
+                        <p:column headerText="Default" style="width:160px;">
                             #{cdkController.resolveDefaultValue(prop)}
                         </p:column>
                         <p:column headerText="Description" field="description" />
@@ -35,12 +35,8 @@
 
                 <p:tab title="Facets">
                     <p:dataTable value="#{cc.attrs.value.facets}" var="facet" stripedRows="true">
-                        <p:column headerText="Name" style="width:200px;">
-                            #{facet.name}
-                        </p:column>
-                        <p:column headerText="Description">
-                            #{facet.description}
-                        </p:column>
+                        <p:column headerText="Name" style="width:200px;" field="name"/>
+                        <p:column headerText="Description" field="description"/>
                     </p:dataTable>
                 </p:tab>
 
@@ -50,20 +46,52 @@
                     <p:dataTable value="#{cc.attrs.value.clientBehaviorsEvents}"
                                  var="prop"
                                  stripedRows="true">
-                        <p:column headerText="Name" style="width:200px;">
-                            #{prop.name}
-                        </p:column>
-                        <p:column headerText="Type" style="width:300px;">
-                            #{prop.type.name}
-                        </p:column>
+                        <p:column headerText="Name" style="width:200px;" field="name"/>
+                        <p:column headerText="Type" style="width:300px;" field="type.name" />
                         <p:column headerText="Default" style="width:50px;">
                             #{prop.defaultEvent}
                         </p:column>
-                        <p:column headerText="Description">
-                            #{prop.description}
-                        </p:column>
+                        <p:column headerText="Description" field="description"/>
                     </p:dataTable>
-
+                </p:tab>
+                <p:tab title="Resource Dependencies">
+                    <p:dataTable value="#{cc.attrs.value.resourceDependencies}"
+                                 var="resourceDependency"
+                                 stripedRows="true">
+                        <p:column field="name"/>
+                        <p:column field="library" />
+                        <p:column field="target" />
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Information">
+                    <div class="component-meta">
+                        <div class="meta-card">
+                            <span class="meta-label">Family</span>
+                            <span class="meta-value">#{cc.attrs.value.componentFamily}</span>
+                        </div>
+                        <div class="meta-card">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">#{cc.attrs.value.tag.componentType}</span>
+                        </div>
+                        <div class="meta-card">
+                            <span class="meta-label">Class</span>
+                            <span class="meta-value">#{cc.attrs.value.componentClass}</span>
+                        </div>
+                        <div class="meta-card">
+                            <span class="meta-label">Renderer Type</span>
+                            <span class="meta-value">#{cc.attrs.value.tag.rendererType}</span>
+                        </div>
+                        <div class="meta-card">
+                            <span class="meta-label">Renderer Class</span>
+                            <span class="meta-value">#{cc.attrs.value.rendererClass}</span>
+                        </div>
+                        <ui:fragment rendered="#{not empty cc.attrs.value.tag.handlerClass}">
+                            <div class="meta-card">
+                                <span class="meta-label">Handler Class</span>
+                                <span class="meta-value">#{cc.attrs.value.tag.handlerClass}</span>
+                            </div>
+                        </ui:fragment>
+                    </div>
                 </p:tab>
             </p:tabView>
 

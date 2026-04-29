@@ -45,9 +45,13 @@ import java.util.stream.Collectors;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.RenderKit;
+import jakarta.faces.render.Renderer;
 import jakarta.inject.Named;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Named("cdkController")
@@ -82,9 +86,17 @@ public class CDKController {
     @Getter
     public static class TagInfo {
         private Tag tag;
+
+        private boolean component;
+
         private List<PrimePropertyKeys> properties;
+
+        private String componentClass;
+        private String componentFamily;
+        private String rendererClass;
         private List<PrimeFacetKeys> facets;
         private List<PrimeClientBehaviorEventKeys> clientBehaviorsEvents;
+        private List<ResourceDependency> resourceDependencies;
 
         public TagInfo(Tag tag) {
             try {
@@ -93,12 +105,29 @@ public class CDKController {
                 FacesContext context = FacesContext.getCurrentInstance();
 
                 if (tag.getType() == TagType.COMPONENT) {
+                    component = true;
+
                     PrimeComponent instance = (PrimeComponent) context.getApplication().createComponent(tag.getComponentType());
                     properties = Arrays.asList(instance.getPropertyKeys());
+
+                    componentClass = instance.getClass().getName();
+                    componentFamily = ((UIComponent) instance).getFamily();
+
+                    if (LangUtils.isNotBlank(tag.getRendererType())) {
+                        RenderKit renderKit = context.getRenderKit();
+                        Renderer<?> renderer = renderKit.getRenderer(componentFamily, tag.getRendererType());
+                        rendererClass = renderer.getClass().getName();
+                    }
+
                     facets = Arrays.asList(instance.getFacetKeys());
                     if (instance instanceof PrimeClientBehaviorHolder) {
                         clientBehaviorsEvents = Arrays.asList(((PrimeClientBehaviorHolder) instance).getClientBehaviorEventKeys());
                     }
+
+                    resourceDependencies = Arrays.stream(
+                            instance.getClass().getAnnotationsByType(jakarta.faces.application.ResourceDependency.class))
+                            .map(r -> new ResourceDependency(r.name(), r.library(), r.target()))
+                            .collect(Collectors.toList());
                 }
                 else if (tag.getType() == TagType.BEHAVIOR) {
                     PrimeClientBehavior instance = (PrimeClientBehavior) context.getApplication().createBehavior(tag.getBehaviorId());
@@ -120,5 +149,13 @@ public class CDKController {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class ResourceDependency {
+        private String name;
+        private String library;
+        private String target;
     }
 }
