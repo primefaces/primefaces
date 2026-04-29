@@ -1,0 +1,99 @@
+#md-output {
+  margin: 0 auto;
+  color: var(--text-color);
+}
+
+#md-output h1 {
+  font-size: 1.8rem;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 8px;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+#md-output h2 {
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  color: var(--text-color);
+  border-left: 4px solid var(--primary-color);
+  padding-left: 10px;
+  font-weight: 600;
+}
+
+#md-output h3 {
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-top: 1.4rem;
+  font-weight: 600;
+}
+
+#md-output table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+}
+
+#md-output th {
+  background: var(--surface-ground);
+  color: var(--text-color);
+  text-align: left;
+  padding: 8px 12px;
+  border: 1px solid var(--surface-border);
+  font-weight: 600;
+}
+
+#md-output td {
+  padding: 8px 12px;
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+}
+
+#md-output tr:nth-child(even) {
+  background: var(--surface-hover);
+}
+
+#md-output pre {
+  background: var(--surface-ground);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+  padding: 16px;
+  border-radius: var(--border-radius);
+  overflow-x: auto;
+  font-size: 0.85rem;
+}
+
+#md-output code {
+  font-family: monospace;
+}
+
+#md-output p code {
+  background: var(--surface-hover);
+  color: var(--primary-color);
+  padding: 2px 6px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--surface-border);
+  font-size: 0.85em;
+}
+
+#md-output strong {
+  color: var(--text-color);
+  font-weight: 700;
+}
+
+#md-output a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+#md-output a:hover {
+  color: var(--primary-color-text);
+  text-decoration: underline;
+}
+
+#md-output blockquote {
+  border-left: 4px solid var(--surface-border);
+  margin: 0;
+  padding: 8px 16px;
+  color: var(--text-color-secondary);
+}
