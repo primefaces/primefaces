@@ -14,9 +14,12 @@
     <div class="layout-submenu">
 
         <ui:fragment rendered="#{not empty tagName}">
-            <p:dialog widgetVar="currentTagLib" width="1300px" height="800px" appendTo="@(body)" header="Tag: #{tagName}">
-                <mycomposites:componentDocumentation value="#{cdkController.tags[tagName]}" />
-            </p:dialog>
+            <p:sidebar widgetVar="currentTagLib" style="width: 1300px; overflow: auto;" appendTo="@(body)" modal="true" position="right" blockScroll="true">
+                <h:form>
+                    <h4>p:#{tagName}</h4>
+                    <mycomposites:componentDocumentation value="#{cdkController.tags[tagName]}" />
+                </h:form>
+            </p:sidebar>
         </ui:fragment>
 
         <!-- RESOURCES -->

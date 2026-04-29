@@ -37,6 +37,8 @@ import org.primefaces.cdk.spi.taglib.Taglib;
 import org.primefaces.cdk.spi.taglib.TaglibParser;
 import org.primefaces.util.LangUtils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -80,9 +82,9 @@ public class CDKController {
     @Getter
     public static class TagInfo {
         private Tag tag;
-        private PrimePropertyKeys[] properties;
-        private PrimeFacetKeys[] facets;
-        private PrimeClientBehaviorEventKeys[] clientBehaviorsEvents;
+        private List<PrimePropertyKeys> properties;
+        private List<PrimeFacetKeys> facets;
+        private List<PrimeClientBehaviorEventKeys> clientBehaviorsEvents;
 
         public TagInfo(Tag tag) {
             try {
@@ -92,23 +94,23 @@ public class CDKController {
 
                 if (tag.getType() == TagType.COMPONENT) {
                     PrimeComponent instance = (PrimeComponent) context.getApplication().createComponent(tag.getComponentType());
-                    properties = instance.getPropertyKeys();
-                    facets = instance.getFacetKeys();
+                    properties = Arrays.asList(instance.getPropertyKeys());
+                    facets = Arrays.asList(instance.getFacetKeys());
                     if (instance instanceof PrimeClientBehaviorHolder) {
-                        clientBehaviorsEvents = ((PrimeClientBehaviorHolder) instance).getClientBehaviorEventKeys();
+                        clientBehaviorsEvents = Arrays.asList(((PrimeClientBehaviorHolder) instance).getClientBehaviorEventKeys());
                     }
                 }
                 else if (tag.getType() == TagType.BEHAVIOR) {
                     PrimeClientBehavior instance = (PrimeClientBehavior) context.getApplication().createBehavior(tag.getBehaviorId());
-                    properties = instance.getPropertyKeys();
+                    properties = Arrays.asList(instance.getPropertyKeys());
                 }
                 else if (tag.getType() == TagType.CONVERTER) {
                     PrimeConverter<?> instance = (PrimeConverter<?>) context.getApplication().createConverter(tag.getConverterId());
-                    properties = instance.getPropertyKeys();
+                    properties = Arrays.asList(instance.getPropertyKeys());
                 }
                 else if (tag.getType() == TagType.VALIDATOR) {
                     PrimeValidator<?> instance = (PrimeValidator<?>) context.getApplication().createValidator(tag.getValidatorId());
-                    properties = instance.getPropertyKeys();
+                    properties = Arrays.asList(instance.getPropertyKeys());
                 }
                 else if (tag.getType() == TagType.TAG_HANDLER) {
                     // TODO
