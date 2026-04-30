@@ -87,8 +87,6 @@ public class CDKController {
     public static class TagInfo {
         private Tag tag;
 
-        private boolean component;
-
         private List<PrimePropertyKeys> properties;
 
         private String componentClass;
@@ -96,6 +94,13 @@ public class CDKController {
         private String rendererClass;
         private List<PrimeFacetKeys> facets;
         private List<PrimeClientBehaviorEventKeys> clientBehaviorsEvents;
+
+        private String behaviorClass;
+
+        private String converterClass;
+
+        private String validatorClass;
+
         private List<ResourceDependency> resourceDependencies;
 
         public TagInfo(Tag tag) {
@@ -105,8 +110,6 @@ public class CDKController {
                 FacesContext context = FacesContext.getCurrentInstance();
 
                 if (tag.getType() == TagType.COMPONENT) {
-                    component = true;
-
                     PrimeComponent instance = (PrimeComponent) context.getApplication().createComponent(tag.getComponentType());
                     properties = Arrays.asList(instance.getPropertyKeys());
 
@@ -125,21 +128,29 @@ public class CDKController {
                     }
 
                     resourceDependencies = Arrays.stream(
-                            instance.getClass().getAnnotationsByType(jakarta.faces.application.ResourceDependency.class))
+                                    instance.getClass().getAnnotationsByType(jakarta.faces.application.ResourceDependency.class))
                             .map(r -> new ResourceDependency(r.name(), r.library(), r.target()))
                             .collect(Collectors.toList());
                 }
                 else if (tag.getType() == TagType.BEHAVIOR) {
                     PrimeClientBehavior instance = (PrimeClientBehavior) context.getApplication().createBehavior(tag.getBehaviorId());
                     properties = Arrays.asList(instance.getPropertyKeys());
+                    behaviorClass = instance.getClass().getName();
+
+                    resourceDependencies = Arrays.stream(
+                                    instance.getClass().getAnnotationsByType(jakarta.faces.application.ResourceDependency.class))
+                            .map(r -> new ResourceDependency(r.name(), r.library(), r.target()))
+                            .collect(Collectors.toList());
                 }
                 else if (tag.getType() == TagType.CONVERTER) {
                     PrimeConverter<?> instance = (PrimeConverter<?>) context.getApplication().createConverter(tag.getConverterId());
                     properties = Arrays.asList(instance.getPropertyKeys());
+                    converterClass = instance.getClass().getName();
                 }
                 else if (tag.getType() == TagType.VALIDATOR) {
                     PrimeValidator<?> instance = (PrimeValidator<?>) context.getApplication().createValidator(tag.getValidatorId());
                     properties = Arrays.asList(instance.getPropertyKeys());
+                    validatorClass = instance.getClass().getName();
                 }
                 else if (tag.getType() == TagType.TAG_HANDLER) {
                     // TODO
@@ -148,6 +159,22 @@ public class CDKController {
             catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        public boolean isComponent() {
+            return tag.getType() == TagType.COMPONENT;
+        }
+
+        public boolean isBehavior() {
+            return tag.getType() == TagType.BEHAVIOR;
+        }
+
+        public boolean isConverter() {
+            return tag.getType() == TagType.CONVERTER;
+        }
+
+        public boolean isValidator() {
+            return tag.getType() == TagType.VALIDATOR;
         }
     }
 

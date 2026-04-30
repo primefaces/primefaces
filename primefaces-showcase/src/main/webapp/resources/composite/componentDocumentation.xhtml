@@ -33,16 +33,14 @@
                     </p:dataTable>
                 </p:tab>
 
-                <p:tab title="Facets">
+                <p:tab title="Facets" rendered="#{cc.attrs.value.component}">
                     <p:dataTable value="#{cc.attrs.value.facets}" var="facet" stripedRows="true">
                         <p:column headerText="Name" style="width:200px;" field="name"/>
                         <p:column headerText="Description" field="description"/>
                     </p:dataTable>
                 </p:tab>
 
-                <p:tab title="Events"
-                       rendered="#{not empty cc.attrs.value.clientBehaviorsEvents}">
-
+                <p:tab title="Events" rendered="#{cc.attrs.value.component}">
                     <p:dataTable value="#{cc.attrs.value.clientBehaviorsEvents}"
                                  var="prop"
                                  stripedRows="true">
@@ -54,6 +52,7 @@
                         <p:column headerText="Description" field="description"/>
                     </p:dataTable>
                 </p:tab>
+
                 <p:tab title="Resource Dependencies">
                     <p:dataTable value="#{cc.attrs.value.resourceDependencies}"
                                  var="resourceDependency"
@@ -63,28 +62,61 @@
                         <p:column field="target" />
                     </p:dataTable>
                 </p:tab>
+
                 <p:tab title="Information">
                     <div class="component-meta">
-                        <div class="meta-card">
-                            <span class="meta-label">Family</span>
-                            <span class="meta-value">#{cc.attrs.value.componentFamily}</span>
-                        </div>
-                        <div class="meta-card">
-                            <span class="meta-label">Type</span>
-                            <span class="meta-value">#{cc.attrs.value.tag.componentType}</span>
-                        </div>
-                        <div class="meta-card">
-                            <span class="meta-label">Class</span>
-                            <span class="meta-value">#{cc.attrs.value.componentClass}</span>
-                        </div>
-                        <div class="meta-card">
-                            <span class="meta-label">Renderer Type</span>
-                            <span class="meta-value">#{cc.attrs.value.tag.rendererType}</span>
-                        </div>
-                        <div class="meta-card">
-                            <span class="meta-label">Renderer Class</span>
-                            <span class="meta-value">#{cc.attrs.value.rendererClass}</span>
-                        </div>
+                        <ui:fragment rendered="#{cc.attrs.value.component}">
+                            <div class="meta-card">
+                                <span class="meta-label">Family</span>
+                                <span class="meta-value">#{cc.attrs.value.componentFamily}</span>
+                            </div>
+                            <div class="meta-card">
+                                <span class="meta-label">Type</span>
+                                <span class="meta-value">#{cc.attrs.value.tag.componentType}</span>
+                            </div>
+                            <div class="meta-card">
+                                <span class="meta-label">Class</span>
+                                <span class="meta-value">#{cc.attrs.value.componentClass}</span>
+                            </div>
+                            <div class="meta-card">
+                                <span class="meta-label">Renderer Type</span>
+                                <span class="meta-value">#{cc.attrs.value.tag.rendererType}</span>
+                            </div>
+                            <div class="meta-card">
+                                <span class="meta-label">Renderer Class</span>
+                                <span class="meta-value">#{cc.attrs.value.rendererClass}</span>
+                            </div>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{cc.attrs.value.behavior}">
+                            <div class="meta-card">
+                                <span class="meta-label">Behavior Id</span>
+                                <span class="meta-value">#{cc.attrs.value.tag.behaviorId}</span>
+                            </div>
+                            <div class="meta-card">
+                                <span class="meta-label">Behavior Class</span>
+                                <span class="meta-value">#{cc.attrs.value.behaviorClass}</span>
+                            </div>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{cc.attrs.value.converter}">
+                            <div class="meta-card">
+                                <span class="meta-label">Converter Id</span>
+                                <span class="meta-value">#{cc.attrs.value.tag.converterId}</span>
+                            </div>
+                            <div class="meta-card">
+                                <span class="meta-label">Converter Class</span>
+                                <span class="meta-value">#{cc.attrs.value.converterClass}</span>
+                            </div>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{cc.attrs.value.validator}">
+                            <div class="meta-card">
+                                <span class="meta-label">Validator Id</span>
+                                <span class="meta-value">#{cc.attrs.value.tag.validatorId}</span>
+                            </div>
+                            <div class="meta-card">
+                                <span class="meta-label">Validator Class</span>
+                                <span class="meta-value">#{cc.attrs.value.validatorClass}</span>
+                            </div>
+                        </ui:fragment>
                         <ui:fragment rendered="#{not empty cc.attrs.value.tag.handlerClass}">
                             <div class="meta-card">
                                 <span class="meta-label">Handler Class</span>

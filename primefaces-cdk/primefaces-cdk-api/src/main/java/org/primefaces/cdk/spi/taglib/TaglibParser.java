@@ -81,41 +81,33 @@ public class TaglibParser {
         String validatorId = null;
         String converterId = null;
 
-        // 1. COMPONENT
         Element component = getDirectChild(tagElement, "component");
+        Element validator = getDirectChild(tagElement, "validator");
+        Element converter = getDirectChild(tagElement, "converter");
+        Element behavior = getDirectChild(tagElement, "behavior");
+
         if (component != null) {
             type = TagType.COMPONENT;
             componentType = getChildText(component, "component-type");
             handlerClass  = getChildText(component, "handler-class");
             rendererType  = getChildText(component, "renderer-type");
         }
-
-        // 2. VALIDATOR
-        Element validator = getDirectChild(tagElement, "validator");
-        if (validator != null) {
+        else if (validator != null) {
             type = TagType.VALIDATOR;
             validatorId  = getChildText(validator, "validator-id");
             handlerClass = getChildText(validator, "handler-class");
         }
-
-        // 3. CONVERTER
-        Element converter = getDirectChild(tagElement, "converter");
-        if (converter != null) {
+        else if (converter != null) {
             type = TagType.CONVERTER;
             converterId  = getChildText(converter, "converter-id");
             handlerClass = getChildText(converter, "handler-class");
         }
-
-        // 4. BEHAVIOR
-        Element behavior = getDirectChild(tagElement, "behavior");
-        if (behavior != null) {
+        else if (behavior != null) {
             type = TagType.BEHAVIOR;
             behaviorId  = getChildText(behavior, "behavior-id");
             handlerClass = getChildText(behavior, "handler-class");
         }
-
-        // 4. TAG_HANDLER
-        if (handlerClass == null) {
+        else {
             type = TagType.TAG_HANDLER;
             handlerClass = getChildText(tagElement, "handler-class");
         }
