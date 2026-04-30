@@ -61,7 +61,7 @@
         a {
             display: block;
             color: var(--text-color-secondary);
-            font-size: .95rem;
+            font-size: 1rem;
             padding: .375rem .75rem;
             border-left: 2px solid transparent;
             text-decoration: none;
@@ -226,7 +226,7 @@
                     background: transparent;
     
                     .ui-tabs-panel {
-                        padding: 2rem 1rem;
+                        padding: 0;
                     }
                 }
             }
@@ -254,7 +254,7 @@
 
     .card {
         background: var(--surface-a);
-        padding: 2rem;
+        padding: 1.5rem;
         border: 1px solid var(--surface-d);
         box-shadow: 0 1px 2px rgba(0,0,0,.06);
         border-radius: 10px;

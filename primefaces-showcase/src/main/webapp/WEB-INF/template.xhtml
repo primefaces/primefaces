@@ -83,10 +83,13 @@
                         <div class="content-section documentation">
                             <ui:insert name="static-documentation"/>
                             <ui:insert name="source">
-                                <sc:tabscode
-                                        value="#{sc:getFilesContent(facesContext.externalContext.requestServletPath, true)}">
-                                    <ui:insert name="more-source-tabs"/>
-                                </sc:tabscode>
+                                <h2>Usage</h2>
+                                <div class="card">
+                                    <sc:tabscode
+                                            value="#{sc:getFilesContent(facesContext.externalContext.requestServletPath, true)}">
+                                        <ui:insert name="more-source-tabs"/>
+                                    </sc:tabscode>
+                                </div>
                             </ui:insert>
                         </div>
                     </ui:insert>
