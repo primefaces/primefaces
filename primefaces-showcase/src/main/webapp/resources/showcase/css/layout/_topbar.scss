@@ -160,7 +160,7 @@
                     transform-origin: top;
                     top: var(--layout-topbar-height);
                     right: 0;
-                    width: 275px;
+                    width: 350px;
                     max-height: 400px;
                     background-color: var(--surface-f);
                     box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
@@ -179,7 +179,7 @@
                             color: var(--text-color-secondary);
                             font-weight: 600;
                             user-select: none;
-                            padding: 1.5rem 0 1rem 0;
+                            padding: 1rem 0 0.6rem 0;
                             font-size: 0.857rem;
                             text-transform: uppercase;
                 
@@ -192,7 +192,7 @@
                     a {
                         text-decoration: none;
                         color: var(--text-color);
-                        padding: .5rem;
+                        padding: .2rem;
                         display: flex;
                         align-items: center;
                         user-select: none;

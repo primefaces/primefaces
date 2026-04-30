@@ -59,14 +59,6 @@ public class AppMenu {
         menuCategories.add(new MenuCategory("Theming", themingMenuItems));
         //THEMING CATEGORY END
 
-        //UIKIT CATEGORY START
-        /*
-        List<MenuItem> uiKitMenuItems = new ArrayList<>();
-        uiKitMenuItems.add(new MenuItem("Figma", "/uikit", "New"));
-        menuCategories.add(new MenuCategory("UI KIT", uiKitMenuItems));
-        */
-        //UIKIT CATEGORY END
-
         //CORE CATEGORY START
         List<MenuItem> ajaxMenuItems = new ArrayList<>();
         ajaxMenuItems.add(new MenuItem("Introduction", "/ui/ajax/basic"));
