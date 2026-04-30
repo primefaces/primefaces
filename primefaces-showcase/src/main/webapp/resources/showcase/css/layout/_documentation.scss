@@ -7,7 +7,6 @@
   font-size: 1.8rem;
   border-bottom: 2px solid var(--primary-color);
   padding-bottom: 8px;
-  color: var(--primary-color);
   font-weight: 700;
 }
 
@@ -87,7 +86,7 @@
 }
 
 #md-output a:hover {
-  color: var(--primary-color-text);
+  color: var(--text-color);
   text-decoration: underline;
 }
 

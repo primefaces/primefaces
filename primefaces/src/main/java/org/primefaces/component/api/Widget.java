@@ -41,7 +41,7 @@ public interface Widget {
 
     String ATTR_WIDGET_VAR_PATTERN = Widget.class.getName() + ".ATTR_WIDGET_VAR_PATTERN";
 
-    @Property(description = "Name of the client side widget.")
+    @Property(description = "Name of the client side widget.", implicitDefaultValue = "generated ('widget_' + componentClientId)")
     String getWidgetVar();
 
     // backwards compatibility
