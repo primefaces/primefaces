@@ -46,7 +46,7 @@
                             <ui:repeat value="#{category.themes}" var="theme">
                                 <div class="col-3">
                                     <p:commandLink actionListener="#{app.changeTheme(theme)}"
-                                                   oncomplete="App.changeTheme('#{theme.id}', #{theme.dark})" update=":app-theme-logo">
+                                                   oncomplete="App.changeTheme('#{theme.id}', #{theme.dark})">
                                         <h:graphicImage name="#{theme.image}" library="showcase" alt="#{theme.name}"/>
                                     </p:commandLink>
                                     <span>#{theme.name}</span>

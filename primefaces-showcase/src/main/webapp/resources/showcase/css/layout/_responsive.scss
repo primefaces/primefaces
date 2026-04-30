@@ -27,10 +27,20 @@
     }
 
     .layout-topbar {
-        height: 110px;
+        height: calc(var(--layout-topbar-height) + 46px);
         flex-wrap: wrap;
         justify-content: space-between;
         padding: 0;
+        padding-left: 0;
+        left: 0;
+        width: 100%;
+
+        .layout-topbar-inner {
+            width: 100%;
+            margin-left: 0;
+            padding: 0 var(--layout-page-padding-x);
+            flex-wrap: wrap;
+        }
 
         .menu-button {
             display: block;
@@ -70,6 +80,7 @@
                     width: 100%;
                     font-size: 14px;
                     min-width: auto;
+                    border-radius: 0;
                 }
 
                 &.topbar-submenu > ul {
@@ -80,19 +91,36 @@
     }
 
     .layout-sidebar {
+        left: 0;
         top: 0;
         z-index: 999;
         height: 100%;
         transform: translateX(-100%);
+        position: fixed;
+        width: var(--layout-sidebar-width);
 
         &.active {
             transform: translateX(0);
         }
     }
 
+    .layout-shell {
+        max-width: none;
+        margin: 0;
+        padding-top: 0;
+        display: block;
+    }
+
     .layout-content {
         margin-left: 0;
-        padding-top: 110px;
+        margin-right: 0;
+        padding-top: calc(var(--layout-topbar-height) + 46px);
+        grid-template-columns: minmax(0, 1fr);
+        column-gap: 0;
+
+        > * {
+            max-width: 100%;
+        }
 
         .content-section {
             &.introduction {
@@ -189,7 +217,7 @@
                     position: static;
 
                     > ul {
-                        top: 110px;
+                        top: calc(var(--layout-topbar-height) + 46px);
                         position: fixed;
                         right: auto;
                         left: 0;

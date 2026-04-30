@@ -1,32 +1,31 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
                 xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
 
-    <div class="layout-news">
-        <div class="layout-news-container">
-            <div class="layout-news-content">
-                <span class="layout-news-text">Summer Sale is here 🏖️ Get 50% off with code PRSM25</span>
-                <a class="layout-news-link" href="https://www.primefaces.org/blog/summer-sale-2025" target="_blank" rel="noopener noreferrer">Learn More</a>
+    <ui:fragment rendered="false">
+        <div class="layout-news">
+            <div class="layout-news-container">
+                <div class="layout-news-content">
+                    <span class="layout-news-text">Summer Sale is here 🏖️ Get 50% off with code PRSM25</span>
+                    <a class="layout-news-link" href="https://www.primefaces.org/blog/summer-sale-2025" target="_blank" rel="noopener noreferrer">Learn More</a>
+                </div>
+                <a class="layout-news-close">
+                    <span class="pi pi-times"></span>
+                </a>
             </div>
-            <a class="layout-news-close">
-                <span class="pi pi-times"></span>
-            </a>
         </div>
-    </div>
+    </ui:fragment>
 
     <div class="layout-topbar">
-        <a class="menu-button" tabindex="0">
-            <i class="pi pi-bars"></i>
-        </a>
-        <h:link styleClass="logo" outcome="/index.xhtml" title="Showcase Home">
-            <p:graphicImage name="images/primefaces-logo.svg" library="showcase" />
-        </h:link>
-        <p:outputPanel id="app-theme-logo" class="app-theme">
-            <p:graphicImage id="app-theme-image" name="#{app.themeImage}" library="showcase" />
-            <p:tooltip for="app-theme-logo" value="#{app.themeName}" position="bottom" showDelay="0" />
-        </p:outputPanel>
+        <div class="layout-topbar-inner">
+            <a class="menu-button" tabindex="0">
+                <i class="pi pi-bars"></i>
+            </a>
+            <h:link styleClass="logo" outcome="/index.xhtml" title="Showcase Home">
+                <p:graphicImage name="images/primefaces-logo.svg" library="showcase" />
+            </h:link>
 
-        <h:form styleClass="topbar-form">
-            <ul class="topbar-menu">
+            <h:form styleClass="topbar-form">
+                <ul class="topbar-menu">
                 <li class="topbar-submenu">
                     <a tabindex="0">
                         <i class="pi pi-palette"></i>
@@ -42,7 +41,7 @@
                             <li class="topbar-submenu-header">#{category.name}</li>
                             <ui:repeat value="#{category.themes}" var="theme">
                                 <li>
-                                    <p:commandLink actionListener="#{app.changeTheme(theme)}" oncomplete="App.changeTheme('#{theme.id}', #{theme.dark})" update=":app-theme-logo">
+                                    <p:commandLink actionListener="#{app.changeTheme(theme)}" oncomplete="App.changeTheme('#{theme.id}', #{theme.dark})">
                                         <h:graphicImage name="#{theme.image}" library="showcase" alt="#{theme.name}"/>
                                         <span>#{theme.name}</span>
                                     </p:commandLink>
@@ -82,7 +81,8 @@
                         <li><a href="https://www.primetek.com.tr" target="_blank"><span>About PrimeTek</span></a></li>
                     </ul>
                 </li>
-            </ul>
-        </h:form>
+                </ul>
+            </h:form>
+        </div>
     </div>
 </ui:composition>

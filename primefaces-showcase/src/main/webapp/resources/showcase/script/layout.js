@@ -2,12 +2,12 @@ App = {
     init: function() {
         this.wrapper = $(document.body).children('.layout-wrapper');
         this.topbar = this.wrapper.children('.layout-topbar');
-        this.topbarMenu = this.topbar.find('> form > .topbar-menu');
-        this.sidebar = this.wrapper.children('.layout-sidebar');
+        this.topbarMenu = this.topbar.find('.topbar-menu');
+        this.sidebar = this.wrapper.find('.layout-sidebar').first();
         this.menu = this.sidebar.children('.layout-menu');
         this.menuLinks = this.menu.find('a');
         this.mask = this.wrapper.children('.layout-mask');
-        this.menuButton = this.topbar.children('.menu-button');
+        this.menuButton = this.topbar.find('.menu-button');
         this.configurator = this.wrapper.children('.layout-config');
         this.configuratorButton = $('#layout-config-button');
         this.configuratorCloseButton = $('#layout-config-close-button');
@@ -17,9 +17,31 @@ App = {
         
         this._bindEvents();
         this._bindNews();
+        this._bindTopbarScroll();
         
         this.restoreMenu();
         Storage.restoreSettings();
+    },
+
+    _bindTopbarScroll: function() {
+        var $this = this;
+        var rafId = null;
+
+        var update = function() {
+            rafId = null;
+            if (window.scrollY > 0) {
+                $this.topbar.addClass('scrolled');
+            } else {
+                $this.topbar.removeClass('scrolled');
+            }
+        };
+
+        $(window).off('scroll.showcaseTopbar').on('scroll.showcaseTopbar', function() {
+            if (rafId) return;
+            rafId = window.requestAnimationFrame(update);
+        });
+
+        update();
     },
 
     _bindEvents: function() {

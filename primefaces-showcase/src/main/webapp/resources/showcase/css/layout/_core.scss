@@ -2,6 +2,22 @@ $linkColor: #2196f3;
 $focusBorderColor:#BBDEFB;
 $actionColor: #FEAB4D;
 
+:root {
+    --layout-topbar-height: 56px;
+    --layout-sidebar-width: 280px;
+    --layout-right-rail-width: 288px;
+    --layout-content-max-width: 980px;
+    --layout-page-padding-x: 2rem;
+    --layout-shell-gap: 2.5rem;
+    --layout-shell-max-width: calc(
+        var(--layout-sidebar-width) +
+        var(--layout-shell-gap) +
+        var(--layout-content-max-width) +
+        var(--layout-shell-gap) +
+        var(--layout-right-rail-width)
+    );
+    --layout-shell-left: clamp(0px, calc((100% - var(--layout-shell-max-width)) / 2), 9999px);
+}
 
 html {
     font-size: 14px;
@@ -12,12 +28,32 @@ body {
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: var(--surface-a);
+    background-color: var(--surface-b);
+    background-image: url("\#{resource['showcase:images/layout/pattern.png']}"), radial-gradient(720px circle at 50% -10%, rgba(33, 150, 243, 0.06), transparent 62%);
+    background-repeat: no-repeat, no-repeat;
+    background-position: top center, top center;
+    background-size: min(1400px, 100%) auto, cover;
+    background-attachment: scroll, fixed;
     font-family: var(--font-family);
     font-weight: normal;
     color: var(--text-color);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+@supports (color: color-mix(in srgb, white, black)) {
+    body {
+        background-image: url("\#{resource['showcase:images/layout/pattern.png']}"), radial-gradient(
+            720px circle at 50% -10%,
+            color-mix(in srgb, var(--primary-color) 10%, transparent),
+            transparent 62%
+        );
+    }
+}
+
+.layout-wrapper {
+    position: relative;
+    z-index: 1;
 }
 
 a {
