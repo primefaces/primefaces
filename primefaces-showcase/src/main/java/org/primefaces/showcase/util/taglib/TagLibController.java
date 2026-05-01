@@ -48,7 +48,7 @@ public class TagLibController implements Serializable {
 
     @PostConstruct
     public void init() {
-        selectedTag = tagLibProvider.getTagsSorted().getFirst();
+        selectedTag = tagLibProvider.getTagsSorted().get(0);
     }
 
     public String getTagName(String tagName) {
