@@ -4,8 +4,13 @@
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
-    
-    <ui:define name="content">
+
+    <ui:define name="title"></ui:define>
+
+    <ui:define name="description">
+    </ui:define>
+
+    <ui:define name="implementation">
         <div class="home">
             <div id="homepage-intro" class="introduction #{app.darkMode ? 'introduction-dark' : ''}">
                 <div class="introduction-promo">Always bet on Prime!</div>
@@ -207,6 +212,10 @@
                 </div>
             </div>
         </div>
+    </ui:define>
+
+    <ui:define name="source">
+
     </ui:define>
 
 </ui:composition>

@@ -5,12 +5,6 @@
                 xmlns:mycomposites="jakarta.faces.composite/composite"
                 xmlns:p="primefaces">
 
-    <ui:fragment rendered="#{not empty appSubMenu.subMenuItems
-                            or not empty documentationLink
-                            or not empty widgetLink
-                            or not empty primefacesClientApiLink
-                            or not empty tagName
-                            or tagLibrary.isTagVdlAvailable(documentationLink)}">
     <div class="layout-submenu">
 
         <ui:fragment rendered="#{not empty tagName}">
@@ -102,9 +96,6 @@
             </ui:repeat>
         </ui:fragment>
 
-
-
     </div>
-    </ui:fragment>
 
 </ui:composition>

@@ -2,12 +2,16 @@
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
-                xmlns:p="primefaces" template="/WEB-INF/template.xhtml">
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
 
-    <ui:define name="content">
-        <div class="content-section documentation">
-            <h1>Getting Started</h1>
-            <p>PrimeFaces is a lightweight library with one jar, zero-configuration and no required dependencies. You just need to add PrimeFaces and import the namespace into your XHTMLs to get started.</p>
+    <ui:define name="title"> Getting Started </ui:define>
+
+    <ui:define name="description">
+        PrimeFaces is a lightweight library with one jar, zero-configuration and no required dependencies. You just need to add PrimeFaces and import the namespace into your XHTMLs to get started.
+    </ui:define>
+
+    <ui:define name="implementation">
 
             <h5>Dependency</h5>
             <p>PrimeFaces is usally added as Apache Maven dependency. (Or alternatively Gradle dependency or manual download.)</p>
@@ -48,6 +52,10 @@
 
 </code></pre>
 
-        </div>
     </ui:define>
+
+    <ui:define name="source">
+
+    </ui:define>
+
 </ui:composition>
