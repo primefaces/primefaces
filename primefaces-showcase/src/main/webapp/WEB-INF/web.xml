@@ -19,6 +19,7 @@
     </context-param>
 
     <welcome-file-list>
+        <welcome-file>index</welcome-file>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
 
@@ -36,6 +37,10 @@
     </context-param>
     <context-param>
         <param-name>jakarta.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>jakarta.faces.AUTOMATIC_EXTENSIONLESS_MAPPING</param-name>
         <param-value>true</param-value>
     </context-param>
 
@@ -141,15 +146,15 @@
 
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
-        <location>/error.xhtml</location>
+        <location>/error</location>
     </error-page>
     <error-page>
         <exception-type>jakarta.faces.application.ViewExpiredException</exception-type>
-        <location>/viewExpired.xhtml</location>
+        <location>/viewExpired</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/error.xhtml</location>
+        <location>/error</location>
     </error-page>
 
     <servlet>
