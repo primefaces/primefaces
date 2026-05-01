@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                xmlns:mycomposites="jakarta.faces.composite/composite"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title"> TagLib </ui:define>
+
+    <ui:define name="content">
+        <div class="content-section introduction">
+            <div class="feature-intro">
+                <h1>TagLib</h1>
+                <p>TagLib Documentation</p>
+            </div>
+        </div>
+
+        <div class="content-section documentation">
+
+            <h2>Functions</h2>
+            <div class="card">
+                <h:form styleClass="taglib-component">
+                    <p:dataTable value="#{tagLibProvider.functionsSorted}" var="func" stripedRows="true">
+                        <p:column headerText="Signature" style="width:500px;" field="signature" />
+                        <p:column headerText="Description" field="function.description" />
+                    </p:dataTable>
+                </h:form>
+            </div>
+
+            <h2>Tags</h2>
+            <div class="card">
+                <h:form>
+                    <p:outputLabel for="@next" value="Tag:" /> <br />
+                    <p:selectOneMenu value="#{tagLibController.selectedTag}" filter="true" filterMatchMode="contains"
+                                     converter="#{tagInfoConverter}">
+                        <f:selectItems value="#{tagLibProvider.tagsSorted}"
+                                       var="tagInfo"
+                                       itemLabel="#{tagInfo.tag.tagName}"
+                                       itemValue="#{tagInfo}" />
+                        <p:ajax update="@form" />
+                    </p:selectOneMenu>
+
+                    <br />
+                    <br />
+
+                    <mycomposites:tagDocumentation value="#{tagLibController.selectedTag}"
+                                                   rendered="#{tagLibController.selectedTag != null}"/>
+                </h:form>
+            </div>
+
+        </div>
+    </ui:define>
+
+
+
+</ui:composition>

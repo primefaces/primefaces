@@ -14,10 +14,10 @@
     <div class="layout-submenu">
 
         <ui:fragment rendered="#{not empty tagName}">
-            <p:sidebar widgetVar="currentTagLib" style="width: 1200px; overflow: auto;" appendTo="@(body)" modal="true" position="right" blockScroll="true">
+            <p:sidebar widgetVar="currentTagLib" styleClass="taglib-sidebar" appendTo="@(body)" modal="true" position="right" blockScroll="true">
                 <h:form>
-                    <h4>p:#{tagName}</h4>
-                    <mycomposites:componentDocumentation value="#{cdkController.tags[tagName]}" />
+                    <h3>#{tagLibController.getTagName(tagName)} Tag Documentation</h3>
+                    <mycomposites:tagDocumentation value="#{tagLibProvider.tags[tagName]}" />
                 </h:form>
             </p:sidebar>
         </ui:fragment>
@@ -48,7 +48,8 @@
             <ui:fragment rendered="#{not empty tagName}">
                 <a class="submenu-resource-link" href="#" onclick="PF('currentTagLib').show(); return false;" target="_blank" rel="noopener noreferrer">
                     <i class="pi pi-sliders-h"></i>
-                    <span>TagLib</span>
+                    <span>Tag Documentation</span>
+                    <p:tag value="New" severity="success" />
                 </a>
             </ui:fragment>
 
@@ -56,6 +57,7 @@
                 <a class="submenu-resource-link" href="#" onclick="PF('currentDocumentation').show(); return false;" target="_blank" rel="noopener noreferrer">
                     <i class="pi pi-receipt"></i>
                     <span>Documentation</span>
+                    <p:tag value="New" severity="success" />
                 </a>
             </ui:fragment>
 

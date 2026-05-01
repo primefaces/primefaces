@@ -8,7 +8,7 @@
       xmlns:composite="jakarta.faces.composite">
 
     <composite:interface>
-        <composite:attribute name="value" type="org.primefaces.showcase.util.CDKController$TagInfo"/>
+        <composite:attribute name="value" type="org.primefaces.showcase.util.taglib.TagInfo"/>
     </composite:interface>
 
     <composite:implementation>
@@ -27,7 +27,7 @@
                             #{prop.required}
                         </p:column>
                         <p:column headerText="Default" style="width:160px;">
-                            #{cdkController.resolveDefaultValue(prop)}
+                            #{tagLibController.resolveDefaultValue(prop)}
                         </p:column>
                         <p:column headerText="Description" field="description" />
                     </p:dataTable>

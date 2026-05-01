@@ -1,56 +1,71 @@
-body .taglib-component {
-  .ui-tabs .ui-tabs-panels .ui-tabs-panel {
-    padding: 0.5rem 0;
+body {
+  .taglib-sidebar {
+    width: 1200px;
+    overflow: auto;
+
+    h3 {
+      margin: 0;
+      padding: 0.3rem 0 0.9rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
   }
 
-  .ui-datatable thead th {
-    padding: 0.6rem 0.6rem;
+  .taglib-component {
+    padding-top: 1rem;
+
+    .ui-tabs .ui-tabs-panels .ui-tabs-panel {
+      padding: 0.5rem 0;
+    }
+
+    .ui-datatable thead th {
+      padding: 0.6rem 0.6rem;
+    }
+
+    .ui-datatable .ui-datatable-data > tr > td {
+      padding: 0.6rem 0.6rem;
+      font-size: 0.9rem;
+    }
+
+    .ui-datatable thead th .ui-column-title {
+      font-size: 1.0rem;
+    }
+
+    .component-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 12px;
+      margin: 1rem 0 1.5rem;
+    }
+
+    .meta-card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px 14px;
+      transition: all 0.15s ease;
+    }
+
+    .meta-card:hover {
+      border-color: #d1d5db;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .meta-label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .meta-value {
+      font-size: 13px;
+      color: #111827;
+      word-break: break-word;
+      line-height: 1.4;
+    }
   }
 
-  .ui-datatable .ui-datatable-data > tr > td {
-    padding: 0.6rem 0.6rem;
-    font-size: 0.9rem;
-  }
-
-  .ui-datatable thead th .ui-column-title {
-    font-size: 1.0rem;
-  }
-
-  .component-meta {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 12px;
-    margin: 1rem 0 1.5rem;
-  }
-
-  .meta-card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 12px 14px;
-    transition: all 0.15s ease;
-  }
-
-  .meta-card:hover {
-    border-color: #d1d5db;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-    transform: translateY(-1px);
-  }
-
-  .meta-label {
-    display: block;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    color: #6b7280;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .meta-value {
-    font-size: 13px;
-    color: #111827;
-    word-break: break-word;
-    line-height: 1.4;
-  }
 }
-

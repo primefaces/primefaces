@@ -140,6 +140,11 @@ public @interface Property {
             this.internal = internal;
         }
 
+        public static Literal of(Property property) {
+            return new Literal(property.description(), property.required(), property.defaultValue(),
+                    property.implicitDefaultValue(), property.skipAccessors(), property.type(), property.internal());
+        }
+
         public static Literal of(String description, boolean required, String defaultValue, String implicitDefaultValue, boolean skipAccessors,
                                  Class<?> type, boolean internal) {
             return new Literal(description, required, defaultValue, implicitDefaultValue, skipAccessors, type, internal);
