@@ -63,12 +63,14 @@
 
                 <div class="layout-content">
                     <ui:insert name="content">
-                        <div class="content-section introduction">
-                            <div class="feature-intro">
-                                <h1><ui:insert name="title"></ui:insert></h1>
-                                <p><ui:insert name="description"></ui:insert></p>
+                        <ui:insert name="introduction">
+                            <div class="content-section introduction">
+                                <div class="feature-intro">
+                                    <h1><ui:insert name="title"></ui:insert></h1>
+                                    <p><ui:insert name="description"></ui:insert></p>
+                                </div>
                             </div>
-                        </div>
+                        </ui:insert>
 
                         <ui:include src="./submenu.xhtml">
                             <ui:param name="documentationLink" value="#{documentationLink}" />
