@@ -190,24 +190,29 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery.TriggeredEvent} event The event that triggered the slider handle to move.
      * @param {JQueryUI.SliderUIParams} ui Details about the slider.
      */
-    onSlide: function(event, ui) {
+    onSlide: function (event, ui) {
         if (this.cfg.onSlide) {
             this.cfg.onSlide.call(this, event, ui);
         }
+
+        var decimals = this.getStepDecimals();
 
         if (this.cfg.range === true) {
             this.setInputValue(this.input.eq(0), ui.values[0]);
             this.setInputValue(this.input.eq(1), ui.values[1]);
 
             if (this.output) {
-                this.output.text(this.cfg.displayTemplate.replace('{min}', ui.values[0]).replace('{max}', ui.values[1]));
+                this.output.text(this.cfg.displayTemplate
+                    .replace('{min}', this.formatValue(ui.values[0], decimals))
+                    .replace('{max}', this.formatValue(ui.values[1], decimals)));
             }
         }
         else {
             this.setInputValue(this.input, ui.value);
 
             if (this.output) {
-                this.output.text(this.cfg.displayTemplate.replace('{value}', ui.value));
+                this.output.text(this.cfg.displayTemplate
+                    .replace('{value}', this.formatValue(ui.value, decimals)));
             }
         }
     },
@@ -273,6 +278,32 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('slideEnd', ext);
         }
+    },
+
+    /**
+     * Determines the number of decimal places for the slider's step value.
+     * @returns {number} The number of decimal places in the step value. Returns 0 if the step is an integer.
+     */
+    getStepDecimals: function () {
+        if (this.decimalStep && this.cfg.step) {
+            var step = String(this.cfg.step);
+            var separator = step.indexOf('.');
+            return separator < 0 ? 0 : step.length - separator - 1;
+        }
+        else {
+            return 0;
+        }
+    },
+
+    /**
+     * Formats a value to a fixed number of decimal places if it is a number.
+     * @private
+     * @param {number|string} value The value to format.
+     * @param {number} decimals The number of decimal places.
+     * @returns {string|number} The formatted value as a string if number, or the original value if not a number.
+     */
+    formatValue: function (value, decimals) {
+        return (typeof value === 'number') ? value.toFixed(decimals) : value;
     },
 
     /**
