@@ -3,222 +3,450 @@
                 xmlns:f="jakarta.faces.core"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:p="primefaces"
-                template="/WEB-INF/template.xhtml">
-
-    <ui:define name="title"></ui:define>
-
-    <ui:define name="description">
-    </ui:define>
-
-    <ui:define name="introduction">
-    </ui:define>
+                template="/WEB-INF/template-landing.xhtml">
 
     <ui:define name="implementation">
-        <div class="home">
-            <div id="homepage-intro" class="introduction #{app.darkMode ? 'introduction-dark' : ''}">
-                <div class="introduction-promo">Always bet on Prime!</div>
-                <div class="introduction-title">The Ultimate UI Component Library</div>
-                <div class="introduction-subtitle">for Jakarta Faces</div>
-    
-                <h:link styleClass="action-button" outcome="/getstarted">GET STARTED</h:link>
-                <p:graphicImage alt="devices" styleClass="introduction-devices" name="images/home/intro-devices.png" library="showcase" />
-            </div>
-            
-            <div class="features">
-                <h4>Features</h4>
-                <p>Congratulations! <span role="img" aria-label="celebrate" class="mx-2">🎉</span> Your quest to find the UI library for JavaServer Faces is now complete.</p>
+        <div class="landing-page">
 
-                <div class="grid">
-                    <div class="col-12 md:col-4">
-                        <div class="feature-card">
-                            <p:graphicImage name="images/home/jsf-components.png" library="showcase" />
-                            <div class="feature-card-detail">
-                                <div class="feature-name">100+ COMPONENTS</div>
-                                <p>The most complete set of UI Components featuring 100+ easy to use components for all your UI requirements.</p>
+            <!-- ═══ HERO ═══════════════════════════════════════════════════════ -->
+            <section class="landing-hero">
+                <div class="landing-hero-inner">
+                    <a href="https://github.com/primefaces/primefaces/releases" target="_blank" rel="noopener noreferrer" class="landing-version-badge">
+                        <i class="pi pi-box"></i>
+                        primefaces@#{app.primeFacesVersion}
+                    </a>
+
+                    <h1 class="landing-hero-title">
+                        UI Suite for<br/>
+                        <span class="landing-hero-highlight">Jakarta Faces</span>
+                    </h1>
+
+                    <p class="landing-hero-subtitle">
+                        Enhance your web applications with PrimeFaces' comprehensive suite of customizable,
+                        feature-rich UI components for Jakarta EE and Spring.
+                    </p>
+
+                    <div class="landing-hero-actions">
+                        <h:link styleClass="landing-btn landing-btn-primary" outcome="/getstarted">
+                            Get Started
+                        </h:link>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ LOGO STRIP ══════════════════════════════════════════════════ -->
+            <section class="landing-logos">
+                <div class="landing-logos-track">
+                    <div class="landing-logos-inner">
+                        <p:graphicImage name="images/whouses/fox.svg"       library="showcase" alt="Fox" />
+                        <p:graphicImage name="images/whouses/airbus.svg"    library="showcase" alt="Airbus" />
+                        <p:graphicImage name="images/whouses/nike.svg"      library="showcase" alt="Nike" />
+                        <p:graphicImage name="images/whouses/mercedes.svg"  library="showcase" alt="Mercedes" />
+                        <p:graphicImage name="images/whouses/ebay.svg"      library="showcase" alt="eBay" />
+                        <p:graphicImage name="images/whouses/ford.svg"      library="showcase" alt="Ford" />
+                        <p:graphicImage name="images/whouses/vw.svg"        library="showcase" alt="VW" />
+                        <p:graphicImage name="images/whouses/unicredit.svg" library="showcase" alt="UniCredit" />
+                        <p:graphicImage name="images/whouses/lufthansa.svg" library="showcase" alt="Lufthansa" />
+                        <p:graphicImage name="images/whouses/nvidia.svg"    library="showcase" alt="Nvidia" />
+                        <p:graphicImage name="images/whouses/verizon.svg"   library="showcase" alt="Verizon" />
+                        <p:graphicImage name="images/whouses/sap.svg"       library="showcase" alt="SAP" />
+                        <p:graphicImage name="images/whouses/amex.svg"      library="showcase" alt="Amex" />
+                        <p:graphicImage name="images/whouses/volvo.svg"     library="showcase" alt="Volvo" />
+                        <p:graphicImage name="images/whouses/siemens.svg"   library="showcase" alt="Siemens" />
+                        <!-- duplicate for seamless scroll -->
+                        <p:graphicImage name="images/whouses/fox.svg"       library="showcase" alt="Fox" aria-hidden="true"/>
+                        <p:graphicImage name="images/whouses/airbus.svg"    library="showcase" alt="Airbus" aria-hidden="true"/>
+                        <p:graphicImage name="images/whouses/nike.svg"      library="showcase" alt="Nike" aria-hidden="true"/>
+                        <p:graphicImage name="images/whouses/mercedes.svg"  library="showcase" alt="Mercedes" aria-hidden="true"/>
+                        <p:graphicImage name="images/whouses/ebay.svg"      library="showcase" alt="eBay" aria-hidden="true"/>
+                        <p:graphicImage name="images/whouses/ford.svg"      library="showcase" alt="Ford" aria-hidden="true"/>
+                        <p:graphicImage name="images/whouses/vw.svg"        library="showcase" alt="VW" aria-hidden="true"/>
+                        <p:graphicImage name="images/whouses/unicredit.svg" library="showcase" alt="UniCredit" aria-hidden="true"/>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ FEATURES GRID ══════════════════════════════════════════════ -->
+            <section class="landing-section landing-features">
+                <div class="landing-container">
+                    <div class="landing-section-label">Features</div>
+                    <h2 class="landing-section-title">Everything you need</h2>
+                    <p class="landing-section-subtitle">
+                        A complete UI toolkit for Jakarta Faces that covers every use case — from simple forms to complex
+                        data-driven enterprise applications.
+                    </p>
+
+                    <div class="landing-features-grid">
+                        <div class="landing-feature-card">
+                            <div class="landing-feature-icon landing-feature-icon-blue">
+                                <i class="pi pi-th-large"></i>
                             </div>
+                            <h3>100+ Components</h3>
+                            <p>The most complete set of UI Components featuring 100+ easy-to-use components for all your UI requirements.</p>
+                        </div>
+                        <div class="landing-feature-card">
+                            <div class="landing-feature-icon landing-feature-icon-green">
+                                <i class="pi pi-github"></i>
+                            </div>
+                            <h3>Open Source</h3>
+                            <p>Hosted at GitHub, all components are open source and free to use under the MIT license.</p>
+                        </div>
+                        <div class="landing-feature-card">
+                            <div class="landing-feature-icon landing-feature-icon-purple">
+                                <i class="pi pi-palette"></i>
+                            </div>
+                            <h3>Themes</h3>
+                            <p>Choose from 30+ premium and free themes including Material Design, Bootstrap, Tailwind, and custom presets.</p>
+                        </div>
+                        <div class="landing-feature-card">
+                            <div class="landing-feature-icon landing-feature-icon-orange">
+                                <i class="pi pi-objects-column"></i>
+                            </div>
+                            <h3>Templates</h3>
+                            <p>Professionally designed, highly customizable Facelets-based application templates to get started in no time.</p>
+                        </div>
+                        <div class="landing-feature-card">
+                            <div class="landing-feature-icon landing-feature-icon-teal">
+                                <i class="pi pi-eye"></i>
+                            </div>
+                            <h3>Accessibility</h3>
+                            <p>WCAG 2.0 compliant. Every component handles keyboard navigation, screen readers, and ARIA out of the box.</p>
+                        </div>
+                        <div class="landing-feature-card">
+                            <div class="landing-feature-icon landing-feature-icon-red">
+                                <i class="pi pi-headphones"></i>
+                            </div>
+                            <h3>PRO Support</h3>
+                            <p>Private channel support with the PrimeTek team. Get assistance within hours, not days.</p>
+                        </div>
+                        <div class="landing-feature-card">
+                            <div class="landing-feature-icon landing-feature-icon-indigo">
+                                <i class="pi pi-bolt"></i>
+                            </div>
+                            <h3>Productivity</h3>
+                            <p>Allocate your valuable time to business logic rather than dealing with complex UI requirements.</p>
+                        </div>
+                        <div class="landing-feature-card">
+                            <div class="landing-feature-icon landing-feature-icon-yellow">
+                                <i class="pi pi-users"></i>
+                            </div>
+                            <h3>Community</h3>
+                            <p>Join a vibrant and growing open-source community with thousands of developers worldwide.</p>
+                        </div>
+                        <div class="landing-feature-card">
+                            <div class="landing-feature-icon landing-feature-icon-cyan">
+                                <i class="pi pi-mobile"></i>
+                            </div>
+                            <h3>Mobile Ready</h3>
+                            <p>Touch-optimized and responsive design elements with enhanced mobile user experience.</p>
                         </div>
                     </div>
-                    <div class="col-12 md:col-4">
-                        <div class="feature-card">
-                            <p:graphicImage name="images/home/jsf-opensource.png" library="showcase" />
-                            <div class="feature-card-detail">
-                                <div class="feature-name">OPEN SOURCE</div>
-                                <p>Hosted at <a href="https://github.com/primefaces/primefaces" target="_blank">GitHub</a>, all components are open source and free to use under MIT license. Feel the power of open source.</p>
-                            </div>
+                </div>
+            </section>
+
+            <!-- ═══ QUICK START ════════════════════════════════════════════════ -->
+            <section class="landing-section landing-quickstart">
+                <div class="landing-container">
+                    <div class="landing-quickstart-grid">
+                        <div class="landing-quickstart-text">
+                            <div class="landing-section-label">Quick Start</div>
+                            <h2 class="landing-section-title">So simple to use</h2>
+                            <p>Add the Maven dependency, declare the namespace, drop a component tag — you have a
+                               production-ready UI. No complex setup, no boilerplate ceremony.</p>
+                            <h:link styleClass="landing-btn landing-btn-outline" outcome="/getstarted">
+                                <i class="pi pi-book mr-2"></i>Read the Docs
+                            </h:link>
                         </div>
-                    </div>
-                    <div class="col-12 md:col-4">
-                        <div class="feature-card">
-                            <p:graphicImage name="images/home/jsf-themes.png" library="showcase" />
-                            <div class="feature-card-detail">
-                                <div class="feature-name">THEMES</div>
-                                <p>Don’t get tied up in just one look and feel. Choose from a variety of options including material and flat design.</p>
+                        <div class="landing-quickstart-code">
+                            <div class="landing-code-tab-bar" id="qs-tabs">
+                                <span class="landing-code-tab active" data-tab="qs-pom">pom.xml</span>
+                                <span class="landing-code-tab" data-tab="qs-page">page.xhtml</span>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-4">
-                        <div class="feature-card">
-                            <p:graphicImage name="images/home/jsf-templates.png" library="showcase" />
-                            <div class="feature-card-detail">
-                                <div class="feature-name">TEMPLATES</div>
-                                <p>Professionally designed highly customizable facelets based application templates to get you started in no time.</p>
+                            <div id="qs-pom">
+                                <pre class="landing-code-block language-xml"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.primefaces&lt;/groupId&gt;
+    &lt;artifactId&gt;primefaces&lt;/artifactId&gt;
+    &lt;version&gt;#{app.primeFacesVersion}&lt;/version&gt;
+    &lt;classifier&gt;jakarta&lt;/classifier&gt;
+&lt;/dependency&gt;
+
+&lt;!-- Optional: PrimeFlex CSS utility --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.webjars.npm&lt;/groupId&gt;
+    &lt;artifactId&gt;primeflex&lt;/artifactId&gt;
+    &lt;version&gt;4.0.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-4">
-                        <div class="feature-card">
-                            <p:graphicImage name="images/home/jsf-accesibility.png" library="showcase" />
-                            <div class="feature-card-detail">
-                                <div class="feature-name">ACCESSIBILITY</div>
-                                <p>Fully accessible and in compliance with Section 508 standards.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-4">
-                        <div class="feature-card">
-                            <p:graphicImage name="images/home/jsf-pro.png" library="showcase" />
-                            <div class="feature-card-detail">
-                                <div class="feature-name">PRO SUPPORT</div>
-                                <p>With the exclusive services of Pro account, you no longer need to post your questions in the community forum and your issues to community issue tracker.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-4">
-                        <div class="feature-card">
-                            <p:graphicImage name="images/home/jsf-productivity.png" library="showcase" />
-                            <div class="feature-card-detail">
-                                <div class="feature-name">PRODUCTIVITY</div>
-                                <p>Allocate your valuable time to business logic rather than dealing with the complex user interface requirements.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-4">
-                        <div class="feature-card">
-                            <p:graphicImage name="images/home/jsf-community.png" library="showcase" />
-                            <div class="feature-card-detail">
-                                <div class="feature-name">COMMUNITY</div>
-                                <p>Join PrimeFaces community to become a part of an active, vibrant and growing open source foundation.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-4">
-                        <div class="feature-card">
-                            <p:graphicImage name="images/home/jsf-mobile.png" library="showcase" />
-                            <div class="feature-card-detail">
-                                <div class="feature-name">MOBILE</div>
-                                <p>Enhanced mobile user experience with touch optimized responsive design elements.</p>
+                            <div id="qs-page" style="display:none">
+                                <pre class="landing-code-block language-xml"><code>&lt;html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="primefaces"&gt;
+&lt;h:head&gt;
+    &lt;title&gt;My App&lt;/title&gt;
+&lt;/h:head&gt;
+&lt;h:body&gt;
+    &lt;p:dataTable var="item" value="\#{bean.items}"&gt;
+        &lt;p:column headerText="Name"&gt;\#{item.name}&lt;/p:column&gt;
+        &lt;p:column headerText="Status"&gt;
+            &lt;p:tag value="\#{item.status}" /&gt;
+        &lt;/p:column&gt;
+    &lt;/p:dataTable&gt;
+&lt;/h:body&gt;
+&lt;/html&gt;</code></pre>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="whouses">
-                <h4>Key Users</h4>
-                <p>The creator of PrimeFaces is PrimeTek Informatics, the distinguished component library vendor who built popular open source projects such as PrimeNG, PrimeReact and PrimeVue over the past years.</p>
-                <div class="grid">
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/fox.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/airbus.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/nike.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/mercedes.svg" library="showcase" styleClass="circular"/></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/ebay.svg" library="showcase" styleClass="circular"/></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/ford.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/vw.svg" library="showcase" styleClass="circular" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/unicredit.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/lufthansa.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/nvidia.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/verizon.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/sap.svg" library="showcase" styleClass="circular"/></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/amex.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/viacom.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/volvo.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/siemens.svg" library="showcase" /></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/hp.svg" library="showcase" styleClass="circular"/></div>
-                    <div class="col-6 md:col-3"><p:graphicImage name="images/whouses/generali.svg" library="showcase" styleClass="circular"/></div>
-                </div>
-            </div>
-
-            <div class="templates">
-                <h4>Premium Application Templates</h4>
-                <p>Create awesome applications in no time using the premium templates and impress your users.</p>
-
-                 <div class="grid">
-                    <div class="col-12 md:col-3">
-                        <a href="https://www.primefaces.org/layouts/atlantis" target="_blank">
-                            <p:graphicImage name="images/layouts/atlantis.jpg" library="showcase" />
-                        </a>
-                    </div>
-                    <div class="col-12 md:col-3">
-                        <a href="https://www.primefaces.org/layouts/freya" target="_blank">
-                            <p:graphicImage name="images/layouts/freya.jpg" library="showcase" />
-                        </a>
-                    </div>
-                    <div class="col-12 md:col-3">
-                        <a href="https://www.primefaces.org/layouts/diamond" target="_blank">
-                            <p:graphicImage name="images/layouts/diamond.jpg" library="showcase" />
-                        </a>
-                    </div>
-                    <div class="col-12 md:col-3">
-                        <a href="https://www.primefaces.org/layouts/ultima" target="_blank">
-                            <p:graphicImage name="images/layouts/ultima.jpg" library="showcase" />
-                        </a>
-                    </div>
-                    <div class="col-12 md:col-3">
-                        <a href="https://www.primefaces.org/layouts/poseidon" target="_blank">
-                            <p:graphicImage name="images/layouts/poseidon.jpg" library="showcase" />
-                        </a>
-                    </div>
-                    <div class="col-12 md:col-3">
-                        <a href="https://www.primefaces.org/layouts/avalon" target="_blank">
-                            <p:graphicImage name="images/layouts/avalon.jpg" library="showcase" />
-                        </a>
-                    </div>
-                    <div class="col-12 md:col-3">
-                        <a href="https://www.primefaces.org/layouts/apollo" target="_blank">
-                            <p:graphicImage name="images/layouts/apollo.jpg" library="showcase" />
-                        </a>
-                    </div>
-                    <div class="col-12 md:col-3">
-                        <a href="https://www.primefaces.org/layouts/verona" target="_blank">
-                            <p:graphicImage name="images/layouts/verona.jpg" library="showcase" />
-                        </a>
+            <!-- ═══ THEMING ════════════════════════════════════════════════════ -->
+            <section class="landing-section landing-theming">
+                <div class="landing-container">
+                    <div class="landing-theming-grid">
+                        <div class="landing-theming-preview">
+                            <div class="landing-theme-card">
+                                <div class="landing-theme-card-header">
+                                    <i class="pi pi-palette" style="font-size:1.1rem;color:var(--primary-color)"></i>
+                                    <span style="font-weight:700;font-size:.9rem;color:var(--text-color)">Available Themes</span>
+                                </div>
+                                <div class="landing-theme-list">
+                                    <h:form>
+                                        <ui:repeat value="#{themes.categories}" var="category">
+                                            <div class="landing-theme-category">#{category.name}</div>
+                                            <div class="landing-theme-items">
+                                                <ui:repeat value="#{category.themes}" var="theme">
+                                                    <p:commandLink styleClass="landing-theme-item #{app.theme eq theme.id ? 'active' : ''}"
+                                                                   actionListener="#{app.changeTheme(theme)}"
+                                                                   oncomplete="App.changeTheme('#{theme.id}', #{theme.dark})"
+                                                                   update="@form"
+                                                                   title="#{theme.name}">
+                                                        <h:graphicImage name="#{theme.image}" library="showcase" alt="#{theme.name}" />
+                                                        <span>#{theme.name}</span>
+                                                    </p:commandLink>
+                                                </ui:repeat>
+                                            </div>
+                                        </ui:repeat>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="landing-theming-text">
+                            <div class="landing-section-label">Theming</div>
+                            <h2 class="landing-section-title">Pick your theme</h2>
+                            <p>Choose from a growing collection of free themes — Lara, Aura, Nora, Material, Bootstrap
+                               and more. Each theme is a complete CSS stylesheet that skins every component
+                               consistently. Switch themes at runtime without a page reload.</p>
+                            <ul class="landing-check-list">
+                                <li><i class="pi pi-check-circle"></i>Free and premium themes included</li>
+                                <li><i class="pi pi-check-circle"></i>Light and dark variants for every family</li>
+                                <li><i class="pi pi-check-circle"></i>Visual Theme Designer tool available</li>
+                                <li><i class="pi pi-check-circle"></i>Runtime theme switching built-in</li>
+                            </ul>
+                            <h:link styleClass="landing-btn landing-btn-outline" outcome="/theming">
+                                <i class="pi pi-palette mr-2"></i>Explore Themes
+                            </h:link>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="primeflex">
-                <div class="grid">
-                    <div class="col-12 md:col-6">
-                        <h3 class="pro-title">PrimeFlex: Perfect CSS Utility Companion</h3>
-                        <p><a href="https://primeflex.org/" target="_blank" rel="noopener noreferrer">PrimeFlex</a> is a lightweight responsive CSS utility library to accompany Prime UI libraries and static webpages as well.</p>
-                        <a class="action-button" href="https://primeflex.org/">LEARN MORE</a>
-                    </div>
-                    <div class="col-12 md:col-6 text-center">
-                        <p:graphicImage name="images/primeflex.png" library="showcase" class="section-image" />
+            <!-- ═══ ACCESSIBILITY ══════════════════════════════════════════════ -->
+            <section class="landing-section landing-accessibility">
+                <div class="landing-container">
+                    <div class="landing-section-label">Accessibility</div>
+                    <h2 class="landing-section-title">Accessible by Default</h2>
+                    <p class="landing-section-subtitle">
+                        WCAG 2.0 compliant. Every component handles keyboard navigation, screen readers,
+                        and focus management out of the box.
+                    </p>
+
+                    <div class="landing-a11y-grid">
+                        <div class="landing-a11y-card">
+                            <div class="landing-a11y-icon">
+                                <i class="pi pi-key"></i>
+                            </div>
+                            <h4>Keyboard Navigation</h4>
+                            <p>Every component is fully navigable with Tab, Arrow keys, Enter, and Escape.</p>
+                        </div>
+                        <div class="landing-a11y-card">
+                            <div class="landing-a11y-icon">
+                                <i class="pi pi-volume-up"></i>
+                            </div>
+                            <h4>Screen Reader</h4>
+                            <p>Semantic HTML and ARIA live regions ensure assistive technologies interpret every component correctly.</p>
+                        </div>
+                        <div class="landing-a11y-card">
+                            <div class="landing-a11y-icon">
+                                <i class="pi pi-info-circle"></i>
+                            </div>
+                            <h4>ARIA Attributes</h4>
+                            <p>Roles, states, and properties are automatically applied following WAI-ARIA patterns.</p>
+                        </div>
+                        <div class="landing-a11y-card">
+                            <div class="landing-a11y-icon">
+                                <i class="pi pi-circle"></i>
+                            </div>
+                            <h4>Focus Management</h4>
+                            <p>Focus trapping, restoration, and visible focus indicators are applied throughout.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="prosupport">
-                <div class="grid">
-                    <div class="col-12 md:col-6">
-                        <h4>PrimeFaces PRO Support</h4>
-                        <p>No time to wait for a response at forum or issue tracker? Then PrimeFaces PRO Support is definitely for you.</p>
-                        <p>PrimeFaces PRO is an exceptional support service where you'll contact the PrimeTek via a private channel and receive assistance just in a couple of hours. Optionally PrimeFaces PRO offers the ability to request changes and new features for the component library.</p>
-                        <a class="action-button" href="mailto:contact@primetek.com.tr">
-                            GET A QUOTE
+            <!-- ═══ TEMPLATES ══════════════════════════════════════════════════ -->
+            <section class="landing-section landing-templates">
+                <div class="landing-container">
+                    <div class="landing-section-label">Templates</div>
+                    <h2 class="landing-section-title">Premium Application Templates</h2>
+                    <p class="landing-section-subtitle">
+                        Create awesome applications in no time using professionally designed templates
+                        and impress your users.
+                    </p>
+
+                    <div class="landing-templates-grid">
+                        <a href="https://www.primefaces.org/layouts/freya" target="_blank" rel="noopener noreferrer" class="landing-template-card">
+                            <p:graphicImage name="images/layouts/freya.jpg" library="showcase" alt="Freya Template" />
+                            <div class="landing-template-overlay">
+                                <span>Freya</span>
+                                <i class="pi pi-external-link"></i>
+                            </div>
+                        </a>
+                        <a href="https://www.primefaces.org/layouts/diamond" target="_blank" rel="noopener noreferrer" class="landing-template-card">
+                            <p:graphicImage name="images/layouts/diamond.jpg" library="showcase" alt="Diamond Template" />
+                            <div class="landing-template-overlay">
+                                <span>Diamond</span>
+                                <i class="pi pi-external-link"></i>
+                            </div>
+                        </a>
+                        <a href="https://www.primefaces.org/layouts/poseidon" target="_blank" rel="noopener noreferrer" class="landing-template-card">
+                            <p:graphicImage name="images/layouts/poseidon.jpg" library="showcase" alt="Poseidon Template" />
+                            <div class="landing-template-overlay">
+                                <span>Poseidon</span>
+                                <i class="pi pi-external-link"></i>
+                            </div>
+                        </a>
+                        <a href="https://www.primefaces.org/layouts/atlantis" target="_blank" rel="noopener noreferrer" class="landing-template-card">
+                            <p:graphicImage name="images/layouts/atlantis.jpg" library="showcase" alt="Atlantis Template" />
+                            <div class="landing-template-overlay">
+                                <span>Atlantis</span>
+                                <i class="pi pi-external-link"></i>
+                            </div>
+                        </a>
+                        <a href="https://www.primefaces.org/layouts/ultima" target="_blank" rel="noopener noreferrer" class="landing-template-card">
+                            <p:graphicImage name="images/layouts/ultima.jpg" library="showcase" alt="Ultima Template" />
+                            <div class="landing-template-overlay">
+                                <span>Ultima</span>
+                                <i class="pi pi-external-link"></i>
+                            </div>
+                        </a>
+                        <a href="https://www.primefaces.org/layouts/avalon" target="_blank" rel="noopener noreferrer" class="landing-template-card">
+                            <p:graphicImage name="images/layouts/avalon.jpg" library="showcase" alt="Avalon Template" />
+                            <div class="landing-template-overlay">
+                                <span>Avalon</span>
+                                <i class="pi pi-external-link"></i>
+                            </div>
+                        </a>
+                        <a href="https://www.primefaces.org/layouts/apollo" target="_blank" rel="noopener noreferrer" class="landing-template-card">
+                            <p:graphicImage name="images/layouts/apollo.jpg" library="showcase" alt="Apollo Template" />
+                            <div class="landing-template-overlay">
+                                <span>Apollo</span>
+                                <i class="pi pi-external-link"></i>
+                            </div>
+                        </a>
+                        <a href="https://www.primefaces.org/layouts/verona" target="_blank" rel="noopener noreferrer" class="landing-template-card">
+                            <p:graphicImage name="images/layouts/verona.jpg" library="showcase" alt="Verona Template" />
+                            <div class="landing-template-overlay">
+                                <span>Verona</span>
+                                <i class="pi pi-external-link"></i>
+                            </div>
                         </a>
                     </div>
-                    <div class="col-12 md:col-6">
-                        <p:graphicImage name="images/pro.png" library="showcase" />
+
+                    <div class="landing-templates-cta">
+                        <a href="https://www.primefaces.org/store" target="_blank" rel="noopener noreferrer" class="landing-btn landing-btn-primary">
+                            <i class="pi pi-shopping-bag mr-2"></i>Visit PrimeStore
+                        </a>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- ═══ PRO SUPPORT ════════════════════════════════════════════════ -->
+            <section class="landing-section landing-pro">
+                <div class="landing-container">
+                    <div class="landing-pro-grid">
+                        <div class="landing-pro-text">
+                            <div class="landing-section-label">PRO Support</div>
+                            <h2 class="landing-section-title">Priority support from the creators</h2>
+                            <p>No time to wait for a forum response? PrimeFaces PRO gives you a private support channel
+                               with direct access to the PrimeTek team. Get answers in hours, not days.</p>
+                            <ul class="landing-check-list">
+                                <li><i class="pi pi-check-circle"></i>Private dedicated support channel</li>
+                                <li><i class="pi pi-check-circle"></i>Response within a few business hours</li>
+                                <li><i class="pi pi-check-circle"></i>Ability to request features and changes</li>
+                                <li><i class="pi pi-check-circle"></i>Long-term maintenance guarantee</li>
+                            </ul>
+                            <a href="mailto:contact@primetek.com.tr" class="landing-btn landing-btn-primary">
+                                <i class="pi pi-envelope mr-2"></i>Get a Quote
+                            </a>
+                        </div>
+                        <div class="landing-pro-visual">
+                            <div class="landing-pro-card">
+                                <div class="landing-pro-card-header">
+                                    <i class="pi pi-shield" style="font-size:2rem;color:var(--primary-color)"></i>
+                                    <h3>PrimeFaces PRO</h3>
+                                </div>
+                                <ul class="landing-pro-features">
+                                    <li><i class="pi pi-check"></i> Private support channel</li>
+                                    <li><i class="pi pi-check"></i> Direct access to PrimeTek</li>
+                                    <li><i class="pi pi-check"></i> Same-day acknowledgement</li>
+                                    <li><i class="pi pi-check"></i> Feature request priority</li>
+                                    <li><i class="pi pi-check"></i> Long-term maintenance</li>
+                                    <li><i class="pi pi-check"></i> Custom component support</li>
+                                </ul>
+                                <a href="mailto:contact@primetek.com.tr" class="landing-btn landing-btn-primary" style="width:100%;justify-content:center">
+                                    Contact Us
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ FINAL CTA ═══════════════════════════════════════════════════ -->
+            <section class="landing-section landing-cta">
+                <div class="landing-container landing-cta-inner">
+                    <h2>Ready to build something amazing?</h2>
+                    <p>Join thousands of developers who trust PrimeFaces for their Jakarta Faces applications.</p>
+                    <div class="landing-hero-actions">
+                        <h:link styleClass="landing-btn landing-btn-primary" outcome="/getstarted">
+                            Get Started for Free
+                        </h:link>
+                        <a href="https://github.com/primefaces/primefaces" target="_blank" rel="noopener noreferrer" class="landing-btn landing-btn-ghost">
+                            <i class="pi pi-github mr-2"></i>View on GitHub
+                        </a>
+                    </div>
+                </div>
+            </section>
+
         </div>
-    </ui:define>
 
-    <ui:define name="source">
-
+        <script>
+        (function () {
+            document.getElementById('qs-tabs').addEventListener('click', function (e) {
+                var tab = e.target.closest('[data-tab]');
+                if (!tab) return;
+                var targetId = tab.getAttribute('data-tab');
+                // update tab active state
+                this.querySelectorAll('.landing-code-tab').forEach(function (t) {
+                    t.classList.toggle('active', t === tab);
+                });
+                // show/hide panels
+                ['qs-pom', 'qs-page'].forEach(function (id) {
+                    document.getElementById(id).style.display = (id === targetId) ? '' : 'none';
+                });
+            });
+        })();
+        </script>
     </ui:define>
 
 </ui:composition>
