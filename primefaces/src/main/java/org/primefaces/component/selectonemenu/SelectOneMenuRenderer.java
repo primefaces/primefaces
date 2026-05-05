@@ -297,6 +297,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
             }
 
+            if (menu.isRequired()) {
+                writer.writeAttribute(HTML.ARIA_REQUIRED, "true", null);
+            }
+
+            if (!menu.isValid()) {
+                writer.writeAttribute(HTML.ARIA_INVALID, "true", null);
+            }
+
             encodeAriaLabel(writer, menu);
             renderARIACombobox(context, menu);
             renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
