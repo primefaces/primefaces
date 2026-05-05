@@ -186,7 +186,9 @@ public class PanelRenderer extends CoreRenderer {
         writer.writeAttribute("id", panel.getClientId(context) + "_header", null);
         writer.writeAttribute("class", styleClass, null);
         if (panel.isToggleable()) {
-            writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
+            if (panel.isToggleableHeader()) {
+                writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
+            }
             writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(!panel.isCollapsed()), null);
             writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_content", null);
         }
