@@ -71,7 +71,8 @@ App = {
         });
 
         $(document).off('click.showcase').on('click.showcase', function(event) {
-            if (!$.contains($this.topbarMenu.get(0), event.target)) {
+            var topbarMenuEl = $this.topbarMenu.get(0);
+            if (topbarMenuEl && !$.contains(topbarMenuEl, event.target)) {
                 $this.hideTopbarSubmenu($this.topbarMenu.children('.topbar-submenu-active'));
             }
 
@@ -259,4 +260,6 @@ var Storage = {
     }
 }
 
-App.init();
+$(function() {
+    App.init();
+});
