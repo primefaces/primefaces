@@ -260,8 +260,8 @@ class DataTable006Test extends AbstractDataTableTest {
         dataTable.selectPage(2);
         page.submit.click();
 
-        // Assert - only 1 record unselected should leave first page selections only
-        assertSelections(page.messages, "2,3");
+        // Assert - with selectionPageOnly=false, all rows except unselected one should remain selected
+        assertSelections(page.messages, "2,3,4,5");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }
 
@@ -281,25 +281,32 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, true);
         assertSelections(page.messages,
-                "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,"
-                        + "2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3");
+                "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
-        // Act - unselect one row
+        // Act - unselect one row (row 2)
         dataTable.getCell(1, 0).getWebElement().click();
         page.submit.click();
 
-        // Assert - only 1 record unselected
+        // Assert - only 1 record unselected (row 2), all others remain selected (74 rows)
         assertSelectAllCheckbox(dataTable, false);
-        assertSelections(page.messages, "1,3");
+        assertSelections(page.messages,
+                "1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
-        // Act - reselect all record, unselect one and move to next page
+        // Act - reselect all, unselect one (row 1) and move to next page
         dataTable.toggleSelectAllCheckBox();
         dataTable.getCell(0, 0).getWebElement().click();
         dataTable.selectPage(2);
         page.submit.click();
 
-        // Assert - only 1 record unselected should leave first page selections only
-        assertSelections(page.messages, "2,3");
+        // Assert - with @all and !1 deselection marker, all 74 rows remain selected (all except row 1)
+        assertSelections(page.messages,
+                "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }
 
@@ -363,6 +370,202 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelections(page.messages, "");
         assertSelectAllCheckbox(dataTable, false);
+        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("DataTable: selection - reselect deselected row with selectionPageOnly='false'")
+    void reselectDeselectedRow(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleSelectPageOnly.click();
+
+        // Act - select all
+        dataTable.toggleSelectAllCheckBox();
+        page.submit.click();
+
+        // Assert - all rows selected
+        assertSelectAllCheckbox(dataTable, true);
+        assertSelections(page.messages, "1,2,3,4,5");
+
+        // Act - deselect row 2
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - row 2 deselected
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages, "1,3,4,5");
+
+        // Act - reselect row 2 (the one we just deselected)
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - row 2 is reselected, all 5 rows should now be selected again
+        // Note: selectAll checkbox remains unchecked because we manually reselected rather than using toggle all
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages, "1,2,3,4,5");
+        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("DataTable: GitHub #8110 - Lazy: selections should be preserved when navigating between pages")
+    void lazySelectionPreservedAcrossPagination(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleLazyMode.click();
+
+        // Act - select rows on page 1
+        dataTable.getCell(0, 0).getWebElement().click();
+        dataTable.getCell(2, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - rows selected on page 1
+        assertSelections(page.messages, "1,3");
+
+        // Act - navigate to page 2 (without selecting anything)
+        dataTable.selectPage(2);
+
+        // Act - navigate back to page 1
+        dataTable.selectPage(1);
+
+        // Assert - selections on page 1 should still be preserved
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+
+        // Act - submit to verify selections are still intact
+        page.submit.click();
+
+        // Assert - selections should still be 1,3
+        assertSelections(page.messages, "1,3");
+        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("DataTable: GitHub #8110 - Lazy: selections should be preserved when navigating between pages with selectionPageOnly='false'")
+    void lazySelectionPreservedAcrossPaginationAllPages(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleLazyMode.click();
+        page.toggleSelectPageOnly.click();
+
+        // Act - select rows on page 1
+        dataTable.getCell(0, 0).getWebElement().click();
+        dataTable.getCell(2, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - rows selected on page 1
+        assertSelections(page.messages, "1,3");
+
+        // Act - navigate to page 2 (without selecting anything)
+        dataTable.selectPage(2);
+
+        // Act - navigate back to page 1
+        dataTable.selectPage(1);
+
+        // Assert - selections on page 1 should still be preserved
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+
+        // Act - submit to verify selections are still intact
+        page.submit.click();
+
+        // Assert - selections should still be 1,3
+        assertSelections(page.messages, "1,3");
+        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("DataTable: GitHub #11556 - checkbox unselects items from other pages with selectionPageOnly='false'")
+    void deselectOneRowShouldKeepOtherPagesSelected(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleSelectPageOnly.click();
+
+        // Act - select all rows on all pages
+        dataTable.toggleSelectAllCheckBox();
+        page.submit.click();
+
+        // Assert - all rows selected
+        assertSelectAllCheckbox(dataTable, true);
+        assertSelections(page.messages, "1,2,3,4,5");
+
+        // Act - navigate to page 2 to verify all selected
+        dataTable.selectPage(2);
+        page.submit.click();
+
+        // Assert - all rows on page 2 are selected
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+
+        // Act - go back to page 1 and unselect one item (row 2)
+        dataTable.selectPage(1);
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - only row 2 should be unselected on page 1
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages, "1,3,4,5");
+
+        // Act - navigate to page 2
+        dataTable.selectPage(2);
+        page.submit.click();
+
+        // Assert - items on page 2 should still be selected
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertSelections(page.messages, "1,3,4,5");
+        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("DataTable: GitHub #13640 - Lazy: selecting all then deselecting a row should not deselect all unseen rows with selectionPageOnly='false'")
+    void lazyDeselectOneRowShouldKeepOtherPagesSelected(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleLazyMode.click();
+        page.toggleSelectPageOnly.click();
+
+        // Act - select all rows on all pages
+        dataTable.toggleSelectAllCheckBox();
+        page.submit.click();
+
+        // Assert - all 75 rows selected
+        assertSelectAllCheckbox(dataTable, true);
+        assertSelections(page.messages,
+                "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
+
+        // Act - deselect one row (row 2 on page 1)
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - only row 2 should be deselected, all other 74 rows remain selected
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages,
+                "1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
+
+        // Act - navigate to page 2
+        dataTable.selectPage(2);
+        page.submit.click();
+
+        // Assert - all rows on page 2 should still be selected
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertSelections(page.messages,
+                "1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }
 
