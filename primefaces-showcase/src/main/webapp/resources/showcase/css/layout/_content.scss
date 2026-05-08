@@ -1,14 +1,107 @@
 @use "mixins";
 
+.layout-shell {
+    max-width: var(--layout-shell-max-width);
+    margin: 0 auto;
+    padding-top: var(--layout-topbar-height);
+    display: grid;
+    grid-template-columns: var(--layout-sidebar-width) minmax(0, 1fr);
+    column-gap: var(--layout-shell-gap);
+    align-items: start;
+}
+
 .layout-content {
-    margin-left: 250px;
-    padding-top: 70px;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--layout-right-rail-width);
+    column-gap: var(--layout-shell-gap);
+    background-color: transparent;
+    min-height: calc(100vh - var(--layout-topbar-height));
+
+    &:not(:has(.layout-submenu)) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    > * {
+        grid-column: 1;
+        min-width: 0;
+        max-width: var(--layout-content-max-width);
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .layout-submenu {
+        grid-column: 2;
+        grid-row: 1 / span 100;
+        position: sticky;
+        top: var(--layout-topbar-height);
+        max-height: none;
+        overflow: visible;
+        padding: 2rem 0 2rem 0;
+        margin-right: 0;
+        max-width: var(--layout-right-rail-width);
+        width: 100%;
+        border-left: 1px solid transparent;
+
+        .submenu-section-title {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            color: var(--text-color-secondary);
+            margin: 1.25rem 0 .5rem .75rem;
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+
+        a {
+            display: block;
+            color: var(--text-color-secondary);
+            font-size: 1rem;
+            padding: .375rem .75rem;
+            border-left: 2px solid transparent;
+            text-decoration: none;
+            transition: color .15s, border-color .15s;
+            border-radius: 0 3px 3px 0;
+
+            &:hover {
+                color: var(--text-color);
+                border-left-color: var(--surface-d);
+            }
+
+            &.active {
+                color: var(--primary-color);
+                border-left-color: var(--primary-color);
+                font-weight: 600;
+            }
+        }
+
+        .submenu-resource-link {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            border-left: none;
+
+            &:hover {
+                border-left: none;
+            }
+
+            i {
+                font-size: .75rem;
+                flex-shrink: 0;
+            }
+        }
+    }
 
     .content-section {
-        padding: 2rem;
+        padding: 2.5rem var(--layout-page-padding-x);
 
         &.introduction {
-            background-color: var(--surface-b);
+            background-color: transparent;
             color: var(--text-color);
             padding-bottom: 0;
             display: flex;
@@ -24,7 +117,8 @@
                 }
 
                 p {
-                    margin: 0;
+                  margin: 0;
+                  font-size: 1.25rem;
                 }
 
                 a {
@@ -46,7 +140,7 @@
         }
 
         &.implementation {
-            background-color: var(--surface-b);
+            background-color: transparent;
             color: var(--text-color);
 
             +.documentation {
@@ -59,7 +153,7 @@
         }
 
         &.documentation {
-            background-color: var(--surface-b);
+            background-color: transparent;
             color: var(--text-color);
 
             li {
@@ -133,7 +227,7 @@
                     background: transparent;
     
                     .ui-tabs-panel {
-                        padding: 2rem 1rem;
+                        padding: 0;
                     }
                 }
             }
@@ -160,10 +254,11 @@
     }
 
     .card {
-        background: var(--surface-e);
-        padding: 2rem;
-        box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
-        border-radius: 4px;
+        background: var(--surface-a);
+        padding: 1.5rem;
+        border: 1px solid var(--surface-d);
+        box-shadow: 0 1px 2px rgba(0,0,0,.06);
+        border-radius: 10px;
         margin-bottom: 2rem;
 
         .card-header {

@@ -59,12 +59,18 @@ public class MenuItem implements Serializable {
     public MenuItem(String label, List<MenuItem> menuItems) {
         this.label = label;
         this.menuItems = menuItems;
+        for (MenuItem menuItem : menuItems) {
+            menuItem.setParent(this);
+        }
     }
 
     public MenuItem(String label, List<MenuItem> menuItems, String badge) {
         this.label = label;
         this.menuItems = menuItems;
         this.badge = badge;
+        for (MenuItem menuItem : menuItems) {
+            menuItem.setParent(this);
+        }
     }
 
     public String getLabel() {

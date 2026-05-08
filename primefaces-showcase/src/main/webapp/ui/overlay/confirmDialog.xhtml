@@ -17,8 +17,15 @@
 
     <ui:param name="documentationLink" value="/components/confirmdialog"/>
     <ui:param name="widgetLink" value="ConfirmDialog-1"/>
+    <ui:param name="tagName" value="confirmDialog"/>
 
     <ui:define name="implementation">
+        <script>
+function checkConfirmation() {
+    console.log('ConfirmDialog BeforeShow!');
+    return true; // return false to not bring up the dialog
+}
+        </script>
         <div class="card">
             <h3>Global</h3>
             <h:form>
@@ -26,7 +33,7 @@
 
                 <p:commandButton value="Confirm" action="#{confirmView.confirm}" update="message" styleClass="mr-2"
                                  icon="pi pi-check">
-                    <p:confirm header="Confirmation" message="Are you sure you want to proceed?"
+                    <p:confirm header="Confirmation" message="Are you sure you want to proceed?" beforeShow="checkConfirmation();"
                                icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
 

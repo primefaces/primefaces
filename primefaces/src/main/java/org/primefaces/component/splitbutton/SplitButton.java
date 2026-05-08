@@ -96,6 +96,13 @@ public class SplitButton extends SplitButtonBaseImpl {
             styleClass = styleClass + " ui-state-disabled";
         }
 
+        if ("small".equals(getSize())) {
+            styleClass = styleClass + " ui-button-sm";
+        }
+        else if ("large".equals(getSize())) {
+            styleClass = styleClass + " ui-button-lg";
+        }
+
         return styleClass;
     }
 

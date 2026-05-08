@@ -30,6 +30,7 @@ $hoverBg:rgba(255,255,255,.04) !default;
 //general
 $fontFamily:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
 $fontSize:1rem !default;
+$lineHeight: 1.2 !default;
 $textColor:$shade000 !default;
 $textSecondaryColor:$shade100 !default;
 $borderRadius:4px !default;
@@ -65,6 +66,9 @@ $focusOutlineColor:$primaryLightColor !default;
 $focusOutline:0 none !default;
 $focusOutlineOffset:0 !default;
 $focusShadow:0 0 0 1px $focusOutlineColor !default;
+
+//outputlabel
+$outputLabelFontWeight: normal !default;
 
 //input field
 $inputPadding:.5rem .75rem !default;
@@ -153,6 +157,25 @@ $outlinedButtonBorder:1px solid !default;
 $plainButtonTextColor:$textSecondaryColor !default;
 $plainButtonHoverBgColor:$hoverBg !default;
 $plainButtonActiveBgColor:rgba(255,255,255,.16) !default;
+
+//button sizes
+$buttonFontSizeSm: 0.875rem !default;
+$buttonFontSizeLg: 1.25rem !default;
+
+$iconSizeSm: 0.875rem !default;
+$iconSizeLg: 1.25rem !default;
+
+$buttonTextOnlyPaddingSm: .375rem .563rem !default;
+$buttonWithLeftIconPaddingSm: .375rem .563rem .375rem 1.5rem !default;
+$buttonWithRightIconPaddingSm: .375rem 1.5rem .375rem .563rem !default;
+$buttonIconOnlyPaddingSm: .375rem 0 !default;
+$buttonIconOnlyWidthSm: 1.768rem !default;
+
+$buttonTextOnlyPaddingLg: .625rem .938rem !default;
+$buttonWithLeftIconPaddingLg: .625rem .938rem .625rem 2.5rem !default;
+$buttonWithRightIconPaddingLg: .625rem 2.5rem .625rem .938rem !default;
+$buttonIconOnlyPaddingLg: .625rem 0 !default;
+$buttonIconOnlyWidthLg: 2.946rem !default;
 
 //button severities
 $secondaryButtonBg:#6c757d !default;
@@ -458,6 +481,7 @@ $datatableHeaderCellPadding:1rem 1rem !default;
 $datatableHeaderCellBg:$shade800 !default;
 $datatableHeaderCellTextColor:$shade000 !default;
 $datatableHeaderCellFontWeight:600 !default;
+$datatableHeaderCellFontSize: $fontSize !default;
 $datatableHeaderCellBorder:1px solid $shade600 !default;
 $datatableHeaderCellBorderWidth:1px 0 2px 0 !default;
 $datatableHeaderCellHoverBg:$hoverBg !default;
@@ -599,6 +623,7 @@ $progressBarValueBg:$primaryColor !default;
 $verticalMenuPadding:.5rem 0 !default;
 $menuBg:$shade800 !default;
 $menuBorder:1px solid $shade600 !default;
+$menuListPadding: 0 !default;
 $menuitemTextColor:$shade000 !default;
 $menuitemIconColor:$shade100 !default;
 $menuitemHoverBg:$hoverBg !default;

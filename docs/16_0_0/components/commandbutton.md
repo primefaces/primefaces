@@ -78,6 +78,7 @@ CommandButton is an extended version of standard commandButton with ajax and the
 | renderDisabledClick | true | Boolean | When enabled, click event can be added to disabled button.
 | validateClient | false | Boolean | When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.
 | enabledByValidateClient | false | Boolean | When set to true the button is only enabled after successful client side validation. Used together with `<p:clientValidator event="..." />` on all relevant input-components.
+| size | null | String | Defines the size of the button, valid values are `small` and `large`.
 
 
 ## Getting started with CommandButton

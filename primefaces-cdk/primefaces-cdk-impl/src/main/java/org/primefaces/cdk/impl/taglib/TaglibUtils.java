@@ -42,6 +42,7 @@ import org.primefaces.cdk.impl.container.ConverterInfo;
 import org.primefaces.cdk.impl.container.FunctionInfo;
 import org.primefaces.cdk.impl.container.TagHandlerInfo;
 import org.primefaces.cdk.impl.container.ValidatorInfo;
+import org.primefaces.cdk.spi.taglib.TagType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -68,18 +69,10 @@ public final class TaglibUtils {
 
     }
 
-    public enum TagType {
-        BEHAVIOR,
-        CONVERTER,
-        VALIDATOR,
-        COMPONENT,
-        TAG_HANDLER
-    }
-
     public static String getRendererType(Class<?> componentClass) throws IllegalAccessException {
         String rendererType = null;
         try {
-            Field field = componentClass.getDeclaredField(DEFAULT_RENDERER_NAME);
+            Field field = componentClass.getField(DEFAULT_RENDERER_NAME);
             rendererType = (String) field.get(null);
         }
         catch (NoSuchFieldException e) {

@@ -294,10 +294,23 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
                 writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
             }
 
+            if (component.isRequired()) {
+                writer.writeAttribute(HTML.ARIA_REQUIRED, "true", null);
+            }
+
+            if (!component.isValid()) {
+                writer.writeAttribute(HTML.ARIA_INVALID, "true", null);
+            }
+
             encodeAriaLabel(writer, component);
             renderARIACombobox(context, component);
             renderPassThruAttributes(context, component, HTML.TAB_INDEX);
             renderDomEvents(context, component, HTML.BLUR_FOCUS_EVENTS);
+
+            String labelledBy = component.getAriaLabelledBy();
+            if (LangUtils.isNotBlank(labelledBy)) {
+                writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
+            }
 
             String label = component.getLabel();
             if (label != null) {

@@ -55,67 +55,56 @@
             </ui:fragment>
             
             <ui:include src="./topbar.xhtml"></ui:include>
-            <ui:include src="./menu.xhtml"></ui:include>
             <ui:include src="./config.xhtml"></ui:include>
             <div class="layout-mask"></div>
 
-            <div class="layout-content">
-                <ui:insert name="content">
-                    <div class="content-section introduction">
-                        <div class="feature-intro">
-                            <h1><ui:insert name="title"></ui:insert></h1>
-                            <p><ui:insert name="description"></ui:insert></p>
-                        </div>
-                        <div class="feature-documentation">
-                            <ui:fragment rendered="#{not empty documentationLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/16_0_0/##{documentationLink}" target="_blank" rel="noopener noreferrer">
-                                    <i class="pi pi-external-link"></i> 
-                                    <span>SERVER API</span>
-                                </a>
-                            </ui:fragment>
-                            <ui:fragment rendered="#{not empty widgetLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.#{widgetLink}.html#{not empty widgetLinkHash ? '#'.concat(widgetLinkHash) : ''}" target="_blank" rel="noopener noreferrer">
-                                    <i class="pi pi-external-link"></i> 
-                                    <span>CLIENT API</span>
-                                </a>
-                            </ui:fragment>
-                            <ui:fragment rendered="#{not empty primefacesClientApiLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/#{primefacesClientApiLink}" target="_blank" rel="noopener noreferrer">
-                                    <i class="pi pi-external-link"></i> 
-                                    <span>CLIENT API</span>
-                                </a>
-                            </ui:fragment>
-                            <ui:fragment rendered="#{tagLibrary.isTagVdlAvailable(documentationLink)}">
-                                <a class="documentation-link"
-                                   href="https://primefaces.github.io/primefaces/vdldoc/p/#{tagLibrary.getTagVdlComponent(documentationLink)}.html"
-                                   target="_blank" rel="noopener noreferrer">
-                                    <i class="pi pi-external-link"></i>
-                                    <span>TAG VDL</span>
-                                </a>
-                            </ui:fragment>
-                        </div>
-                    </div>
-                    <div class="content-section implementation">
-                        <ui:insert name="implementation"></ui:insert>
-                    </div>
-                    <div class="content-section documentation">
-                        <ui:insert name="static-documentation"/>
-                        <ui:insert name="source">
-                            <sc:tabscode
-                                    value="#{sc:getFilesContent(facesContext.externalContext.requestServletPath, true)}">
-                                <ui:insert name="more-source-tabs"/>
-                            </sc:tabscode>
+            <div class="layout-shell">
+                <ui:include src="./menu.xhtml"></ui:include>
+
+                <div class="layout-content">
+                    <ui:insert name="content">
+                        <ui:insert name="introduction">
+                            <div class="content-section introduction">
+                                <div class="feature-intro">
+                                    <h1><ui:insert name="title"></ui:insert></h1>
+                                    <p><ui:insert name="description"></ui:insert></p>
+                                </div>
+                            </div>
                         </ui:insert>
-                    </div>
-                </ui:insert>
-                <ui:include src="./footer.xhtml"></ui:include>
-                <p:ajaxExceptionHandler type="jakarta.faces.application.ViewExpiredException" update="viewExpiredDialog" onexception="PF('viewExpiredDialog').show();" />
-                <p:dialog id="viewExpiredDialog" header="Session expired" widgetVar="viewExpiredDialog" height="500px" onShow="document.location.href = document.location.href;">
-                    <h3>Reloading page</h3>
-                    Message: #{pfExceptionHandler.message} <br/>
-                    StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
-                </p:dialog>
+
+                        <ui:include src="./submenu.xhtml">
+                            <ui:param name="documentationLink" value="#{documentationLink}" />
+                            <ui:param name="widgetLink" value="#{widgetLink}" />
+                            <ui:param name="tagName" value="#{tagName}" />
+                            <ui:param name="primefacesClientApiLink" value="#{primefacesClientApiLink}" />
+                        </ui:include>
+
+                        <div class="content-section implementation">
+                            <ui:insert name="implementation"></ui:insert>
+                        </div>
+                        <div class="content-section documentation">
+                            <ui:insert name="static-documentation"/>
+                            <ui:insert name="source">
+                                <h2>Usage</h2>
+                                <div class="card">
+                                    <sc:tabscode
+                                            value="#{sc:getFilesContent(facesContext.externalContext.requestServletPath, true)}">
+                                        <ui:insert name="more-source-tabs"/>
+                                    </sc:tabscode>
+                                </div>
+                            </ui:insert>
+                        </div>
+                    </ui:insert>
+                    <p:ajaxExceptionHandler type="jakarta.faces.application.ViewExpiredException" update="viewExpiredDialog" onexception="PF('viewExpiredDialog').show();" />
+                    <p:dialog id="viewExpiredDialog" header="Session expired" widgetVar="viewExpiredDialog" height="500px" onShow="document.location.href = document.location.href;">
+                        <h3>Reloading page</h3>
+                        Message: #{pfExceptionHandler.message} <br/>
+                        StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
+                    </p:dialog>
+                </div>
             </div>
+
+            <ui:include src="./footer.xhtml"></ui:include>
         </div>
 
         <ui:insert name="status">
@@ -134,8 +123,11 @@
 
         <h:outputStylesheet name="css/layout/layout.css" library="showcase"/>
         <h:outputScript name="script/layout.js" library="showcase" />
+        <h:outputScript name="script/marked.min.js" library="showcase" />
+        <h:outputScript name="script/purify.min.js" library="showcase" />
         <h:outputScript name="prismjs/1.30.0/prism.js" library="webjars" />
         <h:outputScript name="prismjs/1.30.0/components/prism-java.min.js" library="webjars" />
+        <h:outputScript name="prismjs/1.30.0/plugins/line-numbers/prism-line-numbers.min.js" library="webjars" />
         </f:view>
     </h:body>
 

@@ -1239,7 +1239,10 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
     showMessage(msg: Partial<PrimeType.hook.confirm.ConfirmMessage>): void {
         // Execute any code specified to run before showing the message
         if (msg.beforeShow) {
-            PrimeFaces.csp.eval(msg.beforeShow);
+            const beforeShowResult = PrimeFaces.csp.evalResult(msg.beforeShow);
+            if (beforeShowResult === false) {
+                return;
+            }
         }
 
         // Set icon if provided, or hide it otherwise

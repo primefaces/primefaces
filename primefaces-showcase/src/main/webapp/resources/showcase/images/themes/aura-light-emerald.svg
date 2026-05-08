@@ -1,0 +1,18 @@
+<svg width="2500" height="2500" viewBox="0 0 2500 2500" role="img" xmlns="http://www.w3.org/2000/svg">
+    <title>Emerald flower logo</title>
+    <desc>App icon with rounded square emerald green background and white four-petal pointed flower rotated 45 degrees</desc>
+
+    <rect x="0" y="0" width="2500" height="2500" rx="550" ry="550" fill="rgb(16, 185, 129)"/>
+
+    <g transform="rotate(45, 1250, 1250)">
+        <!-- Top petal -->
+        <path d="M1250,1250 C1100,1050 1050,550 1250,250 C1450,550 1400,1050 1250,1250 Z" fill="white" opacity="0.95"/>
+        <!-- Bottom petal -->
+        <path d="M1250,1250 C1400,1450 1450,1950 1250,2250 C1050,1950 1100,1450 1250,1250 Z" fill="white" opacity="0.95"/>
+        <!-- Left petal -->
+        <path d="M1250,1250 C1050,1400 550,1450 250,1250 C550,1050 1050,1100 1250,1250 Z" fill="white" opacity="0.95"/>
+        <!-- Right petal -->
+        <path d="M1250,1250 C1450,1100 1950,1050 2250,1250 C1950,1450 1450,1400 1250,1250 Z" fill="white" opacity="0.95"/>
+    </g>
+
+</svg>

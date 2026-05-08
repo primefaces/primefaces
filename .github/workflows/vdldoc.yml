@@ -6,7 +6,7 @@ on:
     branches: [ master, main ]
 
 env:
-  JAVA_VERSION: '11'
+  JAVA_VERSION: '21'
   JAVA_DISTRO: 'temurin'
   BRANCH: 'master'
 
@@ -33,16 +33,16 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-      - name: Generate TagLib
-        run: mvn clean install -pl primefaces -am -DskipTests
+      - name: Build PrimeFaces
+        run: mvn -B -T1C --no-transfer-progress clean install -pl primefaces -am -DskipTests -Dcheckstyle.skip
 
       - name: Generate VDL Documentation
         working-directory: primefaces
-        run: mvn vdldoc:vdldoc --batch-mode --show-version
+        run: mvn -B -T1C --no-transfer-progress -Pvdl
 
       - name: Copy VDL Documentation
         run: |
-          cp -r primefaces/target/site/vdldoc/* docs/vdldoc/
+          rsync -av --delete primefaces/target/site/vdldoc/ docs/vdldoc/
 
       - name: Check for changes
         id: check-changes

@@ -62,6 +62,8 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer<LinkButton> {
                     .add(isTextAndIcon && "left".equals(component.getIconPos()), HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS)
                     .add(isTextAndIcon && "right".equals(component.getIconPos()), HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
                     .add(disabled, "ui-state-disabled")
+                    .add("small".equals(component.getSize()), "ui-button-sm")
+                    .add("large".equals(component.getSize()), "ui-button-lg")
                     .build();
 
         writer.startElement("span", component);

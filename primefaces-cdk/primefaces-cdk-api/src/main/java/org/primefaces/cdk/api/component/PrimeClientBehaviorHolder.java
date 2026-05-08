@@ -62,7 +62,7 @@ public interface PrimeClientBehaviorHolder extends ClientBehaviorHolder {
         return component.getClientId(context).equals(partialSource);
     }
 
-    default boolean isAjaxBehaviorEvent(FacesEvent event, PrimeClientBehaviorEventKeys... targetEvents) {
+    default boolean isAjaxBehaviorEvent(FacesEvent event, PrimeClientBehaviorEventKeys targetEvent, PrimeClientBehaviorEventKeys... targetEvents) {
         if (!(event instanceof AjaxBehaviorEvent)) {
             return false;
         }
@@ -73,8 +73,12 @@ public interface PrimeClientBehaviorHolder extends ClientBehaviorHolder {
         String partialSource = externalContext.getRequestParameterMap().get(ClientBehaviorContext.BEHAVIOR_SOURCE_PARAM_NAME);
         String partialEvent = externalContext.getRequestParameterMap().get(ClientBehaviorContext.BEHAVIOR_EVENT_PARAM_NAME);
         if (component.getClientId(context).equals(partialSource)) {
-            for (PrimeClientBehaviorEventKeys targetEvent : targetEvents) {
-                if (partialEvent.equals(targetEvent.getName())) {
+            if (partialEvent.equals(targetEvent.getName())) {
+                return true;
+            }
+
+            for (PrimeClientBehaviorEventKeys otherTargetEvent : targetEvents) {
+                if (partialEvent.equals(otherTargetEvent.getName())) {
                     return true;
                 }
             }

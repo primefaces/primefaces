@@ -195,19 +195,24 @@ PrimeFaces.widget.Slider = class Slider extends PrimeFaces.widget.BaseWidget {
             this.cfg.onSlide.call(this, event, ui);
         }
 
+        var decimals = this.getStepDecimals();
+
         if (this.cfg.range === true) {
             this.setInputValue(this.input.eq(0), ui.values[0]);
             this.setInputValue(this.input.eq(1), ui.values[1]);
 
             if (this.output) {
-                this.output.text(this.cfg.displayTemplate.replace('{min}', ui.values[0]).replace('{max}', ui.values[1]));
+                this.output.text(this.cfg.displayTemplate
+                    .replace('{min}', this.formatValue(ui.values[0], decimals))
+                    .replace('{max}', this.formatValue(ui.values[1], decimals)));
             }
         }
         else {
             this.setInputValue(this.input, ui.value);
 
             if (this.output) {
-                this.output.text(this.cfg.displayTemplate.replace('{value}', ui.value));
+                this.output.text(this.cfg.displayTemplate
+                    .replace('{value}', this.formatValue(ui.value, decimals)));
             }
         }
     }
@@ -273,6 +278,32 @@ PrimeFaces.widget.Slider = class Slider extends PrimeFaces.widget.BaseWidget {
 
             this.callBehavior('slideEnd', ext);
         }
+    }
+
+    /**
+     * Determines the number of decimal places in the slider's step value.
+     * @returns {number} The number of decimal places in the step value, or 0 if the step is an integer or undefined.
+     */
+    getStepDecimals() {
+        if (this.decimalStep && this.cfg.step) {
+            var step = String(this.cfg.step);
+            var separator = step.indexOf('.');
+            return separator < 0 ? 0 : step.length - separator - 1;
+        }
+        else {
+            return 0;
+        }
+    }
+
+    /**
+     * Formats the given value to the specified number of decimal places.
+     * @private
+     * @param {number|string} value The value to format.
+     * @param {number} decimals The number of decimal places.
+     * @returns {string|number} The formatted value as a string if value is a number, otherwise returns the value unchanged.
+     */
+    formatValue(value, decimals) {
+        return (typeof value === 'number') ? value.toFixed(decimals) : value;
     }
 
     /**

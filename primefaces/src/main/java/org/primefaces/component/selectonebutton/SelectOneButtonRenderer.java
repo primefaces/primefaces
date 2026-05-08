@@ -132,13 +132,17 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
 
-        String buttonStyle = HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS;
-        buttonStyle = selected ? buttonStyle + " ui-state-active" : buttonStyle;
-        buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
+        String styleClass = getStyleClassBuilder(context)
+                .add(HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS)
+                .add(selected, "ui-state-active")
+                .add(disabled, "ui-state-disabled")
+                .add("small".equals(component.getSize()), "ui-button-sm")
+                .add("large".equals(component.getSize()), "ui-button-lg")
+                .build();
 
         //button
         writer.startElement("div", null);
-        writer.writeAttribute("class", buttonStyle, null);
+        writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute(HTML.ARIA_ROLE, "radio", null);
         writer.writeAttribute("tabindex", component.getTabindex(), null);
         if (option.getDescription() != null) {

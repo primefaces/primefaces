@@ -57,4 +57,8 @@ public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UI
 
     @Property(description = "Defines a string value that labels the current element for accessibility.")
     public abstract String getAriaLabel();
+
+    @Property(description = "Defines the size of the button, valid values are \"small\" and \"large\".")
+    public abstract String getSize();
+
 }

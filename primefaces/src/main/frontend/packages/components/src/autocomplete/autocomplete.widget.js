@@ -992,7 +992,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
                 data: { query: query },
                 dataType: 'json'
             }).done(function(suggestions) {
-                var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-helper-reset" role="listbox">';
+                var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget" role="listbox">';
                 suggestions.suggestions.forEach(function(suggestion, index) {
                     var labelEncoded = $("<div>").text(suggestion.label).html();
                     var itemValue = labelEncoded;
@@ -1635,12 +1635,12 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
      */
     findWrapperTag(wrapper) {
         if (wrapper.is('ul')) {
-            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-helper-reset" role="listbox">';
+            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget" role="listbox">';
             this.wrapperEndTag = '</ul>';
         }
         else {
             var header = wrapper.find('> table > thead');
-            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-helper-reset" role="listbox">' +
+            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget" role="listbox">' +
                 (header.length ? header.eq(0).outherHTML : '') +
                 '<tbody>';
             this.wrapperEndTag = '</tbody></table>';

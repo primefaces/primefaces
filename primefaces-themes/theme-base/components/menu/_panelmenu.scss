@@ -4,6 +4,12 @@ body {
       position: static;
     }
 
+    .ui-menu-list {
+      list-style: none;
+      padding: $menuListPadding;
+      margin: 0;
+    }
+
     .ui-panelmenu-panel:first-child {
       .ui-panelmenu-header {
         margin-top: 0;

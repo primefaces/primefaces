@@ -42,6 +42,7 @@ import org.primefaces.cdk.impl.container.PropertyInfo;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -206,9 +207,17 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         // Sort alphabetically — stable, predictable generated output.
-        List<PropertyInfo> props = propsMap.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .map(Map.Entry::getValue)
+        List<String> priority = List.of("id", "rendered", "binding", "widgetVar");
+        List<PropertyInfo> props = propsMap.values().stream()
+                .sorted(Comparator
+                        // 1. priority order
+                        .comparingInt((PropertyInfo p) -> {
+                            int idx = priority.indexOf(p.getName());
+                            return idx >= 0 ? idx : Integer.MAX_VALUE;
+                        })
+                        // 2. fallback alphabetical
+                        .thenComparing(PropertyInfo::getName)
+                )
                 .collect(Collectors.toList());
         List<FacetInfo> facets = facetsMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())

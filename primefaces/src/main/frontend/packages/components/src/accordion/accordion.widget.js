@@ -43,7 +43,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
         this.panels = this.jq.children('.ui-accordion-content');
         this.cfg.rtl = this.jq.hasClass('ui-accordion-rtl');
         this.cfg.expandedIcon = 'ui-icon-triangle-1-s';
-        this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
+        this.cfg.collapsedIcon = 'ui-icon-triangle-1-n';
 
         this.initActive();
         this.bindEvents();
@@ -312,7 +312,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
         //deactivate current
         if (!this.cfg.multiple) {
             var oldHeader = this.headers.filter('.ui-state-active');
-            oldHeader.children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
+            oldHeader.children('.ui-accordion-toggler.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
             oldHeader.attr('aria-expanded', false).removeClass('ui-state-active')
                 .next().attr('aria-hidden', true).slideUp(this.cfg.toggleSpeed, function() {
                     if ($this.cfg.onTabClose)
@@ -323,7 +323,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
         //activate selected
         var newHeader = panel.prev();
         newHeader.attr('aria-expanded', true).addClass('ui-state-active').removeClass('ui-state-hover')
-            .children('.ui-icon').removeClass(this.cfg.collapsedIcon).addClass(this.cfg.expandedIcon);
+            .children('.ui-accordion-toggler.ui-icon').removeClass(this.cfg.collapsedIcon).addClass(this.cfg.expandedIcon);
 
         panel.attr('aria-hidden', false).slideDown(this.cfg.toggleSpeed, function() {
             $this.postTabShow(panel);
@@ -340,7 +340,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
             panel = this.panels.eq(index),
             header = panel.prev();
 
-        header.attr('aria-expanded', false).children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
+        header.attr('aria-expanded', false).children('.ui-accordion-toggler.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
         header.removeClass('ui-state-active');
         panel.attr('aria-hidden', true).slideUp(this.cfg.toggleSpeed, function() {
             if ($this.cfg.onTabClose)

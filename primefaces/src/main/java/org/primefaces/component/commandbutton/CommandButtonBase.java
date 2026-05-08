@@ -103,4 +103,7 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
     @Property(defaultValue = "true", description = "If true, the button will be disabled during Ajax requests triggered by the button.")
     public abstract boolean isDisableOnAjax();
 
+    @Property(description = "Defines the size of the button, valid values are \"small\" and \"large\".")
+    public abstract String getSize();
+
 }

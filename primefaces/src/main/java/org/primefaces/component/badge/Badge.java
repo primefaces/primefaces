@@ -48,6 +48,8 @@ public class Badge extends BadgeBaseImpl {
     public static final String SEVERITY_SUCCESS_CLASS = "ui-badge-success";
     public static final String SEVERITY_WARNING_CLASS = "ui-badge-warning";
     public static final String SEVERITY_DANGER_CLASS = "ui-badge-danger";
+    public static final String SEVERITY_SECONDARY_CLASS = "ui-badge-secondary";
+    public static final String SEVERITY_HELP_CLASS = "ui-badge-help";
     public static final String LABEL_CLASS = "ui-badge-label";
     public static final String ICON_CLASS = "ui-badge-icon";
 

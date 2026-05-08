@@ -57,7 +57,7 @@ public class TabView extends TabViewBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.TabView";
 
     public static final String CONTAINER_CLASS = "ui-tabs ui-widget ui-widget-content ui-hidden-container";
-    public static final String NAVIGATOR_CLASS = "ui-tabs-nav ui-helper-reset ui-widget-header";
+    public static final String NAVIGATOR_CLASS = "ui-tabs-nav ui-widget-header";
     public static final String INACTIVE_TAB_HEADER_CLASS = "ui-tabs-header ui-state-default";
     public static final String ACTIVE_TAB_HEADER_CLASS = "ui-tabs-header ui-state-default ui-tabs-selected ui-state-active";
     public static final String PANELS_CLASS = "ui-tabs-panels";

@@ -199,6 +199,9 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, RT
             defaultValue = "true")
     public abstract boolean isNoOpener();
 
+    @Property(defaultValue = "true", description = "Defines whether html would be escaped or not for tooltip content and more.")
+    public abstract boolean isEscape();
+
     @Property(description = "Sets the height of the entire calendar, including header and footer."
             + " By default, this option is unset and the calendar's height is calculated by aspectRatio."
             + " If \"auto\" is specified, the view's contents will assume a natural height and no scrollbars will be used.")

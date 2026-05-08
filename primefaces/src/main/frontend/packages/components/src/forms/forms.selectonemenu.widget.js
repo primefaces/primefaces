@@ -45,7 +45,6 @@
  * @prop {number} optGroupsSize The number of option groups.
  * @prop {JQuery} panel The DOM element for the overlay panel with the available selectable options.
  * @prop {JQuery} panelId ID of the DOM element for the overlay panel with the available selectable options.
- * @prop {number} panelWidthAdjusted The adjusted width of the overlay panel.
  * @prop {JQuery} preShowValue The DOM element for the selected option that is shown before the overlay panel is brought.
  * @prop {JQuery} labeledBy The DOM element for the label connected to he SelectOneMenu.
  * up.
@@ -264,7 +263,6 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh(cfg) {
-        this.panelWidthAdjusted = false;
         this.items = null;
 
         super.refresh(cfg);
@@ -278,26 +276,22 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      * @private
      */
     alignPanelWidth() {
-        if(!this.panelWidthAdjusted) {
-            var jqWidth = this.jq.outerWidth();
+        var jqWidth = this.jq.outerWidth();
 
-            /* Ensures that the width of a potential scrollbar is considered in the following panel width calculation */
-            let hasVerticalScrollbar = this.itemsWrapper[0].scrollHeight > this.itemsWrapper[0].clientHeight;
-            if (hasVerticalScrollbar) {
-                this.itemsWrapper.css({'overflow': 'scroll'});
-            }
-
-            if(this.panel.outerWidth() < jqWidth) {
-                this.panel.outerWidth(jqWidth);
-            }
-            else {
-                this.panel.outerWidth(this.panel.outerWidth());
-            }
-
-            this.itemsWrapper.css({'overflow': ''});
-
-            this.panelWidthAdjusted = true;
+        /* Ensures that the width of a potential scrollbar is considered in the following panel width calculation */
+        let hasVerticalScrollbar = this.itemsWrapper[0].scrollHeight > this.itemsWrapper[0].clientHeight;
+        if (hasVerticalScrollbar) {
+            this.itemsWrapper.css({'overflow': 'scroll'});
         }
+
+        if(this.panel.outerWidth() < jqWidth) {
+            this.panel.outerWidth(jqWidth);
+        }
+        else {
+            this.panel.outerWidth(this.panel.outerWidth());
+        }
+
+        this.itemsWrapper.css({'overflow': ''});
     }
 
     /**
@@ -1568,7 +1562,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
      */
     renderPanelContentFromHiddenSelect(initContentsAndBindItemEvents) {
          if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
-             var panelContent = '<div id="' + this.id + '_items" class="ui-selectonemenu-items ui-widget-content ui-widget ui-helper-reset" role="listbox">';
+             var panelContent = '<div id="' + this.id + '_items" class="ui-selectonemenu-items ui-widget-content ui-widget" role="listbox">';
              panelContent += this.renderSelectItems(this.input);
              panelContent += '</div>';
 
@@ -1597,7 +1591,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         var hasOptgroup = opts.filter("optgroup").length > 0;
         
         if (!hasOptgroup && !isGrouped) {
-            content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-helper-reset">';
+            content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget">';
         }
 
         content += opts.map(function(index, element) {
@@ -1635,7 +1629,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                        (isGrouped ? " ui-selectonemenu-item-group-children" : "") +
                        ($item.data("noselection-option") ? " ui-noselection-option" : "");
 
-        var content = isOptgroup ? '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-helper-reset" aria-labelledby="' + id + '">' : '';
+        var content = isOptgroup ? '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget" aria-labelledby="' + id + '">' : '';
         
         content += '<li id="' + id + '" class="' + cssClass + '" tabindex="-1" role="' + (isOptgroup ? "presentation" : "option") + '"';
         
