@@ -87,7 +87,9 @@ public class ShowcaseUtil {
             if (fullPath.endsWith(".jsf")) {
                 fullPath = fullPath.substring(0, fullPath.length() - ".jsf".length()) + ".xhtml";
             }
-            if (!fullPath.endsWith(".xhtml")) {
+
+            // only add .xhtml if the file has no extension
+            if (!fullPath.contains(".")) {
                 fullPath = fullPath + ".xhtml";
             }
 

@@ -361,24 +361,6 @@
     }
 }
 
-.landing-code-block {
-    margin: 0 !important;
-    background: var(--surface-a) !important;
-    border-left: none !important;
-    padding: 1.5rem !important;
-    font-size: .82rem !important;
-    line-height: 1.7 !important;
-    box-shadow: none !important;
-
-    &::before, &::after { display: none !important; }
-
-    code {
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
-    }
-}
-
 /* ── Theming ───────────────────────────────────────────────────────────── */
 .landing-theming {
     background-color: var(--surface-b);
