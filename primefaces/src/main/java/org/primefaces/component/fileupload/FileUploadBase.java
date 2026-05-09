@@ -52,6 +52,9 @@ public abstract class FileUploadBase extends PrimeUIInput implements Widget, Sty
     @Facet(description = "Custom content to display when no files are selected.")
     public abstract UIComponent getEmptyFacet();
 
+    @Facet(description = "Custom content to display in the header,  next to the buttons (in advanced mode).")
+    public abstract UIComponent getHeaderFacet();
+
     @Property(description = "Comma separated list of content types to accept.")
     public abstract String getAccept();
 

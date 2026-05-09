@@ -14,6 +14,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
     * Added `showSelectAll` property to show/hide the select all checkbox
 * Dialog/ConfirmDialog
     * Added `dismissableMask` property to allow modal dialog to be closed if you click the background mask
+* FileUpload
+    * Added a `header` facet to render custom content next in the header, to the buttons (in the advanced mode).
 * Input(s)
     * Any component based on these now has an `ariaDescribedBy` property
 * GMap
