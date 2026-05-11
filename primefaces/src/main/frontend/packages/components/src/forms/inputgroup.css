@@ -35,7 +35,7 @@
     padding-left: .5em;
 }
 
-.ui-inputgroup .ui-password:not(.ui-inputfield) {
+.ui-inputgroup>.ui-password:not(.ui-inputfield) {
     padding-left: 0;
 }
 
