@@ -32,6 +32,7 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
@@ -144,6 +145,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute(HTML.ARIA_ROLE, "radio", null);
+        writer.writeAttribute(HTML.ARIA_CHECKED, Objects.toString(selected), null);
         writer.writeAttribute("tabindex", component.getTabindex(), null);
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);
