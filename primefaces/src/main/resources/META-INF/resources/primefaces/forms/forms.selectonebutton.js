@@ -50,7 +50,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
                 const original = this.inputs.eq(i);
 
                 if(original.is(':checked')) {
-                    this.buttons.eq(i).addClass('ui-state-active');
+                    this.buttons.eq(i).addClass('ui-state-active').attr('aria-checked', 'true');
                 }
 
                 if(original.is(':disabled')) {
@@ -125,8 +125,8 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
      * Selects the given button option. If another button option is selected already, it will be unselected.
      * @param {JQuery} button A button of this widget to select.
      */
-     select: function(button) {
-        this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover');
+    select: function(button) {
+        this.buttons.filter('.ui-state-active').attr('aria-checked', 'false').removeClass('ui-state-active ui-state-hover');
         
         if (this.cfg.custom) {
             const index = this.buttons.index(button);
@@ -141,7 +141,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
             radio.prop('checked', true);
         }
 
-        button.addClass('ui-state-active');
+        button.addClass('ui-state-active').attr('aria-checked', 'true');
 
         this.triggerChange();
     },
@@ -152,7 +152,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
      */
     unselect: function(button) {
         if(this.cfg.unselectable) {
-            button.removeClass('ui-state-active ui-state-hover');
+            button.removeClass('ui-state-active ui-state-hover').attr('aria-checked', 'false');
 
             if (this.cfg.custom) {
                 const index = this.buttons.index(button);
