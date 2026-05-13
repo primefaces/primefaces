@@ -21,7 +21,7 @@
         <jakarta.jar.skip>false</jakarta.jar.skip>
         <cyclonedx.skip>true</cyclonedx.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
-        <mockito.version>5.15.2</mockito.version>
+        <mockito.version>5.23.0</mockito.version>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
         <sonar.skip>false</sonar.skip>
     </properties>
@@ -1315,7 +1315,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.2</version>
+                <version>3.5.5</version>
+                <configuration>
+                    <!--
+                    see https://stackoverflow.com/questions/79278490/mockito-is-currently-self-attaching-to-enable-the-inline-mock-maker-this-will-n
+                    official solution is https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3, but we don´t get it up and working as of 08/2025
+                    @{argLine} added so we don't lose jacoco-javaagent
+                    -->
+                    <argLine>@{argLine} -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar</argLine>
+                </configuration>
             </plugin>
         </plugins>
     </build>
