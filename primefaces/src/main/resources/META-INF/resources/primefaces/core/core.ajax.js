@@ -989,6 +989,13 @@ if (!PrimeFaces.ajax) {
                             cfg.promise.reject({ jqXHR: xhr, textStatus: status, errorThrown: errorThrown });
                         }
 
+                        // Navigation / tab close cancels requests; do not surface as real errors.
+                        // Rely on pageUnloading, not jqXHR.status === 0 alone (0 is also used for CORS/network failures).
+                        if (pageUnloading || status === "abort") {
+                            PrimeFaces.debug('Page unloaded or aborted.');
+                            return;
+                        }
+
                         var location = xhr.getResponseHeader("Location");
                         if (xhr.status === 401 && location) {
                             PrimeFaces.debug('Unauthorized status received. Redirecting to ' + location);
@@ -1640,7 +1647,30 @@ if (!PrimeFaces.ajax) {
     };
 
     var unloadEvent = ("onpagehide" in window) ? "pagehide" : "unload";
+
+    // Set when the browser is tearing down or navigating away so in-flight XHR failures are not
+    // treated as application errors. Teardown does not consistently report jQuery textStatus of
+    // "abort" or a non-zero HTTP status.
+    var pageUnloading = false;
+
+    // Add listeners to detect when the page is unloading or being shown again, in order to properly 
+    // manage AJAX request state. Setting `pageUnloading` prevents treating XHR failures from navigation 
+    // as application errors. Reset on pageshow if coming from bfcache (event.persisted).
+    window.addEventListener("beforeunload", () => {
+        pageUnloading = true;
+    });
+
+    window.addEventListener("pageshow", (event) => {
+        if (event.persisted) {
+            // The page is loaded from the bfcache, restore AJAX handling
+            pageUnloading = false;
+        }
+    });
+
+    // Use jQuery to listen for browser unload events (including pagehide for SPA/PR and legacy support).
+    // Abort all queued AJAX requests when the page is really going away to avoid side effects or ghost requests.
     $(window).on(unloadEvent, function() {
+        pageUnloading = true;
         PrimeFaces.ajax.Queue.abortAll();
     });
 
