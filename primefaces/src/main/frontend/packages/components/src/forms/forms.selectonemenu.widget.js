@@ -1589,17 +1589,43 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
 
         var opts = parentItem.children("option, optgroup");
         var hasOptgroup = opts.filter("optgroup").length > 0;
-        
+
         if (!hasOptgroup && !isGrouped) {
             content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget">';
-        }
-
-        content += opts.map(function(index, element) {
-            return $this.renderSelectItem(element, isGrouped);
-        }).get().join('');
-        
-        if (!hasOptgroup && !isGrouped) {
+            content += opts.map(function(index, element) {
+                return $this.renderSelectItem(element, isGrouped);
+            }).get().join('');
             content += '</ul>';
+        } else if (hasOptgroup && !isGrouped) {
+            // Mixed root-level options and optgroups: wrap consecutive ungrouped options
+            // in their own <ul> so all items share the same DOM depth as optgroup <ul>s.
+            var pendingOptions = [];
+            opts.each(function(index, element) {
+                if (element.tagName === "OPTGROUP") {
+                    if (pendingOptions.length > 0) {
+                        content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget">';
+                        pendingOptions.forEach(function(opt) {
+                            content += $this.renderSelectItem(opt, false);
+                        });
+                        content += '</ul>';
+                        pendingOptions = [];
+                    }
+                    content += $this.renderSelectItem(element, false);
+                } else {
+                    pendingOptions.push(element);
+                }
+            });
+            if (pendingOptions.length > 0) {
+                content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget">';
+                pendingOptions.forEach(function(opt) {
+                    content += $this.renderSelectItem(opt, false);
+                });
+                content += '</ul>';
+            }
+        } else {
+            content += opts.map(function(index, element) {
+                return $this.renderSelectItem(element, isGrouped);
+            }).get().join('');
         }
         
         return content;
