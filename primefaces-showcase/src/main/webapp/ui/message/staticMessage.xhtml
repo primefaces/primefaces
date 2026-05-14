@@ -46,6 +46,11 @@
                              closable="true" rendered="#{not messagesView.closed}">
                 <p:ajax event="close" listener="#{messagesView.onClose()}" update="growl"/>
             </p:staticMessage>
+
+            <h5>Custom Icon</h5>
+            <p:staticMessage severity="success" summary="Bolt" icon="pi pi-bolt" style="width: 100%"
+                             detail="This is a static message with a custom icon.">
+            </p:staticMessage>
         </div>
 
     </ui:define>

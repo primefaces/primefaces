@@ -25,6 +25,7 @@ package org.primefaces.component.staticmessage;
 
 import org.primefaces.component.messages.Messages;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
         severity = severity == null ? "info" : severity.toLowerCase();
 
         String styleClass = getStyleClassBuilder(context)
-                .add("ui-message ui-staticmessage ui-message-" + severity + " ui-widget")
+                .add("ui-message ui-staticmessage ui-widget ui-message-" + severity)
                 .add(iconOnly, "ui-message-icon-only ui-helper-clearfix")
                 .add(component.getStyleClass())
                 .build();
@@ -74,7 +75,7 @@ public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
         }
 
         if (!"text".equals(display)) {
-            encodeIcon(writer, severity, detail, iconOnly);
+            encodeIcon(writer, component, iconOnly);
         }
         if (!iconOnly) {
             encodeText(writer, summary, severity + "-summary", escape);
@@ -102,9 +103,15 @@ public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
         writer.endElement("span");
     }
 
-    protected void encodeIcon(ResponseWriter writer, String severity, String title, boolean iconOnly) throws IOException {
+    protected void encodeIcon(ResponseWriter writer, StaticMessage component, boolean iconOnly) throws IOException {
+        String title = component.getDetail();
+        String severity = component.getSeverity();
+        String icon = component.getIcon();
+        if (LangUtils.isEmpty(icon)) {
+            icon = "ui-message-" + severity + "-icon";
+        }
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-message-" + severity + "-icon", null);
+        writer.writeAttribute("class", icon, null);
         if (iconOnly && title != null) {
             writer.writeAttribute("title", title, null);
         }
