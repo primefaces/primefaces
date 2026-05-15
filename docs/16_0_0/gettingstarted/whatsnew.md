@@ -34,6 +34,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
     * Added new `dynamic="true"` to allow lazy loading of the menu elements
 * Spinner
     * Added `dir="rtl"` right to left support.
+* StaticMessage
+    * Added `icon="pi pi-bolt"` property for custom icons
 * Sticky
     * Added `stickyTopAt` attribute for elements fixed at the top of the page whose height should be considered when positioning the sticky element.
 * TabView

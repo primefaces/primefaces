@@ -68,6 +68,9 @@ public abstract class StaticMessageBase extends UIComponentBase implements Widge
     @Property(description = "Defines display mode, valid values are text, icon and both(default).", defaultValue = "both")
     public abstract String getDisplay();
 
+    @Property(description = "The icon to display.", implicitDefaultValue = "severity")
+    public abstract String getIcon();
+
     @Property(description = "Adds a close icon to hide the message.", defaultValue = "false")
     public abstract boolean isClosable();
 
