@@ -41,8 +41,14 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
     private static final long serialVersionUID = -3415081263308946252L;
 
     protected List<ProgrammingLanguage> langs;
+    private final LazyDataModelCallTracker lazyDataModelCallTracker;
 
     public ProgrammingLanguageLazyDataModel() {
+        this(null);
+    }
+
+    public ProgrammingLanguageLazyDataModel(LazyDataModelCallTracker lazyDataModelCallTracker) {
+        this.lazyDataModelCallTracker = lazyDataModelCallTracker;
         langs = new ArrayList<>();
         for (int i = 1; i <= 75; i++) {
             langs.add(new ProgrammingLanguage(i, "Language " + i, 1990 + (i % 10),
@@ -53,16 +59,26 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
     @Override
     public int count(Map<String, FilterMeta> filterBy) {
         List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(null, filterBy);
-        return (int) langsFiltered.size();
+        int result = (int) langsFiltered.size();
+        if (lazyDataModelCallTracker != null) {
+            lazyDataModelCallTracker.recordCountCall(result);
+        }
+        return result;
     }
 
     @Override
     public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(sortBy, filterBy);
 
-        return langsFiltered.stream()
+        List<ProgrammingLanguage> result = langsFiltered.stream()
                     .skip(first).limit(pageSize)
                     .collect(Collectors.toList());
+
+        if (lazyDataModelCallTracker != null) {
+            lazyDataModelCallTracker.recordLoadCall(first, pageSize, result.size());
+        }
+
+        return result;
     }
 
     protected List<ProgrammingLanguage> sortAndFilterInternal(Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {

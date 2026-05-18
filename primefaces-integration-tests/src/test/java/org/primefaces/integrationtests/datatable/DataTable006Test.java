@@ -107,6 +107,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertLoadCall(page, 0, 3); // Initial page load: first=0, size=3
     }
 
     @Test
@@ -128,6 +129,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
         assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
         assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertLoadCalls(page, new int[]{0, 3}, new int[]{3, 3}); // Page 1 (first=0, size=3) and Page 2 (first=3, size=3)
 
         // Act
         page.submit.click();
@@ -203,6 +205,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
         assertSelections(page.messages, "1,3");
+        assertLoadCall(page, 0, 3); // Initial page load: first=0, size=3
     }
 
     @Test
@@ -285,6 +288,9 @@ class DataTable006Test extends AbstractDataTableTest {
                         + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
                         + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
+        // Assert - tracking: with selection binding, select all should load all 75 rows
+        assertLoadCall(page, 0, 75); // Load all rows: first=0, size=75
+
         // Act - unselect one row (row 2)
         dataTable.getCell(1, 0).getWebElement().click();
         page.submit.click();
@@ -345,6 +351,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,12");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertLoadCall(page, 0, 3); // Initial page load: first=0, size=3
     }
 
     @Test
@@ -441,6 +448,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert - selections should still be 1,3
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertLoadCalls(page, new int[]{0, 3}, new int[]{3, 3}); // Page 1 (first=0, size=3) and Page 2 (first=3, size=3)
     }
 
     @Test
@@ -477,6 +485,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert - selections should still be 1,3
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
+        assertLoadCalls(page, new int[]{0, 3}, new int[]{3, 3}); // Page 1 (first=0, size=3) and Page 2 (first=3, size=3)
     }
 
     @Test
@@ -543,6 +552,9 @@ class DataTable006Test extends AbstractDataTableTest {
                         + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
                         + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
+        // Assert - tracking: verify all data was loaded due to selection binding
+        assertLoadCall(page, 0, 75); // Load all rows: first=0, size=75
+
         // Act - deselect one row (row 2 on page 1)
         dataTable.getCell(1, 0).getWebElement().click();
         page.submit.click();
@@ -588,6 +600,21 @@ class DataTable006Test extends AbstractDataTableTest {
         assertEquals(selections, message.getDetail());
     }
 
+    private void assertLoadCall(Page page, int first, int pageSize) {
+        String expectedPattern = String.format("load(first=%d, size=%d", first, pageSize);
+        assertTrue(page.getFullHistory().contains(expectedPattern),
+                "Expected load call with pattern: " + expectedPattern + " but got: " + page.getFullHistory());
+    }
+
+    private void assertLoadCalls(Page page, int[] firsts, int[] pageSizes) {
+        assertEquals(firsts.length, pageSizes.length, "Arrays must have same length");
+        assertEquals(firsts.length, page.getLoadCallCount(),
+                "Expected " + firsts.length + " load calls but got " + page.getLoadCallCount() + ": " + page.getFullHistory());
+        for (int i = 0; i < firsts.length; i++) {
+            assertLoadCall(page, firsts[i], pageSizes[i]);
+        }
+    }
+
     public static class Page extends AbstractPrimePage {
 
         @FindBy(id = "form:msgs")
@@ -608,9 +635,23 @@ class DataTable006Test extends AbstractDataTableTest {
         @FindBy(id = "form:toggleLazyMode")
         CommandButton toggleLazyMode;
 
+        @FindBy(id = "form:loadCallCount")
+        WebElement loadCallCountInput;
+
+        @FindBy(id = "form:fullHistory")
+        WebElement fullHistoryInput;
+
         @Override
         public String getLocation() {
             return "datatable/dataTable006.xhtml";
+        }
+
+        public int getLoadCallCount() {
+            return Integer.parseInt(loadCallCountInput.getAttribute("value"));
+        }
+
+        public String getFullHistory() {
+            return fullHistoryInput.getAttribute("value");
         }
     }
 }
