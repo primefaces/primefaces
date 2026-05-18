@@ -44,6 +44,9 @@ import jakarta.faces.context.FacesContext;
 
 public class SelectionFeature implements DataTableFeature {
 
+    /**
+     * Selector used to indicate "select all rows".
+     */
     private static final String ALL_SELECTOR = "@all";
 
     @Override
@@ -271,7 +274,14 @@ public class SelectionFeature implements DataTableFeature {
 
     /**
      * Selects all rows in the DataTable, handling both lazy and non-lazy modes.
-     * For lazy tables, loads all data at once using the lazy data model.
+     * <p>
+     * <strong>Performance Warning:</strong> For lazy tables, this method loads ALL data at once using the lazy data model.
+     * This can cause significant memory and performance issues with large datasets. This method is only called when a
+     * selection value expression binding exists. To avoid this performance impact, consider:
+     * <ul>
+     * <li>Not binding a selection value expression (selection will be tracked via rowKeys with @all marker only)</li>
+     * <li>Using selectionPageOnly=true to limit selection to current page</li>
+     * </ul>
      * For non-lazy tables, iterates through all row indices.
      * Deselected rows (if any) are excluded from the selection.
      *
