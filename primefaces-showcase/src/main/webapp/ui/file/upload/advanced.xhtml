@@ -124,7 +124,7 @@
         </div>
 
         <div class="card">
-            <h5>Empty Facet</h5>
+            <h5>Facets</h5>
 
             <p>The empty-facet is rendered when no files are added yet.</p>
 
@@ -134,6 +134,21 @@
                               update="growl">
                     <f:facet name="empty">
                         Drag and drop files to here to upload.
+                    </f:facet>
+                    <p:validateFile sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" />
+                </p:fileUpload>
+
+                <p:growl id="growl" showDetail="true" keepAlive="true"/>
+            </h:form>
+
+            <p class="mt-5">Use the header facet to render custom content in the header, next to the buttons.</p>
+
+            <h:form id="buttonFacet" enctype="multipart/form-data">
+                <p:fileUpload id="upload" listener="#{fileUploadView.handleFileUpload}" mode="advanced"
+                              multiple="true"
+                              update="growl">
+                    <f:facet name="header">
+                        Only image files are allowed
                     </f:facet>
                     <p:validateFile sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" />
                 </p:fileUpload>

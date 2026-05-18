@@ -252,6 +252,16 @@ The empty-facet is rendered when no files are added yet. It's rendered in `div` 
 </p:fileUpload>
 ```
 
+### Header Facet
+
+Use the `header` facet to render custom content in the header, next to the buttons.
+
+```xhtml
+<p:fileUpload advanced="true" ...>
+    <f:facet name="header">Only image files are allowed</f:facet>
+</p:fileUpload>
+```
+
 ## Auto Upload
 Default behavior requires a user to trigger the upload process, you can change this way by setting `auto` to `true`.
 Auto uploads are triggered as soon as files are selected from the dialog.
