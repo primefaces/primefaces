@@ -161,8 +161,19 @@ public class SelectionFeature implements DataTableFeature {
                 // Extract deselected rows (only relevant when @all is present)
                 Set<String> deselectedRows = extractDeselectedRows(rowKeys);
 
-                // Select all rows, handling deselections
-                selectAllRows(context, table, var, requestMap, rowKeyToObjectMap, deselectedRows);
+                // Only load all data if there's a value expression binding that needs actual objects
+                ValueExpression selectionVE = table.getValueExpression(DataTable.PropertyKeys.selection.toString());
+                if (selectionVE != null) {
+                    // Current behavior: load all data and populate selection
+                    selectAllRows(context, table, var, requestMap, rowKeyToObjectMap, deselectedRows);
+                    setSelection(context, table, true, rowKeyToObjectMap);
+                }
+                else {
+                    // Optimized behavior: just store the rowKeys with @all marker
+                    // This avoids loading all data for lazy models when no selection binding exists
+                    table.setSelection(null); // Clear any stale selection from previous non-@all selections
+                    table.setSelectedRowKeys(rowKeys); // Keep @all and ! markers
+                }
             }
             else {
                 // Standard selection - explicit rowKeys
@@ -177,9 +188,9 @@ public class SelectionFeature implements DataTableFeature {
                         }
                     }
                 }
+                
+                setSelection(context, table, true, rowKeyToObjectMap);
             }
-
-            setSelection(context, table, true, rowKeyToObjectMap);
         }
     }
 

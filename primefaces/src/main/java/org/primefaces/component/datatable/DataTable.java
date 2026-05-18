@@ -655,6 +655,33 @@ public class DataTable extends DataTableBaseImpl {
                 .collect(Collectors.joining(","));
     }
 
+    /**
+     * Checks if a row with the given rowKey is selected.
+     * Handles the @all selector and deselected rows (marked with ! prefix).
+     *
+     * @param rowKey the row key to check
+     * @return true if the row is selected, false otherwise
+     */
+    public boolean isRowSelected(String rowKey) {
+        if (rowKey == null) {
+            return false;
+        }
+        
+        Set<String> selectedRowKeys = getSelectedRowKeys();
+        
+        // Direct match - row is explicitly selected
+        if (selectedRowKeys.contains(rowKey)) {
+            return true;
+        }
+        
+        // Check if @all is present and row is not deselected
+        if (selectedRowKeys.contains("@all")) {
+            return !selectedRowKeys.contains("!" + rowKey);
+        }
+        
+        return false;
+    }
+
     public boolean isSelectAll() {
         return (boolean) getStateHelper().eval(InternalPropertyKeys.selectAll, () -> false);
     }
