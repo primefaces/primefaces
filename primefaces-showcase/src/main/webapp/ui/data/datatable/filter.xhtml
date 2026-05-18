@@ -5,15 +5,6 @@
                 xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
-    <ui:define name="head">
-        <style>
-            .ui-filter-column .ui-column-customfilter .custom-filter {
-                width: 100%;
-                box-sizing: border-box;
-            }
-        </style>
-    </ui:define>
-
     <ui:define name="title">
         DataTable <span class="subitem">Filter</span>
     </ui:define>
@@ -64,7 +55,7 @@
                     <p:column field="representative" headerText="Representative" filterMatchMode="exact"
                         sortBy="#{customer.representative.name}">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="ui-custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()"  autoWidth="false">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.representatives}" />
                             </p:selectOneMenu>
@@ -83,7 +74,7 @@
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="ui-custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()"  autoWidth="false">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.customerStatus}" />
                             </p:selectOneMenu>
@@ -123,7 +114,7 @@
                     <p:column field="representative" headerText="Representative" filterMatchMode="exact"
                               sortBy="#{customer.representative.name}">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable2').filter()" styleClass="custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable2').filter()" styleClass="custom-filter" autoWidth="false">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.representatives}" />
                             </p:selectOneMenu>
@@ -136,13 +127,13 @@
 
                     <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()" styleClass="ui-custom-filter" />
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()"  />
                         </f:facet>
                     </p:column>
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable2').filter()" styleClass="ui-custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable2').filter()"  autoWidth="false">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.customerStatus}" />
                             </p:selectOneMenu>
@@ -231,7 +222,7 @@
                     <p:column field="representative" headerText="Representative" filterMatchMode="exact"
                               sortBy="#{customer.representative.name}">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="ui-custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" autoWidth="false">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.representatives}" />
                             </p:selectOneMenu>
@@ -250,7 +241,7 @@
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="ui-custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" >
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.customerStatus}" />
                             </p:selectOneMenu>

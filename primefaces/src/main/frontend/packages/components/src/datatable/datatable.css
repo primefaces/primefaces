@@ -65,7 +65,10 @@
     margin: .5rem auto auto auto;
 }
 
-.ui-datatable .ui-column-filter .ui-inputfield {
+.ui-datatable .ui-column-filter .ui-inputfield,
+.ui-datatable .ui-column-customfilter .ui-inputfield,
+.ui-datatable .ui-column-customfilter .ui-selectonemenu {
+    width: 100%;
     max-width: 100%;
 }
 
