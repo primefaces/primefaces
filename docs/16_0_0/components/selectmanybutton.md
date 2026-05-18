@@ -39,6 +39,7 @@ onchange | null | String | Callback to execute on value change.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
+size | null | String | Defines the size of the button, valid values are `small` and `large`.
 
 ## Getting started with SelectManyButton
 SelectManyButton usage is same as selectManyCheckbox, buttons just replace checkboxes.

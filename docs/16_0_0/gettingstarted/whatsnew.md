@@ -8,10 +8,14 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../migrationguide/16_0_0) for more enhancements and changes.
 
+* Button/CommandButton/LinkButton/MenuButton/SelectBooleanButton/SelectManyButton/SelectOneButton/SplitButton
+    * Added `size` property to control the dimensions of the component, possible values are `small` and `large`
 * ColumnToggler
     * Added `showSelectAll` property to show/hide the select all checkbox
 * Dialog/ConfirmDialog
     * Added `dismissableMask` property to allow modal dialog to be closed if you click the background mask
+* FileUpload
+    * Added a `header` facet to render custom content next in the header, to the buttons (in the advanced mode).
 * Input(s)
     * Any component based on these now has an `ariaDescribedBy` property
 * GMap
@@ -32,6 +36,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/16_0_0/#/../
     * Added new `dynamic="true"` to allow lazy loading of the menu elements
 * Spinner
     * Added `dir="rtl"` right to left support.
+* StaticMessage
+    * Added `icon="pi pi-bolt"` property for custom icons
 * Sticky
     * Added `stickyTopAt` attribute for elements fixed at the top of the page whose height should be considered when positioning the sticky element.
 * TabView

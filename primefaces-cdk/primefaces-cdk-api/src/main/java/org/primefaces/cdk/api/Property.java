@@ -23,10 +23,13 @@
  */
 package org.primefaces.cdk.api;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import jakarta.enterprise.util.AnnotationLiteral;
 
 /**
  * Marks abstract getter methods to generate component property implementations.
@@ -114,4 +117,95 @@ public @interface Property {
      * @return true if the property should be omitted from the taglib, false otherwise
      */
     boolean internal() default false;
+
+
+    public static final class Literal extends AnnotationLiteral<Property> implements Property {
+
+        private final String description;
+        private final boolean required;
+        private final String defaultValue;
+        private final String implicitDefaultValue;
+        private final boolean skipAccessors;
+        private final Class<?> type;
+        private final boolean internal;
+
+        private Literal(String description, boolean required, String defaultValue, String implicitDefaultValue, boolean skipAccessors,
+                               Class<?> type, boolean internal) {
+            this.description = description;
+            this.required = required;
+            this.defaultValue = defaultValue;
+            this.implicitDefaultValue = implicitDefaultValue;
+            this.skipAccessors = skipAccessors;
+            this.type = type;
+            this.internal = internal;
+        }
+
+        public static Literal of(Property property) {
+            return new Literal(property.description(), property.required(), property.defaultValue(),
+                    property.implicitDefaultValue(), property.skipAccessors(), property.type(), property.internal());
+        }
+
+        public static Literal of(String description, boolean required, String defaultValue, String implicitDefaultValue, boolean skipAccessors,
+                                 Class<?> type, boolean internal) {
+            return new Literal(description, required, defaultValue, implicitDefaultValue, skipAccessors, type, internal);
+        }
+
+        public static Literal of(PrimePropertyKeys key) {
+            return new Literal(key.getDescription(), key.isRequired(), key.getDefaultValue(),
+                    key.getImplicitDefaultValue(), false, key.getType(), key.isHidden());
+        }
+
+        @Override
+        public String description() {
+            return description;
+        }
+
+        @Override
+        public boolean required() {
+            return required;
+        }
+
+        @Override
+        public String defaultValue() {
+            return defaultValue;
+        }
+
+        @Override
+        public String implicitDefaultValue() {
+            return implicitDefaultValue;
+        }
+
+        @Override
+        public boolean skipAccessors() {
+            return skipAccessors;
+        }
+
+        @Override
+        public Class<?> type() {
+            return type;
+        }
+
+        @Override
+        public boolean internal() {
+            return internal;
+        }
+
+        @Override
+        public Class<? extends Annotation> annotationType() {
+            return Property.class;
+        }
+
+        @Override
+        public String toString() {
+            return "PropertyLiteral{" +
+                    "description='" + description + '\'' +
+                    ", required=" + required +
+                    ", defaultValue='" + defaultValue + '\'' +
+                    ", implicitDefaultValue='" + implicitDefaultValue + '\'' +
+                    ", callSuper=" + skipAccessors +
+                    ", type=" + type +
+                    ", hide=" + internal +
+                    '}';
+        }
+    }
 }

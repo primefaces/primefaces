@@ -264,6 +264,10 @@ public class TreeRenderer extends CoreRenderer<Tree> {
             component.getFilteredRowKeys().clear();
             if (LangUtils.isNotBlank(filteredValue)) {
                 encodeFilteredNodes(context, component, component.getValue(), filteredValue, filterLocale);
+                if (component.getFilteredRowKeys().isEmpty()) {
+                    // PF #14763 Force filtering so no match shows none not all
+                    component.getFilteredRowKeys().add("");
+                }
             }
 
             if (root != null && root.getRowKey() == null) {

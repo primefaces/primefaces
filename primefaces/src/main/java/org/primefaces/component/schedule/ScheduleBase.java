@@ -85,12 +85,6 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, RT
             defaultValue = "true")
     public abstract boolean isShowWeekends();
 
-    @Property(description = "Style of the main container element of schedule.")
-    public abstract String getStyle();
-
-    @Property(description = "Style class of the main container element of schedule.")
-    public abstract String getStyleClass();
-
     @Property(description = "When true, events are draggable.",
             defaultValue = "true")
     public abstract boolean isDraggable();
@@ -204,6 +198,9 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, RT
     @Property(description = "Whether for URL events access to the opener window from the target site should be prevented (phishing protection).",
             defaultValue = "true")
     public abstract boolean isNoOpener();
+
+    @Property(defaultValue = "true", description = "Defines whether html would be escaped or not for tooltip content and more.")
+    public abstract boolean isEscape();
 
     @Property(description = "Sets the height of the entire calendar, including header and footer."
             + " By default, this option is unset and the calendar's height is calculated by aspectRatio."

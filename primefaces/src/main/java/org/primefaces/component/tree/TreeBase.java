@@ -102,7 +102,7 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Style
     public abstract String getDropRestrict();
 
     @Property(defaultValue = "move",
-            description = "When enabled and dropMode='move', the copy of the selected nodes can be dropped from a tree to another tree using Shift key.")
+            description = "Whether to 'move' or 'copy' the node on drop.")
     public abstract String getDropMode();
 
     @Property(defaultValue = "0", description = "Position of the element in the tabbing order.")

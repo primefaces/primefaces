@@ -1,0 +1,57 @@
+@import "./extensions/_input";
+
+body {
+  .ui-autocomplete.ui-autocomplete-dd {
+
+    .ui-autocomplete-dropdown {
+      .ui-button-text {
+        line-height: normal;
+      }
+    }
+  }
+
+  .ui-calendar {
+    .ui-datepicker-trigger {
+      .ui-button-text {
+        line-height: normal;
+      }
+    }
+  }
+
+  .ui-panel {
+    .ui-panel-titlebar {
+      border-bottom: none;
+    }
+    .ui-panel-titlebar + .ui-panel-content {
+      padding-top: 0;
+    }
+    .ui-panel-footer {
+      padding-top: 0;
+    }
+    .ui-panel-content:has(+ .ui-panel-footer) {
+      border-bottom: none;
+    }
+  }
+
+  .ui-accordion {
+    .ui-accordion-header {
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-radius: 0;
+
+      &:first-child {
+        border-top: none;
+        border-radius: 0;
+      }
+
+      .ui-accordion-toggler.ui-icon {
+        float: right;
+      }
+    }
+
+    .ui-accordion-content{
+      border: none;
+    }
+  }
+}

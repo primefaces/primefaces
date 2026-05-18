@@ -44,7 +44,7 @@ import jakarta.faces.view.facelets.TagAttribute;
 import jakarta.faces.view.facelets.TagConfig;
 import jakarta.faces.view.facelets.TagHandler;
 
-@FacesTagHandler("AutoUpdate is a TagHandler to mark the parent component to be updated at every AJAX request."
+@FacesTagHandler(description = "AutoUpdate is a TagHandler to mark the parent component to be updated at every AJAX request."
         + " AutoUpdate is ignored if the trigger (p:commandButton, p:ajax...) of AJAX request has the attribute ignoreAutoUpdate set to 'true'")
 public class AutoUpdateTagHandler extends TagHandler {
 

@@ -10,7 +10,7 @@ LinkButton a simple link, which is styled as a button and integrated with Jakart
 | --- | --- |
 | Tag | linkButton
 | Component Class | org.primefaces.component.linkbutton.LinkButton
-| Component Type | org.primefaces.component.Link
+| Component Type | org.primefaces.component.LinkButton
 | Component Family | org.primefaces.component |
 | Renderer Type | org.primefaces.component.LinkButtonRenderer
 | Renderer Class | org.primefaces.component.linkbutton.LinkButtonRenderer

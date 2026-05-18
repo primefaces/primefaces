@@ -31,8 +31,6 @@ import org.primefaces.cdk.impl.CdkUtils;
 import org.primefaces.cdk.impl.container.BehaviorEventInfo;
 import org.primefaces.cdk.impl.container.FacetInfo;
 import org.primefaces.cdk.impl.container.PropertyInfo;
-import org.primefaces.cdk.impl.literal.FacesBehaviorEventLiteral;
-import org.primefaces.cdk.impl.literal.PropertyLiteral;
 
 import java.lang.reflect.Method;
 import java.util.ArrayDeque;
@@ -124,7 +122,7 @@ public class HierarchyScanner {
                         implicitDefaultValue = p.getAnnotation().implicitDefaultValue();
                     }
 
-                    p.setAnnotation(new PropertyLiteral(
+                    p.setAnnotation(Property.Literal.of(
                             description,
                             p.getAnnotation().required(),
                             defaultValue,
@@ -290,7 +288,7 @@ public class HierarchyScanner {
 
                 Method setter = getSetter(clazz, propertyName, getter.getReturnType());
 
-                Property property = new PropertyLiteral(
+                Property property = Property.Literal.of(
                         CdkUtils.getWellKnownDescription(propertyName),
                         false,
                         CdkUtils.getWellKnownDefaultValue(propertyName),
@@ -374,7 +372,7 @@ public class HierarchyScanner {
             ExecutableElement setter = findSetterInElement(element, propName, getter.getReturnType());
 
             PropertyInfo propertyInfo = new PropertyInfo(propName,
-                    new PropertyLiteral(annotation.description(), annotation.required(), annotation.defaultValue(),
+                    Property.Literal.of(annotation.description(), annotation.required(), annotation.defaultValue(),
                             annotation.implicitDefaultValue(), annotation.skipAccessors(), null, annotation.internal()),
                     getter.getReturnType().toString());
 
@@ -416,7 +414,7 @@ public class HierarchyScanner {
 
                 ExecutableElement setter = findSetterInElement(element, propertyName, getter.getReturnType());
 
-                PropertyLiteral property = new PropertyLiteral(
+                Property property = Property.Literal.of(
                         CdkUtils.getWellKnownDescription(propertyName),
                         false,
                         CdkUtils.getWellKnownDefaultValue(propertyName),
@@ -571,7 +569,7 @@ public class HierarchyScanner {
         }
 
         return new BehaviorEventInfo(name,
-                new FacesBehaviorEventLiteral(name, null, description, implicit, defaultEvent),
+                FacesBehaviorEvent.Literal.of(name, null, description, implicit, defaultEvent),
                 eventClassName);
     }
 

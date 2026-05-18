@@ -40,6 +40,11 @@ public class Themes {
 
     @PostConstruct
     public void init() {
+        Category primeUIX = new Category("PrimeUIX");
+        primeUIX.getThemes().add(
+                new Theme("aura-light-emerald", "Aura Light Emerald", "images/themes/aura-light-emerald.svg", false));
+        categories.add(primeUIX);
+
         Category primeOne = new Category("PrimeOne");
         primeOne.getThemes().add(
                 new Theme("saga-blue", "Saga Blue", "images/themes/saga.png", false));

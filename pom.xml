@@ -74,8 +74,8 @@
         <junit.version>5.13.4</junit.version>
         <poi.version>5.5.1</poi.version>
         <jacoco.version>0.8.14</jacoco.version>
-        <tomcat.version>10.1.48</tomcat.version>
-        <slf4j.version>2.0.17</slf4j.version>
+        <tomcat.version>10.1.55</tomcat.version>
+        <slf4j.version>2.0.18</slf4j.version>
         <dart-sass.version>1.79.6</dart-sass.version>
 
         <sonar.skip>true</sonar.skip>
@@ -150,7 +150,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.6.1</version>
+                    <version>3.6.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -201,7 +201,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.5.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <propertiesEncoding>${project.build.sourceEncoding}</propertiesEncoding>
@@ -291,7 +291,7 @@
             <plugin>
                 <groupId>org.jreleaser</groupId>
                 <artifactId>jreleaser-maven-plugin</artifactId>
-                <version>1.22.0</version>
+                <version>1.24.0</version>
                 <inherited>false</inherited>
                 <configuration>
                     <jreleaser>
@@ -416,7 +416,7 @@
             <dependency>
                 <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
                 <artifactId>owasp-java-html-sanitizer</artifactId>
-                <version>20260102.1</version>
+                <version>20260313.1</version>
             </dependency>
 
             <!-- Data Exporter -->
@@ -454,7 +454,7 @@
             <dependency>
                 <groupId>uk.org.okapibarcode</groupId>
                 <artifactId>okapibarcode</artifactId>
-                <version>0.5.4</version>
+                <version>0.5.5</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.beust</groupId>

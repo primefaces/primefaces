@@ -40,7 +40,7 @@ import jakarta.faces.view.facelets.TagAttribute;
 import jakarta.faces.view.facelets.TagConfig;
 import jakarta.faces.view.facelets.TagHandler;
 
-@FacesTagHandler("Traditionally, dynamic binary data was presented to the client by writing a servlet or filter to stream the data."
+@FacesTagHandler(description = "Traditionally, dynamic binary data was presented to the client by writing a servlet or filter to stream the data."
         + " FileDownload simplifies this process.")
 public class FileDownloadTagHandler extends TagHandler {
 

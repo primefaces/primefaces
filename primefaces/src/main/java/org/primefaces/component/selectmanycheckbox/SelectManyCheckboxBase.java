@@ -76,8 +76,4 @@ public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox impl
     @Property(defaultValue = "12", description = "Defines the number of columns in grid layout.")
     public abstract int getColumns();
 
-    @Override
-    @Property(description = "Use modern PrimeFlex-Grid instead of classic Grid CSS.")
-    public abstract Boolean getFlex();
-
 }

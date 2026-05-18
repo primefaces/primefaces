@@ -45,6 +45,7 @@ tabindex | 0 | String | Position of the element in the tabbing order.
 title | null | String | Advisory tooltip information.
 onfocus | null | String | Client side callback to execute when button receives focus.
 onblur | null | String | Client side callback to execute when button loses focus.
+size | null | String | Defines the size of the button, valid values are `small` and `large`.
 
 ## Getting started with SelectBooleanButton
 SelectBooleanButton usage is similar to selectBooleanCheckbox.

@@ -82,6 +82,7 @@ body {
     transition: $transition;
     -webkit-appearance: none;
     appearance: none;
+    line-height: $lineHeight;
 
     &.ui-state-hover {
       border-color: $inputHoverBorderColor;

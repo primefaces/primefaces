@@ -23,18 +23,23 @@
  */
 package org.primefaces.cdk.api.behavior;
 
+
 import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.cdk.api.state.ValueExpressionStateHelper;
 
 import jakarta.el.ValueExpression;
+import jakarta.faces.component.PartialStateHolder;
 import jakarta.faces.component.StateHelper;
 import jakarta.faces.component.behavior.ClientBehaviorBase;
 import jakarta.faces.context.FacesContext;
 
-public abstract class PrimeClientBehavior extends ClientBehaviorBase {
+public abstract class PrimeClientBehavior extends ClientBehaviorBase implements PartialStateHolder {
 
     private StateHelper stateHelper;
+
+    private boolean transientFlag = false;
+    private boolean initialState = false;
 
     public PrimeClientBehavior() {
         super();
@@ -67,6 +72,30 @@ public abstract class PrimeClientBehavior extends ClientBehaviorBase {
         }
 
         return ((ValueExpressionStateHelper) getStateHelper()).getBinding(name);
+    }
+
+    public boolean isTransient() {
+        return transientFlag;
+    }
+
+    @Override
+    public void setTransient(boolean transientFlag) {
+        this.transientFlag = transientFlag;
+    }
+
+    @Override
+    public void markInitialState() {
+        initialState = true;
+    }
+
+    @Override
+    public boolean initialStateMarked() {
+        return initialState;
+    }
+
+    @Override
+    public void clearInitialState() {
+        initialState = false;
     }
 
     @Override

@@ -73,8 +73,8 @@ public class AutoComplete extends AutoCompleteBaseImpl {
     public static final String INPUT_WITH_DROPDOWN_CLASS = "ui-autocomplete-input ui-autocomplete-dd-input ui-inputfield ui-widget ui-state-default";
     public static final String DROPDOWN_CLASS = "ui-autocomplete-dropdown ui-button ui-widget ui-state-default ui-button-icon-only";
     public static final String PANEL_CLASS = "ui-autocomplete-panel ui-widget-content ui-helper-hidden ui-shadow ui-input-overlay";
-    public static final String LIST_CLASS = "ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-helper-reset";
-    public static final String TABLE_CLASS = "ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-helper-reset";
+    public static final String LIST_CLASS = "ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget";
+    public static final String TABLE_CLASS = "ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget";
     public static final String ITEM_CLASS = "ui-autocomplete-item ui-autocomplete-list-item";
     public static final String ROW_CLASS = "ui-autocomplete-item ui-autocomplete-row ui-widget-content";
     public static final String TOKEN_DISPLAY_CLASS = "ui-autocomplete-token ui-state-active";

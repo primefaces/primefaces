@@ -196,6 +196,12 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         if (component.isDisabled()) {
             buttonClass += " ui-state-disabled";
         }
+        if ("small".equals(component.getSize())) {
+            buttonClass += " ui-button-sm";
+        }
+        else if ("large".equals(component.getSize())) {
+            buttonClass += " ui-button-lg";
+        }
 
         writer.startElement("button", component);
         writer.writeAttribute("id", id, null);

@@ -23,11 +23,15 @@
  */
 package org.primefaces.cdk.api;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import jakarta.enterprise.util.AnnotationLiteral;
+import jakarta.faces.event.BehaviorEvent;
 
 /**
  * Defines a client behavior event for a Faces component.
@@ -94,4 +98,57 @@ public @interface FacesBehaviorEvent {
      * @return true if this is the default event, false otherwise
      */
     boolean defaultEvent() default false;
+
+
+    public static final class Literal extends AnnotationLiteral<FacesBehaviorEvent> implements FacesBehaviorEvent {
+
+        private String name;
+        private Class<? extends jakarta.faces.event.BehaviorEvent> event;
+        private String description;
+        private boolean implicit;
+        private boolean defaultEvent;
+
+        private Literal(String name, Class<? extends BehaviorEvent> event, String description,
+                                         boolean implicit, boolean defaultEvent) {
+            this.name = name;
+            this.event = event;
+            this.description = description;
+            this.implicit = implicit;
+            this.defaultEvent = defaultEvent;
+        }
+
+        public static Literal of(String name, Class<? extends BehaviorEvent> event, String description, boolean implicit, boolean defaultEvent) {
+            return new Literal(name, event, description, implicit, defaultEvent);
+        }
+
+        @Override
+        public String name() {
+            return name;
+        }
+
+        @Override
+        public Class<? extends BehaviorEvent> event() {
+            return event;
+        }
+
+        @Override
+        public String description() {
+            return description;
+        }
+
+        @Override
+        public boolean implicit() {
+            return implicit;
+        }
+
+        @Override
+        public boolean defaultEvent() {
+            return defaultEvent;
+        }
+
+        @Override
+        public Class<? extends Annotation> annotationType() {
+            return FacesBehaviorEvent.class;
+        }
+    }
 }

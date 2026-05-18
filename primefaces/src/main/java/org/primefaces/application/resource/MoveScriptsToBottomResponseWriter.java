@@ -25,6 +25,7 @@ package org.primefaces.application.resource;
 
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.AgentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 import java.io.IOException;
@@ -51,11 +52,11 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private static final Pattern TRACKING_SUFFIX_PATTERN = Pattern.compile("_\\d+$");
 
     private final MoveScriptsToBottomState state;
+    private final Map<String, String> includeAttributes;
+    private final StringBuilder inline;
 
     private boolean inScript;
     private String scriptType;
-    private Map<String, String> includeAttributes;
-    private StringBuilder inline;
     private boolean scriptsRendered;
 
     private boolean foundHtmlElement;
@@ -74,7 +75,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         foundBodyElement = false;
 
         includeAttributes = new LinkedHashMap<>(6);
-        inline = new StringBuilder(75);
+        inline = new StringBuilder(256);
     }
 
     @Override
@@ -240,7 +241,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             // write inline scripts
             for (Map.Entry<String, List<String>> entry : state.getInlines().entrySet()) {
                 // strip tracking _0, _1, _2 etc off the end of the string
-                String type = TRACKING_SUFFIX_PATTERN.matcher(entry.getKey()).replaceAll("");
+                String type = TRACKING_SUFFIX_PATTERN.matcher(entry.getKey()).replaceAll(Constants.EMPTY_STRING);
                 List<String> inlines = entry.getValue();
 
                 String id = UUID.randomUUID().toString();
@@ -275,47 +276,68 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     }
 
     protected String mergeAndMinimizeInlineScripts(String id, String type, List<String> inlines, boolean deferred) {
-        StringBuilder script = new StringBuilder(inlines.size() * 100);
+        if (inlines == null || inlines.isEmpty()) {
+            return Constants.EMPTY_STRING;
+        }
+
+        boolean isJavascriptScript = RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type);
+        boolean hasPrimeFaces = false;
+
+        StringBuilder script = new StringBuilder(inlines.size() * 128 + 128);
         for (int i = 0; i < inlines.size(); i++) {
-            if (i > 0) {
-                script.append("\n");
-            }
-            script.append(inlines.get(i));
+            // trim the single inline script! (for example <script> console.log('hello'); </script>)
+            // otherwise at the end of the merge you will get "console.log('hello'); ;"
+            String inline = inlines.get(i).trim();
 
-            // append ; only if this is JS code
-            if (RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type)) {
-                script.append(";");
-            }
-        }
-
-        String minimized = script.toString();
-
-        if (LangUtils.isNotBlank(minimized)) {
-            if (RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type)) {
-                minimized = minimized.replace(";;", ";");
-
-                if (minimized.contains("PrimeFaces")) {
-                    minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
-                        .replace("PrimeFaces.cw", "pf.cw")
-                        .replace("PrimeFaces.ab", "pf.ab")
-                        .replace("window.PrimeFaces", "pf");
-
-                    minimized = "var pf=window.PrimeFaces;" + minimized;
+            if (LangUtils.isNotEmpty(inline)) {
+                if (i > 0) {
+                    script.append('\n');
                 }
 
-                if (!minimized.endsWith(";")) {
-                    minimized += ";";
-                }
-                minimized += "document.getElementById('" + id + "').remove();";
+                if (isJavascriptScript) {
+                    if (inline.contains("PrimeFaces")) {
+                        hasPrimeFaces = true;
+                        inline = inline.replace("PrimeFaces.settings", "pf.settings")
+                                .replace("PrimeFaces.cw", "pf.cw")
+                                .replace("PrimeFaces.ab", "pf.ab")
+                                .replace("window.PrimeFaces", "pf");
+                    }
 
-                // deferred scripts have to wait until scripts are loaded before it can execute inline
-                if (deferred) {
-                    minimized = String.format("document.addEventListener(\"DOMContentLoaded\", function() {%s});", minimized);
+                    script.append(inline);
+
+                    if (!inline.endsWith(";")) {
+                        script.append(';');
+                    }
+                }
+                else {
+                    script.append(inline);
                 }
             }
         }
 
-        return minimized;
+        if (LangUtils.isBlank(script)) {
+            return Constants.EMPTY_STRING;
+        }
+
+        if (isJavascriptScript) {
+            if (hasPrimeFaces) {
+                script.insert(0, "var pf=window.PrimeFaces;");
+            }
+
+            if (script.charAt(script.length() - 1) != ';') {
+                script.append(';');
+            }
+
+            script.append("document.getElementById('").append(id).append("').remove();");
+
+            // deferred scripts have to wait until scripts are loaded before it can execute inline
+            if (deferred) {
+                script.insert(0, "document.addEventListener(\"DOMContentLoaded\", function() {");
+                script.append("});");
+            }
+        }
+
+        return script.toString();
     }
 
     @Override

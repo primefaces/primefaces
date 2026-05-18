@@ -252,6 +252,16 @@ The empty-facet is rendered when no files are added yet. It's rendered in `div` 
 </p:fileUpload>
 ```
 
+### Header Facet
+
+Use the `header` facet to render custom content in the header, next to the buttons.
+
+```xhtml
+<p:fileUpload advanced="true" ...>
+    <f:facet name="header">Only image files are allowed</f:facet>
+</p:fileUpload>
+```
+
 ## Auto Upload
 Default behavior requires a user to trigger the upload process, you can change this way by setting `auto` to `true`.
 Auto uploads are triggered as soon as files are selected from the dialog.
@@ -334,8 +344,6 @@ It is suggested to offer simple uploader as a fallback.
 > maxPartCount limits the total number of parts in a multi-part request and maxPartHeaderSize limits the size of the headers provided with each part.
 
 See https://tomcat.apache.org/tomcat-11.0-doc/config/http.html#Common_Attributes for additional information.
-
-```xml
 
 ## Chunking and Resume
 FileUpload supports chunked upload using the `maxChunkSize` attribute but only in advanced mode!
@@ -431,6 +439,7 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
                 }
             }
         }
+		```
 
       * Service provider registration:
 

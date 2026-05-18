@@ -49,7 +49,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
                 const original = this.inputs.eq(i);
 
                 if(original.is(':checked')) {
-                    this.buttons.eq(i).addClass('ui-state-active');
+                    this.buttons.eq(i).addClass('ui-state-active').attr('aria-checked', 'true');
                 }
 
                 if(original.is(':disabled')) {
@@ -125,7 +125,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
      * @param {JQuery} button A button of this widget to select.
      */
     select(button) {
-        this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover');
+        this.buttons.filter('.ui-state-active').attr('aria-checked', 'false').removeClass('ui-state-active ui-state-hover');
         
         if (this.cfg.custom) {
             const index = this.buttons.index(button);
@@ -140,7 +140,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
             radio.prop('checked', true);
         }
 
-        button.addClass('ui-state-active');
+        button.addClass('ui-state-active').attr('aria-checked', 'true');
 
         this.triggerChange();
     }
@@ -151,7 +151,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
      */
     unselect(button) {
         if(this.cfg.unselectable) {
-            button.removeClass('ui-state-active ui-state-hover');
+            button.removeClass('ui-state-active ui-state-hover').attr('aria-checked', 'false');
 
             if (this.cfg.custom) {
                 const index = this.buttons.index(button);

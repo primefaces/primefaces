@@ -23,7 +23,6 @@
  */
 package org.primefaces.util;
 
-import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.UploadedFile;
 
@@ -64,14 +63,12 @@ import static org.mockito.Mockito.when;
 
 class FileUploadUtilsTest {
 
-    private FileUpload fileUpload;
     private InputStream inputStream;
     private PrimeApplicationContext appContext;
     private FacesContext context;
 
     @BeforeEach
     void setup() {
-        fileUpload = mock(FileUpload.class);
         inputStream = mock(InputStream.class);
         context = mock(FacesContext.class);
         Application app = mock(Application.class);
@@ -85,7 +82,6 @@ class FileUploadUtilsTest {
     @AfterEach
     void teardown() {
         inputStream = null;
-        fileUpload = null;
     }
 
     private UploadedFile createFile(String filename, String contentType, InputStream stream) {
@@ -96,6 +92,7 @@ class FileUploadUtilsTest {
             when(file.getInputStream()).thenReturn(stream);
         }
         catch (IOException e) {
+            // we just need the catchblock for mocking
         }
         return file;
     }

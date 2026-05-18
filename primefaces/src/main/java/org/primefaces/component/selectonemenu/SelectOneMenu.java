@@ -65,8 +65,8 @@ public class SelectOneMenu extends SelectOneMenuBaseImpl {
     public static final String FOOTER_CLASS = "ui-selectonemenu-footer";
     public static final String RTL_PANEL_CLASS = "ui-selectonemenu-panel-rtl";
     public static final String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";
-    public static final String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-helper-reset";
-    public static final String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-helper-reset";
+    public static final String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget";
+    public static final String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget";
     public static final String ITEM_GROUP_CLASS = "ui-selectonemenu-item-group";
     public static final String ITEM_CLASS = "ui-selectonemenu-item ui-selectonemenu-list-item";
     public static final String ROW_CLASS = "ui-selectonemenu-item ui-selectonemenu-row ui-widget-content";

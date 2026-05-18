@@ -45,7 +45,7 @@ import jakarta.faces.view.facelets.TagHandler;
 /**
  * {@link TagHandler} for the <code>ImportEnum</code> component.
  */
-@FacesTagHandler("Utility tag to import enums.")
+@FacesTagHandler(description = "Utility tag to import enums.")
 public class ImportEnumTagHandler extends TagHandler {
 
     private static final String DEFAULT_ALL_SUFFIX = "ALL_VALUES";

@@ -40,7 +40,7 @@ public class App implements Serializable {
 
     @Inject private Themes themes;
 
-    private String theme = "saga-blue";
+    private String theme = "aura-light-emerald";
     private boolean darkMode = false;
     private String inputStyle = "outlined";
     private Country locale = new Country(0, Locale.US);

@@ -3,7 +3,6 @@
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
                 xmlns:p="primefaces"
-                xmlns:mycomposites="jakarta.faces.composite/composite"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -16,10 +15,9 @@
 
     <ui:param name="documentationLink" value="/components/panel"/>
     <ui:param name="widgetLink" value="Panel-1"/>
+    <ui:param name="tagName" value="panel"/>
 
     <ui:define name="implementation">
-
-        <mycomposites:componentDocumentation value="#{componentDocumentationController.panel}" rendered="false" />
 
         <h:form>
             <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
@@ -34,7 +32,7 @@
             </p:panel>
 
             <h5>Toggleable</h5>
-            <p:panel header="Header" toggleable="true" closable="true" toggleSpeed="500"
+            <p:panel header="Header" toggleable="true" toggleableHeader="true" closable="true" toggleSpeed="500"
                         closeSpeed="500" widgetVar="panel">
 
                 <p:ajax event="close" listener="#{panelView.onClose}" update="msgs"/>

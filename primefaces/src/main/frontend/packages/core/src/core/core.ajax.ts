@@ -9,6 +9,12 @@ import { AjaxExceptionHandler } from "../ajaxexceptionhandler/ajaxexceptionhandl
 const unloadEvent = ("onpagehide" in window) ? "pagehide" : "unload";
 
 /**
+ * Set when the browser is tearing down or navigating away so in-flight XHR failures are not treated as application errors.
+ * Teardown does not consistently report jQuery {@code textStatus} of {@code "abort"} or a non-zero HTTP status.
+ */
+let pageUnloading = false;
+
+/**
  * Retrieves the text content of a node.
  * @param node Node from which to get its text.
  * @returns The text content of the node. 
@@ -931,6 +937,13 @@ export class AjaxRequest {
                     cfg.promise.reject({ jqXHR: xhr, textStatus: status, errorThrown: errorThrown });
                 }
 
+                // Navigation / tab close cancels requests; do not surface as real errors.
+                // Rely on pageUnloading, not jqXHR.status === 0 alone (0 is also used for CORS/network failures).
+                if (pageUnloading || status === "abort") {
+                    core.debug('Page unloaded or aborted.');
+                    return;
+                }
+
                 const location = xhr.getResponseHeader("Location");
                 if (xhr.status === 401 && location) {
                     core.debug('Unauthorized status received. Redirecting to ' + location);
@@ -1748,7 +1761,26 @@ export class Ajax {
 export const ajax: Ajax = new Ajax();
 
 export function globalAjaxSetup(): void {
-    $(window).on(unloadEvent, ()  => ajax.Queue.abortAll());
+    // Add listeners to detect when the page is unloading or being shown again, in order to properly 
+    // manage AJAX request state. Setting `pageUnloading` prevents treating XHR failures from navigation 
+    // as application errors. Reset on pageshow if coming from bfcache (event.persisted).
+    window.addEventListener("beforeunload", () => {
+        pageUnloading = true;
+    });
+
+    window.addEventListener("pageshow", (event: PageTransitionEvent) => {
+        if (event.persisted) {
+            // The page is loaded from the bfcache, restore AJAX handling
+            pageUnloading = false;
+        }
+    });
+
+    // Use jQuery to listen for browser unload events (including pagehide for SPA/PR and legacy support).
+    // Abort all queued AJAX requests when the page is really going away to avoid side effects or ghost requests.
+    $(window).on(unloadEvent, () => {
+        pageUnloading = true;
+        ajax.Queue.abortAll();
+    });
 
     $(() => {
         if (window.faces && faces.ajax) {
@@ -1765,5 +1797,10 @@ export function globalAjaxSetup(): void {
                 }
             });
         }
+    });
+
+    $(document).on('pfAjaxError', function(e, xhr, settings, error){
+        // this is very likely a connection error
+        ajax.Utils.handleError("", "AJAX failure");
     });
 }

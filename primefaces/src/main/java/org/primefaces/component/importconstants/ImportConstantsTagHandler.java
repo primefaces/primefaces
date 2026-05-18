@@ -46,7 +46,7 @@ import jakarta.faces.view.facelets.TagHandler;
 /**
  * {@link TagHandler} for the <code>ImportConstants</code> component.
  */
-@FacesTagHandler("Utility tag to import constants.")
+@FacesTagHandler(description = "Utility tag to import constants.")
 public class ImportConstantsTagHandler extends TagHandler {
 
     @Property(description = "The constants class.", required = true, type = String.class)

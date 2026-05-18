@@ -183,7 +183,7 @@ public class ValueExpressionAnalyzerTest {
     }
 
     @Test
-    @Disabled
+    @Disabled // not supported by EL?
     void secondAndThirdLevelMethodExpression() {
         ExpressionFactory factory = newExpressionFactory();
 

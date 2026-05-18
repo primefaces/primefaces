@@ -171,6 +171,11 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
             encodeButton(context, component.getCancelLabel(), cancelCssClassBuilder, component.getCancelIcon(), component.getCancelButtonTitle());
         }
 
+        UIComponent headerFacet = component.getHeaderFacet();
+        if (FacetUtils.shouldRenderFacet(headerFacet)) {
+            headerFacet.encodeAll(context);
+        }
+
         writer.endElement("div");
 
         renderChildren(context, component);

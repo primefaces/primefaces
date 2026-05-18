@@ -6,6 +6,10 @@
 	padding: 0.5em 1em 0.3em;
 }
 
+.ui-panel .ui-panel-titlebar-toggleable {
+	cursor: pointer;
+}
+
 .ui-panel .ui-panel-title {
 	margin: 0.1em 16px 0.2em 0;
 }

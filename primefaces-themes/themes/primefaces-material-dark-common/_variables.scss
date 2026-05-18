@@ -24,6 +24,7 @@ $overlayColor: #ffffff !default;
 //global
 $fontFamily: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif !default;
 $fontSize: 1rem !default;
+$lineHeight: 1.2 !default;
 $textColor: $emphasis-high !default;
 $textSecondaryColor: $emphasis-medium !default;
 $borderRadius: 4px !default;
@@ -63,6 +64,9 @@ $actionIconHoverBg: rgba($overlayColor, .04) !default;
 $actionIconHoverBorderColor: transparent !default;
 $actionIconHoverColor: $textSecondaryColor !default;
 $actionIconBorderRadius: 50% !default;
+
+//outputlabel
+$outputLabelFontWeight: normal !default;
 
 //input field
 $inputPadding: 1rem 1rem !default;
@@ -150,6 +154,26 @@ $plainButtonTextColor: $textSecondaryColor !default;
 $plainButtonHoverBgColor: rgba(255, 255, 255, .04) !default;
 $plainButtonActiveBgColor: rgba(255, 255, 255, .16) !default;
 
+//button sizes
+$buttonFontSizeSm: 0.875rem !default;
+$buttonFontSizeLg: 1.25rem !default;
+
+$iconSizeSm: 0.875rem !default;
+$iconSizeLg: 1.25rem !default;
+
+$buttonTextOnlyPaddingSm: 0.536rem 0.75rem !default;
+$buttonWithLeftIconPaddingSm: 0.536rem 0.75rem 0.536rem 1.875rem !default;
+$buttonWithRightIconPaddingSm: 0.536rem 1.875rem 0.536rem 0.75rem !default;
+$buttonIconOnlyPaddingSm: 0.536rem !default;
+$buttonIconOnlyWidthSm: 2.25rem !default;
+
+$buttonTextOnlyPaddingLg: 0.893rem 1.25rem !default;
+$buttonWithLeftIconPaddingLg: 0.893rem 1.25rem 0.893rem 3.125rem !default;
+$buttonWithRightIconPaddingLg: 0.893rem 3.125rem 0.893rem 1.25rem !default;
+$buttonIconOnlyPaddingLg: 0.893rem !default;
+$buttonIconOnlyWidthLg: 3.75rem !default;
+
+//button severities
 $secondaryButtonBg: $accentColor !default;
 $secondaryButtonTextColor: $accentTextColor !default;
 $secondaryButtonBorder: 0 none !default;
@@ -453,6 +477,7 @@ $datatableHeaderCellBg: #1e1e1e !default;
 $datatableHeaderCellTextColor: $textColor !default;
 $datatableHeaderCellIconColor: $textSecondaryColor !default;
 $datatableHeaderCellFontWeight: 500 !default;
+$datatableHeaderCellFontSize: $fontSize !default;
 $datatableHeaderCellBorder: 1px solid #404040 !default;
 $datatableHeaderCellBorderWidth: 0 0 1px 0 !default;
 $datatableHeaderCellHoverBg: rgba(255, 255, 255, .04) !default;
@@ -596,6 +621,7 @@ $progressBarValueBg: $primaryColor !default;
 //menu
 $menuBg: #1e1e1e !default;
 $menuBorder: 1px solid rgba(255, 255, 255, .12) !default;
+$menuListPadding: 0 !default;
 $menuitemTextColor: $textColor !default;
 $menuitemIconColor: $textSecondaryColor !default;
 $menuitemHoverBg: rgba(255, 255, 255, .04) !default;

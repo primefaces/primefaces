@@ -1,0 +1,21 @@
+@use 'sass:color';
+
+// Same pattern as luna-green: accent + @import common (saga/PrimeUIX light base lives in primefaces-aura-common).
+@import '../primefaces-aura-common/primitive';
+
+$primaryColor: $emerald-500 !default;
+$primaryTextColor: #ffffff !default;
+$primaryLightColor: color.scale($primaryColor, $lightness: 60%) !default;
+$primaryDarkColor: color.scale($primaryColor, $lightness: -10%) !default;
+$primaryDarkerColor: color.scale($primaryColor, $lightness: -20%) !default;
+
+$highlightBg: $emerald-50 !default;
+$highlightTextColor: $emerald-700 !default;
+
+@import '../primefaces-aura-common/variables';
+@import '../primefaces-aura-common/fonts';
+@import '../primefaces-aura-common/extensions';
+
+
+
+

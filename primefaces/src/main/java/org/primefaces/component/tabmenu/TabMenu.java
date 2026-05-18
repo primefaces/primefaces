@@ -39,7 +39,7 @@ public class TabMenu extends TabMenuBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.TabMenu";
 
     public static final String CONTAINER_CLASS = "ui-tabmenu ui-widget ui-widget-content";
-    public static final String NAVIGATOR_CLASS = "ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header";
+    public static final String NAVIGATOR_CLASS = "ui-tabmenu-nav ui-helper-clearfix ui-widget-header";
     public static final String INACTIVE_TAB_HEADER_CLASS = "ui-tabmenuitem";
     public static final String ACTIVE_TAB_HEADER_CLASS = "ui-tabmenuitem ui-state-active";
 }

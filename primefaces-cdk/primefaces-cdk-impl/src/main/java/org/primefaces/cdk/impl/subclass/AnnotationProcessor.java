@@ -26,6 +26,7 @@ package org.primefaces.cdk.impl.subclass;
 import org.primefaces.cdk.api.FacesBehaviorBase;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.FacesConverterBase;
 import org.primefaces.cdk.api.FacesValidatorBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
@@ -38,10 +39,10 @@ import org.primefaces.cdk.impl.CdkUtils;
 import org.primefaces.cdk.impl.container.BehaviorEventInfo;
 import org.primefaces.cdk.impl.container.FacetInfo;
 import org.primefaces.cdk.impl.container.PropertyInfo;
-import org.primefaces.cdk.impl.literal.PropertyLiteral;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -97,6 +98,7 @@ import jakarta.faces.component.UIComponent;
     "org.primefaces.cdk.api.FacesBehaviorEvent",
     "org.primefaces.cdk.api.FacesBehaviorEvents",
     "org.primefaces.cdk.api.FacesComponentBase",
+    "org.primefaces.cdk.api.FacesConverterBase",
     "org.primefaces.cdk.api.FacesValidatorBase"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
@@ -140,6 +142,12 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
         }
 
+        for (Element e : roundEnv.getElementsAnnotatedWith(FacesConverterBase.class)) {
+            if (e.getKind() == ElementKind.CLASS && e.getModifiers().contains(Modifier.ABSTRACT)) {
+                componentsToGenerate.add((TypeElement) e);
+            }
+        }
+
         for (TypeElement classElement : componentsToGenerate) {
             generateComponent(classElement);
         }
@@ -154,8 +162,7 @@ public class AnnotationProcessor extends AbstractProcessor {
      */
     private void generateComponent(TypeElement classElement) {
         HierarchyScannerResult hierarchyScannerResult = scanner.scan(classElement);
-        boolean isBehavior = isBehaviorClass(classElement);
-        boolean isValidator = isValidatorClass(classElement);
+        boolean isComponent = classElement.getAnnotation(FacesComponentBase.class) != null;
 
         // --- Properties ---
         // Start from the scan result and key by name for override/injection logic.
@@ -164,24 +171,24 @@ public class AnnotationProcessor extends AbstractProcessor {
             propsMap.put(p.getName(), p);
         }
 
-        // Inject synthetic "id" property for components (not behaviors) when absent.
-        if (!isBehavior && !isValidator) {
+        // Inject synthetic "id" property for components only when absent.
+        if (isComponent) {
             if (!propsMap.containsKey("id")) {
-                Property property = new PropertyLiteral("Unique identifier of the component in a namingContainer.",
+                Property property = Property.Literal.of("Unique identifier of the component in a namingContainer.",
                         false,
                         "",
                         "generated", false, String.class, false);
                 propsMap.put("id", new PropertyInfo("id", property));
             }
             if (!propsMap.containsKey("binding")) {
-                Property property = new PropertyLiteral("An EL expression referring to a server side UIComponent instance in a backing bean.",
+                Property property = Property.Literal.of("An EL expression referring to a server side UIComponent instance in a backing bean.",
                         false,
                         "",
                         "generated", false, UIComponent.class, false);
                 propsMap.put("binding", new PropertyInfo("binding", property));
             }
             if (!propsMap.containsKey("rendered")) {
-                Property property = new PropertyLiteral("Unique identifier of the component in a namingContainer.",
+                Property property = Property.Literal.of("Unique identifier of the component in a namingContainer.",
                         false,
                         "",
                         "generated", false, Boolean.class, false);
@@ -194,14 +201,23 @@ public class AnnotationProcessor extends AbstractProcessor {
         for (FacetInfo f : hierarchyScannerResult.getFacets()) {
             facetsMap.put(f.getName(), f);
         }
-        if (!isBehavior) {
+
+        if (isComponent) {
             scanPrimeComponentInterface(propsMap, facetsMap);
         }
 
         // Sort alphabetically — stable, predictable generated output.
-        List<PropertyInfo> props = propsMap.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .map(Map.Entry::getValue)
+        List<String> priority = List.of("id", "rendered", "binding", "widgetVar");
+        List<PropertyInfo> props = propsMap.values().stream()
+                .sorted(Comparator
+                        // 1. priority order
+                        .comparingInt((PropertyInfo p) -> {
+                            int idx = priority.indexOf(p.getName());
+                            return idx >= 0 ? idx : Integer.MAX_VALUE;
+                        })
+                        // 2. fallback alphabetical
+                        .thenComparing(PropertyInfo::getName)
+                )
                 .collect(Collectors.toList());
         List<FacetInfo> facets = facetsMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
@@ -210,7 +226,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         List<BehaviorEventInfo> events = hierarchyScannerResult.getBehaviorEvents();
 
         try {
-            generateImplementation(classElement, props, facets, events, !isBehavior && !isValidator);
+            generateImplementation(classElement, props, facets, events, isComponent);
         }
         catch (IOException ioe) {
             messager.printMessage(Diagnostic.Kind.ERROR,
@@ -266,22 +282,6 @@ public class AnnotationProcessor extends AbstractProcessor {
                 }
             }
         }
-    }
-
-    /**
-     * Returns {@code true} if {@code classElement} represents a Fasce behavior
-     * (detected by name convention: simple name contains "Behavior").
-     */
-    private boolean isBehaviorClass(TypeElement classElement) {
-        return classElement.getSimpleName().toString().contains("Behavior");
-    }
-
-    /**
-     * Returns {@code true} if {@code classElement} represents a Fasce validator
-     * (detected by name convention: simple name contains "Validator").
-     */
-    private boolean isValidatorClass(TypeElement classElement) {
-        return classElement.getSimpleName().toString().contains("Validator");
     }
 
     private void generateImplementation(TypeElement classElement, List<PropertyInfo> props,

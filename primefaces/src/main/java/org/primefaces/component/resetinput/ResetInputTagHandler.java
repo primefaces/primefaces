@@ -41,7 +41,7 @@ import jakarta.faces.view.facelets.TagConfig;
 import jakarta.faces.view.facelets.TagException;
 import jakarta.faces.view.facelets.TagHandler;
 
-@FacesTagHandler("Input components keep their local values at state when validation fails." +
+@FacesTagHandler(description = "Input components keep their local values at state when validation fails." +
         " ResetInput is used to clear the cached values from state so that components retrieve their values from the backing bean model instead.")
 public class ResetInputTagHandler extends TagHandler {
 

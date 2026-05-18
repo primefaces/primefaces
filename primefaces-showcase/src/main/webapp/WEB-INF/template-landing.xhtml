@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces"
+      xmlns:sc="primefaces.showcase"
+      lang="#{p:language()}" xml:lang="#{p:language()}">
+
+    <h:head>
+        <f:facet name="first">
+            <ui:fragment rendered="#{facesContext.application.projectStage eq 'Production'}">
+                <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-93461466-1"></script>
+                <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', 'UA-93461466-1');
+                </script>
+            </ui:fragment>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <meta name="mobile-web-app-capable" content="yes"/>
+            <link href="#{resource['showcase:images/favicon-32x32.png']}" rel="icon" type="image/png" sizes="32x32"/>
+            <link href="#{resource['showcase:images/favicon-16x16.png']}" rel="icon" type="image/png" sizes="16x16"/>
+        </f:facet>
+        <title>PrimeFaces - UI Suite for Jakarta Faces</title>
+
+        <h:outputStylesheet name="primeflex/4.0.0/primeflex.min.css" library="webjars" />
+        <h:outputStylesheet name="css/flags/flags.css" library="showcase"/>
+
+        <h:outputScript name="jquery/jquery.js" library="primefaces"/>
+        <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
+        <h:outputScript name="locales/locale-#{app.locale.language}.js" library="primefaces"/>
+
+        <ui:insert name="head"/>
+    </h:head>
+
+    <h:body>
+        <f:view locale="#{app.locale.locale}">
+        <div class="layout-wrapper layout-landing-wrapper #{app.inputStyleClass}">
+            <ui:include src="./topbar.xhtml"/>
+            <ui:include src="./config.xhtml"/>
+            <div class="layout-mask"></div>
+
+            <div class="layout-landing-content">
+                <ui:insert name="content">
+                    <ui:insert name="implementation"/>
+                </ui:insert>
+            </div>
+
+            <ui:include src="./footer.xhtml"/>
+        </div>
+
+        <ui:insert name="status">
+            <p:ajaxStatus styleClass="status-indicator">
+                <f:facet name="start">
+                    <i class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                </f:facet>
+                <f:facet name="complete">
+                    <h:outputText value=""/>
+                </f:facet>
+            </p:ajaxStatus>
+        </ui:insert>
+
+        <ui:insert name="body"/>
+
+        <h:outputStylesheet name="css/layout/layout.css" library="showcase"/>
+        <h:outputScript name="script/layout.js" library="showcase" />
+        <h:outputScript name="script/marked.min.js" library="showcase" />
+        <h:outputScript name="script/purify.min.js" library="showcase" />
+        <h:outputScript name="prismjs/1.30.0/prism.js" library="webjars" />
+        <h:outputScript name="prismjs/1.30.0/components/prism-java.min.js" library="webjars" />
+        <h:outputScript name="prismjs/1.30.0/plugins/line-numbers/prism-line-numbers.min.js" library="webjars" />
+        </f:view>
+    </h:body>
+
+</html>

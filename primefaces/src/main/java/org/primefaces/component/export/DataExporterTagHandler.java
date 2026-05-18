@@ -37,7 +37,8 @@ import jakarta.faces.view.facelets.TagAttribute;
 import jakarta.faces.view.facelets.TagConfig;
 import jakarta.faces.view.facelets.TagHandler;
 
-@FacesTagHandler("DataExporter is handy for exporting data listed using a PrimeFaces Datatable to various formats such as excel, pdf, csv and xml.")
+@FacesTagHandler(description =
+        "DataExporter is handy for exporting data listed using a PrimeFaces Datatable to various formats such as excel, pdf, csv and xml.")
 public class DataExporterTagHandler extends TagHandler {
 
     @Property(description = "Search expression to resolve one or multiple target components.", required = true, type = String.class)

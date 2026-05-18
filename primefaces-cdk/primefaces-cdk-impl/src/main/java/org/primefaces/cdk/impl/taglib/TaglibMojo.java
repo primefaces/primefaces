@@ -28,6 +28,7 @@ import org.primefaces.cdk.api.Function;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.cdk.impl.container.BehaviorInfo;
 import org.primefaces.cdk.impl.container.ComponentInfo;
+import org.primefaces.cdk.impl.container.ConverterInfo;
 import org.primefaces.cdk.impl.container.FunctionInfo;
 import org.primefaces.cdk.impl.container.TagHandlerInfo;
 import org.primefaces.cdk.impl.container.ValidatorInfo;
@@ -54,6 +55,7 @@ import java.util.stream.Stream;
 
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.behavior.FacesBehavior;
+import jakarta.faces.convert.FacesConverter;
 import jakarta.faces.validator.FacesValidator;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -123,6 +125,7 @@ public class TaglibMojo extends AbstractMojo {
             // Find all component and behavior classes
             List<Class<?>> componentClasses = findAnnotatedClasses(FacesComponent.class);
             List<Class<?>> behaviorClasses = findAnnotatedClasses(FacesBehavior.class);
+            List<Class<?>> converterClasses = findAnnotatedClasses(FacesConverter.class);
             List<Class<?>> validatorClasses = findAnnotatedClasses(FacesValidator.class);
             List<Class<?>> tagHandlerClasses = findAnnotatedClasses(FacesTagHandler.class);
             List<FunctionInfo> functionInfos = findFunctionInfos();
@@ -146,6 +149,13 @@ public class TaglibMojo extends AbstractMojo {
                     .sorted(Comparator.comparing(BehaviorInfo::getTagName))
                     .collect(Collectors.toList());
 
+            getLog().info("Processing converters...");
+            List<ConverterInfo> converterInfos = converterClasses.stream()
+                    .map(clazz -> processConverterClass(clazz))
+                    .filter(Objects::nonNull)
+                    .sorted(Comparator.comparing(ConverterInfo::getTagName))
+                    .collect(Collectors.toList());
+
             getLog().info("Processing validators...");
             List<ValidatorInfo> validatorInfos = validatorClasses.stream()
                     .map(clazz -> processValidatorClass(clazz))
@@ -161,7 +171,7 @@ public class TaglibMojo extends AbstractMojo {
                     .collect(Collectors.toList());
 
             // Generate the taglib XML
-            Document document = generateTaglibXml(functionInfos, componentInfos, behaviorInfos, validatorInfos, tagHandlerInfos);
+            Document document = generateTaglibXml(functionInfos, componentInfos, behaviorInfos, converterInfos, validatorInfos, tagHandlerInfos);
 
             // Save the taglib XML to file
             File taglibFile = new File(outputDirectory, shortName + ".taglib.xml");
@@ -229,6 +239,8 @@ public class TaglibMojo extends AbstractMojo {
             Collection<String> classNames = allFunctions.stream().map(FunctionInfo::getName).collect(Collectors.toList());
             getLog().info("Found functions: " + String.join(",", classNames));
 
+            allFunctions.sort(Comparator.comparing(FunctionInfo::getName));
+
             return allFunctions;
         }
         catch (Exception e) {
@@ -274,6 +286,23 @@ public class TaglibMojo extends AbstractMojo {
         }
     }
 
+    private ConverterInfo processConverterClass(Class<?> behaviorClass) {
+        try {
+            getLog().debug("Processing @FacesConverter class: " + behaviorClass.getName());
+
+            ConverterInfo converterInfo = TaglibUtils.getConverterInfo(behaviorClass);
+
+            getLog().info("Processing converter: " + converterInfo.getConverterClass().getName()
+                    + ", tag: " + converterInfo.getTagName());
+
+            return converterInfo;
+        }
+        catch (Exception e) {
+            getLog().error("Error processing behavior class: " + behaviorClass.getName(), e);
+            return null;
+        }
+    }
+
     private ValidatorInfo processValidatorClass(Class<?> validatorClass) {
         try {
             getLog().debug("Processing @FacesValidator class: " + validatorClass.getName());
@@ -310,7 +339,7 @@ public class TaglibMojo extends AbstractMojo {
     }
 
     private Document generateTaglibXml(List<FunctionInfo> functionInfos, List<ComponentInfo> componentInfos, List<BehaviorInfo> behaviorInfos,
-                                       List<ValidatorInfo> validatorInfos, List<TagHandlerInfo> tagHandlerInfos) {
+                                       List<ConverterInfo> converterInfos, List<ValidatorInfo> validatorInfos, List<TagHandlerInfo> tagHandlerInfos) {
         Document document = DocumentHelper.createDocument();
         Element faceletTaglib = document.addElement("facelet-taglib", "https://jakarta.ee/xml/ns/jakartaee")
                 .addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance")
@@ -371,6 +400,23 @@ public class TaglibMojo extends AbstractMojo {
             }
 
             writeProperties(tag, behaviorInfo.getProperties());
+        }
+
+        // Add a tag for each converter
+        for (ConverterInfo validatorInfo : converterInfos) {
+            Element tag = faceletTaglib.addElement("tag");
+            if (validatorInfo.getDescription() != null) {
+                tag.addElement("description").addCDATA(validatorInfo.getDescription());
+            }
+            tag.addElement("tag-name").addText(validatorInfo.getTagName());
+            Element converter = tag.addElement("converter");
+            converter.addElement("converter-id").addText(validatorInfo.getConverterClass().getName());
+
+            if (validatorInfo.getHandlerClass() != null) {
+                converter.addElement("handler-class").addText(validatorInfo.getHandlerClass().getName());
+            }
+
+            writeProperties(tag, validatorInfo.getProperties());
         }
 
         // Add a tag for each validator

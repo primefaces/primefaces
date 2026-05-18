@@ -67,9 +67,6 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Name of the client side widget.")
-    public abstract String getWidgetVar();
-
     @Property(description = "Custom label for on state.")
     public abstract String getOnLabel();
 
@@ -84,5 +81,8 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
 
     @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
     public abstract String getAriaLabel();
+
+    @Property(description = "Defines the size of the button, valid values are \"small\" and \"large\".")
+    public abstract String getSize();
 
 }

@@ -20,6 +20,62 @@ $buttonIconOnlyWidth: 2.357rem;
 /// @group button
 $buttonIconOnlyPadding: .5rem 0;
 
+/// Font size of a small button
+/// @group button
+$buttonFontSizeSm: 0.875rem;
+
+/// Font size of a large button
+/// @group button
+$buttonFontSizeLg: 1.25rem;
+
+/// Icon size of a small button
+/// @group button
+$iconSizeSm: 0.875rem;
+
+/// Icon size of a large button
+/// @group button
+$iconSizeLg: 1.25rem;
+
+/// Padding of a small button with only text
+/// @group button
+$buttonTextOnlyPaddingSm: .375rem .75rem;
+
+/// Padding of a small button having an icon on left side of the text
+/// @group button
+$buttonWithLeftIconPaddingSm: .375rem .75rem .375rem 1.5rem;
+
+/// Padding of a small button having an icon on right side of the text
+/// @group button
+$buttonWithRightIconPaddingSm: .375rem 1.5rem .375rem .75rem;
+
+/// Padding of a small button having an icon with no label
+/// @group button
+$buttonIconOnlyPaddingSm: .375rem;
+
+/// Width of a small button having an icon with no label
+/// @group button
+$buttonIconOnlyWidthSm: 1.857rem;
+
+/// Padding of a large button with only text
+/// @group button
+$buttonTextOnlyPaddingLg: .625rem 1.25rem;
+
+/// Padding of a large button having an icon on left side of the text
+/// @group button
+$buttonWithLeftIconPaddingLg: .625rem 1.25rem .625rem 2.5rem;
+
+/// Padding of a large button having an icon on right side of the text
+/// @group button
+$buttonWithRightIconPaddingLg: .625rem 2.5rem .625rem 1.25rem;
+
+/// Padding of a large button having an icon with no label
+/// @group button
+$buttonIconOnlyPaddingLg: .625rem;
+
+/// Width of a large button having an icon with no label
+/// @group button
+$buttonIconOnlyWidthLg: 3rem;
+
 /// Background of a button
 /// @group button
 $buttonBg: $primaryColor;

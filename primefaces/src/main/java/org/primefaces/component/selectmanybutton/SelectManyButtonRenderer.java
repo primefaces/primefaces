@@ -134,13 +134,17 @@ public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButto
             return;
         }
 
-        String buttonStyle = HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS;
-        buttonStyle = selected ? buttonStyle + " ui-state-active" : buttonStyle;
-        buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
+        String styleClass = getStyleClassBuilder(context)
+                .add(HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS)
+                .add(selected, "ui-state-active")
+                .add(disabled, "ui-state-disabled")
+                .add("small".equals(component.getSize()), "ui-button-sm")
+                .add("large".equals(component.getSize()), "ui-button-lg")
+                .build();
 
         //button
         writer.startElement("div", getSelectItemComponent(option));
-        writer.writeAttribute("class", buttonStyle, null);
+        writer.writeAttribute("class", styleClass, null);
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);
         }

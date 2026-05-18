@@ -80,5 +80,6 @@ public class Lazy<T> implements Serializable, Supplier<T> {
     }
 
     static final class NotInitialized implements Serializable {
+        private static final long serialVersionUID = 1L;
     }
 }

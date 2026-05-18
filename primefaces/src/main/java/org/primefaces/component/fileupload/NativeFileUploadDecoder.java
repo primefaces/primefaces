@@ -29,10 +29,9 @@ import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.LangUtils;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.MultipartConfigElement;
@@ -51,12 +50,13 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
     protected List<UploadedFile> createUploadedFiles(HttpServletRequest request, FileUpload fileUpload, String inputToDecodeId)
             throws IOException, ServletException {
         Long sizeLimit = fileUpload.getSizeLimit();
-        Iterable<Part> parts = request.getParts();
-        return StreamSupport.stream(parts.spliterator(), false)
-                .filter(p -> p != null && p.getName().equals(inputToDecodeId))
-                .filter(p -> LangUtils.isNotBlank(p.getSubmittedFileName()))
-                .map(p -> new NativeUploadedFile(p, sizeLimit, null))
-                .collect(Collectors.toList());
+        List<UploadedFile> result = new ArrayList<>();
+        for (Part p : request.getParts()) {
+            if (p != null && p.getName().equals(inputToDecodeId) && LangUtils.isNotBlank(p.getSubmittedFileName())) {
+                result.add(new NativeUploadedFile(p, sizeLimit, null));
+            }
+        }
+        return result;
     }
 
     @Override
@@ -77,12 +77,15 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
 
     @Override
     public String getUploadDirectory(HttpServletRequest request) {
-        return Collections.list(request.getAttributeNames()).stream()
-                .map(request::getAttribute)
-                .filter(MultipartConfigElement.class::isInstance)
-                .map(MultipartConfigElement.class::cast)
-                .findFirst()
-                .map(MultipartConfigElement::getLocation)
-                .orElse(super.getUploadDirectory(request));
+        Enumeration<String> attributeNames = request.getAttributeNames();
+        while (attributeNames.hasMoreElements()) {
+            Object attribute = request.getAttribute(attributeNames.nextElement());
+            if (attribute instanceof MultipartConfigElement) {
+                MultipartConfigElement multipart = (MultipartConfigElement) attribute;
+                return multipart.getLocation();
+            }
+        }
+
+        return super.getUploadDirectory(request);
     }
 }

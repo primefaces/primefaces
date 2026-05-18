@@ -27,6 +27,8 @@ import java.io.Serializable;
 
 public class ColumnMeta implements Serializable {
 
+    private static final long serialVersionUID = 1325154657445654368L;
+
     private String columnKey;
 
     private String width;

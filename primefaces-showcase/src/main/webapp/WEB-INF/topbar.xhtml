@@ -1,52 +1,49 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
                 xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
 
-    <div class="layout-news">
-        <div class="layout-news-container">
-            <div class="layout-news-content">
-                <span class="layout-news-text">Summer Sale is here 🏖️ Get 50% off with code PRSM25</span>
-                <a class="layout-news-link" href="https://www.primefaces.org/blog/summer-sale-2025" target="_blank" rel="noopener noreferrer">Learn More</a>
+    <ui:fragment rendered="false">
+        <div class="layout-news">
+            <div class="layout-news-container">
+                <div class="layout-news-content">
+                    <span class="layout-news-text">Summer Sale is here 🏖️ Get 50% off with code PRSM25</span>
+                    <a class="layout-news-link" href="https://www.primefaces.org/blog/summer-sale-2025" target="_blank" rel="noopener noreferrer">Learn More</a>
+                </div>
+                <a class="layout-news-close">
+                    <span class="pi pi-times"></span>
+                </a>
             </div>
-            <a class="layout-news-close">
-                <span class="pi pi-times"></span>
-            </a>
         </div>
-    </div>
+    </ui:fragment>
 
     <div class="layout-topbar">
-        <a class="menu-button" tabindex="0">
-            <i class="pi pi-bars"></i>
-        </a>
-        <h:link styleClass="logo" outcome="/index.xhtml" title="Showcase Home">
-            <p:graphicImage name="images/primefaces-logo.svg" library="showcase" />
-        </h:link>
-        <p:outputPanel id="app-theme-logo" class="app-theme">
-            <p:graphicImage id="app-theme-image" name="#{app.themeImage}" library="showcase" />
-            <p:tooltip for="app-theme-logo" value="#{app.themeName}" position="bottom" showDelay="0" />
-        </p:outputPanel>
+        <div class="layout-topbar-inner">
+            <a class="menu-button" tabindex="0">
+                <i class="pi pi-bars"></i>
+            </a>
+            <h:link styleClass="logo" outcome="/index.xhtml" title="Showcase Home">
+                <p:graphicImage name="images/primefaces-logo.svg" library="showcase" />
+            </h:link>
 
-        <h:form styleClass="topbar-form">
-            <ul class="topbar-menu">
-                <li>
-                    <h:link outcome="/getstarted">Get Started</h:link>
-                </li>
+            <h:form styleClass="topbar-form">
+                <ul class="topbar-menu">
                 <li class="topbar-submenu">
                     <a tabindex="0">
-                        <p:badge severity="danger" styleClass="inline">
-                            <h:outputText value="Themes"/>
-                        </p:badge>
+                        <i class="pi pi-palette"></i>
+                        Themes
                     </a>
                     <ul class="connected-overlay-in">
-                        <li class="topbar-submenu-header">THEMING</li>
-                        <li><h:link outcome="/theming"><i class="pi pi-fw pi-file"></i><span>Guide</span></h:link></li>
-                        <li><h:link outcome="/icons"><i class="pi pi-fw pi-info-circle"></i><span>Icons</span></h:link></li>
-                        <li><h:link outcome="/uikit"><i class="pi pi-fw pi-pencil"></i><span>UI Kit</span></h:link></li>
+                        <li class="topbar-submenu-header">Input Style</li>
+                        <p:selectOneRadio value="#{app.inputStyle}" onchange="App.updateInputStyle(event.target.value)" columns="2">
+                            <f:selectItem itemLabel="Outlined" itemValue="outlined"/>
+                            <f:selectItem itemLabel="Filled" itemValue="filled"/>
+                            <p:ajax/>
+                        </p:selectOneRadio>
 
                         <ui:repeat value="#{themes.categories}" var="category">
                             <li class="topbar-submenu-header">#{category.name}</li>
                             <ui:repeat value="#{category.themes}" var="theme">
                                 <li>
-                                    <p:commandLink actionListener="#{app.changeTheme(theme)}" oncomplete="App.changeTheme('#{theme.id}', #{theme.dark})" update=":app-theme-logo">
+                                    <p:commandLink actionListener="#{app.changeTheme(theme)}" oncomplete="App.changeTheme('#{theme.id}', #{theme.dark})">
                                         <h:graphicImage name="#{theme.image}" library="showcase" alt="#{theme.name}"/>
                                         <span>#{theme.name}</span>
                                     </p:commandLink>
@@ -56,9 +53,35 @@
                     </ul>
                 </li>
                 <li class="topbar-submenu">
-                    <a tabindex="0">Templates</a>
+                        <a tabindex="0">
+                            <i class="pi pi-cog"></i>
+                            Settings
+                        </a>
+                        <ul class="connected-overlay-in">
+                            <li class="topbar-submenu-header">Locale</li>
+                            <p>Change the locale of the datepicker, schedule and client side validation messages.</p>
+                            <p:selectOneMenu id="locale" value="#{app.locale}" converter="#{localeConverter}"
+                                             style="width:300px" panelStyle="width:300px;height:350px;" height="350px"
+                                             var="l" filter="true" filterMatchMode="startsWith">
+                                <f:selectItems value="#{countryService.locales}" var="locale"
+                                               itemLabel="#{locale.displayLanguage}" itemValue="#{locale}"/>
+                                <p:ajax oncomplete="window.location.reload();"/>
+                                <p:column style="width:10%">
+                                    <span class="flag flag-#{l.code}" style="width: 30px; height: 20px"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Language"/>
+                                    </f:facet>
+                                    <h:outputText value="#{l.displayLanguage}"/>
+                                </p:column>
+                            </p:selectOneMenu>
+                        </ul>
+                    </li>
+                <li class="topbar-submenu">
+                    <a tabindex="0"><i class="pi pi-objects-column"></i> Templates</a>
                     <ul class="connected-overlay-in">
-                        <li class="topbar-submenu-header">PREMIUM ADMIN TEMPLATES</li>
+                        <li class="topbar-submenu-header">PREMIUM TEMPLATES</li>
                         <li><a href="https://www.primefaces.org/layouts/freya"><h:graphicImage name="showcase/images/layouts/freya-logo.png" alt="Freya"/><span>Freya</span></a></li>
                         <li><a href="https://www.primefaces.org/layouts/diamond"><h:graphicImage name="showcase/images/layouts/diamond-logo.png" alt="Diamond"/><span>Diamond</span></a></li>
                         <li><a href="https://www.primefaces.org/layouts/poseidon"><h:graphicImage name="showcase/images/layouts/poseidon-logo.svg" alt="Poseidon"/><span>Poseidon</span></a></li>
@@ -70,26 +93,24 @@
                      </ul>
                 </li>
                 <li class="topbar-submenu">
-                    <a tabindex="0">Resources</a>
+                    <a tabindex="0"><i class="pi pi-graduation-cap"></i>Resources</a>
                     <ul class="connected-overlay-in">
-                        <li><h:link outcome="/support"><span>Support</span></h:link></li>
-                        <li><a href="https://github.com/orgs/primefaces/discussions"><span>Forum</span></a></li>
-                        <li><a href="https://discord.gg/gzKFYnpmCY" target="_blank"><span>Discord Chat</span></a></li>
-                        <li><a href="https://github.com/primefaces/primefaces" target="_blank"><span>Source Code</span></a></li>
-                        <li><a href="https://www.primefaces.org/store" target="_blank"><span>PrimeStore</span></a></li>
-                        <li><a href="https://www.primefaces.org/category/primefaces/" target="_blank"><span>Blog</span></a></li>
-                        <li><a href="https://www.youtube.com/channel/UCTgmp69aBOlLnPEqlUyetWw/featured" target="_blank"><span>PrimeTV</span></a></li>
-                        <li><a href="https://twitter.com/primefaces?lang=en" target="_blank"><span>Twitter</span></a></li>
-                        <li><a href="https://www.primefaces.org/whouses" target="_blank"><span>Who Uses</span></a></li>
-                        <li><a href="https://www.primefaces.org/newsletter" target="_blank"><span>Newsletter</span></a></li>
-                        <li><a href="https://gear.primefaces.org" target="_blank"><span>Gear Store</span></a></li>
-                        <li><a href="https://www.primetek.com.tr" target="_blank"><span>About PrimeTek</span></a></li>
+                        <li><h:link outcome="/support"><i class="pi pi-question-circle"></i><span>Support</span></h:link></li>
+                        <li><a href="https://github.com/orgs/primefaces/discussions"><i class="pi pi-comments"></i><span>Forum</span></a></li>
+                        <li><a href="https://discord.gg/gzKFYnpmCY" target="_blank"><i class="pi pi-discord"></i><span>Discord Chat</span></a></li>
+                        <li><a href="https://github.com/primefaces/primefaces" target="_blank"><i class="pi pi-github"></i><span>Source Code</span></a></li>
+                        <li><a href="https://www.primefaces.org/store" target="_blank"><i class="pi pi-shopping-bag"></i><span>PrimeStore</span></a></li>
+                        <li><a href="https://www.primefaces.org/category/primefaces/" target="_blank"><i class="pi pi-pen-to-square"></i><span>Blog</span></a></li>
+                        <li><a href="https://www.youtube.com/channel/UCTgmp69aBOlLnPEqlUyetWw/featured" target="_blank"><i class="pi pi-youtube"></i><span>PrimeTV</span></a></li>
+                        <li><a href="https://twitter.com/primefaces?lang=en" target="_blank"><i class="pi pi-twitter"></i><span>Twitter</span></a></li>
+                        <li><a href="https://www.primefaces.org/whouses" target="_blank"><i class="pi pi-building"></i><span>Who Uses</span></a></li>
+                        <li><a href="https://www.primefaces.org/newsletter" target="_blank"><i class="pi pi-envelope"></i><span>Newsletter</span></a></li>
+                        <li><a href="https://gear.primefaces.org" target="_blank"><i class="pi pi-shopping-bag"></i><span>Gear Store</span></a></li>
+                        <li><a href="https://www.primetek.com.tr" target="_blank"><i class="pi pi-info-circle"></i><span>About PrimeTek</span></a></li>
                     </ul>
                 </li>
-                <li>
-                    v#{app.primeFacesVersion}
-                </li>
-            </ul>
-        </h:form>
+                </ul>
+            </h:form>
+        </div>
     </div>
 </ui:composition>

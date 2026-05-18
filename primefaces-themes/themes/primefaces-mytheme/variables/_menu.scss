@@ -42,6 +42,10 @@ $menuBg: #ffffff;
 /// @group menu
 $menuBorder: 1px solid #dee2e6;
 
+/// Menu list padding
+/// @group menu
+$menuListPadding: 0 !default;
+
 /// Text color of a menuitem
 /// @group menu
 $menuitemTextColor: $textColor;

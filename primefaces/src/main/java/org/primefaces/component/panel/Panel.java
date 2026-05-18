@@ -56,11 +56,14 @@ public class Panel extends PanelBaseImpl {
 
     public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content";
     public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-helper-clearfix";
+    public static final String PANEL_TITLEBAR_TOGGLEABLE_CLASS = "ui-panel-titlebar-toggleable";
     public static final String PANEL_TITLE_CLASS = "ui-panel-title";
     public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-state-default";
     public static final String PANEL_CONTENT_CLASS = "ui-panel-content ui-widget-content";
     public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
     public static final String PANEL_ACTIONS_CLASS = "ui-panel-actions";
+    public static final String PANEL_COLLAPSED_CLASS = "ui-hidden-container";
+    public static final String PANEL_COLLAPSED_HORIZONTAL_CLASS = "ui-panel-collapsed-h";
 
     public Menu getOptionsMenu() {
         UIComponent optionsFacet = getOptionsFacet();

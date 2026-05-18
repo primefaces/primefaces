@@ -73,6 +73,7 @@ public abstract class PrimeUIData extends UIDataPatch {
         return super.getRows();
     }
 
+    @Override
     @Property(description = "Index of the first data to display.")
     public int getFirst() {
         return super.getFirst();

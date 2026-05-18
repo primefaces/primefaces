@@ -34,5 +34,17 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface FacesTagHandler {
 
-    String value();
+    /**
+     * The name of the tag-handler.
+     *
+     * @return the tag-handler name
+     */
+    String name() default "";
+
+    /**
+     * The description text for the tag-handler.
+     *
+     * @return the tag-handler description
+     */
+    String description();
 }

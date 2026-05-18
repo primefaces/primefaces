@@ -80,6 +80,8 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
                 .add(isIconLeft, HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
                 .add(isValueBlank(value) && isValueBlank(buttonIcon), HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
                 .add(disabled, "ui-state-disabled")
+                .add("small".equals(button.getSize()), "ui-button-sm")
+                .add("large".equals(button.getSize()), "ui-button-lg")
                 .build();
 
         writer.startElement("button", null);

@@ -30,6 +30,7 @@ import org.primefaces.cdk.api.behavior.PrimeClientBehavior;
 @FacesBehaviorBase
 public abstract class ClientValidatorBehaviorBase extends PrimeClientBehavior {
 
+    @Override
     @Property(description = "Event name to trigger validation.")
     public abstract String getEvent();
 

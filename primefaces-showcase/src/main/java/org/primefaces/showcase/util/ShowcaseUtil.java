@@ -88,6 +88,11 @@ public class ShowcaseUtil {
                 fullPath = fullPath.substring(0, fullPath.length() - ".jsf".length()) + ".xhtml";
             }
 
+            // only add .xhtml if the file has no extension
+            if (!fullPath.contains(".")) {
+                fullPath = fullPath + ".xhtml";
+            }
+
             // Finding in WEB ...
             FacesContext fc = FacesContext.getCurrentInstance();
             InputStream is = fc.getExternalContext().getResourceAsStream(fullPath);

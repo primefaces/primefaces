@@ -2,12 +2,12 @@ App = {
     init: function() {
         this.wrapper = $(document.body).children('.layout-wrapper');
         this.topbar = this.wrapper.children('.layout-topbar');
-        this.topbarMenu = this.topbar.find('> form > .topbar-menu');
-        this.sidebar = this.wrapper.children('.layout-sidebar');
+        this.topbarMenu = this.topbar.find('.topbar-menu');
+        this.sidebar = this.wrapper.find('.layout-sidebar').first();
         this.menu = this.sidebar.children('.layout-menu');
         this.menuLinks = this.menu.find('a');
         this.mask = this.wrapper.children('.layout-mask');
-        this.menuButton = this.topbar.children('.menu-button');
+        this.menuButton = this.topbar.find('.menu-button');
         this.configurator = this.wrapper.children('.layout-config');
         this.configuratorButton = $('#layout-config-button');
         this.configuratorCloseButton = $('#layout-config-close-button');
@@ -17,9 +17,31 @@ App = {
         
         this._bindEvents();
         this._bindNews();
+        this._bindTopbarScroll();
         
         this.restoreMenu();
         Storage.restoreSettings();
+    },
+
+    _bindTopbarScroll: function() {
+        var $this = this;
+        var rafId = null;
+
+        var update = function() {
+            rafId = null;
+            if (window.scrollY > 0) {
+                $this.topbar.addClass('scrolled');
+            } else {
+                $this.topbar.removeClass('scrolled');
+            }
+        };
+
+        $(window).off('scroll.showcaseTopbar').on('scroll.showcaseTopbar', function() {
+            if (rafId) return;
+            rafId = window.requestAnimationFrame(update);
+        });
+
+        update();
     },
 
     _bindEvents: function() {
@@ -41,25 +63,7 @@ App = {
         });
 
         this.menuLinks.off('click').on('click', function() {
-            var link = $(this);
-            
-            if (link.hasClass('submenu-link')) {
-                if (link.hasClass('submenu-link-active')) {
-                    $this.activeSubmenus = $.grep($this.activeSubmenus, function (val) {
-                        return val !== link.attr('id');
-                    });
-                    link.removeClass('submenu-link-active').next('.submenu').slideUp('fast');
-                }
-                else {
-                    $this.activeSubmenus.push(link.attr('id'));
-                    link.addClass('submenu-link-active').next('.submenu').slideDown('fast');
-                }
-
-                sessionStorage.setItem('active_submenus', $this.activeSubmenus.join(','));
-            }
-            else {
-                link.addClass('router-link-active');
-            }   
+            sessionStorage.setItem('scroll_position', $this.menu.scrollTop());
         });
 
         this.menu.off('scroll').on('scroll', function() {
@@ -67,7 +71,8 @@ App = {
         });
 
         $(document).off('click.showcase').on('click.showcase', function(event) {
-            if (!$.contains($this.topbarMenu.get(0), event.target)) {
+            var topbarMenuEl = $this.topbarMenu.get(0);
+            if (topbarMenuEl && !$.contains(topbarMenuEl, event.target)) {
                 $this.hideTopbarSubmenu($this.topbarMenu.children('.topbar-submenu-active'));
             }
 
@@ -156,22 +161,32 @@ App = {
     },
 
     restoreMenu: function() {
-        var activeRouteLink = this.menuLinks.filter('[href^="' + window.location.pathname + '"]');
-        if (activeRouteLink.length) {
-            activeRouteLink.addClass('router-link-active');
-        }
+        var currentPath = window.location.pathname;
 
-        var activeSubmenus = sessionStorage.getItem('active_submenus');
-        if (activeSubmenus) {
-            this.activeSubmenus = activeSubmenus.split(',');
-            this.activeSubmenus.forEach(function(id) {
-                $('#' + id).addClass('submenu-link-active').next().show();
-            });
-        }
+        // Exact match: the link whose href matches the current page
+        this.menuLinks.filter('[href^="' + currentPath + '"]').addClass('router-link-active');
+
+        // Parent match: a submenu-link is active when the current page
+        // lives under the same directory as its first-child URL
+        this.menuLinks.filter('.submenu-link').each(function() {
+            var href = $(this).attr('href');
+            if (href) {
+                var dir = href.substring(0, href.lastIndexOf('/') + 1);
+                if (currentPath.indexOf(dir) === 0) {
+                    $(this).addClass('router-link-active');
+                }
+            }
+        });
 
         var scrollPosition = sessionStorage.getItem('scroll_position');
         if (scrollPosition) {
             this.menu.scrollTop(parseInt(scrollPosition));
+        } else {
+            // First visit: scroll sidebar so the active link is visible
+            var activeLink = this.menu.find('a.router-link-active:first');
+            if (activeLink.length) {
+                this.menu.scrollTop(activeLink[0].offsetTop - this.menu[0].offsetTop - 100);
+            }
         }
     },
 
@@ -245,4 +260,6 @@ var Storage = {
     }
 }
 
-App.init();
+$(function() {
+    App.init();
+});

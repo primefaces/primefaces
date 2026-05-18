@@ -70,7 +70,7 @@ public class SelectManyMenu extends SelectManyMenuBaseImpl {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        if (isAjaxBehaviorEvent(event)) {
+        if (isAjaxBehaviorEventSource(event)) {
             FacesContext context = getFacesContext();
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;

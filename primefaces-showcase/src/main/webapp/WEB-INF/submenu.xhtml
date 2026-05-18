@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:mycomposites="jakarta.faces.composite/composite"
+                xmlns:p="primefaces">
+
+    <div class="layout-submenu">
+
+        <ui:fragment rendered="#{not empty tagName}">
+            <p:sidebar widgetVar="currentTagLib" styleClass="taglib-sidebar" appendTo="@(body)" modal="true" position="right" blockScroll="true">
+                <h:form>
+                    <h3>#{tagLibController.getTagName(tagName)} Tag Documentation</h3>
+                    <mycomposites:tagDocumentation value="#{tagLibProvider.tags[tagName]}" />
+                </h:form>
+            </p:sidebar>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{not empty documentationLink}">
+            <p:sidebar widgetVar="currentDocumentation" style="width: 1200px; overflow: auto;" appendTo="@(body)" modal="true" position="right" blockScroll="true">
+                <div id="md-output">Loading...</div>
+                <script>
+                    async function renderRemoteMarkdown(url, targetId) {
+                        const el = document.getElementById(targetId);
+                        const res = await fetch(url);
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        const md = await res.text();
+                        el.innerHTML = DOMPurify.sanitize(marked.parse(md));
+                    }
+                    renderRemoteMarkdown(
+                        'https://primefaces.github.io/primefaces/16_0_0#{documentationLink}.md',
+                        'md-output'
+                    );
+                </script>
+            </p:sidebar>
+        </ui:fragment>
+
+        <!-- RESOURCES -->
+        <ui:fragment rendered="#{not empty documentationLink or not empty widgetLink or not empty primefacesClientApiLink or tagLibrary.isTagVdlAvailable(documentationLink)}">
+            <div class="submenu-section-title">RESOURCES</div>
+
+            <ui:fragment rendered="#{not empty tagName}">
+                <a class="submenu-resource-link" href="#" onclick="PF('currentTagLib').show(); return false;" target="_blank" rel="noopener noreferrer">
+                    <i class="pi pi-sliders-h"></i>
+                    <span>Tag Documentation</span>
+                    <p:tag value="New" severity="success" />
+                </a>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{not empty documentationLink}">
+                <a class="submenu-resource-link" href="#" onclick="PF('currentDocumentation').show(); return false;" target="_blank" rel="noopener noreferrer">
+                    <i class="pi pi-receipt"></i>
+                    <span>Documentation</span>
+                    <p:tag value="New" severity="success" />
+                </a>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{not empty documentationLink}">
+                <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/16_0_0/##{documentationLink}" target="_blank" rel="noopener noreferrer">
+                    <i class="pi pi-external-link"></i>
+                    <span>Documentation</span>
+                </a>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{not empty widgetLink}">
+                <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.#{widgetLink}.html#{not empty widgetLinkHash ? '#'.concat(widgetLinkHash) : ''}" target="_blank" rel="noopener noreferrer">
+                    <i class="pi pi-external-link"></i>
+                    <span>JSDoc</span>
+                </a>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{not empty primefacesClientApiLink}">
+                <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/jsdocs/#{primefacesClientApiLink}" target="_blank" rel="noopener noreferrer">
+                    <i class="pi pi-external-link"></i>
+                    <span>JSDoc</span>
+                </a>
+            </ui:fragment>
+
+            <!--
+            <ui:fragment rendered="#{tagLibrary.isTagVdlAvailable(documentationLink)}">
+                <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/vdldoc/primefaces/#{tagLibrary.getTagVdlComponent(documentationLink)}.html" target="_blank" rel="noopener noreferrer">
+                    <i class="pi pi-external-link"></i>
+                    <span>Tag VDL</span>
+                </a>
+            </ui:fragment>
+            -->
+        </ui:fragment>
+
+        <!-- ON THIS PAGE -->
+        <ui:fragment rendered="#{not empty appSubMenu.subMenuItems}">
+            <div class="submenu-section-title">ON THIS PAGE</div>
+            <ui:repeat value="#{appSubMenu.subMenuItems}" var="sub">
+                <h:link outcome="#{sub.url}" styleClass="#{sub eq appSubMenu.currentMenuItem ? 'active' : ''}">
+                    #{sub.label}
+                </h:link>
+            </ui:repeat>
+        </ui:fragment>
+
+    </div>
+
+</ui:composition>
