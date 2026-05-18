@@ -113,7 +113,11 @@ PrimeFaces.widget.BlockUI = class BlockUI extends PrimeFaces.widget.BaseWidget {
                 // subscribe to all DOM update events so we can resize even if another DOM element changed
                 PrimeFaces.queueTask(function() { $this.alignOverlay() });
             }
-        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
+            // #14913 if it's redirect don't hide, so the current page stays blocked until the new page is ready  
+            if (args && args.redirect) {
+                return;
+            }
             if (!$this.cfg.blocked && PrimeFaces.ajax.Utils.isXhrSourceATrigger($this, settings, false)) {
                 $this.hide();
             }
