@@ -42,20 +42,9 @@ public class LazyDataModelCallTracker implements Serializable {
      *
      * @param first the offset of first data
      * @param pageSize the number of data to load
-     * @param resultSize the actual size of the result
      */
-    public void recordLoadCall(int first, int pageSize, int resultSize) {
-        calls.add(String.format("load(first=%d, size=%d, result=%d)",
-                first, pageSize, resultSize));
-    }
-
-    /**
-     * Records a count() call.
-     *
-     * @param resultSize the count result
-     */
-    public void recordCountCall(int resultSize) {
-        calls.add(String.format("count(result=%d)", resultSize));
+    public void recordLoadCall(int first, int pageSize) {
+        calls.add(String.format("load(first=%d, size=%d)", first, pageSize));
     }
 
     /**
@@ -69,13 +58,34 @@ public class LazyDataModelCallTracker implements Serializable {
      * Gets the total number of load() calls.
      */
     public int getLoadCallCount() {
-        return (int) calls.stream().filter(c -> c.startsWith("load")).count();
+        return calls.size();
     }
 
     /**
-     * Gets the complete tracking history (both load and count calls) as a string.
+     * No-op setter for JSF compatibility with h:inputHidden.
+     */
+    public void setLoadCallCount(int loadCallCount) {
+        // No-op - this is a computed property
+    }
+
+    /**
+     * Gets the complete tracking history as a string with pipe separators.
      */
     public String getFullHistoryString() {
         return String.join(" | ", calls);
+    }
+
+    /**
+     * No-op setter for JSF compatibility with h:inputHidden.
+     */
+    public void setFullHistoryString(String fullHistoryString) {
+        // No-op - this is a computed property
+    }
+
+    /**
+     * Gets the list of load calls for programmatic access.
+     */
+    public List<String> getCalls() {
+        return new ArrayList<>(calls);
     }
 }

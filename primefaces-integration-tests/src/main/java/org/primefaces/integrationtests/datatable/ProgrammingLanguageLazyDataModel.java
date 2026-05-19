@@ -59,11 +59,7 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
     @Override
     public int count(Map<String, FilterMeta> filterBy) {
         List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(null, filterBy);
-        int result = (int) langsFiltered.size();
-        if (lazyDataModelCallTracker != null) {
-            lazyDataModelCallTracker.recordCountCall(result);
-        }
-        return result;
+        return (int) langsFiltered.size();
     }
 
     @Override
@@ -75,7 +71,7 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
                     .collect(Collectors.toList());
 
         if (lazyDataModelCallTracker != null) {
-            lazyDataModelCallTracker.recordLoadCall(first, pageSize, result.size());
+            lazyDataModelCallTracker.recordLoadCall(first, pageSize);
         }
 
         return result;

@@ -39,6 +39,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -107,7 +109,10 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
-        assertLoadCalls(page, new int[]{0,0}, new int[]{3,3}); // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after submit (first=0, size=3)
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1 // after submit
+        );
     }
 
     @Test
@@ -137,7 +142,12 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,5");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
-        assertLoadCalls(page, new int[]{0, 3, 0, 0}, new int[]{3, 3, 3, 3}); // Page 1 after toggleLazyMode (first=0, size=3), Page 2 (first=3, size=3), Page 1 (first=0, size=3),  Page 1 after submit (first=0, size=3)
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_2, // after pagination to page 2
+                PageLoad.PAGE_1, // after pagination back to page 1
+                PageLoad.PAGE_1 // after submit
+        );
 
         // Assert - row 0 and 2 on page 1 and row 1 on page 2 still selected
         assertEquals("true",
@@ -205,7 +215,11 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
         assertSelections(page.messages, "1,3");
-        assertLoadCalls(page, new int[]{0,0,0}, new int[]{3,3,3});  // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after submit (first=0, size=3), Page 1 after submit (first=0, size=3)
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after submit
+                PageLoad.PAGE_1 // after submit
+        );
     }
 
     @Test
@@ -313,8 +327,17 @@ class DataTable006Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
 
         // Assert - tracking: verify expected load calls have been made
-        // TODO: ist da nicht ein load all zu viel?
-        assertLoadCalls(page, new int[]{0, 0, 0, 0, 0, 0,3,0,3}, new int[]{3, 3, 75, 3, 3, 75,3,75,3});  // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after toggleSelectPageOnly (first=0, size=3), all data after submit because of select all (first=0, size=75), Page 1 after submit (first=0, size=3), Page 1 after submit (first=0, size=3), all data after Page2 selection because of select all (first=0, size=75), Page 2 selection (first=3, size=3), all data after submit because of select all (first=0, size=75), Page 2 after submit (first=3, size=3)
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after toggleSelectPageOnly
+                PageLoad.ALL_DATA, // after 1st submit (select all)
+                PageLoad.PAGE_1, // after 1st submit
+                PageLoad.PAGE_1, // after 2nd submit
+                PageLoad.ALL_DATA, // after pagination to page 2 (select all is still active)
+                PageLoad.PAGE_2, // after pagination to page 2
+                PageLoad.ALL_DATA, // after 3rd submit (select all is still active)
+                PageLoad.PAGE_2 // after 3rd submit
+        );
     }
 
     @Test
@@ -352,7 +375,15 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,12");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
-        assertLoadCalls(page, new int[]{0,0,0,0,0,0,0}, new int[]{3,3,3,3,3,3,3});  // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after submit (first=0, size=3), Page 1 after filter (first=0, size=3), Page 1 after filter (first=0, size=3), Page 1 after submit (first=0, size=3), Page 1 after removing filter (first=0, size=3), Page 1 after submit (first=0, size=3)
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after 1st submit
+                PageLoad.PAGE_1, // after filter
+                PageLoad.PAGE_1, // after filter
+                PageLoad.PAGE_1, // after 2nd submit
+                PageLoad.PAGE_1, // after removing filter
+                PageLoad.PAGE_1 // after 3rd submit
+        );
     }
 
     @Test
@@ -449,7 +480,13 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert - selections should still be 1,3
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
-        assertLoadCalls(page, new int[]{0,0,3,0,0}, new int[]{3, 3,3,3,3}); // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after submit (first=0, size=3), Page 2 (first=3, size=3), Page 1 (first=0, size=3), Page 1 after submit (first=0, size=3)
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after 1st submit
+                PageLoad.PAGE_2, // after pagination to page 2
+                PageLoad.PAGE_1, // after pagination back to page 1
+                PageLoad.PAGE_1 // after 2nd submit
+        );
     }
 
     @Test
@@ -486,7 +523,14 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert - selections should still be 1,3
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
-        assertLoadCalls(page, new int[]{0, 0, 0, 3, 0, 0}, new int[]{3, 3, 3, 3, 3, 3}); // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after toggleSelectPageOnly (first=0, size=3), Page 1 after submit (first=0, size=3), Page 2 (first=3, size=3), Page 1 (first=0, size=3), Page 1 after submit (first=0, size=3)
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after toggleSelectPageOnly
+                PageLoad.PAGE_1, // after 1st submit
+                PageLoad.PAGE_2, // after pagination to page 2
+                PageLoad.PAGE_1, // after pagination back to page 1
+                PageLoad.PAGE_1 // after 2nd submit
+        );
     }
 
     @Test
@@ -579,7 +623,15 @@ class DataTable006Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
 
         // Assert - tracking: verify expected load calls have been made
-        assertLoadCalls(page, new int[]{0, 0, 0, 0, 3, 3}, new int[]{3, 3, 75, 3, 3, 3});  // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after toggleSelectPageOnly (first=0, size=3), all data after submit because of select all (first=0, size=75), Page 1 after submit (first=0, size=3), Page 1 after submit (first=0, size=3), Page 2 selection (first=3, size=3), Page 2 after submit (first=3, size=3)
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after toggleSelectPageOnly
+                PageLoad.ALL_DATA, // after 1st submit (select all)
+                PageLoad.PAGE_1, // after 1st submit
+                PageLoad.PAGE_1, // after 2nd submit
+                PageLoad.PAGE_2, // after pagination to page 2
+                PageLoad.PAGE_2 // after 3rd submit
+        );
     }
 
     private void assertConfiguration(JSONObject cfg, boolean selectionPageOnly) {
@@ -601,19 +653,31 @@ class DataTable006Test extends AbstractDataTableTest {
         assertEquals(selections, message.getDetail());
     }
 
-    private void assertLoadCall(Page page, int first, int pageSize) {
-        String expectedPattern = String.format("load(first=%d, size=%d", first, pageSize);
-        assertTrue(page.getFullHistory().contains(expectedPattern),
-                "Expected load call with pattern: " + expectedPattern + " but got: " + page.getFullHistory());
-    }
-
-    private void assertLoadCalls(Page page, int[] firsts, int[] pageSizes) {
-        assertEquals(firsts.length, pageSizes.length, "Arrays must have same length");
-        assertEquals(firsts.length, page.getLoadCallCount(),
-                "Expected " + firsts.length + " load calls but got " + page.getLoadCallCount() + ": " + page.getFullHistory());
-        for (int i = 0; i < firsts.length; i++) {
-            assertLoadCall(page, firsts[i], pageSizes[i]);
+    private void assertLoadCalls(Page page, PageLoad... expectedLoads) {
+        assertEquals(expectedLoads.length, page.getLoadCallCount(),
+                "Expected " + expectedLoads.length + " load calls but got " + page.getLoadCallCount() + ":\n" + page.getFullHistory());
+        
+        List<String> actualCalls = page.getLoadCalls();
+        
+        // Build a full list for compare and set of unique elements
+        java.util.List<String> expectedList = new java.util.ArrayList<>(expectedLoads.length);
+        java.util.Set<String> uniqueExpected = new java.util.LinkedHashSet<>();
+        for (PageLoad expectedLoad : expectedLoads) {
+            String loadStr = expectedLoad.toString();
+            expectedList.add(loadStr);
+            uniqueExpected.add(loadStr);
         }
+        
+        // Assert each unique expected load appears in actual calls
+        for (String uniqueLoad : uniqueExpected) {
+            assertTrue(actualCalls.contains(uniqueLoad),
+                    "Expected load call '" + uniqueLoad + "' not found in actual calls:\n" + page.getFullHistory());
+        }
+        
+        // Assert the full history matches exactly (including order and duplicates)
+        String expectedHistory = String.join(" | ", expectedList);
+        assertEquals(expectedHistory, page.getFullHistory(),
+                "Compare of full history of expected load calls failed");
     }
 
     public static class Page extends AbstractPrimePage {
@@ -648,11 +712,53 @@ class DataTable006Test extends AbstractDataTableTest {
         }
 
         public int getLoadCallCount() {
-            return Integer.parseInt(loadCallCountInput.getText());
+            return Integer.parseInt(loadCallCountInput.getAttribute("value"));
         }
 
         public String getFullHistory() {
-            return fullHistoryInput.getText();
+            return fullHistoryInput.getAttribute("value");
         }
+
+        public List<String> getLoadCalls() {
+            String history = fullHistoryInput.getAttribute("value");
+            if (history == null || history.trim().isEmpty()) {
+                return new java.util.ArrayList<>();
+            }
+            return java.util.Arrays.asList(history.split(" \\| "));
+        }
+    }
+
+    /**
+     * Represents a lazy data load operation with first offset and page size.
+     * Provides predefined constants for common page loads to improve test readability.
+     */
+    public static class PageLoad {
+
+        private final int first;
+        private final int pageSize;
+
+        public PageLoad(int first, int pageSize) {
+            this.first = first;
+            this.pageSize = pageSize;
+        }
+
+        public int getFirst() {
+            return first;
+        }
+
+        public int getPageSize() {
+            return pageSize;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("load(first=%d, size=%d)", first, pageSize);
+        }
+
+        // Predefined page loads for common test scenarios
+        public static final PageLoad PAGE_1 = new PageLoad(0, 3);
+        public static final PageLoad PAGE_2 = new PageLoad(3, 3);
+        public static final PageLoad PAGE_3 = new PageLoad(6, 3);
+        public static final PageLoad ALL_DATA = new PageLoad(0, 75);
     }
 }
