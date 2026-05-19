@@ -31,6 +31,8 @@ import org.primefaces.selenium.component.SelectBooleanButton;
 import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.datatable.Row;
 
+import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -38,8 +40,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -656,9 +656,9 @@ class DataTable006Test extends AbstractDataTableTest {
     private void assertLoadCalls(Page page, PageLoad... expectedLoads) {
         assertEquals(expectedLoads.length, page.getLoadCallCount(),
                 "Expected " + expectedLoads.length + " load calls but got " + page.getLoadCallCount() + ":\n" + page.getFullHistory());
-        
+
         List<String> actualCalls = page.getLoadCalls();
-        
+
         // Build a full list for compare and set of unique elements
         java.util.List<String> expectedList = new java.util.ArrayList<>(expectedLoads.length);
         java.util.Set<String> uniqueExpected = new java.util.LinkedHashSet<>();
@@ -667,13 +667,13 @@ class DataTable006Test extends AbstractDataTableTest {
             expectedList.add(loadStr);
             uniqueExpected.add(loadStr);
         }
-        
+
         // Assert each unique expected load appears in actual calls
         for (String uniqueLoad : uniqueExpected) {
             assertTrue(actualCalls.contains(uniqueLoad),
                     "Expected load call '" + uniqueLoad + "' not found in actual calls:\n" + page.getFullHistory());
         }
-        
+
         // Assert the full history matches exactly (including order and duplicates)
         String expectedHistory = String.join(" | ", expectedList);
         assertEquals(expectedHistory, page.getFullHistory(),
@@ -734,6 +734,12 @@ class DataTable006Test extends AbstractDataTableTest {
      */
     public static class PageLoad {
 
+        // Predefined page loads for common test scenarios
+        public static final PageLoad PAGE_1 = new PageLoad(0, 3);
+        public static final PageLoad PAGE_2 = new PageLoad(3, 3);
+        public static final PageLoad PAGE_3 = new PageLoad(6, 3);
+        public static final PageLoad ALL_DATA = new PageLoad(0, 75);
+
         private final int first;
         private final int pageSize;
 
@@ -754,11 +760,5 @@ class DataTable006Test extends AbstractDataTableTest {
         public String toString() {
             return String.format("load(first=%d, size=%d)", first, pageSize);
         }
-
-        // Predefined page loads for common test scenarios
-        public static final PageLoad PAGE_1 = new PageLoad(0, 3);
-        public static final PageLoad PAGE_2 = new PageLoad(3, 3);
-        public static final PageLoad PAGE_3 = new PageLoad(6, 3);
-        public static final PageLoad ALL_DATA = new PageLoad(0, 75);
     }
 }
