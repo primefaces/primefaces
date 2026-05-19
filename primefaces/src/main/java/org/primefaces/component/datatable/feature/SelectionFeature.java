@@ -191,7 +191,7 @@ public class SelectionFeature implements DataTableFeature {
                         }
                     }
                 }
-                
+
                 setSelection(context, table, true, rowKeyToObjectMap);
             }
         }

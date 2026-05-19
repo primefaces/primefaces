@@ -666,19 +666,19 @@ public class DataTable extends DataTableBaseImpl {
         if (rowKey == null) {
             return false;
         }
-        
+
         Set<String> selectedRowKeys = getSelectedRowKeys();
-        
+
         // Direct match - row is explicitly selected
         if (selectedRowKeys.contains(rowKey)) {
             return true;
         }
-        
+
         // Check if @all is present and row is not deselected
         if (selectedRowKeys.contains("@all")) {
             return !selectedRowKeys.contains("!" + rowKey);
         }
-        
+
         return false;
     }
 
