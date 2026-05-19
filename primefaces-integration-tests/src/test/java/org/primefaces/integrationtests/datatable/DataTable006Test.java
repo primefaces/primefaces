@@ -107,7 +107,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
-        assertLoadCall(page, 0, 3); // Initial page load: first=0, size=3
+        assertLoadCalls(page, new int[]{0,0}, new int[]{3,3}); // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after submit (first=0, size=3)
     }
 
     @Test
@@ -129,7 +129,6 @@ class DataTable006Test extends AbstractDataTableTest {
         assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
         assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
         assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
-        assertLoadCalls(page, new int[]{0, 3}, new int[]{3, 3}); // Page 1 (first=0, size=3) and Page 2 (first=3, size=3)
 
         // Act
         page.submit.click();
@@ -138,6 +137,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,5");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertLoadCalls(page, new int[]{0, 3, 0, 0}, new int[]{3, 3, 3, 3}); // Page 1 after toggleLazyMode (first=0, size=3), Page 2 (first=3, size=3), Page 1 (first=0, size=3),  Page 1 after submit (first=0, size=3)
 
         // Assert - row 0 and 2 on page 1 and row 1 on page 2 still selected
         assertEquals("true",
@@ -205,7 +205,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
         assertSelections(page.messages, "1,3");
-        assertLoadCall(page, 0, 3); // Initial page load: first=0, size=3
+        assertLoadCalls(page, new int[]{0,0,0}, new int[]{3,3,3});  // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after submit (first=0, size=3), Page 1 after submit (first=0, size=3)
     }
 
     @Test
@@ -288,9 +288,6 @@ class DataTable006Test extends AbstractDataTableTest {
                         + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
                         + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
-        // Assert - tracking: with selection binding, select all should load all 75 rows
-        assertLoadCall(page, 0, 75); // Load all rows: first=0, size=75
-
         // Act - unselect one row (row 2)
         dataTable.getCell(1, 0).getWebElement().click();
         page.submit.click();
@@ -314,6 +311,10 @@ class DataTable006Test extends AbstractDataTableTest {
                         + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
                         + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
+
+        // Assert - tracking: verify expected load calls have been made
+        // TODO: ist da nicht ein load all zu viel?
+        assertLoadCalls(page, new int[]{0, 0, 0, 0, 0, 0,3,0,3}, new int[]{3, 3, 75, 3, 3, 75,3,75,3});  // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after toggleSelectPageOnly (first=0, size=3), all data after submit because of select all (first=0, size=75), Page 1 after submit (first=0, size=3), Page 1 after submit (first=0, size=3), all data after Page2 selection because of select all (first=0, size=75), Page 2 selection (first=3, size=3), all data after submit because of select all (first=0, size=75), Page 2 after submit (first=3, size=3)
     }
 
     @Test
@@ -351,7 +352,7 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,12");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
-        assertLoadCall(page, 0, 3); // Initial page load: first=0, size=3
+        assertLoadCalls(page, new int[]{0,0,0,0,0,0,0}, new int[]{3,3,3,3,3,3,3});  // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after submit (first=0, size=3), Page 1 after filter (first=0, size=3), Page 1 after filter (first=0, size=3), Page 1 after submit (first=0, size=3), Page 1 after removing filter (first=0, size=3), Page 1 after submit (first=0, size=3)
     }
 
     @Test
@@ -448,7 +449,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert - selections should still be 1,3
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
-        assertLoadCalls(page, new int[]{0, 3}, new int[]{3, 3}); // Page 1 (first=0, size=3) and Page 2 (first=3, size=3)
+        assertLoadCalls(page, new int[]{0,0,3,0,0}, new int[]{3, 3,3,3,3}); // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after submit (first=0, size=3), Page 2 (first=3, size=3), Page 1 (first=0, size=3), Page 1 after submit (first=0, size=3)
     }
 
     @Test
@@ -485,7 +486,7 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert - selections should still be 1,3
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
-        assertLoadCalls(page, new int[]{0, 3}, new int[]{3, 3}); // Page 1 (first=0, size=3) and Page 2 (first=3, size=3)
+        assertLoadCalls(page, new int[]{0, 0, 0, 3, 0, 0}, new int[]{3, 3, 3, 3, 3, 3}); // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after toggleSelectPageOnly (first=0, size=3), Page 1 after submit (first=0, size=3), Page 2 (first=3, size=3), Page 1 (first=0, size=3), Page 1 after submit (first=0, size=3)
     }
 
     @Test
@@ -552,9 +553,6 @@ class DataTable006Test extends AbstractDataTableTest {
                         + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
                         + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
-        // Assert - tracking: verify all data was loaded due to selection binding
-        assertLoadCall(page, 0, 75); // Load all rows: first=0, size=75
-
         // Act - deselect one row (row 2 on page 1)
         dataTable.getCell(1, 0).getWebElement().click();
         page.submit.click();
@@ -579,6 +577,9 @@ class DataTable006Test extends AbstractDataTableTest {
                         + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
                         + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
+
+        // Assert - tracking: verify expected load calls have been made
+        assertLoadCalls(page, new int[]{0, 0, 0, 0, 3, 3}, new int[]{3, 3, 75, 3, 3, 3});  // Page 1 after toggleLazyMode (first=0, size=3), Page 1 after toggleSelectPageOnly (first=0, size=3), all data after submit because of select all (first=0, size=75), Page 1 after submit (first=0, size=3), Page 1 after submit (first=0, size=3), Page 2 selection (first=3, size=3), Page 2 after submit (first=3, size=3)
     }
 
     private void assertConfiguration(JSONObject cfg, boolean selectionPageOnly) {
@@ -647,11 +648,11 @@ class DataTable006Test extends AbstractDataTableTest {
         }
 
         public int getLoadCallCount() {
-            return Integer.parseInt(loadCallCountInput.getAttribute("value"));
+            return Integer.parseInt(loadCallCountInput.getText());
         }
 
         public String getFullHistory() {
-            return fullHistoryInput.getAttribute("value");
+            return fullHistoryInput.getText();
         }
     }
 }

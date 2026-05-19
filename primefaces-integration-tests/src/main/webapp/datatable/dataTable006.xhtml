@@ -48,8 +48,8 @@
 
             <p:commandButton id="buttonUnselect" value="Unselect" update="@form" action="#{dataTable006.unselectRows}"/>
 
-            <h:inputHidden id="loadCallCount" value="#{dataTable006.lazyDataModelCallTracker.loadCallCount}"/>
-            <h:inputHidden id="fullHistory" value="#{dataTable006.lazyDataModelCallTracker.fullHistoryString}"/>
+            <h:outputText id="loadCallCount" value="#{dataTable006.lazyDataModelCallTracker.loadCallCount}"/>
+            <h:outputText id="fullHistory" value="#{dataTable006.lazyDataModelCallTracker.fullHistoryString}"/>
         </h:form>
 
     </h:body>
