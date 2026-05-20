@@ -10,6 +10,11 @@
         padding-top: var(--layout-topbar-height);
         min-height: 100vh;
     }
+
+    /* Landing page has no sidebar — hide the burger button at every breakpoint */
+    .menu-button {
+        display: none !important;
+    }
 }
 
 /* ── Section scaffold ──────────────────────────────────────────────────── */
