@@ -38,7 +38,6 @@ import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -391,7 +390,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                         LocalDateTime endDate = isDate
                                 ? CalendarUtils.convertDate2LocalDateTime((Date) end)
                                 : (LocalDateTime) end;
-                        endDate = endDate.plusDays(1).minus(1, ChronoUnit.NANOS);
+                        endDate = endDate.toLocalDate().plusDays(1).atStartOfDay().minusNanos(1);
                         range.set(1, isDate ? CalendarUtils.convertLocalDateTime2Date(endDate) : endDate);
                     }
                 }
