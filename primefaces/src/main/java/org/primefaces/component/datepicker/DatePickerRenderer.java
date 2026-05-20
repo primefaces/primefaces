@@ -387,11 +387,11 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                     // #8351 adjust end date to end of day
                     Object end = range.get(1);
                     boolean isDate = end instanceof Date;
-                    if (end instanceof LocalDateTime || isDate) {
+                    if (end instanceof LocalDate || isDate) {
                         LocalDateTime endDate = isDate
                                 ? CalendarUtils.convertDate2LocalDateTime((Date) end)
                                 : (LocalDateTime) end;
-                        endDate = endDate.plusDays(1).minus(1, ChronoUnit.NANOS);
+                        endDate = endDate.toLocalDate().atTime(23, 59, 59);
                         range.set(1, isDate ? CalendarUtils.convertLocalDateTime2Date(endDate) : endDate);
                     }
                 }
