@@ -2500,12 +2500,10 @@ $.widget("prime.datePicker", {
                 newViewDate.setMonth(newViewDate.getMonth() - 1, 1);
             }
 
-            // previous (check first day of month at 00:00:00)
-            newViewDate = this.truncateDate(newViewDate);
-
             // #5967 check if month can be navigated to by checking last day in month
             var testDate = new Date(newViewDate.getTime()),
                 minDate = this.options.minDate;
+            testDate = this.truncateDate(testDate);
             testDate.setMonth(testDate.getMonth() + 1);
             testDate.setHours(-1);
             if (this.options.showMinMaxRange && minDate && minDate > testDate) {
@@ -2563,12 +2561,11 @@ $.widget("prime.datePicker", {
                 newViewDate.setMonth(newViewDate.getMonth() + 1, 1);
             }
 
-            // next (check last day of month)
-            newViewDate = this.truncateDate(newViewDate);
-
             // #5967 check if month can be navigated to by checking first day next month
-            var maxDate = this.options.maxDate;
-            if (this.options.showMinMaxRange && maxDate && maxDate < newViewDate) {
+            var testDate = new Date(newViewDate.getTime()),
+                maxDate = this.options.maxDate;
+            testDate = this.truncateDate(testDate);
+            if (this.options.showMinMaxRange && maxDate && maxDate < testDate) {
                 this.setNavigationState(newViewDate);
                 event.preventDefault();
                 event.stopPropagation();
