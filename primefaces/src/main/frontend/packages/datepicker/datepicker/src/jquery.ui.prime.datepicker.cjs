@@ -2503,6 +2503,7 @@ $.widget("prime.datePicker", {
             // #5967 check if month can be navigated to by checking last day in month
             var testDate = new Date(newViewDate.getTime()),
                 minDate = this.options.minDate;
+             // previous (check first day of month at 00:00:00)
             testDate = this.truncateDate(testDate);
             testDate.setMonth(testDate.getMonth() + 1);
             testDate.setHours(-1);
