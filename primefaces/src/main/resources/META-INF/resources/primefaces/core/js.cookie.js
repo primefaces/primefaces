@@ -100,7 +100,7 @@
           if (name === found) {
             break
           }
-        } catch {
+        } catch (e) {
           // Do nothing...
         }
       }
