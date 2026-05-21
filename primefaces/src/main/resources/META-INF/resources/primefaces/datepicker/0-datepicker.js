@@ -2517,12 +2517,11 @@
                     newViewDate.setMonth(newViewDate.getMonth() - 1, 1);
                 }
 
-                // previous (check first day of month at 00:00:00)
-                newViewDate = this.truncateDate(newViewDate);
-
                 // #5967 check if month can be navigated to by checking last day in month
                 var testDate = new Date(newViewDate.getTime()),
                     minDate = this.options.minDate;
+                // previous (check first day of month at 00:00:00)
+                testDate = this.truncateDate(testDate);
                 testDate.setMonth(testDate.getMonth() + 1);
                 testDate.setHours(-1);
                 if (this.options.showMinMaxRange && minDate && minDate > testDate) {
@@ -2580,11 +2579,11 @@
                     newViewDate.setMonth(newViewDate.getMonth() + 1, 1);
                 }
 
+                var testDate = new Date(newViewDate.getTime()),
+                    maxDate = this.options.maxDate;
                 // next (check last day of month)
-                newViewDate = this.truncateDate(newViewDate);
+                testDate = this.truncateDate(testDate);
 
-                // #5967 check if month can be navigated to by checking first day next month
-                var maxDate = this.options.maxDate;
                 if (this.options.showMinMaxRange && maxDate && maxDate < newViewDate) {
                     this.setNavigationState(newViewDate);
                     event.preventDefault();
