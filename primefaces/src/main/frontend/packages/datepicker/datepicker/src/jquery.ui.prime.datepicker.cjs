@@ -2565,6 +2565,7 @@ $.widget("prime.datePicker", {
             // #5967 check if month can be navigated to by checking first day next month
             var testDate = new Date(newViewDate.getTime()),
                 maxDate = this.options.maxDate;
+            // next (check last day of month)
             testDate = this.truncateDate(testDate);
             if (this.options.showMinMaxRange && maxDate && maxDate < testDate) {
                 this.setNavigationState(newViewDate);
