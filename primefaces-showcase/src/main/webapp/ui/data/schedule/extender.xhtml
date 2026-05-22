@@ -66,18 +66,14 @@
 
                         <ui:fragment
                                 rendered="#{not empty scheduleJava8View.extenderExample}">
-                            <pre id="extenderCode" name="extenderCode"
-                                 class="brush:js">#{scheduleJava8View.extenderCode}</pre>
-                            <script>SyntaxHighlighter.highlight(document.getElementById('extenderCode'))</script>
+                            <pre class="line-numbers"><code class="language-javascript">#{scheduleJava8View.extenderCode}</code></pre>
                         </ui:fragment>
 
                         <ui:fragment
                                 rendered="#{not empty scheduleJava8View.extenderExample and not empty scheduleJava8View.extenderExample.html}">
                             <h:outputText
                                     value="Additional CSS or JavaScript required for this example"/>
-                            <pre id="extenderHtml" name="html"
-                                 class="brush:html">#{scheduleJava8View.extenderExample.html}</pre>
-                            <script>SyntaxHighlighter.highlight(document.getElementById('extenderHtml'))</script>
+                            <pre class="line-numbers"><code class="language-xml">#{scheduleJava8View.extenderExample.html}</code></pre>
                         </ui:fragment>
 
                         <p:commandButton id="update" styleClass="extender-update"

@@ -143,6 +143,9 @@ App = {
     changeTheme: function(theme, dark) {
         PrimeFaces.changeTheme(theme);
 
+        // Keep the data-dark attribute in sync so Shiki CSS variables switch correctly
+        document.documentElement.setAttribute('data-dark', dark ? 'true' : 'false');
+
         if (dark)
             $('#homepage-intro').addClass('introduction-dark');
         else
