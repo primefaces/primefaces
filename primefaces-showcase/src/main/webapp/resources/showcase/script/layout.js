@@ -166,20 +166,49 @@ App = {
     restoreMenu: function() {
         var currentPath = window.location.pathname;
 
-        // Exact match: the link whose href matches the current page
-        this.menuLinks.filter('[href^="' + currentPath + '"]').addClass('router-link-active');
+        var currentPathNoExt = currentPath.replace(/\.[^/.]+$/, '');
 
-        // Parent match: a submenu-link is active when the current page
-        // lives under the same directory as its first-child URL
-        this.menuLinks.filter('.submenu-link').each(function() {
-            var href = $(this).attr('href');
-            if (href) {
-                var dir = href.substring(0, href.lastIndexOf('/') + 1);
-                if (currentPath.indexOf(dir) === 0) {
-                    $(this).addClass('router-link-active');
+        // Step 1 — leaf link: highlight any direct menu link whose href starts with
+        // the current path (the ^= handles ?jfwid=… query params JSF appends).
+        var activeLeaf = this.menuLinks.not('.submenu-link')
+            .filter('[href^="' + currentPath + '"]');
+        activeLeaf.addClass('router-link-active');
+
+        // Step 2 — submenu (group) link: only needed when no leaf link matched,
+        // i.e. the current page is a child inside a group (e.g. datatable/filter,
+        // colorPickerInline) that has no standalone entry in the menu.
+        // Pick the submenu-link with the longest matching prefix so that a
+        // specific dir like /datatable/ (31 chars) always wins over the generic
+        // section dir /data/ (16 chars), and the name-prefix heuristic handles
+        // flat groups like ColorPicker (colorPicker → colorPickerInline).
+        if (activeLeaf.length === 0) {
+            var bestLink = null;
+            var bestScore = 0;
+
+            this.menuLinks.filter('.submenu-link').each(function() {
+                var href = $(this).attr('href');
+                if (!href) return;
+                var hrefPath = href.split('?')[0];
+                var hrefNoExt = hrefPath.replace(/\.[^/.]+$/, '');
+                var hrefDir = hrefNoExt.substring(0, hrefNoExt.lastIndexOf('/') + 1);
+
+                var score = 0;
+                if (currentPath.indexOf(hrefDir) === 0) {
+                    score = Math.max(score, hrefDir.length);
                 }
+                if (currentPathNoExt.indexOf(hrefNoExt) === 0) {
+                    score = Math.max(score, hrefNoExt.length);
+                }
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestLink = this;
+                }
+            });
+
+            if (bestLink) {
+                $(bestLink).addClass('router-link-active');
             }
-        });
+        }
 
         var scrollPosition = sessionStorage.getItem('scroll_position');
         if (scrollPosition) {
