@@ -114,8 +114,8 @@ public class AppMenu {
         formMenuItems.add(new MenuItem("Chips", "/ui/input/chips"));
 
         List<MenuItem> colorPickerMenuItems = new ArrayList<>();
-        colorPickerMenuItems.add(new MenuItem("Popup", "/ui/input/colorPicker"));
-        colorPickerMenuItems.add(new MenuItem("Inline", "/ui/input/colorPickerInline"));
+        colorPickerMenuItems.add(new MenuItem("Popup", "/ui/input/colorpicker/colorPicker"));
+        colorPickerMenuItems.add(new MenuItem("Inline", "/ui/input/colorpicker/colorPickerInline"));
         formMenuItems.add(new MenuItem("ColorPicker", colorPickerMenuItems));
 
         //DatePicker Nested MenuItem
