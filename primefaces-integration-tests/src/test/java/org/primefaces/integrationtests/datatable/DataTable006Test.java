@@ -31,6 +31,8 @@ import org.primefaces.selenium.component.SelectBooleanButton;
 import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.datatable.Row;
 
+import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -107,6 +109,10 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1 // after submit
+        );
     }
 
     @Test
@@ -136,6 +142,12 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,5");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_2, // after pagination to page 2
+                PageLoad.PAGE_1, // after pagination back to page 1
+                PageLoad.PAGE_1 // after submit
+        );
 
         // Assert - row 0 and 2 on page 1 and row 1 on page 2 still selected
         assertEquals("true",
@@ -203,6 +215,11 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
         assertSelections(page.messages, "1,3");
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after submit
+                PageLoad.PAGE_1 // after submit
+        );
     }
 
     @Test
@@ -260,8 +277,8 @@ class DataTable006Test extends AbstractDataTableTest {
         dataTable.selectPage(2);
         page.submit.click();
 
-        // Assert - only 1 record unselected should leave first page selections only
-        assertSelections(page.messages, "2,3");
+        // Assert - with selectionPageOnly=false, all rows except unselected one should remain selected
+        assertSelections(page.messages, "2,3,4,5");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }
 
@@ -281,26 +298,46 @@ class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, true);
         assertSelections(page.messages,
-                "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,"
-                        + "2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3");
+                "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
-        // Act - unselect one row
+        // Act - unselect one row (row 2)
         dataTable.getCell(1, 0).getWebElement().click();
         page.submit.click();
 
-        // Assert - only 1 record unselected
+        // Assert - only 1 record unselected (row 2), all others remain selected (74 rows)
         assertSelectAllCheckbox(dataTable, false);
-        assertSelections(page.messages, "1,3");
+        assertSelections(page.messages,
+                "1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
 
-        // Act - reselect all record, unselect one and move to next page
+        // Act - reselect all, unselect one (row 1) and move to next page
         dataTable.toggleSelectAllCheckBox();
         dataTable.getCell(0, 0).getWebElement().click();
         dataTable.selectPage(2);
         page.submit.click();
 
-        // Assert - only 1 record unselected should leave first page selections only
-        assertSelections(page.messages, "2,3");
+        // Assert - with @all and !1 deselection marker, all 74 rows remain selected (all except row 1)
+        assertSelections(page.messages,
+                "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
+
+        // Assert - tracking: verify expected load calls have been made
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after toggleSelectPageOnly
+                PageLoad.ALL_DATA, // after 1st submit (select all)
+                PageLoad.PAGE_1, // after 1st submit
+                PageLoad.PAGE_1, // after 2nd submit
+                PageLoad.ALL_DATA, // after pagination to page 2 (select all is still active)
+                PageLoad.PAGE_2, // after pagination to page 2
+                PageLoad.ALL_DATA, // after 3rd submit (select all is still active)
+                PageLoad.PAGE_2 // after 3rd submit
+        );
     }
 
     @Test
@@ -338,6 +375,15 @@ class DataTable006Test extends AbstractDataTableTest {
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3,12");
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after 1st submit
+                PageLoad.PAGE_1, // after filter
+                PageLoad.PAGE_1, // after filter
+                PageLoad.PAGE_1, // after 2nd submit
+                PageLoad.PAGE_1, // after removing filter
+                PageLoad.PAGE_1 // after 3rd submit
+        );
     }
 
     @Test
@@ -366,6 +412,228 @@ class DataTable006Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration(), false);
     }
 
+    @Test
+    @Order(10)
+    @DisplayName("DataTable: selection - reselect deselected row with selectionPageOnly='false'")
+    void reselectDeselectedRow(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleSelectPageOnly.click();
+
+        // Act - select all
+        dataTable.toggleSelectAllCheckBox();
+        page.submit.click();
+
+        // Assert - all rows selected
+        assertSelectAllCheckbox(dataTable, true);
+        assertSelections(page.messages, "1,2,3,4,5");
+
+        // Act - deselect row 2
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - row 2 deselected
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages, "1,3,4,5");
+
+        // Act - reselect row 2 (the one we just deselected)
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - row 2 is reselected, all 5 rows should now be selected again
+        // Note: selectAll checkbox remains unchecked because we manually reselected rather than using toggle all
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages, "1,2,3,4,5");
+        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("DataTable: GitHub #8110 - Lazy: selections should be preserved when navigating between pages")
+    void lazySelectionPreservedAcrossPagination(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleLazyMode.click();
+
+        // Act - select rows on page 1
+        dataTable.getCell(0, 0).getWebElement().click();
+        dataTable.getCell(2, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - rows selected on page 1
+        assertSelections(page.messages, "1,3");
+
+        // Act - navigate to page 2 (without selecting anything)
+        dataTable.selectPage(2);
+
+        // Act - navigate back to page 1
+        dataTable.selectPage(1);
+
+        // Assert - selections on page 1 should still be preserved
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+
+        // Act - submit to verify selections are still intact
+        page.submit.click();
+
+        // Assert - selections should still be 1,3
+        assertSelections(page.messages, "1,3");
+        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after 1st submit
+                PageLoad.PAGE_2, // after pagination to page 2
+                PageLoad.PAGE_1, // after pagination back to page 1
+                PageLoad.PAGE_1 // after 2nd submit
+        );
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("DataTable: GitHub #8110 - Lazy: selections should be preserved when navigating between pages with selectionPageOnly='false'")
+    void lazySelectionPreservedAcrossPaginationAllPages(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleLazyMode.click();
+        page.toggleSelectPageOnly.click();
+
+        // Act - select rows on page 1
+        dataTable.getCell(0, 0).getWebElement().click();
+        dataTable.getCell(2, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - rows selected on page 1
+        assertSelections(page.messages, "1,3");
+
+        // Act - navigate to page 2 (without selecting anything)
+        dataTable.selectPage(2);
+
+        // Act - navigate back to page 1
+        dataTable.selectPage(1);
+
+        // Assert - selections on page 1 should still be preserved
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("false", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+
+        // Act - submit to verify selections are still intact
+        page.submit.click();
+
+        // Assert - selections should still be 1,3
+        assertSelections(page.messages, "1,3");
+        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after toggleSelectPageOnly
+                PageLoad.PAGE_1, // after 1st submit
+                PageLoad.PAGE_2, // after pagination to page 2
+                PageLoad.PAGE_1, // after pagination back to page 1
+                PageLoad.PAGE_1 // after 2nd submit
+        );
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("DataTable: GitHub #11556 - checkbox unselects items from other pages with selectionPageOnly='false'")
+    void deselectOneRowShouldKeepOtherPagesSelected(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleSelectPageOnly.click();
+
+        // Act - select all rows on all pages
+        dataTable.toggleSelectAllCheckBox();
+        page.submit.click();
+
+        // Assert - all rows selected
+        assertSelectAllCheckbox(dataTable, true);
+        assertSelections(page.messages, "1,2,3,4,5");
+
+        // Act - navigate to page 2 to verify all selected
+        dataTable.selectPage(2);
+        page.submit.click();
+
+        // Assert - all rows on page 2 are selected
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+
+        // Act - go back to page 1 and unselect one item (row 2)
+        dataTable.selectPage(1);
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - only row 2 should be unselected on page 1
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages, "1,3,4,5");
+
+        // Act - navigate to page 2
+        dataTable.selectPage(2);
+        page.submit.click();
+
+        // Assert - items on page 2 should still be selected
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertSelections(page.messages, "1,3,4,5");
+        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("DataTable: GitHub #13640 - Lazy: selecting all then deselecting a row should not deselect all unseen rows with selectionPageOnly='false'")
+    void lazyDeselectOneRowShouldKeepOtherPagesSelected(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleLazyMode.click();
+        page.toggleSelectPageOnly.click();
+
+        // Act - select all rows on all pages
+        dataTable.toggleSelectAllCheckBox();
+        page.submit.click();
+
+        // Assert - all 75 rows selected
+        assertSelectAllCheckbox(dataTable, true);
+        assertSelections(page.messages,
+                "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
+
+        // Act - deselect one row (row 2 on page 1)
+        dataTable.getCell(1, 0).getWebElement().click();
+        page.submit.click();
+
+        // Assert - only row 2 should be deselected, all other 74 rows remain selected
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages,
+                "1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
+
+        // Act - navigate to page 2
+        dataTable.selectPage(2);
+        page.submit.click();
+
+        // Assert - all rows on page 2 should still be selected
+        assertEquals("true", dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertEquals("true", dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"));
+        assertSelections(page.messages,
+                "1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,"
+                        + "31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,"
+                        + "61,62,63,64,65,66,67,68,69,70,71,72,73,74,75");
+        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+
+        // Assert - tracking: verify expected load calls have been made
+        assertLoadCalls(page,
+                PageLoad.PAGE_1, // after toggleLazyMode
+                PageLoad.PAGE_1, // after toggleSelectPageOnly
+                PageLoad.ALL_DATA, // after 1st submit (select all)
+                PageLoad.PAGE_1, // after 1st submit
+                PageLoad.PAGE_1, // after 2nd submit
+                PageLoad.PAGE_2, // after pagination to page 2
+                PageLoad.PAGE_2 // after 3rd submit
+        );
+    }
+
     private void assertConfiguration(JSONObject cfg, boolean selectionPageOnly) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
@@ -383,6 +651,33 @@ class DataTable006Test extends AbstractDataTableTest {
         Msg message = messages.getMessage(0);
         assertTrue(message.getSummary().contains("Selected ProgrammingLanguage(s)"));
         assertEquals(selections, message.getDetail());
+    }
+
+    private void assertLoadCalls(Page page, PageLoad... expectedLoads) {
+        assertEquals(expectedLoads.length, page.getLoadCallCount(),
+                "Expected " + expectedLoads.length + " load calls but got " + page.getLoadCallCount() + ":\n" + page.getFullHistory());
+
+        List<String> actualCalls = page.getLoadCalls();
+
+        // Build a full list for compare and set of unique elements
+        java.util.List<String> expectedList = new java.util.ArrayList<>(expectedLoads.length);
+        java.util.Set<String> uniqueExpected = new java.util.LinkedHashSet<>();
+        for (PageLoad expectedLoad : expectedLoads) {
+            String loadStr = expectedLoad.toString();
+            expectedList.add(loadStr);
+            uniqueExpected.add(loadStr);
+        }
+
+        // Assert each unique expected load appears in actual calls
+        for (String uniqueLoad : uniqueExpected) {
+            assertTrue(actualCalls.contains(uniqueLoad),
+                    "Expected load call '" + uniqueLoad + "' not found in actual calls:\n" + page.getFullHistory());
+        }
+
+        // Assert the full history matches exactly (including order and duplicates)
+        String expectedHistory = String.join(" | ", expectedList);
+        assertEquals(expectedHistory, page.getFullHistory(),
+                "Compare of full history of expected load calls failed");
     }
 
     public static class Page extends AbstractPrimePage {
@@ -405,9 +700,65 @@ class DataTable006Test extends AbstractDataTableTest {
         @FindBy(id = "form:toggleLazyMode")
         CommandButton toggleLazyMode;
 
+        @FindBy(id = "form:loadCallCount")
+        WebElement loadCallCountInput;
+
+        @FindBy(id = "form:fullHistory")
+        WebElement fullHistoryInput;
+
         @Override
         public String getLocation() {
             return "datatable/dataTable006.xhtml";
+        }
+
+        public int getLoadCallCount() {
+            return Integer.parseInt(loadCallCountInput.getAttribute("value"));
+        }
+
+        public String getFullHistory() {
+            return fullHistoryInput.getAttribute("value");
+        }
+
+        public List<String> getLoadCalls() {
+            String history = fullHistoryInput.getAttribute("value");
+            if (history == null || history.trim().isEmpty()) {
+                return new java.util.ArrayList<>();
+            }
+            return java.util.Arrays.asList(history.split(" \\| "));
+        }
+    }
+
+    /**
+     * Represents a lazy data load operation with first offset and page size.
+     * Provides predefined constants for common page loads to improve test readability.
+     */
+    public static class PageLoad {
+
+        // Predefined page loads for common test scenarios
+        public static final PageLoad PAGE_1 = new PageLoad(0, 3);
+        public static final PageLoad PAGE_2 = new PageLoad(3, 3);
+        public static final PageLoad PAGE_3 = new PageLoad(6, 3);
+        public static final PageLoad ALL_DATA = new PageLoad(0, 75);
+
+        private final int first;
+        private final int pageSize;
+
+        public PageLoad(int first, int pageSize) {
+            this.first = first;
+            this.pageSize = pageSize;
+        }
+
+        public int getFirst() {
+            return first;
+        }
+
+        public int getPageSize() {
+            return pageSize;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("load(first=%d, size=%d)", first, pageSize);
         }
     }
 }
