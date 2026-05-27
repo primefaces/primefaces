@@ -83,6 +83,9 @@ ImageCropper has the ability to crop external images as well.
 <p:imageCropper value="#{cropper.croppedImage}" image=" http://primefaces.prime.com.tr/en/images/schema.png">
 </p:imageCropper>
 ```
+
+> :warning **When the `image` attribute resolves to an `http`/`https` URL, PrimeFaces opens a server-side connection to fetch the image for cropping. If this value can be influenced by end-user input (e.g. `image="#{bean.userProvidedUrl}"`), the application is responsible for validating and allowlisting the URL before it reaches the component. Binding an unvalidated user-supplied URL creates a Server-Side Request Forgery (SSRF) risk, as the server will fetch whichever URL is provided — including internal network addresses.**
+
 ## Context Relative Path
 For local images, ImageCropper always requires the image path to be context relative. So to
 accomplish this simply just add slash ("/path/to/image.png") and imagecropper will recognize it at

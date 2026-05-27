@@ -279,8 +279,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
                 imagePath = (String) imageObject;
                 originalFileName = imagePath;
 
-                boolean isExternal = imagePath.startsWith("http");
-
+                boolean isExternal = imagePath.startsWith("http://") || imagePath.startsWith("https://");
                 if (isExternal) {
                     URL url;
                     try {
@@ -290,8 +289,14 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
                         throw new FacesException(e);
                     }
                     URLConnection urlConnection = url.openConnection();
-                    inputStream = urlConnection.getInputStream();
+                    urlConnection.setConnectTimeout(5_000);
+                    urlConnection.setReadTimeout(10_000);
+                    urlConnection.connect();
                     contentType = urlConnection.getContentType();
+                    if (contentType == null || !contentType.startsWith("image/")) {
+                        throw new FacesException("ImageCropper: external URL did not return an image content-type: " + contentType);
+                    }
+                    inputStream = urlConnection.getInputStream();
                 }
                 else {
                     ExternalContext externalContext = context.getExternalContext();
