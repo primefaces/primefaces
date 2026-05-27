@@ -316,11 +316,22 @@
                                 </pomchecker>
                                 <mavenCentral>
                                     <sonatype>
-                                        <active>ALWAYS</active>
+                                        <active>RELEASE</active>
                                         <url>https://central.sonatype.com/api/v1/publisher</url>
                                         <stagingRepositories>target/staging-deploy</stagingRepositories>
                                     </sonatype>
                                 </mavenCentral>
+                                <nexus2>
+                                    <snapshot-deploy>
+                                        <active>SNAPSHOT</active>
+                                        <snapshotUrl>https://central.sonatype.com/repository/maven-snapshots/</snapshotUrl>
+                                        <applyMavenCentralRules>true</applyMavenCentralRules>
+                                        <snapshotSupported>true</snapshotSupported>
+                                        <closeRepository>true</closeRepository>
+                                        <releaseRepository>true</releaseRepository>
+                                        <stagingRepositories>target/staging-deploy</stagingRepositories>
+                                    </snapshot-deploy>
+                                </nexus2>
                             </maven>
                         </deploy>
                     </jreleaser>
