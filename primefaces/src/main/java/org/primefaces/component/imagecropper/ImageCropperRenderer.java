@@ -40,12 +40,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Map;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
@@ -273,13 +276,24 @@ public class ImageCropperRenderer extends CoreRenderer {
                 imagePath = (String) imageObject;
                 originalFileName = imagePath;
 
-                boolean isExternal = imagePath.startsWith("http");
-
+                boolean isExternal = imagePath.startsWith("http://") || imagePath.startsWith("https://");
                 if (isExternal) {
-                    URL url = new URL(imagePath);
+                    URL url;
+                    try {
+                        url = new URI(imagePath).toURL();
+                    }
+                    catch (URISyntaxException e) {
+                        throw new FacesException(e);
+                    }
                     URLConnection urlConnection = url.openConnection();
-                    inputStream = urlConnection.getInputStream();
+                    urlConnection.setConnectTimeout(5_000);
+                    urlConnection.setReadTimeout(10_000);
+                    urlConnection.connect();
                     contentType = urlConnection.getContentType();
+                    if (contentType == null || !contentType.startsWith("image/")) {
+                        throw new FacesException("ImageCropper: external URL did not return an image content-type: " + contentType);
+                    }
+                    inputStream = urlConnection.getInputStream();
                 }
                 else {
                     ExternalContext externalContext = context.getExternalContext();
