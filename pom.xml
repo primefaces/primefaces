@@ -117,10 +117,9 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.12.0</version>
                         <configuration>
-                        <sourcepath>${basedir}/src/main/java;</sourcepath>
-                        <doclint>none</doclint>
-                        <excludePackageNames>org.primefaces.shaded.*</excludePackageNames>
-                    </configuration>
+                            <doclint>none</doclint>
+                            <excludePackageNames>org.primefaces.shaded.*</excludePackageNames>
+                        </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
