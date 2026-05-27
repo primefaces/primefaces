@@ -28,6 +28,7 @@ import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
+import org.primefaces.model.map.MarkerLabel;
 import org.primefaces.model.map.Polygon;
 import org.primefaces.model.map.Polyline;
 import org.primefaces.model.map.Rectangle;
@@ -240,8 +241,34 @@ public class GMapRenderer extends CoreRenderer<GMap> {
         if (marker.getAnimation() != null) {
             writer.write(",animation: google.maps.Animation." + marker.getAnimation().name());
         }
+        if (marker.getLabel() != null && marker.getLabel().getText() != null) {
+            writer.write(",label:");
+            encodeMarkerLabel(context, marker.getLabel());
+        }
 
         writer.write("})");
+    }
+
+    protected void encodeMarkerLabel(FacesContext context, MarkerLabel label) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.write("{text:\"" + EscapeUtils.forJavaScript(label.getText()) + "\"");
+        if (label.getClassName() != null) {
+            writer.write(",className:\"" + EscapeUtils.forJavaScript(label.getClassName()) + "\"");
+        }
+        if (label.getColor() != null) {
+            writer.write(",color:\"" + EscapeUtils.forJavaScript(label.getColor()) + "\"");
+        }
+        if (label.getFontFamily() != null) {
+            writer.write(",fontFamily:\"" + EscapeUtils.forJavaScript(label.getFontFamily()) + "\"");
+        }
+        if (label.getFontSize() != null) {
+            writer.write(",fontSize:\"" + EscapeUtils.forJavaScript(label.getFontSize()) + "\"");
+        }
+        if (label.getFontWeight() != null) {
+            writer.write(",fontWeight:\"" + EscapeUtils.forJavaScript(label.getFontWeight()) + "\"");
+        }
+        writer.write("}");
     }
 
     protected void encodeIcon(FacesContext context, Object icon) throws IOException {
