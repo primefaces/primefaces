@@ -59,12 +59,6 @@ However, there are some settings and patterns that can improve the performance.
 ### MyFaces
 
 ```xml
-<!-- Cache EL expressions; See: https://myfaces.apache.org/#/coreConceptsCacheElExpressions -->
-<context-param>
-    <param-name>org.apache.myfaces.CACHE_EL_EXPRESSIONS</param-name>
-    <param-value>alwaysRecompile</param-value>
-</context-param>
-
 <!-- reduce saved view states -->
 <context-param>
     <param-name>org.apache.myfaces.NUMBER_OF_VIEWS_IN_SESSION</param-name>
@@ -73,6 +67,12 @@ However, there are some settings and patterns that can improve the performance.
 <context-param>
     <param-name>org.apache.myfaces.NUMBER_OF_SEQUENTIAL_VIEWS_IN_SESSION</param-name>
     <param-value>3</param-value>
+</context-param>
+
+<!-- Cache EL expressions; See: https://myfaces.apache.org/#/coreConceptsCacheElExpressions -->
+<context-param>
+    <param-name>org.apache.myfaces.CACHE_EL_EXPRESSIONS</param-name>
+    <param-value>alwaysRecompile</param-value>
 </context-param>
 
 <!-- Disable ViewState compression (better performance but more memory usage) -->
@@ -92,37 +92,14 @@ However, there are some settings and patterns that can improve the performance.
     <param-value>true</param-value>
 </context-param>
 
-<context-param>
-    <param-name>org.apache.myfaces.PRETTY_HTML</param-name>
-    <param-value>false</param-value>
-</context-param>
-
-<!-- Uses Lambda instead of reflection, might fail for some cases / environments -->
+<!-- Uses Lambda instead of reflection, might fail for some cases / environments; NOTE its called org.apache.myfaces.USE_LAMBDAS_OVER_REFLECTION in 5.0 -->
 <context-param>
     <param-name>org.apache.myfaces.USE_LAMBDA_METAFACTORY</param-name>
     <param-value>true</param-value>
 </context-param>
 
-<!-- Increase startup performance and EL resolution by disable deprecated features -->
-<context-param>
-    <param-name>org.apache.myfaces.SUPPORT_JSP_AND_FACES_EL</param-name>
-    <param-value>false</param-value>
-</context-param>
-
-<!-- Increase cache -->
-<context-param>
-    <param-name>org.apache.myfaces.VIEW_UNIQUE_IDS_CACHE_ENABLED</param-name>
-    <param-value>true</param-value>
-</context-param>
-<context-param>
-    <param-name>org.apache.myfaces.COMPONENT_UNIQUE_IDS_CACHE_SIZE</param-name>
-    <param-value>500</param-value>
-</context-param>
-```
-
 You can also try ViewPooling: https://myfaces.apache.org/#/coreConceptsViewPooling
 and Whitespace compression: https://myfaces.apache.org/#/coreConceptsWhitespaceCompression
-
 
 ### Other
 
