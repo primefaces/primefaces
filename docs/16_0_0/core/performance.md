@@ -99,7 +99,7 @@ However, there are some settings and patterns that can improve the performance.
 </context-param>
 ```
 
-You can also try ViewPooling: https://myfaces.apache.org/#/coreConceptsViewPooling
+You can also try ViewPooling: https://myfaces.apache.org/#/coreConceptsViewPooling  
 and Whitespace compression: https://myfaces.apache.org/#/coreConceptsWhitespaceCompression
 
 ### Other
