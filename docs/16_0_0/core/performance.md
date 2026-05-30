@@ -69,16 +69,16 @@ However, there are some settings and patterns that can improve the performance.
     <param-value>3</param-value>
 </context-param>
 
-<!-- Cache EL expressions; See: https://myfaces.apache.org/#/coreConceptsCacheElExpressions -->
-<context-param>
-    <param-name>org.apache.myfaces.CACHE_EL_EXPRESSIONS</param-name>
-    <param-value>alwaysRecompile</param-value>
-</context-param>
-
 <!-- Disable ViewState compression (better performance but more memory usage) -->
 <context-param>
     <param-name>org.apache.myfaces.COMPRESS_STATE_IN_SESSION</param-name>
     <param-value>false</param-value>
+</context-param>
+
+<!-- Cache EL expressions; See: https://myfaces.apache.org/#/coreConceptsCacheElExpressions -->
+<context-param>
+    <param-name>org.apache.myfaces.CACHE_EL_EXPRESSIONS</param-name>
+    <param-value>alwaysRecompile</param-value>
 </context-param>
 
 <context-param>
