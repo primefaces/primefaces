@@ -97,6 +97,7 @@ However, there are some settings and patterns that can improve the performance.
     <param-name>org.apache.myfaces.USE_LAMBDA_METAFACTORY</param-name>
     <param-value>true</param-value>
 </context-param>
+```
 
 You can also try ViewPooling: https://myfaces.apache.org/#/coreConceptsViewPooling
 and Whitespace compression: https://myfaces.apache.org/#/coreConceptsWhitespaceCompression
