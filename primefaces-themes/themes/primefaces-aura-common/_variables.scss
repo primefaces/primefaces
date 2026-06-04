@@ -849,5 +849,7 @@ $galleriaThumbnailNavigatorHeight:2rem !default;
     --surface-hover: #{$slate-100};
     --maskbg: #{$maskBg};
     --focus-ring: #{$focusShadow};
+	--p-primary-color: #{$primaryColor};
+	--p-primary-contrast-color: #{$primaryTextColor};
     color-scheme: light;
 }
