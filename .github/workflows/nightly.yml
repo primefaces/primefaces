@@ -20,31 +20,31 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Java 11 with Faces 4.0
-          - java: 11
+          # Java 17 with Faces 4.0
+          - java: 17
             profile: 'firefox,theme-saga,myfaces-4.0'
-          - java: 11
+          - java: 17
             profile: 'firefox,csp,theme-saga,myfaces-4.0'
-          - java: 11
+          - java: 17
             profile: 'chrome,theme-saga,myfaces-4.0'
-          - java: 11
+          - java: 17
             profile: 'chrome,csp,theme-nova,myfaces-4.0'
-          - java: 11
+          - java: 17
             profile: 'chrome,csp,theme-nova,mojarra-4.0'
-          - java: 11
+          - java: 17
             profile: 'chrome,client-state-saving,theme-nova,mojarra-4.0'
-          # Java 17 with Faces 4.1
-          - java: 17
+          # Java 21 with Faces 4.1
+          - java: 21
             profile: 'firefox,theme-saga,myfaces-4.1'
-          - java: 17
+          - java: 21
             profile: 'firefox,csp,theme-saga,myfaces-4.1'
-          - java: 17
+          - java: 21
             profile: 'chrome,theme-saga,myfaces-4.1'
-          - java: 17
+          - java: 21
             profile: 'chrome,csp,theme-nova,myfaces-4.1'
-          - java: 17
+          - java: 21
             profile: 'chrome,csp,theme-nova,mojarra-4.1'
-          - java: 17
+          - java: 21
             profile: 'chrome,client-state-saving,theme-nova,mojarra-4.1'
 
     steps:

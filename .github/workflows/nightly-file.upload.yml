@@ -16,21 +16,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - java: 11
+          - java: 17
             profile: 'headless,firefox,myfaces-4.0'
-          - java: 11
+          - java: 17
             profile: 'headless,firefox,mojarra-4.0'
-          - java: 11
+          - java: 17
             profile: 'headless,chrome,myfaces-4.0'
-          - java: 11
+          - java: 17
             profile: 'headless,chrome,mojarra-4.0'
-          - java: 17
+          - java: 25
             profile: 'headless,firefox,myfaces-4.1'
-          - java: 17
+          - java: 25
             profile: 'headless,firefox,mojarra-4.1'
-          - java: 17
+          - java: 25
             profile: 'headless,chrome,myfaces-4.1'
-          - java: 17
+          - java: 25
             profile: 'headless,chrome,mojarra-4.1'
 
     steps:
