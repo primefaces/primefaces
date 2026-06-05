@@ -25,9 +25,9 @@ package org.primefaces.event;
 
 import org.primefaces.component.tabview.Tab;
 
-import jakarta.faces.component.UIComponent;
-
 import java.io.Serial;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 
 public class TabChangeEvent<T> extends TabEvent<T> {

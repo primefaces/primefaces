@@ -29,9 +29,9 @@ import org.primefaces.context.PrimeFacesContext;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 
-import jakarta.faces.application.ProjectStage;
-
 import java.io.Serial;
+
+import jakarta.faces.application.ProjectStage;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.PhaseEvent;

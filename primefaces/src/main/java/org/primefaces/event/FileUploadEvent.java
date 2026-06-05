@@ -26,9 +26,9 @@ package org.primefaces.event;
 
 import org.primefaces.model.file.UploadedFile;
 
-import jakarta.faces.component.UIComponent;
-
 import java.io.Serial;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.FacesListener;
 
