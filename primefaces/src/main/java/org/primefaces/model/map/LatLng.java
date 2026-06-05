@@ -23,12 +23,13 @@
  */
 package org.primefaces.model.map;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class LatLng implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private double lat;
 

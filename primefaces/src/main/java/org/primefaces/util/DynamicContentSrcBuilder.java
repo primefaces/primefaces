@@ -138,8 +138,7 @@ public class DynamicContentSrcBuilder {
         if (component != null) {
             for (int i = 0; i < component.getChildCount(); i++) {
                 UIComponent child = component.getChildren().get(i);
-                if (child instanceof UIParameter) {
-                    UIParameter param = (UIParameter) child;
+                if (child instanceof UIParameter param) {
                     if (!param.isDisable()) {
                         Object paramValue = param.getValue();
 

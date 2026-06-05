@@ -23,12 +23,13 @@
  */
 package org.primefaces.model.diagram.endpoint;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class EndPointList extends ArrayList<EndPoint> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     public boolean add(EndPoint e) {

@@ -31,6 +31,7 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -47,7 +48,7 @@ import lombok.Data;
 @Data
 public class Schedule001 implements Serializable {
 
-    private static final long serialVersionUID = 2014707183985306105L;
+    @Serial private static final long serialVersionUID = 2014707183985306105L;
 
     private ScheduleModel eventModel;
     private String locale = "en";

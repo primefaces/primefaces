@@ -190,11 +190,11 @@ public class PrimeConfiguration {
 
         if (param == null && externalContext.getApplicationMap().containsKey(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME)) {
             Object applicationMapValue = externalContext.getApplicationMap().get(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
-            if (applicationMapValue instanceof String) {
-                param = (String) applicationMapValue;
+            if (applicationMapValue instanceof String string) {
+                param = string;
             }
-            else if (applicationMapValue instanceof Boolean) {
-                return (Boolean) applicationMapValue;
+            else if (applicationMapValue instanceof Boolean boolean1) {
+                return boolean1;
             }
         }
 

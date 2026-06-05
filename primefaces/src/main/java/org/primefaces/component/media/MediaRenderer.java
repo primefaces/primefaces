@@ -87,8 +87,7 @@ public class MediaRenderer extends CoreRenderer<Media> {
 
         if (component.getChildCount() > 0) {
             for (UIComponent child : component.getChildren()) {
-                if (child instanceof UIParameter) {
-                    UIParameter param = (UIParameter) child;
+                if (child instanceof UIParameter param) {
 
                     encodeParam(writer, param.getName(), param.getValue(), false);
                 }
@@ -124,10 +123,10 @@ public class MediaRenderer extends CoreRenderer<Media> {
         Object value = media.getValue();
 
         // resolve by content-type
-        if (value instanceof StreamedContent) {
+        if (value instanceof StreamedContent content) {
             Map<String, MediaPlayer> players = MediaPlayerFactory.getPlayers();
             for (MediaPlayer mp : players.values()) {
-                if (Objects.equals(mp.getType(), ((StreamedContent) value).getContentType())) {
+                if (Objects.equals(mp.getType(), content.getContentType())) {
                     return mp;
                 }
             }
@@ -135,11 +134,11 @@ public class MediaRenderer extends CoreRenderer<Media> {
 
         // resolve by filename
         String filename = null;
-        if (value instanceof String) {
-            filename = (String) value;
+        if (value instanceof String string) {
+            filename = string;
         }
-        else if (value instanceof StreamedContent) {
-            filename = ((StreamedContent) value).getName();
+        else if (value instanceof StreamedContent content1) {
+            filename = content1.getName();
         }
 
         if (LangUtils.isNotBlank(filename)) {

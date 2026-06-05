@@ -26,11 +26,13 @@ package org.primefaces.event;
 import org.primefaces.component.tabview.Tab;
 
 import jakarta.faces.component.UIComponent;
+
+import java.io.Serial;
 import jakarta.faces.component.behavior.Behavior;
 
 public class TabChangeEvent<T> extends TabEvent<T> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     public TabChangeEvent(UIComponent component, Behavior behavior, Tab tab, T data, String type, int index) {
         super(component, behavior, tab, data, type, index);

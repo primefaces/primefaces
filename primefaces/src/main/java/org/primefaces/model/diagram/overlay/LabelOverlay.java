@@ -25,11 +25,12 @@ package org.primefaces.model.diagram.overlay;
 
 import org.primefaces.util.EscapeUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class LabelOverlay implements Overlay, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String label;
 

@@ -23,6 +23,7 @@
  */
 package org.primefaces.util;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Locale;
@@ -48,7 +49,7 @@ public class CurrencyValidator extends BigDecimalValidator {
     public static final String CURRENCY_SYMBOL_STR = Character.toString(CURRENCY_SYMBOL);
     private static final Pattern SPACE_PATTERN = Pattern.compile(Constants.SPACE);
 
-    private static final long serialVersionUID = -4201640771171486514L;
+    @Serial private static final long serialVersionUID = -4201640771171486514L;
 
     private static final CurrencyValidator VALIDATOR = new CurrencyValidator();
 

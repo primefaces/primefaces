@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ import jakarta.faces.component.EditableValueHolder;
 @SuppressWarnings({"SerializableHasSerializationMethods", "NonSerializableFieldInSerializableClass"})
 public class SavedState implements Serializable {
 
-    private static final long serialVersionUID = 4325654657465654768L;
+    @Serial private static final long serialVersionUID = 4325654657465654768L;
 
     private Object submittedValue;
     private boolean submitted;

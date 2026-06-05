@@ -28,6 +28,7 @@ import org.primefaces.model.TreeNode;
 import org.primefaces.showcase.domain.Document;
 
 import java.io.Serializable;
+import java.util.concurrent.ThreadLocalRandom;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -44,10 +45,10 @@ public class PaginatorView implements Serializable {
         root = new DefaultTreeNode();
 
         for (int i = 0; i < 50; i++) {
-            TreeNode node = new DefaultTreeNode(new Document("Node " + i, String.valueOf((int) (Math.random() * 1000)), "Document"), root);
+            TreeNode node = new DefaultTreeNode(new Document("Node " + i, String.valueOf((int) (ThreadLocalRandom.current().nextDouble() * 1000)), "Document"), root);
 
             for (int j = 0; j < 5; j++) {
-                new DefaultTreeNode(new Document("Node " + i + "." + j, String.valueOf((int) (Math.random() * 1000)), "Document"), node);
+                new DefaultTreeNode(new Document("Node " + i + "." + j, String.valueOf((int) (ThreadLocalRandom.current().nextDouble() * 1000)), "Document"), node);
             }
         }
     }

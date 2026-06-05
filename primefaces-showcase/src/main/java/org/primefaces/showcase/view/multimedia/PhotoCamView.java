@@ -28,6 +28,7 @@ import org.primefaces.event.CaptureEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.imageio.stream.FileImageOutputStream;
 
@@ -44,7 +45,7 @@ public class PhotoCamView implements Serializable {
     private String filename;
 
     private String getRandomImageName() {
-        int i = (int) (Math.random() * 10000000);
+        int i = (int) (ThreadLocalRandom.current().nextDouble() * 10000000);
 
         return String.valueOf(i);
     }

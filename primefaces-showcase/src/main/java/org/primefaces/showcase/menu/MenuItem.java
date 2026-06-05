@@ -23,13 +23,14 @@
  */
 package org.primefaces.showcase.menu;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 public class MenuItem implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private final String label;
     private String url;
     private List<MenuItem> menuItems;

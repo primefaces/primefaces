@@ -26,6 +26,7 @@ package org.primefaces.event.map;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.GeocodeResult;
 
+import java.io.Serial;
 import java.util.List;
 
 import jakarta.faces.component.UIComponent;
@@ -33,7 +34,7 @@ import jakarta.faces.component.behavior.Behavior;
 
 public class GeocodeEvent extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private final String query;
     private final List<GeocodeResult> results;

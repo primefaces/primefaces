@@ -23,6 +23,7 @@
  */
 package org.primefaces.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +48,7 @@ import jakarta.faces.model.DataModelListener;
  */
 public abstract class LazyDataModel<T> extends DataModel<T> implements SelectableDataModel<T>, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     protected Converter<T> rowKeyConverter;
     private int rowCount;

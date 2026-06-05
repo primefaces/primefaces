@@ -105,8 +105,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             }
         }
 
-        if (input instanceof Spinner) {
-            Spinner spinner = (Spinner) input;
+        if (input instanceof Spinner spinner) {
 
             if (annotationType.equals(Max.class) && spinner.getMax() == Spinner.MAX_VALUE) {
                 Max max = (Max) constraint;
@@ -136,8 +135,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             }
         }
 
-        if (input instanceof InputNumber) {
-            InputNumber inputNumber = (InputNumber) input;
+        if (input instanceof InputNumber inputNumber) {
 
             if (LangUtils.isBlank(inputNumber.getMaxValue())) {
                 if (annotationType.equals(Max.class)) {
@@ -179,8 +177,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             }
         }
 
-        if (input instanceof UICalendar) {
-            UICalendar uicalendar = (UICalendar) input;
+        if (input instanceof UICalendar uicalendar) {
             boolean hasTime = uicalendar.hasTime();
             Temporal now = CalendarUtils.now(uicalendar);
 

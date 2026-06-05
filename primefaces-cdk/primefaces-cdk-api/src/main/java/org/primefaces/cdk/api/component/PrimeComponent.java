@@ -47,7 +47,7 @@ public interface PrimeComponent {
         if (getChildCount() > 0) {
             for (int i = 0; i < getChildCount(); i++) {
                 UIComponent child = getChildren().get(i);
-                if (child instanceof PrimeFacet && ((PrimeFacet) child).getName().equals(facetKey.getName())) {
+                if (child instanceof PrimeFacet primeFacet && primeFacet.getName().equals(facetKey.getName())) {
                     return child;
                 }
             }

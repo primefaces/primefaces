@@ -23,11 +23,14 @@
  */
 package org.primefaces.csp;
 
+import java.io.Serial;
+
+
 import jakarta.faces.FacesException;
 
 public class CspException extends FacesException {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     public CspException() {
         // NOOP

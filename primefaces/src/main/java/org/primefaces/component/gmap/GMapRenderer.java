@@ -276,8 +276,8 @@ public class GMapRenderer extends CoreRenderer<GMap> {
         if (icon instanceof String) {
             writer.write("'" + icon + "'");
         }
-        else if (icon instanceof Symbol) {
-            encodeIcon(context, (Symbol) icon);
+        else if (icon instanceof Symbol symbol) {
+            encodeIcon(context, symbol);
         }
         else {
             throw new FacesException("GMap marker icon must be String or Symbol");

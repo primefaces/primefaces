@@ -176,11 +176,11 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                     encodeJSONValue(paramName, null);
                 }
                 else {
-                    if (paramValue instanceof JSONObject) {
-                        encodeJSONObject(paramName, (JSONObject) paramValue);
+                    if (paramValue instanceof JSONObject object) {
+                        encodeJSONObject(paramName, object);
                     }
-                    else if (paramValue instanceof JSONArray) {
-                        encodeJSONArray(paramName, (JSONArray) paramValue);
+                    else if (paramValue instanceof JSONArray array) {
+                        encodeJSONArray(paramName, array);
                     }
                     else if (BeanUtils.isBean(paramValue)) {
                         encodeJSONObject(paramName, new JSONObject(paramValue));

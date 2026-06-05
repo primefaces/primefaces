@@ -238,8 +238,8 @@ public class PrimeApplicationContext {
 
     private void resolveFileUploadResumeUrl(FacesContext facesContext) {
         Object request = facesContext.getExternalContext().getRequest();
-        if (request instanceof HttpServletRequest) {
-            ServletContext servletContext = ((HttpServletRequest) request).getServletContext();
+        if (request instanceof HttpServletRequest servletRequest) {
+            ServletContext servletContext = servletRequest.getServletContext();
             if (servletContext == null) {
                 return;
             }

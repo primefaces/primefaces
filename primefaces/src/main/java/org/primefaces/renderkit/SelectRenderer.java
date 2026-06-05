@@ -71,8 +71,7 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
 
         for (int i = 0; i < component.getChildCount(); i++) {
             UIComponent child = component.getChildren().get(i);
-            if (child instanceof UISelectItem) {
-                UISelectItem uiSelectItem = (UISelectItem) child;
+            if (child instanceof UISelectItem uiSelectItem) {
                 Object selectItemValue = uiSelectItem.getValue();
 
                 if (selectItemValue == null) {
@@ -83,20 +82,20 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
                 }
                 addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
             }
-            else if (child instanceof UISelectItems) {
-                UISelectItems uiSelectItems = ((UISelectItems) child);
+            else if (child instanceof UISelectItems items) {
+                UISelectItems uiSelectItems = items;
                 Object value = uiSelectItems.getValue();
 
                 if (value != null) {
-                    if (value instanceof SelectItem) {
-                        addSelectItem(component, selectItems, (SelectItem) value, hideNoSelectOption);
+                    if (value instanceof SelectItem item1) {
+                        addSelectItem(component, selectItems, item1, hideNoSelectOption);
                     }
                     else if (value.getClass().isArray()) {
                         for (int j = 0; j < Array.getLength(value); j++) {
                             Object item = Array.get(value, j);
 
-                            if (item instanceof SelectItem) {
-                                selectItem = updateSelectItem(context, uiSelectItems, (SelectItem) item);
+                            if (item instanceof SelectItem selectItem1) {
+                                selectItem = updateSelectItem(context, uiSelectItems, selectItem1);
                             }
                             else {
                                 selectItem = createSelectItem(context, uiSelectItems, item, null);
@@ -104,21 +103,19 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
                             addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
-                    else if (value instanceof Map) {
-                        Map<?, ?> map = (Map<?, ?>) value;
+                    else if (value instanceof Map<?, ?> map) {
 
                         for (Map.Entry<?, ?> entry : map.entrySet()) {
                             selectItem = createSelectItem(context, uiSelectItems, entry.getValue(), String.valueOf(entry.getKey()));
                             addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
-                    else if (value instanceof List && value instanceof RandomAccess) {
-                        List<?> list = (List<?>) value;
+                    else if (value instanceof List<?> list && value instanceof RandomAccess) {
 
                         for (int j = 0; j < list.size(); j++) {
                             Object item = list.get(j);
-                            if (item instanceof SelectItem) {
-                                selectItem = updateSelectItem(context, uiSelectItems, (SelectItem) item);
+                            if (item instanceof SelectItem selectItem11) {
+                                selectItem = updateSelectItem(context, uiSelectItems, selectItem11);
                             }
                             else {
                                 selectItem = createSelectItem(context, uiSelectItems, item, null);
@@ -126,12 +123,11 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
                             addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
-                    else if (value instanceof Collection) {
-                        Collection<?> collection = (Collection<?>) value;
+                    else if (value instanceof Collection<?> collection) {
 
                         for (Object item : collection) {
-                            if (item instanceof SelectItem) {
-                                selectItem = updateSelectItem(context, uiSelectItems, (SelectItem) item);
+                            if (item instanceof SelectItem selectItem12) {
+                                selectItem = updateSelectItem(context, uiSelectItems, selectItem12);
                             }
                             else {
                                 selectItem = createSelectItem(context, uiSelectItems, item, null);
@@ -233,8 +229,8 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
             if (value == null) {
                 return "";
             }
-            else if (value instanceof String) {
-                return (String) value;
+            else if (value instanceof String string) {
+                return string;
             }
             else {
                 Converter implicitConverter = findImplicitConverter(context, component);
@@ -330,8 +326,8 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
         else {
             compareValue = itemValue;
 
-            if (compareValue instanceof String && !(value instanceof String)) {
-                compareValue = converter.getAsObject(context, component, (String) compareValue);
+            if (compareValue instanceof String string && !(value instanceof String)) {
+                compareValue = converter.getAsObject(context, component, string);
             }
         }
 
@@ -346,8 +342,8 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
         int count = selectItems.size();
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            if (selectItem instanceof SelectItemGroup) {
-                count += countSelectItems(((SelectItemGroup) selectItem).getSelectItems());
+            if (selectItem instanceof SelectItemGroup group) {
+                count += countSelectItems(group.getSelectItems());
             }
         }
         return count;
@@ -360,8 +356,8 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
 
         int count = selectItems.length;
         for (SelectItem selectItem : selectItems) {
-            if (selectItem instanceof SelectItemGroup) {
-                count += countSelectItems(((SelectItemGroup) selectItem).getSelectItems());
+            if (selectItem instanceof SelectItemGroup group) {
+                count += countSelectItems(group.getSelectItems());
             }
         }
         return count;
@@ -401,9 +397,9 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
         // loop attached SelectItems - other values are not allowed
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            if (selectItem instanceof SelectItemGroup) {
+            if (selectItem instanceof SelectItemGroup group) {
                 // if it's a SelectItemGroup also include its children in the checked values
-                SelectItem[] groupItemsArray = ((SelectItemGroup) selectItem).getSelectItems();
+                SelectItem[] groupItemsArray = group.getSelectItems();
                 if (groupItemsArray != null && groupItemsArray.length > 0) {
                     validSubmittedValues.addAll(
                             doValidateSubmittedValues(context,
@@ -443,8 +439,7 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
      * @return either NULL or a component the SelectItem was defined by
      */
     public UIComponent getSelectItemComponent(SelectItem item) {
-        if (item instanceof WrapperSelectItem) {
-            WrapperSelectItem wrapper = (WrapperSelectItem) item;
+        if (item instanceof WrapperSelectItem wrapper) {
             return wrapper.getComponent();
         }
 

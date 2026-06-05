@@ -52,8 +52,7 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
     @Override
     public VisitResult visit(VisitContext context, UIComponent target) {
 
-        if (target instanceof AjaxExceptionHandler) {
-            AjaxExceptionHandler currentHandler = (AjaxExceptionHandler) target;
+        if (target instanceof AjaxExceptionHandler currentHandler) {
 
             if (LangUtils.isBlank(currentHandler.getType())) {
                 handlers.put(null, currentHandler);

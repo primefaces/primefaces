@@ -108,13 +108,13 @@ public class SortTableComparator implements Comparator<Object> {
                 else if (value2 == null) {
                     result = -1 * sortMeta.getNullSortOrder();
                 }
-                else if (value1 instanceof String && value2 instanceof String) {
+                else if (value1 instanceof String string && value2 instanceof String string1) {
                     if (sortMeta.isCaseSensitiveSort()) {
                         result = collator.compare(value1, value2);
                     }
                     else {
-                        String str1 = (((String) value1).toLowerCase(locale));
-                        String str2 = (((String) value2).toLowerCase(locale));
+                        String str1 = (string.toLowerCase(locale));
+                        String str2 = (string1.toLowerCase(locale));
 
                         result = collator.compare(str1, str2);
                     }

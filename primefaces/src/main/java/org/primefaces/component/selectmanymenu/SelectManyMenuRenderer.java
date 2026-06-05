@@ -224,9 +224,9 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
             }
 
             for (UIComponent child : component.getChildren()) {
-                if (child instanceof Column && child.isRendered()) {
-                    String style = ((Column) child).getStyle();
-                    String styleClass = ((Column) child).getStyleClass();
+                if (child instanceof Column column && child.isRendered()) {
+                    String style = column.getStyle();
+                    String styleClass = column.getStyleClass();
 
                     writer.startElement("td", null);
                     if (styleClass != null) {

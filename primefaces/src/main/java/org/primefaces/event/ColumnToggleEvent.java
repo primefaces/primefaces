@@ -27,11 +27,13 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.model.Visibility;
 
 import jakarta.faces.component.UIComponent;
+
+import java.io.Serial;
 import jakarta.faces.component.behavior.Behavior;
 
 public class ColumnToggleEvent extends ToggleEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private transient UIColumn column;
 

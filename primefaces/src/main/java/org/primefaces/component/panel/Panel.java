@@ -68,8 +68,8 @@ public class Panel extends PanelBaseImpl {
     public Menu getOptionsMenu() {
         UIComponent optionsFacet = getOptionsFacet();
         if (FacetUtils.shouldRenderFacet(optionsFacet)) {
-            if (optionsFacet instanceof Menu) {
-                return (Menu) optionsFacet;
+            if (optionsFacet instanceof Menu menu) {
+                return menu;
             }
             else {
                 return (Menu) optionsFacet.getChildren().get(0);

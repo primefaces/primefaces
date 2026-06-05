@@ -37,12 +37,12 @@ public class PrimeExternalContext extends ExternalContextWrapper {
         ExternalContext externalContext = facesContext.getExternalContext();
 
         while (externalContext != null) {
-            if (externalContext instanceof PrimeExternalContext) {
-                return (PrimeExternalContext) externalContext;
+            if (externalContext instanceof PrimeExternalContext context) {
+                return context;
             }
 
-            if (externalContext instanceof ExternalContextWrapper) {
-                externalContext = ((ExternalContextWrapper) externalContext).getWrapped();
+            if (externalContext instanceof ExternalContextWrapper wrapper) {
+                externalContext = wrapper.getWrapped();
             }
             else {
                 return null;

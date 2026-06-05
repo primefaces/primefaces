@@ -25,6 +25,7 @@ package org.primefaces.model;
 
 import org.primefaces.util.Callbacks;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
  */
 public class LazyDefaultTreeNode<T> extends DefaultTreeNode<T> implements LazyTreeNode {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private Callbacks.SerializableFunction<T, List<T>> loadFunction;
     private Callbacks.SerializableFunction<T, Boolean> isLeafFunction;

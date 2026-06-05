@@ -49,8 +49,7 @@ public interface MenuItemAware {
     List<MenuElement> getElements();
 
     default void broadcastMenuActionEvent(FacesEvent event, FacesContext context, Consumer<FacesEvent> broadcast) throws AbortProcessingException {
-        if (event instanceof MenuActionEvent) {
-            MenuActionEvent menuActionEvent = (MenuActionEvent) event;
+        if (event instanceof MenuActionEvent menuActionEvent) {
             MenuItem menuItem = menuActionEvent.getMenuItem();
 
             Function<MenuItem, String> function = menuItem.getFunction();

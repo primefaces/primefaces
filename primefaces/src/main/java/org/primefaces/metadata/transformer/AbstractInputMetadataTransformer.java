@@ -39,34 +39,34 @@ public abstract class AbstractInputMetadataTransformer implements MetadataTransf
 
     @Override
     public void transform(FacesContext context, PrimeApplicationContext applicationContext, UIComponent component) throws IOException {
-        if (component instanceof EditableValueHolder && component instanceof UIInput) {
-            transformInput(context, applicationContext, (UIInput) component);
+        if (component instanceof EditableValueHolder && component instanceof UIInput input) {
+            transformInput(context, applicationContext, input);
         }
     }
 
     protected abstract void transformInput(FacesContext context, PrimeApplicationContext applicationContext, UIInput component) throws IOException;
 
     protected void setMaxlength(UIInput input, int maxlength) {
-        if (input instanceof HtmlInputText) {
-            ((HtmlInputText) input).setMaxlength(maxlength);
+        if (input instanceof HtmlInputText text) {
+            text.setMaxlength(maxlength);
         }
-        else if (input instanceof HtmlInputSecret) {
-            ((HtmlInputSecret) input).setMaxlength(maxlength);
+        else if (input instanceof HtmlInputSecret secret) {
+            secret.setMaxlength(maxlength);
         }
-        else if (input instanceof InputTextarea) {
-            ((InputTextarea) input).setMaxlength(maxlength);
+        else if (input instanceof InputTextarea textarea) {
+            textarea.setMaxlength(maxlength);
         }
     }
 
     protected int getMaxlength(UIInput input) {
-        if (input instanceof HtmlInputText) {
-            return ((HtmlInputText) input).getMaxlength();
+        if (input instanceof HtmlInputText text) {
+            return text.getMaxlength();
         }
-        else if (input instanceof HtmlInputSecret) {
-            return ((HtmlInputSecret) input).getMaxlength();
+        else if (input instanceof HtmlInputSecret secret) {
+            return secret.getMaxlength();
         }
-        else if (input instanceof InputTextarea) {
-            ((InputTextarea) input).getMaxlength();
+        else if (input instanceof InputTextarea textarea) {
+            textarea.getMaxlength();
         }
 
         return Integer.MIN_VALUE;

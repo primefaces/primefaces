@@ -310,8 +310,8 @@ public final class TaglibUtils {
 
                     for (Object enumConstant : enumConstants) {
                         String propertyName = ((Enum<?>) enumConstant).name();
-                        if (enumConstant instanceof PrimePropertyKeys) {
-                            propertyName = ((PrimePropertyKeys) enumConstant).getName();
+                        if (enumConstant instanceof PrimePropertyKeys keys) {
+                            propertyName = keys.getName();
                         }
 
                         if (properties.containsKey(propertyName) || CdkUtils.shouldIgnoreProperty(clazz, propertyName)) {

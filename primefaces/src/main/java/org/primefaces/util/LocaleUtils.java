@@ -104,11 +104,11 @@ public class LocaleUtils {
         Locale result = null;
 
         if (locale != null) {
-            if (locale instanceof String) {
-                result = toLocale((String) locale);
+            if (locale instanceof String string) {
+                result = toLocale(string);
             }
-            else if (locale instanceof java.util.Locale) {
-                result = (java.util.Locale) locale;
+            else if (locale instanceof java.util.Locale locale1) {
+                result = locale1;
             }
             else {
                 throw new IllegalArgumentException("Type:" + locale.getClass() + " is not a valid locale type for: " + clientId);

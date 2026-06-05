@@ -23,6 +23,7 @@
  */
 package org.primefaces.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.Objects;
 
 public class DualListModel<T> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private List<T> source;
     private List<T> target;

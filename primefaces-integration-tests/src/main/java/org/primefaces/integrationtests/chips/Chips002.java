@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.chips;
 
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ import lombok.Data;
 @Data
 public class Chips002 implements Serializable {
 
-    private static final long serialVersionUID = -8778258234357429563L;
+    @Serial private static final long serialVersionUID = -8778258234357429563L;
 
     private List<String> values;
 

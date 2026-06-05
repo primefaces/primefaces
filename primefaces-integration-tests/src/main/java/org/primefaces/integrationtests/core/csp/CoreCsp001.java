@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.core.csp;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.faces.application.FacesMessage;
@@ -37,7 +38,7 @@ import lombok.Data;
 @Data
 public class CoreCsp001 implements Serializable {
 
-    private static final long serialVersionUID = 8797995450720503195L;
+    @Serial private static final long serialVersionUID = 8797995450720503195L;
 
     private String firstname;
     private String lastname;

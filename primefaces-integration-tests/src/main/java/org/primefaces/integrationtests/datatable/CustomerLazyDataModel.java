@@ -30,6 +30,7 @@ import org.primefaces.model.filter.FilterConstraint;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -46,7 +47,7 @@ import org.apache.commons.collections4.ComparatorUtils;
  */
 public class CustomerLazyDataModel extends LazyDataModel<Customer> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private List<Customer> datasource;
 

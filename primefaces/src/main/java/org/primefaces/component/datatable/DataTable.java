@@ -246,8 +246,8 @@ public class DataTable extends DataTableBaseImpl {
     public boolean hasSelectionColumn() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
-            if (child.isRendered() && (child instanceof Column)) {
-                boolean selectionBox = ((Column) child).isSelectionBox();
+            if (child.isRendered() && (child instanceof Column column)) {
+                boolean selectionBox = column.isSelectionBox();
                 if (selectionBox) {
                     return true;
                 }
@@ -354,14 +354,12 @@ public class DataTable extends DataTableBaseImpl {
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
+        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent behaviorEvent) {
             setRowIndex(-1);
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
             FacesEvent wrapperEvent = null;
-
-            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowSelect, ClientBehaviorEventKeys.rowSelectRadio,
                     ClientBehaviorEventKeys.contextMenu, ClientBehaviorEventKeys.rowSelectCheckbox, ClientBehaviorEventKeys.rowDblselect)) {
@@ -393,7 +391,7 @@ public class DataTable extends DataTableBaseImpl {
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());
             }
             else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.filter)) {
-                deferredEvents.put(ClientBehaviorEventKeys.filter, (AjaxBehaviorEvent) event);
+                deferredEvents.put(ClientBehaviorEventKeys.filter, behaviorEvent);
                 return;
             }
             else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.rowEdit, ClientBehaviorEventKeys.rowEditInit, ClientBehaviorEventKeys.rowEditCancel)) {
@@ -652,8 +650,8 @@ public class DataTable extends DataTableBaseImpl {
         List<SummaryRow> sumRows = new ArrayList<>(3);
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent kid = getChildren().get(i);
-            if (kid.isRendered() && kid instanceof SummaryRow) {
-                sumRows.add((SummaryRow) kid);
+            if (kid.isRendered() && kid instanceof SummaryRow row) {
+                sumRows.add(row);
             }
         }
 
@@ -731,8 +729,7 @@ public class DataTable extends DataTableBaseImpl {
                                 process(context, facet, phaseId);
                             }
                         }
-                        else if (child instanceof Columns) {
-                            Columns uicolumns = (Columns) child;
+                        else if (child instanceof Columns uicolumns) {
                             int f = uicolumns.getFirst();
                             int r = uicolumns.getRows();
                             int l = (r == 0) ? uicolumns.getRowCount() : (f + r);
@@ -827,8 +824,7 @@ public class DataTable extends DataTableBaseImpl {
 
             for (int i = 0; i < iterableChildren.size(); i++) {
                 UIComponent child = iterableChildren.get(i);
-                if (child instanceof Columns) {
-                    Columns columns = (Columns) child;
+                if (child instanceof Columns columns) {
                     for (int j = 0; j < columns.getRowCount(); j++) {
                         columns.setRowIndex(j);
 

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.importenum;
 
+import java.io.Serial;
 import java.util.LinkedHashMap;
 
 import jakarta.faces.FacesException;
@@ -35,7 +36,7 @@ import jakarta.faces.FacesException;
  */
 public class EnumHashMap<K, V> extends LinkedHashMap<K, V> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private final Class<?> clazz;
 

@@ -85,16 +85,16 @@ public class CalendarUtils {
             return null;
         }
 
-        if (value instanceof LocalDate) {
-            return (LocalDate) value;
+        if (value instanceof LocalDate date) {
+            return date;
         }
 
-        if (value instanceof LocalDateTime) {
-            return ((LocalDateTime) value).toLocalDate();
+        if (value instanceof LocalDateTime time) {
+            return time.toLocalDate();
         }
 
-        if (value instanceof Date) {
-            return convertDate2LocalDate((Date) value, calculateZoneId(calendar.getTimeZone()));
+        if (value instanceof Date date1) {
+            return convertDate2LocalDate(date1, calculateZoneId(calendar.getTimeZone()));
         }
 
         String pattern = calendar.calculatePattern();
@@ -114,8 +114,8 @@ public class CalendarUtils {
         if (calendar.getConverter() != null) {
             try {
                 Object obj = calendar.getConverter().getAsObject(context, calendar, value.toString());
-                if (obj instanceof LocalDate) {
-                    return (LocalDate) obj;
+                if (obj instanceof LocalDate date2) {
+                    return date2;
                 }
             }
             catch (ConverterException ex) {
@@ -126,8 +126,8 @@ public class CalendarUtils {
         Converter converter = context.getApplication().createConverter(value.getClass());
         if (converter != null) {
             Object obj = converter.getAsObject(context, calendar, value.toString());
-            if (obj instanceof LocalDate) {
-                return (LocalDate) obj;
+            if (obj instanceof LocalDate date3) {
+                return date3;
             }
         }
 
@@ -149,16 +149,16 @@ public class CalendarUtils {
             return null;
         }
 
-        if (value instanceof LocalTime) {
-            return (LocalTime) value;
+        if (value instanceof LocalTime time) {
+            return time;
         }
 
-        if (value instanceof LocalDateTime) {
-            return ((LocalDateTime) value).toLocalTime();
+        if (value instanceof LocalDateTime time1) {
+            return time1.toLocalTime();
         }
 
-        if (value instanceof Date) {
-            return convertDate2LocalTime((Date) value, calculateZoneId(calendar.getTimeZone()));
+        if (value instanceof Date date) {
+            return convertDate2LocalTime(date, calculateZoneId(calendar.getTimeZone()));
         }
 
         String pattern = calendar.calculatePattern();
@@ -178,8 +178,8 @@ public class CalendarUtils {
         if (calendar.getConverter() != null) {
             try {
                 Object obj = calendar.getConverter().getAsObject(context, calendar, value.toString());
-                if (obj instanceof LocalTime) {
-                    return (LocalTime) obj;
+                if (obj instanceof LocalTime time2) {
+                    return time2;
                 }
             }
             catch (ConverterException ex) {
@@ -190,8 +190,8 @@ public class CalendarUtils {
         Converter<?> converter = context.getApplication().createConverter(value.getClass());
         if (converter != null) {
             Object obj = converter.getAsObject(context, calendar, value.toString());
-            if (obj instanceof LocalTime) {
-                return (LocalTime) obj;
+            if (obj instanceof LocalTime time3) {
+                return time3;
             }
         }
 
@@ -216,26 +216,26 @@ public class CalendarUtils {
         if (value == null) {
             return null;
         }
-        if (value instanceof LocalDateTime) {
-            return ((LocalDateTime) value).toInstant(ZoneOffset.UTC);
+        if (value instanceof LocalDateTime time) {
+            return time.toInstant(ZoneOffset.UTC);
         }
-        if (value instanceof LocalDate) {
-            return ((LocalDate) value).atStartOfDay().toInstant(ZoneOffset.UTC);
+        if (value instanceof LocalDate date) {
+            return date.atStartOfDay().toInstant(ZoneOffset.UTC);
         }
-        if (value instanceof LocalTime) {
+        if (value instanceof LocalTime time1) {
             LocalDate now = LocalDate.now();
-            return now.atTime(((LocalTime) value)).toInstant(ZoneOffset.UTC);
+            return now.atTime(time1).toInstant(ZoneOffset.UTC);
         }
-        if (value instanceof Date) {
-            if (value instanceof java.sql.Date) {
+        if (value instanceof Date date2) {
+            if (value instanceof java.sql.Date date1) {
                 // java.sql.Date does not support toInstant
-                return new Date(((java.sql.Date) value).getTime()).toInstant();
+                return new Date(date1.getTime()).toInstant();
             }
-            return ((Date) value).toInstant(); // implied UTC
+            return date2.toInstant(); // implied UTC
         }
         if (value instanceof String) {
             boolean hasTime = calendar.isTimeOnly() || calendar.hasTime() ||
-                    (calendar instanceof DatePicker && ((DatePicker) calendar).isShowTime());
+                    (calendar instanceof DatePicker dp && dp.isShowTime());
             LocalDate datePart = calendar.isTimeOnly() ? null : getObjectAsLocalDate(context, calendar, value);
             LocalTime timePart = hasTime ? getObjectAsLocalTime(context, calendar, value) : null;
             if (datePart == null) {
@@ -283,10 +283,10 @@ public class CalendarUtils {
             return null;
         }
 
-        if (value instanceof List) {
+        if (value instanceof List list) {
             StringBuilder valuesAsString = new StringBuilder();
             String separator = "multiple".equals(calendar.getSelectionMode()) ? "," : " " + calendar.getRangeSeparator() + " ";
-            List<?> values = ((List) value);
+            List<?> values = list;
 
             for (int i = 0; i < values.size(); i++) {
                 if (i != 0) {
@@ -313,38 +313,38 @@ public class CalendarUtils {
             Converter converter = calendar.getConverter();
             // always use the user-applied converter first
             if (converter != null) {
-                if (converter instanceof DateTimeConverter) {
-                    ((DateTimeConverter) converter).setPattern(pattern);
-                    ((DateTimeConverter) converter).setLocale(calendar.calculateLocale(context));
-                    ((DateTimeConverter) converter).setTimeZone(calculateTimeZone(calendar.getTimeZone()));
+                if (converter instanceof DateTimeConverter timeConverter) {
+                    timeConverter.setPattern(pattern);
+                    timeConverter.setLocale(calendar.calculateLocale(context));
+                    timeConverter.setTimeZone(calculateTimeZone(calendar.getTimeZone()));
                 }
                 return converter.getAsString(context, calendar, value);
             }
         }
 
-        if (value instanceof String) {
-            return (String) value;
+        if (value instanceof String string) {
+            return string;
         }
         //Use built-in converter
-        else if (value instanceof Date) {
+        else if (value instanceof Date date1) {
             SimpleDateFormat format = new SimpleDateFormat(pattern, calendar.calculateLocale(context));
             format.setTimeZone(calculateTimeZone(calendar.getTimeZone()));
 
-            return format.format((Date) value);
+            return format.format(date1);
         }
         else if (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof LocalTime || value instanceof YearMonth) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, calendar.calculateLocale(context));
-            if (value instanceof LocalDate) {
-                return ((LocalDate) value).format(dateTimeFormatter);
+            if (value instanceof LocalDate date) {
+                return date.format(dateTimeFormatter);
             }
-            else if (value instanceof LocalDateTime) {
-                return ((LocalDateTime) value).format(dateTimeFormatter);
+            else if (value instanceof LocalDateTime time1) {
+                return time1.format(dateTimeFormatter);
             }
-            else if (value instanceof LocalTime) {
+            else if (value instanceof LocalTime time) {
                 if (calendar instanceof UICalendar) {
                     return LocalDateTime.of(LocalDate.now(), (LocalTime) value).format(dateTimeFormatter);
                 }
-                return ((LocalTime) value).format(dateTimeFormatter);
+                return time.format(dateTimeFormatter);
             }
             else { //if (value instanceof YearMonth)
                 return ((YearMonth) value).format(dateTimeFormatter);
@@ -422,8 +422,7 @@ public class CalendarUtils {
 
     public static ZoneId calculateZoneId(Object usertimeZone, ZoneId defaultZoneId) {
         if (usertimeZone != null) {
-            if (usertimeZone instanceof String) {
-                String usertimeZoneStr = (String) usertimeZone;
+            if (usertimeZone instanceof String usertimeZoneStr) {
                 if (LangUtils.isNotEmpty(usertimeZoneStr)) {
                     return ZoneId.of(usertimeZoneStr);
                 }
@@ -431,11 +430,11 @@ public class CalendarUtils {
                     return defaultZoneId;
                 }
             }
-            else if (usertimeZone instanceof ZoneId) {
-                return (ZoneId) usertimeZone;
+            else if (usertimeZone instanceof ZoneId id) {
+                return id;
             }
-            else if (usertimeZone instanceof TimeZone) {
-                return ((TimeZone) usertimeZone).toZoneId();
+            else if (usertimeZone instanceof TimeZone zone) {
+                return zone.toZoneId();
             }
             else {
                 throw new IllegalArgumentException("TimeZone could be either String or java.time.ZoneId or java.util.TimeZone");
@@ -452,11 +451,11 @@ public class CalendarUtils {
 
     public static TimeZone calculateTimeZone(Object usertimeZone, TimeZone defaultTimeZone) {
         if (usertimeZone != null) {
-            if (usertimeZone instanceof String) {
-                return TimeZone.getTimeZone((String) usertimeZone);
+            if (usertimeZone instanceof String string) {
+                return TimeZone.getTimeZone(string);
             }
-            else if (usertimeZone instanceof TimeZone) {
-                return (TimeZone) usertimeZone;
+            else if (usertimeZone instanceof TimeZone zone) {
+                return zone;
             }
             else {
                 throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
@@ -482,8 +481,7 @@ public class CalendarUtils {
             return null;
         }
         else {
-            if (date instanceof java.sql.Date) {
-                java.sql.Date sqlDate = (java.sql.Date) date;
+            if (date instanceof java.sql.Date sqlDate) {
                 return sqlDate.toLocalDate().atStartOfDay(zoneId);
             }
             else {
@@ -527,8 +525,8 @@ public class CalendarUtils {
             return null;
         }
 
-        if (date instanceof java.sql.Time) {
-            return ((java.sql.Time) date).toLocalTime();
+        if (date instanceof java.sql.Time time) {
+            return time.toLocalTime();
         }
 
         return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
@@ -633,11 +631,11 @@ public class CalendarUtils {
         if (dateType.isAssignableFrom(java.util.Date.class)) {
             ZoneId zone = calculateZoneId(uicalendar.getTimeZone());
             java.util.Date date;
-            if (now instanceof LocalDate) {
-                date = java.util.Date.from(((LocalDate) now).atStartOfDay(zone).toInstant());
+            if (now instanceof LocalDate localDate) {
+                date = java.util.Date.from(localDate.atStartOfDay(zone).toInstant());
             }
-            else if (now instanceof LocalTime) {
-                date = java.util.Date.from(((LocalTime) now).atDate(LocalDate.now(zone)).atZone(zone).toInstant());
+            else if (now instanceof LocalTime time) {
+                date = java.util.Date.from(time.atDate(LocalDate.now(zone)).atZone(zone).toInstant());
             }
             else {
                 date = java.util.Date.from(((LocalDateTime) now).atZone(zone).toInstant());

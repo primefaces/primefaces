@@ -33,6 +33,7 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FastStringWriter;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ import jakarta.faces.event.PhaseListener;
 
 public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseListener {
 
-    private static final long serialVersionUID = 20130317L;
+    @Serial private static final long serialVersionUID = 20130317L;
 
     private static final Logger LOGGER = Logger.getLogger(DefaultTimelineUpdater.class.getName());
 
@@ -307,7 +308,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     static class CrudOperationData implements Serializable {
 
-        private static final long serialVersionUID = 1L;
+        @Serial private static final long serialVersionUID = 1L;
 
         private final CrudOperation crudOperation;
         private final TimelineEvent<?> event;
