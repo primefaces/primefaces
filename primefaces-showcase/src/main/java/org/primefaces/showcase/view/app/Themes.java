@@ -44,7 +44,7 @@ public class Themes {
         primeUIX.getThemes().add(
                 new Theme("aura-light-emerald", "Aura Light Emerald", "images/themes/aura-light-emerald.svg", false));
         primeUIX.getThemes().add(
-                new Theme("aura-dark-emerald", "Aura Dark    Emerald", "images/themes/aura-dark-emerald.svg", false));
+                new Theme("aura-dark-emerald", "Aura Dark Emerald", "images/themes/aura-dark-emerald.svg", true));
         categories.add(primeUIX);
 
         Category primeOne = new Category("PrimeOne");
