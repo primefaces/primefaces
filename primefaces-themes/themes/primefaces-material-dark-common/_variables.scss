@@ -850,4 +850,6 @@ $galleriaThumbnailNavigatorHeight:2rem !default;
     --maskbg: #{$maskBg};
     --focus-ring: #{$focusShadow};
     color-scheme: dark;
+    --p-primary-color: #{$primaryColor};
+    --p-primary-contrast-color: #{$primaryTextColor};
 }
