@@ -19,7 +19,7 @@ $colors: (
 ) !default;
 
 // shades (slate) — PrimeUIX v3 light surfaces
-$shade000: #ffffff !default;
+$shade000: $slate-50 !default;
 $shade100: $slate-100 !default;
 $shade200: $slate-200 !default;
 $shade300: $slate-300 !default;
@@ -29,6 +29,27 @@ $shade600: $slate-600 !default;
 $shade700: $slate-700 !default;
 $shade800: $slate-800 !default;
 $shade900: $slate-900 !default;
+
+$surface000: $slate-50 !default;
+$surface050: $slate-50 !default;
+$surface100: $slate-100 !default;
+$surface200: $slate-200 !default;
+$surface300: $slate-300 !default;
+$surface400: $slate-400 !default;
+$surface500: $slate-500 !default;
+$surface600: $slate-600 !default;
+$surface700: $slate-700 !default;
+$surface800: $slate-800 !default;
+$surface900: $slate-900 !default;
+$surface950: $slate-900 !default;
+
+$surface-a: $shade000 !default;
+$surface-b: $shade100 !default;
+$surface-c: $shade200 !default;
+$surface-d: $shade300 !default;
+$surface-e: $shade000 !default;
+$surface-f: $shade000 !default;
+
 
 // highlight defaults (overridden by accent)
 $highlightBg: $slate-100 !default;
@@ -806,28 +827,28 @@ $galleriaThumbnailNavigatorWidth:2rem !default;
 $galleriaThumbnailNavigatorHeight:2rem !default;
 
 :root {
-    --surface-a: #{$shade000};
-    --surface-b: #{$shade100};
-    --surface-c: #{$shade200};
-    --surface-d: #{$shade300};
-    --surface-e: #{$shade000};
-    --surface-f: #{$shade000};
+    --surface-a: #{$surface-a};
+    --surface-b: #{$surface-b};
+    --surface-c: #{$surface-c};
+    --surface-d: #{$surface-d};
+    --surface-e: #{$surface-e};
+    --surface-f: #{$surface-f};
     --text-color: #{$textColor};
     --text-color-secondary: #{$textSecondaryColor};
     --primary-color: #{$primaryColor};
     --primary-color-text: #{$primaryTextColor};
     --font-family: #{$fontFamily};
-    --surface-0: #{$shade000};
-    --surface-50: #{$slate-50};
-    --surface-100: #{$slate-100};
-    --surface-200: #{$slate-200};
-    --surface-300: #{$slate-300};
-    --surface-400: #{$slate-400};
-    --surface-500: #{$slate-500};
-    --surface-600: #{$slate-600};
-    --surface-700: #{$slate-700};
-    --surface-800: #{$slate-800};
-    --surface-900: #{$slate-900};
+    --surface-0: #{surface000};
+    --surface-50: #{$surface050};
+    --surface-100: #{$surface100};
+    --surface-200: #{$surface200};
+    --surface-300: #{$surface300};
+    --surface-400: #{$surface400};
+    --surface-500: #{$surface500};
+    --surface-600: #{$surface600};
+    --surface-700: #{$surface700};
+    --surface-800: #{$surface800};
+    --surface-900: #{$surface900};
     --gray-50: #{$gray-50};
     --gray-100: #{$gray-100};
     --gray-200: #{$gray-200};
@@ -852,4 +873,5 @@ $galleriaThumbnailNavigatorHeight:2rem !default;
     color-scheme: light;
     --p-primary-color: #{$primaryColor};
     --p-primary-contrast-color: #{$primaryTextColor};
+    --ground-background: #{$surface000};
 }

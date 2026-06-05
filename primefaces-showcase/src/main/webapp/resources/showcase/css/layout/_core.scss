@@ -28,7 +28,7 @@ body {
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: var(--surface-b);
+    background-color: var(--ground-background);
     background-image: url("\#{resource['showcase:images/layout/pattern.png']}"), radial-gradient(720px circle at 50% -10%, rgba(33, 150, 243, 0.06), transparent 62%);
     background-repeat: no-repeat, no-repeat;
     background-position: top center, top center;

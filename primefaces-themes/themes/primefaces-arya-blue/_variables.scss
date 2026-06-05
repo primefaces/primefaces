@@ -859,4 +859,5 @@ $galleriaThumbnailNavigatorHeight:2rem !default;
     color-scheme: dark;
     --p-primary-color: #{$primaryColor};
     --p-primary-contrast-color: #{$primaryTextColor};
+    --ground-background: var(--surface-b);
 }

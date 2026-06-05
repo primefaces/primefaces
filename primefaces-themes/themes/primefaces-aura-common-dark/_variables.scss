@@ -1,0 +1,43 @@
+@use 'sass:color';
+
+/*
+   --p-surface-0: #ffffff;
+  --p-surface-50: #f8fafc;
+  --p-surface-100: #f1f5f9;
+  --p-surface-200: #e2e8f0;
+  --p-surface-300: #cbd5e1;
+  --p-surface-400: #94a3b8;
+  --p-surface-500: #64748b;
+  --p-surface-600: #475569;
+  --p-surface-700: #334155;
+  --p-surface-800: #1e293b;
+  --p-surface-900: #0f172a;
+  --p-surface-950: #020617;
+ */
+
+$shade000: #0f172a !default;
+$shade100: #1e293b !default;
+$shade200: #334155 !default;
+$shade300: #475569 !default;
+$shade400: #64748b !default;
+$shade500: #94a3b8 !default;
+$shade600: #cbd5e1 !default;
+$shade700: #e2e8f0 !default;
+$shade800: #e8e9ea !default;
+$shade900: #f1f5f9 !default;
+
+$surface000: #020617 !default;
+$surface050: #0f172a !default;
+$surface100: #1e293b !default;
+$surface200: #334155 !default;
+$surface300: #475569 !default;
+$surface400: #64748b !default;
+$surface500: #94a3b8 !default;
+$surface600: #cbd5e1 !default;
+$surface700: #e2e8f0 !default;
+$surface800: #e8e9ea !default;
+$surface900: #f1f5f9 !default;
+$surface950: #f8fafc !default;
+
+
+@import '../primefaces-aura-common/variables';
