@@ -25,9 +25,9 @@ package org.primefaces.event;
 
 import org.primefaces.component.api.UIColumn;
 
-import jakarta.faces.component.UIComponent;
-
 import java.io.Serial;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 
 public class ColumnResizeEvent extends ResizeEvent {

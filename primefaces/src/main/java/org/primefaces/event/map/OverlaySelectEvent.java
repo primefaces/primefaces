@@ -26,9 +26,9 @@ package org.primefaces.event.map;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.Overlay;
 
-import jakarta.faces.component.UIComponent;
-
 import java.io.Serial;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 
 public class OverlaySelectEvent<T> extends AbstractAjaxBehaviorEvent {

@@ -26,9 +26,9 @@ package org.primefaces.event;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.AjaxSource;
 
-import jakarta.el.ValueExpression;
-
 import java.io.Serial;
+
+import jakarta.el.ValueExpression;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.event.PhaseId;
 

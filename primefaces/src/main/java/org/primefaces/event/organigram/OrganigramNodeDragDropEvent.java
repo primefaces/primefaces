@@ -25,9 +25,9 @@ package org.primefaces.event.organigram;
 
 import org.primefaces.model.OrganigramNode;
 
-import jakarta.faces.component.UIComponent;
-
 import java.io.Serial;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 
 /**

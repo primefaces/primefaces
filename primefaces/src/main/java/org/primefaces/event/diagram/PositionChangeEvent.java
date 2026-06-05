@@ -26,9 +26,9 @@ package org.primefaces.event.diagram;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.diagram.Element;
 
-import jakarta.faces.component.UIComponent;
-
 import java.io.Serial;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 
 public class PositionChangeEvent extends AbstractAjaxBehaviorEvent {

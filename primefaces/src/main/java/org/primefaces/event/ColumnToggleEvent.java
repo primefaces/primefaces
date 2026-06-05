@@ -26,9 +26,9 @@ package org.primefaces.event;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.model.Visibility;
 
-import jakarta.faces.component.UIComponent;
-
 import java.io.Serial;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 
 public class ColumnToggleEvent extends ToggleEvent {
