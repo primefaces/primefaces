@@ -65,8 +65,7 @@ public class SelectBooleanView {
 
     public void addMessage(AjaxBehaviorEvent event) {
         UIComponent component = event.getComponent();
-        if (component instanceof UIInput) {
-            UIInput inputComponent = (UIInput) component;
+        if (component instanceof UIInput inputComponent) {
             Boolean value = (Boolean) inputComponent.getValue();
             String summary = value ? "Checked" : "Unchecked";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));

@@ -27,6 +27,7 @@ import org.primefaces.util.FileUploadUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +41,7 @@ import org.json.JSONObject;
 
 public class FileUploadChunksServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(FileUploadChunksServlet.class.getName());
 
     @Override

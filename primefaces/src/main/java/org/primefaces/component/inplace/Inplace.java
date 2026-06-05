@@ -90,7 +90,7 @@ public class Inplace extends InplaceBaseImpl {
 
         for (Iterator<UIComponent> it = getFacetsAndChildren(); it.hasNext(); ) {
             UIComponent component = it.next();
-            if (component instanceof EditableValueHolder && !((EditableValueHolder) component).isValid()) {
+            if (component instanceof EditableValueHolder holder && !holder.isValid()) {
                 valid = false;
                 break;
             }
@@ -99,7 +99,7 @@ public class Inplace extends InplaceBaseImpl {
             if (childCount > 0) {
                 for (int i = 0; i < childCount; i++) {
                     UIComponent child = component.getChildren().get(i);
-                    if (child instanceof EditableValueHolder && !((EditableValueHolder) child).isValid()) {
+                    if (child instanceof EditableValueHolder holder1 && !holder1.isValid()) {
                         valid = false;
                         break;
                     }

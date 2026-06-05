@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.treetable;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.model.TreeNode;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ import lombok.Data;
 @Data
 public class TreeTable004 implements Serializable {
 
-    private static final long serialVersionUID = -3049074201208091926L;
+    @Serial private static final long serialVersionUID = -3049074201208091926L;
 
     private TreeNode<Document> root;
     private TreeNode<Document>[] selectedNodes;

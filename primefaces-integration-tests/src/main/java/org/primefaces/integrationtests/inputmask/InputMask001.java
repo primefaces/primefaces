@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.inputmask;
 
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.faces.view.ViewScoped;
@@ -37,7 +38,7 @@ import lombok.Data;
 @Data
 public class InputMask001 implements Serializable {
 
-    private static final long serialVersionUID = 1;
+    @Serial private static final long serialVersionUID = 1;
 
     private String value;
 

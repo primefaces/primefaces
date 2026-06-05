@@ -27,6 +27,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ import lombok.Data;
 @Data
 public class DataTable013 implements Serializable {
 
-    private static final long serialVersionUID = 7843156490297905919L;
+    @Serial private static final long serialVersionUID = 7843156490297905919L;
 
     private List<ProgrammingLanguage> progLanguages;
 

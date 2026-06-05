@@ -25,6 +25,7 @@ package org.primefaces.showcase.view.chartjs;
 
 import org.primefaces.event.ItemSelectEvent;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -91,7 +92,7 @@ import software.xdev.chartjs.model.options.tooltip.TooltipOptions;
 @RequestScoped
 public class ChartView implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String json;
     private String barModel;

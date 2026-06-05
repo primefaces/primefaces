@@ -29,6 +29,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.util.LangUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -42,7 +43,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
     public static final Integer MIN_PRIORITY = Integer.MAX_VALUE;
     public static final Integer MAX_PRIORITY = Integer.MIN_VALUE;
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String columnKey;
     private String field;

@@ -25,6 +25,7 @@ package org.primefaces.model.filter;
 
 import org.primefaces.util.LangUtils;
 
+import java.io.Serial;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -32,7 +33,7 @@ import jakarta.faces.context.FacesContext;
 
 public class EqualsFilterConstraint implements FilterConstraint {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
@@ -41,7 +42,7 @@ public class EqualsFilterConstraint implements FilterConstraint {
         }
         // #8106
         // Ported from InFilterConstraint: check for "" comparison
-        if (filter instanceof String && LangUtils.isEmpty((String) filter) && value == null) {
+        if (filter instanceof String string && LangUtils.isEmpty(string) && value == null) {
             return true;
         }
 
@@ -60,9 +61,9 @@ public class EqualsFilterConstraint implements FilterConstraint {
 
         // #12666
         // If Comparable, prefer compareTo to handle BigDecimal, etc.
-        if (value instanceof Comparable) {
+        if (value instanceof Comparable comparable) {
             ComparableFilterConstraint.assertAssignable(filter, value);
-            return compareToEquals((Comparable) value, (Comparable) filter);
+            return compareToEquals(comparable, (Comparable) filter);
         }
         return value.equals(filter);
     }

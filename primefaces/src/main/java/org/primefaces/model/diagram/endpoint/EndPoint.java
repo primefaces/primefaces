@@ -25,6 +25,7 @@ package org.primefaces.model.diagram.endpoint;
 
 import org.primefaces.model.diagram.overlay.Overlay;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.Objects;
 
 public abstract class EndPoint implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String id;
     private EndPointAnchor anchor;

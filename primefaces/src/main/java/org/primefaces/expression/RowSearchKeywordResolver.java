@@ -77,8 +77,8 @@ public class RowSearchKeywordResolver extends SearchKeywordResolver {
 
             for (UIComponent column : data.getChildren()) {
                 // handle dynamic columns
-                if (column instanceof Columns) {
-                    List<DynamicColumn> dynamicColumns = ((Columns) column).getDynamicColumns();
+                if (column instanceof Columns columns) {
+                    List<DynamicColumn> dynamicColumns = columns.getDynamicColumns();
                     for (int i = 0; i < dynamicColumns.size(); i++) {
                         for (UIComponent comp : column.getChildren()) {
                             expressionContext.invokeContextCallback(comp);

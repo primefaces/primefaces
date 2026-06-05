@@ -23,12 +23,13 @@
  */
 package org.primefaces.model.timeline;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 public class TimelineGroup<T> implements Serializable {
 
-    private static final long serialVersionUID = 20140413L;
+    @Serial private static final long serialVersionUID = 20140413L;
 
     /**
      * unique group's id

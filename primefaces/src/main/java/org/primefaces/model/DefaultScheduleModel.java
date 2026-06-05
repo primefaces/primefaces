@@ -25,6 +25,7 @@ package org.primefaces.model;
 
 import org.primefaces.util.LangUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.UUID;
 
 public class DefaultScheduleModel implements ScheduleModel, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private List<ScheduleEvent<?>> events;
     private boolean eventLimit;

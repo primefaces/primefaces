@@ -79,8 +79,8 @@ public class PrimeClientWindowUtils {
         }
 
         Object request = facesContext.getExternalContext().getRequest();
-        if (request instanceof HttpServletRequest) {
-            if ("POST".equals(((HttpServletRequest) request).getMethod())) {
+        if (request instanceof HttpServletRequest servletRequest) {
+            if ("POST".equals(servletRequest.getMethod())) {
                 return true;
             }
         }

@@ -23,12 +23,13 @@
  */
 package org.primefaces.model.tagcloud;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class DefaultTagCloudItem implements TagCloudItem, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String label;
 

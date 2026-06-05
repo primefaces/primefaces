@@ -131,8 +131,7 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
         for (Iterator<UIComponent> children = component.getChildren().iterator(); children.hasNext(); ) {
             UIComponent child = children.next();
 
-            if (child instanceof Tab && child.isRendered()) {
-                Tab tab = (Tab) child;
+            if (child instanceof Tab tab && child.isRendered()) {
                 if (defaultStep == null) {
                     defaultStep = tab.getId();
                 }
@@ -191,8 +190,7 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
 
     protected void encodeCurrentStep(FacesContext facesContext, Wizard component) throws IOException {
         for (UIComponent child : component.getChildren()) {
-            if (child instanceof Tab && child.isRendered()) {
-                Tab tab = (Tab) child;
+            if (child instanceof Tab tab && child.isRendered()) {
 
                 if ((component.getStep() == null || tab.getId().equals(component.getStep()))) {
                     tab.encodeAll(facesContext);
@@ -238,8 +236,7 @@ public class WizardRenderer extends CoreRenderer<Wizard> {
         writer.writeAttribute("class", Wizard.STEP_STATUS_CLASS, null);
 
         for (UIComponent child : component.getChildren()) {
-            if (child instanceof Tab && child.isRendered()) {
-                Tab tab = (Tab) child;
+            if (child instanceof Tab tab && child.isRendered()) {
                 String title = tab.getTitle();
                 UIComponent titleFacet = tab.getTitleFacet();
                 boolean active = (!currentFound) && (currentStep == null || tab.getId().equals(currentStep));

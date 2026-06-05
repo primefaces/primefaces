@@ -28,11 +28,13 @@ import org.primefaces.model.diagram.Element;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 
 import jakarta.faces.component.UIComponent;
+
+import java.io.Serial;
 import jakarta.faces.component.behavior.Behavior;
 
 public class DisconnectEvent extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private final Element sourceElement;
     private final Element targetElement;

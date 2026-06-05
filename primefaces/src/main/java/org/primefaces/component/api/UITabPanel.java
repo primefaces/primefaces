@@ -169,26 +169,26 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
         if (value == null) {
             return EMPTY_MODEL;
         }
-        else if (value instanceof DataModel) {
-            return (DataModel<?>) value;
+        else if (value instanceof DataModel<?> model) {
+            return model;
         }
-        else if (value instanceof List) {
-            return new ListDataModel<>((List<?>) value);
+        else if (value instanceof List<?> list) {
+            return new ListDataModel<>(list);
         }
         else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass())) {
             return new ArrayDataModel<>((Object[]) value);
         }
-        else if (value instanceof Collection) {
-            return new CollectionDataModel<>((Collection<?>) value);
+        else if (value instanceof Collection<?> collection) {
+            return new CollectionDataModel<>(collection);
         }
-        else if (value instanceof Iterable) {
-            return new IterableDataModel<>((Iterable<?>) value);
+        else if (value instanceof Iterable<?> iterable) {
+            return new IterableDataModel<>(iterable);
         }
-        else if (value instanceof ResultSet) {
-            return new ResultSetDataModel((ResultSet) value);
+        else if (value instanceof ResultSet set) {
+            return new ResultSetDataModel(set);
         }
-        else if (value instanceof Map) {
-            return new IterableDataModel<>(((Map<?, ?>) value).entrySet());
+        else if (value instanceof Map<?, ?> map) {
+            return new IterableDataModel<>(map.entrySet());
         }
         else {
             return new ScalarDataModel<>(value);
@@ -306,8 +306,8 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
 
                     if (descendantStateIndex != -1 && descendantStateIndex < stateCollection.size()) {
                         Object[] object = stateCollection.get(descendantStateIndex);
-                        if (object[0] != null && component instanceof EditableValueHolder) {
-                            ((SavedState) object[0]).apply((EditableValueHolder) component);
+                        if (object[0] != null && component instanceof EditableValueHolder holder) {
+                            ((SavedState) object[0]).apply(holder);
                         }
                         // If there is descendant state to restore, call it recursively, otherwise
                         // it is safe to skip iteration.
@@ -340,8 +340,8 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
 
                     if (descendantStateIndex != -1 && descendantStateIndex < stateCollection.size()) {
                         Object[] object = stateCollection.get(descendantStateIndex);
-                        if (object[0] != null && component instanceof EditableValueHolder) {
-                            ((SavedState) object[0]).apply((EditableValueHolder) component);
+                        if (object[0] != null && component instanceof EditableValueHolder holder1) {
+                            ((SavedState) object[0]).apply(holder1);
                         }
                         // If there is descendant state to restore, call it recursively, otherwise
                         // it is safe to skip iteration.
@@ -428,7 +428,7 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
                     // of this component; the second is the state of the current
                     // child itself.
 
-                    if (child instanceof EditableValueHolder) {
+                    if (child instanceof EditableValueHolder holder) {
                         if (childStates == null) {
                             childStates = new ArrayList<>(
                                     parent.getFacetCount()
@@ -441,9 +441,9 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
                         }
 
                         childStates.add(child.getChildCount() > 0
-                                ? new Object[]{new SavedState((EditableValueHolder) child),
+                                ? new Object[]{new SavedState(holder),
                                     saveDescendantComponentStates(child, saveChildFacets, true)}
-                                : new Object[]{new SavedState((EditableValueHolder) child), null});
+                                : new Object[]{new SavedState(holder), null});
                     }
                     else if (child.getChildCount() > 0 || (saveChildFacets && child.getFacetCount() > 0)) {
                         Object descendantSavedState = saveDescendantComponentStates(child, saveChildFacets, true);
@@ -492,7 +492,7 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
                     // of this component; the second is the state of the current
                     // child itself.
 
-                    if (child instanceof EditableValueHolder) {
+                    if (child instanceof EditableValueHolder holder1) {
                         if (childStates == null) {
                             childStates = new ArrayList<>(
                                     parent.getFacetCount()
@@ -505,9 +505,9 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
                         }
 
                         childStates.add(child.getChildCount() > 0
-                                ? new Object[]{new SavedState((EditableValueHolder) child),
+                                ? new Object[]{new SavedState(holder1),
                                     saveDescendantComponentStates(child, saveChildFacets, true)}
-                                : new Object[]{new SavedState((EditableValueHolder) child), null});
+                                : new Object[]{new SavedState(holder1), null});
                     }
                     else if (child.getChildCount() > 0 || (saveChildFacets && child.getFacetCount() > 0)) {
                         Object descendantSavedState = saveDescendantComponentStates(child, saveChildFacets, true);
@@ -763,7 +763,7 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
                         for (int j = 0, childCount = getChildCount(); j < childCount; j++) {
                             UIComponent child = getChildren().get(j);
 
-                            if (dynamic && child instanceof Tab && !((Tab) child).isLoaded(i)) {
+                            if (dynamic && child instanceof Tab tab && !tab.isLoaded(i)) {
                                 continue;
                             }
 
@@ -920,8 +920,7 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
 
                     for (int i = 0; i < getChildCount(); i++) {
                         UIComponent child = getChildren().get(i);
-                        if (child instanceof Tab) {
-                            Tab tab = (Tab) child;
+                        if (child instanceof Tab tab) {
                             if (tab.isLoaded()) {
                                 if (tab.visitTree(context, callback)) {
                                     return true;
@@ -1048,8 +1047,7 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
                 if (isDynamic()) {
                     for (int i = 0; i < getChildCount(); i++) {
                         UIComponent child = getChildren().get(i);
-                        if (child instanceof Tab) {
-                            Tab tab = (Tab) child;
+                        if (child instanceof Tab tab) {
                             if (tab.isLoaded()) {
                                 tab.processDecodes(context);
                             }
@@ -1096,8 +1094,7 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
             if (isDynamic()) {
                 for (int i = 0; i < getChildCount(); i++) {
                     UIComponent child = getChildren().get(i);
-                    if (child instanceof Tab) {
-                        Tab tab = (Tab) child;
+                    if (child instanceof Tab tab) {
                         if (tab.isLoaded()) {
                             tab.processValidators(context);
                         }
@@ -1137,8 +1134,7 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
             if (isDynamic()) {
                 for (int i = 0; i < getChildCount(); i++) {
                     UIComponent child = getChildren().get(i);
-                    if (child instanceof Tab) {
-                        Tab tab = (Tab) child;
+                    if (child instanceof Tab tab) {
                         if (tab.isLoaded()) {
                             tab.processUpdates(context);
                         }
@@ -1163,8 +1159,7 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
             super.broadcast(event);
         }
         else {
-            if (event instanceof IndexedEvent) {
-                IndexedEvent idxEvent = (IndexedEvent) event;
+            if (event instanceof IndexedEvent idxEvent) {
 
                 // safe the current index, count aside
                 final int prevIndex = _index;
@@ -1355,15 +1350,14 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
             int j = 0;
             for (int i = 0; i < getChildCount(); i++) {
                 UIComponent child = getChildren().get(i);
-                if (child instanceof Tab) {
-                    Tab tab = (Tab) child;
+                if (child instanceof Tab tab) {
 
                     if (skipUnrendered && !tab.isRendered()) {
                         j++;
                         continue;
                     }
 
-                    callback.accept((Tab) child, j);
+                    callback.accept(tab, j);
                     j++;
                 }
             }
@@ -1373,8 +1367,8 @@ public abstract class UITabPanel extends UIPanel implements NamingContainer {
     public Tab getDynamicTab() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
-            if (child instanceof Tab) {
-                return (Tab) child;
+            if (child instanceof Tab tab) {
+                return tab;
             }
         }
 

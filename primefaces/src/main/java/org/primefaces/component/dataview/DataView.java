@@ -84,13 +84,12 @@ public class DataView extends DataViewBaseImpl {
     public void queueEvent(FacesEvent event) {
         FacesContext context = event.getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
+        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent behaviorEvent) {
             setRowIndex(-1);
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
             if ("page".equals(eventName)) {
-                AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
@@ -120,11 +119,11 @@ public class DataView extends DataViewBaseImpl {
     public void findViewItems() {
         for (UIComponent kid : getChildren()) {
             if (kid.isRendered()) {
-                if (kid instanceof DataViewListItem) {
-                    listItem = (DataViewListItem) kid;
+                if (kid instanceof DataViewListItem item1) {
+                    listItem = item1;
                 }
-                else if (kid instanceof DataViewGridItem) {
-                    gridItem = (DataViewGridItem) kid;
+                else if (kid instanceof DataViewGridItem item) {
+                    gridItem = item;
                 }
             }
         }
@@ -133,8 +132,7 @@ public class DataView extends DataViewBaseImpl {
     public void loadLazyData() {
         DataModel<?> model = getDataModel();
 
-        if (model instanceof LazyDataModel) {
-            LazyDataModel<?> lazyModel = (LazyDataModel<?>) model;
+        if (model instanceof LazyDataModel<?> lazyModel) {
 
             lazyModel.setRowCount(lazyModel.count(Collections.emptyMap()));
             calculateFirst();

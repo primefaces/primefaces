@@ -311,8 +311,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         ResponseWriter writer = context.getResponseWriter();
 
         for (MenuElement element : elements) {
-            if (element instanceof MenuItem) {
-                MenuItem menuItem = (MenuItem) element;
+            if (element instanceof MenuItem menuItem) {
                 if (menuItem.isRendered()) {
                     String containerStyle = menuItem.getContainerStyle();
                     String containerStyleClass = menuItem.getContainerStyleClass();
@@ -332,11 +331,11 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
                     writer.endElement("li");
                 }
             }
-            else if (element instanceof Submenu) {
-                encodeSubmenu(context, component, (Submenu) element);
+            else if (element instanceof Submenu submenu) {
+                encodeSubmenu(context, component, submenu);
             }
-            else if (element instanceof Separator) {
-                encodeSeparator(context, (Separator) element);
+            else if (element instanceof Separator separator) {
+                encodeSeparator(context, separator);
             }
         }
     }

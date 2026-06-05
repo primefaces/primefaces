@@ -26,11 +26,13 @@ package org.primefaces.event;
 import org.primefaces.component.api.UIColumn;
 
 import jakarta.faces.component.UIComponent;
+
+import java.io.Serial;
 import jakarta.faces.component.behavior.Behavior;
 
 public class ColumnResizeEvent extends ResizeEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private transient UIColumn column;
 

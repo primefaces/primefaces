@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.rest;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -32,7 +33,7 @@ import java.util.Objects;
  */
 public class AutoCompleteSuggestion implements Serializable {
 
-    private static final long serialVersionUID = 7487414702117430146L;
+    @Serial private static final long serialVersionUID = 7487414702117430146L;
 
     private String value;
     private String label;

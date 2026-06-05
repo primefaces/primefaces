@@ -66,8 +66,8 @@ public class PrimePageFragmentFactory {
 
     public static <T extends WebElement> T create(Class<T> fragment, WebElement element) {
         ElementLocator el;
-        if (element instanceof AbstractPrimePageFragment) {
-            el = ((AbstractPrimePageFragment) element).getElementLocator();
+        if (element instanceof AbstractPrimePageFragment pageFragment) {
+            el = pageFragment.getElementLocator();
         }
         else {
             el = new ElementLocator() {
@@ -96,12 +96,12 @@ public class PrimePageFragmentFactory {
 
             WebDriver driver = WebDriverProvider.get();
 
-            if (proxy instanceof AbstractPrimePage) {
-                ((AbstractPrimePage) proxy).setWebDriver(driver);
+            if (proxy instanceof AbstractPrimePage page) {
+                page.setWebDriver(driver);
             }
-            if (proxy instanceof AbstractPrimePageFragment) {
-                ((AbstractPrimePageFragment) proxy).setWebDriver(driver);
-                ((AbstractPrimePageFragment) proxy).setElementLocator(el);
+            if (proxy instanceof AbstractPrimePageFragment pageFragment) {
+                pageFragment.setWebDriver(driver);
+                pageFragment.setElementLocator(el);
             }
 
             setMembers(driver, new DefaultElementLocatorFactory(proxy), proxy);
@@ -127,8 +127,8 @@ public class PrimePageFragmentFactory {
             FindByParentPartialId findByParentPartialId = field.getAnnotation(FindByParentPartialId.class);
             if (findByParentPartialId != null) {
                 ElementLocator parentEl = null;
-                if (obj instanceof AbstractPrimePageFragment) {
-                    parentEl = ((AbstractPrimePageFragment) obj).getElementLocator();
+                if (obj instanceof AbstractPrimePageFragment fragment) {
+                    parentEl = fragment.getElementLocator();
                 }
 
                 ElementLocator el = new FindByParentPartialIdElementLocator(driver, parentEl, findByParentPartialId);
@@ -146,12 +146,12 @@ public class PrimePageFragmentFactory {
             value = proxy((Class<T>) field.getType(),
                         MethodDelegation.to(new ElementLocatorInterceptor(el)));
 
-            if (value instanceof AbstractPrimePage) {
-                ((AbstractPrimePage) value).setWebDriver(driver);
+            if (value instanceof AbstractPrimePage page) {
+                page.setWebDriver(driver);
             }
-            if (value instanceof AbstractPrimePageFragment) {
-                ((AbstractPrimePageFragment) value).setWebDriver(driver);
-                ((AbstractPrimePageFragment) value).setElementLocator(el);
+            if (value instanceof AbstractPrimePageFragment fragment) {
+                fragment.setWebDriver(driver);
+                fragment.setElementLocator(el);
             }
 
             DefaultElementLocatorFactory delf = new DefaultElementLocatorFactory((SearchContext) value);

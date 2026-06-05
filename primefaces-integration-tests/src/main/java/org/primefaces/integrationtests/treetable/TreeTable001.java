@@ -29,6 +29,7 @@ import org.primefaces.event.NodeUnselectEvent;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.model.TreeNode;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -44,7 +45,7 @@ import lombok.Data;
 @Data
 public class TreeTable001 implements Serializable {
 
-    private static final long serialVersionUID = 4336050122274677022L;
+    @Serial private static final long serialVersionUID = 4336050122274677022L;
 
     private TreeNode<Document> root;
     private TreeNode<Document> selectedNode;

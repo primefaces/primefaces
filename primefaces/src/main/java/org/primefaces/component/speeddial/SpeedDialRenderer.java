@@ -104,8 +104,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer<SpeedDial> {
         writer.writeAttribute("role", "menu", "role");
 
         for (MenuElement element : elements) {
-            if (element.isRendered() && element instanceof MenuItem) {
-                MenuItem menuItem = (MenuItem) element;
+            if (element.isRendered() && element instanceof MenuItem menuItem) {
                 String icon = menuItem.getIcon();
                 Object value = menuItem.getValue();
                 boolean disabled = menuItem.isDisabled();

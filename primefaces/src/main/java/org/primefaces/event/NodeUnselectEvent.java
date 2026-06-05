@@ -26,11 +26,13 @@ package org.primefaces.event;
 import org.primefaces.model.TreeNode;
 
 import jakarta.faces.component.UIComponent;
+
+import java.io.Serial;
 import jakarta.faces.component.behavior.Behavior;
 
 public class NodeUnselectEvent extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private TreeNode treeNode;
 

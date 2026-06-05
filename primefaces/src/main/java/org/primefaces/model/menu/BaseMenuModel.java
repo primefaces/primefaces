@@ -26,6 +26,7 @@ package org.primefaces.model.menu;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class BaseMenuModel implements MenuModel, Serializable {
     public static final String ID_SEPARATOR = "_";
     public static final String COORDINATES_SEPARATOR = "|";
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private List<MenuElement> elements;
 
@@ -78,8 +79,8 @@ public class BaseMenuModel implements MenuModel, Serializable {
                 element.setId(menuId);
             }
 
-            if (element instanceof MenuGroup) {
-                generateUniqueIds(((MenuGroup) element).getElements(), coordinates);
+            if (element instanceof MenuGroup group) {
+                generateUniqueIds(group.getElements(), coordinates);
             }
         }
     }

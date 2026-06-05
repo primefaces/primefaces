@@ -30,6 +30,7 @@ import org.primefaces.model.datepicker.DefaultDateMetadata;
 import org.primefaces.model.datepicker.DefaultDateMetadataModel;
 import org.primefaces.model.datepicker.LazyDateMetadataModel;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -47,7 +48,7 @@ import lombok.Data;
 @Data
 public class DatePicker011 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private LocalDate date0, date1, date2, date3;
     private LocalDate date4, date5, date6, date7;
@@ -69,7 +70,7 @@ public class DatePicker011 implements Serializable {
         model.add(start.plusDays(2), end); //3rd of this month
 
         modelLazy = new LazyDateMetadataModel() {
-            private static final long serialVersionUID = 1L;
+            @Serial private static final long serialVersionUID = 1L;
             @Override
             public void loadDateMetadata(LocalDate d1, LocalDate d2) {
                 LocalDate start = LocalDate.now().withDayOfMonth(1);

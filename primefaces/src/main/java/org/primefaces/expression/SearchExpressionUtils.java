@@ -211,8 +211,8 @@ public class SearchExpressionUtils {
         UIComponent resolvedComponent = contextlessResolveComponent(FacesContext.getCurrentInstance(), component, expression);
 
         if (resolvedComponent != null) {
-            if (resolvedComponent instanceof Widget) {
-                return ((Widget) resolvedComponent).resolveWidgetVar(context);
+            if (resolvedComponent instanceof Widget widget) {
+                return widget.resolveWidgetVar(context);
             }
             else {
                 throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");

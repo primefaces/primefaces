@@ -47,8 +47,7 @@ public class ResetInputVisitCallback implements VisitCallback {
 
     @Override
     public VisitResult visit(VisitContext context, UIComponent target) {
-        if (target instanceof EditableValueHolder) {
-            EditableValueHolder input = (EditableValueHolder) target;
+        if (target instanceof EditableValueHolder input) {
             input.resetValue();
 
             if (clearModel) {

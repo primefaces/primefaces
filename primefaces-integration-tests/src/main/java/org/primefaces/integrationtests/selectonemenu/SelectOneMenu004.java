@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -38,7 +39,7 @@ import lombok.Data;
 @Data
 public class SelectOneMenu004 implements Serializable {
 
-    private static final long serialVersionUID = 354383342266918349L;
+    @Serial private static final long serialVersionUID = 354383342266918349L;
 
     private String console = "";
     private String console2 = "PS4";

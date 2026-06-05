@@ -71,8 +71,7 @@ public class TriStateCheckboxRenderer extends InputRenderer<TriStateCheckbox> {
         String clientId = checkbox.getClientId(context);
         Object rawValue = checkbox.getValue();
         Boolean value = null;
-        if (rawValue instanceof String) {
-            String stringValue = (String) rawValue;
+        if (rawValue instanceof String stringValue) {
             if (LangUtils.isBlank(stringValue)) {
                 value = null;
             }

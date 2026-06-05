@@ -113,8 +113,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
 
         for (MenuElement element : elements) {
             if (element.isRendered()) {
-                if (element instanceof MenuItem) {
-                    MenuItem menuItem = (MenuItem) element;
+                if (element instanceof MenuItem menuItem) {
                     String containerStyle = menuItem.getContainerStyle();
                     String containerStyleClass = getStyleClassBuilder(context)
                             .add(Menu.MENUITEM_CLASS)
@@ -139,8 +138,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
                     }
                     writer.endElement("li");
                 }
-                else if (element instanceof Submenu && shouldBeRendered(context, element)) {
-                    Submenu submenu = (Submenu) element;
+                else if (element instanceof Submenu submenu && shouldBeRendered(context, element)) {
                     String style = submenu.getStyle();
                     String styleClass = getStyleClassBuilder(context)
                             .add(Menu.TIERED_SUBMENU_CLASS)
@@ -159,8 +157,8 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
                     encodeSubmenu(context, menu, submenu);
                     writer.endElement("li");
                 }
-                else if (element instanceof Separator) {
-                    encodeSeparator(context, (Separator) element);
+                else if (element instanceof Separator separator) {
+                    encodeSeparator(context, separator);
                 }
             }
         }

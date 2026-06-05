@@ -27,6 +27,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +46,7 @@ import lombok.Data;
 @Data
 public class Chips001 implements Serializable {
 
-    private static final long serialVersionUID = -8778258234357429563L;
+    @Serial private static final long serialVersionUID = -8778258234357429563L;
 
     private List<String> values;
 

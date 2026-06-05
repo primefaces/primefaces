@@ -273,8 +273,8 @@ public interface UIColumn {
     }
 
     default UIComponent asUIComponent() {
-        if (this instanceof UIComponent) {
-            return (UIComponent) this;
+        if (this instanceof UIComponent component) {
+            return component;
         }
         throw new UnsupportedOperationException(getClass().getName() + "#asUIComponent is not implemented");
     }

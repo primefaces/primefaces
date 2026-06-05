@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.autocomplete;
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.GeneratedDriverService;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -42,7 +43,7 @@ import lombok.Data;
 @Data
 public class AutoComplete002 implements Serializable {
 
-    private static final long serialVersionUID = 5157497001324985194L;
+    @Serial private static final long serialVersionUID = 5157497001324985194L;
 
     @Inject
     private GeneratedDriverService service;

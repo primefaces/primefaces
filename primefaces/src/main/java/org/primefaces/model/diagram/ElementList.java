@@ -23,12 +23,13 @@
  */
 package org.primefaces.model.diagram;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.UUID;
 
 class ElementList extends ArrayList<Element> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     public boolean add(Element e) {

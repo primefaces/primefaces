@@ -362,8 +362,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
 
             for (UIComponent child : group.getChildren()) {
                 if (child.isRendered()) {
-                    if (child instanceof Row) {
-                        Row headerRow = (Row) child;
+                    if (child instanceof Row headerRow) {
                         String rowClass = headerRow.getStyleClass();
                         String rowStyle = headerRow.getStyle();
 
@@ -377,11 +376,11 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
 
                         for (UIComponent headerRowChild : headerRow.getChildren()) {
                             if (headerRowChild.isRendered()) {
-                                if (headerRowChild instanceof Column) {
-                                    encodeColumnHeader(context, component, (Column) headerRowChild);
+                                if (headerRowChild instanceof Column column) {
+                                    encodeColumnHeader(context, component, column);
                                 }
-                                else if (headerRowChild instanceof Columns) {
-                                    List<DynamicColumn> dynamicColumns = ((Columns) headerRowChild).getDynamicColumns();
+                                else if (headerRowChild instanceof Columns columns) {
+                                    List<DynamicColumn> dynamicColumns = columns.getDynamicColumns();
                                     for (DynamicColumn dynaColumn : dynamicColumns) {
                                         dynaColumn.applyModel();
                                         encodeColumnHeader(context, component, dynaColumn);
@@ -413,8 +412,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
                 if (column instanceof Column) {
                     encodeColumnHeader(context, component, column);
                 }
-                else if (column instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) column;
+                else if (column instanceof DynamicColumn dynamicColumn) {
                     dynamicColumn.applyModel();
 
                     encodeColumnHeader(context, component, dynamicColumn);
@@ -874,8 +872,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
 
             for (UIComponent child : group.getChildren()) {
                 if (child.isRendered()) {
-                    if (child instanceof Row) {
-                        Row footerRow = (Row) child;
+                    if (child instanceof Row footerRow) {
                         String rowClass = footerRow.getStyleClass();
                         String rowStyle = footerRow.getStyle();
 
@@ -889,11 +886,11 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
 
                         for (UIComponent footerRowChild : footerRow.getChildren()) {
                             if (footerRowChild.isRendered()) {
-                                if (footerRowChild instanceof Column) {
-                                    encodeColumnFooter(context, tt, (Column) footerRowChild);
+                                if (footerRowChild instanceof Column column) {
+                                    encodeColumnFooter(context, tt, column);
                                 }
-                                else if (footerRowChild instanceof Columns) {
-                                    List<DynamicColumn> dynamicColumns = ((Columns) footerRowChild).getDynamicColumns();
+                                else if (footerRowChild instanceof Columns columns) {
+                                    List<DynamicColumn> dynamicColumns = columns.getDynamicColumns();
                                     for (DynamicColumn dynaColumn : dynamicColumns) {
                                         dynaColumn.applyModel();
                                         encodeColumnFooter(context, tt, dynaColumn);
@@ -925,8 +922,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
                 if (column instanceof Column) {
                     encodeColumnFooter(context, tt, column);
                 }
-                else if (column instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) column;
+                else if (column instanceof DynamicColumn dynamicColumn) {
                     dynamicColumn.applyModel();
 
                     encodeColumnFooter(context, tt, dynamicColumn);

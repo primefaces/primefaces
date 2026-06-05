@@ -27,12 +27,14 @@ package org.primefaces.event;
 import org.primefaces.model.file.UploadedFile;
 
 import jakarta.faces.component.UIComponent;
+
+import java.io.Serial;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.FacesListener;
 
 public class FileUploadEvent extends FacesEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private final UploadedFile file;
     private final int totalFilesCount;

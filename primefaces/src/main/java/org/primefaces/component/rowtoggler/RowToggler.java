@@ -43,8 +43,8 @@ public class RowToggler extends RowTogglerBaseImpl {
             UIComponent parent = getParent();
 
             while (parent != null) {
-                if (parent instanceof DataTable) {
-                    parentTable = (DataTable) parent;
+                if (parent instanceof DataTable table) {
+                    parentTable = table;
                     break;
                 }
 

@@ -107,14 +107,16 @@ class HierarchyScannerTest {
     void singleClass_propertyAnnotations_areCollected() {
         JavaFileObject source = JavaFileObjects.forSourceString(
                 "com.example.SimpleBase",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.Property;\n"
-                        + "public abstract class SimpleBase {\n"
-                        + "    @Property(description = \"The label\")\n"
-                        + "    public abstract String getLabel();\n"
-                        + "    @Property(description = \"Is it closable?\")\n"
-                        + "    public abstract boolean isClosable();\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.Property;
+                public abstract class SimpleBase {
+                    @Property(description = "The label")
+                    public abstract String getLabel();
+                    @Property(description = "Is it closable?")
+                    public abstract boolean isClosable();
+                }
+                """);
 
         HierarchyScannerResult result = compile("com.example.SimpleBase", source);
 
@@ -138,20 +140,24 @@ class HierarchyScannerTest {
     void parentChild_inheritedPropertiesAreMerged() {
         JavaFileObject parent = JavaFileObjects.forSourceString(
                 "com.example.ParentBase",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.Property;\n"
-                        + "public abstract class ParentBase {\n"
-                        + "    @Property(description = \"Parent style\")\n"
-                        + "    public abstract String getStyle();\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.Property;
+                public abstract class ParentBase {
+                    @Property(description = "Parent style")
+                    public abstract String getStyle();
+                }
+                """);
         JavaFileObject child = JavaFileObjects.forSourceString(
                 "com.example.ChildBase",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.Property;\n"
-                        + "public abstract class ChildBase extends ParentBase {\n"
-                        + "    @Property(description = \"Child value\")\n"
-                        + "    public abstract String getValue();\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.Property;
+                public abstract class ChildBase extends ParentBase {
+                    @Property(description = "Child value")
+                    public abstract String getValue();
+                }
+                """);
 
         HierarchyScannerResult result = compile("com.example.ChildBase", parent, child);
 
@@ -164,20 +170,24 @@ class HierarchyScannerTest {
     void child_internalTrue_overridesParentDefinition() {
         JavaFileObject parent = JavaFileObjects.forSourceString(
                 "com.example.ParentBase",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.Property;\n"
-                        + "public abstract class ParentBase {\n"
-                        + "    @Property(description = \"Parent widget var\")\n"
-                        + "    public abstract String getWidgetVar();\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.Property;
+                public abstract class ParentBase {
+                    @Property(description = "Parent widget var")
+                    public abstract String getWidgetVar();
+                }
+                """);
         JavaFileObject child = JavaFileObjects.forSourceString(
                 "com.example.ChildBase",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.Property;\n"
-                        + "public abstract class ChildBase extends ParentBase {\n"
-                        + "    @Property(description = \"Hidden\", internal = true)\n"
-                        + "    public abstract String getWidgetVar();\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.Property;
+                public abstract class ChildBase extends ParentBase {
+                    @Property(description = "Hidden", internal = true)
+                    public abstract String getWidgetVar();
+                }
+                """);
 
         HierarchyScannerResult result = compile("com.example.ChildBase", parent, child);
 
@@ -191,17 +201,21 @@ class HierarchyScannerTest {
     void annotatedInterface_propertiesCollected() {
         JavaFileObject iface = JavaFileObjects.forSourceString(
                 "com.example.HasWidget",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.Property;\n"
-                        + "public interface HasWidget {\n"
-                        + "    @Property(description = \"The widget variable name\")\n"
-                        + "    String getWidgetVar();\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.Property;
+                public interface HasWidget {
+                    @Property(description = "The widget variable name")
+                    String getWidgetVar();
+                }
+                """);
         JavaFileObject impl = JavaFileObjects.forSourceString(
                 "com.example.WidgetBase",
-                "package com.example;\n"
-                        + "public abstract class WidgetBase implements HasWidget {\n"
-                        + "}\n");
+                """
+                package com.example;
+                public abstract class WidgetBase implements HasWidget {
+                }
+                """);
 
         HierarchyScannerResult result = compile("com.example.WidgetBase", iface, impl);
 
@@ -213,14 +227,16 @@ class HierarchyScannerTest {
     void facetAnnotations_areCollected() {
         JavaFileObject source = JavaFileObjects.forSourceString(
                 "com.example.PanelBase",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.Facet;\n"
-                        + "public abstract class PanelBase {\n"
-                        + "    @Facet(description = \"The panel header\")\n"
-                        + "    public abstract Object getHeaderFacet();\n"
-                        + "    @Facet(description = \"The panel footer\")\n"
-                        + "    public abstract Object getFooterFacet();\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.Facet;
+                public abstract class PanelBase {
+                    @Facet(description = "The panel header")
+                    public abstract Object getHeaderFacet();
+                    @Facet(description = "The panel footer")
+                    public abstract Object getFooterFacet();
+                }
+                """);
 
         HierarchyScannerResult result = compile("com.example.PanelBase", source);
 
@@ -235,12 +251,14 @@ class HierarchyScannerTest {
     void behaviorEvent_singleAnnotation_isCollected() {
         JavaFileObject source = JavaFileObjects.forSourceString(
                 "com.example.ClickBehaviorBase",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.FacesBehaviorEvent;\n"
-                        + "import jakarta.faces.event.BehaviorEvent;\n"
-                        + "@FacesBehaviorEvent(name = \"click\", event = BehaviorEvent.class, defaultEvent = true)\n"
-                        + "public abstract class ClickBehaviorBase {\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.FacesBehaviorEvent;
+                import jakarta.faces.event.BehaviorEvent;
+                @FacesBehaviorEvent(name = "click", event = BehaviorEvent.class, defaultEvent = true)
+                public abstract class ClickBehaviorBase {
+                }
+                """);
 
         HierarchyScannerResult result = compile("com.example.ClickBehaviorBase", source);
 
@@ -255,17 +273,19 @@ class HierarchyScannerTest {
     void behaviorEvents_container_allEventsCollected() {
         JavaFileObject source = JavaFileObjects.forSourceString(
                 "com.example.MultiEventBase",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.FacesBehaviorEvent;\n"
-                        + "import org.primefaces.cdk.api.FacesBehaviorEvents;\n"
-                        + "import jakarta.faces.event.BehaviorEvent;\n"
-                        + "@FacesBehaviorEvents({\n"
-                        + "    @FacesBehaviorEvent(name = \"select\",   event = BehaviorEvent.class, defaultEvent = true),\n"
-                        + "    @FacesBehaviorEvent(name = \"unselect\", event = BehaviorEvent.class),\n"
-                        + "    @FacesBehaviorEvent(name = \"toggle\",   event = BehaviorEvent.class, implicit = true)\n"
-                        + "})\n"
-                        + "public abstract class MultiEventBase {\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.FacesBehaviorEvent;
+                import org.primefaces.cdk.api.FacesBehaviorEvents;
+                import jakarta.faces.event.BehaviorEvent;
+                @FacesBehaviorEvents({
+                    @FacesBehaviorEvent(name = "select",   event = BehaviorEvent.class, defaultEvent = true),
+                    @FacesBehaviorEvent(name = "unselect", event = BehaviorEvent.class),
+                    @FacesBehaviorEvent(name = "toggle",   event = BehaviorEvent.class, implicit = true)
+                })
+                public abstract class MultiEventBase {
+                }
+                """);
 
         HierarchyScannerResult result = compile("com.example.MultiEventBase", source);
 
@@ -283,20 +303,24 @@ class HierarchyScannerTest {
     void child_behaviorEvent_overridesParentByName() {
         JavaFileObject parent = JavaFileObjects.forSourceString(
                 "com.example.ParentBehaviorBase",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.FacesBehaviorEvent;\n"
-                        + "import jakarta.faces.event.BehaviorEvent;\n"
-                        + "@FacesBehaviorEvent(name = \"click\", event = BehaviorEvent.class, description = \"parent click\")\n"
-                        + "public abstract class ParentBehaviorBase {\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.FacesBehaviorEvent;
+                import jakarta.faces.event.BehaviorEvent;
+                @FacesBehaviorEvent(name = "click", event = BehaviorEvent.class, description = "parent click")
+                public abstract class ParentBehaviorBase {
+                }
+                """);
         JavaFileObject child = JavaFileObjects.forSourceString(
                 "com.example.ChildBehaviorBase",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.FacesBehaviorEvent;\n"
-                        + "import jakarta.faces.event.BehaviorEvent;\n"
-                        + "@FacesBehaviorEvent(name = \"click\", event = BehaviorEvent.class, description = \"child click\")\n"
-                        + "public abstract class ChildBehaviorBase extends ParentBehaviorBase {\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.FacesBehaviorEvent;
+                import jakarta.faces.event.BehaviorEvent;
+                @FacesBehaviorEvent(name = "click", event = BehaviorEvent.class, description = "child click")
+                public abstract class ChildBehaviorBase extends ParentBehaviorBase {
+                }
+                """);
 
         HierarchyScannerResult result = compile("com.example.ChildBehaviorBase", parent, child);
 
@@ -310,14 +334,16 @@ class HierarchyScannerTest {
     void nonGetterPropertyAnnotation_isIgnored() {
         JavaFileObject source = JavaFileObjects.forSourceString(
                 "com.example.BadBase",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.Property;\n"
-                        + "public abstract class BadBase {\n"
-                        + "    @Property(description = \"Valid\")\n"
-                        + "    public abstract String getGoodProp();\n"
-                        + "    @Property(description = \"Invalid placement\")\n"
-                        + "    public abstract void processAction();\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.Property;
+                public abstract class BadBase {
+                    @Property(description = "Valid")
+                    public abstract String getGoodProp();
+                    @Property(description = "Invalid placement")
+                    public abstract void processAction();
+                }
+                """);
 
         CapturingProcessor processor = new CapturingProcessor("com.example.BadBase");
         Compilation compilation = Compiler.javac().withProcessors(processor).compile(source);
@@ -334,21 +360,25 @@ class HierarchyScannerTest {
     void diamondInterface_propertyNotDuplicated() {
         JavaFileObject base = JavaFileObjects.forSourceString(
                 "com.example.HasStyle",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.Property;\n"
-                        + "public interface HasStyle {\n"
-                        + "    @Property(description = \"CSS style\")\n"
-                        + "    String getStyle();\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.Property;
+                public interface HasStyle {
+                    @Property(description = "CSS style")
+                    String getStyle();
+                }
+                """);
         JavaFileObject left  = JavaFileObjects.forSourceString("com.example.HasInput",
                 "package com.example;\npublic interface HasInput extends HasStyle {}\n");
         JavaFileObject right = JavaFileObjects.forSourceString("com.example.HasOutput",
                 "package com.example;\npublic interface HasOutput extends HasStyle {}\n");
         JavaFileObject leaf  = JavaFileObjects.forSourceString(
                 "com.example.DiamondBase",
-                "package com.example;\n"
-                        + "public abstract class DiamondBase implements HasInput, HasOutput {\n"
-                        + "}\n");
+                """
+                package com.example;
+                public abstract class DiamondBase implements HasInput, HasOutput {
+                }
+                """);
 
         HierarchyScannerResult result = compile("com.example.DiamondBase", base, left, right, leaf);
 
@@ -361,17 +391,21 @@ class HierarchyScannerTest {
     void abstractGetterInAncestor_getterIsGenerated() {
         JavaFileObject parent = JavaFileObjects.forSourceString(
                 "com.example.AbstractParent",
-                "package com.example;\n"
-                        + "import org.primefaces.cdk.api.Property;\n"
-                        + "public abstract class AbstractParent {\n"
-                        + "    @Property(description = \"The for attribute\")\n"
-                        + "    public abstract String getFor();\n"
-                        + "}\n");
+                """
+                package com.example;
+                import org.primefaces.cdk.api.Property;
+                public abstract class AbstractParent {
+                    @Property(description = "The for attribute")
+                    public abstract String getFor();
+                }
+                """);
         JavaFileObject child = JavaFileObjects.forSourceString(
                 "com.example.ChildBase",
-                "package com.example;\n"
-                        + "public abstract class ChildBase extends AbstractParent {\n"
-                        + "}\n");
+                """
+                package com.example;
+                public abstract class ChildBase extends AbstractParent {
+                }
+                """);
 
         HierarchyScannerResult result = compile("com.example.ChildBase", parent, child);
 
@@ -389,9 +423,11 @@ class HierarchyScannerTest {
     void threeLevelHierarchy_abstractRedeclarationWithInternal_getterIsGenerated() {
         JavaFileObject base = JavaFileObjects.forSourceString(
                 "org.primefaces.cdk.impl.subclass.Base",
-                "package org.primefaces.cdk.impl.subclass;\n"
-                        + "public abstract class Base extends BaseClassOverrideProperty {\n"
-                        + "}\n");
+                """
+                package org.primefaces.cdk.impl.subclass;
+                public abstract class Base extends BaseClassOverrideProperty {
+                }
+                """);
 
         HierarchyScannerResult result = compile("org.primefaces.cdk.impl.subclass.Base", base);
 
@@ -411,9 +447,11 @@ class HierarchyScannerTest {
     void threeLevelHierarchy_concreteGetterSilentlyInherited_noGetterGenerated() {
         JavaFileObject base = JavaFileObjects.forSourceString(
                 "org.primefaces.cdk.impl.subclass.Base",
-                "package org.primefaces.cdk.impl.subclass;\n"
-                        + "public abstract class Base extends BaseClassWithoutProperties {\n"
-                        + "}\n");
+                """
+                package org.primefaces.cdk.impl.subclass;
+                public abstract class Base extends BaseClassWithoutProperties {
+                }
+                """);
 
         HierarchyScannerResult result = compile("org.primefaces.cdk.impl.subclass.Base", base);
 
@@ -429,9 +467,11 @@ class HierarchyScannerTest {
     void asdasd() {
         JavaFileObject base = JavaFileObjects.forSourceString(
                 "org.primefaces.cdk.impl.subclass.Base",
-                "package org.primefaces.cdk.impl.subclass;\n"
-                        + "public abstract class Base extends SuperBaseClass implements AdditionalPropertiesInterface {\n"
-                        + "}\n");
+                """
+                package org.primefaces.cdk.impl.subclass;
+                public abstract class Base extends SuperBaseClass implements AdditionalPropertiesInterface {
+                }
+                """);
 
         HierarchyScannerResult result = compile("org.primefaces.cdk.impl.subclass.Base", base);
 

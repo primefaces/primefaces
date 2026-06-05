@@ -26,12 +26,13 @@ package org.primefaces.model;
 import org.primefaces.util.EscapeUtils;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.io.Writer;
 
 public class ResponsiveOption implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String breakpoint;
     private int numVisible;

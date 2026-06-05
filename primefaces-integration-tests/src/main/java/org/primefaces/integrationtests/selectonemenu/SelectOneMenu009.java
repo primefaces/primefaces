@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.selectonemenu;
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -41,7 +42,7 @@ import lombok.Data;
 @Data
 public class SelectOneMenu009 implements Serializable {
 
-    private static final long serialVersionUID = -1176776788684122837L;
+    @Serial private static final long serialVersionUID = -1176776788684122837L;
 
     @Inject
     private RealDriverService driverService;

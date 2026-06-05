@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.event.RowEditEvent;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -41,7 +42,7 @@ import lombok.Data;
 @Data
 public class DataTable007Lazy implements Serializable {
 
-    private static final long serialVersionUID = 2990776186773208159L;
+    @Serial private static final long serialVersionUID = 2990776186773208159L;
 
     protected ProgrammingLanguageLazyDataModel lazyDataModel;
 
