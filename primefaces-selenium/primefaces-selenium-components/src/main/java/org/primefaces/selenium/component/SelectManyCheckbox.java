@@ -108,8 +108,8 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
     }
 
     public List<String> getLabels() {
-        return getCheckboxes().stream()
-                    .map(WebElement::getText)
+        return getItems().stream()
+                    .map(SelectItem::getLabel)
                     .collect(Collectors.toList());
     }
 
@@ -141,5 +141,12 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
 
     public boolean isSelected(int index) {
         return getItems().get(index).isSelected();
+    }
+
+    public List<String> getSelectedLabels() {
+        return getItems().stream()
+                    .filter(SelectItem::isSelected)
+                    .map(SelectItem::getLabel)
+                    .collect(Collectors.toList());
     }
 }
