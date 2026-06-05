@@ -52,15 +52,15 @@ $surface-f: $shade000 !default;
 
 
 // highlight defaults (overridden by accent)
-$highlightBg: $slate-100 !default;
-$highlightTextColor: $slate-800 !default;
+$highlightBg: $shade100 !default;
+$highlightTextColor: $shade800 !default;
 
 // general — PrimeUIX v3: typography, motion, radius
 $fontSize:1rem !default;
 $fontFamily:Inter, sans-serif !default;
 $lineHeight: 1.5 !default;
 $textColor: $shade700 !default;
-$textSecondaryColor: $slate-500 !default;
+$textSecondaryColor: $shade500 !default;
 $transitionDuration: 0.2s !default;
 $transition: background-color $transitionDuration, color $transitionDuration, border-color $transitionDuration, box-shadow $transitionDuration, opacity $transitionDuration !default;
 $actionIconTransition: background-color $transitionDuration, color $transitionDuration, box-shadow $transitionDuration, opacity $transitionDuration ease-in-out !default;
@@ -150,7 +150,7 @@ $inputContentPanelBg:$shade000 !default;
 $inputContentPanelTextColor:$shade700 !default;
 
 //inputs with overlays
-$inputOverlayBorder:0 none !default;                  
+$inputOverlayBorder:1px solid $inputBorderColor !default;
 $inputOverlayShadow:0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12) !default;
 
 //inputs with buttons
