@@ -23,7 +23,7 @@
         <webdriver.headless>false</webdriver.headless>
         <webdriver.browser>chrome</webdriver.browser>
         <primefaces.CSP>false</primefaces.CSP>
-        <primefaces.THEME>saga-blue</primefaces.THEME>
+        <primefaces.THEME>aura-light-emerald</primefaces.THEME>
         <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <jakarta.faces.STATE_SAVING_METHOD>server</jakarta.faces.STATE_SAVING_METHOD>
 
@@ -414,6 +414,12 @@
             <id>csp</id>
             <properties>
                 <primefaces.CSP>true</primefaces.CSP>
+            </properties>
+        </profile>
+        <profile>
+            <id>theme-aura</id>
+            <properties>
+                <primefaces.THEME>aura-light-emerald</primefaces.THEME>
             </properties>
         </profile>
         <profile>
