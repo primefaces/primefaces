@@ -25,6 +25,8 @@ PrimeFaces per default only comes with the saga-blue theme.
 The primefaces-themes module contains all other themes:
 
 - primefaces-arya-blue
+- primefaces-aura-dark-emerald
+- primefaces-aura-light-emerald
 - primefaces-bootstrap4-blue-dark
 - primefaces-bootstrap4-blue-light
 - primefaces-bootstrap4-dark-common
