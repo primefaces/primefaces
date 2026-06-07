@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 25]
+        java: [17, 25]
     steps:
       - uses: actions/checkout@v6
       - name: Set up JDK ${{ matrix.java }}
@@ -54,9 +54,9 @@ jobs:
       matrix:
         include:
           # Java 11 with Faces 4.0
-          - java: 11
+          - java: 17
             facesimpl: 'mojarra-4.0'
-          - java: 11
+          - java: 17
             facesimpl: 'myfaces-4.0'
           # Java 17 with Faces 4.1
           - java: 17
