@@ -73,7 +73,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <junit.version>5.13.4</junit.version>
         <poi.version>5.5.1</poi.version>
-        <jacoco.version>0.8.14</jacoco.version>
+        <jacoco.version>0.8.15</jacoco.version>
         <tomcat.version>10.1.55</tomcat.version>
         <slf4j.version>2.0.18</slf4j.version>
         <dart-sass.version>1.79.6</dart-sass.version>
@@ -383,7 +383,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.14</version>
+                        <version>0.8.15</version>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
