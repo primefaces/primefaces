@@ -83,7 +83,7 @@ jobs:
       - name: Build
         run: mvn clean install -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true --batch-mode --show-version
       - name: Integration Tests
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-aura,csp,${{ matrix.facesimpl }}
       - name: Upload failure-screenshots
         uses: actions/upload-artifact@v7
         if: always()
