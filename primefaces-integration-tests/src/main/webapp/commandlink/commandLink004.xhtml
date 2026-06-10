@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+    <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+        <h:head/>
+
+        <h:body>
+            <h:form id="form">
+                <p:messages id="messages" showDetail="true"/>
+
+                <p:inputText id="name" value="#{commandLink004.text}" required="true" label="Name">
+                    <f:validateLength minimum="3" maximum="50"/>
+                    <p:clientValidator event="keyup"/>
+                </p:inputText>
+                <p:message for="name" id="msgName"/>
+
+                <p:commandLink id="linkValidate" value="Submit"
+                               validateClient="true"
+                               process="@form" update="@form"
+                               action="#{commandLink004.submit()}"/>
+            </h:form>
+        </h:body>
+    </f:view>
+
+</html>
