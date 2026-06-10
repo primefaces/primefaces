@@ -41,23 +41,6 @@ class InputText006Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("InputText: p:ajax 'blur' event fires its listener")
-    void blurFiresAjax(Page page) {
-        // Arrange
-        InputText blurInput = page.blurInput;
-        assertEquals("", page.eventlog.getText());
-
-        // Act - type and then tab away to blur the field
-        blurInput.getInput().sendKeys("hi");
-        PrimeSelenium.guardAjax(blurInput.getInput()).sendKeys(Keys.TAB);
-
-        // Assert
-        assertEquals("blur", page.eventlog.getText());
-        assertNoJavascriptErrors();
-    }
-
-    @Test
-    @Order(2)
     @DisplayName("InputText: p:ajax 'keyup' event fires its listener")
     void keyupFiresAjax(Page page) {
         // Arrange
@@ -73,7 +56,7 @@ class InputText006Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @Order(3)
+    @Order(2)
     @DisplayName("InputText: p:ajax 'change' event fires its listener")
     void changeFiresAjax(Page page) {
         // Arrange
@@ -85,6 +68,23 @@ class InputText006Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("change", page.eventlog.getText());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("InputText: p:ajax 'blur' event fires its listener")
+    void blurFiresAjax(Page page) {
+        // Arrange
+        InputText blurInput = page.blurInput;
+        assertEquals("", page.eventlog.getText());
+
+        // Act - type and then tab away to blur the field
+        blurInput.getInput().sendKeys("hi");
+        PrimeSelenium.guardAjax(blurInput.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        assertEquals("blur", page.eventlog.getText());
         assertNoJavascriptErrors();
     }
 

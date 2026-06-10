@@ -12,12 +12,6 @@
     <h:body>
 
         <h:form id="form">
-            <p:outputLabel for="@next" value="Blur"/>
-            <p:inputText id="blurInput" value="#{inputText006.value}">
-                <p:ajax event="blur" process="@this" listener="#{inputText006.onBlur}" update="form:eventlog"/>
-            </p:inputText>
-            <br/>
-
             <p:outputLabel for="@next" value="Keyup"/>
             <p:inputText id="keyupInput" value="#{inputText006.value}">
                 <p:ajax event="keyup" process="@this" listener="#{inputText006.onKeyup}" update="form:eventlog"/>
@@ -27,6 +21,12 @@
             <p:outputLabel for="@next" value="Change"/>
             <p:inputText id="changeInput" value="#{inputText006.value}">
                 <p:ajax event="change" process="@this" listener="#{inputText006.onChange}" update="form:eventlog"/>
+            </p:inputText>
+            <br/>
+
+            <p:outputLabel for="@next" value="Blur"/>
+            <p:inputText id="blurInput" value="#{inputText006.value}">
+                <p:ajax event="blur" process="@this" listener="#{inputText006.onBlur}" update="form:eventlog"/>
             </p:inputText>
             <br/>
 
