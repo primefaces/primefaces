@@ -78,9 +78,10 @@ public abstract class ImageCropperBase extends PrimeUIInput implements Widget {
     public abstract boolean isGuides();
 
     @Property(defaultValue = "1", description = "Define the view mode of the cropper. " +
-        "ViewMode to 0, the crop box can extend outside the canvas, while a value of 1, 2 or 3 will restrict the crop box to the size of the canvas. " +
-        "ViewMode of 2 or 3 will additionally restrict the canvas to the container. " +
-        "Note that if the proportions of the canvas and the container are the same, there is no difference between 2 and 3.")
+            "ViewMode 0 is not supported. " +
+            "A value of 1, 2 or 3 will restrict the crop box to the size of the canvas. " +
+            "ViewMode of 2 or 3 will additionally restrict the canvas to the container. " +
+            "Note that if the proportions of the canvas and the container are the same, there is no difference between 2 and 3.")
     public abstract int getViewMode();
 
     @Property(defaultValue = "true", description = "Controls browser caching mode of the resource.")

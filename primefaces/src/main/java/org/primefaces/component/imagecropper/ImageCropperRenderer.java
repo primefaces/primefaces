@@ -46,6 +46,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -66,6 +67,7 @@ import org.apache.commons.io.input.BoundedInputStream;
 @FacesRenderer(rendererType = ImageCropper.DEFAULT_RENDERER, componentFamily = ImageCropper.COMPONENT_FAMILY)
 public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
 
+    private static final Logger LOGGER = Logger.getLogger(ImageCropperRenderer.class.getName());
     private static final Pattern IMAGE_TYPE_PATTERN = Pattern.compile("^image/([^;]+);?.*$");
 
     @Override
@@ -90,10 +92,16 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         String image = clientId + "_image";
         String select = null;
 
+        int viewMode = component.getViewMode();
+        if (viewMode <= 0 || viewMode > 3) {
+            LOGGER.warning("ImageCropper: viewMode='" + viewMode + "' is not valid or not supported and has been changed to viewMode='1'.");
+            viewMode = 1;
+        }
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, image)
                 .attr("image", image)
-                .attr("viewMode", component.getViewMode(), 0)
+                .attr("viewMode", viewMode)
                 .attr("aspectRatio", component.getAspectRatio(), Double.MIN_VALUE)
                 .attr("responsive", component.isResponsive(), true)
                 .attr("zoomOnTouch", component.isZoomOnTouch(), true)
