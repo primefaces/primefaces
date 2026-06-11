@@ -315,7 +315,7 @@ __metadata:
     "@types/downloadjs": "npm:1.4.6"
     "@types/hammerjs": "npm:2.0.46"
     "@types/inputmask": "npm:5.0.7"
-    "@types/jquery": "npm:4.0.0"
+    "@types/jquery": "npm:4.0.1"
     "@types/jquery-cropper": "npm:1.0.4"
     "@types/jquery-mousewheel": "npm:3.1.12"
     "@types/jquery-touchswipe": "npm:1.6.0"
@@ -323,7 +323,7 @@ __metadata:
     "@types/js-cookie": "npm:3.0.6"
     "@types/jscrollpane": "npm:2.0.35"
     "@types/moment-jdateformatparser": "npm:1.2.0"
-    "@types/node": "npm:25.6.2"
+    "@types/node": "npm:25.9.3"
     "@types/pnpapi": "npm:0.0.5"
     "@types/rangyinputs": "npm:1.2.5"
     "@types/raphael": "npm:2.3.10"
@@ -350,7 +350,7 @@ __metadata:
     jquery-touchswipe: "npm:1.6.19"
     jquery-ui: "npm:1.14.2"
     jquery-ui-timepicker-addon: "patch:jquery-ui-timepicker-addon@npm%3A1.6.3#~/.yarn/patches/jquery-ui-timepicker-addon-npm-1.6.3-b43c27b305.patch"
-    js-cookie: "npm:3.0.7"
+    js-cookie: "npm:3.0.8"
     jscrollpane: "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch"
     jsplumb: "npm:2.15.6"
     keycharm: "npm:0.4.0"
@@ -358,7 +358,7 @@ __metadata:
     moment-jdateformatparser: "npm:1.2.1"
     moment-timezone: "npm:0.6.2"
     primeicons: "npm:7.0.0"
-    primelocale: "npm:2.3.1"
+    primelocale: "npm:2.4.0"
     propagating-hammerjs: "npm:3.0.0"
     quill: "npm:2.0.3"
     rangyinputs: "npm:1.2.0"
@@ -478,12 +478,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:25.6.2":
-  version: 25.6.2
-  resolution: "@types/node@npm:25.6.2"
+"@types/node@npm:25.9.3":
+  version: 25.9.3
+  resolution: "@types/node@npm:25.9.3"
   dependencies:
-    undici-types: "npm:~7.19.0"
-  checksum: 10c0/7f540331aa3ab88c285aeaf2eb43e3992f54f0cdb7f3593d156af67b199d4eaf56590fa1c310a00aa58ff69dba668cb3915a157fe83cd6b40a73bb338a12f09a
+    undici-types: "npm:>=7.24.0 <7.24.7"
+  checksum: 10c0/72d3aece9d42c2c641bcd3f3cb2dc2828b4bd384dfcbd910c404b8859a68bd69d50c4769ce7defd4ff5e049768e23e615f09407ea2cbbb5f44b90d75a7c6b8ca
   languageName: node
   linkType: hard
 
@@ -883,10 +883,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-cookie@npm:3.0.7":
-  version: 3.0.7
-  resolution: "js-cookie@npm:3.0.7"
-  checksum: 10c0/c921c43014e98bb94a1765663a1a10d693048d61444e374c1ecf459eba92320381f9c406e724df9aa44e819c4b606e6a7240f2abe2d5c54ad1e73a3002b191c2
+"js-cookie@npm:3.0.8":
+  version: 3.0.8
+  resolution: "js-cookie@npm:3.0.8"
+  checksum: 10c0/421912a4a55535bda32b3059835864e1182c3af5b4516df00a060edc1fa5a53d38bb8d5a91d5d305e396206f4fd11e829f17850aa5aa8164118c04d8ebf1ff5d
   languageName: node
   linkType: hard
 
@@ -987,10 +987,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"primelocale@npm:2.3.1":
-  version: 2.3.1
-  resolution: "primelocale@npm:2.3.1"
-  checksum: 10c0/ff8c10267615cbb5eafe267bf89f4691d6f6d7fb22cf43351f5e9afa8a14516b5a48e12f5184149823bee1ded57b466ddd577e4a7823ba365e80836c78da6c4c
+"primelocale@npm:2.4.0":
+  version: 2.4.0
+  resolution: "primelocale@npm:2.4.0"
+  checksum: 10c0/e4c32b450506830a20986965bd138986495ab5473a13219bd179297a0d02b78ec05119c9511b3cb31e9094f0d15116749ad3176dd7594cbfefbdb692d7adc312
   languageName: node
   linkType: hard
 
@@ -1069,10 +1069,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~7.19.0":
-  version: 7.19.2
-  resolution: "undici-types@npm:7.19.2"
-  checksum: 10c0/7159f10546f9f6c47d36776bb1bbf8671e87c1e587a6fee84ae1f111ae8de4f914efa8ca0dfcd224f4f4a9dfc3f6028f627ccb5ddaccf82d7fd54671b89fac3e
+"undici-types@npm:>=7.24.0 <7.24.7":
+  version: 7.24.6
+  resolution: "undici-types@npm:7.24.6"
+  checksum: 10c0/d9cd8befb643ac904615c280a095ba4240531f6bb4a5e75a22a7483630ca8d3f1016d2ab6ace6ceda1f63b3a2db2fe037fafe121d6917a0187573aa548ff78ca
   languageName: node
   linkType: hard
 
