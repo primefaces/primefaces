@@ -203,7 +203,7 @@ public class HeadRenderer extends Renderer<UIComponent> {
         writer.write("if(window.PrimeFaces){");
 
         writer.write("PrimeFaces.settings={");
-        writer.write("locale:'" + LocaleUtils.getCurrentLocale(context) + "',");
+        writer.write("locale:'" + EscapeUtils.forJavaScript(LocaleUtils.getCurrentLocale(context).toString()) + "',");
         writer.write("viewId:'" + context.getViewRoot().getViewId() + "',");
         writer.write("contextPath:'" + EscapeUtils.forJavaScript(externalContext.getRequestContextPath()) + "',");
         writer.write("cookiesSecure:" + (requestContext.isSecure() && configuration.isCookiesSecure()));
@@ -236,9 +236,9 @@ public class HeadRenderer extends Renderer<UIComponent> {
                     writer.write(',');
                 }
 
-                String errorPageUrl = context.getExternalContext().getRequestContextPath() + entry.getValue();
+                String errorPageUrl = EscapeUtils.forJavaScript(externalContext.getRequestContextPath()) + entry.getValue();
                 errorPageUrl = context.getApplication().evaluateExpressionGet(context, errorPageUrl, String.class);
-                errorPageUrl = context.getExternalContext().encodeActionURL(errorPageUrl);
+                errorPageUrl = externalContext.encodeActionURL(errorPageUrl);
 
                 writer.write("'" + (entry.getKey() == null ? "" : entry.getKey()) + "':'" + errorPageUrl + "'");
 
