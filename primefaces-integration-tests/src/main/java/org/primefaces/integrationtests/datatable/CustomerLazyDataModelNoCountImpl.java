@@ -48,17 +48,6 @@ public class CustomerLazyDataModelNoCountImpl extends LazyDataModel<Customer> {
     }
 
     @Override
-    public Customer getRowData(String rowKey) {
-        for (Customer customer : datasource) {
-            if (customer.getId() == Integer.parseInt(rowKey)) {
-                return customer;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
     public String getRowKey(Customer customer) {
         return String.valueOf(customer.getId());
     }

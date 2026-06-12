@@ -46,6 +46,7 @@ public class DataTable006 implements Serializable {
 
     private static final long serialVersionUID = -7518459955779385834L;
 
+    private final LazyDataModelCallTracker lazyDataModelCallTracker = new LazyDataModelCallTracker();
     private ProgrammingLanguageLazyDataModel lazyDataModel;
     private List<ProgrammingLanguage> progLanguages;
     private List<ProgrammingLanguage> filteredProgLanguages;
@@ -60,7 +61,7 @@ public class DataTable006 implements Serializable {
     @PostConstruct
     public void init() {
         progLanguages = service.getLangs();
-        lazyDataModel = new ProgrammingLanguageLazyDataModel();
+        lazyDataModel = new ProgrammingLanguageLazyDataModel(lazyDataModelCallTracker);
     }
 
     public void submit() {
@@ -88,5 +89,9 @@ public class DataTable006 implements Serializable {
     public void unselectRows() {
         selectedProgLanguages.clear();
         TestUtils.addMessage("ProgrammingLanguages unselected via backing bean", "");
+    }
+
+    public LazyDataModelCallTracker getLazyDataModelCallTracker() {
+        return lazyDataModelCallTracker;
     }
 }

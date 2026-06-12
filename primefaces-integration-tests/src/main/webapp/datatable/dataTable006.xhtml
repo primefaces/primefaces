@@ -47,6 +47,9 @@
             <p:commandButton id="togglePaginator" value="Paginator" update="@form" action="#{dataTable006.togglePaginator}"/>
 
             <p:commandButton id="buttonUnselect" value="Unselect" update="@form" action="#{dataTable006.unselectRows}"/>
+
+            <h:inputHidden id="loadCallCount" value="#{dataTable006.lazyDataModelCallTracker.loadCallCount}"/>
+            <h:inputHidden id="fullHistory" value="#{dataTable006.lazyDataModelCallTracker.fullHistoryString}"/>
         </h:form>
 
     </h:body>
