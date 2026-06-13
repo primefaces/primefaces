@@ -69,7 +69,7 @@
     "blueimp-file-upload": "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch",
     "component-emitter": "1.3.1",
     "downloadjs": "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch",
-    "esbuild": "0.28.0",
+    "esbuild": "0.28.1",
     "hammerjs": "2.0.8",
     "inputmask": "5.0.10-beta.59",
     "jquery": "4.0.0",
