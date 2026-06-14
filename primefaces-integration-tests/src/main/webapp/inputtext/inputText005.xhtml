@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:outputLabel for="@next" value="Template placeholders"/>
+            <p:inputText id="template" value="#{inputText005.templateValue}" counter="displayTemplate"
+                         maxlength="10" counterTemplate="Entered {1} of {2}, {0} left"/>
+            <br/>
+            <h:outputText id="displayTemplate"/>
+            <br/>
+
+            <p:outputLabel for="@next" value="Count bytes as chars"/>
+            <p:inputText id="bytes" value="#{inputText005.bytesValue}" counter="displayBytes"
+                         maxlength="10" countBytesAsChars="true" counterTemplate="{0}"/>
+            <br/>
+            <h:outputText id="displayBytes"/>
+            <br/>
+
+            <p:outputLabel for="@next" value="Counter without maxlength"/>
+            <p:inputText id="nomax" value="#{inputText005.noMaxValue}" counter="displayNoMax"
+                         counterTemplate="{0}"/>
+            <br/>
+            <h:outputText id="displayNoMax"/>
+
+            <p:commandButton id="button" update="@form" value="Submit"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
