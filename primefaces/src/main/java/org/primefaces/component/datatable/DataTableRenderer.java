@@ -1199,7 +1199,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         //Preselection
-        boolean selected = selectionEnabled && table.getSelectedRowKeys().contains(rowKey);
+        boolean selected = selectionEnabled && table.isRowSelected(rowKey);
         boolean disabled = table.isSelectionDisabled();
         boolean allowSelection = selectionEnabled && !disabled;
         boolean expanded = table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey));

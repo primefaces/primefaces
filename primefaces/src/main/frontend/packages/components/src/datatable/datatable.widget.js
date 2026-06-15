@@ -4840,15 +4840,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      */
     removeSelection(rowKey) {
         if(this.selection.includes('@all')) {
-            // GitHub #3535 if @all was previously selected just select values on page
-            this.clearSelection();
-            var rows = this.tbody.children('tr');
-            for(var i = 0; i < rows.length; i++) {
-                var rowMeta = this.getRowMeta(rows.eq(i));
-                if(rowMeta.key !== rowKey) {
-                    this.addSelection(rowMeta.key);
-                }
-            }
+            // GitHub #14538,#3535: Keep @all and add negative rowKey to mark this row as unselected
+            this.selection.push('!' + rowKey);
         }
         else {
             this.selection = $.grep(this.selection, function(value) {
@@ -4863,7 +4856,14 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {number} rowKey Key of the row to add.
      */
     addSelection(rowKey) {
-        if(!this.isSelected(rowKey)) {
+        if(this.selection.includes('@all')) {
+            // GitHub #14538,#3535: Remove the deselection marker if it exists (reselecting a deselected row)
+            var deselectionMarker = '!' + rowKey;
+            this.selection = $.grep(this.selection, function(value) {
+                return value !== deselectionMarker;
+            });
+        }
+        else if(!this.isSelected(rowKey)) {
             this.selection.push(rowKey);
         }
     }
