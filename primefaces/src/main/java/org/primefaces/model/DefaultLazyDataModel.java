@@ -32,6 +32,7 @@ import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.PropertyDescriptorResolver;
 import org.primefaces.util.SortTableComparator;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -57,7 +58,7 @@ import jakarta.faces.convert.Converter;
  */
 public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = Logger.getLogger(DefaultLazyDataModel.class.getName());
 
@@ -105,8 +106,8 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
         FacesContext context = FacesContext.getCurrentInstance();
         UIComponent source = UIComponent.getCurrentComponent(context);
-        if (source instanceof UITable) {
-            values.sort(SortTableComparator.comparingField(context, (UITable<?>) source));
+        if (source instanceof UITable<?> table) {
+            values.sort(SortTableComparator.comparingField(context, table));
         }
 
         if (sorter != null) {
@@ -169,8 +170,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
                         }
                         // otherwise it's a user-defined filterBy expression
                         else {
-                            if (source instanceof UITable) {
-                                UITable<?> table = (UITable<?>) source;
+                            if (source instanceof UITable<?> table) {
                                 table.invokeOnColumn(filterMeta.getColumnKey(), (column) -> {
                                     Object localValue = ComponentUtils.executeInRequestScope(context, table.getVar(), obj,
                                             () -> filterMeta.getLocalValue(context.getELContext(), column));

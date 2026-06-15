@@ -23,11 +23,12 @@
  */
 package org.primefaces.component.lifecycle;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class PhaseInfo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private int phase;
     private long start;

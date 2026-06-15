@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.password;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -36,7 +37,7 @@ import lombok.Data;
 @Data
 public class Password002 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private String value;
 
     @PostConstruct

@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.fileupload;
 
 import org.primefaces.model.file.UploadedFile;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,7 @@ import lombok.Data;
 @ViewScoped
 @Data
 public class FileUploadView implements Serializable {
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private List<UploadFile> uploadedFiles = Collections.synchronizedList(new ArrayList<>());
 
@@ -52,7 +53,7 @@ public class FileUploadView implements Serializable {
 
     @Data
     public static final class UploadFile implements Serializable {
-        private static final long serialVersionUID = 1L;
+        @Serial private static final long serialVersionUID = 1L;
         private final String fileName;
         private final int size;
 

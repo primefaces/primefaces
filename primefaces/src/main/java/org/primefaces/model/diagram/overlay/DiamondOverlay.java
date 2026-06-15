@@ -23,11 +23,12 @@
  */
 package org.primefaces.model.diagram.overlay;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class DiamondOverlay implements Overlay, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     public String getType() {

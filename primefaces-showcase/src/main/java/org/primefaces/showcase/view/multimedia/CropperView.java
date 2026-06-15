@@ -26,6 +26,7 @@ package org.primefaces.showcase.view.multimedia;
 import org.primefaces.model.CroppedImage;
 
 import java.io.File;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.imageio.stream.FileImageOutputStream;
 
@@ -76,7 +77,7 @@ public class CropperView {
     }
 
     private String getRandomImageName() {
-        int i = (int) (Math.random() * 100000);
+        int i = (int) (ThreadLocalRandom.current().nextDouble() * 100000);
 
         return String.valueOf(i);
     }

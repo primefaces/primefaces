@@ -80,8 +80,7 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
         Enumeration<String> attributeNames = request.getAttributeNames();
         while (attributeNames.hasMoreElements()) {
             Object attribute = request.getAttribute(attributeNames.nextElement());
-            if (attribute instanceof MultipartConfigElement) {
-                MultipartConfigElement multipart = (MultipartConfigElement) attribute;
+            if (attribute instanceof MultipartConfigElement multipart) {
                 return multipart.getLocation();
             }
         }

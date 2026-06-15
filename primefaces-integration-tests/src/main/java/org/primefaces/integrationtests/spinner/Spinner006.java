@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.spinner;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -36,7 +37,7 @@ import lombok.Data;
 @Data
 public class Spinner006 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private Integer integer;
 
     @PostConstruct

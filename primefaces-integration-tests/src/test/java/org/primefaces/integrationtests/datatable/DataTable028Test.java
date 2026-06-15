@@ -193,32 +193,35 @@ class DataTable028Test extends AbstractDataTableTest {
     }
 
     private void assertInitalState() {
-        String expected = StringUtils.deleteWhitespace("Result:\n"
-                + "509, EUR, BB, BB2, A\n"
-                + "512, EUR, BB, BB2, B\n"
-                + "515, EUR, BB, BB2, C\n"
-                + "516, USA, AA, AA, D\n"
-                + "517, USA, AA, AA, E");
+        String expected = StringUtils.deleteWhitespace("""
+                Result:
+                509, EUR, BB, BB2, A
+                512, EUR, BB, BB2, B
+                515, EUR, BB, BB2, C
+                516, USA, AA, AA, D
+                517, USA, AA, AA, E""");
         assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
     }
 
     private void assertAfterBb3Update() {
-        String expected = StringUtils.deleteWhitespace("Result:\n"
-                + "509, EUR, BB, BB3, A\n"
-                + "512, EUR, BB, BB3, B\n"
-                + "515, EUR, BB, BB3, C\n"
-                + "516, USA, AA, AA, D\n"
-                + "517, USA, AA, AA, E");
+        String expected = StringUtils.deleteWhitespace("""
+                Result:
+                509, EUR, BB, BB3, A
+                512, EUR, BB, BB3, B
+                515, EUR, BB, BB3, C
+                516, USA, AA, AA, D
+                517, USA, AA, AA, E""");
         assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
     }
 
     private void assertAfterBb3UpdateSorted() {
-        String expected = StringUtils.deleteWhitespace("Result:\n"
-                + "516, USA, AA, AA, D\n"
-                + "517, USA, AA, AA, E\n"
-                + "509, EUR, BB, BB3, A\n"
-                + "512, EUR, BB, BB3, B\n"
-                + "515, EUR, BB, BB3, C");
+        String expected = StringUtils.deleteWhitespace("""
+                Result:
+                516, USA, AA, AA, D
+                517, USA, AA, AA, E
+                509, EUR, BB, BB3, A
+                512, EUR, BB, BB3, B
+                515, EUR, BB, BB3, C""");
         assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
     }
 

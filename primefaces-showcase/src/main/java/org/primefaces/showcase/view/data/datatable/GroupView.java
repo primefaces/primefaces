@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -100,11 +101,11 @@ public class GroupView implements Serializable {
     }
 
     private int getRandomAmount() {
-        return (int) (Math.random() * 100000);
+        return (int) (ThreadLocalRandom.current().nextDouble() * 100000);
     }
 
     private int getRandomPercentage() {
-        return (int) (Math.random() * 100);
+        return (int) (ThreadLocalRandom.current().nextDouble() * 100);
     }
 
     public Integer getLastYearTotal() {
@@ -143,6 +144,6 @@ public class GroupView implements Serializable {
     }
 
     private int getRandomGoals() {
-        return (int) (Math.random() * 50);
+        return (int) (ThreadLocalRandom.current().nextDouble() * 50);
     }
 }

@@ -26,6 +26,7 @@ package org.primefaces.event.data;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.FilterMeta;
 
+import java.io.Serial;
 import java.util.Map;
 
 import jakarta.faces.component.UIComponent;
@@ -33,7 +34,7 @@ import jakarta.faces.component.behavior.Behavior;
 
 public class FilterEvent extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private Map<String, FilterMeta> filterBy;
 

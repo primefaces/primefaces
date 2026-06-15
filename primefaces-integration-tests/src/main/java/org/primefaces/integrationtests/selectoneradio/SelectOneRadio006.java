@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.selectoneradio;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -36,7 +37,7 @@ import lombok.Data;
 @Data
 public class SelectOneRadio006 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
 
     private String value;
 

@@ -580,8 +580,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
 
         ResponseWriter writer = context.getResponseWriter();
 
-        if (option instanceof SelectItemGroup) {
-            SelectItemGroup group = (SelectItemGroup) option;
+        if (option instanceof SelectItemGroup group) {
 
             writer.startElement("optgroup", null);
             writer.writeAttribute("label", group.getLabel(), null);

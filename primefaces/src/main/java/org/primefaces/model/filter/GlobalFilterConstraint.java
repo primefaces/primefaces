@@ -23,9 +23,11 @@
  */
 package org.primefaces.model.filter;
 
+import java.io.Serial;
+
 public class GlobalFilterConstraint extends ContainsFilterConstraint {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     public GlobalFilterConstraint() {
         // NOOP

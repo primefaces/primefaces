@@ -25,6 +25,7 @@ package org.primefaces.event.schedule;
 
 import org.primefaces.event.DateRangeEvent;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 import jakarta.faces.component.UIComponent;
@@ -32,7 +33,7 @@ import jakarta.faces.component.behavior.Behavior;
 
 public class ScheduleRangeEvent extends DateRangeEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     public ScheduleRangeEvent(UIComponent component, Behavior behavior, LocalDateTime startDate, LocalDateTime endDate) {
         super(component, behavior, startDate, endDate);

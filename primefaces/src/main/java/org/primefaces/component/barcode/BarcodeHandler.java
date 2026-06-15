@@ -107,8 +107,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
             int quietZoneVertical = Integer.parseInt(params.get("mv"));
 
             // #13548 be lenient with EAN13 and EAN8 for check digits
-            if (generator instanceof Ean) {
-                Ean ean = (Ean) generator;
+            if (generator instanceof Ean ean) {
                 if (ean.getMode() == Ean.Mode.EAN13 && value.length() == 13) {
                     value = value.substring(0, 12);
                 }
@@ -118,8 +117,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
             }
 
             // #13548 be lenient with UPC-A for check digits
-            if (generator instanceof Upc) {
-                Upc upc = (Upc) generator;
+            if (generator instanceof Upc upc) {
                 if (upc.getMode() == Mode.UPCA && value.length() == 12) {
                     value = value.substring(0, 11);
                 }
@@ -130,8 +128,8 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
             generator.setQuietZoneHorizontal(quietZoneHorizontal);
             generator.setQuietZoneVertical(quietZoneVertical);
 
-            if (generator instanceof QrCode) {
-                ((QrCode) generator).setPreferredEccLevel(EccLevel.valueOf(params.get("qrec")));
+            if (generator instanceof QrCode code) {
+                code.setPreferredEccLevel(EccLevel.valueOf(params.get("qrec")));
             }
 
             // Make Okapi backwards compatible with Barcode4J legacy values, Okapi is clockwise and Barcode4J is counter-clockwise

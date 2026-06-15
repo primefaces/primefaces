@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.inputnumber;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -37,7 +38,7 @@ import lombok.Data;
 @Data
 public class InputNumber005 implements Serializable {
 
-    private static final long serialVersionUID = 1284846991600576270L;
+    @Serial private static final long serialVersionUID = 1284846991600576270L;
     private BigDecimal value;
 
     @PostConstruct

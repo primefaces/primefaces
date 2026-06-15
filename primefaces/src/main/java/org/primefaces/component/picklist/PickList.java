@@ -250,14 +250,12 @@ public class PickList extends PickListBaseImpl {
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
+        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent behaviorEvent) {
             Map<String, String[]> paramValues = context.getExternalContext().getRequestParameterValuesMap();
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
-
-            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if ("transfer".equals(eventName)) {
                 String[] items = paramValues.get(clientId + "_transferred");
@@ -270,7 +268,7 @@ public class PickList extends PickListBaseImpl {
                 super.queueEvent(transferEvent);
             }
             else if ("select".equals(eventName) || "unselect".equals(eventName) || "reorder".equals(eventName)) {
-                customEvents.put(eventName, (AjaxBehaviorEvent) event);
+                customEvents.put(eventName, behaviorEvent);
             }
         }
         else {

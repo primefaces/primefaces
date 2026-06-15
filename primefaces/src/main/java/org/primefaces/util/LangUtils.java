@@ -392,8 +392,7 @@ public class LangUtils {
             https://github.com/spring-projects/spring-framework/blob/master/spring-core/src/main/java/org/springframework/core/GenericTypeResolver.java
              */
             while (superClass != null && genericSuperclass != null) {
-                if (genericSuperclass instanceof ParameterizedType) {
-                    ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;
+                if (genericSuperclass instanceof ParameterizedType parameterizedType) {
                     List<Type> actualTypeArgs = Arrays.asList(parameterizedType.getActualTypeArguments());
                     List<Type> genericTypeArgs;
 
@@ -421,8 +420,7 @@ public class LangUtils {
                         ParameterizedType pt = (ParameterizedType) getter.getGenericReturnType();
 
                         Type listType = pt.getActualTypeArguments()[0];
-                        if (listType  instanceof TypeVariable) {
-                            TypeVariable<?> typeVar = (TypeVariable<?>) listType;
+                        if (listType  instanceof TypeVariable<?> typeVar) {
                             Type typeVarResolved = genericTypeArgs2ActualTypeArgs.get(typeVar);
                             return loadClassForName(typeVarResolved.getTypeName());
                         }

@@ -23,13 +23,14 @@
  */
 package org.primefaces.model.filter;
 
+import java.io.Serial;
 import java.util.Locale;
 
 import jakarta.faces.context.FacesContext;
 
 public class NegationFilterConstraintWrapper implements FilterConstraint {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private FilterConstraint wrapped;
 

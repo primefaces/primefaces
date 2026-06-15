@@ -23,12 +23,15 @@
  */
 package org.primefaces.event.data;
 
+import java.io.Serial;
+
+
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.event.ComponentSystemEvent;
 
 public class PostSortEvent extends ComponentSystemEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     public PostSortEvent(UIComponent component) {
         super(component);

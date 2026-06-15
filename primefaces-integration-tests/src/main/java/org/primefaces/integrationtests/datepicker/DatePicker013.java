@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -37,7 +38,7 @@ import lombok.Data;
 @Data
 public class DatePicker013 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private LocalDateTime localDateTime1;
     private LocalDateTime localDateTime2;

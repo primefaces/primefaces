@@ -63,8 +63,8 @@ public class StepsRenderer extends BaseMenuRenderer<Steps> {
         int i = 0;
         if (elements != null && !elements.isEmpty()) {
             for (MenuElement element : elements) {
-                if (element.isRendered() && (element instanceof MenuItem)) {
-                    encodeItem(context, component, (MenuItem) element, activeIndex, i);
+                if (element.isRendered() && (element instanceof MenuItem item)) {
+                    encodeItem(context, component, item, activeIndex, i);
                     i++;
                 }
             }

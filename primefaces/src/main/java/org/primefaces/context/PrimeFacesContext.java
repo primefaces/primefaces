@@ -88,13 +88,13 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
         ResponseWriter wrappedWriter = writer;
         while (wrappedWriter != null) {
-            if (wrappedWriter instanceof ResponseWriterWrapper) {
+            if (wrappedWriter instanceof ResponseWriterWrapper wrapper) {
                 if (wrappedWriter instanceof MoveScriptsToBottomResponseWriter
                         || wrappedWriter instanceof CspResponseWriter) {
                     alreadyWrapped = true;
                     break;
                 }
-                wrappedWriter = ((ResponseWriterWrapper) wrappedWriter).getWrapped();
+                wrappedWriter = wrapper.getWrapped();
             }
             else {
                 break;
@@ -137,8 +137,8 @@ public class PrimeFacesContext extends FacesContextWrapper {
                 && FacesMessage.SEVERITY_ERROR.equals(message.getSeverity())) {
 
             getViewRoot().invokeOnComponent(this, clientId, (context, target) -> {
-                if (target instanceof UIInput) {
-                    ((UIInput) target).setValid(false);
+                if (target instanceof UIInput input) {
+                    input.setValid(false);
                 }
             });
         }

@@ -76,12 +76,12 @@ public class Badge extends BadgeBaseImpl {
     }
 
     public static BadgeModel getBadgeModel(Object object) {
-        if (object instanceof BadgeModel) {
-            return (BadgeModel) object;
+        if (object instanceof BadgeModel model) {
+            return model;
         }
-        if (object instanceof String) {
+        if (object instanceof String string) {
             return DefaultBadgeModel.builder()
-                    .value((String) object)
+                    .value(string)
                     .build();
         }
         return null;

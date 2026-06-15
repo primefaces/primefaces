@@ -66,8 +66,7 @@ public class EffectRenderer extends CoreRenderer<Effect> {
         EffectBuilder effectBuilder = new EffectBuilder(component.getType(), effectedComponentClientId, component.isQueue());
 
         for (UIComponent child : component.getChildren()) {
-            if (child instanceof UIParameter) {
-                UIParameter param = (UIParameter) child;
+            if (child instanceof UIParameter param) {
 
                 effectBuilder.withOption(param.getName(), (String) param.getValue());
             }

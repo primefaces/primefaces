@@ -30,6 +30,7 @@ import org.primefaces.showcase.service.ProductService;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -72,7 +73,7 @@ public class AddRowView implements Serializable {
 
     public void onAddNew() {
         // Add one new product to the table:
-        Product newProduct = new Product((int) (Math.random() * 10000), "f230fh0g3", "New Bamboo Watch",
+        Product newProduct = new Product((int) (ThreadLocalRandom.current().nextDouble() * 10000), "f230fh0g3", "New Bamboo Watch",
                 "Product Description", "bamboo-watch.jpg", 100, "Accessories", 24, InventoryStatus.INSTOCK, 5);
         products1.add(newProduct);
 

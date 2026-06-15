@@ -71,8 +71,8 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
             List<MenuElement> elements = component.getElements();
 
             for (MenuElement element : elements) {
-                if (element.isRendered() && element instanceof Submenu) {
-                    encodeRootSubmenu(context, component, (Submenu) element);
+                if (element.isRendered() && element instanceof Submenu submenu) {
+                    encodeRootSubmenu(context, component, submenu);
                 }
             }
         }
@@ -132,8 +132,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
 
             for (MenuElement element : elements) {
                 if (element.isRendered()) {
-                    if (element instanceof MenuItem) {
-                        MenuItem menuItem = (MenuItem) element;
+                    if (element instanceof MenuItem menuItem) {
                         String containerStyle = menuItem.getContainerStyle();
                         String containerStyleClass = menuItem.getContainerStyleClass();
                         containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
@@ -147,8 +146,8 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
                         encodeMenuItem(context, component, menuItem, "-1");
                         writer.endElement("li");
                     }
-                    else if (element instanceof Submenu) {
-                        encodeDescendantSubmenu(context, component, (Submenu) element);
+                    else if (element instanceof Submenu submenu1) {
+                        encodeDescendantSubmenu(context, component, submenu1);
                     }
                 }
             }
@@ -215,15 +214,15 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
 
             for (MenuElement element : elements) {
                 if (element.isRendered()) {
-                    if (element instanceof MenuItem) {
+                    if (element instanceof MenuItem item) {
                         writer.startElement("li", null);
                         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                        encodeMenuItem(context, component, (MenuItem) element, "-1");
+                        encodeMenuItem(context, component, item, "-1");
                         writer.endElement("li");
                     }
-                    else if (element instanceof Submenu) {
-                        encodeDescendantSubmenu(context, component, (Submenu) element);
+                    else if (element instanceof Submenu submenu1) {
+                        encodeDescendantSubmenu(context, component, submenu1);
                     }
                 }
             }

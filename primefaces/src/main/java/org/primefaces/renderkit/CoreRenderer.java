@@ -95,8 +95,8 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
     }
 
     protected void renderFacet(FacesContext context, UIComponent facet) throws IOException {
-        if (facet instanceof PrimeFacet) {
-            ((PrimeFacet) facet).encodeExplicitly(context);
+        if (facet instanceof PrimeFacet primeFacet) {
+            primeFacet.encodeExplicitly(context);
         }
         else {
             renderChild(context, facet);
@@ -161,8 +161,8 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
     }
 
     protected void renderDomEvents(FacesContext context, UIComponent component, List<String> eventAttrs) throws IOException {
-        if (component instanceof ClientBehaviorHolder) {
-            renderDomEvents(context, component, eventAttrs, ((ClientBehaviorHolder) component).getClientBehaviors());
+        if (component instanceof ClientBehaviorHolder holder) {
+            renderDomEvents(context, component, eventAttrs, holder.getClientBehaviors());
         }
         else {
             renderPassThruAttributes(context, component, eventAttrs);
@@ -353,8 +353,8 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         boolean hasCommand = (command != null);
 
         Map<String, List<ClientBehavior>> allBehaviors = null;
-        if (component instanceof ClientBehaviorHolder) {
-            allBehaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
+        if (component instanceof ClientBehaviorHolder holder) {
+            allBehaviors = holder.getClientBehaviors();
         }
 
         Object event = component.getAttributes().get(domEvent);
@@ -487,11 +487,10 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
             return false;
         }
 
-        if (value instanceof Boolean) {
-            return (Boolean) value;
+        if (value instanceof Boolean boolean1) {
+            return boolean1;
         }
-        else if (value instanceof Number) {
-            Number number = (Number) value;
+        else if (value instanceof Number number) {
 
             if (value instanceof Integer) {
                 return number.intValue() != Integer.MIN_VALUE;
@@ -512,7 +511,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
                 return number.shortValue() != Short.MIN_VALUE;
             }
         }
-        else if (value instanceof String && "false".equalsIgnoreCase((String) value)
+        else if (value instanceof String string && "false".equalsIgnoreCase(string)
                 && HTML.BOOLEAN_HTML_ATTRS.contains(attribute)) {
             // #14390: passthrough attribute with "false" should be treated like boolean false
             return false;
@@ -598,8 +597,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
 
         for (int i = 0; i < component.getChildCount(); i++) {
             UIComponent child = component.getChildren().get(i);
-            if (child instanceof UIParameter) {
-                UIParameter param = (UIParameter) child;
+            if (child instanceof UIParameter param) {
                 params.put(param.getName(), param.getValue());
             }
         }
@@ -646,8 +644,8 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         if (clientBehaviors != null && !clientBehaviors.isEmpty()) {
             boolean written = false;
             Collection<String> eventNames;
-            if (component instanceof MixedClientBehaviorHolder) {
-                eventNames = ((MixedClientBehaviorHolder) component).getUnobtrusiveClientBehaviorEventKeys().stream()
+            if (component instanceof MixedClientBehaviorHolder holder) {
+                eventNames = holder.getUnobtrusiveClientBehaviorEventKeys().stream()
                         .map(k -> k.getName())
                         .collect(Collectors.toList());
             }
@@ -759,8 +757,8 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
     protected boolean shouldWriteId(UIComponent component) {
         String id = component.getId();
 
-        return (null != id) && (!id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX) || ((component instanceof ClientBehaviorHolder)
-                && !((ClientBehaviorHolder) component).getClientBehaviors().isEmpty()));
+        return (null != id) && (!id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX) || ((component instanceof ClientBehaviorHolder cbh)
+                && !cbh.getClientBehaviors().isEmpty()));
     }
 
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
@@ -813,11 +811,10 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         if (converterMessage != null) writer.writeAttribute(HTML.ValidationMetadata.CONVERTER_MESSAGE, converterMessage, null);
 
         //converter
-        if (converter instanceof ClientConverter) {
-            ClientConverter clientConverter = (ClientConverter) converter;
+        if (converter instanceof ClientConverter clientConverter) {
             Map<String, Object> metadata = clientConverter.getMetadata();
 
-            writer.writeAttribute(HTML.ValidationMetadata.CONVERTER, ((ClientConverter) converter).getConverterId(), null);
+            writer.writeAttribute(HTML.ValidationMetadata.CONVERTER, clientConverter.getConverterId(), null);
 
             if (metadata != null && !metadata.isEmpty()) {
                 renderValidationMetadataMap(context, metadata);
@@ -850,8 +847,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         Validator<?>[] validators = component.getValidators();
         if (validators != null) {
             for (Validator<?> validator : validators) {
-                if (validator instanceof ClientValidator) {
-                    ClientValidator clientValidator = (ClientValidator) validator;
+                if (validator instanceof ClientValidator clientValidator) {
                     if (validatorIds == null) {
                         validatorIds = new ArrayList<>(5);
                     }
@@ -1065,8 +1061,8 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
                 if (attributeValue != null) {
                     String value = null;
 
-                    if (attributeValue instanceof ValueExpression) {
-                        Object expressionValue = ((ValueExpression) attributeValue).getValue(context.getELContext());
+                    if (attributeValue instanceof ValueExpression expression) {
+                        Object expressionValue = expression.getValue(context.getELContext());
                         if (expressionValue != null) {
                             value = expressionValue.toString();
                         }

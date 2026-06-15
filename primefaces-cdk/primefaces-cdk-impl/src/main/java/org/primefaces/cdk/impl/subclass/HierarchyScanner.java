@@ -185,15 +185,15 @@ public class HierarchyScanner {
         TypeMirror superclassMirror = element.getSuperclass();
         if (superclassMirror != null) {
             Element superElement = processingEnv.getTypeUtils().asElement(superclassMirror);
-            if (superElement instanceof TypeElement) {
-                collectRecursive((TypeElement) superElement, result, visited);
+            if (superElement instanceof TypeElement typeElement) {
+                collectRecursive(typeElement, result, visited);
             }
         }
 
         for (TypeMirror ifaceMirror : element.getInterfaces()) {
             Element ifaceElement = processingEnv.getTypeUtils().asElement(ifaceMirror);
-            if (ifaceElement instanceof TypeElement) {
-                collectRecursive((TypeElement) ifaceElement, result, visited);
+            if (ifaceElement instanceof TypeElement typeElement1) {
+                collectRecursive(typeElement1, result, visited);
             }
         }
     }

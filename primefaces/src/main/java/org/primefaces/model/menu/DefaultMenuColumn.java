@@ -23,13 +23,14 @@
  */
 package org.primefaces.model.menu;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultMenuColumn implements MenuColumn, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String id;
     private String style;

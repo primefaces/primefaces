@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.model.SortMeta;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +41,13 @@ import lombok.Data;
 @Data
 public class DataTable042 implements Serializable {
 
-    private static final long serialVersionUID = -9070796086139839567L;
+    @Serial private static final long serialVersionUID = -9070796086139839567L;
 
     @lombok.Data
     @lombok.AllArgsConstructor
     public static class Data implements Serializable {
 
-        private static final long serialVersionUID = 1L;
+        @Serial private static final long serialVersionUID = 1L;
         private String textA;
         private String textB;
     }

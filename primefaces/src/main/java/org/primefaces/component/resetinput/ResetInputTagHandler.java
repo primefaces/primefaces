@@ -63,11 +63,9 @@ public class ResetInputTagHandler extends TagHandler {
             return;
         }
 
-        if (parent instanceof ActionSource) {
+        if (parent instanceof ActionSource actionSource) {
             ValueExpression targetVE = target.getValueExpression(faceletContext, Object.class);
             ValueExpression clearModelVE = clearModel != null ? clearModel.getValueExpression(faceletContext, Boolean.class) : null;
-
-            ActionSource actionSource = (ActionSource) parent;
             actionSource.addActionListener(new ResetInputActionListener(targetVE, clearModelVE));
         }
         else {

@@ -295,8 +295,7 @@ public class AjaxRequestBuilder {
 
         for (int i = 0; i < component.getChildCount(); i++) {
             UIComponent child = component.getChildren().get(i);
-            if (child instanceof UIParameter) {
-                UIParameter parameter = (UIParameter) child;
+            if (child instanceof UIParameter parameter) {
                 Object paramValue = parameter.getValue();
 
                 if (paramValue == null) {

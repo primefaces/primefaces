@@ -28,6 +28,7 @@ import org.primefaces.showcase.service.ProductService;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
@@ -57,6 +58,6 @@ public class SummaryRowView implements Serializable {
     }
 
     public int getRandomPrice() {
-        return (int) (Math.random() * 100000);
+        return (int) (ThreadLocalRandom.current().nextDouble() * 100000);
     }
 }

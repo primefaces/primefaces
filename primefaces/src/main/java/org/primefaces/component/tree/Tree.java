@@ -124,8 +124,7 @@ public class Tree extends TreeBaseImpl {
         if (nodes == null) {
             nodes = new HashMap<>();
             for (UIComponent child : getChildren()) {
-                if (child instanceof UITreeNode) {
-                    UITreeNode node = (UITreeNode) child;
+                if (child instanceof UITreeNode node) {
                     nodes.put(node.getType(), node);
                 }
             }
@@ -301,8 +300,7 @@ public class Tree extends TreeBaseImpl {
         String treeNodeType = treeNode.getType();
 
         for (UIComponent child : getChildren()) {
-            if (child instanceof UITreeNode && child.isRendered()) {
-                UITreeNode uiTreeNode = (UITreeNode) child;
+            if (child instanceof UITreeNode uiTreeNode && child.isRendered()) {
 
                 if (!treeNodeType.equals(uiTreeNode.getType())) {
                     continue;

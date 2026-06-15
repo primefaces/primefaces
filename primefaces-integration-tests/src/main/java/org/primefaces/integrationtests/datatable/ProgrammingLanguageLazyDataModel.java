@@ -28,6 +28,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortMeta;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,7 +39,7 @@ import java.util.stream.Stream;
 
 public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingLanguage> {
 
-    private static final long serialVersionUID = -3415081263308946252L;
+    @Serial private static final long serialVersionUID = -3415081263308946252L;
 
     protected List<ProgrammingLanguage> langs;
 

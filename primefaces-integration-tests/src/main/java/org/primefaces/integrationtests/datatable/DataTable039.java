@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ import lombok.Setter;
 @Setter
 public class DataTable039 extends DataTable002 {
 
-    private static final long serialVersionUID = -3473389242161557269L;
+    @Serial private static final long serialVersionUID = -3473389242161557269L;
 
     private List<ProgrammingLanguage.ProgrammingLanguageType> selectedProgrammingLanguageTypes = new ArrayList<>();
 
