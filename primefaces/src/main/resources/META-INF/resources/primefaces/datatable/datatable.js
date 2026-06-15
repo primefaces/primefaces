@@ -5391,7 +5391,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 $this.stickyContainer.hide();
                 $this.resizeTimeout = PrimeFaces.queueTask(function() {
-                    $this.stickyContainer.css({ left: orginTableContent.offset().left + 'px', 'z-index': PrimeFaces.nextZindex() });
+                    $this.stickyContainer.css({ left: orginTableContent.offset().left + 'px', 'z-index': PrimeFaces.utils.nextStickyZindex() });
                     $this.stickyContainer.width(table.outerWidth());
                     // Dispatch the scroll event on the window
                     window.dispatchEvent(new Event('scroll'));
