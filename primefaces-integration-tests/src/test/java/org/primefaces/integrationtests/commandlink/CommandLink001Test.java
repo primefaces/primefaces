@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -64,9 +65,12 @@ class CommandLink001Test extends AbstractPrimePageTest {
         // Arrange
         assertNoJavascriptErrors();
 
-        // Act
+        // Act - let each submit fully settle before firing the next; firing back-to-back
+        // is racy on Firefox where the second click can be dropped during request teardown
         page.linkAjax.click();
+        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(page.counter, "1"));
         page.linkAjax.click();
+        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(page.counter, "2"));
 
         // Assert
         assertEquals("Counter: 2", page.messages.getMessage(0).getDetail());
