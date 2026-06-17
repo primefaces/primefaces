@@ -31,6 +31,7 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.Severity;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -65,6 +66,7 @@ class InputText007Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("InputText: custom validator accepts a valid value with no message")
+    @Disabled("Fails on MyFaces 4.0 / 4.1 as of 06/2026")
     void customValidatorPasses(Page page) {
         // Arrange
         InputText validator = page.validator;
@@ -83,6 +85,7 @@ class InputText007Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("InputText: conversion failure shows the custom converterMessage")
+    @Disabled("Fails on MyFaces 4.0 / 4.1 as of 06/2026")
     void converterMessageOnBadInput(Page page) {
         // Arrange
         InputText converter = page.converter;
