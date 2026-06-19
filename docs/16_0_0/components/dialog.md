@@ -56,14 +56,6 @@ Dialog is a panel component that can overlay other elements on page.
 | visible | false | Boolean | When enabled, dialog is visible by default.
 | width | auto | Integer | Width of the dialog
 
-## Common Mistakes
-- Use `appendTo` with care as the page definition and HTML DOM will be different!
-    if `p:dialog` is inside an `h:form` component and `appendTo` is enabled, on the browser the `p:dialog` would be
-    outside of the form and may cause unexpected results. In this case, nest a `h:form` inside the `p:dialog`.
-- Do not place `p:dialog` inside tables, containers likes divs with relative positioning or with non-
-    visible overflow defined, in cases like these functionality might be broken. This is not a limitation
-    but a result of DOM model. For example `p:dialog` inside a `p:tabView`, `p:accordion` are a
-    couple of examples. Same applies to `p:confirmDialog` as well.
 
 ## Getting started with the Dialog
 Dialog is a panel component containing other components, note that by default dialog is not visible.
@@ -117,6 +109,53 @@ Some examples are described below;
 Dialog applies focus on first visible input on show by default which is useful for user friendliness
 however in some cases this is not desirable. Assume the first input is a popup calendar and opening
 the dialog shows a popup calendar. To customize default focus behavior, use focus attribute.
+
+## Common Mistakes
+
+### Using `appendTo`
+
+`appendTo` moves the dialog in the browser DOM to a different parent than where it appears in your
+Facelets page. That is often intentional, but it changes how forms and Ajax updates behave.
+
+**When to use `appendTo="@(body)"`**
+
+- **Nested dialogs** — when a dialog opens another dialog that is larger than its parent, the child
+  may be clipped or positioned incorrectly. Appending it to `body` lets it render above the parent
+  dialog and use the full viewport.
+- **Overflow containers** — when the dialog sits inside a parent with `overflow: hidden` or limited
+  space (for example `p:tabView` or `p:accordionPanel`), `appendTo="@(body)"` avoids clipping and
+  stacking issues.
+
+**Form and Ajax behavior**
+
+If `p:dialog` is declared inside an `h:form` and `appendTo` is set, the dialog is rendered outside
+that form in the DOM. Ajax updates and submit actions inside the dialog may then fail or behave
+unexpectedly — for example, a `p:commandButton` whose `disabled` state depends on server-side logic
+may not update after a `p:ajax` request. See
+[issue #8075](https://github.com/primefaces/primefaces/issues/8075).
+
+Place an `h:form` **inside** the dialog so its contents stay in a valid form context after the
+dialog is moved:
+
+```xhtml
+<h:form>
+    <p:commandButton onclick="PF('dialog').show()" value="Open dialog" />
+    <p:dialog widgetVar="dialog" appendTo="@(body)">
+        <h:form>
+            <p:inputText value="#{testBean.text}">
+                <p:ajax event="keyup" update="button" delay="1000" />
+            </p:inputText>
+            <p:commandButton disabled="#{testBean.disabled}" id="button" />
+        </h:form>
+    </p:dialog>
+</h:form>
+```
+
+### Restricted parent containers
+
+Do not place `p:dialog` inside table cells or containers with `position: relative` or
+`overflow: hidden`. Functionality can break because of how the dialog is positioned in the DOM —
+this is not a component limitation. The same guidance applies to `p:confirmDialog`.
 
 
 ## Ajax Behavior Events
