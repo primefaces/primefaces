@@ -69,6 +69,7 @@ class CommandLink001Test extends AbstractPrimePageTest {
         // is racy on Firefox where the second click can be dropped during request teardown
         page.linkAjax.click();
         PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(page.counter, "1"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(page.linkAjax));
         page.linkAjax.click();
         PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(page.counter, "2"));
 
