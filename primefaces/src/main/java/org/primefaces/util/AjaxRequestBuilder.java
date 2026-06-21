@@ -159,7 +159,7 @@ public class AjaxRequestBuilder {
     private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, Set<SearchExpressionHint> hints) {
         if (LangUtils.isNotBlank(expressions)) {
             String resolvedExpressions = SearchExpressionUtils.resolveClientIdsAsString(context, component, expressions, hints,
-                    null);
+                    ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
             buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }
 
