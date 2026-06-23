@@ -5,49 +5,38 @@ on:
     types: [labeled]
 
 permissions:
-  contents: read
   issues: write
 
 jobs:
-  issue-labeled:
+  comment:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Cannot Replicate
-        if: github.event.label.name == 'Resolution: Cannot Replicate'
-        uses: actions/github-script@v8
+      - uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: `We're unable to replicate your issue. If you are able to create a [PrimeFaces Test Reproducer](https://github.com/primefaces/primefaces-test) or add additional details, please edit this issue. This issue will be closed if there is no activity within 20 days.`
-            });
+            const comments = {
+              "Resolution: Cannot Replicate":
+                "We're unable to replicate your issue. If you are able to create a [PrimeFaces Test Reproducer](https://github.com/primefaces/primefaces-test) or add additional details, please edit this issue. This issue will be closed if there is no activity within 20 days.",
 
-      - name: Duplicate
-        if: github.event.label.name == 'Resolution: Duplicate'
-        uses: actions/github-script@v8
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: `This issue is a duplicate and has already been reported and fixed. Please review the closed issues for the upcoming milestone release.`
-            });
+              "Resolution: Duplicate":
+                "This issue is a duplicate and has already been reported and fixed. Please review the closed issues for the upcoming milestone release.",
 
-      - name: Needs Reproducer
-        if: github.event.label.name == 'Status: Needs Reproducer'
-        uses: actions/github-script@v8
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
+              "Status: Needs Reproducer":
+                "Please provide an executable example using the [PrimeFaces Test](https://github.com/primefaces/primefaces-test) project. This issue will be closed if there is no activity within 20 days."
+            };
+
+            const body = comments[context.payload.label.name];
+
+            if (!body) {
+              console.log(`No comment configured for label '${context.payload.label.name}'`);
+              return;
+            }
+
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `Please provide an executable example using the [PrimeFaces Test](https://github.com/primefaces/primefaces-test) project. This issue will be closed if there is no activity within 20 days.`
+              body
             });
