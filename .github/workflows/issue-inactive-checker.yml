@@ -2,12 +2,12 @@ name: Issue Inactive Checker
 
 on:
   schedule:
-    - cron: "0 13 * * *" # Every Monday at 1PM UTC (9AM EST)
+    - cron: "0 13 * * 1" # Every Monday at 1PM UTC (9AM EST)
   workflow_dispatch:
-
+  
 permissions:
   contents: read
-
+  
 jobs:
   issue-close-require:
     permissions:
@@ -16,20 +16,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cannot Replicate
-        uses: actions-cool/issues-helper@v3
+        uses: actions/stale@v9
         with:
-          actions: "close-issues"
-          labels: "Resolution: Cannot Replicate"
-          inactive-day: 20
+          days-before-stale: 20
+          days-before-close: 0
+          only-labels: "Resolution: Cannot Replicate"
+          stale-issue-label: "Resolution: Cannot Replicate"
+          close-issue-message: >
+            This issue has been automatically closed due to inactivity for 20 days.
+            If this is still relevant, please open a new issue with a reproducer.
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
+
       - name: Needs Reproducer
-        uses: actions-cool/issues-helper@v3
+        uses: actions/stale@v9
         with:
-          actions: "close-issues"
-          labels: "Status: Needs Reproducer"
-          inactive-day: 20
+          days-before-stale: 20
+          days-before-close: 0
+          only-labels: "Status: Needs Reproducer"
+          stale-issue-label: "Status: Needs Reproducer"
+          close-issue-message: >
+            This issue has been automatically closed due to inactivity for 20 days.
+            If this is still relevant, please open a new issue with a reproducer.
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
+
       - name: Duplicate
-        uses: actions-cool/issues-helper@v3
+        uses: actions/stale@v9
         with:
-          actions: "close-issues"
-          labels: "Resolution: Duplicate"
-          inactive-day: 20
+          days-before-stale: 20
+          days-before-close: 0
+          only-labels: "Resolution: Duplicate"
+          stale-issue-label: "Resolution: Duplicate"
+          close-issue-message: >
+            This issue has been automatically closed due to inactivity for 20 days.
+            If this is still relevant, please open a new issue with a reproducer.
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
