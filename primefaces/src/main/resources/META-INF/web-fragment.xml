@@ -9,6 +9,10 @@
     <distributable />
 
     <listener>
+        <listener-class>org.primefaces.webapp.PrimeServletContextListener</listener-class>
+    </listener>
+
+    <listener>
         <listener-class>org.primefaces.webapp.UploadedFileCleanerListener</listener-class>
     </listener>
 

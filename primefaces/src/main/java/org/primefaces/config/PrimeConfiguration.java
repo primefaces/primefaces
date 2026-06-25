@@ -25,6 +25,7 @@ package org.primefaces.config;
 
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
 
 import java.util.Map;
 import java.util.Objects;
@@ -70,7 +71,7 @@ public class PrimeConfiguration {
     // web.xml
     private final Map<String, String> errorPages;
 
-    private boolean cookiesSecure;
+    private Lazy<Boolean> cookiesSecure;
     private String cookiesSameSite;
 
     public PrimeConfiguration(FacesContext context, PrimeEnvironment environment) {
@@ -174,13 +175,16 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
         cookiesSameSite = (value == null) ? "Strict" : value;
 
-        cookiesSecure = true;
-        if (externalContext.getContext() instanceof ServletContext) {
-            ServletContext se = (ServletContext) externalContext.getContext();
-            if (se.getSessionCookieConfig() != null) {
-                cookiesSecure = se.getSessionCookieConfig().isSecure();
+        cookiesSecure = new Lazy<>(() -> {
+            if (externalContext.getContext() instanceof ServletContext) {
+                ServletContext se = (ServletContext) externalContext.getContext();
+                Object storedCookiesSecure = se.getAttribute(Constants.ServletContextAttributes.COOKIES_SECURE);
+                if (storedCookiesSecure instanceof Boolean) {
+                    return (Boolean) storedCookiesSecure;
+                }
             }
-        }
+            return true;
+        });
     }
 
     protected boolean resolveValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
@@ -303,7 +307,7 @@ public class PrimeConfiguration {
     }
 
     public boolean isCookiesSecure() {
-        return cookiesSecure;
+        return cookiesSecure.get();
     }
 
     public String getCookiesSameSite() {

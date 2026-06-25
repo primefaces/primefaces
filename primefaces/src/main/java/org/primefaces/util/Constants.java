@@ -130,6 +130,15 @@ public class Constants {
     public static final char NON_BREAKING_SPACE = '\u00A0';
     public static final String NON_BREAKING_SPACE_STR = Character.toString(NON_BREAKING_SPACE);
 
+    public static class ServletContextAttributes {
+
+        public static final String COOKIES_SECURE = "primefaces.cookiesSecure";
+
+        private ServletContextAttributes() {
+
+        }
+    }
+
     private Constants() {
     }
 }
