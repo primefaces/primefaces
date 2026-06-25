@@ -90,20 +90,23 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        if (!table.loadLazyDataIfEnabled()) {
-            filter(context, table);
+        // For full-update requests (partialUpdate="false") the load and tbody encoding is
+        // deferred to preRender/render, which runs immediately after all features. Loading
+        // here would be redundant — the data would be thrown away and loaded again in preRender.
+        if (!table.isFullUpdateRequest(context)) {
+            if (!table.loadLazyDataIfEnabled()) {
+                filter(context, table);
 
-            // update filtered value accordingly to take account sorting
-            if (table.isSortingCurrentlyActive()) {
-                DataTableFeatures.sortFeature().sort(context, table);
+                // update filtered value accordingly to take account sorting
+                if (table.isSortingCurrentlyActive()) {
+                    DataTableFeatures.sortFeature().sort(context, table);
+                }
             }
+
+            renderer.encodeTbody(context, table, true);
         }
 
         context.getApplication().publishEvent(context, PostFilterEvent.class, table);
-
-        if (!table.isFullUpdateRequest(context)) {
-            renderer.encodeTbody(context, table, true);
-        }
     }
 
     public void filter(FacesContext context, DataTable table) {

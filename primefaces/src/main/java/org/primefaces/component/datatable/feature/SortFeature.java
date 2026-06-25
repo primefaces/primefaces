@@ -89,34 +89,27 @@ public class SortFeature implements DataTableFeature {
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         table.setFirst(0);
 
-        if (!table.loadLazyDataIfEnabled()) {
-            //reset the value given in the filter feature property before sorting
-            if (table.isFullUpdateRequest(context)) {
-                table.setValue(null);
-            }
+        // For full-update requests (partialUpdate="false") the load and tbody encoding is
+        // deferred to preRender/render, which runs immediately after all features. Loading
+        // here would be redundant — the data would be thrown away and loaded again in preRender.
+        if (!table.isFullUpdateRequest(context)) {
+            if (!table.loadLazyDataIfEnabled()) {
+                sort(context, table);
 
-            sort(context, table);
-
-            if (table.isPaginator() && ComponentUtils.isRequestSource(table, context)) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", table.getRowCount());
-            }
-
-            //update filtered value accordingly to take account sorting
-            if (table.isFilteringCurrentlyActive()) {
-                if (table.isFullUpdateRequest(context)) {
-                    DataTableFeatures.filterFeature().filter(context, table);
+                if (table.isPaginator() && ComponentUtils.isRequestSource(table, context)) {
+                    PrimeFaces.current().ajax().addCallbackParam("totalRecords", table.getRowCount());
                 }
-                else {
+
+                //update filtered value accordingly to take account sorting
+                if (table.isFilteringCurrentlyActive()) {
                     table.setFilteredValue(resolveList(table.getValue()));
                 }
             }
+
+            renderer.encodeTbody(context, table, true);
         }
 
         context.getApplication().publishEvent(context, PostSortEvent.class, table);
-
-        if (!table.isFullUpdateRequest(context)) {
-            renderer.encodeTbody(context, table, true);
-        }
 
         if (table.isMultiViewState()) {
             Map<String, SortMeta> sortMeta = table.getSortByAsMap();

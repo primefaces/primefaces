@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:dataTable id="datatable" widgetVar="datatable" value="#{dataTable049.lazyDataModel}" var="lang"
+                         paginator="true" rows="10" filterEvent="enter"
+                         partialUpdate="false">
+
+                <p:column field="id" headerText="ID"/>
+
+                <p:column field="name" headerText="Name" sortBy="#{lang.name}" filterMatchMode="contains"/>
+
+                <p:column field="firstAppeared" headerText="First Appeared" sortBy="#{lang.firstAppeared}" filterMatchMode="gte"/>
+
+                <p:column headerText="Action">
+                    <p:commandButton id="selectBtn" value="Select"
+                                     actionListener="#{dataTable049.select(lang)}"
+                                     update="form:selectedOutput"/>
+                </p:column>
+
+            </p:dataTable>
+
+            <h:outputText id="selectedOutput" value="#{dataTable049.selectedId != null ? dataTable049.selectedId : ''}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

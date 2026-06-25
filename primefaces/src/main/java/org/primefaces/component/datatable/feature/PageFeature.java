@@ -40,11 +40,11 @@ public class PageFeature implements DataTableFeature {
 
         boolean isPageState = table.isPageStateRequest(context);
 
-        if (!isPageState) {
-            table.loadLazyDataIfEnabled();
-        }
-
+        // For full-update requests (partialUpdate="false") the load and tbody encoding is
+        // deferred to preRender/render, which runs immediately after all features. Loading
+        // here would be redundant — the data would be thrown away and loaded again in preRender.
         if (!isPageState && !table.isFullUpdateRequest(context)) {
+            table.loadLazyDataIfEnabled();
             renderer.encodeTbody(context, table, true);
         }
 
