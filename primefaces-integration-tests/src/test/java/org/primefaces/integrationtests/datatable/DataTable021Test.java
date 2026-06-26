@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Add and remove rows from filtered DataTable
  * https://github.com/primefaces/primefaces/issues/7336
  */
-public class DataTable021Test extends AbstractDataTableTest {
+class DataTable021Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)

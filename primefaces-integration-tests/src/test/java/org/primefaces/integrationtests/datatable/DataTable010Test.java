@@ -148,7 +148,6 @@ class DataTable010Test extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
         assertTrue(cfg.has("selectionMode"));
     }
 

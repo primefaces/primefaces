@@ -636,7 +636,6 @@ class DataTable006Test extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg, boolean selectionPageOnly) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
         assertEquals("checkbox", cfg.get("selectionMode"));
         assertEquals(selectionPageOnly, cfg.getBoolean("selectionPageOnly"));
     }

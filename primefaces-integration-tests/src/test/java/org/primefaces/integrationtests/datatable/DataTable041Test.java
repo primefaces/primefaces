@@ -32,7 +32,7 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class Datatable041Test extends AbstractPrimePageTest {
+class DataTable041Test extends AbstractPrimePageTest {
 
     @Test
     void rowExpansion(Page page) {

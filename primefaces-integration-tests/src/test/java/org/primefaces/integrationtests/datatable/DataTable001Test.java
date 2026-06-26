@@ -286,7 +286,6 @@ class DataTable001Test extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
         assertTrue(cfg.has("paginator"));
         assertEquals("wgtTable", cfg.getString("widgetVar"));
         assertEquals(0, cfg.getInt("tabindex"));

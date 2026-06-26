@@ -160,7 +160,6 @@ class DataTable007Test extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
         assertTrue(cfg.has("editable"));
     }
 

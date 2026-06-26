@@ -29,9 +29,8 @@ import org.primefaces.selenium.component.model.datatable.Row;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
-
-import org.openqa.selenium.HasCapabilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -79,32 +78,31 @@ public abstract class AbstractDataTableTest extends AbstractTableTest {
     }
 
     protected void assertRows(DataTable dataTable, List<ProgrammingLanguage> langs) {
-        List<Row> rows = dataTable.getRows();
-        assertRows(rows, langs);
+        assertRows(dataTable, langs, ProgrammingLanguage::getId);
     }
 
     protected void assertRows(List<Row> rows, List<ProgrammingLanguage> langs) {
-        int expectedSize = langs.size();
-        assertNotNull(rows);
-        assertEquals(expectedSize, rows.size());
-
-        int row = 0;
-        for (ProgrammingLanguage programmingLanguage : langs) {
-            String rowText = rows.get(row).getCell(0).getText();
-            assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText.trim()));
-            row++;
-        }
+        assertRows(rows, langs, ProgrammingLanguage::getId);
     }
 
-    protected void logWebDriverCapabilites(DataTable003Test.Page page) {
-        if (page.getWebDriver() instanceof HasCapabilities) {
-            HasCapabilities hasCaps = (HasCapabilities) page.getWebDriver();
-            System.out.println("BrowserName: " + hasCaps.getCapabilities().getBrowserName());
-            System.out.println("Version: " + hasCaps.getCapabilities().getBrowserVersion());
-            System.out.println("Platform: " + hasCaps.getCapabilities().getPlatformName());
-        }
-        else {
-            System.out.println("WebDriver does not implement HasCapabilities --> can´t show version etc");
+    /**
+     * Asserts that the table's rows match the expected items, comparing the first cell of each row
+     * (an id rendered as text) against the id extracted from each item. Model-agnostic so any
+     * backing type (ProgrammingLanguage, Employee, ...) can reuse it.
+     */
+    protected <T> void assertRows(DataTable dataTable, List<T> items, ToIntFunction<T> idExtractor) {
+        assertRows(dataTable.getRows(), items, idExtractor);
+    }
+
+    protected <T> void assertRows(List<Row> rows, List<T> items, ToIntFunction<T> idExtractor) {
+        assertNotNull(rows);
+        assertEquals(items.size(), rows.size());
+
+        int row = 0;
+        for (T item : items) {
+            String rowText = rows.get(row).getCell(0).getText();
+            assertEquals(idExtractor.applyAsInt(item), Integer.parseInt(rowText.trim()));
+            row++;
         }
     }
 
