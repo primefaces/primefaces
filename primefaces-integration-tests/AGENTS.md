@@ -55,6 +55,40 @@ into the view by EL name (`#{dataTable001...}`). Backing beans use Lombok `@Data
   (see `AbstractDataTableTest`), and cross-component table helpers in the root
   `org.primefaces.integrationtests.AbstractTableTest`.
 
+## Tagging tests by behavior
+
+The `NNN` number is **insertion order, not feature** — the same behavior (filtering,
+selection, …) is spread across many numbered classes, so the suite is hard to navigate by
+*what* it covers. To make it navigable by behavior, `datatable` test classes carry JUnit 5
+`@Tag`s at the **class level** (a class may carry several). Vocabulary currently in use:
+
+| Tag | Covers |
+|---|---|
+| `filter` | column / global / lazy filtering, filter operators (lt, in, between, NOT, …) |
+| `sort` | single / multi / custom sort |
+| `selection` | row & checkbox selection, (de)select-all, disabled selection |
+| `paginator` | paging behavior and paginator row-count |
+| `lazy` | `LazyDataModel`-backed tables |
+| `edit` | cell / row editing, add & delete row |
+| `rowgroup` | row grouping (header / summary / rowspan) |
+| `mvs` | MultiViewState |
+| `rowexpansion` | expandable rows / row toggler |
+| `frozencolumns` | frozen columns |
+| `scrolling` | sticky header, virtual scroll |
+| `rendering` | conditional render, null values, container-not-rendered, impl quirks |
+
+Run one behavior across the whole suite with the JUnit tag filter (`-Dgroups`):
+
+```bash
+mvn verify -f primefaces-integration-tests/pom.xml \
+    -Pintegration-tests,mojarra-4.0 -Dgroups=filter
+```
+
+When adding a `datatable` test, tag it with the behavior(s) it exercises. Keep the
+vocabulary small — reuse an existing tag rather than coining a near-synonym. (Currently
+only the `datatable` package is tagged; extend the same scheme to other components as
+needed.)
+
 ## Anatomy of a test
 
 Tests extend `AbstractPrimePageTest` (from the framework). Two equally valid styles exist

@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
@@ -40,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
  * {@link jakarta.faces.view.facelets.FaceletContext#includeFacelet} and filtered
  * via method
  */
+@Tag("filter")
 class DataTable023Test extends AbstractDataTableTest {
 
     private static final int ID = 0;

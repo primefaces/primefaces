@@ -35,12 +35,15 @@ import java.util.List;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("edit")
+@Tag("filter")
 class DataTable007Test extends AbstractDataTableTest {
 
     @Test

@@ -33,6 +33,7 @@ import org.primefaces.selenium.component.Messages;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
@@ -40,6 +41,9 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("selection")
+@Tag("paginator")
+@Tag("filter")
 class DataTable010Test extends AbstractDataTableTest {
 
     @Test

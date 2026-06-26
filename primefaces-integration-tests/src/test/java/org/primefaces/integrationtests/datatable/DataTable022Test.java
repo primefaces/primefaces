@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
@@ -39,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
  * Test for multiple filtered columns added via
  * {@link jakarta.faces.view.facelets.FaceletContext#includeFacelet}
  */
+@Tag("filter")
 class DataTable022Test extends AbstractDataTableTest {
 
     @Test

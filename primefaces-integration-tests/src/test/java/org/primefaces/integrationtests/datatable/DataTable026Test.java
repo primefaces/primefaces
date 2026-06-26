@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
@@ -45,6 +46,7 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Tag("filter")
 class DataTable026Test extends AbstractDataTableTest {
 
     protected final List<Employee> employees = new EmployeeService().getEmployees();

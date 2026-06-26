@@ -31,6 +31,7 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.ToggleSwitch;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -39,6 +40,7 @@ import org.openqa.selenium.support.FindBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("selection")
 class DataTable032Test extends AbstractDataTableTest {
 
     @Test

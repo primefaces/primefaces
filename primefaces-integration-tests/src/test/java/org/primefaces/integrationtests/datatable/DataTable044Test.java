@@ -28,11 +28,14 @@ import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("filter")
+@Tag("paginator")
 class DataTable044Test extends AbstractDataTableTest {
     @Test
     @DisplayName("first index is properly reset when table is filtered externally")

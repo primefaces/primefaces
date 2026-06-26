@@ -31,12 +31,15 @@ import org.primefaces.selenium.component.DataTable;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("sort")
+@Tag("edit")
 class DataTable011Test extends AbstractDataTableTest {
 
     @Test

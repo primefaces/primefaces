@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -50,6 +51,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * DataTable #11135: support composite as filter.
  *
  */
+@Tag("filter")
+@Tag("paginator")
 class DataTable043Test extends AbstractDataTableTest {
 
     @Test

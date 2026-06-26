@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -47,6 +48,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * These tests verify that the correct (filtered/sorted) data is rendered after each interaction —
  * i.e. that the final load wins with the right parameters and the table is not stale.
  */
+@Tag("lazy")
+@Tag("filter")
+@Tag("sort")
+@Tag("paginator")
 class DataTable049Test extends AbstractDataTableTest {
 
     @Test
