@@ -96,7 +96,6 @@ class DataTable012Test extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
     }
 
     public static class Page extends AbstractPrimePage {

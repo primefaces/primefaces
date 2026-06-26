@@ -110,7 +110,6 @@ class DataTable003Test extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
         assertTrue(cfg.getBoolean("multiSort"));
         assertFalse(cfg.getBoolean("allowUnsorting"));
     }
