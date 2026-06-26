@@ -47,11 +47,11 @@ import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("lazy")
-@Tag("paginator")
-@Tag("sort")
-@Tag("filter")
-@Tag("selection")
+@Tag("DataTable-lazy")
+@Tag("DataTable-paginator")
+@Tag("DataTable-sort")
+@Tag("DataTable-filter")
+@Tag("DataTable-selection")
 class DataTable002Test extends AbstractDataTableTest {
 
     @ParameterizedTest

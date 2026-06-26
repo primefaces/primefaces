@@ -48,10 +48,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * These tests verify that the correct (filtered/sorted) data is rendered after each interaction —
  * i.e. that the final load wins with the right parameters and the table is not stale.
  */
-@Tag("lazy")
-@Tag("filter")
-@Tag("sort")
-@Tag("paginator")
+@Tag("DataTable-lazy")
+@Tag("DataTable-filter")
+@Tag("DataTable-sort")
+@Tag("DataTable-paginator")
 class DataTable049Test extends AbstractDataTableTest {
 
     @Test

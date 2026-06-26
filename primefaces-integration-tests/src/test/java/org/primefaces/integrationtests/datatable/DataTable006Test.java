@@ -45,8 +45,8 @@ import org.openqa.selenium.support.FindBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("selection")
-@Tag("lazy")
+@Tag("DataTable-selection")
+@Tag("DataTable-lazy")
 class DataTable006Test extends AbstractDataTableTest {
 
     @Test

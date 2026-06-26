@@ -41,9 +41,9 @@ import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Tag("filter")
-@Tag("sort")
-@Tag("edit")
+@Tag("DataTable-filter")
+@Tag("DataTable-sort")
+@Tag("DataTable-edit")
 class DataTable028Test extends AbstractDataTableTest {
 
     @ParameterizedTest

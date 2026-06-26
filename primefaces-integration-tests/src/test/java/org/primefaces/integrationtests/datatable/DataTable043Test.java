@@ -51,8 +51,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * DataTable #11135: support composite as filter.
  *
  */
-@Tag("filter")
-@Tag("paginator")
+@Tag("DataTable-filter")
+@Tag("DataTable-paginator")
 class DataTable043Test extends AbstractDataTableTest {
 
     @Test

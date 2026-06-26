@@ -40,10 +40,10 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("mvs")
-@Tag("sort")
-@Tag("filter")
-@Tag("paginator")
+@Tag("DataTable-mvs")
+@Tag("DataTable-sort")
+@Tag("DataTable-filter")
+@Tag("DataTable-paginator")
 class DataTable015Test extends AbstractDataTableTest {
 
     @Test

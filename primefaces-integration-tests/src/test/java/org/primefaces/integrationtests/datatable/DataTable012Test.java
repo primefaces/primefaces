@@ -43,7 +43,7 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Tag("sort")
+@Tag("DataTable-sort")
 class DataTable012Test extends AbstractDataTableTest {
 
     @Test

@@ -34,8 +34,8 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("filter")
-@Tag("paginator")
+@Tag("DataTable-filter")
+@Tag("DataTable-paginator")
 class DataTable044Test extends AbstractDataTableTest {
     @Test
     @DisplayName("first index is properly reset when table is filtered externally")

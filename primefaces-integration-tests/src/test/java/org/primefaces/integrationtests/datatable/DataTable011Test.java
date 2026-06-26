@@ -38,8 +38,8 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("sort")
-@Tag("edit")
+@Tag("DataTable-sort")
+@Tag("DataTable-edit")
 class DataTable011Test extends AbstractDataTableTest {
 
     @Test

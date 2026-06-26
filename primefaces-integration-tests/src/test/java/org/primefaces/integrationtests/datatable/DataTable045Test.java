@@ -37,9 +37,9 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("lazy")
-@Tag("paginator")
-@Tag("rowgroup")
+@Tag("DataTable-lazy")
+@Tag("DataTable-paginator")
+@Tag("DataTable-rowgroup")
 class DataTable045Test extends AbstractDataTableTest {
 
     @Test

@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
  * {@link jakarta.faces.view.facelets.FaceletContext#includeFacelet} and filtered
  * via method
  */
-@Tag("filter")
+@Tag("DataTable-filter")
 class DataTable023Test extends AbstractDataTableTest {
 
     private static final int ID = 0;

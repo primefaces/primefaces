@@ -45,7 +45,7 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Tag("filter")
+@Tag("DataTable-filter")
 class DataTable026NotTest extends AbstractDataTableTest {
 
     protected final List<Employee> employees = new EmployeeService().getEmployees();

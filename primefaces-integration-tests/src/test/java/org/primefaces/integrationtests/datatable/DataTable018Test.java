@@ -48,9 +48,9 @@ import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("paginator")
-@Tag("sort")
-@Tag("filter")
+@Tag("DataTable-paginator")
+@Tag("DataTable-sort")
+@Tag("DataTable-filter")
 class DataTable018Test extends AbstractDataTableTest {
 
     @Test

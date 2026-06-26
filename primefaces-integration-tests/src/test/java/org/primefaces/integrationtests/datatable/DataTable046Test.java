@@ -40,7 +40,7 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Tag("rendering")
+@Tag("DataTable-rendering")
 class DataTable046Test extends AbstractDataTableTest {
 
     @Test

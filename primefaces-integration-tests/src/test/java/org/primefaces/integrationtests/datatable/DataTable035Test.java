@@ -36,7 +36,7 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@Tag("selection")
+@Tag("DataTable-selection")
 class DataTable035Test extends AbstractDataTableTest {
 
     @Test

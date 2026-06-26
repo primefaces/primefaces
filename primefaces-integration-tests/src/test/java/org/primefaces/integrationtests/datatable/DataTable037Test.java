@@ -40,9 +40,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("lazy")
-@Tag("paginator")
-@Tag("rowgroup")
+@Tag("DataTable-lazy")
+@Tag("DataTable-paginator")
+@Tag("DataTable-rowgroup")
 class DataTable037Test extends AbstractDataTableTest {
 
     @Test

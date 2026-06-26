@@ -47,8 +47,8 @@ import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("lazy")
-@Tag("filter")
+@Tag("DataTable-lazy")
+@Tag("DataTable-filter")
 class DataTable039Test extends AbstractDataTableTest {
 
     @ParameterizedTest

@@ -34,7 +34,7 @@ import org.openqa.selenium.support.FindBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("rowexpansion")
+@Tag("DataTable-rowexpansion")
 class DataTable041CustomIconTest extends AbstractPrimePageTest {
 
     @Test

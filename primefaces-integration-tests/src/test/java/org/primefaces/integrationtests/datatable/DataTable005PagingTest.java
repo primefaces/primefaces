@@ -44,8 +44,8 @@ import org.openqa.selenium.interactions.Actions;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("selection")
-@Tag("paginator")
+@Tag("DataTable-selection")
+@Tag("DataTable-paginator")
 class DataTable005PagingTest extends AbstractDataTableTest {
 
     @ParameterizedTest

@@ -37,8 +37,8 @@ import org.openqa.selenium.support.FindBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Tag("scrolling")
-@Tag("lazy")
+@Tag("DataTable-scrolling")
+@Tag("DataTable-lazy")
 class DataTable027Test extends AbstractDataTableTest {
 
     @Test

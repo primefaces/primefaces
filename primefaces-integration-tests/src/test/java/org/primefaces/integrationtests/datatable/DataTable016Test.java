@@ -40,7 +40,7 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("rowgroup")
+@Tag("DataTable-rowgroup")
 class DataTable016Test extends AbstractDataTableTest {
 
     @Test

@@ -36,7 +36,7 @@ import org.openqa.selenium.support.FindBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-@Tag("filter")
+@Tag("DataTable-filter")
 class DataTable031Test extends AbstractDataTableTest {
 
     @Test

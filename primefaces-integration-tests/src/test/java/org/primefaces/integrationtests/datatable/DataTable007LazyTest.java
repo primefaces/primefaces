@@ -42,8 +42,8 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("edit")
-@Tag("lazy")
+@Tag("DataTable-edit")
+@Tag("DataTable-lazy")
 class DataTable007LazyTest extends AbstractDataTableTest {
 
     @Test

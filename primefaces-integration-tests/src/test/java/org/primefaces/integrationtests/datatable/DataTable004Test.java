@@ -43,7 +43,7 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("selection")
+@Tag("DataTable-selection")
 class DataTable004Test extends AbstractDataTableTest {
 
     @Test

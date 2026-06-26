@@ -44,8 +44,8 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("edit")
-@Tag("filter")
+@Tag("DataTable-edit")
+@Tag("DataTable-filter")
 class DataTable007CellTest extends AbstractDataTableTest {
 
     @Test

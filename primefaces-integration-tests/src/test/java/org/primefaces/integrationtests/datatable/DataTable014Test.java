@@ -40,7 +40,7 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("scrolling")
+@Tag("DataTable-scrolling")
 class DataTable014Test extends AbstractDataTableTest {
 
     @Test

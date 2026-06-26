@@ -44,8 +44,8 @@ import org.openqa.selenium.interactions.Actions;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("selection")
-@Tag("filter")
+@Tag("DataTable-selection")
+@Tag("DataTable-filter")
 class DataTable005Test extends AbstractDataTableTest {
 
     @ParameterizedTest
