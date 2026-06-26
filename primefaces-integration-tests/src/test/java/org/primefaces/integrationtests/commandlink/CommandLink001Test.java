@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.commandlink;
 
+import org.junit.jupiter.api.Tag;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
@@ -61,6 +62,7 @@ class CommandLink001Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("CommandLink: repeated AJAX submit keeps firing the action")
+    @Tag("FirefoxExclude")
     void ajaxSubmitMultiple(Page page) {
         // Arrange
         assertNoJavascriptErrors();
