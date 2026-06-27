@@ -25,7 +25,6 @@ package org.primefaces.showcase.util.taglib;
 
 import org.primefaces.cdk.spi.taglib.Taglib;
 import org.primefaces.cdk.spi.taglib.TaglibParser;
-import org.primefaces.util.LangUtils;
 
 import java.util.Comparator;
 import java.util.List;
@@ -53,8 +52,7 @@ public class TagLibProvider {
     public void init() {
         TaglibParser taglibParser = new TaglibParser();
         try {
-            taglib = taglibParser.parse(LangUtils.getContextClassLoader().getResourceAsStream(
-                    "/META-INF/primefaces.taglib.xml"));
+            taglib = taglibParser.parse(this.getClass().getResourceAsStream("/META-INF/primefaces.taglib.xml"));
             tags = taglib.getTags().stream().collect(
                     Collectors.toMap(t -> t.getTagName(), t -> new TagInfo(t)));
             tagsSorted = tags.values().stream()
