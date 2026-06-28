@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.fileupload;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
@@ -35,7 +36,9 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -109,6 +112,9 @@ class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
+        // non-AJAX full page submit: guardHttp may return before navigation commits, so wait for the
+        // reloaded page to render p:messages before reading it (otherwise #form:msgs is NoSuchElement)
+        PrimeSelenium.waitDocumentLoad().until(ExpectedConditions.presenceOfElementLocated(By.id("form:msgs")));
         assertFalse(page.messages.getAllMessages().isEmpty());
         assertEquals("Invalid file size.",
                 page.messages.getMessage(0).getSummary());
@@ -130,6 +136,9 @@ class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
+        // non-AJAX full page submit: guardHttp may return before navigation commits, so wait for the
+        // reloaded page to render p:messages before reading it (otherwise #form:msgs is NoSuchElement)
+        PrimeSelenium.waitDocumentLoad().until(ExpectedConditions.presenceOfElementLocated(By.id("form:msgs")));
         assertFalse(page.messages.getAllMessages().isEmpty());
         assertEquals("Invalid file type.",
                 page.messages.getMessage(0).getSummary());
