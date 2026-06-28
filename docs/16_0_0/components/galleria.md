@@ -4,51 +4,6 @@ Galleria is a content gallery component.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Galleria.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | galleria
-| Component Class | org.primefaces.component.galleria.Galleria
-| Component Type | org.primefaces.component.Galleria
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.GalleriaRenderer
-| Renderer Class | org.primefaces.component.galleria.GalleriaRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget.
-| value | null | Collection | Collection of data to display.
-| var | null | String | Name of variable to access an item in collection.
-| varStatus | null | String | Name of the exported request scoped variable for the status of the iteration.
-| style | null | String | Inline style of the container element.
-| styleClass | null | String | Style class of the container element.
-| activeIndex | 0 | Integer | Index of the first item.
-| fullScreen | false | Boolean | Whether to display the component on fullscreen.
-| closeIcon | null | String | Close icon on fullscreen mode.
-| numVisible | 3 | Integer | Number of items per page.
-| responsiveOptions | null | Object[] | A model of options for responsive design.
-| showThumbnails | true | Boolean | Whether to display thumbnail container.
-| showIndicators | false | Boolean | Whether to display indicator container.
-| showIndicatorsOnItem | false | Boolean | When enabled, indicator container is displayed on item container.
-| showCaption | false | Boolean | Whether to display caption container.
-| showItemNavigators | false | Boolean | Whether to display navigation buttons in item container.
-| showThumbnailNavigators | true | Boolean | Whether to display navigation buttons in thumbnail container.
-| showItemNavigatorsOnHover | false | Boolean | Whether to display navigation buttons on item container's hover.
-| changeItemOnIndicatorHover | false | Boolean | When enabled, item is changed on indicator item's hover.
-| circular | false | Boolean | Defines if scrolling would be infinite.
-| autoPlay | false | Boolean | Items are displayed with a slideshow in autoPlay mode.
-| transitionInterval | 4000 | Number | Time in milliseconds to scroll items.
-| thumbnailsPosition | bottom | String | Position of thumbnails. Valid values are "bottom", "top", "left" and "right".
-| verticalViewPortHeight | 450px | String | Height of the viewport in vertical layout. Default is 450px.
-| indicatorsPosition | bottom | String | Position of indicators. Valid values are "bottom", "top", "left" and "right".
-| tabindex | 0 | Integer | Position of the output in the tabbing order. Default: "0".
-
 ## Getting Started with Galleria
 Contents to displayed are defined as children of galleria;
 

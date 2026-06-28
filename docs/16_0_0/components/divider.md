@@ -2,31 +2,6 @@
 
 Divider is used to separate contents.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | divider
-| Component Class | org.primefaces.component.divider.Divider
-| Component Type | org.primefaces.component.Divider
-| Component Family | org.primefaces.component
-| Renderer Type | org.primefaces.component.DividerRenderer
-| Renderer Class | org.primefaces.component.divider.DividerRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| align | null | String | Alignment of the content, options are "left", "center", "right" for horizontal layout and "top", "center", "bottom" for vertical.
-| layout | horizontal | String | Specifies the orientation, valid values are "horizontal" and "vertical".
-| type | solid | String | Border style type, default is "solid" and other options are "dashed" and "dotted".
-| title | null | String | Advisory tooltip information.
-| style | null | String | Style of the Divider.
-| styleClass | null | String | StyleClass of the Divider.
-
 ## Getting Started
 Divider has two orientations defined with the ```layout``` property, default is "horizontal" and the alternative is 
 "vertical".

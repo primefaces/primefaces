@@ -4,29 +4,6 @@ TagCloud displays a collection of tag with different strengths.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TagCloud.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | tagCloud
-| Component Class | org.primefaces.component.tagcloud.TagCloud
-| Component Type | org.primefaces.component.TagCloud
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.TagCloudRenderer
-| Renderer Class | org.primefaces.component.tagcloud.TagCloudRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-widgetVar | null | String | Name of the client side widget.
-model | null | TagCloudModel | Backing tag cloud model.
-style | null | String | Inline style of the container element.
-styleClass | null | String | Style class of the container element.
-
 ## Getting started with the TagCloud
 TagCloud requires a backend TagCloud model to display.
 

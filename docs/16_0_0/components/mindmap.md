@@ -5,30 +5,6 @@ animations and more.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Mindmap-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | mindmap
-| Component Class | org.primefaces.component.mindmap.Mindmap
-| Component Type | org.primefaces.component.Mindmap
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.MindmapRenderer
-| Renderer Class | org.primefaces.component.mindmap.MindmapRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | MindmapNode | MenuModel instance to build menu dynamically.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-effectSpeed | 300 | Integer | Speed of the animations in milliseconds.
-widgetVar | null | String | Name of the client side widget.
-
 ## Getting started with Mindmap
 Mindmap requires an instance of _org.primefaces.model.mindmap.MindmapNode_ as the root. Due to
 it’s lazy nature, a select ajax behavior must be provided to load children of selected node on the fly

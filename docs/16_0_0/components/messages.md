@@ -2,40 +2,6 @@
 
 Messages is a pre-skinned extended version of the standard Jakarta Faces messages component.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | messages
-| Component Class | org.primefaces.component.messages.Messages
-| Component Type | org.primefaces.component.Messages
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.MessagesRenderer
-| Renderer Class | org.primefaces.component.messages.MessagesRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-widgetVar | null | String | Name of the client side widget.
-showSummary | true | Boolean | Specifies if the summary of the FacesMessages should be displayed.
-showDetail | false | Boolean | Specifies if the detail of the FacesMessages should be displayed.
-globalOnly | false | String | When true, only facesmessages with no clientIds are displayed.
-redisplay | true | Boolean | Defines if already rendered messages should be displayed
-for | null | String | The clientId or name of associated key, takes precedence when used with globalOnly.
-forType | null | String | Defines how the `for` attribute is used to retrieve messages from `FacesContext#getMessages`. `key` defines that the `for` value is passed directly to `#getMessages`, whereas `expression` will be resolved by the `SearchExpressionHandler` first and then passed as `clientId` to `#getMessages`. Default is both.
-forIgnores | null | String | Defines a list of keys and clientIds, which should NOT be rendered by this component. Separated by space or comma.
-escape | true | Boolean | Defines whether HTML would be escaped or not.
-severity | null | String | Comma separated list of severities to display only.
-closable | false | Boolean | Adds a close icon to hide the messages.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-showIcon | true | Boolean | Defines if severity icons would be displayed.
-skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summary are equals.
-
 ## Getting started with Messages
 Message usage is exactly same as standard messages.
 

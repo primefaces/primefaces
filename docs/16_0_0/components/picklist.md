@@ -4,67 +4,6 @@ PickList is used for transferring data between two different collections.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.PickList-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | pickList
-| Component Class | org.primefaces.component.picklist.PickList
-| Component Type | org.primefaces.component.PickList
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.PickListRenderer
-| Renderer Class | org.primefaces.component.picklist.PickListRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component than can be either an EL expression of a literal text
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-required | false | Boolean | Marks component as required
-validator | null | MethodExpr | A method binding expression that refers to a method validating the input
-valueChangeListener | null | MethodExpr | A method binding expression that refers to a method for handling a valuchangeevent
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-converterMessage | null | String | Message to be displayed when conversion fails.
-validatorMessage | null | String | Message to be displayed when validation fields.
-var | null | String | Name of the iterator.
-itemLabel | null | String | Label of an item.
-itemValue | null | Object | Value of an item.
-style | null | String | Style of the main container.
-styleClass | null | String | Style class of the main container.
-widgetVar | null | String | Name of the client side widget.
-disabled | false | Boolean | Disables the component.
-effect | null | String | Name of the animation to display.
-effectSpeed | null | String | Speed of the animation.
-showSourceControls | false | Boolean | Specifies visibility of reorder buttons of source list.
-showTargetControls | false | Boolean | Specifies visibility of reorder buttons of target list.
-onTransfer | null | String | Client side callback to execute when an item is transferred from one list to another.
-label | null | String | A localized user presentable name.
-itemDisabled | false | Boolean | Specified if an item can be picked or not.
-showSourceFilter | false | Boolean | Displays and input filter for source list.
-showTargetFilter | false | Boolean | Displays and input filter for target list.
-sourceFilterPlaceholder | null | String | Placeholder for the source filter input element.
-targetFilterPlaceholder | null | String | Placeholder for the target filter input element.
-filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
-filterFunction | null | String | Name of the javascript function for custom filtering.
-filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
-showCheckbox | false | Boolean | When true, a checkbox is displayed next to each item.
-labelDisplay | tooltip | String | Defines how the button labels displayed, valid values are "tooltip" (default) and "inline".
-orientation | horizontal | String | Defines layout orientation, valid values are "vertical" and "horizontal".
-responsive | false | Boolean | In responsive mode, picklist adjusts itself based on screen width.
-escape | true | Boolean | Defines if labels of the component are escaped or not.
-tabindex | null | String | Position of the element in the tabbing order.
-dragDrop | true | Boolean | Specifies dragdrop based drag and drop transfers and reordering, default is true and works only on supported browsers.
-filterEvent | keyup | String | Client side event to invoke picklist filtering for input fields.
-filterDelay | 300 | Integer  | Delay to wait in milliseconds before sending each filter query.
-escapeValue | true | Boolean | Defines if values of the component are escaped or not.
-transferOnDblclick | true | Boolean | Defines if items should be transferred on dblclick.
-transferOnCheckboxClick | false | Boolean | Defines if items should be transferred, instead of selected, on checkbox click. This only works in combination with showCheckbox=true.
-
 ## Getting started with PickList
 You need to create custom model called _org.primefaces.model.DualListModel_ to use PickList. As
 the name suggests it consists of two lists, one is the source list and the other is the target. As the first

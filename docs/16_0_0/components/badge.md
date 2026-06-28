@@ -2,34 +2,6 @@
 
 Badge is a small status indicator for another element.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | badge
-| Component Class | org.primefaces.component.badge.Badge
-| Component Type | org.primefaces.component.Badge
-| Component Family | org.primefaces.component
-| Renderer Type | org.primefaces.component.BadgeRenderer
-| Renderer Class | org.primefaces.component.badge.BadgeRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| value | null | String | Value to display inside the badge.
-| severity | null | String | Severity type of the badge.
-| size | null | String | Size of the badge, valid options are "large" and "xlarge".
-| style | null | String | Style of the badge.
-| styleClass | null | String | StyleClass of the badge.
-| icon | null | String | Icon of the badge as a CSS class.
-| iconPos | left | String | Position of the icon.
-| onclick | null | String | Client side callback to execute when the badge element clicked. If not set it delegates the click to its target element.
-| visible | true | Boolean | Whether to hide the badge (but render the children).
-
 ## Getting Started
 Badge can either be used as a standalone component, or it may contain components.
 

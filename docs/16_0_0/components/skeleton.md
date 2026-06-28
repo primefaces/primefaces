@@ -2,33 +2,6 @@
 
 Skeleton is a placeholder to display instead of the actual content.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | skeleton
-| Component Class | org.primefaces.component.skeleton.Skeleton
-| Component Type | org.primefaces.component.Skeleton
-| Component Family | org.primefaces.component
-| Renderer Type | org.primefaces.component.SkeletonRenderer
-| Renderer Class | org.primefaces.component.skeleton.SkeletonRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| shape | rectangle | String | Shape of the element, options are "rectangle" and "circle".
-| size | null | String | Size of the Circle or Square.
-| width | 100 | String | 	Width of the element.
-| height | 1rem | String | Height of the element.
-| borderRadius | null | String | Border radius of the element, defaults to value from theme.
-| animation | wave | String | Type of the animation, valid options are "wave" and "none".
-| style | null | String | Style of the Skeleton.
-| styleClass | null | String | StyleClass of the Skeleton.
-
 ## Getting Started
 Skeleton displays a rectangle in its simplest form.
 

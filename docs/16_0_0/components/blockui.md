@@ -4,32 +4,6 @@ BlockUI is used to block interactivity of Jakarta Faces components with optional
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.BlockUI.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | blockUI
-| Component Class | org.primefaces.component.blockui.BlockUI
-| Component Type | org.primefaces.component.BlockUI
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.BlockUIRenderer
-| Renderer Class | org.primefaces.component.blockui.BlockUIRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component.
-| rendered | true | Boolean | Boolean value to specify the rendering of the component.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget.
-| trigger | null | String | Identifier of the component(s) to bind.
-| block | null | String | Search expression for block targets.
-| blocked | false | Boolean | Blocks the UI by default when enabled.
-| animate | true | Boolean | When disabled, displays block without animation effect.
-| styleClass | null | String | Style class of the component.
-| delay | 0 | int | Delay in milliseconds before displaying the ajax status. Default is 0 meaning immediate.
-
 ## Getting Started with BlockUI
 BlockUI requires _trigger_ and _block_ attributes to be defined. With the special ajax integration, ajax
 requests whose source are the trigger components will block the ui onstart and unblock oncomplete.

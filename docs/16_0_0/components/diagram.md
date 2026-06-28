@@ -6,30 +6,6 @@ api, events and theming.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Diagram-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | diagram
-| Component Class | org.primefaces.component.diagram.Diagram
-| Component Type | org.primefaces.component.Diagram
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.DiagramRenderer
-| Renderer Class | org.primefaces.component.diagram.DiagramRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget
-| value | null | String | Model of the diagram.
-| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
-| style | null | String | Inline style of the diagram.
-| styleClass | null | String | Style class of the diagram.
-
 ## Getting started with the Diagram
 Diagram requires a backend model to display.
 

@@ -4,33 +4,6 @@ Splitter is utilized to separate and resize panels.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Splitter.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | splitter
-| Component Class | org.primefaces.component.splitter.Splitter
-| Component Type | org.primefaces.component.Splitter
-| Component Family | org.primefaces.component
-| Renderer Type | org.primefaces.component.SplitterRenderer
-| Renderer Class | org.primefaces.component.splitter.SplitterRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| layout | horizontal | String | Orientation of the panels, valid values are "horizontal" and "vertical".
-| gutterSize | 4 | Integer | Size of the divider in pixels.
-| step | 5 | Integer | Step size when pressing arrow keys to resize panel. Default is 5.
-| stateKey | null | string | Storage identifier of a stateful Splitter.
-| stateStorage | session | string | Defines where a stateful splitter keeps its state, valid values are "session" for sessionStorage and "local" for localStorage.
-| onResizeEnd | null | String | Client-side callback to execute after the resizing end.
-| style | null | String | Style of the splitter.
-| styleClass | null | String | StyleClass of the splitter.
-
 ## Getting Started
 Splitter requires two SplitterPanel components to wrap.
 

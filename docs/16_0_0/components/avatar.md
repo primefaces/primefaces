@@ -2,38 +2,6 @@
 
 Avatar represents people using icons, labels and images.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | avatar
-| Component Class | org.primefaces.component.avatar.Avatar
-| Component Type | org.primefaces.component.Avatar
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.AvatarRenderer
-| Renderer Class | org.primefaces.component.avatar.AvatarRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| label | null | String | Defines the text to display.
-| icon | null | String | Defines the icon to display.
-| size | null | String | Size of the element, valid options are "large" and "xlarge".
-| shape | square | String | Shape of the element, valid options are "square" and "circle".
-| title | getLabel() | String | Advisory tooltip information. Defaults to the label value.
-| style | null | String | Style of the avatar.
-| styleClass | null | String | StyleClass of the avatar.
-| dynamicColor | false | Boolean | Dynamically assign contrasting foreground and background colors based on the label.
-| saturation | 100 | Integer | Saturation of dynamicColor (0 .. 100).
-| lightness | 40 | Integer | Lightness of dynamicColor (0 .. 100).
-| alpha | 100 | Integer | Alpha of dynamicColor (0 .. 100).
-| gravatar | null | String | Gravatar e-mail address for the profile to be displayed.
-| gravatarConfig | null | String | Optional Gravatar configuration for any other Gravatar API URL parameters.
-
 ## Getting Started
 Avatar has three built-in display modes; "label", "icon" and custom content.
 

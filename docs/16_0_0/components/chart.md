@@ -8,33 +8,6 @@ Chart.js based components are a modern replacement for the older jQuery-based `p
 
 A bar chart provides a way of showing data values represented as vertical bars. It is sometimes used to show trend data, and the comparison of multiple data sets side by side.
 
-### Info
-
-| Name | Value |
-| --- | --- |
-| Tag | barChart
-| Component Class | org.primefaces.component.chart.Chart
-| Component Type | org.primefaces.component.Chart
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ChartRenderer
-| Renderer Class | org.primefaces.component.barchart.ChartRenderer
-
-### Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| ariaLabel | title | String | The aria-label attribute is used to define a string that labels the current element for accessibility. (default to chart title).
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| canvasStyle | null | String | Inline style of the canvas element.
-| canvasStyleClass | null | String | Style class of the canvas element.
-| extender | null | String | Name of JavaScript function to extend the options of the underlying Chart.js plugin.
-| style | null | String | Inline style of the component.
-| styleClass | null | String | Style class of the component.
-| value | null | String | Chart model data as a JSON string, either generated from an XDEV model object or provided as raw JSON configuration.
-| widgetVar | null | String | Name of the client side widget.
-
 ### Raw JSON
 
 You can pass any full Chart.js configuration using a raw JSON string of data and configuration. This allows you complete and total

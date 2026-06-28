@@ -4,45 +4,6 @@ SelectOneButton is an input component to do a single select.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectOneButton-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | selectOneButton
-| Component Class | org.primefaces.component.selectonebutton.SelectOneButton
-| Component Type | org.primefaces.component.SelectOneButton
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.SelectOneButtonRenderer
-| Renderer Class | org.primefaces.component.selectonebutton.SelectOneButtonRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-converterMessage | null | String | Message to be displayed when conversion fails.
-disabled | false | Boolean | Disables the component.
-hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
-immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-label | null | String | User presentable name.
-layout | null | String | Layout of the buttons, valid values are null (default) or "custom".
-onchange | null | String | Callback to execute on value change.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-required | false | Boolean | Marks component as required
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-size | null | String | Defines the size of the button, valid values are `small` and `large`.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the container.
-tabindex | 0 | String | Position of the element in the tabbing order.
-unselectable | true | Boolean | Whether selection can be cleared.
-validator | null | MethodExpr | A method expression that refers to a method validating the input
-validatorMessage | null | String | Message to be displayed when validation fields.
-value | null | Object | Value of the component referring to a List.
-valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
-widgetVar | null | String | Name of the client side widget.
-
 ## Getting started with SelectOneButton
 SelectOneButton usage is same as selectOneRadio component, buttons just replace the radios.
 

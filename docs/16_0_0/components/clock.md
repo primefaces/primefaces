@@ -4,32 +4,6 @@ Clock displays server or client datetime live.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Clock-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | clock
-| Component Class | org.primefaces.component.clock.Clock
-| Component Type | org.primefaces.component.Clock
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ClockRenderer
-| Renderer Class | org.primefaces.component.clock.ClockRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component.
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-| pattern | null | String | Datetime format.
-| mode | client | String | Mode value, valid values are 'client' and 'server'.
-| autoSync | false | Boolean | Syncs time periodically in server mode.
-| syncInterval | 60000 | Integer | Defines in milliseconds the sync interval in autoSync setting.
-| timeZone | TimeZone.getDefault() | Object | String or a java.util.TimeZone instance to specify the timezone used for date conversion in 'server' mode.
-| displayMode | digital | String | Display mode, valid values are 'digital' and 'analog'.
-| value | null | Object | Custom clock time in 'server' mode must be either Date or LocalDateTime. Null means use server clock time.
-
 ## Getting Started with Clock
 Clock has two modes, _client_ (default) and _server_. In simple mode, datetime is displayed by just
 adding component on page. On page load, clock is initialized and start running based on client time.

@@ -4,66 +4,6 @@ SelectCheckboxMenu is a multi select component that displays options in an overl
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectCheckboxMenu-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | selectCheckboxMenu
-| Component Class | org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu
-| Component Type | org.primefaces.component.SelectCheckboxMenu
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.SelectCheckboxMenuRenderer
-| Renderer Class | org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenuRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
-ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
-collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-converterMessage | null | String | Message to be displayed when conversion fails.
-disabled | false | Boolean | Disables the component.
-dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
-emptyLabel | null | String | Label to be shown in updateLabel mode when no item is selected. If not set the label is shown.
-filter | false | Boolean | Renders an input field as a filter.
-filterFunction | null | String | Client side function to use in custom filtering.
-filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
-filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
-filterPlaceholder | null | String  | Placeholder text to show when filter input is empty.
-hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
-immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-label | null | String | User presentable name.
-labelSeparator | , | String | Separator for joining item lables if updateLabel is set to true. Default is ",".
-multiple | false | Boolean | Whether to show selected items as multiple labels.
-onHide | null | String | Client side callback to execute when overlay is hidden.
-onShow | null | String | Client side callback to execute when overlay is displayed.
-onchange | null | String | Callback to execute on value change.
-panelStyle | null | String | Inline style of the overlay.
-panelStyleClass | null | String | Style class of the overlay.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-required | false | Boolean | Marks component as required
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-scrollHeight | null | String | Maximum height of the overlay, e.g., "200vh" or "200%". Default is "200px".
-selectedLabel | null | String | Label to be shown in updateLabel mode when one or more items are selected. If not set the label is shown.
-showHeader | true | Boolean | When enabled, the header of panel is displayed.
-showSelectAll | true | Boolean | When enabled, the select all checkbox is displayed.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the container.
-tabindex | null | String | Position of the element in the tabbing order.
-title | null | String | Advisory tooltip information.
-updateLabel | false | Boolean | When enabled, the label is updated on every change, else it statically displays the `selectedLabel`.
-validator | null | MethodExpr | A method expression that refers to a method validating the input
-validatorMessage | null | String | Message to be displayed when validation fields.
-value | null | Object | Value of the component referring to a List.
-valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
-var | null | String | Name of iterator to be used in custom content display.
-widgetVar | null | String | Name of the client side widget.
-
 ## Getting started with SelectCheckboxMenu
 SelectCheckboxMenu usage is same as the standard selectManyCheckbox or PrimeFaces
 selectManyCheckbox components.

@@ -4,43 +4,6 @@ Panel is a grouping component with content toggle, close and menu integration.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Panel-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | panel
-| Component Class | org.primefaces.component.panel.Panel
-| Component Type | org.primefaces.component.Panel
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.PanelRenderer
-| Renderer Class | org.primefaces.component.panel.PanelRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-header | null | String | Header text
-footer | null | String | Footer text
-toggleable | false | Boolean | Makes panel toggleable.
-toggleSpeed | 500 | Integer | Speed of toggling in milliseconds
-collapsed | false | Boolean | Renders a toggleable panel as collapsed.
-style | null | String | Style of the panel
-styleClass | null | String | Style class of the panel
-closable | false | Boolean | Make panel closable.
-closeSpeed | 1000 | Integer | Speed of closing effect in milliseconds
-visible | true | Boolean | Renders panel as visible.
-closeTitle | null | String | Tooltip for the close button.
-toggleTitle | null | String | Tooltip for the toggle button.
-menuTitle | null | String | Tooltip for the menu button.
-renderEmptyFacets | false | Boolean | Render facets even if their children are not rendered. Default is false.
-toggleOrientation | vertical | String | Defines the orientation of the toggling, valid values are vertical and horizontal.
-widgetVar | null | String | Name of the client side widget
-toggleableHeader | false | Boolean | Defines if the panel is toggleable by clicking on the whole panel header.
-multiViewState | false | Boolean | Whether to keep Panel state across views, defaults to false.
-
 ## Getting started with Panel
 Panel encapsulates other components.
 

@@ -5,42 +5,6 @@ and skinning.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Slider-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | slider
-| Component Class | org.primefaces.component.slider.Slider
-| Component Type | org.primefaces.component.Slider
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.SliderRenderer
-| Renderer Class | org.primefaces.component.slider.SliderRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-for | null | String | Id of the input text that the slider will be used for
-display | null | String | Id of the component to display the slider value.
-minValue | 0 | Double | Minimum value of the slider
-maxValue | 100 | Double | Maximum value of the slider
-style | null | String | Inline style of the container element
-styleClass | null | String | Style class of the container element
-animate | true | Boolean | Boolean value to enable/disable the animated move when background of slider is clicked
-type | horizontal | String | Sets the type of the slider, "horizontal" or "vertical".
-step | 1 | Double | Fixed pixel increments that the slider move in
-disabled | false | Boolean | Disables or enables the component.
-readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
-onSlideStart | null | String | Client side callback to execute when slide begins.
-onSlide | null | String | Client side callback to execute during sliding.
-onSlideEnd | null | String | Client side callback to execute when slide ends.
-range | min | String | When set `true`, two handles are provided for selection a range. Another types `false` for disable range style and `max` for shows range handle to the slider max.
-displayTemplate | null | String | String template to use when updating the display. Valid placeholders are {value}, {min} and {max}.
-touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
-
 ## Getting started with Slider
 Slider requires an input component to work with, _for_ attribute is used to set the id of the input
 component whose input will be provided by the slider.

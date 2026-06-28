@@ -5,28 +5,6 @@ viewport during scrolling.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Sticky-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | sticky
-| Component Class | org.primefaces.component.sticky.Sticky
-| Component Type | org.primefaces.component.Sticky
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.StickyRenderer
-| Renderer Class | org.primefaces.component.sticky.StickyRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-margin | 0 | Integer | Margin to the top of the page during fixed scrolling.
-stickyTopAt | null | String | Selector for elements fixed at the top of the page whose height should be considered when positioning the sticky element.
-target | null | String | Component to make sticky.
-
 ## Getting started with Sticky
 Sticky requires a target to keep in viewport on scroll. Here is a sticky toolbar;
 

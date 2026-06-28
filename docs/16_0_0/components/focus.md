@@ -2,28 +2,6 @@
 
 Focus is a utility component that makes it easy to manage the element focus on a Jakarta Faces page.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | focus
-| Component Class | org.primefaces.component.focus.Focus
-| Component Type | org.primefaces.component.Focus.FocusTag
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.FocusRenderer
-| Renderer Class | org.primefaces.component.focus.FocusRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| for | null | String | Specifies the exact component to set focus
-| context | null | String | The root component to start first input search.
-| minSeverity | error | String | Minimum severity level to be used when finding the first invalid component
-
 ## Getting started with Focus
 By default focus will find the _first enabled and visible input component_ on page and apply focus.
 Input component can be any element such as input, textarea and select.

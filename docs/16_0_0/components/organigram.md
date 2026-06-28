@@ -4,34 +4,6 @@ Organigram is a data component to display an organizational hierarchy.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Organigram.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | organigram
-| Component Class | org.primefaces.component.organigram.Organigram
-| Component Type | org.primefaces.component.Organigram
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.OrganigramRenderer
-| Renderer Class | org.primefaces.component.organigram.OrganigramRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Organigram Node | Model instance.
-var | null | String | Name of the request-scoped variable that'll be used to refer each treenode data during rendering.
-selection | null | Organigram Node | OrganigramNode to reference the selection.
-LeafNodeConnectorHeight | 10 | Integer | The height of the connector line for leaf nodes.
-zoom | false | Boolean | Defines if zoom controls are rendered.
-autoScrollToSelection | false | Boolean | Auto scroll to the selected node on rendering if enabled.
-style | null | String | Style of the main container element of organigram.
-styleClass | null | String | Style class of the main container element of organigram.
-widgetVar | null | String | Name of the client side widget.
-
 ## Getting Started with Organigram
 Organigram requires an instance of OrganigramNode interface as its value to define the root, a
 default implementation _DefaultOrganigramNode_ is provided. Each node has a type where each

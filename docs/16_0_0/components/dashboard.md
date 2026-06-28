@@ -4,34 +4,6 @@ Dashboard provides a portal like layout with drag&drop based reorder capabilitie
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Dashboard.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | dashboard
-| Component Class | org.primefaces.component.dashboard.Dashboard
-| Component Type | org.primefaces.component.Dashboard
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.DashboardRenderer
-| Renderer Class | org.primefaces.component.dashboard.DashboardRenderer
-
-## Attributes
-
-| Name       | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id         | null | String | Unique identifier of the component
-| rendered   | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding    | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar  | null | String | Name of the client side widget
-| model      | null | DashboardModel | Dashboard model instance representing the layout of the UI.
-| disabled   | false | Boolean | Disables the component.
-| reordering | true | Boolean | Allow reordering of panels.
-| responsive | false | Boolean | In responsive mode, allows use of PrimeFlex CSS to control widget sizes and responsiveness.
-| scope      | null | String | Scope for dashboard drag and drop behaviour. Items can be dragged between multiple dashboards with the same scope.
-| style      | null | String | Inline style of the dashboard container
-| styleClass | null | String | Style class of the dashboard container
-| var        | null | String | Name of collection iterator which will be the value of DashboardWidget.getValue().
-
 ## Getting started with Dashboard
 Dashboard is backed by a DashboardModel and consists of panel components.
 

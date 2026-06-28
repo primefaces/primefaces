@@ -6,40 +6,6 @@ displayed when display element is toggled.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Inplace-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | inplace
-| Component Class | org.primefaces.component.inplace.Inplace
-| Component Type | org.primefaces.component.Inplace
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.InplaceRenderer
-| Renderer Class | org.primefaces.component.inplace.InplaceRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-widgetVar | null | String | Name of the client side widget.
-label | null | String | Label to be shown in display mode.
-emptyLabel | null | String | Label to be shown in display mode when value is empty.
-effect | fade | String | Effect to be used when toggling.
-effectSpeed | normal | String | Speed of the effect.
-disabled | false | Boolean | Prevents hidden content to be shown.
-style | null | String | Inline style of the main container element.
-styleClass | null | String | Style class of the main container element.
-editor | false | Boolean | Specifies the editor mode.
-saveLabel | Save | String | Tooltip text of save button in editor mode.
-cancelLabel | Cancel | String | Tooltip text of cancel button in editor mode.
-event | click | String | Name of the client side event to display inline content.
-toggleable | true | Boolean | Defines if inplace is toggleable or not.
-mode | output | String | Defines the default mode to display (input or output).
-tabindex | "0" | String | Position of the output in the tabbing order.
-
 ## Getting Started with Inplace
 The inline component needs to be a child of inplace.
 

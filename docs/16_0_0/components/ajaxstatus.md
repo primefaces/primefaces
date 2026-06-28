@@ -4,33 +4,6 @@ AjaxStatus is a global notifier for ajax requests.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.AjaxStatus-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | ajaxStatus |
-| Component Class | org.primefaces.component.ajaxstatus.AjaxStatus |
-| Component Type | org.primefaces.component.AjaxStatus |
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.AjaxStatusRenderer |
-| Renderer Class | org.primefaces.component.ajaxstatus.AjaxStatusRenderer |
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component. |
-| rendered | true | Boolean | Boolean value to specify the rendering of the component. |
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean |
-| onstart | null | String | Client side callback to execute after ajax requests start. |
-| oncomplete(xhr,settings,args) | null | String | Client side callback to execute after ajax requests complete. |
-| onsuccess(xhr,settings) | null | String | Client side callback to execute after ajax requests completed successfully. |
-| onerror(xhr,settings,error) | null | String | Client side callback to execute when an ajax request fails. |
-| delay | 0 | int | Delay in milliseconds before displaying the ajax status. Default is 0 meaning immediate. |
-| style | null | String | Inline style of the component. |
-| styleClass | null | String | Style class of the component. |
-| widgetVar | null | String | Name of the client side widget. |
-
 ## Getting Started with AjaxStatus
 AjaxStatus uses facets to represent the request status. Most common used facets are _start_ and
 _complete_. The _start_ facet will be visible once ajax request begins and stay visible until it’s completed.

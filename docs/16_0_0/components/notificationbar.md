@@ -4,32 +4,6 @@ NotificationBar displays a multipurpose fixed positioned panel for notification.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.NotificationBar-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | notificationBar
-| Component Class | org.primefaces.component.notificationbar.NotificationBar
-| Component Type | org.primefaces.component.NotificatonBar
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.NotificationBarRenderer
-| Renderer Class | org.primefaces.component.notificationbar.NotificationBarRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-style | null | String | Style of the container element
-styleClass | null | String | StyleClass of the container element
-position | top | String | Position of the bar, "top" or "bottom".
-effect | fade | String | Name of the effect, "fade", "slide" or "none".
-effectSpeed | normal | String | Speed of the effect, "slow", "normal" or "fast".
-autoDisplay | false | Boolean | When true, panel is displayed on page load.
-widgetVar | null | String | Name of the client side widget.
-
 ## Getting started with NotificationBar
 As notificationBar is a panel component, any content can be placed inside.
 

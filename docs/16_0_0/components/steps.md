@@ -3,32 +3,6 @@
 Steps components is an indicator for the steps in a workflow. Layout of steps component is
 optimized for responsive design.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | steps
-| Component Class | org.primefaces.component.steps.Steps
-| Component Type | org.primefaces.component.Steps
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.StepsRenderer
-| Renderer Class | org.primefaces.component.steps.StepsRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-model | null | MenuModel | MenuModel instance to build menu dynamically.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-activeIndex | 0 | Integer | Index of the active tab.
-activeStepExecutable | false | boolean | Allows the active index menu to remain executable. Default is false.
-widgetVar | null | String | Name of the client side widget.
-readonly | true | Boolean | Defines whether items would be clickable or not.
-
 ## Getting started with Steps
 Steps requires menuitems as children components, each menuitem is rendered as a step. Just like in
 any other menu component, menuitems can be utilized to do ajax requests, non-ajax requests and

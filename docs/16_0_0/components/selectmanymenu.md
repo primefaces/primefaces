@@ -4,55 +4,6 @@ SelectManyMenu is an extended version of the standard SelectManyMenu.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectManyMenu.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | selectManyMenu
-| Component Class | org.primefaces.component.selectmanymenu.SelectManyMenu
-| Component Type | org.primefaces.component.SelectManyMenu
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.SelectManyMenuRenderer
-| Renderer Class | org.primefaces.component.selectmanymenu.SelectManyMenuRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
-collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-converterMessage | null | String | Message to be displayed when conversion fails.
-disabled | false | Boolean | Disables the component.
-filter | false | Boolean | Displays an input filter for the list.
-filterFunction | null | String | Client side function to use in custom filterMatchMode.
-filterMatchMode | null | String | Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.
-filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
-hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
-immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-label | null | String | User presentable name.
-metaKeySelection | true | Boolean | The meta key (SHIFT or CTRL) must be held down to multi-select items.
-onchange | null | String | Callback to execute on value change.
-onclick | null | String | Callback for click event.
-ondblclick | null | String | Callback for dblclick event.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-required | false | Boolean | Marks component as required
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-scrollHeight | null | Integer | Defines the height of the scrollable area
-showCheckbox | false | Boolean | When true, a checkbox is displayed next to each item.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the container.
-tabindex | null | String | Position of the input element in the tabbing order.
-validator | null | MethodExpr | A method expression that refers to a method validating the input
-validatorMessage | null | String | Message to be displayed when validation fields.
-value | null | Object | Value of the component referring to a List.
-valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
-var | null | String | Name of iterator to be used in custom content display.
-widgetVar | null | String | Name of the client side widget.
-
 ## Getting started with SelectManyMenu
 SelectManyMenu usage is same as the standard one.
 

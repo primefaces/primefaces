@@ -5,47 +5,6 @@ and advance theme support.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Tooltip-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | tooltip
-| Component Class | org.primefaces.component.tooltip.Tooltip
-| Component Type | org.primefaces.component.Tooltip
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.TooltipRenderer
-| Renderer Class | org.primefaces.component.tooltip.TooltipRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component than can be either an EL expression of a literal text
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-widgetVar | null | String | Name of the client side widget.
-showEvent | mouseover | String | Event displaying the tooltip.
-showEffect | fade | String | Effect to be used for displaying.
-hideEvent | mouseout | String | Event hiding the tooltip.
-hideEffect | fade | String | Effect to be used for hiding.
-showDelay | 400 | Integer | Delay time to show tooltip in milliseconds.
-hideDelay | 0 | Integer | Delay time to hide tooltip in milliseconds.
-for | null | String | Component to attach the tooltip.
-style | null | String | Inline style of the tooltip.
-styleClass | null | String | Style class of the tooltip.
-globalSelector | null | String | jquery selector for global tooltip, defaults to "a,:input,:button".
-escape | true | Boolean | Defines whether HTML would be escaped or not.
-trackMouse | false | Boolean | Tooltip position follows pointer on mousemove.
-beforeShow | null | String | Client side callback to execute before tooltip is shown. Returning false will prevent display.
-onHide | null | String | Client side callback to execute after tooltip is shown.
-onShow | null | String | Client side callback to execute after tooltip is shown.
-position | right | String | Position of the tooltip, valid values are right, left, top and bottom.
-my | null | String | Defines which position on the element being positioned to align with the target element: "horizontal vertical" alignment. A single value such as "right" will be normalized to "right center", "top" will be normalized to "center top" (following CSS convention). Acceptable horizontal values: "left", "center", "right". Acceptable vertical values: "top", "center", "bottom". Example: "left top" or "center center". Each dimension can also contain offsets, in pixels or percent, e.g., "right+10 top-25%". Percentage offsets are relative to the element being positioned. If set overrides the 'position' attribute. Example "left center".
-at | null | String | Defines which position on the target element to align the positioned element against: "horizontal vertical" alignment. See the my option for full details on possible values. Percentage offsets are relative to the target element. If set overrides the 'position' attribute. Example "right center".
-autoHide | true | boolean | Whether to hide tooltip when hovering over tooltip content.
-
 ## Getting started with the Tooltip
 Tooltip can be used by attaching it to a target component. Tooltip value can also be retrieved from
 target’s title, so following are same;

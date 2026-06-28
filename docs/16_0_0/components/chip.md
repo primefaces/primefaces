@@ -4,33 +4,6 @@ Chip represents entities using icons, labels and images.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Chip.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | chip
-| Component Class | org.primefaces.component.chip.Chip
-| Component Type | org.primefaces.component.Chip
-| Component Family | org.primefaces.component
-| Renderer Type | org.primefaces.component.ChipRenderer
-| Renderer Class | org.primefaces.component.chip.ChipRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| label	| null | String | Defines the text to display.
-| icon | null | String | Defines the icon to display.
-| image | null | String | Defines the image to display.
-| removable | false | Boolean | Whether to display a remove icon.
-| removeIcon | pi pi-times-circle | String | Icon of the remove element.
-| widgetVar | null | String | Name of the client side widget.
-| style | null | String | Style of the Chip.
-| styleClass | null | String | StyleClass of the Chip.
-
 ## Getting Started
 Chip can display labels, icons and images.
 

@@ -4,29 +4,6 @@ Spotlight highlights a certain component on page.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Spotlight.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | spotlight
-| Component Class | org.primefaces.component.spotlight.Spotlight
-| Component Type | org.primefaces.component.Spotlight
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.SpotlightRenderer
-| Renderer Class | org.primefaces.component.spotlight.SpotlightRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | false | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-widgetVar | null | String | Name of the client side widget.
-target | null | String | Component to highlight.
-active | false | Boolean | When true, spotlight is activated initially.
-blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
-
 ## Getting started with Spotlight
 Spotlight is accessed using client side api. Clicking the button highlights the panel below;
 

@@ -5,42 +5,6 @@ and avoiding popup blockers are notable advantages over classic javascript confi
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ConfirmDialog-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | confirmDialog
-| Component Class | org.primefaces.component.confirmdialog.ConfirmDialog
-| Component Type | org.primefaces.component.ConfirmDialog
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ConfirmDialogRenderer
-| Renderer Class | org.primefaces.component.confirmdialog.ConfirmDialogRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget.
-| message | null | String | Text to be displayed in body.
-| header | null | String | Text for the header.
-| severity | null | String | Message severity for the displayed icon.
-| width | auto | Integer | Width of the dialog in pixels
-| height | auto | Integer | Width of the dialog in pixels
-| style | null | String | Inline style of the dialog container.
-| styleClass | null | String | Style class of the dialog container
-| closable | true | Boolean | Defines if close icon should be displayed or not
-| appendTo | null | String | Appends the dialog to the element defined by the given search expression.
-| visible | false | Boolean | Whether to display confirm dialog on load.
-| showEffect | null | String | Effect to use on showing dialog.
-| hideEffect | null | String | Effect to use on hiding dialog.
-| closeOnEscape | false | Boolean | Defines if dialog should hide on escape key.
-| dir | ltr | String | Defines text direction, valid values are ltr and rtl.
-| global | false | Boolean | When enabled, confirmDialog becomes a shared for other components that require confirmation.
-| responsive | false | Boolean | In responsive mode, dialog adjusts itself based on screen width.
-
 ## Getting started with ConfirmDialog
 ConfirmDialog has two modes; global and non-global. Non-Global mode is almost same as the
 dialog component used with a simple client side api, _show()_ and _hide()_.

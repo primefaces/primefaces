@@ -4,40 +4,6 @@ TieredMenu is used to display nested submenus with overlays.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TieredMenu-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | tieredMenu
-| Component Class | org.primefaces.component.tieredmenu.TieredMenu
-| Component Type | org.primefaces.component.TieredMenu
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.TieredMenuRenderer
-| Renderer Class | org.primefaces.component.tieredmenu.TieredMenuRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-widgetVar | null | String | Name of the client side widget.
-model | null | MenuModel | MenuModel instance for programmatic menu.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
-autoDisplay | true | Boolean | Defines whether the first level of submenus will be displayed on mouseover or not. When set to false, click event is required to display.
-trigger | null | String | Id of the component whose triggerEvent will show the dynamic positioned menu.
-my | null | String | Corner of menu to align with trigger element.
-at | null | String | Corner of trigger to align with menu element.
-overlay | false | Boolean | Defines positioning, when enabled menu is displayed with absolute position relative to the trigger. Default is false, meaning static positioning.
-showDelay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
-hideDelay | 0 | int | Delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
-tabindex | 0 | String | Position of the element in the tabbing order.
-triggerEvent | click | String | Event name of trigger that will show the dynamic positioned menu.
-toggleEvent | hover | String | Event to toggle the submenus, valid values are "hover" and "click".
-
 ## Getting started with the TieredMenu
 TieredMenu consists of submenus and menuitems, submenus can be nested and each nested
 submenu will be displayed in an overlay.

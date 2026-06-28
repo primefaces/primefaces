@@ -4,34 +4,6 @@ MegaMenu is a horizontal navigation component that displays submenus together.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.MegaMenu.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | megaMenu
-| Component Class | org.primefaces.component.megamenu.MegaMenu
-| Component Type | org.primefaces.component.MegaMenu
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.MegaMenuRenderer
-| Renderer Class | org.primefaces.component.megamenu.MegaMenuRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-widgetVar | null | String | Name of the client side widget
-model | null | MenuModel | MenuModel instance to create menus programmatically
-dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-autoDisplay | true | Boolean | Defines whether submenus will be displayed on mouseover or not. When set to false, click event is required to display.
-delay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
-activeIndex | null | Integer | Index of the active root menu to display as highlighted. By default no root is highlighted.
-orientation | horizontal | String | Defines the orientation of the root menuitems, valid values are "horizontal" and "vertical".
-
 ## Getting Started with MegaMenu
 Layout of MegaMenu is grid based and root items require columns as children.
 

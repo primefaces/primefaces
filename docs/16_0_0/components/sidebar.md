@@ -4,39 +4,6 @@ Sidebar is a panel component displayed as an overlay at the edges of the screen.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Sidebar-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | sidebar
-| Component Class | org.primefaces.component.sidebar.Sidebar
-| Component Type | org.primefaces.component.Sidebar
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.SidebarMenuRenderer
-| Renderer Class | org.primefaces.component.sidebar.SidebarMenuRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-widgetVar | null | String | Name of the client side widget.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-visible | false | Boolean | Specifies the visibility of the sidebar.
-position | left | String | Position of the sidebar.
-fullScreen | false | Boolean | Whether to enable the whole screen.
-blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
-baseZIndex | 0 | Integer | Base zIndex value to use in layering. Only use this attribute if you are having issues with your sidebar displaying as this may cause issues with overlay components inside the sidebar.
-appendTo | null | String | Appends the sidebar to the given search expression.
-dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the sidebar is not rendered on page load to improve performance. Default is false.
-onShow | null | String | Client side callback to execute when sidebar is displayed.
-onHide | null | String | Client side callback to execute when sidebar is hidden.
-modal | true | Boolean | Enables modality.
-showCloseIcon | true | Boolean | Displays a close icon to hide the overlay, default is true.
-
 ## Getting started with the Sidebar
 Sidebar is used a container to other components and display is toggle using the show() and hide()
 methods of the widget.

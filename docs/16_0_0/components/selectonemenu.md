@@ -4,69 +4,6 @@ SelectOneMenu is an extended version of the standard SelectOneMenu.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectOneMenu-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | selectOneMenu
-| Component Class | org.primefaces.component.selectonemenu.SelectOneMenu
-| Component Type | org.primefaces.component.SelectOneMenu
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.SelectOneMenuRenderer
-| Renderer Class | org.primefaces.component.selectonemenu.SelectOneMenuRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component.
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-required | false | Boolean | Marks component as required
-alwaysDisplayLabel | false | Boolean | Always display the `label` value instead of the selected item label.
-appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
-ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
-autocomplete | null | String | Controls browser autocomplete behavior for editable input field
-autoWidth | auto | String | Calculates a fixed width based on the width of the maximum option label. If the value is "auto", it's only calculated when its not placed inside a ui-fluid and no width was specified on the component. "false" = never calculate, "true" = always calculate.
-caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
-converterMessage | null | String | Message to be displayed when conversion fails.
-dir | ltr | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
-disabled | false | Boolean | Disables the component.
-dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
-editable | false | Boolean | When true, input becomes editable.
-filter | false | Boolean | Renders an input field as a filter.
-filterFunction | null | String | Client side function to use in custom filtering.
-filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
-filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
-filterPlaceholder | null | String | Watermark displayed in the filter input field before the user enters a value.
-height | auto | Integer | Height of the overlay.
-hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
-label | null | String | User presentable name used in conjuction with `alwaysDisplayLabel` to display instead of selected item.
-labelTemplate | null | String | Displays label of the element in a custom template. Valid placeholder is {0}.
-maxlength | null | Integer | Number of maximum characters allowed in editable selectOneMenu.
-onblur | null | String | Client side callback to execute when element loses focus.
-onchange | null | String | Client side callback to execute on value change.
-onfocus | null | String | Client side callback to execute when element receives focus.
-onkeydown | null | String | Client side callback to execute on keydown.
-onkeyup | null | String | Client side callback to execute on keyup.
-panelStyle | null | String | Style of the dropdown panel container element.
-panelStyleClass | null | String | Style  class of the dropdown panel container element.
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the container.
-syncTooltip | false | Boolean | Updates the title of the component with the description of the selected item.
-tabindex | null | String | Tabindex of the input.
-title | null | String | Advisory tooltip information.
-touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
-validator | null | MethodExpr | A method expression that refers to a method validating the input
-validatorMessage | null | String | Message to be displayed when validation fields.
-valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
-var | null | String | Name of the item iterator.
-widgetVar | null | String | Name of the client side widget.
-
 ## Getting started with SelectOneMenu
 Basic SelectOneMenu usage is same as the standard one.
 

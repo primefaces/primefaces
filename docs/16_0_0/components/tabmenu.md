@@ -4,31 +4,6 @@ TabMenu is a navigation component that displays menuitems as tabs.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TabMenu.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | tabMenu
-| Component Class | org.primefaces.component.tabmenu.TabMenu
-| Component Type | org.primefaces.component.TabMenu
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.TabMenuRenderer
-| Renderer Class | org.primefaces.component.tabmenu.TabMenuRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-model | null | MenuModel | MenuModel instance to build menu dynamically.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-activeIndex | 0 | Integer | Index of the active tab.
-widgetVar | null | String | Name of the client side widget.
-orientation | top | String | Orientation of the tab items relative to where you want to put the content, valid values are "top" (default), "left", "right" and "bottom".
-
 ## Getting started with TabMenu
 TabMenu requires menuitems as children components, each menuitem is rendered as a tab. Just like
 in any other menu component, menuitems can be utilized to do ajax requests, non-ajax requests and

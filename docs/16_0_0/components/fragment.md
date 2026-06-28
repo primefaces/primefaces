@@ -5,27 +5,6 @@ AJAX request is triggered by a descendant component.
 
 !> Nested fragments are currently not supported!
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | fragment
-| Component Class | org.primefaces.component.fragment.Fragment
-| Component Type | org.primefaces.component.Fragment
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.FragmentRenderer
-| Renderer Class | org.primefaces.component.fragment.FragmentRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| process | true | Boolean | Process the fragment automatically.
-| update | false | Boolean | Updates the fragment automatically.
-
 ## Getting started with Fragment
 In the following case, required input field outside the fragment is ignored and only the contents of
 the fragment are processed / updated automatically on button click, since button is inside the fragment.

@@ -4,30 +4,6 @@ IdleMonitor watches user actions on a page and notify callbacks in case they go 
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.IdleMonitor-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | idleMonitor
-| Component Class | org.primefaces.component.idlemonitor.IdleMonitor
-| Component Type | org.primefaces.component.IdleMonitor
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.IdleMonitorRenderer
-| Renderer Class | org.primefaces.component.idlemonitor.IdleMonitor
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-timeout | 300000 | Integer | Time to wait in milliseconds until deciding if the user is idle. Default is 5 minutes.
-onidle | null | String | Client side callback to execute when user goes idle.
-onactive | null | String | Client side callback to execute when user goes idle.
-multiWindowSupport | false | Boolean | When set to true, the lastAccessed state will be shared between all browser windows for the same servlet context.
-widgetVar | null | String | Name of the client side widget.
-
 ## Getting Started with IdleMonitor
 To begin with, you can hook-in to client side events that are called when a user goes idle or
 becomes active again. Example below toggles visibility of a dialog to respond these events.

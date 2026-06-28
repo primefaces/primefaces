@@ -4,62 +4,8 @@ Dialog is a panel component that can overlay other elements on page.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Dialog-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | dialog
-| Component Class | org.primefaces.component.dialog.Dialog
-| Component Type | org.primefaces.component.Dialog
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.DialogRenderer
-| Renderer Class | org.primefaces.component.dialog.DialogRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget
-| appendTo | null | String | Appends the dialog to the element defined by the given search expression.
-| blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
-| cache | true | Boolean | Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once.
-| closable | true | Boolean | Defines if close icon should be displayed or not
-| closeOnEscape | false | Boolean | Defines if dialog should close on escape key.
-| dir | ltr | String | Defines text direction, valid values are ltr and rtl.
-| draggable | true | Boolean | Specifies draggability
-| dynamic | false | Boolean | Enables lazy loading of the content with ajax.
-| fitViewport | false | Boolean | Dialog size might exceed viewport if content is bigger than viewport in terms of height or width. fitViewport option automatically adjusts height and width to fit dialog within the viewport.
-| focus | null | String | Defines which component to apply focus by search expression.
-| footer | null | String | Text of the footer.
-| header | null | String | Text of the header
-| height | auto | Integer | Height of the dialog
-| hideEffect | null | String | Effect to use when hiding the dialog
-| maximizable | false | Boolean | Whether a dialog is maximizable or not.
-| minHeight | 0 | Integer | Minimum height of a resizable dialog.
-| minWidth | 150 | Integer | Minimum width of a resizable dialog.
-| minimizable | false | Boolean | Whether a dialog is minimizable or not.
-| modal | false | Boolean | Enables modality.
-| my | center | String | Position of the dialog relative to the target.
-| onHide | null | String | Client side callback to execute when dialog is hidden.
-| onShow | null | String | Client side callback to execute when dialog is displayed.
-| position | null | String | Defines where the dialog should be displayed
-| positionType | fixed | String | Defines whether dialog will be kept in viewport on scroll (fixed) or keep its position (absolute).
-| resizable | true | Boolean | Specifies resizability
-| responsive | true | Boolean | In responsive mode the dialog adjusts itself based on screen width, browser resizing, and scrolling of the document.
-| showEffect | null | String | Effect to use when showing the dialog
-| showHeader | true | Boolean | Defines visibility of the header content.
-| style | null | String | Inline style of the dialog.
-| styleClass | null | String | Style class of the dialog
-| visible | false | Boolean | When enabled, dialog is visible by default.
-| width | auto | Integer | Width of the dialog
-
-
 ## Getting started with the Dialog
 Dialog is a panel component containing other components, note that by default dialog is not visible.
-
 
 ```xhtml
 <p:dialog>

@@ -6,20 +6,6 @@ constants class. ImportConstant is an utility tag which allows to import constan
 The constants can be accessed via the name of the class (default setting) or via a custom name (var
 attribute).
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | importConstants
-| Handler | org.primefaces.component.importconstants.ImportConstantsTagHandler
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-type | null | String | Name of the class containing the constants.
-var | null | String | Variable name to expose to EL.
-
 ## Getting Started with ImportConstants
 Class whose constants would be imported is defined with type property and the var property
 specifies the variable name to use via EL.

@@ -6,45 +6,6 @@ ToggleSwitch is used to select a boolean value.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ToggleSwitch.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | toggleSwitch
-| Component Class | org.primefaces.component.toggleswitch.ToggleSwitch
-| Component Type | org.primefaces.component.ToggleSwitch
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ToggleSwitchRenderer
-| Renderer Class | org.primefaces.component.toggleswitch.ToggleSwitchRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component than can be either an EL expression of a literal text
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-required | false | Boolean | Marks component as required
-validator | null | MethodExpr | A method binding expression that refers to a method validating the input
-valueChangeListener | null | MethodExpr | A method binding expression that refers to a method for handling a valuchangeevent
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-converterMessage | null | String | Message to be displayed when conversion fails.
-validatorMessage | null | String | Message to be displayed when validation fields.
-widgetVar | null | String | Name of the client side widget.
-label | null | String | User presentable name.
-disabled | false | Boolean | Disables or enables the component.
-readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
-onchange | false | Boolean | Client side callback to execute on value change event.
-style | null | String | Inline style of the main container.
-styleClass | null | String | Style class of the main container.
-tabindex | null | Integer | The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.
-onfocus | null | String | Client side callback to execute when component receives focus.
-onblur | null | Sring | Client side callback to execute when component loses focus.
-ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
-
 ## Getting started with ToggleSwitch
 ToggleSwitch requires a boolean reference as the value.
 

@@ -5,34 +5,6 @@ relationship.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.MultiSelectListbox.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | multiSelectListbox
-| Component Class | org.primefaces.component.multiselectlistbox.MultiSelectListbox
-| Component Type | org.primefaces.component.MultiSelectListbox
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.MultiSelectListboxRenderer
-| Renderer Class | org.primefaces.component.multiselectlistbox.MultiSelectListboxRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-widgetVar | null | String | Name of the client side widget.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-disabled | false | Boolean | Disables or enables the component.
-readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
-effect | null | String | Effect to use when showing a group of items.
-showHeaders | false | Boolean | Displays label of a group at header section of the children items.
-header | null | String | Label of the root group items.
-hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
-
 ## Getting started with MultiSelectListbox
 MultiSelectListbox needs a collection of SelectItemGroups.
 

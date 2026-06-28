@@ -4,33 +4,6 @@ ImageSwitch component is a simple image gallery component.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ImageSwitch.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | imageSwitch
-| Component Class | org.primefaces.component.imageswitch.ImageSwitch
-| Component Type | org.primefaces.component.ImageSwitch
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ImageSwitchRenderer
-| Renderer Class | org.primefaces.component.imageswitch.ImageSwitchRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-widgetVar | null | String | Name of the client side widget.
-effect | null | String | Name of the effect for transition.
-speed | 500 | Integer | Speed of the effect in milliseconds.
-slideshowSpeed | 3000 | Integer | Slideshow speed in milliseconds.
-slideshowAuto | true | Boolean | Starts slideshow automatically on page load.
-style | null | String | Style of the main container.
-styleClass | null | String | Style class of the main container.
-activeIndex | 0 | Integer | Index of the first image.
-
 ## Getting Started with ImageSwitch
 ImageSwitch component needs a set of images to display. Provide the image collection as a set of
 children components.

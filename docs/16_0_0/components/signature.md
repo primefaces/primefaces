@@ -6,52 +6,6 @@ devices and legacy browsers without canvas support.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Signature-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | signature
-| Component Class | org.primefaces.component.signature.Signature
-| Component Type | org.primefaces.component.Signature
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.SignatureRenderer
-| Renderer Class | org.primefaces.component.signature.SignatureRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
-ariaLabel | "Sign here" | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
-backgroundColor | #ffffff | String | Background color as hex value
-base64Value | null | String | Write-only value used to pass the value in base64 to backing bean
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-color | #000000 | String | Foreground color as hex value
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-converterMessage | null | String | Message to be displayed when conversion fails.
-fontFamily | "cursive" | String | Font family for typing in a signature. Default is "Brush Script MT, cursive"
-fontSize |40 | Integer | Font size for typing in a signature. Default is 40.
-guideline | false | Boolean | Adds a guideline when enabled
-guidelineColor | #a0a0a0 | String | Color of the guideline
-guidelineIndent | 10 | Integer | Guide line indent from the edges
-guidelineOffset | 25 | String | Offset of guideline from bottom
-immediate | false | Boolean | Boolean value that specifies the lifecycle phase the valueChangeEvents should be processed, when true the events will be fired at "apply request values", if immediate is set to false, valueChange Events are fired in "process validations" phase
-onchange | null | String | Client side callback to execute when signature changes.
-readonly | false | Boolean | When enabled, signature is used for display purposes only.
-required | false | Boolean | Marks component as required
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-style | null | String | Inline style of the component
-styleClass | null | String | Style class of the component.
-tabindex | null | Integer | Position of the input element in the tabbing order.
-thickness | 2 | Integer | Thickness of the lines
-validator | null | MethodExpr | A method binding expression that refers to a method validating the input
-validatorMessage | null | String | Message to be displayed when validation fields.
-value | null | Object | Value of the component than can be either an EL expression of a literal text
-valueChangeListener | null | MethodExpr | A method binding expression that refers to a method for handling a valuchangeevent
-widgetVar | null | String | Name of the client side widget
-
 ## Getting started with Signature
 Value is interpreted as JSON so at backing bean should be a string value.
 

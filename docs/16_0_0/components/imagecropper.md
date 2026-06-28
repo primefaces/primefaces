@@ -5,50 +5,6 @@ cropped area and assigned to a CroppedImage instanced on the server side.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ImageCropper.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | imageCropper
-| Component Class | org.primefaces.component. imagecropper.ImageCropper
-| Component Type | org.primefaces.component.ImageCropper
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ImageCropperRenderer
-| Renderer Class | org.primefaces.component.imagecropper.ImageCropperRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component than can be either an EL expression of a literal text
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-required | false | Boolean | Marks component as required
-validator | null | MethodExpr | A method binding expression that refers to a method validating the input
-valueChangeListener | null | MethodExpr | A method binding expression that refers to a method for handling a valuchangeevent
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-converterMessage | null | String | Message to be displayed when conversion fails.
-validatorMessage | null | String | Message to be displayed when validation fields.
-widgetVar | null | String | Name of the client side widget.
-image | null | Object | Binary data to stream or context relative path.
-alt | null | String | Alternate text of the image.
-aspectRatio | null | Double | Aspect ratio of the cropper area.
-minSize | null | String | Minimum size of the cropper area (width,height).
-maxSize | null | String | Maximum size of the cropper area (width,height).
-initialCoords | null | String | Initial coordinates of the cropper area (x, y, width,height).
-boxWidth | 0 | Integer | Maximum box width of the cropping area.
-boxHeight | 0 | Integer | Maximum box height of the cropping area.
-sizeLimit | 10485760 | Long | Maximum number of bytes the image.
-responsive | true | Boolean | Re-render the cropper when resizing the window.
-guides | true | Boolean | Show the dashed lines in the crop box.
-cache | true | Boolean | Controls browser caching mode of the resource. Default is true.
-viewMode | 1 | Integer | Define the view mode of the cropper. If you set viewMode to 0, the crop box can extend outside the canvas, while a value of 1, 2 or 3 will restrict the crop box to the size of the canvas. A viewMode of 2 or 3 will additionally restrict the canvas to the container. Note that if the proportions of the canvas and the container are the same, there is no difference between 2 and 3.
-zoomOnTouch | true | Boolean | Enable to zoom the image by dragging touch. Default is true.
-zoomOnWheel | true | Boolean | Enable to zoom the image by wheeling mouse. Default is true.
-
 ## Getting started with the ImageCropper
 ImageCropper is an input component and image to be cropped is provided via the _image_ attribute.
 The cropped area of the original image is used to create a new image, this new image can be

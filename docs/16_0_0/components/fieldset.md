@@ -4,36 +4,6 @@ Fieldset is a grouping component as an extension to HTML fieldset.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Fieldset.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | fieldset
-| Component Class | org.primefaces.component.fieldset.Fieldset
-| Component Type | org.primefaces.component.Fieldset
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.FieldsetRenderer
-| Renderer Class | org.primefaces.component.fieldset.FieldsetRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget.
-| legend | null | String | Title text.
-| style | null | String | Inline style of the fieldset.
-| styleClass | null | String | Style class of the fieldset.
-| toggleable | false | Boolean | Makes content toggleable with animation.
-| toggleSpeed | 500 | Integer | Toggle duration in milliseconds.
-| collapsed | false | Boolean | Defines initial visibility state of content.
-| tabindex | 0 | String | Position of the element in the tabbing order.
-| escape | true | Boolean | Whether value would be escaped or not.
-| title | null | String | Advisory tooltip information.
-| dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the fieldset is not rendered on page load to improve performance. Default is false.
-
 ## Getting started with Fieldset
 Fieldset is used as a container component for its children.
 

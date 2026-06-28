@@ -4,35 +4,6 @@ Menubar is a horizontal navigation component.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Menubar.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | menubar
-| Component Class | org.primefaces.component.menubar.Menubar
-| Component Type | org.primefaces.component.Menubar
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.MenubarRenderer
-| Renderer Class | org.primefaces.component.menubar.MenubarRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-widgetVar | null | String | Name of the client side widget
-model | null | MenuModel | MenuModel instance to create menus programmatically
-dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
-style | null | String | Inline style of menubar
-styleClass | null | String | Style class of menubar
-autoDisplay | false | Boolean | Defines whether the first level of submenus will be displayed on mouseover or not. When set to false, click event is required to display.
-showDelay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
-hideDelay | 0 | int | Delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
-tabindex | 0 | String | Position of the element in the tabbing order.
-toggleEvent | hover | String | Event to toggle the submenus, valid values are "hover" and "click".
-
 ## Getting started with Menubar
 Submenus and menuitems as child components are required to compose the menubar.
 

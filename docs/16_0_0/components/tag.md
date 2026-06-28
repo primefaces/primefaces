@@ -2,32 +2,6 @@
 
 Tag component is used to categorize content.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | tag
-| Component Class | org.primefaces.component.tag.Tag
-| Component Type | org.primefaces.component.Tag
-| Component Family | org.primefaces.component
-| Renderer Type | org.primefaces.component.TagRenderer
-| Renderer Class | org.primefaces.component.tag.TagRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| value | null | Object | Value to display inside the tag.
-| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-| severity | null | String | Severity type of the tag.
-| rounded | false | Boolean | Whether the corners of the tag are rounded.
-| icon | null | String | Icon of the tag to display next to the value.
-| style | null | String | Style of the tag.
-| styleClass | null | String | StyleClass of the tag.
-
 ## Getting Started
 Content of the tag is specified using the ```value``` property.
 

@@ -4,52 +4,6 @@ DataView displays data in grid or list layout.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataView-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | dataView
-| Component Class | org.primefaces.component.dataview.DataView
-| Component Type | org.primefaces.component.DataView
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.DataViewRenderer
-| Renderer Class | org.primefaces.component.dataview.DataViewRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-currentPageReportTemplate | null | String | Template of the currentPageReport UI.
-emptyMessage | No records found. | String | Text to display when there is no data to display.
-first | 0 | Integer | Index of the first row to be displayed
-flex | false | Boolean | Use modern PrimeFlex-Grid instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
-gridIcon | null | String | Icon of the grid layout button.
-gridRowStyle | null | String | Inline style of each row (grid-cell) in grid layout.
-gridRowStyleClass | null | String | Style class of each row (grid-cell) in grid layout.
-layout | list | String | Layout strategy to use, valid values are "list" and "grid".
-lazy | false | Boolean | Defines if lazy loading is enabled for the data component. In most cases this is detected automatically based on value-binding to LazyDataModel. So no need to set this explicit.
-listIcon | null | String | Icon of the list layout button.
-multiViewState | false | Boolean | Whether to keep DataView state across views, defaults to false.
-pageLinks | 10 | Integer | Maximum number of page links to display.
-paginator | false | Boolean |  Enables pagination.
-paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden if total data count is less than number of rows per page.
-paginatorPosition | both | String | Position of the paginator.
-paginatorTemplate | null | String | Template of the paginator.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-rowIndexVar | null | String | Name of the iterator to refer each row index.
-rowStatePreserved | false | String | Boolean flag directing how the per-row component state should be handled.
-rows | null | Integer | Number of rows to display per page.
-rowsPerPageLabel | null | String | Label of the rows per page dropdown
-rowsPerPageTemplate | {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} | String | Template of the rowsPerPage dropdown.
-style | null | String | Inline style of the dataview (main container).
-styleClass | null | String | Style class of the dataview (main container).
-touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
-value | null | Object | Data to display.
-var | null | String | Name of the request-scoped variable used torefer each data.
-widgetVar | null | String | Name of the client side widget.
-
 ## Getting started with the DataView
 A list of cars will be used throughout the examples.
 

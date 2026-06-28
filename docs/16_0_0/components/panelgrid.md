@@ -3,33 +3,6 @@
 PanelGrid is an extension to the standard panelGrid component with additional features such as
 theming and colspan-rowspan.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | panelGrid
-| Component Class | org.primefaces.component.panelgrid.PanelGrid
-| Component Type | org.primefaces.component.PanelGrid
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.PanelGridRenderer
-| Renderer Class | org.primefaces.component.panelgrid.PanelGridRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-columns | 12 | Integer | Number of columns in responsive layout.
-style | null | String | Inline style of the panel/table.
-contentStyle | null | String | Inline style of the panel-content.
-styleClass | null | String | Style class of the panel/table.
-contentStyleClass | null | String | Style class of the panel-content.
-columnClasses | null | String | Comma separated list of column style classes.<br/>For layout=grid: Grid CSS - classes<br/>For layout=flex: PrimeFlex (FlexGrid) - classes; primeflex.css must be included into the template.xhtml<br/>For layout=tailwind: Tailwind CSS utility classes
-layout | tabular | String | Displays data in a 'tabular' layout, 'grid' layout, 'flex' layout, or 'tailwind' layout. The grid, flex, and tailwind layouts are responsive layouts. Default value is 'grid'.
-role | grid | String | Role for aria.
-
 ## Getting started with PanelGrid
 Basic usage of panelGrid is same as the standard one.
 

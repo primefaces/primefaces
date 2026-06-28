@@ -2,31 +2,6 @@
 
 Chronoline visualizes a series of chained events.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | Chronoline
-| Component Class | org.primefaces.component.chronoline.Chronoline
-| Component Type | org.primefaces.component.Chronoline
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ChronolineRenderer
-| Renderer Class | org.primefaces.component.chronoline.ChronolineRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| value | null | Object | List of items to display.
-| var | null | String | Name of the iterator to display an item.
-| align | left | String | Position of the chronoline bar relative to the content. Valid values are "left", "right for vertical layout and "top", "bottom" for horizontal layout and "alternate" for both.
-| layout | vertical | String | Orientation of the chronoline, valid values are "vertical" and "horizontal".
-| style | null | String | Style of the chronoline.
-| styleClass | null | String | StyleClass of the chronoline.
-
 ## Getting Started
 Chronoline receives the events with the value property as a list of objects. Example below is a sample events object that is used throughout the documentation.
 

@@ -4,47 +4,6 @@ MenuButton displays different commands in a popup menu.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.MenuButton.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | menuButton
-| Component Class | org.primefaces.component.menubutton.MenuButton
-| Component Type | org.primefaces.component.MenuButton
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.MenuButtonRenderer
-| Renderer Class | org.primefaces.component.menubutton.MenuButtonRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
-| ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
-| autoDisplay | true | Boolean | Defines whether the first level of submenus will be displayed on mouseover or not. When set to false, click event is required to display.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-| buttonIcon | null | String | Icon class to display in place of the button label. If specified, the icon will be shown instead of the value (label) of the button.
-| buttonStyle | null | String | Style of the button
-| buttonStyleClass | null | String | Style class of the button
-| collision | flip | String | For the overlay menu that shows up when the menu button is clicked. When the overlay menu overflows the window in some direction, move it to an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details. Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.
-| delay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
-| disabled | false | Boolean | Disables or enables the button.
-| disableOnAjax | true | Boolean | If true, the button will be disabled during Ajax requests triggered by its menu items.
-| icon | null | String | Icon of the menu button.
-| iconPos | left | String | Position of the icon, valid values are left and right.
-| id | null | String | Unique identifier of the component.
-| maxHeight | null | String | The maximum height of the overlay menu that shows up when the menu button is clicked. May be either a number (such as 200), which is interpreted as a height in pixels. Alternatively, may also be a CSS length such as 90vh or 10em. Useful in case the body of your layout does not scroll, especially in combination with the collision property.
-| menuStyleClass | null | String | Style class of the overlay menu element.
-| model | null | MenuModel | MenuModel instance to create menus programmatically
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| style | null | String | Style of the main container element
-| styleClass | null | String | Style class of the main container element
-| title | null | String | Advisory tooltip information.
-| toggleEvent | hover | String | Event to toggle the submenus, valid values are "hover" and "click".
-| value | null | String | Label of the button
-| widgetVar | null | String | Name of the client side widget
-| size | null | String | Defines the size of the button, valid values are `small` and `large`.
-
 ## Getting started with the MenuButton
 MenuButton consists of one ore more menuitems. Following menubutton example has three
 menuitems, first one is used triggers an action with ajax, second one does the similar but without

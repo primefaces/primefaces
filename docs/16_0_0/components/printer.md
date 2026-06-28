@@ -4,23 +4,6 @@ Printer allows sending a specific Jakarta Faces component to the printer, not th
 
 [See the jQuery print method in the JavaScript API Docs.](../jsdocs/modules/src_PrimeFaces.html#printJS)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | printer
-| Behavior Class | org.primefaces.component.behavior.Printer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-target | null | String | Target component to print.
-configuration | null | String | Optional JSON configuration values to completely control jQuery.print.
-
 ## Getting started with the Printer
 Printer is attached to any command component like a button or a link. Examples below
 demonstrates how to print a simple output text or a particular image on page;

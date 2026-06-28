@@ -4,33 +4,6 @@ ConfirmPopup displays a confirmation overlay displayed relatively to its target.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ConfirmPopup-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | confirmPopup
-| Component Class | org.primefaces.component.confirmpopup.ConfirmPopup
-| Component Type | org.primefaces.component.ConfirmPopup
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ConfirmPopupRenderer
-| Renderer Class | org.primefaces.component.confirmpopup.ConfirmPopupRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget.
-| message | null | String | Text to be displayed in body.
-| icon | null | String | Icon to display next to the message.
-| style | null | String | Inline style of the popup container.
-| styleClass | null | String | Style class of the popup container
-| appendTo | null | String | Appends the popup to the element defined by the given search expression.
-| global | false | Boolean | When enabled, confirmPopup becomes a shared for other components that require confirmation.
-| dismissable | true | Boolean | Enables to hide the popup when outside is clicked.
-
 ## Getting started with ConfirmPopup
 ConfirmPopup has two modes; global and non-global. Non-Global mode is almost same as the
 dialog component or overlaypanel component used with a simple client side api, _show(selector)_ and _hide()_.

@@ -4,35 +4,6 @@ SlideMenu is used to display nested submenus with sliding animation.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SlideMenu.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | slideMenu
-| Component Class | org.primefaces.component.slidemenu.SlideMenu
-| Component Type | org.primefaces.component.SlideMenu
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.SlideMenuRenderer
-| Renderer Class | org.primefaces.component.slidemenu.SlideMenuRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-widgetVar | null | String | Name of the client side widget.
-my | null | String | Corner of menu to align with trigger element.
-at | null | String | Corner of trigger to align with menu element.
-backLabel | Back | String | Text for back link.
-model | null | MenuModel | MenuModel instance for programmatic menu.
-overlay | false | Boolean | Defines positioning, when enabled menu is displayed with absolute position relative to the trigger. Default is false, meaning static positioning.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-trigger | null | String | Id of the component whose triggerEvent will show the dynamic positioned menu.
-triggerEvent | click | String | Event name of trigger that will show the dynamic positioned menu.
-
 ## Getting started with the SlideMenu
 SlideMenu consists of submenus and menuitems, submenus can be nested and each nested submenu
 will be displayed with a slide animation.

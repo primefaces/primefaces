@@ -4,46 +4,6 @@ Carousel is a content slider featuring various customization options.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Carousel.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | carousel
-| Component Class | org.primefaces.component.carousel.Carousel
-| Component Type | org.primefaces.component.Carousel
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.CarouselRenderer
-| Renderer Class | org.primefaces.component.carousel.CarouselRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component.
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-| value | null | Object | A value expression that refers to a collection.
-| var | null | String | Name of the request scoped iterator.
-| varStatus     | null    | String     | Name of the exported request scoped variable to represent state of the iteration same as in ui:repeat varStatus.
-| page | null | Integer | Index of the first item.
-| numVisible | 1 | Integer | Number of items per page.
-| numScroll | 1 | Integer | Number of items to scroll.
-| widgetVar | null | String | Name of the client side widget.
-| circular | false | Boolean | Defines if scrolling would be infinite.
-| autoplayInterval | 0 | Integer | Time in milliseconds to scroll items automatically.
-| responsiveOptions | null | List<ResponsiveOption> | A list of options for responsive design.
-| orientation | horizontal | Integer | Specifies the layout of the component, valid values are "horizontal" and "vertical".
-| verticalViewPortHeight | 300px | String | Height of the viewport in vertical layout.
-| style | null | String | Inline style of the component.
-| styleClass | null | String | Style class of the component.
-| contentStyleClass | null | String | Style class of main content.
-| containerStyleClass | null | String | Style class of the viewport container.
-| indicatorsContentStyleClass | null | String | Style class of the paginator items.
-| headerText | null | String | Label for header.
-| footerText | null | String | Label for footer.
-| touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
-| paginator | true | Boolean | Whether to display the paginator links or not.
-
 ## Getting Started
 Carousel requires a collection of items as its `value` along with a visual template to render each item.
 

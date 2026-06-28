@@ -4,37 +4,6 @@ ContextMenu provides an overlay menu displayed on mouse right-click event.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ContextMenu-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | contextMenu
-| Component Class | org.primefaces.component.contextmenu.ContextMenu
-| Component Type | org.primefaces.component.ContextMenu
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ContextMenuRenderer
-| Renderer Class | org.primefaces.component.contextmenu.ContextMenuRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| disabled | false | Boolean | If true, prevents menu from being shown
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget.
-| for | null | String | Id of the component to attach to
-| style | null | String | Style of the main container element
-| styleClass | null | String | Style class of the main container element
-| model | null | MenuModel | Menu model instance to create menu programmatically.
-| nodeType | null | String | Specific type of tree nodes to attach to.
-| event | null | String | Event to bind contextMenu display, default is contextmenu aka right click.
-| beforeShow | null | String | Client side callback to execute before showing.
-| selectionMode | multiple | String | Defines the selection behavior, e.g., "single" or "multiple".
-| targetFilter | null | String | Selector to filter the elements to attach the menu.
-| touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
-
 ## Getting started with ContextMenu
 ContextMenu is created with submenus and menuitems. Optional for attribute defines which
 component the contextMenu is attached to. When for is not defined, contextMenu is attached to the

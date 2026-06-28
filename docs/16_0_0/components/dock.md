@@ -4,37 +4,6 @@ Dock component mimics the well known dock interface of Mac OS X.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Dock.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | dock
-| Component Class | org.primefaces.component.dock.Dock
-| Component Type | org.primefaces.component.Dock
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.DockRenderer
-| Renderer Class | org.primefaces.component.dock.DockRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- |---| --- | --- |
-| id | null | String | Unique identifier of the component
-| widgetVar | null | String | Name of the client side widget.
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| model | null | MenuModel | MenuModel instance to create menus programmatically
-| position | bottom | String | Position of the dock, bottom or top.
-| halign | center | String | Horizontal alignment. left, center, or right
-| blockScroll | true | Boolean | Whether to block scrolling of the document.
-| animate | true | Boolean | Whether to animate the OSX bounce effect when clicking an item.
-| animationDuration | 1600 | Integer | How long in milliseconds to animate the bounce effect.
-| dir | ltr | String | Defines direction of dock. Valid values are "ltr" (default) and "rtl".
-| ~itemWidth~ | 40 | Integer | (DEPRECATED, use CSS below instead) Initial width of items.
-| ~maxWidth~ | 50 | Integer | (DEPRECATED, use CSS below instead) Maximum width of items.
-| ~proximity~ | 90 | Integer | (DEPRECATED, use CSS below instead) Distance to enlarge.
-
-
 ## Getting started with the Dock
 A dock is composed of menu items.
 

@@ -2,31 +2,6 @@
 
 Card is a flexible container component.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | Card
-| Component Class | org.primefaces.component.card.Card
-| Component Type | org.primefaces.component.Card
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.CardRenderer
-| Renderer Class | org.primefaces.component.card.CardRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| style | null | String | Style of the card.
-| styleClass | null | String | StyleClass of the card.
-| header | null | String | Header text of the card.
-| title | null | String | Title text of the card.
-| subtitle | null | String | Subtitle text of the card.
-| footer | null | String | Footer text of the card.
-
 ## Getting Started
 Card provides `header`, `title`, `subtitle` and `footer` facets to place content, or you can also use corresponding attributes if only text is required.
 

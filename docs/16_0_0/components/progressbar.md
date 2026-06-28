@@ -5,39 +5,6 @@ server side using ajax.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ProgressBar.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | propressBar
-| Component Class | org.primefaces.component.progressbar.ProgressBar
-| Component Type | org.primefaces.component.Progressbar
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ProgressBarRenderer
-| Renderer Class | org.primefaces.component.progressbar.ProgressBarRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-widgetVar | null | String | Name of the client side widget
-title | null | String | Advisory tooltip information.
-value | 0 | Integer | Value of the progress bar
-disabled | false | Boolean | Disables or enables the progressbar
-ajax | false | Boolean | Specifies the mode of progressBar, in ajax mode progress value is retrieved from a backing bean.
-interval | 3000 | Integer | Interval in seconds to do periodic requests in ajax mode.
-style | null | String | Inline style of the main container element.
-styleClass | null | String | Style class of the main container element.
-labelTemplate | {value} | String | Template of the progress label.
-displayOnly | false | Boolean | Enables static display mode.
-global | true | Boolean | Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.
-mode | determinate | String | Defines the mode of the progress, valid values are "determinate" and "indeterminate".
-animationDuration | 500 | Integer | Animation duration in milliseconds determining how long the animation will run. Default is 500.
-severity | null | String | Severity type of the progressbar.
-
 ## Getting started with the ProgressBar
 ProgressBar has two modes, "client"(default) or "ajax". Following is a pure client side progressBar.
 

@@ -5,37 +5,6 @@ overlay.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Growl.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | growl
-| Component Class | org.primefaces.component.growl.Growl
-| Component Type | org.primefaces.component.Growl
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.GrowlRenderer
-| Renderer Class | org.primefaces.component.growl.GrowlRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-sticky | false | Boolean | Specifies if the message should stay instead of hidden automatically.
-showSummary | true | Boolean | Specifies if the summary of message should be displayed.
-showDetail | false | Boolean | Specifies if the detail of message should be displayed.
-globalOnly | false | Boolean | When true, only facesmessages without clientids are displayed.
-life | 6000 | Integer | Duration in milliseconds to display non-sticky messages.
-redisplay | true | Boolean | Defines if already rendered messaged should be displayed.
-for | null | String | The clientId or name of associated key, takes precedence when used with globalOnly.
-forType | null | String | Defines how the `for` attribute is used to retrieve messages from `FacesContext#getMessages`. `key` defines that the `for` value is passed directly to `#getMessages`, whereas `expression` will be resolved by the `SearchExpressionHandler` first and then passed as `clientId` to `#getMessages`. Default is both.
-escape | true | Boolean | Defines whether HTML would be escaped or not.
-severity | null | String | Comma separated list of severities to display only.
-keepAlive | false | Boolean | Defines if previous messages should be kept on a new message is shown.
-skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summary are equals.
-
 ## Getting Started with Growl
 Growl usage is similar to standard h:messages component. Simply place growl anywhere on your
 page, since messages are displayed as an overlay, the location of growl in Jakarta Faces page does not matter.

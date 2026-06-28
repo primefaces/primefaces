@@ -3,33 +3,6 @@
 Breadcrumb is a navigation component that provides contextual information about page hierarchy
 in the workflow.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | breadCrumb
-| Component Class | org.primefaces.component.breadcrumb.BreadCrumb
-| Component Type | org.primefaces.component.BreadCrumb
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.BreadCrumbRenderer
-| Renderer Class | org.primefaces.component.breadcrumb.BreadCrumbRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component.
-| rendered | true | Boolean | Boolean value to specify the rendering of the component.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| model | null | MenuModel | MenuModel instance to create menus programmatically
-| style | null | String | Style of main container element.
-| styleClass | null | String | Style class of main container
-| homeDisplay | icon | String | Defines display mode of root link, valid values are "icon" default and "text".
-| homeIcon | ui-icon ui-icon-home | String | Defines home icon CSS class.
-| tabindex | 0 | String | Position of the items in the tabbing order. Default is 0.
-| lastItemDisabled | false | Boolean | Boolean flag indicating whether the last item should be disabled.
-| seo | false | Boolean | Used to produce an Advanced SEO structure on the page. Default is false.
-
 ## Getting Started with BreadCrumb
 Steps are defined as child menuitem components in breadcrumb.
 

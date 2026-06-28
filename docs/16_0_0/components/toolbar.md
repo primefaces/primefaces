@@ -2,27 +2,6 @@
 
 Toolbar is a horizontal grouping component for commands and other content.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | toolbar
-| Component Class | org.primefaces.component.toolbar.Toolbar
-| Component Type | org.primefaces.component.Toolbar
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ToolbarRenderer
-| Renderer Class | org.primefaces.component.toolbar.ToolbarRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-style | null | String | Inline style of the container element.
-styleClass | null | String | Style class of the container element.
-
 ## Getting Started with the Toolbar
 Toolbar has two placeholders(left and right) that are defined with facets. You can also use
 toolbarGroup as an alternative to facets.

@@ -9,28 +9,6 @@ enter key press.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DefaultCommand.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | defaultCommand
-| Component Class | org.primefaces.component.defaultcommand.DefaultCommand
-| Component Type | org.primefaces.component.DefaultCommand
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.DefaultCommandRenderer
-| Renderer Class | org.primefaces.component.defaultcommand.DefaultCommandRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget
-| target | null | String | Identifier of the default command component.
-| scope | null | String | Identifier of the ancestor component to enable multiple default commands in a form.
-
 ## Getting Started with the DefaultCommand
 DefaultCommand must be nested inside a form requires _target_ option to reference a clickable
 command. Example below triggers _btn2_ when enter key is pressed. Note that an input must have

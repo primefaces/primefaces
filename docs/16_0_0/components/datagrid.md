@@ -6,48 +6,6 @@ DataGrid displays a collection of data in a grid layout.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataGrid.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | dataGrid
-| Component Class | org.primefaces.component.datagrid.DataGrid
-| Component Type | org.primefaces.component.DataGrid
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.DataGridRenderer
-| Renderer Class | org.primefaces.component.datagrid.DataGridRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Data to display.
-var | null | String | Name of the request-scoped variable used torefer each data.
-rows | null | Integer | Number of rows to display per page.
-first | 0 | Integer | Index of the first row to be displayed
-widgetVar | null | String | Name of the client side widget.
-columns | 3 | Integer | Number of columns in grid.
-paginator | false | Boolean |  Enables pagination.
-paginatorTemplate | null | String | Template of the paginator.
-rowsPerPageTemplate | null | String | Template of the rowsPerPage dropdown.
-currentPageReportTemplate | null | String | Template of the currentPageReport UI.
-pageLinks | 10 | Integer | Maximum number of page links to display.
-paginatorPosition | both | String | Position of the paginator.
-paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden if total data count is less than number of rows per page.
-style | null | String | Inline style of the datagrid (main container).
-styleClass | null | String | Style class of the datagrid (main container).
-rowStyle | null | String | Inline style of each row (grid-cell).
-rowStyleClass | null | String | Style class of each row (grid-cell).
-rowIndexVar | null | String | Name of the iterator to refer each row index.
-lazy | false | Boolean | Defines if lazy loading is enabled for the data component. In most cases this is detected automatically based on value-binding to LazyDataModel. So no need to set this explicit.
-emptyMessage | No records found. | String | Text to display when there is no data to display.
-multiViewState | false | Boolean | Whether to keep DataGrid state across views, defaults to false.
-touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
-flex | false | Boolean | Use modern PrimeFlex-Grid instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
-
 ## Getting started with the DataGrid
 A list of cars will be used throughout the datagrid, datalist and datatable examples.
 

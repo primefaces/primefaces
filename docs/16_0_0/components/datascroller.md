@@ -4,40 +4,6 @@ DataScroller displays a collection of data with on demand loading using scrollin
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataScroller-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | dataScroller
-| Component Class | org.primefaces.component.datascroller.DataScroller
-| Component Type | org.primefaces.component.DataScroller
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.DataScrollerRenderer
-| Renderer Class | org.primefaces.component.datascroller.DataScrollerRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| value | null | Object | Data to display.
-| var | null | String | Name of the request-scoped variable used to refer each data.
-| rows | null | Integer | Number of rows to display per page.
-| first | 0 | Integer | Index of the first row to be displayed
-| widgetVar | null | String | Name of the client side widget.
-| style | null | String | Inline style of the main container.
-| styleClass | null | String | Style class of the main container.
-| chunkSize | 0 | Integer | Number of items to fetch in each load.
-| rowIndexVar | null | String | Name of iterator to refer each row index.
-| mode | document | String | Defines the target to listen for scroll event, valid values are "document" (default) and "inline".
-| scrollHeight | null | String | Defines pixel height of the viewport in inline mode.
-| lazy | false | Boolean | Defines if lazy loading is enabled for the data component.
-| buffer | 10 | Integer | Percentage height of the buffer between the bottom of the page and the scroll position to initiate the load for the new chunk. Value is defined in integer and default is 10 meaning load would happen after 90% of the viewport is scrolled down.
-| virtualScroll | false | Boolean | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
-| startAtBottom | false | Boolean | if the scrollAtBottom is enabled, scroll position is at bottom and data loading starts from the bottom. Default value is false.
-
 ## Getting started with the DataScroller
 DataScroller requires a collection of data to display, when the page is scrolled down, datascroller
 will do a request with ajax to fetch the new chunk of data and append them at the bottom.

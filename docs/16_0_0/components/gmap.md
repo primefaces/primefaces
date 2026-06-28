@@ -4,44 +4,6 @@ GMap is a map component integrated with Google Maps API V3.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.GMap-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | gmap
-| Component Class | org.primefaces.component.gmap.GMap
-| Component Type | org.primefaces.component.Gmap
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.GmapRenderer
-| Renderer Class | org.primefaces.component.gmap.GmapRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component.
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-| widgetVar | null | String | Name of the client side widget.
-| apiKey | null | String | Google Maps API key. Required for asynchronous loading if Google Maps is not already loaded via script tag.
-| apiVersion | weekly | String | Google Maps API version. Only used for asynchronous loading. Valid values: 'weekly', 'beta', 'alpha', or a specific version number.
-| center | null | String | Center point of the map.
-| disabledDoubleClickZoom | false | Boolean | Disables zooming on mouse double click.
-| disableDefaultUI | false | Boolean | Disables default UI controls
-| draggable | true | Boolean | Defines draggability of map.
-| fitBounds | true | Boolean | Defines if center and zoom should be calculated automatically to contain all markers on the map.
-| libraries | null | String | Comma-separated list of additional Google Maps libraries to load (e.g., 'places,geometry'). Only used for asynchronous loading.
-| mapTypeControl | true | Boolean | Defines visibility of map type control.
-| model | null | MapModel | An org.primefaces.model.MapModel instance.
-| navigationControl | true | Boolean | Defines visibility of navigation control.
-| onPointClick | null | String | Javascript callback to execute when a point on map is clicked.
-| scrollWheel | false | Boolean | Controls scrollwheel zooming on the map.
-| streetView | false | Boolean | Controls street view support.
-| style | null | String | Inline style of the map container.
-| styleClass | null | String | Style class of the map container.
-| type | null | String | There are four types of maps available: roadmap, satellite, hybrid, and terrain.
-| zoom | 8 | Integer | Defines the initial zoom level.
-
 ## Getting started with GMap
 First thing to do is placing V3 of the Google Maps API that the GMap is based on. Make sure to
 register an API key for your map and replace `YOUR_API_KEY` in the script.

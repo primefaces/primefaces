@@ -4,43 +4,6 @@ Rating component features a star based rating system.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Rating-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | rating
-| Component Class | org.primefaces.component.rating.Rating
-| Component Type | org.primefaces.component.Rating
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.RatingRenderer
-| Renderer Class | org.primefaces.component.rating.RatingRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component than can be either an EL expression of a literal text
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-immediate | 0 | Boolean | Boolean value that specifies the lifecycle phase the valueChangeEvents should be processed, when true the events will be fired at "apply request values", if immediate is set to false, valueChange Events are fired in "process validations" phase
-required | false | Boolean | Marks component as required
-validator | null | MethodExpr | A method binding expression that refers to a method validating the input
-valueChangeListener | null | MethodExpr | A method binding expression that refers to a method for handling a valuchangeevent
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-converterMessage | null | String | Message to be displayed when conversion fails.
-validatorMessage | null | String | Message to be displayed when validation fields.
-widgetVar | null | String | Name of the client side widget.
-stars | 5 | Integer | Number of stars to display
-disabled | false | Boolean | Disables user interaction
-readonly | false | Boolean | Disables user interaction without disabled visuals.
-onRate | null | String | Client side callback to execute when rate happens.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-cancel | true | Boolean | When enabled, displays a cancel icon to reset.
-tabindex | "0" | String | Position of the output in the tabbing order.
-
 ## Getting Started with Rating
 Rating is an input component that takes an integer variable as its value.
 

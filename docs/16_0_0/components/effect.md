@@ -4,37 +4,9 @@ Effect component is based on the jQuery UI effects library.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Effect-1.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | effect
-| Tag | Class org.primefaces.component.effect.EffectTag
-| Component Class | org.primefaces.component.effect.Effect
-| Component Type | org.primefaces.component.Effect
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.EffectRenderer
-| Renderer Class | org.primefaces.component.effect.EffectRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget.
-| event | null | String | DOM event to attach the event that executes the animation
-| type | null | String | Specifies the name of the animation
-| for | null | String | Component that is animated
-| speed | 1000 | Integer | Speed of the animation in ms
-| delay | null | Integer | Time to wait until running the effect.
-| queue | true | Boolean | Specifies if effects should be queued.
-
 ## Getting started with Effect
 Effect component needs a trigger and target which is effect’s parent by default. In example below
 clicking outputText (trigger) will run the pulsate effect on outputText(target) itself.
-
 
 ```xhtml
 <h:outputText value="#{bean.value}">

@@ -5,28 +5,6 @@ browser scrollbars.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ScrollPanel.html)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | scrollPanel
-| Component Class | org.primefaces.component.scrollpanel.ScrollPanel
-| Component Type | org.primefaces.component.ScrollPanel
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ScrollPanelRenderer
-| Renderer Class | org.primefaces.component.scrollpanel.ScrollPanelRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-style | null | String | Inline style of the container element.
-styleClass | null | String | Style class of the container element.
-mode | default | String | Scrollbar display mode, valid values are default and native.
-
 ## Getting started with ScrollPanel
 In order to get scrollable content, width and/or height should be defined.
 
