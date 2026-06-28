@@ -30,11 +30,13 @@ import org.primefaces.selenium.component.DataTable;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("DataTable-rendering")
 class DataTable020Test extends AbstractDataTableTest {
 
     @Test

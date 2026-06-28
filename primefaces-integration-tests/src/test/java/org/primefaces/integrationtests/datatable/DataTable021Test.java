@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -48,7 +49,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Add and remove rows from filtered DataTable
  * https://github.com/primefaces/primefaces/issues/7336
  */
-public class DataTable021Test extends AbstractDataTableTest {
+@Tag("DataTable-filter")
+@Tag("DataTable-edit")
+class DataTable021Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)

@@ -30,7 +30,6 @@ import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.SelectManyMenu;
 import org.primefaces.selenium.component.base.ComponentUtils;
-import org.primefaces.selenium.component.model.datatable.Row;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -39,14 +38,15 @@ import java.util.stream.Collectors;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Tag("DataTable-filter")
 class DataTable026Test extends AbstractDataTableTest {
 
     protected final List<Employee> employees = new EmployeeService().getEmployees();
@@ -312,7 +312,6 @@ class DataTable026Test extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
         assertEquals("wgtTable", cfg.getString("widgetVar"));
         assertEquals(0, cfg.getInt("tabindex"));
     }
@@ -353,20 +352,6 @@ class DataTable026Test extends AbstractDataTableTest {
     }
 
     private void assertEmployeeRows(DataTable dataTable, List<Employee> employees) {
-        List<Row> rows = dataTable.getRows();
-        assertEmployeeRows(rows, employees);
-    }
-
-    private void assertEmployeeRows(List<Row> rows, List<Employee> employees) {
-        int expectedSize = employees.size();
-        assertNotNull(rows);
-        assertEquals(expectedSize, rows.size());
-
-        int row = 0;
-        for (Employee employee : employees) {
-            String rowText = rows.get(row).getCell(0).getText();
-            assertEquals(employee.getId(), Integer.parseInt(rowText.trim()));
-            row++;
-        }
+        assertRows(dataTable, employees, Employee::getId);
     }
 }

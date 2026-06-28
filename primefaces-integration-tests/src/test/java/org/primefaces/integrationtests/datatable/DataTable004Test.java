@@ -33,6 +33,7 @@ import org.primefaces.selenium.component.SelectBooleanButton;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -42,6 +43,7 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("DataTable-selection")
 class DataTable004Test extends AbstractDataTableTest {
 
     @Test
@@ -188,7 +190,6 @@ class DataTable004Test extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
         assertTrue(cfg.has("selectionMode"));
     }
 

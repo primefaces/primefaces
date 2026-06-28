@@ -30,11 +30,13 @@ import org.primefaces.selenium.component.model.datatable.Row;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("DataTable-sort")
 class DataTable029Test extends AbstractDataTableTest {
 
     @Test

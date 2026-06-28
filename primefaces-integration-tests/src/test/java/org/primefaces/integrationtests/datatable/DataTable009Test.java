@@ -35,12 +35,14 @@ import org.primefaces.selenium.component.model.datatable.Row;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("DataTable-filter")
 class DataTable009Test extends AbstractDataTableTest {
 
     @Test
@@ -186,7 +188,6 @@ class DataTable009Test extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
         assertTrue(cfg.has("filter"));
     }
 

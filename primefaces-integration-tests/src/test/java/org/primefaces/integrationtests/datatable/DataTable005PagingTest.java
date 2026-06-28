@@ -33,6 +33,7 @@ import java.util.stream.Stream;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,6 +44,8 @@ import org.openqa.selenium.interactions.Actions;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("DataTable-selection")
+@Tag("DataTable-paginator")
 class DataTable005PagingTest extends AbstractDataTableTest {
 
     @ParameterizedTest
@@ -116,7 +119,6 @@ class DataTable005PagingTest extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
         assertTrue(cfg.has("selectionMode"));
     }
 

@@ -55,6 +55,43 @@ into the view by EL name (`#{dataTable001...}`). Backing beans use Lombok `@Data
   (see `AbstractDataTableTest`), and cross-component table helpers in the root
   `org.primefaces.integrationtests.AbstractTableTest`.
 
+## Tagging tests by behavior
+
+The `NNN` number is **insertion order, not feature** — the same behavior (filtering,
+selection, …) is spread across many numbered classes, so the suite is hard to navigate by
+*what* it covers. To make it navigable by behavior, `datatable` test classes carry JUnit 5
+`@Tag`s at the **class level** (a class may carry several). Tags are prefixed with the
+component name (`DataTable-`) so a multi-component run can target one component's behavior.
+JUnit tags may not contain whitespace, so use a hyphen, not `" - "`. Vocabulary currently
+in use:
+
+| Tag | Covers |
+|---|---|
+| `DataTable-filter` | column / global / lazy filtering, filter operators (lt, in, between, NOT, …) |
+| `DataTable-sort` | single / multi / custom sort |
+| `DataTable-selection` | row & checkbox selection, (de)select-all, disabled selection |
+| `DataTable-paginator` | paging behavior and paginator row-count |
+| `DataTable-lazy` | `LazyDataModel`-backed tables |
+| `DataTable-edit` | cell / row editing, add & delete row |
+| `DataTable-rowgroup` | row grouping (header / summary / rowspan) |
+| `DataTable-mvs` | MultiViewState |
+| `DataTable-rowexpansion` | expandable rows / row toggler |
+| `DataTable-frozencolumns` | frozen columns |
+| `DataTable-scrolling` | sticky header, virtual scroll |
+| `DataTable-rendering` | conditional render, null values, container-not-rendered, impl quirks |
+
+Run one behavior across the whole suite with the JUnit tag filter (`-Dgroups`):
+
+```bash
+mvn verify -f primefaces-integration-tests/pom.xml \
+    -Pintegration-tests,mojarra-4.0 -Dgroups=DataTable-filter
+```
+
+When adding a `datatable` test, tag it with the behavior(s) it exercises. Keep the
+vocabulary small — reuse an existing tag rather than coining a near-synonym. (Currently
+only the `datatable` package is tagged; extend the same `<Component>-<behavior>` scheme to
+other components as needed.)
+
 ## Anatomy of a test
 
 Tests extend `AbstractPrimePageTest` (from the framework). Two equally valid styles exist

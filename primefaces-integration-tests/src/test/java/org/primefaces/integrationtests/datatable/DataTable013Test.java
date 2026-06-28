@@ -31,11 +31,13 @@ import java.util.List;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Tag("DataTable-sort")
 class DataTable013Test extends AbstractDataTableTest {
 
     @Test
@@ -57,7 +59,6 @@ class DataTable013Test extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
     }
 
     public static class Page extends AbstractPrimePage {

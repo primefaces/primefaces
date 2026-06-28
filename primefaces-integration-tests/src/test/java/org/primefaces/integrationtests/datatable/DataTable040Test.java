@@ -28,11 +28,13 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.html.SelectOneMenu;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Tag("DataTable-rendering")
 class DataTable040Test extends AbstractDataTableTest {
 
     @Test
