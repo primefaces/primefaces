@@ -195,7 +195,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         page.nonAjax.click();
 
         // Act
-        dialog.getYesButton().click();
+        PrimeSelenium.guardHttp(dialog.getYesButton()).click();
 
         // Assert
         assertEquals("Full page submitted", page.message.getMessage(0).getDetail());
