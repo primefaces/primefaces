@@ -30,6 +30,8 @@ import org.primefaces.selenium.component.OutputLabel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -224,25 +226,23 @@ class OutputLabel001Test extends AbstractPrimePageTest {
     @Order(15)
     @DisplayName("OutputLabel: required indicator (*) must have aria-hidden='true' for screen reader accessibility (BITV/WCAG)")
     void requiredIndicator_AriaHidden(Page page) {
-        // required=true
-        assertTrue(page.required.isRequiredIndicatorAriaHidden(),
-                "required label: required indicator span must have aria-hidden='true'");
-        // indicateRequired=true
-        assertTrue(page.indicaterequired.isRequiredIndicatorAriaHidden(),
-                "indicaterequired label: required indicator span must have aria-hidden='true'");
-        // @NotNull bean validation
-        assertTrue(page.notnull.isRequiredIndicatorAriaHidden(),
-                "@NotNull label: required indicator span must have aria-hidden='true'");
-        // @NotBlank bean validation
-        assertTrue(page.notblank.isRequiredIndicatorAriaHidden(),
-                "@NotBlank label: required indicator span must have aria-hidden='true'");
-        // @NotEmpty bean validation
-        assertTrue(page.notempty.isRequiredIndicatorAriaHidden(),
-                "@NotEmpty label: required indicator span must have aria-hidden='true'");
-        // labels WITHOUT required indicator must not falsely claim aria-hidden
-        assertFalse(page.notrequired.isRequiredIndicatorAriaHidden(),
-                "not-required label: must not have a required indicator at all");
+        assertTrue(hasAriaHiddenRequiredIndicator(page.required));
+        assertTrue(hasAriaHiddenRequiredIndicator(page.indicaterequired));
+        assertTrue(hasAriaHiddenRequiredIndicator(page.notnull));
+        assertTrue(hasAriaHiddenRequiredIndicator(page.notblank));
+        assertTrue(hasAriaHiddenRequiredIndicator(page.notempty));
+        assertFalse(hasAriaHiddenRequiredIndicator(page.notrequired));
         assertNoJavascriptErrors();
+    }
+
+    private boolean hasAriaHiddenRequiredIndicator(OutputLabel label) {
+        try {
+            WebElement indicator = label.findElement(By.className("ui-outputlabel-rfi"));
+            return "true".equals(indicator.getDomAttribute("aria-hidden"));
+        }
+        catch (NoSuchElementException e) {
+            return false;
+        }
     }
 
     private void assertLabel(OutputLabel label, String text, boolean required) {
