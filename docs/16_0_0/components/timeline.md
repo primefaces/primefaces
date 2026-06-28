@@ -120,21 +120,6 @@ For examples on editing, grouping, styling, ranges, linked timelines and lazy lo
 
 https://www.primefaces.org/showcase/ui/data/timeline/basic.xhtml
 
-## Ajax Behavior Events
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-add | org.primefaces.event.timeline.TimelineAddEvent | On event add.
-change | org.primefaces.event.timeline.TimelineModificationEvent | On event change. (Attention: This event creates unnecessary requests. It´s suggested to listen to changed-event.)
-changed | org.primefaces.event.timeline.TimelineModificationEvent | On event change complete.
-edit | org.primefaces.event.timeline.TimelineModificationEvent | On event edit.
-delete | org.primefaces.event.timeline.TimelineModificationEvent | On event delete.
-select | org.primefaces.event.timeline.TimelineSelectEvent | On event select.
-rangechange | org.primefaces.event.timeline.TimelineRangeEvent | On range change. (Attention: This event creates unnecessary requests. It´s suggested to listen to rangechanged-event.) 
-rangechanged | org.primefaces.event.timeline.TimelineRangeEvent | On range change complete.
-lazyload | org.primefaces.event.timeline.TimelineLazyLoadEvent | On lazy load.
-drop | org.primefaces.event.timeline.TimelineDragDropEvent | On drop from outside.
-
 ## Client Side API
 Widget: _PrimeFaces.widget.Timeline_
 

@@ -91,26 +91,6 @@ Following is the list of available effect names;
              - easeOutBounce
              - easeInOutBounce
 
-## Ajax Behavior Events
-Resizable provides default and only _resize_ event that is called on resize end. In case you have a
-listener defined, it will be called by passing an _org.primefaces.event.ResizeEvent_ instance as a
-parameter_._
-
-```xhtml
-<h:inputTextarea id="area" value="Resize me if you need more space" />
-<p:resizable for="area">
-   <p:ajax listener="#{resizeBean.handleResize}">
-</p:resizable>
-```
-```java
-public class ResizeBean {
-   public void handleResize(ResizeEvent event) {
-      int width = event.getWidth();
-      int height = event.getHeight();
-   }
-}
-```
-
 ## Client Side Callbacks
 Resizable has three client side callbacks you can use to hook-in your javascript; _onStart_ , _onResize_
 and _onStop_. All of these callbacks receive two parameters that provide various information about

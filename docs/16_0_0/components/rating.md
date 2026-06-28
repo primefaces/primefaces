@@ -29,32 +29,6 @@ In cases where you only want to use the rating component to display the rating v
 user interaction, set _readonly_ to true. Using _disabled_ attribute does the same but adds disabled
 visual styles.
 
-## Ajax Behavior Events
-Rating provides _rate_ and _cancel_ as ajax behavior events. A defined listener for rate event will be
-executed by passing an _org.primefaces.event.RateEvent_ as a parameter and cancel event will be
-invoked with no parameter.
-
-```xhtml
-<p:rating value="#{ratingBean.rating}">
-    <p:ajax event="rate" listener="#{ratingBean.handleRate}" update="msgs" />
-    <p:ajax event="cancel" listener="#{ratingBean.handleCancel}" update="msgs" />
-</p:rating>
-<p:messages id="msgs" />
-```
-```java
-public class RatingBean {
-    private Integer rating;
-
-    public void handleRate(RateEvent rateEvent) {
-        Integer rate = (Integer) rateEvent.getRating();
-        //Add facesmessage
-    }
-    public void handleCancel() {
-        //Add facesmessage
-    }
-    //getter-setter
-}
-```
 ## Client Side Callbacks
 _onRate_ is called when a star is selected with _value_ as the only parameter.
 

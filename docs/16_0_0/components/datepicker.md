@@ -65,38 +65,6 @@ Multiple dates or a range of dates can be selected by setting the _selectionMode
 
 !> The `mask` property cannot be used together with multiple or range selection modes.
 
-## Ajax Behavior Events
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.
-
-**Default Event:** `valueChange`
-**Available Events:** `blur, change, click, close, contextmenu, copy, cut, dateSelect, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, viewChange, wheel`
-
-**Custom Events:**
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| close | - | When the popup is closed.
-| dateSelect | org.primefaces.event.SelectEvent | When a date is selected.
-| viewChange | org.primefaces.event.DateViewChangeEvent | When the date picker changed to a different month or year page.
-
-DatePicker provides a _dateSelect_ ajax behavior event to execute an instant ajax selection whenever a
-date is selected. If you define a method as a listener, it will be invoked by passing an
-_org.primefaces.event.SelectEvent_ instance.
-
-```xhtml
-<p:datePicker value="#{DatePickerBean.date}">
-    <p:ajax event="dateSelect" listener="#{bean.handleDateSelect}" update="msg" />
-</p:datePicker>
-<p:messages id="msg" />
-```
-```java
-public void handleDateSelect(SelectEvent<LocalDate> event) {
-    LocalDate date = event.getObject();
-    //Add facesmessage
-}
-```
-In popup mode, DatePicker also supports regular ajax behavior events like blur, keyup and more.
-
 ## Date Restriction
 Using mindate and maxdate options, selectable values can be restricted. Values for these attributes
 can either be a String, a java.time.LocalDate, a java.time.LocalDateTime, a java.time.LocalTime or a java.util.Date (deprecated).

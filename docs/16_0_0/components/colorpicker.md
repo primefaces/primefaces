@@ -106,16 +106,6 @@ are below.  For full localization see the [localization documentation](/core/loc
 
 !> Localization is **global** so once a locale is set on a page it is set for all ColorPicker instances.
 
-
-## Ajax Behavior Events
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| change | jakarta.faces.event.AjaxBehaviorEvent | On change.
-| open | jakarta.faces.event.AjaxBehaviorEvent | On open of the popup in popup mode.
-| close | jakarta.faces.event.AjaxBehaviorEvent | On close of the popup in popup mode.
-
-
 ## Client Side API
 Widget: _PrimeFaces.widget.ColorPicker_
 

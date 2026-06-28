@@ -78,17 +78,6 @@ public class MenuBean {
 </p:cascadeSelect>
 ```
 
-## Ajax Behavior Events
-
-The following AJAX behavior events are available for this component. If no event is specific the default event is called.  
-In addition to the custom "itemSelect" event is also available to invoke when an item is selected from dropdown.  
-  
-**Default Event:** itemSelect 
-
-```xhtml
-<p:ajax event="itemSelect" listener="#{bean.handleItemSelect}" update="msgs" />
-```
-
 ## Client Side API
 Widget: _PrimeFaces.widget.CascadeSelect_
 

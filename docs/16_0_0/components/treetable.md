@@ -45,27 +45,6 @@ Node hierarchy can be displayed as paged using paginator. Usage is similar to Da
 and DataGrid where paginator is enabled by setting paginator=”true” and defining a rows property
 to define the number of nodes to be displayed per page.
 
-## Ajax Behavior Events
-
-TreeTable provides various ajax behavior events to respond user actions.
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-expand | org.primefaces.event.NodeExpandEvent | When a node is expanded.
-collapse | org.primefaces.event.NodeCollapseEvent | When a node is collapsed.
-select | org.primefaces.event.NodeSelectEvent | When a node is selected.
-dblselect | org.primefaces.event.NodeSelectEvent | When a node is selected with double click.
-unselect | org.primefaces.event.NodeUnselectEvent | When a node is unselected.
-contextMenu | org.primefaces.event.NodeSelectEvent | ContextMenu display.
-colResize | org.primefaces.event.ColumnResizeEvent | When a column is resized.
-sort | org.primefaces.event.SortEvent | When data is sorted.
-filter | org.primefaces.event.FilterEvent | When data is filtered.
-rowEdit | org.primefaces.event.RowEditEvent | On row edit.
-rowEditInit | org.primefaces.event.RowEditEvent | When row edit is initialized.
-rowEditCancel | org.primefaces.event.RowEditEvent | When row edit is cancelled.
-cellEdit | org.primefaces.event.CellEditEvent | On cell edit.
-page | org.primefaces.event.data.PageEvent | On pagination.
-
 ## Client Side API
 Widget: _PrimeFaces.widget.TreeTable_
 

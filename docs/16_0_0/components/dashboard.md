@@ -96,7 +96,7 @@ public class Bean {
 Dashboard is a stateful component, whenever a widget is reordered dashboard model will be
 updated, by persisting the user changes so you can easily create a stateful dashboard.
 
-## Ajax Behavior Events
+## Listen to reorder
 “reorder” is the one and only ajax behavior event provided by dashboard, this event is fired when
 dashboard panels are reordered. A defined listener will be invoked by passing an
 _org.primefaces.event.DashboardReorderEvent_ instance containing information about reorder.

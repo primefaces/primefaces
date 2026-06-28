@@ -124,15 +124,6 @@ local storage which can be configured using the ```stateStorage``` property.
 </p:splitter>
 ```
 
-## Ajax Behavior Events
-The following AJAX behavior event are available for this component. If no event is specified the default event is called.
-
-**Default Event:** `resizeEnd`
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| resizeEnd | org.primefaces.event.SplitterResizeEvent | Is fired after the resizing end. |
-
 ## Client Side Callbacks
 _onResizeEnd_ is called to invoke when resize ends.
 

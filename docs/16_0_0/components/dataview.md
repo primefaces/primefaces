@@ -165,19 +165,6 @@ template.
 </p:dataView>
 ```
 
-## Ajax Behavior Events
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| page | org.primefaces.event.data.PageEvent | On pagination.
-
-```xhtml
-<p:dataView var="car" value="#{carBean.model}">
-    <p:ajax event="page" update="anothercomponent" />
-    //content
-</p:dataView>
-```
-
 ## Client Side API
 Widget: _PrimeFaces.widget.DataView_
 

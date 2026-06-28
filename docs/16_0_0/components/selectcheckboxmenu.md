@@ -73,26 +73,8 @@ public class MenuBean {
 </p:selectCheckboxMenu>
 ```
 
-## Ajax Behavior Events
-
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `change`  
-**Available Events:** `change, itemSelect, itemUnselect, toggleSelect`  
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-toggleSelect | org.primefaces.event.ToggleSelectEvent | When toggle all checkbox changes.
-itemSelect | org.primefaces.event.SelectEvent | When a item is added via the checkbox.
-itemUnselect | org.primefaces.event.UnselectEvent | When a item is removed via the close-icon.
-
-```xhtml
-<p:ajax event="change" listener="#{bean.handlechange}" update="msgs" />
-```
-
 ## Client Side API
 Widget: _PrimeFaces.widget.SelectCheckBoxMenu_
-
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |

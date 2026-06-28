@@ -225,15 +225,6 @@ Another use case of carousel is tab based content display.
 </p:carousel>
 ```
 
-## Ajax Behavior Events
-The following AJAX behavior event are available for this component. If no event is specified the default event is called.
-
-**Default Event:** `pageChange`
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| pageChange | org.primefaces.event.PageChangeEvent | Is fired after the page changed. |
-
 ## Client Side Callbacks
 `onPageChange` is called to invoke when the page changes.
 

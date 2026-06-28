@@ -14,6 +14,3 @@ StaticMessage component has three different display modes;
 - text : Only message text is displayed.
 - icon : Only message severity is displayed and message text is visible as a tooltip.
 - both (default) : Both icon and text are displayed.
-
-## Ajax Behavior Events
-StaticMessage component has one event: `close`.

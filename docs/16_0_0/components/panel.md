@@ -24,13 +24,6 @@ When same attribute and facet name are used, facet will be used.
     //Child components here...
 </p:panel>
 ```
-## Ajax Behavior Events
-Panel provides custom ajax behavior events for toggling and closing features.
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-toggle | org.primefaces.event.ToggleEvent | When panel is expanded or collapsed.
-close | org.primefaces.event.CloseEvent | When panel is closed.
 
 ## Popup Menu
 Panel has built-in support to display a fully customizable popup menu, an icon to display the menu

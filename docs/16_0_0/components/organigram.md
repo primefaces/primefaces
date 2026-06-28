@@ -75,16 +75,6 @@ public class OrganigramView implements Serializable {
     </p:organigramNode>
 </p:organigram>
 ```
-## Ajax Behavior Events
-Organigram provides the following custom ajax behavior events.
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-dragdrop | org.primefaces.event.organigram.OrganigramNodeDragDropEvent | When a node is reordered with drag-drop.
-select | org.primefaces.event.organigram.OrganigramNodeSelectEvent | When a node is selected.
-contextmenu | org.primefaces.event.organigram.OrganigramNodeSelectEvent | When a node is selected with right click.
-collapse | org.primefaces.event.organigram.OrganigramNodeCollapseEvent | When a node is collapsed.
-expand | org.primefaces.event.organigram.OrganigramNodeExpandEvent | When a node is expanded.
 
 ## Organigram Model API
 Refer to JavaDocs for more information about Organigram Model API.

@@ -49,47 +49,6 @@ the interval attribute.
 <p:progressBar interval="5000" />
 ```
 
-## Ajax Behavior Events
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| complete | jakarta.faces.event.AjaxBehaviorEvent | Is fired when the progress is completed |
-| start | jakarta.faces.event.AjaxBehaviorEvent | Is fired when the progress bar starts |
-| progress | jakarta.faces.event.AjaxBehaviorEvent | Is fired on each progress update |
-
-
-Example below demonstrates how to use this event:
-
-```java
-public class ProgressBean {
-    private int progress;
-
-    public void handleComplete() {
-        //Add a faces message
-    }
-    public void handleStart() {
-        //Add a faces message
-    }
-    public void handleProgress() {
-        //Add a faces message
-    }
-    public int getProgress() {
-        return progress;
-    }
-    public void setProgress(int progress) {
-        this.progress = progress;
-    }
-}
-```
-```xhtml
-<p:progressBar value="#{progressBean.progress}" ajax="true">
-    <p:ajax event="start" listener="#{progressBean.handleStart}" update="messages" />
-    <p:ajax event="complete" listener="#{progressBean.handleComplete}" update="messages" />
-    <p:ajax event="progress" listener="#{progressBean.handleProgress}" update="messages" />
-</p:progressBar>
-<p:growl id="messages" />
-```
-
 ## Display Only
 Assume you have a process like a ticket purchase that spans various pages where each page has
 different use cases such as customer info, seat selection, billing, payment and more. In order to

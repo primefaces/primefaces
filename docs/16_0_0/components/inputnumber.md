@@ -92,17 +92,6 @@ Here are some examples demonstrating various cases;
 <p:inputNumber id="Input8" value="1234.000000001" decimalPlaces="15" />
 ```
 
-## Ajax Behavior Events
-
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `valueChange`  
-**Available Events:** `blur, change, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, wheel`  
-
-```xhtml
-<p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
-```
-
 ## Client Side API
 Widget: _PrimeFaces.widget.InputNumber_
 

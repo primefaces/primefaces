@@ -142,6 +142,11 @@ public class TreeBean implements Serializable {
 }
 ```
 
+Event listeners are also useful when dealing with huge amount of data. The idea for implementing
+such a use case would be providing only the root and child nodes to the tree, use event listeners to
+get the selected node and add new nodes to that particular tree at runtime.
+
+
 ## Multiple TreeNode Types
 It’s a common requirement to display different TreeNode types with a different UI (eg icon).
 Suppose you’re using tree to visualize a company with different departments and different
@@ -244,44 +249,6 @@ public boolean customFilter(TreeNode treeNode, Object filter, Locale locale) {
     // return true if the filter matches the tree node
 }
 ```
-
-## Ajax Behavior Events
-Tree provides various AJAX behavior events.
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-expand | org.primefaces.event.NodeExpandEvent | When a node is expanded.
-collapse | org.primefaces.event.NodeCollapseEvent | When a node is collapsed.
-select | org.primefaces.event.NodeSelectEvent | When a node is selected.
-unselect | org.primefaces.event.NodeUnselectEvent | When a node is unselected.
-dragdrop | jakarta.faces.event.TreeDragDropEvent | When a node is dropped.
-contextMenu | org.primefaces.event.NodeSelectEvent | When a context menu is shown.
-filter | jakarta.faces.event.AjaxBehaviorEvent | When the tree gets filtered.
-
-Following tree has three listeners;
-
-```xhtml
-<p:tree value="#{treeBean.model}" dynamic="true">
-    <p:ajax event="select" listener="#{treeBean.onNodeSelect}" />
-    <p:ajax event="expand" listener="#{treeBean.onNodeExpand}" />
-    <p:ajax event="collapse" listener="#{treeBean.onNodeCollapse}" />
-    ...
-</p:tree>
-```
-```java
-public void onNodeSelect(NodeSelectEvent event) {
-    String node = event.getTreeNode().getData().toString();
-}
-public void onNodeExpand(NodeExpandEvent event) {
-    String node = event.getTreeNode().getData().toString();
-}
-public void onNodeCollapse(NodeCollapseEvent event) {
-    String node = event.getTreeNode().getData().toString();
-}
-```
-Event listeners are also useful when dealing with huge amount of data. The idea for implementing
-such a use case would be providing only the root and child nodes to the tree, use event listeners to
-get the selected node and add new nodes to that particular tree at runtime.
 
 ## Selection
 Node selection is a built-in feature of tree and it supports three different modes. Selection should be

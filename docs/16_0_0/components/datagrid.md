@@ -150,19 +150,6 @@ PrimeFaces Grid CSS create a responsive ui.
 On a smaller screen, grid mode adjusts the content for the optimal view.
 
 
-## Ajax Behavior Events
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| page | org.primefaces.event.data.PageEvent | On pagination.
-
-```xhtml
-<p:dataGrid var="car" value="#{carBean.model}">
-    <p:ajax event="page" update="anothercomponent" />
-    //content
-</p:dataGrid>
-```
-
 ## Client Side API
 Widget: _PrimeFaces.widget.DataGrid_
 

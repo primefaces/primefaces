@@ -31,29 +31,6 @@ Content can easily be customized with the default slot instead of using the buil
 </p:chip>
 ```
 
-## Ajax Behavior Events
-Chip provides _select_ and _close_ as ajax behavior events. 
-
-```xhtml
-<p:chip label="text" removable="true">
-    <p:ajax event="select" listener="#{chipBean.onselect}" update="msgs"/>
-    <p:ajax event="close" listener="#{chipBean.onclose}" update="msgs"/>
-</p:chip>
-<p:messages id="msgs" />
-```
-```java
-public class ChipBean {
-    
-    public void onselect() {
-        //Add facesmessage
-    }
-
-    public void onclose() {
-        //Add facesmessage
-    }
-}
-```
-
 ## Skinning of Chip
 Chip resides in a main container element which _style_ and _styleClass_ options apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of

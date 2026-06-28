@@ -91,38 +91,9 @@ function handleSlideEnd(event, ui) {
     //ui.value = Current value of slider
 }
 ```
-## Ajax Behavior Events
-Slider provides one ajax behavior event called _slideEnd_ that is fired when the slide completes. If
-you have a listener defined, it will be called by passing _org.primefaces.event.SlideEndEvent_
-instance. Example below adds a message and displays it using growl component when slide ends.
 
-```xhtml
-<h:inputText id="number" value="#{sliderBean.number}" />
-<p:slider for="number">
-    <p:ajax event="slideEnd" listener="#{sliderBean.onSlideEnd}" update="msgs" />
-</p:slider>
-<p:messages id="msgs" />
-```
-
-```java
-public class SliderBean {
-    private int number;
-
-    public int getNumber() {
-        return number;
-    }
-    public void setNumber(int number) {
-        this.number = number;
-    }
-    public void onSlideEnd(SlideEndEvent event) {
-        int value = event.getValue();
-        //add faces message
-    }
-}
-```
 ## Client Side API
 Widget: _PrimeFaces.widget.Slider_
-
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 

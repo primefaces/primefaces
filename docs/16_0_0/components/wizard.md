@@ -5,14 +5,6 @@ consists of several child tab components where each tab represents a step in the
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Wizard-1.html)
 
-## Ajax Behavior Events
-Wizard provides custom ajax behavior events to configure the built-in AJAX requests.
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-next | jakarta.faces.event.AjaxBehaviorEvent | When "next" is triggered
-back | jakarta.faces.event.AjaxBehaviorEvent | When "back" is triggered
-
 ## Getting Started with Wizard
 Each step in the flow is represented with a tab. As an example following wizard is used to create a
 new user in a total of 4 steps where last step is for confirmation of the information provided in first

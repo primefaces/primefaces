@@ -57,12 +57,6 @@ public class OrderListBean {
 </p:orderList>
 ```
 
-## Ajax Behavior Events
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-select | org.primefaces.event.SelectEvent | When an item selected.
-unselect | org.primefaces.event.UnselectEvent | When an item unselected.
-reorder | jakarta.faces.event.AjaxBehaviorEvent | When list is reordered.
 
 ## Header
 A facet called “caption” is provided to display a header content for the orderlist.

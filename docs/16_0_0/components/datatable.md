@@ -1219,42 +1219,8 @@ Alternatively, a custom message can be defined using the `emptyMessage` attribut
 </f:facet>
 ```
 
-## Ajax Behavior Events
+## Events
 
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| cellEdit | org.primefaces.event.CellEditEvent | When a cell is edited.
-| cellEditCancel | org.primefaces.event.CellEditEvent | When a cell edit is cancelled e.g. with escape key
-| cellEditInit | org.primefaces.event.CellEditEvent | When a cell edit begins.
-| colReorder | - | When columns are reordered.
-| colResize | org.primefaces.event.ColumnResizeEvent | When a column is being selected.
-| contextMenu | org.primefaces.event.SelectEvent | ContextMenu display.
-| filter | org.primefaces.event.data.FilterEvent | On filtering.
-| liveScroll | org.primefaces.event.data.PageEvent | On live scroll loading more data.
-| page | org.primefaces.event.data.PageEvent | On pagination.
-| rowDblselect | org.primefaces.event.SelectEvent | Row selection with double click.
-| rowEdit | org.primefaces.event.RowEditEvent | When a row is edited.
-| rowEditCancel | org.primefaces.event.RowEditEvent | When row edit is cancelled.
-| rowEditInit | org.primefaces.event.RowEditEvent | When a row switches to edit mode
-| rowReorder | org.primefaces.event.ReorderEvent | On row reorder.
-| rowSelect | org.primefaces.event.SelectEvent | When a row is being selected.
-| rowSelectCheckbox | org.primefaces.event.SelectEvent | Row selection with checkbox.
-| rowSelectRadio | org.primefaces.event.SelectEvent | Row selection with radio.
-| rowToggle | org.primefaces.event.ToggleEvent | Row expand or collapse.
-| rowUnselect | org.primefaces.event.UnselectEvent | When a row is being unselected.
-| rowUnselectCheckbox | org.primefaces.event.UnselectEvent | Row unselection with checkbox.
-| sort | org.primefaces.event.data.SortEvent | When a column is sorted.
-| toggleSelect | org.primefaces.event.ToggleSelectEvent | When header checkbox is toggled.
-| virtualScroll | org.primefaces.event.data.PageEvent | On virtual scoll loading more data.
-
-For example, datatable below makes an ajax request when a row is selected with a click on row.
-
-```xhtml
-<p:dataTable var="car" value="#{carBean.model}">
-    <p:ajax event="rowSelect" update="another_component" />
-    //columns
-</p:dataTable>
-```
 Moreover `org.primefaces.event.data.PostSortEvent`, `org.primefaces.event.data.PostFilterEvent` and
 `org.primefaces.event.data.PostPageEvent`, are available to be used with `f:event` tag.
 

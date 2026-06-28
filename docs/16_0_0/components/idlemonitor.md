@@ -19,30 +19,11 @@ becomes active again. Example below toggles visibility of a dialog to respond th
 By default, idleMonitor waits for 5 minutes (300000 ms) until triggering the onidle event. You can
 customize this duration with the timeout attribute.
 
-## Ajax Behavior Events
-IdleMonitor provides two AJAX behavior events which are _idle_ and _active_ that are fired according to
+## Events
+IdleMonitor provides two behavior events (_idle_ and _active_) that are fired according to
 user status changes. If `multiWindowSupport=true` then the _active_ and _idle_ events will be fired for the
 active window and all other windows will only fire the _idle_ event.
 
-Example below displays messages for each event;
-
-```xhtml
-<p:idleMonitor timeout="5000" update="messages">
-    <p:ajax event="idle" listener="#{bean.idleListener}" update="msg" />
-    <p:ajax event="active" listener="#{bean.activeListener}" update="msg" />
-</p:idleMonitor>
-<p:growl id="msg" />
-```
-```java
-public class Bean {
-    public void idleListener() {
-        //Add facesmessage
-    }
-    public void activeListener() {
-        //Add facesmessage
-    }
-}
-```
 ## Client Side API
 Widget: _PrimeFaces.widget.IdleMonitor_
 

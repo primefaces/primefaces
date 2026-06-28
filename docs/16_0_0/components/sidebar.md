@@ -50,14 +50,6 @@ content specify baseZIndex property. In example below, initial zIndex of the sid
 </p:sidebar>
 ```
 
-## Ajax Behavior Events
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| open | jakarta.faces.event.AjaxBehaviorEvent | On open.
-| close | org.primefaces.event.CloseEvent | On close.
-| loadContent | jakarta.faces.event.AjaxBehaviorEvent | On dynamic content load.
-
 ## Client Side API
 Widget: _PrimeFaces.widget.Sidebar_
 

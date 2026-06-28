@@ -34,13 +34,6 @@ terminal nested inside a dialog;
 <p:terminal widgetVar="term" commandHandler="#{terminalBean.handleCommand}" />
 ```
 
-## Ajax Behavior Events
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| command | jakarta.faces.event.AjaxBehaviorEvent | On submission of any command in the terminal.
-
-
 ## Skinning
 Terminal resides in a main container which _style_ and _styleClass_ attributes apply. Following is the
 list of structural style classes;

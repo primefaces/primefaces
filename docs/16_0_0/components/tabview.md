@@ -53,26 +53,6 @@ specifies the speed of the effect, _slow_ , _normal_ (default) and _fast_ are th
 </p:tabView>
 ```
 
-## AJAX Behavior Events
-_tabChange_ and _tabClose_ are the ajax behavior events of TabView that are executed when a Tab is
-changed and closed respectively. Here is an example of a tabChange behavior implementation;
-
-```xhtml
-<p:tabView>
-    <p:ajax event="tabChange" listener="#{bean.onChange}" />
-    //tabs
-</p:tabView>
-```
-```java
-public void onChange(TabChangeEvent event) {
-    //Tab activeTab = event.getTab();
-    //...
-}
-```
-Your listener(if defined) will be invoked with an _org.primefaces.event.TabChangeEvent_ instance
-that contains a reference to the new active tab and the AccordionPanel itself. For tabClose event,
-listener will be passed an instance of _org.primefaces.event.TabCloseEvent._
-
 ## Dynamic Number of Tabs
 When the tabs to display are not static, use the built-in iteration feature similar to ui:repeat.
 

@@ -57,28 +57,6 @@ element of the tab to show as the parameter.
 </script>
 ```
 
-## Ajax Behavior Events
-_tabChange_ and _tabClose_ are the ajax behavior events of accordion panel. An example with
-tabChange would be;
-
-```html
-<p:accordionPanel>
- <p:ajax event="tabChange" listener="#{bean.onChange}" />
-</p:accordionPanel>
-```
-
-```java
-public void onChange(TabChangeEvent event) {
-    //Tab activeTab = event.getTab();
-    //...
-}
-```
-
-Your listener(if defined) will be invoked with an _org.primefaces.event.TabChangeEvent_ instance
-that contains a reference to the new active tab and the accordion panel itself. Similarly
-_org.primefaces.event.TabCloseEvent_ is passed to the listener of tabClose event when an active tab is
-closed.
-
 ## Dynamic Number of Tabs
 When the tabs to display are not static, use the built-in iteration feature similar to ui:repeat.
 

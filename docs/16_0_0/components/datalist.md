@@ -63,13 +63,6 @@ DataList has a built-in paginator that is enabled by setting paginator option to
 Pagination configuration and usage is same as dataGrid, see pagination section in dataGrid
 documentation for more information and examples.
 
-
-## Ajax Behavior Events
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| page | org.primefaces.event.data.PageEvent | On pagination.
-
 ```xhtml
 <p:dataList var="car" value="#{carBean.model}">
     <p:ajax event="page" update="anothercomponent" />

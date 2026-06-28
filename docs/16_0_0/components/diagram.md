@@ -123,12 +123,3 @@ as source and to receive new connections it should be a target. Ajax event callb
 ElementA.setSource(true);
 ElementB.setTarget(true);
 ```
-## Ajax Behavior Events
-Diagram provides ajax behavior event callbacks invoked by interactive diagrams.
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| connect | org.primefaces.event.diagram.ConnectEvent | On new connection.
-| disconnect | org.primefaces.event.diagram.DisconnectEvent | When a connection is removed.
-| connectionChange | org.primefaces.event.diagram.ConnectionChangeEvent | When a connection has changed.
-| positionChange | org.primefaces.event.diagram.PositionChangeEvent | When the position of a draggable element has changed.

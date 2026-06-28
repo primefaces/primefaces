@@ -41,30 +41,6 @@ toggleable to true to enable this feature.
 </p:fieldset>
 ```
 
-## Ajax Behavior Events
-_toggle_ is the default and only ajax behavior event provided by fieldset that is processed when the
-content is toggled. In case you have a listener defined, it will be invoked by passing an instance of
-_org.primefaces.event.ToggleEvent._
-
-Here is an example that adds a facesmessage and updates growl component when fieldset is
-toggled.
-
-```xhtml
-<p:growld id="messages" />
-<p:fieldset legend="Toggleable Fieldset" toggleable="true"
-    <p:ajax listener="#{bean.onToggle}" update="messages">
-    //content
-</p:fieldset>
-```
-```java
-public void onToggle(ToggleEvent event) {
-    Visibility visibility = event.getVisibility();
-    FacesMessage msg = new FacesMessage();
-    msg.setSummary("Fieldset " + event.getId() + " toggled");
-    msg.setDetail("Visibility: " + visibility);
-    FacesContext.getCurrentInstance().addMessage(null, msg);
-}
-```
 ## Client Side API
 Widget: _PrimeFaces.widget.Fieldset_
 

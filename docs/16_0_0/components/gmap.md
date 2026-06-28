@@ -224,51 +224,10 @@ public void onGeocode(GeocodeEvent event) {
 }
 ```
 
-## AJAX Behavior Events
-GMap provides many custom AJAX behavior events for you to hook-in to various features.
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| geocode | org.primefaces.event.map.GeocodeEvent | When the map is geocoded
-| markerDrag | org.primefaces.event.map.MarkerDragEvent | When a marker is dragged.
-| overlayDblSelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is double clicked.
-| overlaySelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is selected.
-| pointDblSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is double clicked.
-| pointSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is selected.
-| reverseGeocode | org.primefaces.event.map.ReverseGeocodeEvent | When a geocode is reversed.
-| stateChange | org.primefaces.event.map.StateChangeEvent | When map state changes.
-
-Following example displays a FacesMessage about the selected marker with growl component.
-
-```xhtml
-<h:form>
-    <p:growl id="growl" />
-    <p:gmap center="41.381542, 2.122893" zoom="15" type="hybrid" style="width:600px;height:400px" model="#{mapBean.model}">
-        <p:ajax event="overlaySelect" listener="#{mapBean.onMarkerSelect}" update="growl" />
-    </p:gmap>
-</h:form>
-```
-```java
-public class MapBean {
-    private MapModel model;
-    public MapBean() {
-        model = new DefaultMapModel();
-        //add markers
-    }
-    public MapModel getModel() {
-        return model
-    }
-    public void onMarkerSelect(OverlaySelectEvent event) {
-        Marker selectedMarker = (Marker) event.getOverlay();
-        //add facesmessage
-    }
-}
-```
 ## InfoWindow
 A common use case is displaying an info window when a marker is selected. _gmapInfoWindow_ is
 used to implement this special use case. Following example, displays an info window that contains
 an image of the selected marker data.
-
 
 ```xhtml
 <h:form>

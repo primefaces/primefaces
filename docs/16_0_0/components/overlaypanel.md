@@ -26,14 +26,6 @@ _showEvent_ and _hideEvent_ options.
 </p:overlayPanel>
 ```
 
-## Ajax Behavior Events
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| show | jakarta.faces.event.AjaxBehaviorEvent | On show.
-| hide | jakarta.faces.event.AjaxBehaviorEvent | On hide.
-| loadContent | jakarta.faces.event.AjaxBehaviorEvent | On dynamic content load.
-
 ## Positioning
 By default, left top corner of panel is aligned to left bottom corner of the target if there is enough
 space in window viewport, if not the position is flipped on the fly to find the best location to

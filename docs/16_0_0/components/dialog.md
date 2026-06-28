@@ -104,43 +104,6 @@ Do not place `p:dialog` inside table cells or containers with `position: relativ
 this is not a component limitation. The same guidance applies to `p:confirmDialog`.
 
 
-## Ajax Behavior Events
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| open | jakarta.faces.event.AjaxBehaviorEvent | On open.
-| close | org.primefaces.event.CloseEvent | On close.
-| minimize | jakarta.faces.event.AjaxBehaviorEvent | On minimize.
-| restoreMinimize | jakarta.faces.event.AjaxBehaviorEvent | On restore minimize.
-| maximize | jakarta.faces.event.AjaxBehaviorEvent | On maximize.
-| restoreMaximize | jakarta.faces.event.AjaxBehaviorEvent | On restore maximize.
-| move | org.primefaces.event.MoveEvent | On move.
-| loadContent | jakarta.faces.event.AjaxBehaviorEvent | On lazy loading the content when dynamic=true
-| resizeStart | org.primefaces.event.ResizeEvent | On resize start.
-| resizeStop | org.primefaces.event.ResizeEvent | On resize stop.
-
-close** event is one of the ajax behavior events provided by dialog that is fired when the dialog is
-hidden. If there is a listener defined it’ll be executed by passing an instance of
-_org.primefaces.event.CloseEvent_.
-
-Example below adds a FacesMessage when dialog is closed and updates the messages component to
-display the added message.
-
-```xhtml
-<p:dialog>
-    <p:ajax event="close" listener="#{dialogBean.handleClose}" update="msg" />
-    //Content
-</p:dialog>
-<p:messages id="msg" />
-```
-```java
-public class DialogBean {
-    public void handleClose(CloseEvent event) {
-        //Add facesmessage
-    }
-}
-```
-
 ## Client Side Callbacks
 Similar to close listener, onShow and onHide are handy callbacks for client side in case you need to
 execute custom javascript.

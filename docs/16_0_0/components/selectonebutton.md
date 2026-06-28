@@ -70,17 +70,6 @@ This is implemented by adding custom components to a facet named `custom`.
 
 Custom buttons should have `role="radio"` attribute and be placed within the custom facet. The order of buttons should match the order of selectItems. When a custom facet is present, the layout is automatically set to "custom".
 
-## Ajax Behavior Events
-
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `change`  
-**Available Events:** `change`  
-
-```xhtml
-<p:ajax event="change" listener="#{bean.handlechange}" update="msgs" />
-```
-
 ## Client Side API
 Widget: _PrimeFaces.widget.SelectOneButton_
 

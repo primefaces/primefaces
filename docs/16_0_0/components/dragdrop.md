@@ -158,31 +158,6 @@ If _for_ attribute is omitted, parent component becomes droppable.
     <p:droppable />
 </p:outputPanel>
 ```
-### Ajax Behavior Events
-_drop_ is the only and default ajax behavior event provided by droppable that is processed when a
-valid draggable is dropped. In case you define a listener it’ll be executed by passing an
-_org.primefaces.event.DragDrop_ event instance parameter holding information about the dragged
-and dropped components.
-
-Following example shows how to enable draggable images to be dropped on droppables.
-
-```xhtml
-<p:graphicImage id="messi" value="barca/messi_thumb.jpg" />
-<p:draggable for="messi"/>
-<p:outputPanel id="zone" styleClass="slot" />
-<p:droppable for="zone">
-    <p:ajax listener="#{ddController.onDrop}" />
-</p:droppable>
-```
-```java
-public void onDrop(DragDropEvent ddEvent) {
-    String draggedId = ddEvent.getDragId(); //Client id of dragged component
-    String droppedId = ddEvent.getDropId(); //Client id of dropped component
-    // get the dropped object (in this case a GraphicImage)
-    FacesContext context = FacesContext.getCurrentInstance();
-    GraphicImage droppedComponent = (GraphicImage) context.getViewRoot().findComponent(draggedId);
-}
-```
 
 ### onDrop
 onDrop is a client side callback that is invoked when a draggable is dropped, it gets two parameters

@@ -86,44 +86,6 @@ To override calculated pattern from locale, use the pattern option;
 Various effects can be used when showing and hiding the popup calendar, options are; show,
 slideDown, fadeIn, blind, bounce, clip, drop, fold and slide.
 
-## Ajax Behavior Events
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `valueChange`  
-**Available Events:** `blur, change, click, close, contextmenu, copy, cut, dateSelect, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, paste, reset, scroll, search, select, valueChange, viewChange, wheel`
-
-**Custom Events:**
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| close | - | When the popup is closed.
-| dateSelect | org.primefaces.event.SelectEvent | When a date is selected.
-| viewChange | org.primefaces.event.DateViewChangeEvent | When the date picker changed to a different month or year page.
-
-Calendar provides a _dateSelect_ ajax behavior event to execute an instant ajax selection whenever a
-date is selected. If you define a method as a listener, it will be invoked by passing an
-_org.primefaces.event.SelectEvent_ instance.
-
-```xhtml
-<p:calendar value="#{calendarBean.date}">
-    <p:ajax event="dateSelect" listener="#{bean.handleDateSelect}" update="msg" />
-</p:calendar>
-<p:messages id="msg" />
-```
-```java
-public void handleDateSelect(SelectEvent<LocalDate> event) {
-    LocalDate date = event.getObject();
-    //Add facesmessage
-}
-```
-In popup mode, calendar also supports regular ajax behavior events like blur, keyup and more.
-
-Another handy event is the _viewChange_ that is fired when month and year changes. An instance of
-_org.primefaces.event.DateViewChangeEvent_ is passed to the event listener providing the current
-month and year information.
-
-In case, you need to know about when a calendar gets hidden, use _close_ event.
-
 ## Date Ranges
 Using mindate and maxdate options, selectable dates can be restricted. Values for these attributes
 can either be a string or a java.time.LocalDate.

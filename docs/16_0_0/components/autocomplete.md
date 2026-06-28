@@ -231,13 +231,7 @@ You might have a `LazyDataModel` in your project which is almost suitable to ser
 provider. It can be used with `AutoComplete` by using the `lazyModel` in combination with the `lazyField` attribute.
 The query string will be applied on the provided `lazyField` property using `MatchMode.CONTAINS`.
 
-## Ajax Behavior Events
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.
-
-**Default Event:** `valueChange`
-
-**Available Events:** `blur, change, clear, click, contextmenu, copy, cut, dblclick, drag, dragend, dragenter, dragleave, dragover, dragstart, drop, focus, input, invalid, itemSelect, itemUnselect, keydown, keypress, keyup, moreTextSelect, emptyMessageSelect, mousedown, mousemove, mouseout, mouseover, mouseup, paste, query, reset, scroll, search, select, valueChange, wheel`
-
+## Instant selection
 
 Instead of waiting for user to submit the form manually to process the selected item, you can enable
 instant AJAX selection by using the _itemSelect_ AJAX behavior. Example below demonstrates how to

@@ -56,21 +56,6 @@ backgroundColor | Background-Color of the event.
 borderColor | Color of the border surrounding the event.
 textColor | Color of the text inside the event.
 
-## Ajax Behavior Events
-Schedule provides various ajax behavior events to respond user actions.
-
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-dateSelect | org.primefaces.event.SelectEvent<LocalDateTime> | When a date is selected.
-dateDblSelect | org.primefaces.event.SelectEvent<LocalDateTime> | When a date is double click selected.
-eventSelect | org.primefaces.event.SelectEvent<ScheduleEvent> | When an event is selected.
-eventDblSelect | org.primefaces.event.SelectEvent<ScheduleEvent> | When an event is double click selected.
-eventMove | org.primefaces.event.schedule.ScheduleEntryMoveEvent | When an event is moved.
-eventResize | org.primefaces.event.schedule.ScheduleEntryResizeEvent | When an event is resized.
-rangeSelect | org.primefaces.event.schedule.ScheduleRangeEvent  | When a date range is selected when selectable=true.
-viewChange | org.primefaces.event.SelectEvent<String> | When a view is changed.
-
 ## Ajax Updates
 Schedule has a quite complex UI which is generated on-the-fly by the client side
 PrimeFaces.widget.Schedule widget to save bandwidth and increase page load performance. As a
