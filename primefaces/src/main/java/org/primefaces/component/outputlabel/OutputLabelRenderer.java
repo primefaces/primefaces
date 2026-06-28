@@ -130,6 +130,7 @@ public class OutputLabelRenderer extends CoreRenderer {
     protected void encodeRequiredIndicator(ResponseWriter writer, OutputLabel label) throws IOException {
         writer.startElement("span", label);
         writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         writer.write("*");
         writer.endElement("span");
     }

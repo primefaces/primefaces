@@ -34,7 +34,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class OutputLabel001Test extends AbstractPrimePageTest {
 
@@ -217,6 +219,31 @@ class OutputLabel001Test extends AbstractPrimePageTest {
         assertLabel(label, "Read Only Not Skipped*", true);
     }
 
+
+    @Test
+    @Order(15)
+    @DisplayName("OutputLabel: required indicator (*) must have aria-hidden='true' for screen reader accessibility (BITV/WCAG)")
+    void requiredIndicator_AriaHidden(Page page) {
+        // required=true
+        assertTrue(page.required.isRequiredIndicatorAriaHidden(),
+                "required label: required indicator span must have aria-hidden='true'");
+        // indicateRequired=true
+        assertTrue(page.indicaterequired.isRequiredIndicatorAriaHidden(),
+                "indicaterequired label: required indicator span must have aria-hidden='true'");
+        // @NotNull bean validation
+        assertTrue(page.notnull.isRequiredIndicatorAriaHidden(),
+                "@NotNull label: required indicator span must have aria-hidden='true'");
+        // @NotBlank bean validation
+        assertTrue(page.notblank.isRequiredIndicatorAriaHidden(),
+                "@NotBlank label: required indicator span must have aria-hidden='true'");
+        // @NotEmpty bean validation
+        assertTrue(page.notempty.isRequiredIndicatorAriaHidden(),
+                "@NotEmpty label: required indicator span must have aria-hidden='true'");
+        // labels WITHOUT required indicator must not falsely claim aria-hidden
+        assertFalse(page.notrequired.isRequiredIndicatorAriaHidden(),
+                "not-required label: must not have a required indicator at all");
+        assertNoJavascriptErrors();
+    }
 
     private void assertLabel(OutputLabel label, String text, boolean required) {
         assertEquals(required, label.hasRequiredIndicator());
