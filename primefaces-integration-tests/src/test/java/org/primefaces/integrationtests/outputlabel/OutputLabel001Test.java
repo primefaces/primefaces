@@ -30,11 +30,15 @@ import org.primefaces.selenium.component.OutputLabel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class OutputLabel001Test extends AbstractPrimePageTest {
 
@@ -217,6 +221,29 @@ class OutputLabel001Test extends AbstractPrimePageTest {
         assertLabel(label, "Read Only Not Skipped*", true);
     }
 
+
+    @Test
+    @Order(15)
+    @DisplayName("OutputLabel: required indicator (*) must have aria-hidden='true' for screen reader accessibility (BITV/WCAG)")
+    void requiredIndicator_AriaHidden(Page page) {
+        assertTrue(hasAriaHiddenRequiredIndicator(page.required));
+        assertTrue(hasAriaHiddenRequiredIndicator(page.indicaterequired));
+        assertTrue(hasAriaHiddenRequiredIndicator(page.notnull));
+        assertTrue(hasAriaHiddenRequiredIndicator(page.notblank));
+        assertTrue(hasAriaHiddenRequiredIndicator(page.notempty));
+        assertFalse(hasAriaHiddenRequiredIndicator(page.notrequired));
+        assertNoJavascriptErrors();
+    }
+
+    private boolean hasAriaHiddenRequiredIndicator(OutputLabel label) {
+        try {
+            WebElement indicator = label.findElement(By.className("ui-outputlabel-rfi"));
+            return "true".equals(indicator.getDomAttribute("aria-hidden"));
+        }
+        catch (NoSuchElementException e) {
+            return false;
+        }
+    }
 
     private void assertLabel(OutputLabel label, String text, boolean required) {
         assertEquals(required, label.hasRequiredIndicator());
