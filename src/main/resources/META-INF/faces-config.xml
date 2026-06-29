@@ -1,0 +1,1818 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+
+    <name>primefaces</name>
+
+    <factory>
+        <partial-view-context-factory>org.primefaces.context.PrimePartialViewContextFactory</partial-view-context-factory>
+    </factory>
+
+    <lifecycle>
+        <phase-listener>org.primefaces.application.resource.DynamicResourcesPhaseListener</phase-listener>
+        <phase-listener>org.primefaces.component.autoupdate.AutoUpdatePhaseListener</phase-listener>
+        <phase-listener>org.primefaces.csp.CspPhaseListener</phase-listener>
+    </lifecycle>
+
+    <application>
+        <resource-handler>org.primefaces.application.resource.PrimeResourceHandler</resource-handler>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.metadata.transformer.MetadataTransformerExecutor</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.webapp.PostConstructApplicationEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+            <source-class>javax.faces.application.Application</source-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.webapp.PreDestroyApplicationEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreDestroyApplicationEvent</system-event-class>
+            <source-class>javax.faces.application.Application</source-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.event.system.DynamicColumnsListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <source-class>org.primefaces.component.columns.Columns</source-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.component.timeline.TimelineListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+            <source-class>org.primefaces.component.timeline.Timeline</source-class>
+        </system-event-listener>
+    </application>
+
+    <behavior>
+        <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.ajax.AjaxBehavior</behavior-class>
+    </behavior>
+
+    <behavior>
+        <behavior-id>org.primefaces.component.PrinterBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.printer.PrinterBehavior</behavior-class>
+    </behavior>
+
+    <behavior>
+        <behavior-id>org.primefaces.behavior.ConfirmBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.confirm.ConfirmBehavior</behavior-class>
+    </behavior>
+
+    <behavior>
+        <behavior-id>org.primefaces.behavior.ClientValidator</behavior-id>
+        <behavior-class>org.primefaces.behavior.validate.ClientValidator</behavior-class>
+    </behavior>
+
+    <factory>
+        <faces-context-factory>org.primefaces.context.PrimeFacesContextFactory</faces-context-factory>
+    </factory>
+
+    <validator>
+        <validator-id>javax.faces.Length</validator-id>
+        <validator-class>org.primefaces.validate.LengthValidator</validator-class>
+    </validator>
+
+    <validator>
+        <validator-id>javax.faces.LongRange</validator-id>
+        <validator-class>org.primefaces.validate.LongRangeValidator</validator-class>
+    </validator>
+
+    <validator>
+        <validator-id>javax.faces.DoubleRange</validator-id>
+        <validator-class>org.primefaces.validate.DoubleRangeValidator</validator-class>
+    </validator>
+
+    <validator>
+        <validator-id>javax.faces.RegularExpression</validator-id>
+        <validator-class>org.primefaces.validate.RegexValidator</validator-class>
+    </validator>
+
+    <converter>
+        <converter-id>javax.faces.Integer</converter-id>
+        <converter-class>org.primefaces.convert.IntegerConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Integer</converter-for-class>
+        <converter-class>org.primefaces.convert.IntegerConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Long</converter-id>
+        <converter-class>org.primefaces.convert.LongConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Long</converter-for-class>
+        <converter-class>org.primefaces.convert.LongConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Double</converter-id>
+        <converter-class>org.primefaces.convert.DoubleConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Double</converter-for-class>
+        <converter-class>org.primefaces.convert.DoubleConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Float</converter-id>
+        <converter-class>org.primefaces.convert.FloatConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Float</converter-for-class>
+        <converter-class>org.primefaces.convert.FloatConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Short</converter-id>
+        <converter-class>org.primefaces.convert.ShortConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Short</converter-for-class>
+        <converter-class>org.primefaces.convert.ShortConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.math.BigInteger</converter-for-class>
+        <converter-class>org.primefaces.convert.BigIntegerConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.math.BigDecimal</converter-for-class>
+        <converter-class>org.primefaces.convert.BigDecimalConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Byte</converter-id>
+        <converter-class>org.primefaces.convert.ByteConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Byte</converter-for-class>
+        <converter-class>org.primefaces.convert.ByteConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Character</converter-id>
+        <converter-class>org.primefaces.convert.CharacterConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Character</converter-for-class>
+        <converter-class>org.primefaces.convert.CharacterConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Boolean</converter-id>
+        <converter-class>org.primefaces.convert.BooleanConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.lang.Boolean</converter-for-class>
+        <converter-class>org.primefaces.convert.BooleanConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.DateTime</converter-id>
+        <converter-class>org.primefaces.convert.DateTimeConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>javax.faces.Number</converter-id>
+        <converter-class>org.primefaces.convert.NumberConverter</converter-class>
+    </converter>
+
+    <component>
+        <component-type>org.primefaces.component.UIRepeat</component-type>
+        <component-class>org.primefaces.component.repeat.UIRepeat</component-class>
+    </component>
+    <component>
+        <component-type>org.primefaces.component.AccordionPanel</component-type>
+        <component-class>org.primefaces.component.accordionpanel.AccordionPanel</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.AjaxExceptionHandler</component-type>
+        <component-class>org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.AjaxStatus</component-type>
+        <component-class>org.primefaces.component.ajaxstatus.AjaxStatus</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.AutoComplete</component-type>
+        <component-class>org.primefaces.component.autocomplete.AutoComplete</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Barcode</component-type>
+        <component-class>org.primefaces.component.barcode.Barcode</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.BlockUI</component-type>
+        <component-class>org.primefaces.component.blockui.BlockUI</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.BreadCrumb</component-type>
+        <component-class>org.primefaces.component.breadcrumb.BreadCrumb</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Button</component-type>
+        <component-class>org.primefaces.component.button.Button</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Cache</component-type>
+        <component-class>org.primefaces.component.cache.UICache</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Calendar</component-type>
+        <component-class>org.primefaces.component.calendar.Calendar</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Captcha</component-type>
+        <component-class>org.primefaces.component.captcha.Captcha</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Carousel</component-type>
+        <component-class>org.primefaces.component.carousel.Carousel</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.CellEditor</component-type>
+        <component-class>org.primefaces.component.celleditor.CellEditor</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Chart</component-type>
+        <component-class>org.primefaces.component.chart.Chart</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Checkbox</component-type>
+        <component-class>org.primefaces.component.checkbox.Checkbox</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Chips</component-type>
+        <component-class>org.primefaces.component.chips.Chips</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Clock</component-type>
+        <component-class>org.primefaces.component.clock.Clock</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ColorPicker</component-type>
+        <component-class>org.primefaces.component.colorpicker.ColorPicker</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Column</component-type>
+        <component-class>org.primefaces.component.column.Column</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ColumnGroup</component-type>
+        <component-class>org.primefaces.component.columngroup.ColumnGroup</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Columns</component-type>
+        <component-class>org.primefaces.component.columns.Columns</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ColumnToggler</component-type>
+        <component-class>org.primefaces.component.columntoggler.ColumnToggler</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.CommandButton</component-type>
+        <component-class>org.primefaces.component.commandbutton.CommandButton</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.CommandLink</component-type>
+        <component-class>org.primefaces.component.commandlink.CommandLink</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ConfirmDialog</component-type>
+        <component-class>org.primefaces.component.confirmdialog.ConfirmDialog</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ContentFlow</component-type>
+        <component-class>org.primefaces.component.contentflow.ContentFlow</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ContextMenu</component-type>
+        <component-class>org.primefaces.component.contextmenu.ContextMenu</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Dashboard</component-type>
+        <component-class>org.primefaces.component.dashboard.Dashboard</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.DataGrid</component-type>
+        <component-class>org.primefaces.component.datagrid.DataGrid</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.DataList</component-type>
+        <component-class>org.primefaces.component.datalist.DataList</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.DataScroller</component-type>
+        <component-class>org.primefaces.component.datascroller.DataScroller</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.DataTable</component-type>
+        <component-class>org.primefaces.component.datatable.DataTable</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.DataView</component-type>
+        <component-class>org.primefaces.component.dataview.DataView</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.DataViewGridItem</component-type>
+        <component-class>org.primefaces.component.dataview.DataViewGridItem</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.DataViewListItem</component-type>
+        <component-class>org.primefaces.component.dataview.DataViewListItem</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.DefaultCommand</component-type>
+        <component-class>org.primefaces.component.defaultcommand.DefaultCommand</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Diagram</component-type>
+        <component-class>org.primefaces.component.diagram.Diagram</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Dialog</component-type>
+        <component-class>org.primefaces.component.dialog.Dialog</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Dock</component-type>
+        <component-class>org.primefaces.component.dock.Dock</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Draggable</component-type>
+        <component-class>org.primefaces.component.dnd.Draggable</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Droppable</component-type>
+        <component-class>org.primefaces.component.dnd.Droppable</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Editor</component-type>
+        <component-class>org.primefaces.component.editor.Editor</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Effect</component-type>
+        <component-class>org.primefaces.component.effect.Effect</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.FeedReader</component-type>
+        <component-class>org.primefaces.component.feedreader.FeedReader</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Fieldset</component-type>
+        <component-class>org.primefaces.component.fieldset.Fieldset</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.FileUpload</component-type>
+        <component-class>org.primefaces.component.fileupload.FileUpload</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Focus</component-type>
+        <component-class>org.primefaces.component.focus.Focus</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Fragment</component-type>
+        <component-class>org.primefaces.component.fragment.Fragment</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Galleria</component-type>
+        <component-class>org.primefaces.component.galleria.Galleria</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.GMap</component-type>
+        <component-class>org.primefaces.component.gmap.GMap</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.GMapInfoWindow</component-type>
+        <component-class>org.primefaces.component.gmap.GMapInfoWindow</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.GraphicImage</component-type>
+        <component-class>org.primefaces.component.graphicimage.GraphicImage</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Growl</component-type>
+        <component-class>org.primefaces.component.growl.Growl</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.HeaderRow</component-type>
+        <component-class>org.primefaces.component.headerrow.HeaderRow</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Hotkey</component-type>
+        <component-class>org.primefaces.component.hotkey.Hotkey</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.IdleMonitor</component-type>
+        <component-class>org.primefaces.component.idlemonitor.IdleMonitor</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ImageCompare</component-type>
+        <component-class>org.primefaces.component.imagecompare.ImageCompare</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ImageCropper</component-type>
+        <component-class>org.primefaces.component.imagecropper.ImageCropper</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ImageSwitch</component-type>
+        <component-class>org.primefaces.component.imageswitch.ImageSwitch</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Inplace</component-type>
+        <component-class>org.primefaces.component.inplace.Inplace</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.InputMask</component-type>
+        <component-class>org.primefaces.component.inputmask.InputMask</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.InputNumber</component-type>
+        <component-class>org.primefaces.component.inputnumber.InputNumber</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.InputSwitch</component-type>
+        <component-class>org.primefaces.component.inputswitch.InputSwitch</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.InputText</component-type>
+        <component-class>org.primefaces.component.inputtext.InputText</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.InputTextarea</component-type>
+        <component-class>org.primefaces.component.inputtextarea.InputTextarea</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Keyboard</component-type>
+        <component-class>org.primefaces.component.keyboard.Keyboard</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.KeyFilter</component-type>
+        <component-class>org.primefaces.component.keyfilter.KeyFilter</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Knob</component-type>
+        <component-class>org.primefaces.component.knob.Knob</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Layout</component-type>
+        <component-class>org.primefaces.component.layout.Layout</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.LayoutUnit</component-type>
+        <component-class>org.primefaces.component.layout.LayoutUnit</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Lifecycle</component-type>
+        <component-class>org.primefaces.component.lifecycle.Lifecycle</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.LightBox</component-type>
+        <component-class>org.primefaces.component.lightbox.LightBox</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Link</component-type>
+        <component-class>org.primefaces.component.link.Link</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.LinkButton</component-type>
+        <component-class>org.primefaces.component.linkbutton.LinkButton</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Log</component-type>
+        <component-class>org.primefaces.component.log.Log</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Media</component-type>
+        <component-class>org.primefaces.component.media.Media</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.MegaMenu</component-type>
+        <component-class>org.primefaces.component.megamenu.MegaMenu</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Menu</component-type>
+        <component-class>org.primefaces.component.menu.Menu</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Menubar</component-type>
+        <component-class>org.primefaces.component.menubar.Menubar</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.MenuButton</component-type>
+        <component-class>org.primefaces.component.menubutton.MenuButton</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.UIMenuItem</component-type>
+        <component-class>org.primefaces.component.menuitem.UIMenuItem</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Message</component-type>
+        <component-class>org.primefaces.component.message.Message</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Messages</component-type>
+        <component-class>org.primefaces.component.messages.Messages</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Mindmap</component-type>
+        <component-class>org.primefaces.component.mindmap.Mindmap</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.MultiSelectListbox</component-type>
+        <component-class>org.primefaces.component.multiselectlistbox.MultiSelectListbox</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.NotificationBar</component-type>
+        <component-class>org.primefaces.component.notificationbar.NotificationBar</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.OrderList</component-type>
+        <component-class>org.primefaces.component.orderlist.OrderList</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Organigram</component-type>
+        <component-class>org.primefaces.component.organigram.Organigram</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.OrganigramNode</component-type>
+        <component-class>org.primefaces.component.organigramnode.UIOrganigramNode</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.OutputLabel</component-type>
+        <component-class>org.primefaces.component.outputlabel.OutputLabel</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.OutputPanel</component-type>
+        <component-class>org.primefaces.component.outputpanel.OutputPanel</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.OverlayPanel</component-type>
+        <component-class>org.primefaces.component.overlaypanel.OverlayPanel</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Panel</component-type>
+        <component-class>org.primefaces.component.panel.Panel</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.PanelGrid</component-type>
+        <component-class>org.primefaces.component.panelgrid.PanelGrid</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.PanelMenu</component-type>
+        <component-class>org.primefaces.component.panelmenu.PanelMenu</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Password</component-type>
+        <component-class>org.primefaces.component.password.Password</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.PhotoCam</component-type>
+        <component-class>org.primefaces.component.photocam.PhotoCam</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.PickList</component-type>
+        <component-class>org.primefaces.component.picklist.PickList</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Poll</component-type>
+        <component-class>org.primefaces.component.poll.Poll</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ProgressBar</component-type>
+        <component-class>org.primefaces.component.progressbar.ProgressBar</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.RadioButton</component-type>
+        <component-class>org.primefaces.component.radiobutton.RadioButton</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Rating</component-type>
+        <component-class>org.primefaces.component.rating.Rating</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.RemoteCommand</component-type>
+        <component-class>org.primefaces.component.remotecommand.RemoteCommand</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Resizable</component-type>
+        <component-class>org.primefaces.component.resizable.Resizable</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Ribbon</component-type>
+        <component-class>org.primefaces.component.ribbon.Ribbon</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.RibbonGroup</component-type>
+        <component-class>org.primefaces.component.ribbon.RibbonGroup</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Ring</component-type>
+        <component-class>org.primefaces.component.ring.Ring</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Row</component-type>
+        <component-class>org.primefaces.component.row.Row</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.RowEditor</component-type>
+        <component-class>org.primefaces.component.roweditor.RowEditor</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.RowExpansion</component-type>
+        <component-class>org.primefaces.component.rowexpansion.RowExpansion</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.RowToggler</component-type>
+        <component-class>org.primefaces.component.rowtoggler.RowToggler</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Schedule</component-type>
+        <component-class>org.primefaces.component.schedule.Schedule</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ScrollPanel</component-type>
+        <component-class>org.primefaces.component.scrollpanel.ScrollPanel</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SelectBooleanButton</component-type>
+        <component-class>org.primefaces.component.selectbooleanbutton.SelectBooleanButton</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SelectBooleanCheckbox</component-type>
+        <component-class>org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SelectCheckboxMenu</component-type>
+        <component-class>org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SelectManyButton</component-type>
+        <component-class>org.primefaces.component.selectmanybutton.SelectManyButton</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SelectManyCheckbox</component-type>
+        <component-class>org.primefaces.component.selectmanycheckbox.SelectManyCheckbox</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SelectManyMenu</component-type>
+        <component-class>org.primefaces.component.selectmanymenu.SelectManyMenu</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SelectOneButton</component-type>
+        <component-class>org.primefaces.component.selectonebutton.SelectOneButton</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SelectOneListbox</component-type>
+        <component-class>org.primefaces.component.selectonelistbox.SelectOneListbox</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SelectOneMenu</component-type>
+        <component-class>org.primefaces.component.selectonemenu.SelectOneMenu</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SelectOneRadio</component-type>
+        <component-class>org.primefaces.component.selectoneradio.SelectOneRadio</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Separator</component-type>
+        <component-class>org.primefaces.component.separator.UISeparator</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Sidebar</component-type>
+        <component-class>org.primefaces.component.sidebar.Sidebar</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Signature</component-type>
+        <component-class>org.primefaces.component.signature.Signature</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SlideMenu</component-type>
+        <component-class>org.primefaces.component.slidemenu.SlideMenu</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Slider</component-type>
+        <component-class>org.primefaces.component.slider.Slider</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Spacer</component-type>
+        <component-class>org.primefaces.component.spacer.Spacer</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Spinner</component-type>
+        <component-class>org.primefaces.component.spinner.Spinner</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SplitButton</component-type>
+        <component-class>org.primefaces.component.splitbutton.SplitButton</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Spotlight</component-type>
+        <component-class>org.primefaces.component.spotlight.Spotlight</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Stack</component-type>
+        <component-class>org.primefaces.component.stack.Stack</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.StaticMessage</component-type>
+        <component-class>org.primefaces.component.staticmessage.StaticMessage</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Steps</component-type>
+        <component-class>org.primefaces.component.steps.Steps</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Sticky</component-type>
+        <component-class>org.primefaces.component.sticky.Sticky</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.UISubmenu</component-type>
+        <component-class>org.primefaces.component.submenu.UISubmenu</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SubTable</component-type>
+        <component-class>org.primefaces.component.subtable.SubTable</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.SummaryRow</component-type>
+        <component-class>org.primefaces.component.summaryrow.SummaryRow</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Tab</component-type>
+        <component-class>org.primefaces.component.tabview.Tab</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.TabMenu</component-type>
+        <component-class>org.primefaces.component.tabmenu.TabMenu</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.TabView</component-type>
+        <component-class>org.primefaces.component.tabview.TabView</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.TagCloud</component-type>
+        <component-class>org.primefaces.component.tagcloud.TagCloud</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Terminal</component-type>
+        <component-class>org.primefaces.component.terminal.Terminal</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.TextEditor</component-type>
+        <component-class>org.primefaces.component.texteditor.TextEditor</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ThemeSwitcher</component-type>
+        <component-class>org.primefaces.component.themeswitcher.ThemeSwitcher</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.TieredMenu</component-type>
+        <component-class>org.primefaces.component.tieredmenu.TieredMenu</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Timeline</component-type>
+        <component-class>org.primefaces.component.timeline.Timeline</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ToggleSwitch</component-type>
+        <component-class>org.primefaces.component.toggleswitch.ToggleSwitch</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Toolbar</component-type>
+        <component-class>org.primefaces.component.toolbar.Toolbar</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ToolbarGroup</component-type>
+        <component-class>org.primefaces.component.toolbar.ToolbarGroup</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Tooltip</component-type>
+        <component-class>org.primefaces.component.tooltip.Tooltip</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Tree</component-type>
+        <component-class>org.primefaces.component.tree.Tree</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.UITreeNode</component-type>
+        <component-class>org.primefaces.component.tree.UITreeNode</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.TreeTable</component-type>
+        <component-class>org.primefaces.component.treetable.TreeTable</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.TriStateCheckbox</component-type>
+        <component-class>org.primefaces.component.tristatecheckbox.TriStateCheckbox</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Watermark</component-type>
+        <component-class>org.primefaces.component.watermark.Watermark</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.Wizard</component-type>
+        <component-class>org.primefaces.component.wizard.Wizard</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.BarChart</component-type>
+        <component-class>org.primefaces.component.barchart.BarChart</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.BubbleChart</component-type>
+        <component-class>org.primefaces.component.bubblechart.BubbleChart</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.DonutChart</component-type>
+        <component-class>org.primefaces.component.donutchart.DonutChart</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.LineChart</component-type>
+        <component-class>org.primefaces.component.linechart.LineChart</component-class>
+    </component>
+    
+    <component>
+        <component-type>org.primefaces.component.ScatterChart</component-type>
+        <component-class>org.primefaces.component.scatterchart.ScatterChart</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.PieChart</component-type>
+        <component-class>org.primefaces.component.piechart.PieChart</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.PolarAreaChart</component-type>
+        <component-class>org.primefaces.component.polarareachart.PolarAreaChart</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.RadarChart</component-type>
+        <component-class>org.primefaces.component.radarchart.RadarChart</component-class>
+    </component>
+    
+    <component>
+        <component-type>org.primefaces.component.DatePicker</component-type>
+        <component-class>org.primefaces.component.datepicker.DatePicker</component-class>
+    </component>
+    
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AccordionPanelRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.accordionpanel.AccordionPanelRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AjaxStatusRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.ajaxstatus.AjaxStatusRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AutoCompleteRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.autocomplete.AutoCompleteRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.BarcodeRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.barcode.BarcodeRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.BlockUIRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.blockui.BlockUIRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.BreadCrumbRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.breadcrumb.BreadCrumbRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.button.ButtonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.UICacheRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.cache.UICacheRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CalendarRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.calendar.CalendarRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CaptchaRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.captcha.CaptchaRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CarouselRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.carousel.CarouselRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CellEditorRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.celleditor.CellEditorRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ChartRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.chart.ChartRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CheckboxRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.checkbox.CheckboxRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ChipsRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.chips.ChipsRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ClockRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.clock.ClockRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ColorPickerRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.colorpicker.ColorPickerRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ColumnRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.column.ColumnRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ColumnTogglerRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.columntoggler.ColumnTogglerRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CommandButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.commandbutton.CommandButtonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.CommandLinkRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.commandlink.CommandLinkRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ConfirmDialogRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.confirmdialog.ConfirmDialogRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ContentFlowRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.contentflow.ContentFlowRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ContextMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.contextmenu.ContextMenuRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DashboardRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.dashboard.DashboardRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DataGridRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.datagrid.DataGridRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DataListRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.datalist.DataListRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DataScrollerRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.datascroller.DataScrollerRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DataTableRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.datatable.DataTableRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DataViewRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.dataview.DataViewRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DefaultCommandRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.defaultcommand.DefaultCommandRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DiagramRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.diagram.DiagramRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DialogRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.dialog.DialogRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DockRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.dock.DockRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DraggableRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.dnd.DraggableRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DroppableRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.dnd.DroppableRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.EditorRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.editor.EditorRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.EffectRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.effect.EffectRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.FeedReaderRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.feedreader.FeedReaderRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.FieldsetRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.fieldset.FieldsetRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.FileUploadRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.fileupload.FileUploadRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.FocusRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.focus.FocusRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.FragmentRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.fragment.FragmentRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.GalleriaRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.galleria.GalleriaRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.GMapRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.gmap.GMapRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.GraphicImageRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.graphicimage.GraphicImageRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.GrowlRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.growl.GrowlRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.HeaderRowRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.headerrow.HeaderRowRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.HotkeyRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.hotkey.HotkeyRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.IdleMonitorRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.idlemonitor.IdleMonitorRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ImageCompareRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.imagecompare.ImageCompareRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ImageCropperRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.imagecropper.ImageCropperRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ImageSwitchRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.imageswitch.ImageSwitchRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.InplaceRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.inplace.InplaceRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.InputMaskRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.inputmask.InputMaskRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.InputNumberRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.inputnumber.InputNumberRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.InputSwitchRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.inputswitch.InputSwitchRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.InputTextRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.inputtext.InputTextRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.InputTextareaRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.inputtextarea.InputTextareaRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.KeyboardRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.keyboard.KeyboardRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.KeyFilterRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.keyfilter.KeyFilterRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.KnobRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.knob.KnobRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.LayoutRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.layout.LayoutRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.LayoutUnitRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.layout.LayoutUnitRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.LifecycleRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.lifecycle.LifecycleRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.LightBoxRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.lightbox.LightBoxRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.LinkRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.link.LinkRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.LinkButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.linkbutton.LinkButtonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.LogRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.log.LogRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.MediaRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.media.MediaRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.MegaMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.megamenu.MegaMenuRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.MenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.menu.MenuRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.MenubarRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.menubar.MenubarRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.MenuButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.menubutton.MenuButtonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.MessageRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.message.MessageRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.MessagesRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.messages.MessagesRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.MindmapRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.mindmap.MindmapRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.MultiSelectListboxRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.multiselectlistbox.MultiSelectListboxRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.NotificationBarRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.notificationbar.NotificationBarRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.OrderListRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.orderlist.OrderListRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.OrganigramRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.organigram.OrganigramRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.OutputLabelRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.outputlabel.OutputLabelRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.OutputPanelRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.outputpanel.OutputPanelRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.OverlayPanelRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.overlaypanel.OverlayPanelRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PanelRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.panel.PanelRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PanelGridRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.panelgrid.PanelGridRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PanelMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.panelmenu.PanelMenuRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PasswordRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.password.PasswordRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PhotoCamRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.photocam.PhotoCamRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PickListRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.picklist.PickListRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PollRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.poll.PollRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ProgressBarRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.progressbar.ProgressBarRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.RadioButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.radiobutton.RadioButtonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.RatingRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.rating.RatingRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.RemoteCommandRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.remotecommand.RemoteCommandRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ResizableRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.resizable.ResizableRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.RibbonRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.ribbon.RibbonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.RibbonGroupRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.ribbon.RibbonGroupRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.RingRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.ring.RingRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.RowRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.row.RowRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.RowEditorRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.roweditor.RowEditorRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.RowTogglerRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.rowtoggler.RowTogglerRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ScheduleRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.schedule.ScheduleRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ScrollPanelRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.scrollpanel.ScrollPanelRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectBooleanButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.selectbooleanbutton.SelectBooleanButtonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectBooleanCheckboxRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckboxRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectCheckboxMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenuRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectManyButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.selectmanybutton.SelectManyButtonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectManyCheckboxRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.selectmanycheckbox.SelectManyCheckboxRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectManyMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.selectmanymenu.SelectManyMenuRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectOneButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.selectonebutton.SelectOneButtonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectOneListboxRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.selectonelistbox.SelectOneListboxRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectOneMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.selectonemenu.SelectOneMenuRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SelectOneRadioRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.selectoneradio.SelectOneRadioRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SeparatorRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.separator.SeparatorRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SidebarRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.sidebar.SidebarRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SignatureRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.signature.SignatureRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SlideMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.slidemenu.SlideMenuRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SliderRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.slider.SliderRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SpacerRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.spacer.SpacerRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SpinnerRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.spinner.SpinnerRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SplitButtonRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.splitbutton.SplitButtonRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SpotlightRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.spotlight.SpotlightRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.StackRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.stack.StackRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.StaticMessageRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.staticmessage.StaticMessageRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.StepsRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.steps.StepsRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.StickyRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.sticky.StickyRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SubTableRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.subtable.SubTableRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SummaryRowRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.summaryrow.SummaryRowRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TabMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.tabmenu.TabMenuRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TabViewRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.tabview.TabViewRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TagCloudRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.tagcloud.TagCloudRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TerminalRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.terminal.TerminalRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TextEditorRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.texteditor.TextEditorRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ThemeSwitcherRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.themeswitcher.ThemeSwitcherRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TieredMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.tieredmenu.TieredMenuRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TimelineRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.timeline.TimelineRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ToggleSwitchRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.toggleswitch.ToggleSwitchRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ToolbarRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.toolbar.ToolbarRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TooltipRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.tooltip.TooltipRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TreeRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.tree.TreeRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TreeTableRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.treetable.TreeTableRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.TriStateCheckboxRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.tristatecheckbox.TriStateCheckboxRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.WatermarkRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.watermark.WatermarkRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.WizardRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.wizard.WizardRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.BarChartRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.barchart.BarChartRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.BubbleChartRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.bubblechart.BubbleChartRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DonutChartRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.donutchart.DonutChartRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.LineChartRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.linechart.LineChartRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ScatterChartRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.scatterchart.ScatterChartRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PieChartRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.piechart.PieChartRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PolarAreaChartRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.polarareachart.PolarAreaChartRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.RadarChartRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.radarchart.RadarChartRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DatePickerRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.datepicker.DatePickerRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>javax.faces.Head</renderer-type>
+            <renderer-class>org.primefaces.renderkit.HeadRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>javax.faces.Body</renderer-type>
+            <renderer-class>org.primefaces.renderkit.BodyRenderer</renderer-class>
+        </renderer>
+
+        <client-behavior-renderer>
+            <client-behavior-renderer-type>org.primefaces.component.AjaxBehaviorRenderer</client-behavior-renderer-type>
+            <client-behavior-renderer-class>org.primefaces.behavior.ajax.AjaxBehaviorRenderer</client-behavior-renderer-class>
+        </client-behavior-renderer>
+    </render-kit>
+
+</faces-config>

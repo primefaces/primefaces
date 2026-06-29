@@ -1,0 +1,374 @@
+.ui-datatable table {
+	border-collapse:collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.ui-datatable-tablewrapper {
+    overflow: auto;
+}
+
+.ui-datatable .ui-datatable-header,
+.ui-datatable .ui-datatable-footer {
+    text-align: center;
+    padding: 4px 10px;
+}
+
+.ui-datatable .ui-datatable-header {
+    border-bottom: 0px none;
+}
+
+.ui-datatable .ui-datatable-footer {
+    border-top: 0px none;
+}
+
+.ui-datatable thead th, .ui-datatable tfoot td {
+    text-align: center;
+}
+
+.ui-datatable thead th,
+.ui-datatable tbody td,
+.ui-datatable tfoot td,
+.ui-datatable tfoot th{
+    padding: 4px 10px;
+    overflow: hidden;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.ui-datatable tbody.ui-datatable-data {
+    outline: 0;
+}
+
+.ui-datatable tbody td {
+    border-color: inherit;
+}
+
+.ui-datatable .ui-sortable-column {
+    cursor: pointer;
+}
+
+.ui-datatable div.ui-dt-c {
+    position: relative;
+}
+
+.ui-datatable .ui-sortable-column-icon {
+    display: inline-block;
+    margin: -3px 0px -3px 2px;
+}
+
+.ui-datatable .ui-column-filter {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin:auto;
+}
+
+.ui-datatable .ui-row-toggler {
+    cursor: pointer;
+}
+
+.ui-datatable tr.ui-state-highlight {
+    cursor: pointer;
+}
+
+.ui-datatable .ui-selection-column .ui-chkbox-all {
+    display: block;
+    margin: 0px auto;
+    width: 16px;
+    height: 16px;
+}
+
+.ui-datatable-summary {
+    display: none;
+}
+
+/* Scrollable */
+.ui-datatable-scrollable table,
+.ui-datatable-sticky table{
+    table-layout: fixed;
+}
+
+.ui-datatable-scrollable-body {
+    overflow:auto;
+}
+.ui-datatable-scrollable-header,
+.ui-datatable-scrollable-footer {
+    overflow: hidden;
+    border: 0px none;
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-header,
+.ui-datatable-scrollable .ui-datatable-scrollable-footer {
+    position: relative;
+} 
+
+.ui-datatable-scrollable .ui-datatable-scrollable-header td {
+    font-weight: normal;
+}
+
+.ui-datatable-scrollable-body::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 15px;
+    background-color: transparent;
+}
+
+.ui-datatable-scrollable-body::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 1px solid white;
+    background-color: rgba(194,194,194,.5);
+}
+
+.ui-datatable .ui-datatable-scrollable-body  {
+    min-height: 0%;
+}
+
+.ui-datatable .ui-datatable-data tr.ui-state-hover {
+    border-color: inherit;
+    font-weight: inherit;
+    cursor: pointer;
+}
+
+.ui-datatable-scrollable-theadclone {
+    height:0px;
+}
+
+.ui-datatable-scrollable-theadclone tr {
+    height:0px;
+}
+
+.ui-datatable-scrollable-theadclone th.ui-state-default {
+    height:0px;
+    border-bottom-width: 0px;
+    border-top-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    outline: 0 none;
+}
+
+.ui-datatable-scrollable-theadclone th span.ui-column-title {
+  display: block;
+  height: 0px;
+}
+
+.ui-datatable .ui-paginator,
+.ui-datatable .ui-paginator {
+    padding: 2px;
+}
+
+.ui-datatable .ui-datatable-virtualscroll-wrapper {
+    position: relative;
+}
+
+.ui-datatable .ui-datatable-virtualscroll-table {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+} 
+
+/* InCell Editing */
+.ui-datatable .ui-cell-editor-input {
+    display: none;
+}
+
+.ui-datatable .ui-row-editing .ui-cell-editor .ui-cell-editor-output {
+    display:none;
+}
+.ui-datatable .ui-row-editing .ui-cell-editor .ui-cell-editor-input {
+    display:block;
+}
+
+.ui-datatable .ui-row-editor span {
+    cursor: pointer;
+}
+
+.ui-datatable .ui-row-editor .ui-row-editor-pencil {
+    display: inline-block;
+}
+.ui-datatable .ui-row-editing .ui-row-editor .ui-row-editor-pencil {
+    display: none;
+}
+
+.ui-datatable .ui-row-editor .ui-row-editor-check,
+.ui-datatable .ui-row-editor .ui-row-editor-close {
+    display: none;
+}
+
+.ui-datatable .ui-row-editing .ui-row-editor .ui-row-editor-check,
+.ui-datatable .ui-row-editing .ui-row-editor .ui-row-editor-close {
+    display: inline-block;
+}
+
+.ui-datatable .ui-datatable-data tr.ui-row-editing td.ui-editable-column,
+.ui-datatable .ui-datatable-data td.ui-cell-editing {
+    padding:0;
+    margin:0;
+}
+
+.ui-row-editor-outline {
+    outline: dotted thin;
+}
+
+/*resizer */
+.ui-datatable .ui-column-resizer {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 0;
+    width:8px;
+    height:100%;
+    padding:0px;
+    cursor:col-resize;
+    background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
+    border: 1px solid transparent;
+    box-sizing: border-box;
+}
+
+.ui-datatable .ui-column-resizer-helper {
+    width: 1px;
+    position: absolute;
+    z-index: 10;
+    display: none;
+}
+
+.ui-datatable-resizable {
+    padding-bottom:1px;     /*fix for webkit overlow*/
+    overflow:auto;
+}
+
+.ui-datatable-resizable thead th,
+.ui-datatable-resizable tbody td,
+.ui-datatable-resizable tfoot td {
+    white-space: nowrap;
+}
+
+.ui-datatable-resizable table {
+    table-layout: fixed;
+}
+
+.ui-datatable-resizable th.ui-resizable-column {
+    background-clip: padding-box;
+    position: relative;
+}
+
+.ui-datatable-rtl {
+    direction: rtl;
+}
+
+.ui-datatable-rtl.ui-datatable thead th, 
+.ui-datatable-rtl.ui-datatable tfoot td {
+    text-align: right;
+}
+
+/* Frozen Columns */
+.ui-datatable table.ui-datatable-fs {
+    width:auto;
+}
+
+.ui-datatable .ui-datatable-frozenlayout-left,
+.ui-datatable .ui-datatable-frozenlayout-right {
+    padding: 0;
+    border: 0 none;
+    vertical-align: top;
+}
+
+.ui-datatable .ui-datatable-frozen-container {
+    margin-right: -1px;
+}
+
+.ui-datatable-frozen-container .ui-datatable-scrollable-body {
+    overflow: hidden;
+}
+
+.ui-datatable .ui-datatable-frozen-container .ui-row-toggler {
+    margin-top: -2px;
+    margin-bottom: -2px;
+}
+
+.ui-datatable .ui-datatable-frozen-container .ui-row-editor {
+    margin-top: -2px;
+    margin-bottom: -2px;
+}
+
+.ui-datatable-frozenlayout-right .ui-datatable-empty-message td {
+    text-indent: -9999px;
+}
+
+.ui-datatable-frozenlayout-right .ui-datatable-empty-message td > * {
+    visibility: hidden;
+}
+
+/** Reflow **/
+.ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title {
+    display: none;
+}
+
+.ui-datatable-reflow .ui-reflow-label,
+.ui-datatable-reflow .ui-reflow-dropdown {
+    margin-bottom: 10px;
+    display: none;
+}
+
+/* Row Group Toggler */
+.ui-datatable .ui-rowgroup-header > td > a.ui-rowgroup-toggler {
+    padding-right: 1.5em;
+    position: relative;
+}
+
+.ui-datatable .ui-rowgroup-header .ui-rowgroup-toggler-icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+}
+
+@media ( max-width: 640px ) {
+    .ui-datatable-reflow thead th,
+    .ui-datatable-reflow tfoot td {
+        display: none;
+    }
+
+    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"]:not(.ui-helper-hidden) { 
+        text-align: left;
+        display: block;
+        border: 0px none;
+        width: 100%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		float: left;
+		clear: left;
+    }
+    
+    .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
+        border: 0px none;
+    }
+    
+    .ui-datatable-reflow .ui-datatable-data tr.ui-widget-content {
+        border-left: 0px none;
+        border-right: 0px none;
+    }
+
+    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title { 
+        padding: .4em; 
+        min-width: 30%; 
+        display: inline-block;
+        margin: -.4em 1em -.4em -.4em;
+    }
+    
+    .ui-datatable-reflow .ui-reflow-label,
+    .ui-datatable-reflow .ui-reflow-dropdown {
+        display: inline-block;
+    }
+    
+    .ui-datatable-reflow .ui-reflow-dropdown {
+        margin-left: 5px;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+    }
+    
+    .ui-datatable-reflow tr.ui-datatable-empty-message > td {
+        display: block;
+        border: 0 none;
+    }
+}

@@ -1,0 +1,250 @@
+
+/* ========== ContentFlow ========== */
+/*
+ * default style to look nice
+ */
+
+.ui-contentflow {
+}
+    .ui-contentflow .flow {
+        /*border: 1px solid green;*/
+    }
+    .ui-contentflow .flow * {
+    }
+
+    .ui-contentflow .flow .item {
+            /*border: 1px solid red;*/
+    }
+        .ui-contentflow .flow .item canvas.content {
+            height: 100%;
+            width: 100%;
+            /*border: 1px solid yellow;*/
+        }
+        .ui-contentflow .flow .item img.content {
+            /*border: 1px solid yellow;*/
+            width: 100%;
+        }
+        .ui-contentflow .flow .item img.reflection, 
+        .ui-contentflow .flow .item canvas.reflection {
+            width: 100%;
+        }
+    /* ----- styling of items ----- */
+    .ui-contentflow .flow .item.active {
+        cursor: pointer;
+    }
+        .ui-contentflow .flow .item .caption {
+            font-size: 100%;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            max-height: 30%;
+            bottom: 10%;
+            background: url("#{resource['primefaces:contentflow/images/1x1_0.5_black.png']}");
+            width: 100%;
+        }
+        * html .ui-contentflow .flow .item .caption {
+            background-image: none;
+            filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src="#{resource['primefaces:contentflow/images/1x1_0.5_black.png']}");
+        }
+            .ui-contentflow .flow .item .caption a,
+            .ui-contentflow .flow .item .caption a:link,
+            .ui-contentflow .flow .item .caption a:visited,
+            .ui-contentflow .flow .item .caption a:active,
+            .ui-contentflow .flow .item .caption a:hover {
+                text-decoration: none;
+                color: white;
+                font-style: italic;
+                font-size: 0.8em;
+            }
+            .ui-contentflow .flow .item .caption a:hover {
+                text-decoration: underline;
+            }
+        .ui-contentflow .flow .item.active .caption {
+            /*display: block;*/ /* uncomment to show caption inside item */
+        }
+
+    /* ----- scrollbar ----- */
+    .ui-contentflow .scrollbar {
+        width: 50%;
+        margin: 0px auto;
+        margin-top: 10px;
+        height: 16px;
+        background: url("#{resource['primefaces:contentflow/images/scrollbar_white.png']}") left center repeat-x;
+        position: relative;
+        overflow: visible;
+    }
+
+        .ui-contentflow .scrollbar .slider {
+            width: 16px;
+            height: 16px;
+            background: url("#{resource['primefaces:contentflow/images/scrollbar_white.png']}") center center no-repeat;
+            cursor: move;
+        }
+        
+        /* only for IE <= 6 and a alphatransparent slider image */
+        * html .ui-contentflow .scrollbar .slider { background-image: none; }
+        * html .ui-contentflow .scrollbar .slider .virtualSlider {
+            filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=crop, src="#{resource['primefaces:contentflow/images/scrollbar_white.png']}");
+        }
+            .ui-contentflow .scrollbar .slider .position {
+                top: 120%;
+                font-size: 16px;
+                font-weight: bold;
+                color: silver
+            }
+
+    /* ----- global caption ----- */
+    .ui-contentflow .globalCaption {
+        text-align: center;
+        font-weight: bold;
+        color: white;
+        font-size: 14px;
+        height: 20px;
+        margin: 2em auto;
+    }
+        .ui-contentflow .globalCaption .caption {
+        }
+            .ui-contentflow .globalCaption .caption a,
+            .ui-contentflow .globalCaption .caption a:link,
+            .ui-contentflow .globalCaption .caption a:visited,
+            .ui-contentflow .globalCaption .caption a:active,
+            .ui-contentflow .globalCaption .caption a:hover {
+                text-decoration: none;
+                color: white;
+                font-style: italic;
+                font-size: 0.8em;
+            }
+
+            .ui-contentflow .globalCaption .caption a:hover {
+                text-decoration: underline;
+            }
+
+    /* ----- load indicator ----- */
+    .ui-contentflow .loadIndicator {
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+        background: black;
+    }
+        .ui-contentflow .loadIndicator .indicator {
+            background: url("#{resource['primefaces:contentflow/images/loader.gif']}") center center no-repeat;
+            width: 100%;
+            height: 100%;
+        }
+        * html .ui-contentflow .loadIndicator .indicator {
+            height: 100px;
+        }
+
+/* ================================= */
+
+
+
+
+/* ========== ContentFlow ========== */
+/* 
+ * This is the basic CSS file needed for the correct functioning of ui-contentflow.
+ * DON'T CHANGE IT.
+ *
+ */
+.ui-contentflow {
+    position: relative;  /* needed so overlay dimensions are constrained to the ui-contentflow */
+    overflow: hidden;
+}
+.ui-contentflow * {
+    margin: 0px;
+    padding: 0px;
+    /*border: none;*/
+}
+.ui-contentflow img {
+    -ms-interpolation-mode: bicubic;
+}
+
+.ui-contentflow .mouseoverCheckElement {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    left: 0px;
+    /*display: none;*/
+    visibility: hidden;
+}
+.ui-contentflow:hover .mouseoverCheckElement {
+    left: 1px;
+    /*width: 1px;*/
+    /*left: -1px;*/
+    /*background-color: red;*/
+}
+.ui-contentflow .flow {
+    position: relative; /* needed  so that items can be positioned relative to flow*/
+    z-index: 0;         /* need so every item has a z-index relative to the flow-box */
+    visibility: hidden; /* needed so that content is hidden while loading */
+    width: 100%;        /* needed for IE6 */
+    margin: 0 auto;
+}
+.ui-contentflow .flow.hidden {
+    visibility: hidden;
+}
+
+.ui-contentflow .flow .item {
+    position: absolute; /* needed */
+    visibility: hidden;
+    top: 0px;
+    left: 0px;
+}
+.ui-contentflow .flow .item.active {
+}
+.ui-contentflow .flow .item .content {
+    display: block;
+}
+.ui-contentflow .flow .item div.content {
+    width: 100%;
+    height: 100%;
+}
+.ui-contentflow .flow .item .label {
+    display: none;
+}
+.ui-contentflow .flow .item .reflection {
+    display: block;
+}
+.ui-contentflow .flow .item canvas.reflection {
+    margin-top: -1px; /* for FF */
+}
+.ui-contentflow .flow .item .caption {
+    position: absolute; /* needed */
+    display: none;      /* needed to hide it on inactive items */
+}
+.ui-contentflow .flow .item.active .caption {
+    /*display: block;*/ /* uncomment to show caption inside item */
+}
+
+/* ----- scrollbar ----- */
+
+.ui-contentflow .scrollbar {
+    position: relative; /* needed for z-index */
+    z-index: 1;         /* set above flow */
+    visibility: hidden;
+}
+
+.ui-contentflow .scrollbar .slider {
+    position: absolute; /* needed */
+}
+* html .ui-contentflow .scrollbar .slider .virtualSlider {
+    height: 100%;
+}
+.ui-contentflow .scrollbar .slider .position {
+    position: absolute; /* needed */
+    text-align: center;
+}
+
+/* ----- global caption ----- */
+.ui-contentflow .globalCaption {
+    position: relative; /* needed for z-index */
+    z-index: 1;         /* set above flow */
+}
+/* ----- load indicator ----- */
+.ui-contentflow .loadIndicator {
+    position: absolute; /* needed */
+    z-index: 65000;     /* set above everything */
+}
+
+

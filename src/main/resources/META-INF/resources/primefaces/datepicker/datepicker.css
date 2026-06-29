@@ -1,0 +1,92 @@
+.p-datepicker {
+    position: relative;
+    display: inline-block;
+    width: auto;
+}
+
+.p-datepicker-panel .ui-datepicker-header .ui-datepicker-next, 
+.p-datepicker-panel .ui-datepicker-header .ui-datepicker-prev,
+.p-datepicker-panel table td > a,
+.p-datepicker-panel .ui-timepicker > div a {
+    cursor: pointer;
+}
+
+.p-datepicker-panel .ui-datepicker-calendar-container td span, 
+.p-datepicker-panel .ui-datepicker-calendar-container td a {
+    text-align: center;
+}
+
+.p-datepicker-panel .ui-datepicker-calendar-container td.ui-datepicker-other-month-hidden {
+    visibility: hidden;
+}
+
+.p-datepicker-panel .ui-timepicker {
+    text-align: center;
+    padding: .5em;
+}
+
+.p-datepicker-panel .ui-timepicker > div {
+    display: inline-block;
+    margin-left: .5em;
+    min-width: 1.5em;
+}
+
+.p-datepicker-panel .ui-timepicker > .ui-minute-picker, 
+.p-datepicker-panel .ui-timepicker > .ui-second-picker {
+    margin-left: 0;
+}
+
+.p-datepicker-panel .ui-timepicker > div a {
+    display: block;
+}
+
+.p-datepicker-panel .ui-timepicker > .ui-separator {
+    margin-left: 0;
+    min-width: .75em;
+}
+
+.p-datepicker-panel .ui-timepicker > .ui-separator a {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.ui-datepicker-multiple-month .ui-datepicker-group {
+    display: table-cell;
+    border-left-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+.p-datepicker-panel.ui-datepicker-multiple-month {
+    width: auto;
+}
+
+.p-datepicker .ui-datepicker-touch-ui,
+.ui-datepicker-touch-ui {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 80vw;
+    width: auto;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+
+.ui-datepicker-touch-ui.ui-datepicker td a, 
+.ui-datepicker-touch-ui.ui-datepicker td span,
+.ui-datepicker-touch-ui.ui-datepicker th {
+    padding: 2em 0;
+}
+
+.ui-monthpicker .ui-monthpicker-month {
+    width: 33.3%;
+    display: inline-block;
+    text-align: center;
+    padding: .5em;
+    cursor: pointer;
+}
+
+.p-datepicker-panel .ui-datepicker-buttonbar .ui-g-6 {
+    text-align: center;
+}

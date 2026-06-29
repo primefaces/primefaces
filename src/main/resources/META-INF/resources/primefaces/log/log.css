@@ -1,0 +1,76 @@
+.ui-log {
+    position:fixed;
+    width:400px;
+    height:300px;
+    left:50px;
+    top:50px;
+    -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
+}
+
+.ui-log-header {
+    padding: .4em .4em .4em 1em; 
+    position: relative; 
+    border:0px;
+    height:18px;
+}
+
+.ui-log-content {
+    overflow: auto;
+    height:274px;
+}
+
+.ui-log .ui-log-header .ui-log-button { 
+    position:absolute;
+    display: block;
+    padding: 1px;
+}
+
+.ui-log .ui-log-header .ui-log-button.ui-log-clear {
+    top:4px;
+    left:10px;
+}
+
+.ui-log .ui-log-header .ui-log-button.ui-log-all {
+    top:4px;
+    left:30px;
+}
+
+.ui-log .ui-log-header .ui-log-button.ui-log-info {
+    top:4px;
+    left:50px;
+}
+
+.ui-log .ui-log-header .ui-log-button.ui-log-warn {
+    top:4px;
+    left:70px;
+}
+
+.ui-log .ui-log-header .ui-log-button.ui-log-debug {
+    top:4px;
+    left:90px;
+}
+
+.ui-log .ui-log-header .ui-log-button.ui-log-error {
+    top:4px;
+    left:110px;
+}
+
+.ui-log .ui-log-button:hover, .ui-log .ui-log-button.ui-state-active { 
+    padding: 0; 
+}
+
+.ui-log .ui-log-items {
+    list-style-type: none;
+    padding-left: 10px;
+}
+
+.ui-log .ui-log-item {
+    margin-bottom:5px;
+}
+
+.ui-log .ui-log-item .ui-icon {
+    float:left;
+    margin-right: 10px;
+}

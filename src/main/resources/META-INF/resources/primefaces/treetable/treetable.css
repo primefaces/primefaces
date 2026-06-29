@@ -1,0 +1,268 @@
+.ui-treetable table {
+	border-collapse:collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.ui-treetable .ui-treetable-header,
+.ui-treetable .ui-treetable-footer {
+    text-align:center;
+    padding: 4px 10px;
+}
+
+.ui-treetable .ui-treetable-header {
+    border-bottom: 0px none;
+}
+
+.ui-treetable .ui-treetable-footer {
+    border-top: 0px none;
+}
+
+.ui-treetable th, .ui-treetable tfoot td {
+    text-align: center;
+}
+
+.ui-treetable thead th,
+.ui-treetable tbody td,
+.ui-treetable tfoot td {
+    padding: 4px 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.ui-treetable tbody td {
+    border-color: inherit;
+}
+
+.ui-treetable .ui-treetable-toggler {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-top: -5px;
+}
+
+.ui-treetable .ui-treetable-data tr.ui-state-highlight,
+.ui-treetable .ui-treetable-data tr.ui-state-hover {
+    cursor: pointer;
+}
+
+.ui-treetable-scrollable-body {
+    overflow:auto;
+}
+.ui-treetable-scrollable-header,
+.ui-treetable-scrollable-footer {
+    overflow: hidden;
+    border:0 none;
+}
+
+.ui-treetable-scrollable .ui-treetable-scrollable-theadclone tr th > * { 
+    display: none;
+}
+            
+.ui-treetable.ui-treetable-scrollable table {
+    table-layout: fixed;
+}
+.ui-treetable-scrollable .ui-treetable-scrollable-header,
+.ui-treetable-scrollable .ui-treetable-scrollable-footer {
+    position: relative;
+} 
+            
+.ui-treetable .ui-treetable-data tr.ui-state-hover {
+    border-color: inherit;
+    font-weight: inherit;
+}
+
+/** Resizable Columns **/
+.ui-treetable-resizable {
+    padding-bottom:1px;     /*fix for webkit overlow*/
+    overflow:auto;
+}
+
+.ui-treetable.ui-treetable-resizable table {
+    table-layout: fixed;
+}
+
+.ui-treetable .ui-column-resizer {
+    width:8px;
+    height:20px;
+    padding:0px;
+    cursor:col-resize;
+    background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
+    margin: -4px -10px -4px 0px;
+    float: right;
+}
+
+.ui-treetable .ui-column-resizer-helper {
+    width: 1px;
+    position: absolute;
+    z-index: 10;
+    display: none;
+}
+
+.ui-treetable .ui-chkbox {
+    margin-right: 3px;
+}
+
+.ui-treetable .ui-treetable-indent {
+    width: 16px;
+    height: 16px;
+    float: left;
+}
+
+.ui-treetable-scrollable-body::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 15px;
+    background-color: transparent;
+}
+
+.ui-treetable-scrollable-body::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 1px solid white;
+    background-color: rgba(194,194,194,.5);
+}
+
+.ui-treetable .ui-sortable-column {
+    cursor: pointer;
+}
+
+.ui-treetable .ui-sortable-column-icon {
+    display: inline-block;
+    margin: -3px 0px -3px 2px;
+}
+
+.ui-treetable .ui-chkbox.ui-selection {
+    display: none;
+}
+
+.ui-treetable .ui-treetable-selectable-node .ui-chkbox.ui-selection {
+    display: inline-block;
+}
+
+.ui-treetable.ui-treetable-checkbox-all  .ui-chkbox.ui-selection {
+    display: inline-block;
+}
+
+.ui-treetable-scrollable-theadclone {
+    height:0px;
+}
+
+.ui-treetable-scrollable-theadclone tr {
+    height:0px;
+}
+
+.ui-treetable-scrollable-theadclone th.ui-state-default {
+    height:0px;
+    border-bottom-width: 0px;
+    border-top-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    outline: 0 none;
+}
+
+.ui-treetable-scrollable-theadclone th span {
+  display: block;
+  height: 0px;
+}
+
+/** Filter **/
+.ui-treetable .ui-column-filter {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin:auto;
+}
+
+/** Reflow **/
+.ui-treetable-reflow .ui-treetable-data td .ui-column-title {
+    display: none;
+}
+
+@media ( max-width: 640px ) {
+    .ui-treetable-reflow thead th,
+    .ui-treetable-reflow tfoot td {
+        display: none;
+    }
+
+    .ui-treetable-reflow .ui-treetable-data td { 
+        text-align: left;
+        display: block;
+        border: 0px none;
+        width: 100%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		float: left;
+		clear: left;
+    }
+    
+    .ui-treetable-reflow .ui-treetable-data.ui-widget-content {
+        border: 0px none;
+    }
+    
+    .ui-treetable-reflow .ui-treetable-data tr.ui-widget-content {
+        border-left: 0px none;
+        border-right: 0px none;
+    }
+
+    .ui-treetable-reflow .ui-treetable-data td .ui-column-title { 
+        padding: .4em; 
+        min-width: 30%; 
+        display: inline-block;
+        margin: -.4em 1em -.4em -.4em;
+    }
+}
+
+/* InCell Editing */
+.ui-treetable .ui-editable-column .ui-cell-editor {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ui-treetable .ui-editable-column .ui-treetable-toggler {
+    margin-top: 0px;
+}
+
+.ui-treetable .ui-cell-editor-input {
+    display: none;
+}
+
+.ui-treetable .ui-row-editing .ui-cell-editor .ui-cell-editor-output {
+    display:none;
+}
+.ui-treetable .ui-row-editing .ui-cell-editor .ui-cell-editor-input {
+    display:block;
+}
+
+.ui-treetable .ui-row-editor span {
+    cursor: pointer;
+}
+
+.ui-treetable .ui-row-editor .ui-row-editor-pencil {
+    display: inline-block;
+}
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-pencil {
+    display: none;
+}
+
+.ui-treetable .ui-row-editor .ui-row-editor-check,
+.ui-treetable .ui-row-editor .ui-row-editor-close {
+    display: none;
+}
+
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-check,
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-close {
+    display: inline-block;
+}
+
+.ui-treetable .ui-treetable-data tr.ui-row-editing td.ui-editable-column,
+.ui-treetable .ui-treetable-data td.ui-cell-editing {
+    padding:0;
+    margin:0;
+}
+
+.ui-treetable .ui-treetable-data tr.ui-row-editing td.ui-editable-column:first-child,
+.ui-treetable .ui-treetable-data td.ui-cell-editing:first-child {
+    padding-left: 10px;
+} 

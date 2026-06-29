@@ -1,0 +1,5 @@
+.ui-outputpanel-loading {
+    background: url("#{resource['primefaces:outputpanel/images/loading.gif']}") center center no-repeat;
+    width: 32px;
+    height: 32px;
+}
