@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TreeTable <span class="subitem">Multi View State</span>
+    </ui:define>
+
+    <ui:define name="description">
+        MultiViewState (MVS) feature enables TreeTable to maintain its state across pages by setting multiViewState attribute to true. In this demo,
+        manipulate TreeTable with pagination, sorting, filtering and selection, then visit another page and then come back to this page. TreeTable
+        state should remain as you've left it.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="widgetLink" value="TreeTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:messages id="messages"/>
+
+                <p:commandButton value="Clear MultiViewState" action="#{ttMultiViewStateView.clearMultiViewState}"
+                                 update="@form" styleClass="p-mb-3" />
+
+                <p:treeTable widgetVar="treeTable" value="#{ttMultiViewStateView.root}" var="document"
+                                styleClass="ui-fluid" multiViewState="true">
+                    <p:column headerText="Name" filterBy="#{document.name}" filterMatchMode="contains"
+                              sortBy="#{document.name}">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type" filterBy="#{document.type}" filterMatchMode="exact"
+                              sortBy="#{document.type}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('treeTable').filter()" styleClass="custom-filter">
+                                <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="Folder" itemValue="Folder"/>
+                                <f:selectItem itemLabel="Application" itemValue="Application"/>
+                                <f:selectItem itemLabel="Zip" itemValue="Zip"/>
+                                <f:selectItem itemLabel="Text" itemValue="Text"/>
+                                <f:selectItem itemLabel="PDF" itemValue="PDF"/>
+                                <f:selectItem itemLabel="Picture" itemValue="Picture"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

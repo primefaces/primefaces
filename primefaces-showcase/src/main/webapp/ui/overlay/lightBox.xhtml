@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .imagebox a {
+                margin-left: 10px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        LightBox
+    </ui:define>
+
+    <ui:define name="description">
+        LightBox is a modal overlay component to display images, inline content and iframes.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/lightbox"/>
+    <ui:param name="widgetLink" value="LightBox-1"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <h5 style="margin-top: 0">Images</h5>
+            <p:lightBox styleClass="imagebox" id="lighbox1">
+                <h:outputLink value="../../resources/demo/images/nature/nature1.jpg" title="Nature 1">
+                    <p:graphicImage name="/demo/images/nature/nature1.jpg" id="nature1" styleClass="p-shadow-4"
+                                    style="height: 12.5rem; width: 20rem"/>
+                </h:outputLink>
+
+                <h:outputLink value="../../resources/demo/images/nature/nature2.jpg" title="Nature 2">
+                    <p:graphicImage name="/demo/images/nature/nature2.jpg" id="nature2" styleClass="p-shadow-4"
+                                    style="height: 12.5rem; width: 20rem"/>
+                </h:outputLink>
+
+                <h:outputLink value="../../resources/demo/images/nature/nature3.jpg" title="Nature 3">
+                    <p:graphicImage name="/demo/images/nature/nature3.jpg" id="nature3" styleClass="p-shadow-4"
+                                    style="height: 12.5rem; width: 20rem"/>
+                </h:outputLink>
+
+                <h:outputLink value="../../resources/demo/images/nature/nature4.jpg" title="Nature 4">
+                    <p:graphicImage name="/demo/images/nature/nature4.jpg" id="nature4" styleClass="p-shadow-4"
+                                    style="height: 12.5rem; width: 20rem"/>
+                </h:outputLink>
+            </p:lightBox>
+        </div>
+
+        <div class="card">
+            <h5>Inline</h5>
+            <p:lightBox id="lighbox2">
+                <p:link value="Video Content"/>
+
+                <f:facet name="inline">
+                    <p:video value="https://www.w3schools.com/html/mov_bbb.mp4"
+                             player="mp4"
+                             controls="true"
+                             width="420"
+                             height="250">
+                        Your browser does not support the video element.
+                        See: <h:outputLink value="https://www.w3schools.com/html/html5_video.asp">HTML5 Video</h:outputLink>
+                    </p:video>
+                </f:facet>
+            </p:lightBox>
+        </div>
+
+        <div class="card">
+            <h5>IFrame</h5>
+            <p:lightBox iframe="true" id="lighbox3">
+                <p:link value="PrimeFaces HomePage" target="http://www.primefaces.org" title="PrimeFaces HomePage"/>
+            </p:lightBox>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

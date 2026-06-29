@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Keyboard
+    </ui:define>
+
+    <ui:define name="description">
+        A virtual keyboard for text input.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/keyboard"/>
+    <ui:param name="widgetLink" value="Keyboard"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="default" value="Default Layout: "/>
+                        <p:keyboard id="default" value="#{keyboardView.value1}"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="qwerty" value="Basic QWERTY: "/>
+                        <p:keyboard id="qwerty" value="#{keyboardView.value2}" layout="qwertyBasic"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="alphabetic" value="Alphabetic Layout: "/>
+                        <p:keyboard id="alphabetic" value="#{keyboardView.value3}" layout="alphabetic"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="custom1" value="Custom Layout 1: "/>
+                        <p:keyboard id="custom1" value="#{keyboardView.value4}" layout="custom"
+                                    layoutTemplate="prime-back,faces-clear,rocks-close"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="custom2" value="Custom Layout 2: "/>
+                        <p:keyboard id="custom2" value="#{keyboardView.value5}" layout="custom"
+                                    layoutTemplate="create-space-your-close,owntemplate-shift,easily-space-spacebar"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="keypad" value="Default Keypad: "/>
+                        <p:keyboard id="keypad" value="#{keyboardView.value6}" keypadOnly="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="password" value="Password Mode: "/>
+                        <p:keyboard id="password" value="#{keyboardView.value9}" password="true" keypadOnly="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="rtl" value="RTL: "/>
+                        <p:keyboard id="rtl" value="#{keyboardView.value1}" dir="rtl"/>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

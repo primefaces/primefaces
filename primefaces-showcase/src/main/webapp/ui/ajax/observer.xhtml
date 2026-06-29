@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Ajax Framework <span class="subitem">Observer / Event</span>
+    </ui:define>
+
+    <ui:define name="description">
+        AutoUpdate allows you to use the <b>observer pattern</b> in which a component maintains a list of its dependents, called observers, and notifies them automatically of any state changes.
+        Instead of having to list every component you want to <b>update</b> on a CommandButton you can <b>subscribe</b> components to listen to that button's event using <b>@obs(event)</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/ajaxRendering"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h:outputLabel for="name" value="Name" styleClass="p-mr-2" />
+                <p:inputText id="name" value="#{observerView.text}">
+                    <p:ajax process="@this" update="@none" ignoreAutoUpdate="true"/>
+                </p:inputText>
+
+                <div class="p-my-3">
+                    <p:commandButton value="Update global" icon="pi pi-check" styleClass="p-mr-2" />
+                    <p:commandButton value="Update event1" update="@obs(event1)" icon="pi pi-check" styleClass="p-mr-2"/>
+                    <p:commandButton value="Update event2" update="@obs(event2)" icon="pi pi-check"/>
+                </div>
+
+                <h:outputText id="displayGlobal" value="Global: #{observerView.text}" styleClass="p-d-block p-mb-3">
+                    <p:autoUpdate/>
+                </h:outputText>
+
+                <h:outputText id="displayEvent1" value="Event1: #{observerView.text}" styleClass="p-d-block p-mb-3">
+                    <p:autoUpdate on="event1"/>
+                </h:outputText>
+
+                <h:outputText id="displayEvent2" value="Event2: #{observerView.text}" styleClass="p-d-block p-mb-3">
+                    <p:autoUpdate on="event2"/>
+                </h:outputText>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

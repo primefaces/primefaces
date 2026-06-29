@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        OutputPanel
+    </ui:define>
+
+    <ui:define name="description">
+        Output panel is a container element with several use cases such as autoUpdate and deferred loading. This example demonstrates the deferred loading feature with two modes
+        where the content of the panel is loaded after the page itself is loaded to speed up initial page load time. There are two deferred modes, "load" (after page load) and "visible"
+        (after page load and visible after page scroll). A progress indicator is also provided while loading the content.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/outputpanel"/>
+    <ui:param name="widgetLink" value="OutputPanel-1"/>
+
+    <ui:define name="implementation">
+        <h:form>
+            <div class="card" style="min-height: 175px">
+                <p:outputPanel deferred="true">
+                    <h5>Loaded after page load</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </p:outputPanel>
+            </div>
+
+            <div class="card" style="min-height: 230px">
+                <p:tabView dynamic="true">
+                    <p:tab title="Skeletons">
+                        <p:outputPanel deferred="true" class="p-mt-2">
+                            <p:ajax event="load" listener="#{outputPanelView.loadData}"/>
+                            <f:facet name="loading">
+                                <p:skeleton width="200px" height="21px" class="p-mb-4"/>
+                                <p:skeleton width="100%" height="42px"/>
+                            </f:facet>
+                            <h5>#{outputPanelView.data.title}</h5>
+                            <p>#{outputPanelView.data.body}</p>
+                        </p:outputPanel>
+                    </p:tab>
+                    <p:tab title="Ajax / Loaded">
+                        <p:outputPanel deferred="true" loaded="#{not empty outputPanelView.data2}" class="p-mt-2">
+                            <p:ajax event="load" listener="#{outputPanelView.loadData2}"/>
+                            <f:facet name="loading">
+                                <p:skeleton width="200px" height="21px" class="p-mb-4"/>
+                                <p:skeleton width="100%" height="42px"/>
+                            </f:facet>
+                            <h5>#{outputPanelView.data2.title}</h5>
+                            <p>#{outputPanelView.data2.body}</p>
+                        </p:outputPanel>
+                    </p:tab>
+                </p:tabView>
+            </div>
+
+            <div style="height:1000px"></div>
+
+            <div class="card">
+                <p:outputPanel deferred="true" deferredMode="visible">
+                    <h5>Loaded after the panel becomes visible on page scroll</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </p:outputPanel>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-diagram-element {
+                border: 0.1em dotted #E5E4E2;
+                background-color: #EFEEEC;
+                width: 10em;
+                height: 8em;
+                text-align: center;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+                user-select: none;
+            }
+
+            .ui-diagram-element:hover {
+                background-color: #C7C6C4;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Diagram <span class="subitem">Editable</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Connections can be created and edited on the fly using drag and drop. In this example, computers are sources whereas
+        servers are the targets. Once a connection is created, removed or changed using drag and drop, diagram makes an ajax request
+        to save changes in the backend model. Additionally, optional ajax events are provided as callbacks.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/diagram"/>
+    <ui:param name="widgetLink" value="Diagram-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+                <p:diagram value="#{diagramEditableView.model}" style="height:600px" styleClass="ui-widget-content"
+                           var="el">
+                    <f:facet name="element">
+                        <h:outputText value="#{el.name}" style="display:block;margin-top:1em;"/>
+                        <p:graphicImage name="demo/images/#{el.image}"/>
+                    </f:facet>
+                    <p:ajax event="connect" listener="#{diagramEditableView.onConnect}"/>
+                    <p:ajax event="disconnect" listener="#{diagramEditableView.onDisconnect}"/>
+                    <p:ajax event="connectionChange" listener="#{diagramEditableView.onConnectionChange}"/>
+                </p:diagram>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

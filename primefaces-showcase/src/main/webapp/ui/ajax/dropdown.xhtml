@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Ajax Framework <span class="subitem">Dropdown</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Dependent dropdowns implemented with p:ajax behavior.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/ajaxRendering"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+                <p:panel header="Select a Location" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="country" value="Country: "/>
+                        <p:selectOneMenu id="country" value="#{basicView.country}" style="width:150px">
+                            <p:ajax listener="#{basicView.onCountryChange}" update="city"/>
+                            <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{basicView.countries}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="city" value="City: "/>
+                        <p:selectOneMenu id="city" value="#{basicView.city}" style="width:150px">
+                            <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{basicView.cities}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+
+                    <p:divider />
+
+                    <p:commandButton value="Submit" update="msgs" action="#{basicView.displayLocation}"
+                                     icon="pi pi-check"/>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

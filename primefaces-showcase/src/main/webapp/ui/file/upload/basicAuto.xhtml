@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        FileUpload <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Simple uploader uses native browser file upload. When 'auto' is set to to 'true', AJAX is used to automatically upload it.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/fileupload"/>
+    <ui:param name="widgetLink" value="FileUpload-1"/>
+
+    <ui:define name="implementation">
+
+        <p:growl id="messages" showDetail="true"/>
+        <div class="card">
+            <h5>Single</h5>
+            <h:form>
+                <p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true" auto="true"
+                              process="@this" update="messages"
+                              listener="#{fileUploadView.handleFileUpload}"/>
+            </h:form>
+        </div>
+        <div class="card">
+            <h5>Multiple</h5>
+            <h:form>
+                <p:fileUpload value="#{fileUploadView.files}" mode="simple" skinSimple="true" multiple="true"
+                              auto="true"
+                              process="@this" update="messages"
+                              listener="#{fileUploadView.handleFilesUpload}"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

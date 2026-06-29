@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-editable-column .ui-cell-editor-input {
+                overflow: hidden;
+            }
+
+            .ui-editable-column .ui-cell-editor-input * {
+                box-sizing: border-box;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        TreeTable <span class="subitem">Edit</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Data displayed on treetable can be edited at row or cell level.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="widgetLink" value="TreeTable-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true"/>
+
+            <div class="card">
+                <h5>Row Editing</h5>
+                <p:treeTable value="#{ttEditView.root}" editable="true" var="document">
+
+                    <p:ajax event="rowEdit" listener="#{ttEditView.onRowEdit}" update=":form:msgs"/>
+                    <p:ajax event="rowEditCancel" listener="#{ttEditView.onRowCancel}" update=":form:msgs"/>
+
+                    <p:column headerText="Name">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{document.name}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{document.name}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{document.size}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{document.size}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{document.type}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{document.type}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column style="width:6rem">
+                        <p:rowEditor/>
+                    </p:column>
+                </p:treeTable>
+            </div>
+
+            <div class="card">
+                <h5>Cell Editing</h5>
+                <p:treeTable value="#{ttEditView.root2}" editable="true" editMode="cell" var="document">
+
+                    <p:ajax event="cellEdit" listener="#{ttEditView.onCellEdit}" update=":form:msgs"/>
+
+                    <p:column headerText="Name">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{document.name}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{document.name}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{document.size}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{document.size}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{document.type}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{document.type}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                </p:treeTable>
+            </div>
+
+            <div class="card">
+                <h5>Cell Editing can be triggered by a custom event, like double click (dblclick)</h5>
+                <p:treeTable value="#{ttEditView.root2}" editable="true" editMode="cell" var="document"
+                             editInitEvent="dblclick" style="margin-bottom:20px">
+
+                    <p:ajax event="cellEdit" listener="#{ttEditView.onCellEdit}" update=":form:msgs"/>
+
+                    <p:column headerText="Name">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{document.name}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{document.name}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{document.size}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{document.size}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{document.type}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{document.type}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                </p:treeTable>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

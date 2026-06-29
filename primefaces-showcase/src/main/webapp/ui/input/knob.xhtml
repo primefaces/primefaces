@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+
+    <ui:define name="title">
+        Knob
+    </ui:define>
+
+    <ui:define name="description">
+        Knob's useful to insert numeric values in a range.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/knob"/>
+    <ui:param name="widgetLink" value="Knob-1"/>
+
+    <ui:define name="implementation">
+
+        <p:growl>
+            <p:autoUpdate/>
+        </p:growl>
+
+        <h:form>
+            <div class="card">
+                <div class="p-grid p-text-center">
+                    <div class="p-field p-col-12 p-md-4">
+                        <h5 style="margin-top:0">Basic</h5>
+                        <p:knob value="#{knobView.value}">
+                            <p:ajax listener="#{knobView.onChange}"/>
+                        </p:knob>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <h5>Max-Min and Step</h5>
+                        <div class="knob-container  ui-corner-all">
+                            <p:knob max="1000" step="50" value="950"/>
+                        </div>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <h5>Show-Hide Label</h5>
+                        <div class="knob-container ui-corner-all">
+                            <p:knob showLabel="false" value="65"/>
+                        </div>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <h5>Label template</h5>
+                        <div class="knob-container  ui-corner-all">
+                            <p:knob labelTemplate="{value}%" value="35"/>
+                        </div>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <h5>Disabled</h5>
+                        <div class="knob-container ui-corner-all">
+                            <p:knob disabled="true" value="85"/>
+                        </div>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <h5>Cursor</h5>
+                        <div class="knob-container ui-corner-all">
+                            <p:knob cursor="true" value="0"/>
+                        </div>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <h5>Thickness</h5>
+                        <div class="knob-container ui-corner-all">
+                            <p:knob thickness=".5" value="50"/>
+                        </div>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <h5>Theme</h5>
+                        <div class="knob-container ui-corner-all">
+                            <p:knob colorTheme="hot-sneaks" value="45"/>
+                        </div>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <h5>Colors</h5>
+                        <div class="knob-container ui-corner-all">
+                            <p:knob foregroundColor="#2196F3" backgroundColor="#495057" value="25"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

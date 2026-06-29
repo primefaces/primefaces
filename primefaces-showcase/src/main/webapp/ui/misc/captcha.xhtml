@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Captcha
+    </ui:define>
+
+    <ui:define name="description">
+        Captcha is based on reCAPTCHA API.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/captcha"/>
+    <ui:param name="widgetLink" value="Captcha-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:messages showDetail="true"/>
+                <p:captcha label="Captcha"/>
+                <br/>
+                <p:commandButton value="Check" action="#{captchaView.submit}" ajax="false" icon="pi pi-check"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

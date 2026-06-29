@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+
+        <style type="text/css">
+            .ui-log {
+                left: 600px;
+                top: 100px;
+            }
+        </style>
+
+        <script type="text/javascript">
+            function handleComplete(xhr, status, args) {
+                if (args.validationFailed) {
+                    PrimeFaces.debug("Validation Failed");
+                } else {
+                    PrimeFaces.debug("Save:" + args.saved);
+                    PrimeFaces.debug("FirstName: " + args.user.firstname + ", Lastname: " + args.user.lastname);
+                }
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="title">
+        PrimeFaces Context
+    </ui:define>
+
+    <ui:define name="description">
+        PrimeFaces.current() is a helper with various utilities.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/javaAPI?id=primefacescurrent"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:messages/>
+                <h:panelGrid columns="2" cellpadding="7">
+                    <p:outputLabel for="firstname" value="Firstname:"/>
+                    <p:inputText id="firstname" value="#{requestContextView.user.firstname}" required="true"/>
+
+                    <p:outputLabel for="surname" value="Lastname:"/>
+                    <p:inputText id="surname" value="#{requestContextView.user.lastname}" required="true"/>
+                </h:panelGrid>
+
+                <p:commandButton value="Save" action="#{requestContextView.save}" styleClass="p-mt-2"
+                                 oncomplete="handleComplete(xhr, status, args)"/>
+
+                <p:log/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

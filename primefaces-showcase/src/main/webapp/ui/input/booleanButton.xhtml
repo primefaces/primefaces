@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        SelectBooleanButton
+    </ui:define>
+
+    <ui:define name="description">
+        SelectBooleanButton is used to select a boolean value using a button.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/selectbooleanbutton"/>
+    <ui:param name="widgetLink" value="SelectBooleanButton"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="msgs"/>
+
+                <h5>Basic</h5>
+                <p:selectBooleanButton onLabel="Yes" offLabel="No" style="width:6rem"/>
+
+                <h5>With Icon</h5>
+                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                        onIcon="pi pi-check" offIcon="pi pi-times" style="width:6rem" />
+
+                <h5>Icon Only</h5>
+                <p:selectBooleanButton onIcon="pi pi-check" offIcon="pi pi-times" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

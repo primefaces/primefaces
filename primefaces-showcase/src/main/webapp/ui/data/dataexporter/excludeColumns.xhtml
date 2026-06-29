@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataExporter <span class="subitem">Exclude Columns</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Particular columns can be excluded in exported document.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/dataexporter"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="xls" target="tbl" fileName="products"/>
+                </p:commandButton>
+
+                <p:commandButton value="XLSX" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="xlsxstream" target="tbl" fileName="products"/>
+                </p:commandButton>
+
+                <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="pdf" target="tbl" fileName="products"/>
+                </p:commandButton>
+
+                <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="csv" target="tbl" fileName="products" />
+                </p:commandButton>
+
+                <p:commandButton value="XML" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="xml" target="tbl" fileName="products"/>
+                </p:commandButton>
+
+                <p:commandButton value="TXT" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="txt" target="tbl" fileName="products" exporter="#{dataExporterView.textExporter}"/>
+                </p:commandButton>
+
+                <p:dataTable id="tbl" var="product" value="#{dataExporterView.products}"
+                             paginator="true" rows="10">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Code"/>
+                        </f:facet>
+                        <h:outputText value="#{product.code}"/>
+                    </p:column>
+
+                    <p:column exportable="false">
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:outputText value="#{product.name}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Category"/>
+                        </f:facet>
+                        <h:outputText value="#{product.category}"/>
+                    </p:column>
+
+                    <p:column exportable="false">
+                        <f:facet name="header">
+                            <h:outputText value="Quantity"/>
+                        </f:facet>
+                        <h:outputText value="#{product.quantity}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

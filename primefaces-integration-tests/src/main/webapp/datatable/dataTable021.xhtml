@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataTable id="datatable" value="#{dataTable021.progLanguages}" var="lang" widgetVar="datatable"
+                         filteredValue="#{dataTable021.filteredProgLanguages}"
+                         globalFilterFunction="#{dataTable021.globalFilterFunction}">
+
+                <f:facet name="header">
+                    <div class="products-table-header">
+                        <span style="font-weight: bold; text-transform: capitalize;">programming languages</span>
+                        <p:inputText id="globalFilter" onchange="PF('datatable').filter()" placeholder="Search" />
+                    </div>
+                </f:facet>
+
+                <p:column headerText="ID" sortBy="#{lang.id}">
+                    <h:outputText value="#{lang.id}"/>
+                </p:column>
+
+                <p:column headerText="Name" sortBy="#{lang.name}" filterBy="#{lang.name}" filterMatchMode="contains">
+                    <h:outputText value="#{lang.name}"/>
+                </p:column>
+
+                <p:column headerText="First appeared" sortBy="#{lang.firstAppeared}" filterBy="#{lang.firstAppeared}" filterMatchMode="gte">
+                    <h:outputText value="#{lang.firstAppeared}"/>
+                </p:column>
+
+                <p:column>
+                    <p:commandButton id="removeV1"
+                                     update="form:datatable"
+                                     actionListener="#{dataTable021.removeV1(lang)}"
+                                     value="remove row V1">
+                    </p:commandButton>
+                </p:column>
+                <p:column>
+                    <p:commandButton id="removeV2"
+                                     update="form:datatable"
+                                     actionListener="#{dataTable021.removeV2(lang)}"
+                                     value="remove row V2">
+                    </p:commandButton>
+                </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton process="@this form:datatable" update="datatable" value="Delete row" action="#{dataTable021.deleteJavaProgrammingLanguage}" id="buttonDeleteRow" />
+                </f:facet>
+            </p:dataTable>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+            <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+            <p:commandButton id="buttonResetTable" value="reset table" update="form:datatable" action="#{dataTable021.resetTable()}"/>
+            <p:commandButton id="buttonAdd" value="add row" update="form:datatable" action="#{dataTable021.add}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

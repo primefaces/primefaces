@@ -1,0 +1,2 @@
+Error: [tagSuperfluousYield] @yield tag was specified, but method contains no explicit yield expression
+at method foo (${PROJECT_BASEDIR}/src/main/type-definitions/specs/components/MethodReturnGeneratorSuperfluousYield/input.js:9:9)

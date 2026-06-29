@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ImportEnum
+    </ui:define>
+
+    <ui:define name="description">
+        In older EL versions (&lt; 3.0), it's not possible to use enum constants or any other static fields/methods in an EL expression as it is not really a good practive to create beans with getter/setter for each constants class, we provide an utils tag which allows to import enum values in a page.<br/>
+        The enum values can be accessed via the name of the class (default setting) or via a custom name (var attribute).
+        It also possible to get all enum values of the class with the "ALL_VALUES" suffix or a custom prefix via the "allSuffix" attribute.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/importenum"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:importEnum type="javax.faces.application.ProjectStage" var="JsfProjectStages"
+                          allSuffix="ALL_ENUM_VALUES"/>
+
+            <h5 class="p-mt-0">Development</h5>
+            <h:outputText value="#{JsfProjectStages.Development}" />
+
+            <h5>ALL</h5>
+            <ui:repeat var="current" value="#{JsfProjectStages.ALL_ENUM_VALUES}">
+                <h:outputText value="#{current}" styleClass="p-mb-2 p-d-block"/>
+            </ui:repeat>
+        </div>
+    </ui:define>
+
+</ui:composition>

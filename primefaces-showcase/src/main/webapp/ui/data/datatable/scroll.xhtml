@@ -1,0 +1,161 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-datatable-frozenlayout-left {
+                width: 20%;
+            }
+
+            .ui-datatable-frozenlayout-right {
+                width: 80%;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Scroll</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Both vertical and horizontal scrolling of the data is supported with optional frozen rows-columns and on-demand loading features.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form>
+            <div class="card">
+                <h5 style="margin-top:0">Vertical</h5>
+                <p:dataTable var="customer" value="#{dtScrollView.customers1}" scrollable="true" scrollHeight="250">
+                    <p:column headerText="Name" footerText="Name">
+                        <h:outputText value="#{customer.name}"/>
+                    </p:column>
+                    <p:column headerText="Country" footerText="Country">
+                        <h:outputText value="#{customer.country}"/>
+                    </p:column>
+                    <p:column headerText="Representative" footerText="Representative">
+                        <h:outputText value="#{customer.representative.name}"/>
+                    </p:column>
+                    <p:column headerText="Status" footerText="Status">
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Horizontal</h5>
+                <p:dataTable var="customer" value="#{dtScrollView.customers2}" scrollable="true" scrollWidth="600">
+                    <p:column headerText="Name" footerText="Name">
+                        <h:outputText value="#{customer.name}"/>
+                    </p:column>
+                    <p:column headerText="Country" footerText="Country">
+                        <h:outputText value="#{customer.country}"/>
+                    </p:column>
+                    <p:column headerText="Representative" footerText="Representative">
+                        <h:outputText value="#{customer.representative.name}"/>
+                    </p:column>
+                    <p:column headerText="Status" footerText="Status">
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Horizontal and Vertical</h5>
+                <p:dataTable var="customer" value="#{dtScrollView.customers3}" scrollable="true" scrollWidth="50%" scrollHeight="250">
+                    <p:column headerText="Id" footerText="Id">
+                        <h:outputText value="#{customer.id}"/>
+                    </p:column>
+                    <p:column headerText="Name" footerText="Name">
+                        <h:outputText value="#{customer.name}"/>
+                    </p:column>
+                    <p:column headerText="Country" footerText="Country">
+                        <h:outputText value="#{customer.country}"/>
+                    </p:column>
+                    <p:column headerText="Date" footerText="Date">
+                        <h:outputText value="#{customer.date}"/>
+                    </p:column>
+                    <p:column headerText="Company" footerText="Company">
+                        <h:outputText value="#{customer.company}"/>
+                    </p:column>
+                    <p:column headerText="Status" footerText="Status">
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
+                    </p:column>
+                    <p:column headerText="Activity" footerText="Activity">
+                        <h:outputText value="#{customer.activity}"/>
+                    </p:column>
+                    <p:column headerText="Representative" footerText="Representative">
+                        <h:outputText value="#{customer.representative.name}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Frozen Rows</h5>
+                <p:dataTable var="customer" value="#{dtScrollView.customers4}" scrollable="true" scrollHeight="250"
+                             frozenRows="2">
+                    <p:column headerText="Name" footerText="Name">
+                        <h:outputText value="#{customer.name}"/>
+                    </p:column>
+                    <p:column headerText="Country" footerText="Country">
+                        <h:outputText value="#{customer.country}"/>
+                    </p:column>
+                    <p:column headerText="Representative" footerText="Representative">
+                        <h:outputText value="#{customer.representative.name}"/>
+                    </p:column>
+                    <p:column headerText="Status" footerText="Status">
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Frozen Columns</h5>
+                <p:dataTable var="customer" value="#{dtScrollView.customers5}" scrollable="true" scrollHeight="250"
+                             scrollWidth="300" frozenColumns="1">
+                    <p:column headerText="Name" footerText="Name">
+                        <h:outputText value="#{customer.name}"/>
+                    </p:column>
+                    <p:column headerText="Id" footerText="Id">
+                        <h:outputText value="#{customer.id}"/>
+                    </p:column>
+                    <p:column headerText="Country" footerText="Country">
+                        <h:outputText value="#{customer.country}"/>
+                    </p:column>
+                    <p:column headerText="Date" footerText="Date">
+                        <h:outputText value="#{customer.date}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Virtual Scrolling - 20000 Rows</h5>
+                <p:dataTable var="customer" value="#{dtScrollView.lazyModel}" scrollRows="20" scrollable="true"
+                             virtualScroll="true" scrollHeight="200" rows="40" style="margin-bottom:0">
+                    <p:column headerText="Name" footerText="Name">
+                        <h:outputText value="#{customer.name}"/>
+                    </p:column>
+                    <p:column headerText="Country" footerText="Country">
+                        <h:outputText value="#{customer.country}"/>
+                    </p:column>
+                    <p:column headerText="Representative" footerText="Representative">
+                        <h:outputText value="#{customer.representative.name}"/>
+                    </p:column>
+                    <p:column headerText="Status" footerText="Status">
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

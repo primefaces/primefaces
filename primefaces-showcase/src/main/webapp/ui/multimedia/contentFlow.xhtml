@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ContentFlow
+    </ui:define>
+
+    <ui:define name="description">
+        ContentFlow is a content gallery component.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/contentflow"/>
+    <ui:param name="widgetLink" value="ContentFlow"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:contentFlow value="#{imagesView.images}" var="image">
+                <p:graphicImage name="demo/images/nature/#{image}" styleClass="content"/>
+                <div class="caption">#{image}</div>
+            </p:contentFlow>
+        </div>
+    </ui:define>
+
+</ui:composition>

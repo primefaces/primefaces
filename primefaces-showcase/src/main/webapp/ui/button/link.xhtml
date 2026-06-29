@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Link
+    </ui:define>
+
+    <ui:define name="description">
+        Button is a navigation component based on GET requests targeting bookmarkable URLs.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/link"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:link outcome="productDetail" value="Bookmark">
+                <f:param name="productId" value="10"/>
+            </p:link>
+        </div>
+    </ui:define>
+
+</ui:composition>

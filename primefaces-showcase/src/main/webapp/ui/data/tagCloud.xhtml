@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TagCloud
+    </ui:define>
+
+    <ui:define name="description">
+        TagCloud displays a collection of tags with different strengths.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tagcloud"/>
+    <ui:param name="widgetLink" value="TagCloud"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+                <p:tagCloud model="#{tagCloudView.model}">
+                    <p:ajax event="select" update="msgs" listener="#{tagCloudView.onSelect}"/>
+                </p:tagCloud>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

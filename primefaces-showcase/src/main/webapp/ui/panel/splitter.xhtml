@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Splitter
+    </ui:define>
+
+    <ui:define name="description">
+        Splitter is utilized to separate and resize panels.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/splitter"/>
+    <ui:param name="widgetLink" value="Splitter-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Horizontal</h5>
+            <p:splitter style="height: 300px" styleClass="p-mb-5">
+                <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center">
+                    Panel 1
+                </p:splitterPanel>
+                <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center">
+                    Panel 2
+                </p:splitterPanel>
+            </p:splitter>
+        </div>
+
+        <div class="card">
+            <h5>Vertical</h5>
+            <p:splitter style="height: 300px" layout="vertical">
+                <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center">
+                    Panel 1
+                </p:splitterPanel>
+                <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center">
+                    Panel 2
+                </p:splitterPanel>
+            </p:splitter>
+        </div>
+
+        <div class="card">
+            <h5>Nested</h5>
+            <p:splitter style="height: 300px">
+                <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center" size="20" minSize="10">
+                    Panel 1
+                </p:splitterPanel>
+                <p:splitterPanel size="80">
+                    <p:splitter layout="vertical">
+                        <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center" size="15">
+                            Panel 2
+                        </p:splitterPanel>
+                        <p:splitterPanel size="85">
+                            <p:splitter>
+                                <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center" size="20">
+                                    Panel 3
+                                </p:splitterPanel>
+                                <p:splitterPanel styleClass="p-d-flex p-ai-center p-jc-center" size="80">
+                                    Panel 4
+                                </p:splitterPanel>
+                            </p:splitter>
+                        </p:splitterPanel>
+                    </p:splitter>
+                </p:splitterPanel>
+            </p:splitter>
+        </div>
+    </ui:define>
+
+</ui:composition>

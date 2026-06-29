@@ -1,0 +1,166 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+
+            .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                display: none;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Multi View State</span>
+    </ui:define>
+
+    <ui:define name="description">
+        MultiViewState (MVS) feature enables DataTable to maintain its state across pages by setting multiViewState attribute to true. In this demo,
+        manipulate DataTable with pagination, sorting, filtering and selection, then visit another page and then come back to this page. DataTable
+        state should remain as you've left it.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable" />
+    <ui:param name="widgetLink" value="datatable-1" />
+
+    <ui:define name="implementation">
+        <h:form id="form">
+
+            <p:messages id="messages"/>
+
+            <div class="card">
+                <h5>Basic</h5>
+                <p:dataTable id="tableStateDT" var="customer" value="#{dtMultiViewStateView.customers}"
+                             widgetVar="customersTable" multiViewState="true" rows="10" paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15" selectionMode="single"
+                             selection="#{dtMultiViewStateView.selectedCustomer}" rowKey="#{customer.id}"
+                             emptyMessage="No customers found with given criteria"
+                             filteredValue="#{dtMultiViewStateView.filteredCustomers}">
+
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('customersTable').filter()" style="width:150px"
+                                         placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:ajax event="rowSelect" update=":form:customerDetail" oncomplete="PF('customerDialog').show()"/>
+
+                    <p:column headerText="Name" filterBy="#{customer.name}" sortBy="#{customer.name}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{customer.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Country" filterBy="#{customer.country.name}" sortBy="#{customer.country.name}"
+                              filterMatchMode="startsWith">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.country.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Representative" filterBy="#{customer.representative.name}"
+                              sortBy="#{customer.representative.name}" filterMatchMode="startsWith">
+                        <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo"
+                                        width="32" style="vertical-align: middle"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.representative.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Status" filterBy="#{customer.status}" sortBy="#{customer.status}"
+                              filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()"
+                                             style="width:100%; box-sizing: border-box;">
+                                <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dtMultiViewStateView.customerStatus}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
+                    </p:column>
+
+                    <f:facet name="paginatorTopLeft">
+                        <p:commandButton value="Clear table state" action="#{dtMultiViewStateView.clearMultiViewState}"
+                                         update="@form"/>
+                    </f:facet>
+                </p:dataTable>
+            </div>
+
+            <br/>
+
+            <div class="card">
+                <h5>Lazy Loading</h5>
+                <p:dataTable var="customer" value="#{dtLazyView.lazyModel}" paginator="true" rows="10"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             rowsPerPageTemplate="5,10,15" id="customerTable" multiViewState="true">
+                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}">
+                        <h:outputText value="#{customer.name}"/>
+                    </p:column>
+                    <p:column headerText="Country" sortBy="#{customer.country}" filterBy="#{customer.country}">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.country}"/>
+                    </p:column>
+
+                    <p:column headerText="Representative" sortBy="#{customer.representative}"
+                              filterBy="#{customer.representative}" filterMatchMode="startsWith">
+                        <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo"
+                                        width="32" style="vertical-align: middle"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.representative.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Status" sortBy="#{customer.status}" filterBy="#{customer.status}">
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
+                    </p:column>
+
+                    <f:facet name="paginatorTopLeft">
+                        <p:commandButton value="Clear table state" action="#{dtMultiViewStateView.clearMultiViewState}"
+                                         update="@form"/>
+                    </f:facet>
+                </p:dataTable>
+            </div>
+
+            <p:dialog header="Customer Info" widgetVar="customerDialog" modal="true" showEffect="fade" hideEffect="fade"
+                      resizable="false">
+                <p:outputPanel id="customerDetail" style="text-align:center;">
+                    <p:panelGrid columns="2" rendered="#{not empty dtMultiViewStateView.selectedCustomer}"
+                                 columnClasses="label,value">
+                        <h:outputText value="Name:"/>
+                        <h:outputText value="#{dtMultiViewStateView.selectedCustomer.name}"/>
+
+                        <h:outputText value="Country"/>
+                        <p:column>
+                            <span class="flag flag-#{dtMultiViewStateView.selectedCustomer.country.code}"
+                                  style="width: 30px; height: 20px"/>
+                            <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                          value="#{dtMultiViewStateView.selectedCustomer.name}"/>
+                        </p:column>
+
+                        <h:outputText value="Representative"/>
+                        <p:column>
+                            <p:graphicImage
+                                    name="images/avatar/#{dtMultiViewStateView.selectedCustomer.representative.image}"
+                                    library="demo"
+                                    width="32" style="vertical-align: middle"/>
+                            <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                          value="#{dtMultiViewStateView.selectedCustomer.representative}"/>
+                        </p:column>
+
+                        <h:outputText value="Status:"/>
+                        <span class="customer-badge status-#{dtMultiViewStateView.selectedCustomer.status.name().toLowerCase()}">#{dtMultiViewStateView.selectedCustomer.status}</span>
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

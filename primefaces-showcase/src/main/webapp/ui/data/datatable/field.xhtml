@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Field</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Field property is a shorthand to define sort, filter and display properties of a column.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable" />
+    <ui:param name="widgetLink" value="datatable-1" />
+
+    <ui:define name="implementation">
+        <h:form>
+            <div class="card">
+                <p:dataTable var="row" value="#{dtBasicView.products}">
+                    <p:column field="code" headerText="Code" sortable="false" filterable="false" />
+                    <p:column field="name" headerText="Name" />
+                    <p:column field="category" headerText="Category" />
+                    <p:column field="quantity" headerText="Quantity" />
+                </p:dataTable>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        FileUpload <span class="subitem">Tooltips</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Tooltips can be attached to each one of FileUpload buttons in advanced mode using
+        <p:link href="https://primefaces.github.io/primefaces/10_0_0/#/core/searchexpression?id=primefaces-selectors-pfs">PrimeFaces Selectors</p:link>.
+        Moreover, you can use plain html browser native titles as well.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/fileupload"/>
+    <ui:param name="widgetLink" value="FileUpload-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="formId">
+
+                <p:fileUpload id="uploader1" mode="advanced" styleClass="p-d-block p-mb-5"/>
+
+                <p:outputPanel id="tooltipsPanel">
+
+                    <p:tooltip id="uploaderChooseFileBeforeUploadToolTip" 
+                               widgetVar="chooseWV" position="top"
+                               for="@(#formId\:uploader1 > .ui-fileupload-buttonbar > .ui-fileupload-choose)"
+                               value="Choose button tooltip"/>
+
+                    <p:tooltip id="uploaderUploadButtonToolTip"
+                               position="right"
+                               for="@(#formId\:uploader1 > .ui-fileupload-buttonbar > .ui-fileupload-upload)"
+                               value="Upload button tooltip" showEffect="clip"
+                               hideEffect="explode"/>
+
+                    <p:tooltip id="uploaderCancelButtonToolTip"
+                               position="bottom"
+                               for="@(#formId\:uploader1 > .ui-fileupload-buttonbar > .ui-fileupload-cancel)"
+                               value="Cancel button tooltip"/>
+
+                </p:outputPanel>
+
+              
+
+                <p:fileUpload id="uploader2" mode="advanced" styleClass="p-d-block p-mb-5"
+                              chooseButtonTitle="Choose button tooltip"
+                              uploadButtonTitle="Upload button tooltip"
+                              cancelButtonTitle="Cancel button tooltip"/>
+              
+                <p:fileUpload id="uploader3" mode="simple" skinSimple="true" styleClass="p-d-block p-mb-5"
+                              title="my custom title"/>
+
+         
+                <p:fileUpload id="uploader4" mode="simple" styleClass="p-d-block p-mb-5"
+                              title="my custom title"/>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

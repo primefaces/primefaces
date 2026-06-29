@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .left {
+                text-align: left;
+            }
+
+            .right div {
+                float: right;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Charts <span class="subitem">Animate</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Charts can be animated on load.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="widgetLink" value="Chart-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
+                <p:chart type="line" model="#{chartView.animatedModel1}" style="width:400px;"/>
+                <p:chart type="bar" model="#{chartView.animatedModel2}" style="width:400px;"/>
+            </h:panelGrid>
+        </div>
+    </ui:define>
+
+</ui:composition>

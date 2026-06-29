@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Ajax Framework <span class="subitem">Validation</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Validations are executed on the server side and page is updated with the result.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/ajaxRendering"/>
+    <ui:param name="primefacesClientApiLink" value="modules/src_PrimeFaces.PrimeFaces.validation.html" />
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:messages id="msgs"/>
+
+                <h:panelGrid columns="3" cellpadding="7" styleClass="p-mb-3">
+                    <p:outputLabel for="firstname" value="Firstname:"/>
+                    <p:inputText id="firstname" value="#{remoteValidationView.firstname}" required="true" label="Firstname">
+                        <f:validateLength minimum="2"/>
+                    </p:inputText>
+                    <p:message for="firstname" display="icon"/>
+
+                    <p:outputLabel for="lastname" value="Lastname:"/>
+                    <p:inputText id="lastname" value="#{remoteValidationView.lastname}" label="Lastname" required="true">
+                        <f:validateLength minimum="2"/>
+                        <p:ajax update="msgLastname" event="keyup"/>
+                    </p:inputText>
+                    <p:message for="lastname" id="msgLastname" display="icon"/>
+
+                </h:panelGrid>
+
+                <p:commandButton value="Save" update="@form" action="#{remoteValidationView.save}" icon="pi pi-check"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

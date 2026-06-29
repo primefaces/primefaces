@@ -1,0 +1,177 @@
+/* Home Component*/
+.home {
+    a {
+        text-decoration: none;
+        color: $linkColor;
+        font-weight: 600;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    
+    p {
+        margin-bottom: 2rem;
+    }
+
+    .introduction {
+        background-color: var(--surface-a);
+        background-image: url("\#{resource['showcase:images/home/intro-bg.jpg']}");
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding: 115px 30px 135px 50px;
+        color: var(--text-color);
+        position: relative;
+
+        &.introduction-dark {
+            background-image: url("\#{resource['showcase:images/home/intro-bg-dark.jpg']}");
+            color: var(--text-color);
+
+            .introduction-promo {
+                background: linear-gradient(90deg, rgba(76,87,111,.4) 0%, transparent 100%);
+            }
+        }
+        
+        .introduction-promo {
+            display: inline-block;
+            margin-left: -50px;
+            margin-bottom: 20px;
+            padding: 10px 175px 10px 50px;
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, rgba(12,75,152,.6) 0%, transparent 100%);
+            position: relative;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .introduction-title {
+            font-weight: 400;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        .introduction-subtitle {
+            font-weight: 700;
+            margin-bottom: 40px;
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        .introduction-devices {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 55%;
+        }
+    }
+
+    .features {
+        background-color: var(--surface-b);
+        text-align: center;
+        padding: 2rem;
+
+        .p-col-12 {
+            padding: 1rem;
+        }
+
+        .feature-card {
+            background-color: var(--surface-e);
+            box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+            height: 100%;
+            border-radius: 3px;
+
+            .feature-card-detail {
+                padding: 0 2rem 2rem 2rem;
+            }
+
+            p {
+                margin-bottom: 0;
+            }
+        }
+
+        img {
+            width: 100%;
+        }
+
+        .feature-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin: 1rem 0;
+        }
+    }
+
+    .video {
+        background-color: var(--surface-a);
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .whouses {
+        background-color: #34495E;
+        color: #EAECEE;
+        text-align: center;
+        padding: 2rem;
+
+        img {
+            height: 30px;
+
+            &.circular {
+                height: 50px;
+            }
+        }
+
+        .p-grid > div {
+            padding: 2rem .5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .templates {
+        background-color: var(--surface-b);
+        text-align: center;
+        padding: 2rem;
+        border-bottom: 1px solid var(--surface-d);
+
+        img {
+            width: 100%;
+            box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+        }
+    }
+
+    .prime-designer {
+        background-color: var(--surface-a);
+        color: var(--text-color);
+        padding: 2rem;
+      
+        img {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        h4 {
+            text-align: center;
+        }
+    }
+
+    .prosupport {
+        border-bottom: 1px solid var(--surface-d);
+        background-color: var(--surface-b);
+        padding: 2rem;
+        color: var(--text-color);
+
+        img {
+            margin-top: 10px;
+        }
+
+        .p-md-6:last-child {
+            text-align: center;
+        }
+
+        .action-button {
+            display: inline-block;
+            margin-top: 1rem;
+        }
+    }
+}

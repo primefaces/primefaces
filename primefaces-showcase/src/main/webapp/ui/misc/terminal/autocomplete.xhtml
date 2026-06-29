@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Terminal <span class="subitem">AutoComplete</span>
+    </ui:define>
+
+    <ui:define name="description">
+        An autocomplete model can be also provided for the terminal, which will enable the autocompletion feature on the component.<br/>
+            Autocompletion can be triggered using the TAB key. In case there are more alternatives for arguments, these can be clicked to override the current input.        
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/terminal"/>
+    <ui:param name="widgetLink" value="Terminal"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:focus for="terminal"/>
+
+                <p>Try any of the following inputs as an example:</p>
+                <ul style="line-height: 1.5" class="p-m-0 p-pl-6">
+                    <li>TAB</li>
+                    <li><i>git</i> + TAB</li>
+                    <li><i>svn co</i> + TAB</li>
+                    <li><i>git pus</i> + TAB + TAB + TAB</li>
+                </ul>
+
+                <p:terminal id="terminal" widgetVar="term" styleClass="p-mt-5"
+                            commandHandler="#{terminalAutoCompleteView.handleCommand}"
+                            autoCompleteModel="#{terminalAutoCompleteView.autoCompleteModel}"
+                            welcomeMessage="Welcome to PrimeFaces Terminal, how are you today?"/>
+
+                <p:commandButton type="button" value="Clear" icon="pi pi-trash" onclick="PF('term').clear()" styleClass="p-mt-3" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

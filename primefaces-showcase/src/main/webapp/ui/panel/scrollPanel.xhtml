@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ScrollPanel
+    </ui:define>
+
+    <ui:define name="description">
+        ScrollPanel is used to display overflowed content with cross-browser theme aware scrollbars instead of browser scrollbars.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/scrollpanel"/>
+    <ui:param name="widgetLink" value="ScrollPanel"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <h5 style="margin-top:0">Custom Scrollbars</h5>
+            <p:scrollPanel style="width:250px;height:200px">
+                <p class="p-m-0 p-p-3">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Vitae et leo duis ut diam.
+                    Ultricies mi quis hendrerit dolor magna eget est lorem. Amet consectetur adipiscing elit ut.
+                    Nam libero justo laoreet sit amet. Pharetra massa massa ultricies mi quis hendrerit dolor magna.
+                    Est ultricies integer quis auctor elit sed vulputate. Consequat ac felis donec et. Tellus orci ac auctor augue mauris.
+                    Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus a. Tincidunt arcu non sodales neque sodales.
+                    Metus aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices. Sodales ut etiam sit amet nisl purus.
+                    Cursus sit amet dictum sit amet. Tristique senectus et netus et malesuada fames ac turpis egestas.
+                    Et tortor consequat id porta nibh venenatis cras sed. Diam maecenas ultricies mi eget mauris.
+                    Eget egestas purus viverra accumsan in nisl nisi. Suscipit adipiscing bibendum est ultricies integer.
+                    Mattis aliquam faucibus purus in massa tempor nec.
+                </p>
+            </p:scrollPanel>
+        </div>
+
+        <div class="card">
+            <h5>Native ScrollPanel</h5>
+            <p:scrollPanel mode="native" style="width:250px;height:200px">
+                <p class="p-m-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Vitae et leo duis ut diam.
+                    Ultricies mi quis hendrerit dolor magna eget est lorem. Amet consectetur adipiscing elit ut.
+                    Nam libero justo laoreet sit amet. Pharetra massa massa ultricies mi quis hendrerit dolor magna.
+                    Est ultricies integer quis auctor elit sed vulputate. Consequat ac felis donec et. Tellus orci ac auctor augue mauris.
+                    Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus a. Tincidunt arcu non sodales neque sodales.
+                    Metus aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices. Sodales ut etiam sit amet nisl purus.
+                    Cursus sit amet dictum sit amet. Tristique senectus et netus et malesuada fames ac turpis egestas.
+                    Et tortor consequat id porta nibh venenatis cras sed. Diam maecenas ultricies mi eget mauris.
+                    Eget egestas purus viverra accumsan in nisl nisi. Suscipit adipiscing bibendum est ultricies integer.
+                    Mattis aliquam faucibus purus in massa tempor nec.
+                </p>
+            </p:scrollPanel>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

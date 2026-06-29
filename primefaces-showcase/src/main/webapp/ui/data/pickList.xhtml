@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        PickList
+    </ui:define>
+
+    <ui:define name="description">
+        PickList is a dual list input component featuring Drag and Drop based reordering, transition effects, pojo support, theming filtering, captions, checkbox selection, client-server callbacks, responsive layout and more.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/picklist"/>
+    <ui:param name="widgetLink" value="PickList-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form>
+            <p:growl id="msg" showDetail="true" escape="false"/>
+
+            <div class="card">
+                <h5 style="margin-top: 0">Basic PickList</h5>
+                <p:pickList id="pickList" value="#{pickListView.cities}" var="cities" itemLabel="#{cities}" itemValue="#{cities}"/>
+            </div>
+
+            <div class="card">
+                <h5 style="margin-top: 0">Instant Checkbox PickList</h5>
+                <p:pickList id="instantPickList" value="#{pickListView.cities}" var="cities" itemLabel="#{cities}" itemValue="#{cities}" transferOnCheckboxClick="true"
+                            showCheckbox="true" showSourceControls="false" showTargetControls="false" />
+            </div>
+
+
+            <div class="card">
+                <h5>Advanced</h5>
+                <p:pickList id="pojoPickList" value="#{pickListView.countries}" var="country"
+                            itemValue="#{country}" itemLabel="#{country.name}" showSourceControls="true"
+                            showTargetControls="true" showCheckbox="true"
+                            showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"
+                            converter="#{countryConverter}" responsive="true">
+
+                    <f:facet name="sourceCaption">Available</f:facet>
+                    <f:facet name="targetCaption">Starting</f:facet>
+
+                    <p:ajax event="transfer" listener="#{pickListView.onTransfer}" update="msg"/>
+                    <p:ajax event="select" listener="#{pickListView.onSelect}" update="msg"/>
+                    <p:ajax event="unselect" listener="#{pickListView.onUnselect}" update="msg"/>
+                    <p:ajax event="reorder" listener="#{pickListView.onReorder}" update="msg"/>
+
+                    <p:column style="width:94%">
+                        <div class="p-d-flex p-ai-center">
+                            <span class="flag flag-#{country.code} p-mr-2" style="width: 30px; height: 20px" />
+                            <h:outputText value="#{country.name}"/>
+                        </div>
+                    </p:column>
+                </p:pickList>
+            </div>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

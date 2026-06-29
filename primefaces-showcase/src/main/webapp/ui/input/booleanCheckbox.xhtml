@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        SelectBooleanCheckbox
+    </ui:define>
+
+    <ui:define name="description">
+        SelectBooleanCheckbox is used to select a boolean value.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/selectbooleancheckbox"/>
+    <ui:param name="widgetLink" value="SelectBooleanCheckbox"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="msg"/>
+
+                <h5 class="p-mt-0">Basic</h5>
+                <p:selectBooleanCheckbox value="#{selectBooleanView.value1}" itemLabel="Basic"/>
+
+                <h5>Remote</h5>
+                <p:selectBooleanCheckbox value="#{selectBooleanView.value2}" itemLabel="Ajax">
+                    <p:ajax update="msg" listener="#{selectBooleanView.addMessage}"/>
+                </p:selectBooleanCheckbox>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

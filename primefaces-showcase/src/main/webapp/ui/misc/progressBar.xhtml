@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            function start() {
+                PF('startButton1').disable();
+
+                window['progress'] = setInterval(function () {
+                    var pbClient = PF('pbClient'),
+                        oldValue = pbClient.getValue(),
+                        newValue = oldValue + 10;
+
+                    pbClient.setValue(pbClient.getValue() + 10);
+
+                    if (newValue === 100) {
+                        clearInterval(window['progress']);
+                    }
+
+
+                }, 1000);
+            }
+
+            function cancel() {
+                clearInterval(window['progress']);
+                PF('pbClient').setValue(0);
+                PF('startButton1').enable();
+            }
+
+            //]]>
+        </script>
+    </ui:define>
+
+    <ui:define name="title">
+        ProgressBar
+    </ui:define>
+
+    <ui:define name="description">
+        ProgressBar is a process status indicator that can either work on client side or integrate with server side via ajax.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/progressbar"/>
+    <ui:param name="widgetLink" value="ProgressBar"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="growl"/>
+
+                <h5 class="p-mt-0">Client ProgressBar</h5>
+                <p:commandButton value="Start" id="start" type="button" onclick="start()" widgetVar="startButton1" styleClass="p-mr-2" />
+                <p:commandButton value="Cancel" id="cancel" type="button" onclick="cancel()" styleClass="ui-button-outlined" />
+
+                <p:progressBar id="progressBarClient" widgetVar="pbClient" style="width:300px" styleClass="p-mt-3"/>
+
+                <h5>Ajax ProgressBar</h5>
+                <p:commandButton value="Start" type="button"
+                                 onclick="PF('pbAjax').start();PF('startButton2').disable()" widgetVar="startButton2" styleClass="p-mr-2"/>
+                <p:commandButton value="Cancel" action="#{progressBarView.cancel}"
+                                 oncomplete="PF('pbAjax').cancel();PF('startButton2').enable()" styleClass="ui-button-outlined"/>
+
+                <p:progressBar widgetVar="pbAjax" ajax="true" value="#{progressBarView.progress1}"
+                               labelTemplate="{value}%" styleClass="p-mt-3" global="false">
+                    <p:ajax event="complete" listener="#{progressBarView.onComplete}" update="growl"
+                            oncomplete="PF('startButton2').enable()" />
+                </p:progressBar>
+
+                <h5>Ajax ProgressBar (with long running method)</h5>
+                <p:commandButton value="Start"
+                                 onclick="PF('pbAjaxLong').start();PF('startButton3').disable()"
+                                 widgetVar="startButton3" actionListener="#{progressBarView.longRunning}" styleClass="p-mr-2"/>
+                <p:commandButton value="Cancel" action="#{progressBarView.cancel}"
+                                 oncomplete="PF('pbAjaxLong').cancel();PF('startButton3').enable()" styleClass="ui-button-outlined"/>
+
+                <p:progressBar widgetVar="pbAjaxLong" ajax="true" value="#{progressBarView.progress2}"
+                               labelTemplate="{value}%" styleClass="p-mt-3" global="false" interval="500">
+                    <p:ajax event="complete" listener="#{progressBarView.onComplete}" update="growl"
+                            oncomplete="PF('startButton3').enable()" />
+                </p:progressBar>
+
+                <h5>Static Display</h5>
+                <p:progressBar value="50" labelTemplate="{value}%" displayOnly="true"/>
+
+                <h5>Indeterminate</h5>
+                <p:progressBar id="progressBarIndeterminate" style="height:6px" mode="indeterminate"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

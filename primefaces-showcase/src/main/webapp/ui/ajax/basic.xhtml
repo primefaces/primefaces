@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Ajax Framework
+    </ui:define>
+
+    <ui:define name="description">
+        Enhanced user experience with the powerful and easy to use Ajax Framework.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/ajaxRendering"/>
+    <ui:param name="primefacesClientApiLink" value="modules/src_PrimeFaces.PrimeFaces.ajax.html" />
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5 class="p-mt-0">Basic</h5>
+                <h:panelGrid columns="3" cellpadding="7">
+                    <p:outputLabel for="name" value="Name"/>
+                    <p:inputText id="name" value="#{basicView.text1}"/>
+                    <h:outputText id="display" value="#{basicView.text1}"/>
+                </h:panelGrid>
+                <p:commandButton value="Submit" update="display" styleClass="p-mt-3" />
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h:form>
+                <h5 class="p-mt-0">Action Listener</h5>
+                <h:panelGrid columns="2" cellpadding="7">
+                    <h:outputText value="Counter: "/>
+                    <h:outputText id="output" value="#{basicView.number}"/>
+                </h:panelGrid>
+
+                <p:commandButton value="Increment" action="#{basicView.increment}" update="output" styleClass="p-mt-3"/>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h:form>
+                <h5 class="p-mt-0">Events</h5>
+                <h:panelGrid columns="3" cellpadding="7">
+                    <h:outputText value="KeyUp"/>
+                    <p:inputText id="firstname" value="#{basicView.text2}">
+                        <p:ajax event="keyup" update="display2" process="@this"/>
+                    </p:inputText>
+                    <h:outputText id="display2" value="#{basicView.text2}"/>
+
+                    <h:outputText value="Blur"/>
+                    <p:inputText id="middlename" value="#{basicView.text3}">
+                        <p:ajax event="blur" update="display3"/>
+                    </p:inputText>
+                    <h:outputText id="display3" value="#{basicView.text3}"/>
+
+                    <h:outputText value="Input"/>
+                    <p:inputText id="lastname" value="#{basicView.text4}">
+                        <p:ajax event="input" update="display4"/>
+                    </p:inputText>
+                    <h:outputText id="display4" value="#{basicView.text4}"/>
+                </h:panelGrid>
+
+                <h5>Listener</h5>
+                <h:panelGrid columns="3" cellpadding="7">
+                    <h:outputText value="Keyup"/>
+                    <p:inputText id="counter" value="#{basicView.text5}">
+                        <p:ajax event="keyup" update="display5" listener="#{basicView.handleKeyEvent}"/>
+                    </p:inputText>
+                    <h:outputText id="display5" value="#{basicView.text5}"/>
+                </h:panelGrid>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h:form>
+                <h5 class="p-mt-0">Advanced</h5>
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+                <h:panelGrid columns="2" cellpadding="7" styleClass="p-mb-3">
+                    <p:outputLabel for="country" value="Country"/>
+                    <p:selectOneMenu id="country" value="#{basicView.country}" style="width:12rem">
+                        <p:ajax listener="#{basicView.onCountryChange}" update="city"/>
+                        <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{basicView.countries}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="city" value="City"/>
+                    <p:selectOneMenu id="city" value="#{basicView.city}" style="width:12rem">
+                        <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{basicView.cities}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+                <p:commandButton value="Submit" update="msgs" action="#{basicView.displayLocation}" icon="pi pi-check"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

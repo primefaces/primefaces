@@ -1,0 +1,319 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .label {
+                width: 20%;
+                padding: 4px;
+            }
+
+            .value {
+                width: 80%;
+                padding: 4px;
+            }
+
+            .grid {
+                width: 100%;
+            }
+
+            .error {
+                color: red;
+            }
+
+            .outputLabel {
+                font-weight: bold;
+            }
+
+            .grid {
+                width: 33%;
+                padding: 4px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Content Security Policy (CSP)
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/contentsecuritypolicy"/>
+    <ui:param name="primefacesClientApiLink" value="modules/src_PrimeFaces.PrimeFaces.csp.html"/>
+
+    <ui:define name="description">
+        <p>
+            <cite>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site
+                Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware.</cite>
+            See <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">Content Security Policy</a> for more details.
+        </p>
+        <br/>
+        <p>
+            This showcase is for testing CSP integration in PrimeFaces. Just step through the test cases and click at the appropriate button to check if everything
+            is working as expected. If so, you should receive a <i>PASS</i> message.
+        </p>
+
+        <p:outputPanel rendered="#{cspView.cspEnabled}">
+            <p>
+                CSP is currently <b>enabled</b> in your setup.
+                <!--
+                The <code>script-src</code> directive is <b>#\{cspView.configuration.scripts ? 'enabled' : 'disabled'}</b>.
+                The following hosts are whitelisted: <b>#\{cspView.configuration.hostWhitelist}</b>.
+                CSP violations are reported to <b>#\{empty cspView.configuration.reportUri ? 'default endpoint' : cspView.configuration.reportUri}</b>.
+                CSP violations get <b>#\{cspView.configuration.reportOnly ? 'reported only' : 'refused'}</b>.
+                -->
+            </p>
+        </p:outputPanel>
+        <p:outputPanel rendered="#{not cspView.cspEnabled}">
+            <p>
+                CSP is currently
+                <b>disabled</b> in your setup. To enable it you may add the following context parameter to your
+                <code>web.xml</code>:<br/>
+                <pre name="code" class="brush:xml">
+    &#x3C;context-param&#x3E;
+        &#x3C;param-name&#x3E;primefaces.CSP&#x3C;/param-name&#x3E;
+        &#x3C;param-value&#x3E;true&#x3C;/param-value&#x3E;
+    &#x3C;/context-param&#x3E;
+            </pre>
+            </p>
+        </p:outputPanel>
+
+    </ui:define>
+
+    <ui:define name="implementation">
+
+        <h:form>
+            <div class="card">
+                <p:tabView rendered="#{cspView.cspEnabled}">
+                    <p:tab title="JS event handlers">
+                        <p:outputPanel>
+                            JS event handlers should work as expected.
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <p:button onclick="alert('PASS'); return false;" value="Check functionality"/>
+                        </p:outputPanel>
+
+                        <br/>
+                        <p:tabView>
+                            <p:tab title="XHTML">
+                            <pre name="code" class="brush:xml">
+&#x3C;p:button onclick=&#x22;alert(&#x27;PASS&#x27;); return false;&#x22; value=&#x22;Check functionality&#x22; /&#x3E;
+                            </pre>
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab>
+
+                    <p:tab title="Inline script blocks">
+                        <p:outputPanel>
+                            Inline scripts should work as expected.
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <script>
+                                function foo() {
+                                    alert('PASS');
+                                }
+                            </script>
+                            <p:button onclick="foo(); return false;" value="Check functionality"/>
+                        </p:outputPanel>
+
+                        <br/>
+                        <p:tabView>
+                            <p:tab title="XHTML">
+                            <pre name="code" class="brush:xml">
+&#x3C;script&#x3E;
+    function foo() {
+        alert(&#x27;PASS&#x27;);
+    }
+&#x3C;/script&#x3E;
+&#x3C;p:button onclick=&#x22;foo(); return false;&#x22; value=&#x22;Check functionality&#x22; /&#x3E;
+                            </pre>
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab>
+
+                    <p:tab title="JS URI handlers">
+                        <p:outputPanel>
+                            JS URI handlers are not supported and hence should be refused. For example,
+                            <code>&lt;a href="javascript:void(0);"&gt;</code>
+                            can be replaced with <code>&lt;a href="#" onclick="return false;"&gt;</code>
+                        </p:outputPanel>
+
+                        <p:outputPanel>
+                            <a id="link" href="javascript:window.cspScriptExecuted=true;">link</a><br/><br/>
+                            <p:button value="Check functionality"
+                                      onclick="window.cspScriptExecuted=false; document.getElementById('link').click(); if (!window.cspScriptExecuted) alert('PASS'); return false;"/>
+                        </p:outputPanel>
+
+                        <br/>
+                        <p:tabView>
+                            <p:tab title="XHTML">
+                            <pre name="code" class="brush:xml">
+&#x3C;a id=&#x22;link&#x22; href=&#x22;javascript:window.cspScriptExecuted=true;&#x22;&#x3E;link&#x3C;/a&#x3E;&#x3C;br/&#x3E;&#x3C;br/&#x3E;
+&#x3C;p:button value=&#x22;Check functionality&#x22; onclick=&#x22;window.cspScriptExecuted=false; document.getElementById(&#x27;link&#x27;).click();
+    if (!window.cspScriptExecuted) alert(&#x27;PASS&#x27;); return false;&#x22; /&#x3E;
+                            </pre>
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab>
+
+                    <p:tab title="p:commandButton ajaxified">
+                        <p:outputPanel>
+                            Ajaxified <code>p:commandButton</code> should work as expected.
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <p:commandButton value="Check functionality" oncomplete="alert('PASS');"/>
+                        </p:outputPanel>
+
+                        <br/>
+                        <p:tabView>
+                            <p:tab title="XHTML">
+                            <pre name="code" class="brush:xml">
+&#x3C;p:commandButton value=&#x22;Check functionality&#x22; onstart=&#x22;alert(&#x27;PASS&#x27;);&#x22; /&#x3E;
+                            </pre>
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab>
+
+                    <p:tab title="h:commandButton with f:ajax">
+                        <p:outputPanel>
+                            <code>f:ajax</code> should work as expected.
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <h:commandButton value="Check functionality">
+                                <f:ajax event="click" onevent="function() { alert('PASS') }"/>
+                            </h:commandButton>
+                        </p:outputPanel>
+
+                        <br/>
+                        <p:tabView>
+                            <p:tab title="XHTML">
+                            <pre name="code" class="brush:xml">
+&#x3C;h:commandButton value=&#x22;Check functionality&#x22;&#x3E;
+    &#x3C;f:ajax event=&#x22;click&#x22; onevent=&#x22;alert(&#x27;PASS&#x27;)&#x22; /&#x3E;
+&#x3C;/h:commandButton&#x3E;
+                            </pre>
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab>
+
+                    <p:tab title="p:ajax">
+                        <p:outputPanel>
+                            <code>p:ajax</code> should work as expected.
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <p:inputText>
+                                <p:ajax event="change" oncomplete="alert('PASS');"/>
+                            </p:inputText>
+                        </p:outputPanel>
+
+                        <br/>
+                        <p:tabView>
+                            <p:tab title="XHTML">
+                            <pre name="code" class="brush:xml">
+&#x3C;p:inputText&#x3E;
+    &#x3C;p:ajax event=&#x22;change&#x22; onstart=&#x22;alert(&#x27;PASS&#x27;);&#x22; /&#x3E;
+&#x3C;/p:inputText&#x3E;
+                            </pre>
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab>
+
+                    <p:tab title="PrimeFaces.executeScript();">
+                        <p:outputPanel>
+                            <code>PrimeFaces.executeScript()</code> should work as expected.
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <p:commandButton value="Check functionality" actionListener="#{cspView.executeScript}"
+                                             process="@this"/>
+                        </p:outputPanel>
+
+                        <br/>
+                        <p:tabView>
+                            <p:tab title="XHTML">
+                            <pre name="code" class="brush:xml">
+&#x3C;p:commandButton value=&#x22;Check functionality&#x22; actionListener=&#x22;\#{cspView.executeScript}&#x22; /&#x3E;
+                            </pre>
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab>
+
+                    <p:tab title="eval">
+                        <p:outputPanel>
+                            JS <code>eval</code> function call should be refused. Use CSP directive
+                            <code>script-src 'unsafe-eval'</code> (not recommended) or
+                            <code>JSON.parse</code> (recommended) if you are trying to parse JSON strings.
+                        </p:outputPanel>
+
+                        <p:outputPanel>
+                            <p:button value="Check functionality"
+                                      onclick="try { eval('1==1'); } catch(e) { console.log(e); return false; } alert('PASS'); return false;"/>
+                        </p:outputPanel>
+
+                        <br/>
+                        <p:tabView>
+                            <p:tab title="XHTML">
+                            <pre name="code" class="brush:xml">
+&#x3C;p:button value=&#x22;Check functionality&#x22; onclick=&#x22;try { eval(&#x27;1==1&#x27;); } catch(e) { console.log(e); return false; } alert(&#x27;PASS&#x27;); return false;&#x22; /&#x3E;
+                            </pre>
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab>
+
+                    <p:tab title="setTimeout">
+                        <p:outputPanel>
+                            JS <code>setTimeout</code> function call should be refused for string arguments.
+                            <code>window.setTimeout(function() ...</code> should be used instead.
+                            The same applies to <code>setInterval</code>.
+                        </p:outputPanel>
+
+                        <p:outputPanel>
+                            <p:button value="Check functionality"
+                                      onclick="try { window.setTimeout('alert(1)',1000); } catch(e) { console.log(e); return false; } window.setTimeout(function() { alert('PASS'); },1000); return false;"/>
+                        </p:outputPanel>
+
+                        <br/>
+                        <p:tabView>
+                            <p:tab title="XHTML">
+                            <pre name="code" class="brush:xml">
+&#x3C;p:button value=&#x22;Check functionality&#x22; onclick=&#x22;try { window.setTimeout(&#x27;alert(1)&#x27;,1000); } catch(e) { console.log(e); return false; } window.setTimeout(function() { alert(&#x27;PASS&#x27;); },1000); return false;&#x22; /&#x3E;
+                            </pre>
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab>
+
+                    <p:tab title="XSS">
+                        <p:outputPanel>
+                            Injection of javascript code in case of a XSS vulnerability should be refused. Of course you should not stop properly escaping your stuff anyway. ;-)
+                        </p:outputPanel>
+
+                        <p:outputPanel id="xss">
+                            <p:inputText id="xss-in" value="#{cspView.userSuppliedInput}" size="50"/><br/>
+                            <p:outputLabel id="xss-out" escape="false" value="#{cspView.userSuppliedInput}"/><br/>
+                            <p:commandButton value="Check functionality" update="xss-out" process="xss-in"
+                                             onstart="window.cspScriptExecuted=false;"
+                                             oncomplete="if (!window.cspScriptExecuted) alert('PASS');"/>
+                        </p:outputPanel>
+
+                        <br/>
+                        <p:tabView>
+                            <p:tab title="XHTML">
+                            <pre name="code" class="brush:xml">
+&#x3C;p:commandButton value=&#x22;Check functionality&#x22; update=&#x22;xss-out&#x22; process=&#x22;xss-in&#x22; onstart=&#x22;window.cspScriptExecuted=false;&#x22; oncomplete=&#x22;if (!window.cspScriptExecuted) alert(&#x27;PASS&#x27;);&#x22; /&#x3E;                            </pre>
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab>
+
+                </p:tabView>
+            </div>
+            <br/>
+            <!--
+            <p:button value="Validate CSP header" disabled="#\{not cspView.configuration.javascriptDebuggingCookie}"
+                onclick="window.open('https://cspvalidator.org/#headerValue%5B%5D=' + $.cookie('CSP'), '_blank'); return false;"
+                title="#\{not cspView.configuration.javascriptDebuggingCookie ? 'primefaces.csp.JAVASCRIPT_DEBUGGING_COOKIE must be enabled' : ''}" />
+            -->
+        </h:form>
+
+    </ui:define>
+</ui:composition>

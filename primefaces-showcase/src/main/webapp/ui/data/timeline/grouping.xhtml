@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:sc="http://primefaces.org/ui/showcase">
+
+    <ui:define name="head">
+        <style type="text/css">
+            div.vis-item-content {
+                padding: 4px;
+                border-radius: 2px;
+                -moz-border-radius: 2px;
+            }
+
+            div.vis-item.vis-item-range {
+                border-width: 0;
+            }
+
+            #overlappedOrders {
+                margin-top: 20px;
+                width: 100%;
+            }
+
+            #overlappedOrders .ui-chkbox {
+                vertical-align: middle;
+                margin: 3px 5px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Timeline <span class="subitem">Grouping and mergeable events</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Grouping events can be useful for example when showing availability of multiple people, rooms, or other resources next to each other.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="widgetLink" value="Timeline-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form id="form">
+            <p:growl id="growl" showSummary="true" showDetail="false">
+                <p:autoUpdate/>
+            </p:growl>
+            <div class="card">
+                <h5>Timeline Grouping</h5>
+                <p:timeline id="timeline" value="#{groupingTimelineView.model}" var="order" varGroup="truck"
+                            editable="true" eventMargin="0" eventMarginAxis="0" stackEvents="false"
+                            orientationAxis="top" widgetVar="timelineWdgt">
+                    <p:ajax event="changed" update="@none" listener="#{groupingTimelineView.onChange}"/>
+                    <p:ajax event="delete" update="@none" listener="#{groupingTimelineView.onDelete}"/>
+                    <p:ajax event="add" update="@none" onstart="PF('timelineWdgt').cancelAdd()"/>
+
+                    <f:facet name="group">
+                        <h:graphicImage library="demo" name="images/timeline/truck.png" style="vertical-align:middle;"
+                                        alt="Truck"/>
+                        <h:outputText value="Truck #{truck.code}" style="font-weight:bold;"/>
+                    </f:facet>
+
+                    <h:graphicImage library="demo" name="#{order.imagePath}" rendered="#{not empty order.imagePath}"
+                                    style="display:inline; vertical-align:middle;" alt="Order"/>
+                    <h:outputText value="Order #{order.number}"/>
+                </p:timeline>
+            </div>
+
+            <div class="card">
+                <h5>Timeline Grouping With Vertical Scroll and zoomKey(ctrlKey) </h5>
+
+                <p:timeline id="timelineVerticalScroll" value="#{groupingTimelineView.model2}" var="order"
+                            varGroup="truck" zoomKey="ctrlKey"
+                            editable="true" eventMargin="0" eventMarginAxis="0" stackEvents="false"
+                            orientationAxis="top" orientationItem="top" maxHeight="400" horizontalScroll="false"
+                            verticalScroll="true" widgetVar="timelineWdgt2">
+                    <f:facet name="group">
+                        <h:graphicImage library="demo" name="images/timeline/truck.png" style="vertical-align:middle;"
+                                        alt="Truck"/>
+                        <h:outputText value="Truck #{truck.code}" style="font-weight:bold;"/>
+                    </f:facet>
+
+                    <h:graphicImage library="demo" name="#{order.imagePath}" rendered="#{not empty order.imagePath}"
+                                    style="display:inline; vertical-align:middle;" alt="Order"/>
+                    <h:outputText value="Order #{order.number}"/>
+                </p:timeline>
+            </div>
+            <!-- Dialog with overlapped timeline events -->
+            <p:dialog id="overlapEventsDlg" header="Overlapped Orders" widgetVar="overlapEventsWdgt"
+                      showEffect="clip" hideEffect="clip">
+                <h:panelGroup id="overlappedOrdersInner" layout="block" style="padding:10px;">
+                    <strong>
+                        Please choose Orders you want to merge with the Order #{groupingTimelineView.selectedOrder}
+                    </strong>
+
+                    <p/>
+
+                    <p:selectManyMenu id="overlappedOrders" value="#{groupingTimelineView.ordersToMerge}"
+                                      showCheckbox="true">
+                        <f:selectItems value="#{groupingTimelineView.overlappedOrders}" var="order"
+                                       itemLabel=" Order #{order.data.number}" itemValue="#{order}"/>
+                        <sc:convertOrder events="#{groupingTimelineView.model.events}"/>
+                    </p:selectManyMenu>
+                </h:panelGroup>
+
+                <f:facet name="footer">
+                    <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">
+                        <p:commandButton value="Merge" process="overlapEventsDlg" update="@none"
+                                         action="#{groupingTimelineView.merge}"
+                                         oncomplete="PF('overlapEventsWdgt').hide()"/>
+                        <p:commandButton type="button" value="Close" onclick="PF('overlapEventsWdgt').hide()"/>
+                    </h:panelGroup>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/org/primefaces/showcase/convert/OrderConverter.java"/>
+    </ui:define>
+
+</ui:composition>

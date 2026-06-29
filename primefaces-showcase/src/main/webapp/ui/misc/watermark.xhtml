@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Watermark
+    </ui:define>
+
+    <ui:define name="description">
+        Watermark displays a hint about input fields by using native placeholder
+        in modern browsers and a javascript based solution in legacy ones for browser compatibility.
+        In case legacy browsers don't need to be supported, placeholder attribute of input components should be preferred.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/watermark"/>
+    <ui:param name="widgetLink" value="Watermark"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:messages id="messages" showDetail="true"/>
+
+                <h:panelGrid columns="3" cellpadding="5" style="margin-bottom:10px">
+                    <h:outputLabel value="Search: "/>
+                    <p:inputText id="keyword" value="#{watermarkView.keyword}" required="true" label="Keyword"/>
+                    <p:watermark for="keyword" value="Search with a keyword" id="watermark"/>
+                </h:panelGrid>
+
+                <p:commandButton id="regular" action="#{watermarkView.search}" value="Regular" ajax="false"/>
+                <p:commandButton id="ajax" action="#{watermarkView.search}" value="Ajax" styleClass="p-ml-2"
+                                 onclick="PrimeFaces.cleanWatermarks();" oncomplete="PrimeFaces.showWatermarks();"
+                                 update="messages"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        BlockUI
+    </ui:define>
+
+    <ui:define name="description">
+        BlockUI blocks other components. It can be used with special ajax integration or manually with client side api.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/blockui"/>
+    <ui:param name="widgetLink" value="BlockUI"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5 class="p-mt-0">Basic</h5>
+                <p:panel id="pnl" header="New User">
+                    <h:panelGrid columns="3" cellpadding="7">
+                        <h:outputLabel for="firstname" value="Firstname: *"/>
+                        <p:inputText id="firstname" value="#{blockUIView.firstname}" required="true" label="Firstname">
+                            <f:validateLength minimum="2"/>
+                        </p:inputText>
+                        <p:message for="firstname"/>
+
+                        <h:outputLabel for="lastname" value="Lastname: *"/>
+                        <p:inputText id="lastname" value="#{blockUIView.lastname}" required="true" label="Lastname"/>
+                        <p:message for="lastname"/>
+                    </h:panelGrid>
+
+                    <p:commandButton id="saveBtn" value="Save" icon="pi pi-check" action="#{blockUIView.save}" update="growl" styleClass="p-mt-3" />
+                </p:panel>
+
+                <p:blockUI block="pnl" trigger="saveBtn"/>
+
+                <h5>Custom Content</h5>
+                <p:dataTable id="dataTable" var="customer" value="#{blockUIView.customers}"
+                             paginator="true" rows="5" paginatorPosition="bottom">
+                    <f:facet name="header">
+                        Customers
+                    </f:facet>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:outputText value="#{customer.name}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Country"/>
+                        </f:facet>
+                        <h:outputText value="#{customer.country.name}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Company"/>
+                        </f:facet>
+                        <h:outputText value="#{customer.company}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Status"/>
+                        </f:facet>
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
+                    </p:column>
+                </p:dataTable>
+
+                <p:blockUI block="dataTable" trigger="dataTable">
+                    <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+                </p:blockUI>
+
+                <h5>Client Side API</h5>
+                <p:accordionPanel id="accordion" multiple="true">
+                    <p:tab title="Header I">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <h:outputText
+                                    value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="Header II">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <h:outputText
+                                    value="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi."/>
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="Header III">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <h:outputText
+                                    value="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus."/>
+                        </h:panelGrid>
+                    </p:tab>
+                </p:accordionPanel>
+
+                <p:commandButton id="pnlBtn" value="Block Panel" type="button" onclick="PF('bui').show()" styleClass="p-mt-5 p-mr-2" />
+                <p:commandButton id="pnlBtn2" value="Unblock Panel" type="button" onclick="PF('bui').hide()" styleClass="p-mt-5 ui-button-outlined" />
+
+                <p:blockUI block="accordion" widgetVar="bui"/>
+
+                <p:growl id="growl"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

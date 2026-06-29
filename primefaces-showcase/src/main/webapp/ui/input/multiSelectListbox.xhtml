@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        MultiSelectListbox
+    </ui:define>
+
+    <ui:define name="description">
+        MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child relationship.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/multiselectlistbox"/>
+    <ui:param name="widgetLink" value="MultiSelectListbox"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:multiSelectListbox value="#{multiSelectView.selection}" effect="slide" header="Categories"
+                                    showHeaders="true">
+                <f:selectItems value="#{multiSelectView.categories}"/>
+            </p:multiSelectListbox>
+        </div>
+    </ui:define>
+
+</ui:composition>

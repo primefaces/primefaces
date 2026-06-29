@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DialogFramework <span class="subitem">Message</span>
+    </ui:define>
+
+    <ui:define name="description">
+        A facesmessage can be displayed in a dynamically generated dialog on runtime.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/dialogframework"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:commandButton value="Show" icon="pi pi-bookmark" action="#{dfView.showMessage}"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

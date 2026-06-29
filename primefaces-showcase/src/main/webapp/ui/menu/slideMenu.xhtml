@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        SlideMenu
+    </ui:define>
+
+    <ui:define name="description">
+        SlideMenu displays nested submenus with a slide animation.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/slidemenu"/>
+    <ui:param name="widgetLink" value="SlideMenu"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <h5 class="p-mt-0">Inline</h5>
+                <p:slideMenu style="width:200px">
+                    <p:submenu label="Options">
+                        <p:menuitem value="Save (Non-Ajax)" action="#{menuView.save}" update="messages" ajax="false"
+                                    icon="pi pi-save"/>
+                        <p:menuitem value="Update" action="#{menuView.update}" update="messages" icon="pi pi-refresh"/>
+                        <p:menuitem value="Delete" action="#{menuView.delete}" update="messages" icon="pi pi-times"/>
+                    </p:submenu>
+                    <p:submenu label="Navigations">
+                        <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
+                        <p:menuitem value="Internal" outcome="/ui/menu/menubar" icon="pi pi-upload"/>
+                    </p:submenu>
+                </p:slideMenu>
+                
+                <h5>Overlay</h5>
+                <p:commandButton id="dynaButton" value="Show" type="button" icon="pi pi-home"/>
+                <p:slideMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:180px">
+                    <p:submenu label="Options">
+                        <p:menuitem value="Save (Non-Ajax)" action="#{menuView.save}" update="messages" ajax="false"
+                                    icon="pi pi-save"/>
+                        <p:menuitem value="Update" action="#{menuView.update}" update="messages" icon="pi pi-refresh"/>
+                        <p:menuitem value="Delete" action="#{menuView.delete}" update="messages" icon="pi pi-times"/>
+                    </p:submenu>
+                    <p:submenu label="Navigations">
+                        <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
+                        <p:menuitem value="Internal" outcome="/ui/menu/menubar" icon="pi pi-upload"/>
+                    </p:submenu>
+                </p:slideMenu>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

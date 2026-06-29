@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Horizontal Tree <span class="subitem">Events</span>
+    </ui:define>
+
+    <ui:define name="description">
+        An ajax behavior callback is provided for each event such as expand, collapse, select and unselect.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tree?id=horizontal-tree"/>
+    <ui:param name="widgetLink" value="HorizontalTree"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="messages" showDetail="true"/>
+                <p:tree value="#{treeEventsView.root}" var="doc" selectionMode="single"
+                        selection="#{treeEventsView.selectedNode}" orientation="horizontal">
+                    <p:ajax event="expand" update=":form:messages" listener="#{treeEventsView.onNodeExpand}"/>
+                    <p:ajax event="collapse" update=":form:messages" listener="#{treeEventsView.onNodeCollapse}"/>
+                    <p:ajax event="select" update=":form:messages" listener="#{treeEventsView.onNodeSelect}"/>
+                    <p:ajax event="unselect" update=":form:messages" listener="#{treeEventsView.onNodeUnselect}"/>
+
+                    <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="app" icon="pi pi-save">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="document" icon="pi pi-file">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="excel" icon="pi pi-file-excel">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="travel" icon="pi pi-file-pdf">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="picture" icon="pi pi-image">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                    <p:treeNode type="video" icon="pi pi-video">
+                        <h:outputText value="#{doc.name}"/>
+                    </p:treeNode>
+                </p:tree>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

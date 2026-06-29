@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ToggleSwitch
+    </ui:define>
+
+    <ui:define name="description">
+        ToggleSwitch is used to select a boolean value.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/toggleswitch"/>
+    <ui:param name="widgetLink" value="ToggleSwitch"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="msg"/>
+
+                <h5 class="p-mt-0">Basic</h5>
+                <p:toggleSwitch value="#{selectBooleanView.value1}"/>
+
+                <h5>Remote</h5>
+                <p:toggleSwitch value="#{selectBooleanView.value2}">
+                    <p:ajax listener="#{selectBooleanView.addMessage}" update="msg"/>
+                </p:toggleSwitch>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

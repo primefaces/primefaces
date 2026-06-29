@@ -1,0 +1,624 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="content-section introduction">
+            <div class="feature-intro">
+                <h1>Form Layout</h1>
+                <p>Form layout is a CSS utility optimized for creating forms with ease. FormLayout is not included in PrimeFaces as it is provided by <a href="https://github.com/primefaces/primeflex">PrimeFlex</a>.</p>
+            </div>
+        </div>
+
+        <div class="content-section implementation">
+            <div class="card">
+                <h5>Vertical</h5>
+                <div class="ui-fluid">
+                    <div class="p-field">
+                        <label for="firstname1">Firstname</label>
+                        <p:inputText id="firstname1" type="text" />
+                    </div>
+                    <div class="p-field">
+                        <label for="lastname1">Lastname</label>
+                        <p:inputText id="lastname1" type="text" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Vertical and Grid</h5>
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col">
+                        <label for="firstname2">Firstname</label>
+                        <p:inputText id="firstname2" type="text" />
+                    </div>
+                    <div class="p-field p-col">
+                        <label for="lastname2">Lastname</label>
+                        <p:inputText id="lastname2" type="text" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Horizontal and Fixed Width</h5>
+                <div class="p-field p-grid">
+                    <label for="firstname3" class="p-col-fixed" style="width:100px">Firstname</label>
+                    <div class="p-col">
+                        <p:inputText id="firstname3" type="text" />
+                    </div>
+                </div>
+                <div class="p-field p-grid">
+                    <label for="lastname3" class="p-col-fixed" style="width:100px">Lastname</label>
+                    <div class="p-col">
+                        <p:inputText id="lastname3" type="text" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Horizontal and Fluid</h5>
+                <div class="ui-fluid">
+                    <div class="p-field p-grid">
+                        <label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Firstname</label>
+                        <div class="p-col-12 p-md-10">
+                            <p:inputText id="firstname4" type="text" />
+                        </div>
+                    </div>
+                    <div class="p-field p-grid">
+                        <label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Lastname</label>
+                        <div class="p-col-12 p-md-10">
+                            <p:inputText id="lastname4" type="text" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Inline</h5>
+                <div class="p-formgroup-inline">
+                    <div class="p-field">
+                        <label for="firstname5" class="p-sr-only">Firstname</label>
+                        <p:inputText id="firstname5" type="text" placeholder="Firstname" />
+                    </div>
+                    <div class="p-field">
+                        <label for="lastname5" class="p-sr-only">Lastname</label>
+                        <p:inputText id="lastname5" type="text" placeholder="Lastname" />
+                    </div>
+                    <p:commandButton type="button" value="Submit" />
+                </div>
+            </div>
+
+            <div class="card">
+                <p:selectManyCheckbox id="customChkbox1" layout="custom">
+                    <f:selectItem itemLabel="Chicago" itemValue="Chicago"/>
+                    <f:selectItem itemLabel="Los Angeles" itemValue="Los Angeles"/>
+                </p:selectManyCheckbox>
+
+                <p:selectManyCheckbox id="customChkbox2" layout="custom">
+                    <f:selectItem itemLabel="Chicago" itemValue="Chicago"/>
+                    <f:selectItem itemLabel="Los Angeles" itemValue="Los Angeles"/>
+                </p:selectManyCheckbox>
+
+                <h5>Vertical Checkbox</h5>
+                <div class="p-field-checkbox">
+                    <p:checkbox id="city1" for="customChkbox1" itemIndex="0" />
+                    <label for="city1">Chicago</label>
+                </div>
+                <div class="p-field-checkbox">
+                    <p:checkbox id="city2" for="customChkbox1" itemIndex="1" />
+                    <label for="city2">Los Angeles</label>
+                </div>
+
+                <h5>Horizontal Checkbox</h5>
+                <div class="p-formgroup-inline">
+                    <div class="p-field-checkbox">
+                        <p:checkbox id="city3" for="customChkbox2" itemIndex="0" />
+                        <label for="city3">Chicago</label>
+                    </div>
+                    <div class="p-field-checkbox">
+                        <p:checkbox id="city4" for="customChkbox2" itemIndex="1" />
+                        <label for="city4">Los Angeles</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <p:selectOneRadio id="customRadio1" layout="custom">
+                    <f:selectItem itemLabel="Chicago" itemValue="Chicago"/>
+                    <f:selectItem itemLabel="Los Angeles" itemValue="Los Angeles"/>
+                </p:selectOneRadio>
+
+                <p:selectOneRadio id="customRadio2" layout="custom">
+                    <f:selectItem itemLabel="Chicago" itemValue="Chicago"/>
+                    <f:selectItem itemLabel="Los Angeles" itemValue="Los Angeles"/>
+                </p:selectOneRadio>
+
+                <h5>Vertical RadioButton</h5>
+                <div class="p-field-radiobutton">
+                    <p:radioButton id="city5" for="customRadio1" itemIndex="0" />
+                    <label for="city5">Chicago</label>
+                </div>
+                <div class="p-field-radiobutton">
+                    <p:radioButton id="city6" for="customRadio1" itemIndex="1" />
+                    <label for="city6">Los Angeles</label>
+                </div>
+
+                <h5>Horizontal RadioButton</h5>
+                <div class="p-formgroup-inline">
+                    <div class="p-field-radiobutton">
+                        <p:radioButton id="city7" for="customRadio2" itemIndex="0" />
+                        <label for="city7">Chicago</label>
+                    </div>
+                    <div class="p-field-radiobutton">
+                        <p:radioButton id="city8" for="customRadio2" itemIndex="0" />
+                        <label for="city8">Los Angeles</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Help Text</h5>
+                <div class="p-field ui-fluid">
+                    <label for="username">Username</label>
+                    <p:inputText id="username" type="username" aria-describedby="username-help" />
+                    <small id="username-help">Enter your username to reset your password.</small>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Advanced</h5>
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-6">
+                        <label for="firstname6">Firstname</label>
+                        <p:inputText id="firstname6" type="text" />
+                    </div>
+                    <div class="p-field p-col-12 p-md-6">
+                        <label for="lastname6">Lastname</label>
+                        <p:inputText id="lastname6" type="text" />
+                    </div>
+                    <div class="p-field p-col-12">
+                        <label for="address">Address</label>
+                        <p:inputTextarea id="address" rows="4" />
+                    </div>
+                    <div class="p-field p-col-12 p-md-6">
+                        <label for="city">City</label>
+                        <p:inputText id="city" type="text" />
+                    </div>
+                    <div class="p-field p-col-12 p-md-3">
+                        <label for="state">State</label>
+                        <p:selectOneMenu id="state">
+                            <f:selectItem itemLabel="Select" itemValue="" />
+                            <f:selectItem itemLabel="Arizona" itemValue="Arizona" />
+                            <f:selectItem itemLabel="California" itemValue="California" />
+                            <f:selectItem itemLabel="Florida" itemValue="Florida" />
+                            <f:selectItem itemLabel="Ohio" itemValue="Ohio" />
+                            <f:selectItem itemLabel="Washington" itemValue="Washington" />
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="p-field p-col-12 p-md-3">
+                        <label for="zip">Zip</label>
+                        <p:inputText id="zip" type="text" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section documentation">
+            <p:tabView>
+                <p:tab title="Documentation">
+                    <h5>Getting Started</h5>
+                    <p>Core member of the FormLayout is the <i>.p-field</i> class that wraps the input field and the associated label.</p>
+
+<pre class="language-xml"><code>
+&lt;div class="p-field"&gt;
+    &lt;label for="fieldId"&gt;Label&lt;/label&gt;
+    &lt;p:inputText id="fieldId" type="text" /&gt;
+&lt;/div&gt;
+
+</code></pre>
+    
+                    <h5>Vertical Layout</h5>
+                    <p>In its simplest form, a vertical layout is created when used within <i>.ui-fluid</i> that makes the components use all available width.</p>
+
+<pre class="language-xml"><code>
+&lt;div class="ui-fluid"&gt;
+    &lt;div class="p-field"&gt;
+        &lt;label for="firstname"&gt;Firstname&lt;/label&gt;
+        &lt;p:inputText id="firstname" type="text" /&gt;
+    &lt;/div&gt;
+    &lt;div class="p-field"&gt;
+        &lt;label for="lastname"&gt;Lastname&lt;/label&gt;
+        &lt;p:inputText id="lastname" type="text" /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    
+                    <h5>Vertical Layout with Grid</h5>
+                    <p>This is where FormLayout actually hooks-in to PrimeFlex with the help of <i>.p-formgrid</i> class to optimize the content for form design. Example
+                    below arranges two fields to be displayed next two each other.</p>
+
+<pre class="language-xml"><code>
+&lt;div class="ui-fluid p-formgrid p-grid"&gt;
+        &lt;div class="p-field p-col"&gt;
+        &lt;label for="firstname"&gt;Firstname&lt;/label&gt;
+        &lt;p:inputText id="firstname" type="text" /&gt;
+    &lt;/div&gt;
+    &lt;div class="p-field p-col"&gt;
+        &lt;label for="lastname"&gt;Lastname&lt;/label&gt;
+        &lt;p:inputText id="lastname" type="text" /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    
+                    <h5>Horizontal and Fixed Width</h5>
+                    <p>In horizontal form, label of the field is displayed on the same row of the input as opposed to the vertical alternative. In this
+                        example, label has a fixed width where container of the inputs gets the remaining space.</p>
+
+<pre class="language-xml"><code>
+&lt;div class="p-field p-grid"&gt;
+    &lt;label for="firstname" class="p-col-fixed" style="width:100px"&gt;Firstname&lt;/label&gt;
+    &lt;div class="p-col"&gt;
+        &lt;p:inputText id="firstname" type="text" /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="p-field p-grid"&gt;
+    &lt;label for="lastname" class="p-col-fixed" style="width:100px"&gt;Lastname&lt;/label&gt;
+    &lt;div class="p-col"&gt;
+        &lt;p:inputText id="lastname" type="text" /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    
+                    <h5>Horizontal and Fluid</h5>
+                    <p>Wrapping the form in the previous example with <i>.ui-fluid</i> and removing the fixed width results in a fluid layout.</p>
+
+<pre class="language-xml"><code>
+&lt;div class="ui-fluid"&gt;
+    &lt;div class="p-field p-grid"&gt;
+        &lt;label for="firstname" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"&gt;Firstname&lt;/label&gt;
+        &lt;div class="p-col-12 p-md-10"&gt;
+            &lt;p:inputText id="firstname" type="text" /&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="p-field p-grid"&gt;
+        &lt;label for="lastname" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"&gt;Lastname&lt;/label&gt;
+        &lt;div class="p-col-12 p-md-10"&gt;
+            &lt;p:inputText id="lastname" type="text" /&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    
+                    <h5>Inline</h5>
+                    <p>Inline forms are used to display the content on the same row and can simply be implemented by adding <i>.p-formgroup-inline</i> to the form container. Note that per design requirements, if labels
+                        are not visually hidden, it is suggested to use <i>.p-sr-only</i> to still support screen readers.</p>
+
+<pre class="language-xml"><code>
+&lt;div class="p-formgroup-inline"&gt;
+    &lt;div class="p-field"&gt;
+        &lt;label for="firstname" class="p-sr-only"&gt;Firstname&lt;/label&gt;
+        &lt;p:inputText id="firstname" type="text" placeholder="Firstname" /&gt;
+    &lt;/div&gt;
+    &lt;div class="p-field"&gt;
+        &lt;label for="lastname" class="p-sr-only"&gt;Lastname&lt;/label&gt;
+        &lt;p:inputText id="lastname" type="text" placeholder="Lastname" /&gt;
+    &lt;/div&gt;
+    &lt;Button type="button" label="Submit" /&gt;
+&lt;/div&gt;
+
+</code></pre>
+    
+                    <h5>Checkbox and RadioButton</h5>
+                    <p>Checkbox and RadioButton have exclusive layout support via <i>.p-field-checkbox</i> and <i>.p-field-radiobutton</i> classes respectively.
+                    Examples here demonstrates vertical and horizontal layout alternatives.</p>
+
+<pre class="language-xml"><code>
+&lt;h3&gt;Vertical Checkbox&lt;/h3&gt;
+&lt;div class="p-field-checkbox"&gt;
+    &lt;p:checkbox id="city1" for="customChkbox1" itemIndex="0" /&gt;
+    &lt;label for="city1"&gt;Chicago&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class="p-field-checkbox"&gt;
+    &lt;p:checkbox id="city2" for="customChkbox1" itemIndex="1" /&gt;
+    &lt;label for="city2"&gt;Los Angeles&lt;/label&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;Horizontal Checkbox&lt;/h3&gt;
+&lt;div class="p-formgroup-inline"&gt;
+    &lt;div class="p-field-checkbox"&gt;
+        &lt;p:checkbox id="city3" for="customChkbox2" itemIndex="0" /&gt;
+        &lt;label for="city3"&gt;Chicago&lt;/label&gt;
+    &lt;/div&gt;
+    &lt;div class="p-field-checkbox"&gt;
+        &lt;p:checkbox id="city4" for="customChkbox2" itemIndex="1" /&gt;
+        &lt;label for="city4"&gt;Los Angeles&lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    
+<pre class="language-xml"><code>
+&lt;h3&gt;Vertical RadioButton&lt;/h3&gt;
+&lt;div class="p-field-radiobutton"&gt;
+    &lt;p:radioButton id="city5" for="customRadio1" itemIndex="0" /&gt;
+    &lt;label for="city5"&gt;Chicago&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class="p-field-radiobutton"&gt;
+    &lt;p:radioButton id="city6" for="customRadio1" itemIndex="1" /&gt;
+    &lt;label for="city6"&gt;Los Angeles&lt;/label&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;Horizontal RadioButton&lt;/h3&gt;
+&lt;div class="p-formgroup-inline"&gt;
+    &lt;div class="p-field-radiobutton"&gt;
+        &lt;p:radioButton id="city7" for="customRadio2" itemIndex="0" /&gt;
+        &lt;label for="city7"&gt;Chicago&lt;/label&gt;
+    &lt;/div&gt;
+    &lt;div class="p-field-radiobutton"&gt;
+        &lt;p:radioButton id="city8" for="customRadio2" itemIndex="0" /&gt;
+        &lt;label for="city8"&gt;Los Angeles&lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    
+                    <h5>Helper text</h5>
+                    <p>Helper text is an optional element defined with the <i>small</i> tag to display additional information about the input field.</p>
+
+<pre class="language-xml"><code>
+&lt;div class="p-field ui-fluid"&gt;
+    &lt;label for="username"&gt;Username&lt;/label&gt;
+    &lt;p:inputText id="username" type="username" aria-describedby="username-help" /&gt;
+    &lt;small id="username-help"&gt;Enter your username to reset your password.&lt;/small&gt;
+&lt;/div&gt;
+
+</code></pre>
+    
+                    <h5>Advanced Forms</h5>
+                    <p>A responsive form with various input fields can easily be implemented using a combination of <i>.p-field</i>, <i>.p-formgrid</i> and <i>.ui-fluid</i>.</p>
+
+<pre class="language-xml"><code>
+&lt;div class="ui-fluid p-formgrid p-grid"&gt;
+    &lt;div class="p-field p-col-12 p-md-6"&gt;
+        &lt;label for="firstname6"&gt;Firstname&lt;/label&gt;
+        &lt;p:inputText id="firstname6" type="text" /&gt;
+    &lt;/div&gt;
+    &lt;div class="p-field p-col-12 p-md-6"&gt;
+        &lt;label for="lastname6"&gt;Lastname&lt;/label&gt;
+        &lt;p:inputText id="lastname6" type="text" /&gt;
+    &lt;/div&gt;
+    &lt;div class="p-field p-col-12"&gt;
+        &lt;label for="address"&gt;Address&lt;/label&gt;
+        &lt;p:inputTextarea id="address" rows="4" /&gt;
+    &lt;/div&gt;
+    &lt;div class="p-field p-col-12 p-md-6"&gt;
+        &lt;label for="city"&gt;City&lt;/label&gt;
+        &lt;p:inputText id="city" type="text" /&gt;
+    &lt;/div&gt;
+    &lt;div class="p-field p-col-12 p-md-3"&gt;
+        &lt;label for="state"&gt;State&lt;/label&gt;
+        &lt;p:selectOneMenu id="state"&gt;
+            &lt;f:selectItem itemLabel="Select" itemValue="" /&gt;
+            &lt;f:selectItem itemLabel="Arizona" itemValue="Arizona" /&gt;
+            &lt;f:selectItem itemLabel="California" itemValue="California" /&gt;
+            &lt;f:selectItem itemLabel="Florida" itemValue="Florida" /&gt;
+            &lt;f:selectItem itemLabel="Ohio" itemValue="Ohio" /&gt;
+            &lt;f:selectItem itemLabel="Washington" itemValue="Washington" /&gt;
+        &lt;/p:selectOneMenu&gt;
+    &lt;/div&gt;
+    &lt;div class="p-field p-col-12 p-md-3"&gt;
+        &lt;label for="zip"&gt;Zip&lt;/label&gt;
+        &lt;p:inputText id="zip" type="text" /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+                </p:tab>
+
+                <p:tab title="Source">
+<pre class="language-xml"><code>
+            &lt;div class="card">
+                &lt;h5>Vertical&lt;/h5>
+                &lt;div class="ui-fluid">
+                    &lt;div class="p-field">
+                        &lt;label for="firstname1">Firstname&lt;/label>
+                        &lt;p:inputText id="firstname1" type="text" />
+                    &lt;/div>
+                    &lt;div class="p-field">
+                        &lt;label for="lastname1">Lastname&lt;/label>
+                        &lt;p:inputText id="lastname1" type="text" />
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+
+            &lt;div class="card">
+                &lt;h5>Vertical and Grid&lt;/h5>
+                &lt;div class="ui-fluid p-formgrid p-grid">
+                    &lt;div class="p-field p-col">
+                        &lt;label for="firstname2">Firstname&lt;/label>
+                        &lt;p:inputText id="firstname2" type="text" />
+                    &lt;/div>
+                    &lt;div class="p-field p-col">
+                        &lt;label for="lastname2">Lastname&lt;/label>
+                        &lt;p:inputText id="lastname2" type="text" />
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+
+            &lt;div class="card">
+                &lt;h5>Horizontal and Fixed Width&lt;/h5>
+                &lt;div class="p-field p-grid">
+                    &lt;label for="firstname3" class="p-col-fixed" style="width:100px">Firstname&lt;/label>
+                    &lt;div class="p-col">
+                        &lt;p:inputText id="firstname3" type="text" />
+                    &lt;/div>
+                &lt;/div>
+                &lt;div class="p-field p-grid">
+                    &lt;label for="lastname3" class="p-col-fixed" style="width:100px">Lastname&lt;/label>
+                    &lt;div class="p-col">
+                        &lt;p:inputText id="lastname3" type="text" />
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+
+            &lt;div class="card">
+                &lt;h5>Horizontal and Fluid&lt;/h5>
+                &lt;div class="ui-fluid">
+                    &lt;div class="p-field p-grid">
+                        &lt;label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Firstname&lt;/label>
+                        &lt;div class="p-col-12 p-md-10">
+                            &lt;p:inputText id="firstname4" type="text" />
+                        &lt;/div>
+                    &lt;/div>
+                    &lt;div class="p-field p-grid">
+                        &lt;label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Lastname&lt;/label>
+                        &lt;div class="p-col-12 p-md-10">
+                            &lt;p:inputText id="lastname4" type="text" />
+                        &lt;/div>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+
+            &lt;div class="card">
+                &lt;h5>Inline&lt;/h5>
+                &lt;div class="p-formgroup-inline">
+                    &lt;div class="p-field">
+                        &lt;label for="firstname5" class="p-sr-only">Firstname&lt;/label>
+                        &lt;p:inputText id="firstname5" type="text" placeholder="Firstname" />
+                    &lt;/div>
+                    &lt;div class="p-field">
+                        &lt;label for="lastname5" class="p-sr-only">Lastname&lt;/label>
+                        &lt;p:inputText id="lastname5" type="text" placeholder="Lastname" />
+                    &lt;/div>
+                    &lt;p:commandButton type="button" value="Submit" />
+                &lt;/div>
+            &lt;/div>
+
+            &lt;div class="card">
+                &lt;p:selectManyCheckbox id="customChkbox1" layout="custom">
+                    &lt;f:selectItem itemLabel="Chicago" itemValue="Chicago"/>
+                    &lt;f:selectItem itemLabel="Los Angeles" itemValue="Los Angeles"/>
+                &lt;/p:selectManyCheckbox>
+
+                &lt;p:selectManyCheckbox id="customChkbox2" layout="custom">
+                    &lt;f:selectItem itemLabel="Chicago" itemValue="Chicago"/>
+                    &lt;f:selectItem itemLabel="Los Angeles" itemValue="Los Angeles"/>
+                &lt;/p:selectManyCheckbox>
+
+                &lt;h5>Vertical Checkbox&lt;/h5>
+                &lt;div class="p-field-checkbox">
+                    &lt;p:checkbox id="city1" for="customChkbox1" itemIndex="0" />
+                    &lt;label for="city1">Chicago&lt;/label>
+                &lt;/div>
+                &lt;div class="p-field-checkbox">
+                    &lt;p:checkbox id="city2" for="customChkbox1" itemIndex="1" />
+                    &lt;label for="city2">Los Angeles&lt;/label>
+                &lt;/div>
+
+                &lt;h5>Horizontal Checkbox&lt;/h5>
+                &lt;div class="p-formgroup-inline">
+                    &lt;div class="p-field-checkbox">
+                        &lt;p:checkbox id="city3" for="customChkbox2" itemIndex="0" />
+                        &lt;label for="city3">Chicago&lt;/label>
+                    &lt;/div>
+                    &lt;div class="p-field-checkbox">
+                        &lt;p:checkbox id="city4" for="customChkbox2" itemIndex="1" />
+                        &lt;label for="city4">Los Angeles&lt;/label>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+
+            &lt;div class="card">
+                &lt;p:selectOneRadio id="customRadio1" layout="custom">
+                    &lt;f:selectItem itemLabel="Chicago" itemValue="Chicago"/>
+                    &lt;f:selectItem itemLabel="Los Angeles" itemValue="Los Angeles"/>
+                &lt;/p:selectOneRadio>
+
+                &lt;p:selectOneRadio id="customRadio2" layout="custom">
+                    &lt;f:selectItem itemLabel="Chicago" itemValue="Chicago"/>
+                    &lt;f:selectItem itemLabel="Los Angeles" itemValue="Los Angeles"/>
+                &lt;/p:selectOneRadio>
+
+                &lt;h5>Vertical RadioButton&lt;/h5>
+                &lt;div class="p-field-radiobutton">
+                    &lt;p:radioButton id="city5" for="customRadio1" itemIndex="0" />
+                    &lt;label for="city5">Chicago&lt;/label>
+                &lt;/div>
+                &lt;div class="p-field-radiobutton">
+                    &lt;p:radioButton id="city6" for="customRadio1" itemIndex="1" />
+                    &lt;label for="city6">Los Angeles&lt;/label>
+                &lt;/div>
+
+                &lt;h5>Horizontal RadioButton&lt;/h5>
+                &lt;div class="p-formgroup-inline">
+                    &lt;div class="p-field-radiobutton">
+                        &lt;p:radioButton id="city7" for="customRadio2" itemIndex="0" />
+                        &lt;label for="city7">Chicago&lt;/label>
+                    &lt;/div>
+                    &lt;div class="p-field-radiobutton">
+                        &lt;p:radioButton id="city8" for="customRadio2" itemIndex="0" />
+                        &lt;label for="city8">Los Angeles&lt;/label>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+
+            &lt;div class="card">
+                &lt;h5>Help Text&lt;/h5>
+                &lt;div class="p-field ui-fluid">
+                    &lt;label for="username">Username&lt;/label>
+                    &lt;p:inputText id="username" type="username" aria-describedby="username-help" />
+                    &lt;small id="username-help">Enter your username to reset your password.&lt;/small>
+                &lt;/div>
+            &lt;/div>
+
+            &lt;div class="card">
+                &lt;h5>Advanced&lt;/h5>
+                &lt;div class="ui-fluid p-formgrid p-grid">
+                    &lt;div class="p-field p-col-12 p-md-6">
+                        &lt;label for="firstname6">Firstname&lt;/label>
+                        &lt;p:inputText id="firstname6" type="text" />
+                    &lt;/div>
+                    &lt;div class="p-field p-col-12 p-md-6">
+                        &lt;label for="lastname6">Lastname&lt;/label>
+                        &lt;p:inputText id="lastname6" type="text" />
+                    &lt;/div>
+                    &lt;div class="p-field p-col-12">
+                        &lt;label for="address">Address&lt;/label>
+                        &lt;p:inputTextarea id="address" rows="4" />
+                    &lt;/div>
+                    &lt;div class="p-field p-col-12 p-md-6">
+                        &lt;label for="city">City&lt;/label>
+                        &lt;p:inputText id="city" type="text" />
+                    &lt;/div>
+                    &lt;div class="p-field p-col-12 p-md-3">
+                        &lt;label for="state">State&lt;/label>
+                        &lt;p:selectOneMenu id="state">
+                            &lt;f:selectItem itemLabel="Select" itemValue="" />
+                            &lt;f:selectItem itemLabel="Arizona" itemValue="Arizona" />
+                            &lt;f:selectItem itemLabel="California" itemValue="California" />
+                            &lt;f:selectItem itemLabel="Florida" itemValue="Florida" />
+                            &lt;f:selectItem itemLabel="Ohio" itemValue="Ohio" />
+                            &lt;f:selectItem itemLabel="Washington" itemValue="Washington" />
+                        &lt;/p:selectOneMenu>
+                    &lt;/div>
+                    &lt;div class="p-field p-col-12 p-md-3">
+                        &lt;label for="zip">Zip&lt;/label>
+                        &lt;p:inputText id="zip" type="text" />
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+</code></pre>                  
+                </p:tab>
+            </p:tabView>
+        </div>
+        
+    </ui:define>
+
+</ui:composition>

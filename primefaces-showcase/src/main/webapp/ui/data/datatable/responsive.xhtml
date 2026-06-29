@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Responsive</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DataTable has two responsive modes. In priority mode, visibility of columns are toggled based on the screen size and their priority (1-6). On the other hand
+        in reflow mode, columns are displayed as stacked on smaller screens.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form>
+
+            <div class="card">
+                <h5 style="margin-top:0">Column Priority</h5>
+                <p:dataTable var="product" value="#{dtBasicView.products}">
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}"/>
+                    </p:column>
+
+                    <p:column headerText="Name (p3)" responsivePriority="3">
+                        <h:outputText value="#{product.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Category (p2)" responsivePriority="2">
+                        <h:outputText value="#{product.category}"/>
+                    </p:column>
+
+                    <p:column headerText="Price (p4)" responsivePriority="4">
+                        <h:outputText value="$#{product.price}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Reflow</h5>
+                <p:dataTable var="product" value="#{dtBasicView.products}" reflow="true" rows="5" paginator="true">
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}"/>
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}"/>
+                    </p:column>
+
+                    <p:column headerText="Price">
+                        <h:outputText value="$#{product.price}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

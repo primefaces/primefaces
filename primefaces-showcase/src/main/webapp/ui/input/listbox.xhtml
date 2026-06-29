@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        SelectOneListbox
+    </ui:define>
+
+    <ui:define name="description">
+        SelectOneListbox is used to choose a single item from a list.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/selectonelistbox"/>
+    <ui:param name="widgetLink" value="SelectOneListbox"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5>Basic</h5>
+                <div class="p-col-12 p-md-6 p-lg-4 p-xl-3">
+                    <p:selectOneListbox id="basic" value="#{selectOneView.option}">
+                        <f:selectItem itemLabel="New York" itemValue="New York"/>
+                        <f:selectItem itemLabel="Rome" itemValue="Rome"/>
+                        <f:selectItem itemLabel="London" itemValue="London"/>
+                        <f:selectItem itemLabel="Istanbul" itemValue="Istanbul"/>
+                        <f:selectItem itemLabel="Paris" itemValue="Paris"/>
+                    </p:selectOneListbox>
+                </div>
+
+                <h5>Advanced</h5>
+                <div class="p-col-12 p-md-6 p-lg-4 p-xl-3">
+                    <p:selectOneListbox id="advanced" value="#{selectOneView.country}" converter="#{countryConverter}"
+                        var="c" filter="true" filterMatchMode="contains">
+                        <f:selectItems value="#{selectOneView.countries}" var="country" itemLabel="#{country.name}" itemValue="#{country}"/>
+                        <p:column>
+                            <span class="flag flag-#{c.code}" style="width: 30px; height: 20px"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{c.name}"/>
+                        </p:column>
+                    </p:selectOneListbox>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

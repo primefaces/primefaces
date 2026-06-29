@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Charts <span class="subitem">Mixed</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Different types of dataSet can be displayed on the same graph.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/charts?id=mixed-chart"/>
+    <ui:param name="widgetLink" value="BaseChart-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:barChart model="#{chartJsView.mixedModel}" style="width: 100%; height: 600px;"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

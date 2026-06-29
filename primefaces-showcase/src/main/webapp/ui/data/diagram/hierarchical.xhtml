@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-diagram-element {
+                width: 5em;
+                height: 5em;
+                line-height: 5em;
+                text-align: center;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+                border-radius: 5em;
+                border: 1px solid #404a4e;
+                background-color: #404a4e;
+                color: #cccccc;
+                user-select: none;
+            }
+
+            .ui-diagram-element:hover {
+                background-color: #20282b;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Diagram <span class="subitem">Hierarchical</span>
+    </ui:define>
+
+    <ui:define name="description">
+        This example demonstrates an implementation of Hierarchical Diagram.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/diagram"/>
+    <ui:param name="widgetLink" value="Diagram-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:diagram value="#{diagramHierarchicalView.model}" style="height:600px" styleClass="ui-widget-content"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

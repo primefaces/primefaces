@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Chips
+    </ui:define>
+
+    <ui:define name="description">
+        Chips is used to enter multiple values on an inputfield.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chips"/>
+    <ui:param name="widgetLink" value="Chips"/>
+
+    <ui:define name="implementation">
+        <div class="card ui-fluid">
+            <h5>Basic</h5>
+            <p:chips />
+
+            <h5>Unique</h5>
+            <p:chips unique="true" max="3"/>
+
+            <h5>Paste (Comma separated)</h5>
+            <p:chips widgetVar="wgtPaste" addOnPaste="true" separator=","/>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,163 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Carousel
+    </ui:define>
+
+    <ui:define name="description">
+        Carousel displays data using a slide effect.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/carousel"/>
+    <ui:param name="widgetLink" value="Carousel"/>
+
+    <ui:define name="head">
+        <style type="text/css">
+            .product-item .product-item-content {
+                border: 1px solid var(--surface-d);
+                border-radius: 3px;
+                margin: .3rem;
+                text-align: center;
+                padding: 2rem 0;
+            }
+
+            .product-item .product-image {
+                width: 50%;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+            }
+        </style>
+    </ui:define>
+    <ui:define name="implementation">
+
+        <h:form id="form">
+
+            <div class="card">
+                <p:carousel value="#{carouselView.products}" var="product" numVisible="3" numScroll="3"
+                            responsiveOptions="#{carouselView.responsiveOptions}">
+                    <f:facet name="header">
+                        <h5>Basic</h5>
+                    </f:facet>
+                    <div class="product-item">
+                        <div class="product-item-content">
+                            <div class="p-mb-3">
+                                <p:graphicImage name="demo/images/product/#{product.image}" styleClass="product-image"/>
+                            </div>
+                            <div>
+                                <h4 class="p-mb-1">#{product.name}</h4>
+                                <h6 class="p-mt-0 p-mb-3">
+                                    <h:outputText value="#{product.price}">
+                                        <f:convertNumber type="currency" pattern="¤#0" currencySymbol="$" />
+                                    </h:outputText>
+                                </h6>
+                                <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                                <div class="p-mt-5">
+                                    <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button p-mr-2" />
+                                    <p:commandButton type="button" icon="pi pi-star" styleClass="ui-button-success rounded-button p-mr-2" />
+                                    <p:commandButton type="button" icon="pi pi-cog" styleClass="ui-button-help rounded-button" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p:carousel>
+            </div>
+
+            <div class="card">
+                <p:carousel value="#{carouselView.products}" var="product" circular="true" autoplayInterval="3000"
+                            responsiveOptions="#{carouselView.responsiveOptions}" numVisible="3" numScroll="1">
+                    <f:facet name="header">
+                        <h5>Circular, AutoPlay, 3 Items per Page and Scroll by 1</h5>
+                    </f:facet>
+
+                    <div class="product-item">
+                        <div class="product-item-content">
+                            <div class="p-mb-3">
+                                <p:graphicImage name="demo/images/product/#{product.image}" styleClass="product-image"/>
+                            </div>
+                            <div>
+                                <h4 class="p-mb-1">#{product.name}</h4>
+                                <h6 class="p-mt-0 p-mb-3">
+                                    <h:outputText value="#{product.price}">
+                                        <f:convertNumber type="currency" pattern="¤#0" currencySymbol="$" />
+                                    </h:outputText>
+                                </h6>
+                                <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                                <div class="p-mt-5">
+                                    <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button p-mr-2" />
+                                    <p:commandButton type="button" icon="pi pi-star" styleClass="ui-button-success rounded-button p-mr-2" />
+                                    <p:commandButton type="button" icon="pi pi-cog" styleClass="ui-button-help rounded-button" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p:carousel>
+            </div>
+
+            <div class="card">
+                <p:carousel value="#{carouselView.products}" var="product" orientation="vertical"
+                            verticalViewPortHeight="352px" style="max-width: 400px;margin-top: 2em;">
+                    <f:facet name="header">
+                        <h5>Vertical</h5>
+                    </f:facet>
+                    <div class="product-item">
+                        <div class="product-item-content">
+                            <div class="p-mb-3">
+                                <p:graphicImage name="demo/images/product/#{product.image}" styleClass="product-image"/>
+                            </div>
+                            <div>
+                                <h4 class="p-mb-1">#{product.name}</h4>
+                                <h6 class="p-mt-0 p-mb-3">
+                                    <h:outputText value="#{product.price}">
+                                        <f:convertNumber type="currency" pattern="¤#0" currencySymbol="$" />
+                                    </h:outputText>
+                                </h6>
+                                <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                                <div class="p-mt-5">
+                                    <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button p-mr-2" />
+                                    <p:commandButton type="button" icon="pi pi-star" styleClass="ui-button-success rounded-button p-mr-2" />
+                                    <p:commandButton type="button" icon="pi pi-cog" styleClass="ui-button-help rounded-button" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p:carousel>
+            </div>
+
+            <div class="card">
+                <p:carousel circular="true">
+                    <f:facet name="header">
+                        <h5>Tabs</h5>
+                    </f:facet>
+                    <p:tab>
+                        <p class="p-m-0 p-p-3">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </p:tab>
+                    <p:tab>
+                        <p class="p-m-0 p-p-3">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
+                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
+                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                        </p>
+                    </p:tab>
+                    <p:tab>
+                        <p class="p-m-0 p-p-3">
+                            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores
+                            et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+                            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
+                    </p:tab>
+                </p:carousel>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

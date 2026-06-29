@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ImageCropper
+    </ui:define>
+
+    <ui:define name="description">
+        ImageCropper is used to extract a certain part of an image to create a new image.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/imagecropper"/>
+    <ui:param name="widgetLink" value="ImageCropper"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="msgs" showDetail="true"/>
+
+                <h:panelGrid columns="2" cellpadding="7">
+                    <p:imageCropper value="#{cropperView.croppedImage}"
+                                    image="/resources/demo/images/nature/nature6.jpg"
+                                    initialCoords="225,75,300,125"
+                                    minSize="100,100"
+                                    maxSize="250,250"
+                                    zoomOnWheel="false"/>
+                    <h:panelGroup id="cropped">
+                        <p:graphicImage rendered="#{not empty cropperView.newImageName}"
+                                        name="demo/images/crop/#{cropperView.newImageName}.jpg"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+
+                <p:commandButton value="Crop" action="#{cropperView.crop}" update="cropped msgs" styleClass="p-mt-3" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

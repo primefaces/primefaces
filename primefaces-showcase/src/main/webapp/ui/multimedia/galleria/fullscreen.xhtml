@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Galleria <span class="subitem">FullScreen</span>
+    </ui:define>
+
+    <ui:define name="description">
+        In fullscreen mode content covers the whole page over a mask.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/galleria"/>
+    <ui:param name="widgetLink" value="Galleria"/>
+
+    <ui:define name="implementation">
+        <h:form id="myform">
+            <p:remoteCommand name="rc" actionListener="#{galleriaView.changeActiveIndex}" update=":myform:custom" oncomplete="PF('galleria3').show()" />
+            
+            <div class="card">
+                <h5>With Thumbnails</h5>
+                <p:galleria widgetVar="galleria1" value="#{galleriaView.photos}" var="photo" numVisible="9" responsiveOptions="#{galleriaView.responsiveOptions3}"
+                            circular="true" fullScreen="true" showItemNavigators="true" style="max-width: 50%">
+                    <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
+                    <f:facet name="thumbnail">
+                        <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block" />
+                    </f:facet>
+                </p:galleria>
+
+                <p:commandButton value="Show" icon="pi pi-external-link" onclick="PF('galleria1').show()" />
+            </div>
+
+            <div class="card">
+                <h5>Without Thumbnails</h5>
+                <p:galleria widgetVar="galleria2" value="#{galleriaView.photos}" var="photo" numVisible="7" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                            circular="true" fullScreen="true" showItemNavigators="true" showThumbnails="false" style="max-width: 850px">
+                    <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
+                </p:galleria>
+
+                <p:commandButton value="Show" icon="pi pi-external-link" onclick="PF('galleria2').show()" />
+            </div>
+
+            <div class="card">
+                <h5>Custom Content</h5>
+                <p:galleria id="custom" widgetVar="galleria3" value="#{galleriaView.photos}" var="photo" activeIndex="#{galleriaView.activeIndex}" numVisible="7" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                            circular="true" fullScreen="true" showItemNavigators="true" showThumbnails="false" style="max-width: 850px">
+                    <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
+                </p:galleria>
+
+                <div class="p-grid" style="max-width: 400px">
+                    <ui:repeat value="#{galleriaView.photos}" var="photo" varStatus="status">
+                        <div class="p-col-3">
+                            <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="cursor: pointer" onclick="rc([{'name': 'index', 'value': #{status.index} }])" />
+                        </div>
+                    </ui:repeat>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

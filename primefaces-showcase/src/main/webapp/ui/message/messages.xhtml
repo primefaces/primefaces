@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Messages
+    </ui:define>
+
+    <ui:define name="description">
+        Messages components are used to display FacesMessages.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/messages"/>
+    <ui:param name="widgetLink" value="Message"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:tooltip/>
+
+            <h:form>
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate/>
+                </p:messages>
+
+                <h5 class="p-mt-0">Severities</h5>
+                <p:commandButton value="Info" action="#{messagesView.info}" styleClass="p-mr-2" />
+                <p:commandButton value="Warn" action="#{messagesView.warn}" styleClass="p-mr-2 ui-button-warning" />
+                <p:commandButton value="Error" action="#{messagesView.error}" styleClass="ui-button-danger" />
+            </h:form>            
+        </div>
+
+        <div class="card">
+            <h:form>
+                <h5>Validation</h5>
+                <h:panelGrid id="grid" columns="3" cellpadding="7">
+                    <p:outputLabel for="default" value="Default:"/>
+                    <p:inputText id="default" required="true"/>
+                    <p:message for="default"/>
+
+                    <p:outputLabel for="txt" value="Text:"/>
+                    <p:inputText id="txt" required="true"/>
+                    <p:message for="txt" display="text"/>
+
+                    <p:outputLabel for="icon" value="Icon:"/>
+                    <p:inputText id="icon" required="true"/>
+                    <p:message for="icon" display="icon"/>
+
+                    <p:outputLabel for="tt" value="Tooltip:"/>
+                    <p:inputText id="tt" required="true"/>
+                    <p:message for="tt" display="tooltip"/>
+                </h:panelGrid>
+
+                <p:commandButton id="submitButton" value="Submit" update="grid" styleClass="p-mt-3" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

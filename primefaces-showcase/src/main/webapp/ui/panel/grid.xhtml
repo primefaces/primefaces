@@ -1,0 +1,174 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-g div {
+                background-color: #ededed;
+                text-align: center;
+                border: 1px solid #fafafa;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Grid CSS
+    </ui:define>
+
+    <ui:define name="description">
+        Grid CSS is a lightweight responsive layout utility optimized for mobile devices, tablets and desktops.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/gridcss"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+
+            <h5 style="margin-top: 0">Basic</h5>
+            <div class="ui-g">
+                <div class="ui-g-1">1</div>
+                <div class="ui-g-1">1</div>
+                <div class="ui-g-1">1</div>
+                <div class="ui-g-1">1</div>
+                <div class="ui-g-1">1</div>
+                <div class="ui-g-1">1</div>
+                <div class="ui-g-1">1</div>
+                <div class="ui-g-1">1</div>
+                <div class="ui-g-1">1</div>
+                <div class="ui-g-1">1</div>
+                <div class="ui-g-1">1</div>
+                <div class="ui-g-1">1</div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-2">2</div>
+                <div class="ui-g-2">2</div>
+                <div class="ui-g-2">2</div>
+                <div class="ui-g-2">2</div>
+                <div class="ui-g-2">2</div>
+                <div class="ui-g-2">2</div>
+            </div>
+
+
+            <div class="ui-g">
+                <div class="ui-g-3">3</div>
+                <div class="ui-g-3">3</div>
+                <div class="ui-g-3">3</div>
+                <div class="ui-g-3">3</div>
+            </div>
+
+
+            <div class="ui-g">
+                <div class="ui-g-4">4</div>
+                <div class="ui-g-4">4</div>
+                <div class="ui-g-4">4</div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-6">6</div>
+                <div class="ui-g-6">6</div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-12">12</div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-4">4</div>
+                <div class="ui-g-8">8</div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-3">3</div>
+                <div class="ui-g-9">9</div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-3">3</div>
+                <div class="ui-g-5">5</div>
+                <div class="ui-g-4">4</div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-4">4</div>
+                <div class="ui-g-2">2</div>
+                <div class="ui-g-2">2</div>
+                <div class="ui-g-3">3</div>
+                <div class="ui-g-1">1</div>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <h5>Responsive</h5>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-3">ui-g-12 ui-md-6 ui-lg-3</div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">ui-g-12 ui-md-6 ui-lg-3</div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">ui-g-12 ui-md-6 ui-lg-3</div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">ui-g-12 ui-md-6 ui-lg-3</div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-4">ui-g-12 ui-md-6 ui-lg-4</div>
+                <div class="ui-g-12 ui-md-6 ui-lg-4">ui-g-12 ui-md-6 ui-lg-4</div>
+                <div class="ui-g-12 ui-lg-4">ui-g-12 ui-lg-4</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Nested</h5>
+            <div class="ui-g">
+                <div class="ui-g-8 ui-g-nopad">
+                    <div class="ui-g-6">6</div>
+                    <div class="ui-g-6">6</div>
+                    <div class="ui-g-12">12</div>
+                </div>
+                <div class="ui-g-4">4</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Sample Layout</h5>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-2">Menu</div>
+                <div class="ui-g-12 ui-md-10 ui-g-nopad">
+                    <div class="ui-g-12">
+                        Bar
+                    </div>
+                    <div class="ui-g-12 ui-g-nopad">
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet, orci nec dictum convallis, ligula mauris vestibulum turpis, nec varius tortor quam at diam. Nullam a viverra nibh. In tincidunt tempor lectus quis vulputate. Pellentesque nec dui aliquam, lobortis est in, lobortis ante</div>
+                            <div class="ui-g-12 ui-md-4">Maecenas vel nisi aliquet, vulputate tortor id, laoreet massa. Maecenas mattis tristique bibendum. Suspendisse vel mi dictum, vestibulum lacus quis, pulvinar quam. Proin vulputate, nibh at finibus varius, leo eros lacinia elit, nec blandit odio tellus a justo. Donec nec ex auctor, tristique nulla nec, rutrum sapien.</div>
+                            <div class="ui-g-12 ui-md-4">Proin efficitur in leo eget ornare. Nam vestibulum neque sed velit sagittis sodales. Sed scelerisque hendrerit magna a hendrerit. Cras tempor sem at justo pharetra convallis. Curabitur vel sodales purus. Vestibulum interdum facilisis nulla imperdiet suscipit. Quisque lectus felis, condimentum eget hendrerit sit amet.</div>
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-6 ui-md-3"><p:graphicImage name="demo/images/nature/nature1.jpg"
+                                                                        style="width:100%"/></div>
+                            <div class="ui-g-6 ui-md-3"><p:graphicImage name="demo/images/nature/nature2.jpg"
+                                                                        style="width:100%"/></div>
+                            <div class="ui-g-6 ui-md-3"><p:graphicImage name="demo/images/nature/nature3.jpg"
+                                                                        style="width:100%"/></div>
+                            <div class="ui-g-6 ui-md-3"><p:graphicImage name="demo/images/nature/nature4.jpg"
+                                                                        style="width:100%"/></div>
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-6">Phasellus faucibus purus volutpat mauris lacinia sodales. Ut sit amet sapien facilisis, commodo dui non, fringilla tellus. Quisque tempus facilisis nisi sodales finibus. Pellentesque neque orci, ullamcorper vitae ligula quis, dignissim euismod augue.</div>
+                            <div class="ui-g-12 ui-md-6">Fusce ullamcorper congue massa, eget ullamcorper nunc lobortis egestas. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultrices dui eget dolor feugiat dapibus. Aliquam pretium leo et egestas luctus. Nunc facilisis gravida tellus.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    Footer
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        FileUpload <span class="subitem">Multiple</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Multiple mode allows multiple files to be selected from the native file dialog. Note that legacy browsers do not support multiple selection.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/fileupload?id=multiple-uploads"/>
+    <ui:param name="widgetLink" value="FileUpload-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                              multiple="true" update="messages" sizeLimit="100000" fileLimit="3"
+                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+
+                <p:growl id="messages" showDetail="true" keepAlive="true"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

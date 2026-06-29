@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TieredMenu
+    </ui:define>
+
+    <ui:define name="description">
+        TieredMenu displays submenus in nested overlays.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tieredmenu"/>
+    <ui:param name="widgetLink" value="TieredMenu-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <h5 class="p-mt-0">Inline</h5>
+                <p:tieredMenu style="width:200px">
+                    <p:submenu label="File" icon="pi pi-fw pi-file">
+                        <p:submenu label="New" icon="pi pi-fw pi-plus">
+                            <p:menuitem value="Bookmark" icon="pi pi-fw pi-bookmark"/>
+                            <p:menuitem value="Video" icon="pi pi-fw pi-video"/>
+                        </p:submenu>
+                        <p:menuitem value="Delete" icon="pi pi-fw pi-trash"/>
+                        <p:divider />
+                        <p:menuitem value="Export" icon="pi pi-fw pi-external-link"/>
+                    </p:submenu>
+
+                    <p:submenu label="Edit" icon="pi pi-fw pi-pencil">
+                        <p:menuitem value="Left" icon="pi pi-fw pi-align-left"/>
+                        <p:menuitem value="Right" icon="pi pi-fw pi-align-right"/>
+                        <p:menuitem value="Center" icon="pi pi-fw pi-align-center"/>
+                        <p:menuitem value="Justify" icon="pi pi-fw pi-align-justify"/>
+                    </p:submenu>
+
+                    <p:submenu label="Users" icon="pi pi-fw pi-user">
+                        <p:menuitem value="New" icon="pi pi-fw pi-user-plus"/>
+                        <p:menuitem value="Delete" icon="pi pi-fw pi-user-minus"/>
+                        <p:submenu label="Search" icon="pi pi-fw pi-users">
+                            <p:submenu label="Filter" icon="pi pi-fw pi-filter">
+                                <p:menuitem value="Print" icon="pi pi-fw pi-print"/>
+                            </p:submenu>
+                            <p:menuitem value="List" icon="pi pi-fw pi-bars"/>
+                        </p:submenu>
+                    </p:submenu>
+
+                    <p:submenu label="Events" icon="pi pi-fw pi-calendar">
+                        <p:submenu label="Edit" icon="pi pi-fw pi-pencil">
+                            <p:menuitem value="Save" icon="pi pi-fw pi-calendar-plus"/>
+                            <p:menuitem value="Delete" icon="pi pi-fw pi-calendar-minus"/>
+                        </p:submenu>
+                        <p:submenu label="Archieve" icon="pi pi-fw pi-calendar-times">
+                            <p:menuitem value="Remove" icon="pi pi-fw pi-calendar-minus"/>
+                        </p:submenu>
+                    </p:submenu>
+
+                    <p:divider/>
+
+                    <p:menuitem value="Quit" icon="pi pi-fw pi-power-off"/>
+                </p:tieredMenu>
+
+                <h5>Overlay</h5>
+                <p:commandButton id="dynaButton" value="Show" type="button" icon="pi pi-external-link"/>
+                <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
+                    <p:submenu label="File" icon="pi pi-fw pi-file">
+                        <p:submenu label="New" icon="pi pi-fw pi-plus">
+                            <p:menuitem value="Bookmark" icon="pi pi-fw pi-bookmark"/>
+                            <p:menuitem value="Video" icon="pi pi-fw pi-video"/>
+                        </p:submenu>
+                        <p:menuitem value="Delete" icon="pi pi-fw pi-trash"/>
+                        <p:divider />
+                        <p:menuitem value="Export" icon="pi pi-fw pi-external-link"/>
+                    </p:submenu>
+
+                    <p:submenu label="Edit" icon="pi pi-fw pi-pencil">
+                        <p:menuitem value="Left" icon="pi pi-fw pi-align-left"/>
+                        <p:menuitem value="Right" icon="pi pi-fw pi-align-right"/>
+                        <p:menuitem value="Center" icon="pi pi-fw pi-align-center"/>
+                        <p:menuitem value="Justify" icon="pi pi-fw pi-align-justify"/>
+                    </p:submenu>
+
+                    <p:submenu label="Users" icon="pi pi-fw pi-user">
+                        <p:menuitem value="New" icon="pi pi-fw pi-user-plus"/>
+                        <p:menuitem value="Delete" icon="pi pi-fw pi-user-minus"/>
+                        <p:submenu label="Search" icon="pi pi-fw pi-users">
+                            <p:submenu label="Filter" icon="pi pi-fw pi-filter">
+                                <p:menuitem value="Print" icon="pi pi-fw pi-print"/>
+                            </p:submenu>
+                            <p:menuitem value="List" icon="pi pi-fw pi-bars"/>
+                        </p:submenu>
+                    </p:submenu>
+
+                    <p:submenu label="Events" icon="pi pi-fw pi-calendar">
+                        <p:submenu label="Edit" icon="pi pi-fw pi-pencil">
+                            <p:menuitem value="Save" icon="pi pi-fw pi-calendar-plus"/>
+                            <p:menuitem value="Delete" icon="pi pi-fw pi-calendar-minus"/>
+                        </p:submenu>
+                        <p:submenu label="Archieve" icon="pi pi-fw pi-calendar-times">
+                            <p:menuitem value="Remove" icon="pi pi-fw pi-calendar-minus"/>
+                        </p:submenu>
+                    </p:submenu>
+
+                    <p:divider/>
+
+                    <p:menuitem value="Quit" icon="pi pi-fw pi-power-off"/>
+                </p:tieredMenu>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

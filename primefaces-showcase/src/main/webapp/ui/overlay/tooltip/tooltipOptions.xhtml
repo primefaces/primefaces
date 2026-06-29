@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Tooltip <span class="subitem">Tooltip Options</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Tooltip has various customization options such as effects, positioning, events and custom content support.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tooltip"/>
+    <ui:param name="widgetLink" value="Tooltip-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Positions</h5>
+            <div class="p-grid ui-fluid">
+                <div class="p-col-12 p-md-3">
+                    <p:inputText id="right" type="text" placeholder="Right" />
+                    <p:tooltip for="right" value="Enter your username" position="right"/>
+                </div>
+                <div class="p-col-12 p-md-3">
+                    <p:inputText id="top" type="text" placeholder="Top" />
+                    <p:tooltip for="top" value="Enter your username" position="top"/>
+                </div>
+                <div class="p-col-12 p-md-3">
+                    <p:inputText id="bottom" type="text" placeholder="Bottom" />
+                    <p:tooltip for="bottom" value="Enter your username" position="bottom"/>
+                </div>
+                <div class="p-col-12 p-md-3">
+                    <p:inputText id="left" type="text" placeholder="Left" />
+                    <p:tooltip for="left" value="Enter your username" position="left"/>
+                </div>
+            </div>
+
+            <h5>Custom Position</h5>
+            <p:inputText id="custom" type="text" placeholder="Custom" />
+            <p:tooltip for="custom" value="Enter your username" my="right center" at="left center"/>
+
+            <h5>Focus and Blur</h5>
+            <p:inputText id="focus" title="Enter your username"/>
+            <p:tooltip for="focus" showEvent="focus" hideEvent="blur"/>
+
+            <h5>Track Mouse</h5>
+            <p:graphicImage id="track" name="/images/primefaces-logo.svg" library="showcase"/>
+            <p:tooltip for="track" value="Enter your username" trackMouse="true"/>
+
+            <h5>Animation</h5>
+            <p:commandButton type="button" id="animate" icon="pi pi-cog"/>
+            <p:tooltip for="animate" value="Customization options" showEffect="clip" hideEffect="fold" />
+            
+            <h5>Content</h5>
+            <p:commandButton type="button" id="content" icon="pi pi-external-link"/>
+            <p:tooltip for="content">
+                <p:graphicImage name="/images/primefaces-logo.svg" library="showcase"/>
+            </p:tooltip>
+        </div>
+    </ui:define>
+
+</ui:composition>

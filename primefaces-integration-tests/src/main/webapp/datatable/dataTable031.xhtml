@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" lang="de">
+    <h:head>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:dataTable id="dt" value="#{dataTable031.listStringData}" var="d">
+                <p:column filterBy="#{d}" filterMatchMode="contains" headerText="data">#{d}</p:column>
+            </p:dataTable>
+            <p:commandLink id="toggle" update="@form" process="@this" actionListener="#{dataTable031.toggleList()}">toggle</p:commandLink>
+        </h:form>
+    </h:body>
+</html>

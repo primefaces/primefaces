@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .icon-filter.ui-inputtext {
+                width: 100%;
+                padding: 1rem;
+                margin: 1rem 0 1.5rem 0;
+            }
+
+            .icons-list {
+                text-align: center;
+            }
+
+            .icons-list i {
+                font-size: 1.5rem;
+                color: var(--text-color-secondary);
+                margin-bottom: .5rem;
+            }
+
+            .icons-list  .p-md-2 {
+                padding-bottom: 2rem;
+            }
+        </style>
+
+        <script type="text/javascript">
+            //<![CDATA[
+                var icons = $('#icons-grid').children();
+    
+                function onFilter(e) {
+                    var value = e.target.value;
+
+                    if (value.trim().length === 0) {
+                        icons.show();
+                    } 
+                    else {
+                        icons.each(function(index, element) {
+                            var icon = $(element); 
+                            if (icon.data('name').indexOf(value.toLowerCase()) !== -1)
+                                icon.show();
+                            else
+                                icon.hide();
+                        });
+                    }
+                }
+            //]]>
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="content-section documentation">
+            <h1>PrimeIcons</h1>
+            <p>PrimeFaces components internally use <a href="https://github.com/primefaces/primeicons">PrimeIcons</a> library, the official icons suite from <a href="https://www.primetek.com.tr">PrimeTek</a>.</p>
+        
+            <h5>Getting Started</h5>
+            <p>PrimeIcons use the <strong>pi pi-&#123;icon&#125;</strong> syntax such as <strong>pi pi-check</strong>.
+            A standalone icon can be displayed using an element like <i>i</i> or <i>span</i></p>
+
+<pre><code class="language-xml">
+&lt;i class="pi pi-check"&gt;&lt;/i&gt;
+&lt;i class="pi pi-times"&gt;&lt;/i&gt;
+
+</code></pre>
+
+<i class="pi pi-check" style="margin-right: .5rem"></i>
+<i class="pi pi-times"></i>
+
+            <h5>Size</h5>
+            <p>Size of the icons can easily be changed using font-size property.</p>
+
+<pre><code class="language-xml">
+&lt;i class="pi pi-check"&gt;&lt;/i&gt;
+
+</code></pre>
+
+            <i class="pi pi-check"></i>
+
+<pre><code class="language-xml">
+&lt;i class="pi pi-check" style="font-size: 2rem"&gt;&lt;/i&gt;
+
+</code></pre>
+
+            <i class="pi pi-check" style="font-size: 2rem"></i>
+
+            <h5>Spinning Animation</h5>
+            <p>Special pi-spin class applies continuous rotation to an icon.</p>
+
+            <pre><code class="language-xml">
+&lt;i class="pi pi-spin pi-spinner" style="font-size: 2rem"&gt;&lt;/i&gt;
+
+</code></pre>
+
+            <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+
+            <h5>List of Icons</h5>
+            <p>Here is the current list of PrimeIcons, more icons are added periodically. You may also <a href="https://github.com/primefaces/primeicons/issues">request new icons</a> at the issue tracker.</p>
+
+            <p:inputText onkeyup="onFilter(event)" styleClass="icon-filter" placeholder="Search an icon" />
+
+            <div id="icons-grid" class="p-grid icons-list">
+                <ui:repeat value="#{primeIconsView.icons}" var="icon">
+                    <div class="p-col-12 p-md-2" data-name="#{icon.name}" data-key="#{icon.key}">
+                        <i class="pi pi-#{icon.name}"></i>
+                        <div>#{icon.name}</div>
+                    </div>
+                </ui:repeat>
+            </div>
+        </div>
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/fonticons" />
+
+</ui:composition>

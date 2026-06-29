@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Sticky
+    </ui:define>
+
+    <ui:define name="description">
+        Sticky component positions the target component as fixed so that the component stays in window viewport during scrolling.
+        Scroll down to see the sticky toolbar.
+    </ui:define>
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-sticky {
+                top: 70px !important;
+            }
+
+            @media (max-width: 960px) {
+                .ui-sticky {
+                    top: 110px !important;
+                }
+            }
+        </style>
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/sticky"/>
+    <ui:param name="widgetLink" value="Sticky-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:toolbar id="tb">
+                <f:facet name="left">
+                    <p:commandButton type="button" value="New" icon="pi pi-file" styleClass="p-mr-2" />
+                    <p:commandButton type="button" value="Open" icon="pi pi-folder-open" styleClass="ui-button-success" />
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton type="button" title="Save" icon="pi pi-save" styleClass="warn-button p-mr-2" />
+                    <p:commandButton type="button" title="Delete" icon="pi pi-trash" styleClass="ui-button-danger p-mr-2" />
+                    <p:commandButton type="button" title="Print" icon="pi pi-print" styleClass="ui-button-help" />
+                </f:facet>
+            </p:toolbar>
+
+            <div style="height:800px"></div>
+
+            <p:sticky target="tb"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

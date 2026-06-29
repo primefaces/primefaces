@@ -1,0 +1,590 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .box,
+            .sample-layout > div {
+                background-color: #cce4f7;
+                text-align: center;
+                padding-top: 1em;
+                padding-bottom: 1em;
+                border-radius: 4px;
+                color: #30383c;
+            }
+
+            .box-stretched {
+                height: 100%;
+                box-sizing: border-box;
+            }
+
+            .sample-layout {
+                margin: 0;
+            }
+
+            .sample-layout > div {
+                border: 1px solid #ffffff;
+            }
+
+            .vertical-container {
+                margin: 0;
+                height: 200px;
+                background: #efefef;
+                border-radius: 4px;
+            }
+
+            .nested-grid .p-col-4 {
+                padding-bottom: 1em;
+            }
+
+            .doc-table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            .doc-table th {
+                background-color: #cce4f7;
+            }
+
+            .doc-table td,
+            .doc-table th {
+                border: 1px solid #e5ebf0;
+                text-align: left;
+                padding: 8px;
+            }
+
+            .doc-table tr:nth-child(odd) {
+                background-color: #f3f6f9;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="title">
+        FlexGrid
+    </ui:define>
+
+    <ui:define name="description">
+        Flex Grid CSS is a lightweight flex based responsive layout utility optimized for mobile phones, tablets and desktops. Flex
+        Grid CSS is not included in PrimeFaces as it is provided by
+        <a href="https://github.com/primefaces/primeflex"
+           target="_blank">PrimeFlex</a>, a shared grid library between PrimeFaces, PrimeNG and PrimeReact projects.
+    </ui:define>
+
+    <ui:param name="documentationLink" value=""/>
+
+    <ui:define name="implementation">
+        <h3 style="margin-top:0">Getting Started</h3>
+        <p>To use PrimeFlex you must include the CSS on your page after you download it into your /css folder or wherever you keep your CSS files.</p>
+        <pre class="language-xml"><code>
+        &lt;h:outputStylesheet name="css/primeflex.css" /&gt;
+        </code></pre>
+        <p>Or use WebJars...</p>
+        <pre class="language-xml"><code>
+        &lt;dependency&gt;
+           &lt;groupId>org.webjars.npm&lt;/groupId&gt;
+           &lt;artifactId>primeflex&lt;/artifactId&gt;
+           &lt;version>2.0.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        
+        &lt;h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css" /&gt;
+        </code></pre>
+
+        <div class="card">
+            <h5>Basic</h5>
+            <div class="p-grid">
+                <div class="p-col">
+                    <div class="box">
+                        1
+                    </div>
+                </div>
+                <div class="p-col">
+                    <div class="box">
+                        2
+                    </div>
+                </div>
+                <div class="p-col">
+                    <div class="box">
+                        3
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Dynamic</h5>
+            <h:form>
+                <p:commandButton icon="pi pi-plus" action="#{flexGridView.increment}" update="output"/>
+                <p:commandButton icon="pi pi-minus" action="#{flexGridView.decrease}" update="output"/>
+
+                <p:outputPanel id="output">
+                    <div class="p-grid" style="margin-top: .5em">
+                        <ui:repeat var="column" value="#{flexGridView.columns}">
+                            <div class="p-col">
+                                <div class="box">
+                                    #{column}
+                                </div>
+                            </div>
+                        </ui:repeat>
+                    </div>
+                </p:outputPanel>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Reverse Direction</h5>
+            <div class="p-grid p-dir-rev">
+                <div class="p-col">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">2</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">3</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Column Direction</h5>
+            <div class="p-grid p-dir-col">
+                <div class="p-col">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">2</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">3</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Reverse Column Direction</h5>
+            <div class="p-grid p-dir-col-rev">
+                <div class="p-col">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">2</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">3</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>12 Column Grid</h5>
+            <div class="p-grid">
+                <div class="p-col-4">
+                    <div class="box">4</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">1</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="p-grid">
+                <div class="p-col-2">
+                    <div class="box">2</div>
+                </div>
+                <div class="p-col-6">
+                    <div class="box">6</div>
+                </div>
+                <div class="p-col-4">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="p-grid">
+                <div class="p-col-8">
+                    <div class="box">8</div>
+                </div>
+                <div class="p-col-2">
+                    <div class="box">2</div>
+                </div>
+                <div class="p-col-2">
+                    <div class="box">2</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>MultiLine</h5>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <div class="box">6</div>
+                </div>
+                <div class="p-col-6">
+                    <div class="box">6</div>
+                </div>
+                <div class="p-col-6">
+                    <div class="box">6</div>
+                </div>
+                <div class="p-col-6">
+                    <div class="box">6</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Fixed Width Column</h5>
+            <div class="p-grid">
+                <div class="p-col-fixed" style="width:100px">
+                    <div class="box">100px</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">auto</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Responsive</h5>
+            <div class="p-grid">
+                <div class="p-col-12 p-md-6 p-lg-3">
+                    <div class="box">p-col-12 p-md-6 p-lg-3</div>
+                </div>
+                <div class="p-col-12 p-md-6 p-lg-3">
+                    <div class="box">p-col-12 p-md-6 p-lg-3</div>
+                </div>
+                <div class="p-col-12 p-md-6 p-lg-3">
+                    <div class="box">p-col-12 p-md-6 p-lg-3</div>
+                </div>
+                <div class="p-col-12 p-md-6 p-lg-3">
+                    <div class="box">p-col-12 p-md-6 p-lg-3</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Horizontal Alignment - Start</h5>
+            <div class="p-grid p-justify-start">
+                <div class="p-col-2">
+                    <div class="box">2</div>
+                </div>
+                <div class="p-col-1">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col-4">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Horizontal Alignment - End</h5>
+            <div class="p-grid p-justify-end">
+                <div class="p-col-2">
+                    <div class="box">2</div>
+                </div>
+                <div class="p-col-1">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col-4">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Horizontal Alignment - Center</h5>
+            <div class="p-grid p-justify-center">
+                <div class="p-col-2">
+                    <div class="box">2</div>
+                </div>
+                <div class="p-col-1">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col-4">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Horizontal Alignment - Between</h5>
+            <div class="p-grid p-justify-between">
+                <div class="p-col-2">
+                    <div class="box">2</div>
+                </div>
+                <div class="p-col-1">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col-4">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Horizontal Alignment - Around</h5>
+            <div class="p-grid p-justify-around">
+                <div class="p-col-2">
+                    <div class="box">2</div>
+                </div>
+                <div class="p-col-1">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col-4">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Horizontal Alignment - Even</h5>
+            <div class="p-grid p-justify-even">
+                <div class="p-col-2">
+                    <div class="box">2</div>
+                </div>
+                <div class="p-col-1">
+                    <div class="box">1</div>
+                </div>
+                <div class="p-col-4">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Vertical Alignment - Start</h5>
+            <div class="p-grid p-align-start vertical-container">
+                <div class="p-col">
+                    <div class="box">4</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">4</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Vertical Alignment - End</h5>
+            <div class="p-grid p-align-end vertical-container">
+                <div class="p-col">
+                    <div class="box">4</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">4</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Vertical Alignment - Center</h5>
+            <div class="p-grid p-align-center vertical-container">
+                <div class="p-col">
+                    <div class="box">4</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">4</div>
+                </div>
+                <div class="p-col">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Vertical Alignment - Stretch</h5>
+            <div class="p-grid p-align-stretch vertical-container">
+                <div class="p-col">
+                    <div class="box box-stretched">4</div>
+                </div>
+                <div class="p-col">
+                    <div class="box box-stretched">4</div>
+                </div>
+                <div class="p-col">
+                    <div class="box box-stretched">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Vertical Alignment - Per Column</h5>
+            <div class="p-grid vertical-container">
+                <div class="p-col p-col-align-start">
+                    <div class="box">4</div>
+                </div>
+                <div class="p-col p-col-align-center">
+                    <div class="box">4</div>
+                </div>
+                <div class="p-col p-col-align-end">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Offset</h5>
+            <div class="p-grid">
+                <div class="p-col-6 p-offset-3">
+                    <div class="box">6</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="p-grid">
+                <div class="p-col-4">
+                    <div class="box">4</div>
+                </div>
+                <div class="p-col-4 p-offset-4">
+                    <div class="box">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Nested</h5>
+            <div class="p-grid nested-grid">
+                <div class="p-col-8">
+                    <div class="p-grid">
+                        <div class="p-col-6">
+                            <div class="box">6</div>
+                        </div>
+                        <div class="p-col-6">
+                            <div class="box">6</div>
+                        </div>
+                        <div class="p-col-12">
+                            <div class="box">12</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-4">
+                    <div class="box box-stretched">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Panel Integration</h5>
+            <div class="p-grid">
+                <div class="p-col">
+                    <p:panel header="Header 1">
+                        <h:outputText value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet, orci nec dictum convallis,
+                                    ligula mauris vestibulum turpis, nec varius tortor quam at diam. Nullam a viverra nibh. In
+                                    tincidunt tempor lectus quis vulputate. Pellentesque nec dui aliquam, lobortis est in, lobortis
+                                    ante"/>
+                    </p:panel>
+                </div>
+                <div class="p-col">
+                    <p:panel header="Header 2">
+                        <h:outputText value="Maecenas vel nisi aliquet, vulputate tortor id, laoreet massa. Maecenas mattis tristique bibendum.
+                                    Suspendisse vel mi dictum, vestibulum lacus quis, pulvinar quam. Proin vulputate, nibh at
+                                    finibus varius, leo eros lacinia elit, nec blandit odio tellus a justo. Donec nec ex auctor,
+                                    tristique nulla nec, rutrum sapien."/>
+                    </p:panel>
+                </div>
+                <div class="p-col">
+                    <p:panel header="Header 3">
+                        <h:outputText value="Proin efficitur in leo eget ornare. Nam vestibulum neque sed velit sagittis sodales. Sed scelerisque
+                                    hendrerit magna a hendrerit. Cras tempor sem at justo pharetra convallis. Curabitur vel sodales
+                                    purus. Vestibulum interdum facilisis nulla imperdiet suscipit. Quisque lectus felis, condimentum
+                                    eget hendrerit sit amet."/>
+                    </p:panel>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Sample Layout</h5>
+            <div class="p-grid sample-layout">
+                <div class="p-col-12 p-md-2">
+                    Menu
+                </div>
+                <div class="p-col-12 p-md-10 p-col-nogutter">
+                    <div class="p-grid">
+                        <div class="p-col-12 p-col-nogutter">
+                            Top Bar
+                        </div>
+                        <div class="p-col-12">
+                            <div class="p-grid">
+                                <div class="p-col-12 p-md-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet, orci nec dictum convallis,
+                                    ligula mauris vestibulum turpis, nec varius tortor quam at diam. Nullam a viverra nibh. In
+                                    tincidunt tempor lectus quis vulputate. Pellentesque nec dui aliquam, lobortis est in, lobortis
+                                    ante
+                                </div>
+                                <div class="p-col-12 p-md-4">Maecenas vel nisi aliquet, vulputate tortor id, laoreet massa. Maecenas mattis tristique bibendum.
+                                    Suspendisse vel mi dictum, vestibulum lacus quis, pulvinar quam. Proin vulputate, nibh at
+                                    finibus varius, leo eros lacinia elit, nec blandit odio tellus a justo. Donec nec ex auctor,
+                                    tristique nulla nec, rutrum sapien.
+                                </div>
+                                <div class="p-col-12 p-md-4">Proin efficitur in leo eget ornare. Nam vestibulum neque sed velit sagittis sodales. Sed scelerisque
+                                    hendrerit magna a hendrerit. Cras tempor sem at justo pharetra convallis. Curabitur vel sodales
+                                    purus. Vestibulum interdum facilisis nulla imperdiet suscipit. Quisque lectus felis, condimentum
+                                    eget hendrerit sit amet.
+                                </div>
+
+                                <div class="p-col-6 p-md-3">
+                                    <p:graphicImage name="demo/images/nature/nature1.jpg" style="width:100%"/>
+                                </div>
+                                <div class="p-col-6 p-md-3">
+                                    <p:graphicImage name="demo/images/nature/nature2.jpg" style="width:100%"/>
+                                </div>
+                                <div class="p-col-6 p-md-3">
+                                    <p:graphicImage name="demo/images/nature/nature3.jpg" style="width:100%"/>
+                                </div>
+                                <div class="p-col-6 p-md-3">
+                                    <p:graphicImage name="demo/images/nature/nature4.jpg" style="width:100%"/>
+                                </div>
+
+                                <div class="p-col-12 p-md-6">Phasellus faucibus purus volutpat mauris lacinia sodales. Ut sit amet sapien facilisis, commodo
+                                    dui non, fringilla tellus. Quisque tempus facilisis nisi sodales finibus. Pellentesque neque
+                                    orci, ullamcorper vitae ligula quis, dignissim euismod augue.
+                                </div>
+                                <div class="p-col-12 p-md-6">Fusce ullamcorper congue massa, eget ullamcorper nunc lobortis egestas. Lorem ipsum dolor sit
+                                    amet, consectetur adipiscing elit. Quisque ultrices dui eget dolor feugiat dapibus. Aliquam
+                                    pretium leo et egestas luctus. Nunc facilisis gravida tellus.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-12">
+                    Footer
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

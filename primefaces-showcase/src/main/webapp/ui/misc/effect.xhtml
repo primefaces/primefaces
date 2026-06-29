@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Effect
+    </ui:define>
+
+    <ui:define name="description">
+        Effect is attached to a particular event of a target.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/effect"/>
+    <ui:param name="widgetLink" value="Effect-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5 class="p-mt-0">Catalog</h5>
+            <p:panelGrid columns="4" cellpadding="7" layout="flex">
+                <p:panel id="blind" header="Blind">
+                    <h:outputText value="click"/>
+                    <p:effect type="blind" event="click">
+                        <f:param name="direction" value="'horizontal'"/>
+                    </p:effect>
+                </p:panel>
+
+                <p:panel id="clip" header="Clip">
+                    <h:outputText value="click"/>
+                    <p:effect type="clip" event="click"/>
+                </p:panel>
+
+                <p:panel id="drop" header="Drop">
+                    <h:outputText value="click"/>
+                    <p:effect type="drop" event="click"/>
+                </p:panel>
+
+                <p:panel id="explode" header="Explode">
+                    <h:outputText value="click"/>
+                    <p:effect type="explode" event="click"/>
+                </p:panel>
+
+                <p:panel id="fold" header="Fold">
+                    <h:outputText value="doubleclick"/>
+                    <p:effect type="fold" event="dblclick"/>
+                </p:panel>
+
+                <p:panel id="puff" header="Puff">
+                    <h:outputText value="doubleclick"/>
+                    <p:effect type="puff" event="dblclick"/>
+                </p:panel>
+
+                <p:panel id="slide" header="Slide">
+                    <h:outputText value="doubleclick"/>
+                    <p:effect type="slide" event="dblclick"/>
+                </p:panel>
+
+                <p:panel id="scale" header="Scale">
+                    <h:outputText value="doubleclick"/>
+                    <p:effect type="scale" event="dblclick">
+                        <f:param name="percent" value="90"/>
+                    </p:effect>
+                </p:panel>
+
+                <p:panel id="bounce" header="Bounce">
+                    <h:outputText value="click"/>
+                    <p:effect type="bounce" event="click"/>
+                </p:panel>
+
+                <p:panel id="pulsate" header="Pulsate">
+                    <h:outputText value="click"/>
+                    <p:effect type="pulsate" event="click"/>
+                </p:panel>
+
+                <p:panel id="shake" header="Shake">
+                    <h:outputText value="click"/>
+                    <p:effect type="shake" event="click"/>
+                </p:panel>
+
+                <p:panel id="size" header="Size">
+                    <h:outputText value="click"/>
+                    <p:effect type="size" event="click">
+                        <f:param name="to" value="{width: 200,height: 60}"/>
+                    </p:effect>
+                </p:panel>
+            </p:panelGrid>
+        </div>
+
+        <div class="card">
+            <h5>Target</h5>
+            <h:form>
+                <p:commandButton type="button" value="Show" style="display:block" icon="pi pi-image">
+                    <p:effect type="puff" event="click" for="img">
+                        <f:param name="mode" value="'show'"/>
+                    </p:effect>
+                </p:commandButton>
+                <p:graphicImage id="img" name="demo/images/nature/nature1.jpg" style="display:none"/>
+            </h:form>
+        </div>
+
+        <div class="card">                
+            <h:form>
+                <h5>On Load</h5>
+                <p:messages id="messages" closable="true">
+                    <p:effect type="pulsate" event="load" delay="500"/>
+                </p:messages>
+
+                <h:panelGrid columns="2" cellpadding="7">
+                    <p:outputLabel for="text" value="Type:"/>
+                    <p:inputText id="text" value="#{effectView.text}" required="true"/>
+                </h:panelGrid>
+
+                <p:commandButton id="submit" value="Echo" action="#{effectView.echo}" update="messages" styleClass="p-mt-3" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

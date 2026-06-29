@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Rating
+    </ui:define>
+
+    <ui:define name="description">
+        Rating component provides a star based rating input.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/rating"/>
+    <ui:param name="widgetLink" value="Rating-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <h5 class="p-mt-0">Basic</h5>
+                <p:rating value="#{ratingView.rating1}"/>
+
+                <h5>Remote</h5>
+                <p:rating value="#{ratingView.rating2}">
+                    <p:ajax event="rate" listener="#{ratingView.onrate}" update="messages"/>
+                    <p:ajax event="cancel" listener="#{ratingView.oncancel}" update="messages"/>
+                </p:rating>
+
+                <h5>Readonly</h5>
+                <p:rating value="#{ratingView.rating3}" readonly="true"/>
+
+                <h5>Disabled</h5>
+                <p:rating value="#{ratingView.rating3}" disabled="true"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

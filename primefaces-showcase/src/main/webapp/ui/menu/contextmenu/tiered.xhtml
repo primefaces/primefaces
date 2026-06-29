@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ContextMenu <span class="subitem">Tiered</span>
+    </ui:define>
+
+    <ui:define name="description">
+        ContextMenu can have nested submenus and menuitems
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/contextmenu"/>
+    <ui:param name="widgetLink" value="ContextMenu-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            Right click to view the menu options.
+
+            <h:form>
+
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:contextMenu style="width:200px">
+                    <p:submenu label="Ajax Menuitems" icon="pi pi-refresh">
+                        <p:menuitem value="Save" action="#{menuView.save}" update="messages" icon="pi pi-save"/>
+                        <p:menuitem value="Update" action="#{menuView.update}" update="messages" icon="pi pi-refresh"/>
+                    </p:submenu>
+                    <p:submenu label="Non-Ajax Menuitem" icon="pi pi-clone">
+                        <p:menuitem value="Delete" action="#{menuView.delete}" update="messages" ajax="false"
+                                    icon="pi pi-times"/>
+                    </p:submenu>
+                    <p:divider />
+                    <p:submenu label="Navigations" icon="pi pi-home">
+                        <p:submenu label="External">
+                            <p:menuitem value="PrimeTek" url="https://www.primetek.com.tr"/>
+                            <p:menuitem value="PrimeFaces" url="https://www.primefaces.org"/>
+                        </p:submenu>
+                        <p:menuitem value="Mobile" icon="pi pi-mobile"/>
+                    </p:submenu>
+                </p:contextMenu>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

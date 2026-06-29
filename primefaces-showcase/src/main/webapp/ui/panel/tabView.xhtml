@@ -1,0 +1,218 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TabView
+    </ui:define>
+
+    <ui:define name="description">
+        TabView is a tabbed panel component.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tabview"/>
+    <ui:param name="widgetLink" value="TabView-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form id="form">
+
+            <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+            <div class="card">
+                <h5 class="p-mt-0">Default</h5>
+                <p:tabView>
+                    <p:tab title="Header I">
+                        <p class="p-m-0">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header II">
+                        <p class="p-m-0">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab 
+                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut 
+                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header III">
+                        <p class="p-m-0">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores 
+                            et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
+                            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
+                    </p:tab>
+                </p:tabView>
+            </div>
+
+            <div class="card">
+                <h5>On-Demand Loading</h5>
+                <p:tabView dynamic="true" cache="true">
+                    <p:tab title="Header I">
+                        <p class="p-m-0">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header II">
+                        <p class="p-m-0">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab 
+                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut 
+                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header III">
+                        <p class="p-m-0">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores 
+                            et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
+                            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
+                    </p:tab>
+                </p:tabView>
+            </div>
+
+            <div class="card">
+                <h5>Events</h5>
+                <p:tabView>
+                    <p:ajax event="tabChange" listener="#{tabbedView.onTabChange}" update=":form:msgs"/>
+                    <p:ajax event="tabClose" listener="#{tabbedView.onTabClose}" update=":form:msgs"/>
+
+                    <p:tab title="Header I">
+                        <p class="p-m-0">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header II" closable="true">
+                        <p class="p-m-0">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab 
+                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut 
+                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header III" closable="true">
+                        <p class="p-m-0">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores 
+                            et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
+                            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
+                    </p:tab>
+                </p:tabView>
+            </div>
+
+            <div class="card">
+                <h5>DataModel</h5>
+                <p:tabView value="#{tabbedView.products}" var="product">
+                    <p:tab title="#{product.name}">
+                        <div class="product">
+                            <div class="product-list-item">
+                                <p:graphicImage name="demo/images/product/#{product.image}"/>
+                                <div class="product-list-detail">
+                                    <div class="product-name">#{product.name}</div>
+                                    <div class="product-description">#{product.description}</div>
+                                    <p:rating readonly="true" value="#{product.rating}"/>
+                                    <i class="pi pi-tag product-category-icon"/><span
+                                        class="product-category">#{product.category}</span>
+                                </div>
+                                <div class="product-list-action">
+                                    <h:outputText value="#{product.price}" styleClass="product-price">
+                                        <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText>
+                                    <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </p:tab>
+                </p:tabView>
+            </div>
+
+            <div class="card">
+                <h5>Scrollable</h5>
+                <p:tabView scrollable="true">
+                    <p:tab title="Tab 1">Tab 1 Content</p:tab>
+                    <p:tab title="Tab 2">Tab 2 Content</p:tab>
+                    <p:tab title="Tab 3">Tab 3 Content</p:tab>
+                    <p:tab title="Tab 4">Tab 4 Content</p:tab>
+                    <p:tab title="Tab 5">Tab 5 Content</p:tab>
+                    <p:tab title="Tab 6">Tab 6 Content</p:tab>
+                    <p:tab title="Tab 7">Tab 7 Content</p:tab>
+                    <p:tab title="Tab 8">Tab 8 Content</p:tab>
+                    <p:tab title="Tab 9">Tab 9 Content</p:tab>
+                    <p:tab title="Tab 10">Tab 10 Content</p:tab>
+                    <p:tab title="Tab 11">Tab 11 Content</p:tab>
+                    <p:tab title="Tab 12">Tab 12 Content</p:tab>
+                    <p:tab title="Tab 13">Tab 13 Content</p:tab>
+                    <p:tab title="Tab 14">Tab 14 Content</p:tab>
+                    <p:tab title="Tab 15">Tab 15 Content</p:tab>
+                    <p:tab title="Tab 16">Tab 16 Content</p:tab>
+                    <p:tab title="Tab 17">Tab 17 Content</p:tab>
+                    <p:tab title="Tab 18">Tab 18 Content</p:tab>
+                    <p:tab title="Tab 19">Tab 19 Content</p:tab>
+                    <p:tab title="Tab 20">Tab 20 Content</p:tab>
+                    <p:tab title="Tab 21">Tab 21 Content</p:tab>
+                    <p:tab title="Tab 22">Tab 22 Content</p:tab>
+                    <p:tab title="Tab 23">Tab 23 Content</p:tab>
+                    <p:tab title="Tab 24">Tab 24 Content</p:tab>
+                    <p:tab title="Tab 25">Tab 25 Content</p:tab>
+                </p:tabView>
+            </div>
+
+            <div class="card">
+                <h5>Orientation</h5>
+                <p:tabView orientation="bottom">
+                    <p:tab title="Header I">
+                        <p class="p-m-0">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header II">
+                        <p class="p-m-0">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab 
+                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut 
+                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header III">
+                        <p class="p-m-0">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores 
+                            et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
+                            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
+                    </p:tab>
+                </p:tabView>
+            </div>
+
+            <div class="card">
+                <h5>MultiViewState</h5>
+                <p:commandButton value="Clear State" action="#{tabbedView.clearMultiViewState}" update="msgs tabViewMVS" styleClass="p-mb-2 ui-button-warning" />
+                <p:tabView multiViewState="true" id="tabViewMVS">
+                    <p:tab title="Header I">
+                        <p class="p-m-0">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header II">
+                        <p class="p-m-0">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab 
+                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut 
+                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                        </p>
+                    </p:tab>
+                    <p:tab title="Header III">
+                        <p class="p-m-0">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores 
+                            et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
+                            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                        </p>
+                    </p:tab>
+                </p:tabView>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

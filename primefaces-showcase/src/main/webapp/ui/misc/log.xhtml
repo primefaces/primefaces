@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-log {
+                left: 750px;
+                top: 250px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Log
+    </ui:define>
+
+    <ui:define name="description">
+        Log component is a visual console to display internal logs of PrimeFaces. Using log client side API,
+        you can also use the component.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/log"/>
+    <ui:param name="widgetLink" value="Log-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:log id="log"/>
+
+            <h5 class="p-mt-0">Client Side API</h5>
+            <p:commandButton type="button" id="info" value="Info"
+                             onclick="PrimeFaces.info('This is an info message.')" styleClass="p-mr-2" />
+            <p:commandButton type="button" id="warn" value="Warn" onclick="PrimeFaces.warn('This is a warn message.')" styleClass="p-mr-2" />
+            <p:commandButton type="button" id="debug" value="Debug"
+                             onclick="PrimeFaces.debug('This is a debug message.')" styleClass="p-mr-2" />
+            <p:commandButton type="button" id="error" value="Error"
+                             onclick="PrimeFaces.error('This is an error message.')"/>
+
+            <h5>Ajax Request</h5>
+            <h:form id="form">
+                <h:panelGrid id="grid" columns="4" cellpadding="7">
+                    <p:outputLabel for="name" value="Name:"/>
+                    <p:inputText id="name"/>
+                </h:panelGrid>
+
+                <p:commandButton value="Submit" update="grid" styleClass="p-mt-3" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

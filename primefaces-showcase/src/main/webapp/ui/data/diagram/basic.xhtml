@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-diagram-element {
+                border: 0.1em dotted #d4e06b;
+                width: 14em;
+                height: 4em;
+                line-height: 4em;
+                text-align: center;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Diagram <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Diagram is generic component to create visual elements and connect them on a web page. SVG is used on modern browsers and VML on IE 8 and below. Component
+        is highly flexible in terms of api, events and theming.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/diagram"/>
+    <ui:param name="widgetLink" value="Diagram-1"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <p:diagram value="#{diagramBasicView.model}" style="height:400px" styleClass="ui-widget-content"/>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

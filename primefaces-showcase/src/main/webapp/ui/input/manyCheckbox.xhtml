@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .grid-checkbox td {
+                padding: .5rem;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        SelectManyCheckbox
+    </ui:define>
+
+    <ui:define name="description">
+        SelectManyCheckbox is used to choose multiple items from a collection.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/selectmanycheckbox"/>
+    <ui:param name="widgetLink" value="SelectManyCheckbox"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl>
+                    <p:autoUpdate />
+                </p:growl>
+                
+                <h5 style="margin-top:0px">Basic Layout</h5>
+                <p:selectManyCheckbox id="basic" value="#{checkboxView.selectedOptions}">
+                    <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
+                    <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+                    <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
+                </p:selectManyCheckbox>
+                
+                <h5>Basic Layout - AJAX</h5>
+                <p:selectManyCheckbox id="basicAjax" value="#{checkboxView.selectedOptions}" widgetVar="blub">
+                    <p:ajax listener="#{checkboxView.selectedOptionsChanged}" />
+                    <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
+                    <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+                    <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
+                </p:selectManyCheckbox>
+
+                <h5>Grid Layout</h5>
+                <p:selectManyCheckbox id="grid" value="#{checkboxView.selectedCities}" layout="grid" columns="3" styleClass="grid-checkbox">
+                    <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                </p:selectManyCheckbox>
+
+                <h5>Responsive</h5>
+                <p:selectManyCheckbox id="grid2" value="#{checkboxView.selectedCities2}" layout="responsive"
+                                      columns="3">
+                    <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                </p:selectManyCheckbox>
+
+                <h5>Custom Layout</h5>
+                <p:outputPanel id="customPanel">
+                    <p:selectManyCheckbox id="custom" value="#{checkboxView.selectedOptions2}" layout="custom">
+                        <p:ajax listener="#{checkboxView.selectedOptions2Changed}" />
+                        <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
+                        <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+                        <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
+                    </p:selectManyCheckbox>
+
+                    <div class="p-grid p-text-center">
+                        <div class="p-col">
+                            <p:outputLabel for="opt1" value="Option 1" styleClass="p-d-block p-mb-2"/>
+                            <p:checkbox id="opt1" for="custom" itemIndex="0"/>
+                        </div>
+                        
+                        <div class="p-col">
+                            <p:outputLabel for="opt2" value="Option 2" styleClass="p-d-block p-mb-2"/>
+                            <p:checkbox id="opt2" for="custom" itemIndex="1"/>
+                        </div>
+
+                        <div class="p-col">
+                            <p:outputLabel for="opt3" value="Option 3" styleClass="p-d-block p-mb-2"/>
+                            <p:checkbox id="opt3" for="custom" itemIndex="2"/>
+                        </div>
+                    </div>
+                </p:outputPanel>
+
+                <h5>Grouped</h5>
+                <p:selectManyCheckbox id="grid3" value="#{checkboxView.selectedCountries}" layout="pageDirection"
+                                      columns="1" styleClass="grid-checkbox">
+                    <f:selectItems value="#{checkboxView.countries}" var="country" itemLabel="#{country}"
+                                   itemValue="#{country}"/>
+                </p:selectManyCheckbox>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

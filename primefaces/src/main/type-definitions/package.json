@@ -1,0 +1,171 @@
+{
+  "name": "primefaces",
+  "version": "1.0.0",
+  "description": "TypeScript definitions for the client side API of PrimeFaces",
+  "main": "src/index.js",
+  "license": "MIT",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/primefaces/primefaces.git",
+    "directory": "src/main/type-definitions"
+  },
+  "types": "./PrimeFaces.d.ts",
+  "typeScriptVersion": "4.0",
+  "scripts": {
+    "generate-d-ts": "node src/index.js",
+    "generate-typedoc": "node node_modules/typedoc/bin/typedoc",
+    "npm-publish": "node src/npm-publish.js",
+    "test-aggregate": "node test/index.js -- AggregateTest",
+    "test-transform": "node test/index.js -- TransformTest",
+    "test-tsprocess": "node test/index.js -- TsProcessTest",
+    "test-tsvalidate": "node test/index.js -- TsValidateTest",
+    "test": "node test/index.js -- AggregateTest TransformTest TsProcessTest TsValidateTest",
+    "validate": "node node_modules/typescript/bin/tsc --project tsconfig.json"
+  },
+  "jsdocs": {
+    "exclusionTags": [
+      "ignore",
+      "exclude",
+      "hidden"
+    ],
+    "inputDir": "../resources/META-INF/resources/primefaces",
+    "declarationOutputDir": "../../../../docs",
+    "outputFilename": "PrimeFaces.d.ts",
+    "moduleOutputFilename": "PrimeFaces-module.d.ts",
+    "typedocOutputDir": "../../../../docs/jsdocs",
+    "severitySettings": {},
+    "skipEsLint": false,
+    "skipPostProcess": false,
+    "skipTypedocGenerate": false,
+    "verbose": false
+  },
+  "contributors": [
+    {
+      "name": "Cagatay Civici",
+      "url": "https://github.com/cagataycivici",
+      "githubUsername": "cagataycivici"
+    },
+    {
+      "name": "Thomas Andraschko",
+      "url": "https://github.com/tandraschko",
+      "githubUsername": "tandraschko"
+    },
+    {
+      "name": "Jeanfrancois Arcand",
+      "url": "https://github.com/jfarcand",
+      "githubUsername": "jfarcand"
+    },
+    {
+      "name": "Rudy De Busscher",
+      "url": "https://github.com/rdebusscher",
+      "githubUsername": "rdebusscher"
+    },
+    {
+      "name": "Mert Sincan",
+      "url": "https://github.com/mertsincan",
+      "githubUsername": "mertsincan"
+    },
+    {
+      "name": "Sudheer Jonna",
+      "url": "https://github.com/sudheerj",
+      "githubUsername": "sudheerj"
+    },
+    {
+      "name": "Sébastien Lepage",
+      "url": "https://github.com/Rapster",
+      "githubUsername": "Rapster"
+    },
+    {
+      "name": "Emil Lefkof",
+      "url": "https://github.com/melloware",
+      "githubUsername": "melloware"
+    }
+  ],
+  "dependencies": {
+    "@fullcalendar/common": "^5.9.0",
+    "@fullcalendar/core": "^5.9.0",
+    "@fullcalendar/daygrid": "^5.9.0",
+    "@fullcalendar/interaction": "^5.9.0",
+    "@fullcalendar/list": "^5.9.0",
+    "@fullcalendar/moment": "^5.9.0",
+    "@fullcalendar/timegrid": "^5.9.0",
+    "@types/chart.js": "^2.9.34",
+    "@types/downloadjs": "^1.4.2",
+    "@types/google.maps": "^3.45.6",
+    "@types/hammerjs": "^2.0.40",
+    "@types/inputmask": "^5.0.1",
+    "@types/jquery": "^3.5.6",
+    "@types/jqueryui": "^1.12.16",
+    "@types/js-cookie": "^2.2.7",
+    "@types/quill": "~1.3.10",
+    "@types/raphael": "^2.3.2",
+    "autonumeric": "~4.6.0",
+    "cropperjs": "^1.5.12",
+    "jsplumb": "^2.15.6",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
+    "print-js": "^1.6.0",
+    "vis-data": "^7.1.2",
+    "vis-timeline": "^7.4.9",
+    "vis-util": "^5.0.2",
+    "xss": "^1.0.9"
+  },
+  "devDependencies": {
+    "@types/diff": "^5.0.1",
+    "@types/eslint": "^7.28.0",
+    "@types/eslint-scope": "^3.7.1",
+    "@types/estree": "^0.0.50",
+    "@types/minimatch": "^3.0.5",
+    "@types/node": "^16.9.1",
+    "@types/semver": "^7.3.8",
+    "@types/tar-stream": "^2.2.1",
+    "@types/tmp": "^0.2.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "acorn": "^8.5.0",
+    "acorn-walk": "^8.2.0",
+    "astring": "^1.7.5",
+    "comment-parser": "^0.7.2",
+    "diff": "^5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsdoc": "^36.1.0",
+    "eslint-scope": "^6.0.0",
+    "minimatch": "^3.0.4",
+    "npm-registry-client": "^8.6.0",
+    "semver": "^7.3.5",
+    "source-map": "^0.7.3",
+    "tar-stream": "^2.1.4",
+    "tmp": "^0.2.1",
+    "topological-sort": "^0.3.0",
+    "tslint": "^6.1.3",
+    "typedoc": "^0.22.3",
+    "typescript": "^4.4.3"
+  },
+  "peerDependencies": {
+    "@egjs/hammerjs": "*",
+    "component-emitter": "*",
+    "keycharm": "*",
+    "propagating-hammerjs": "*",
+    "uuid": "*"
+  },
+  "peerDependenciesMeta": {
+    "propagating-hammerjs": {
+      "optional": true
+    },
+    "component-emitter": {
+      "optional": true
+    },
+    "@egjs/hammerjs": {
+      "optional": true
+    },
+    "keycharm": {
+      "optional": true
+    },
+    "uuid": {
+      "optional": true
+    }
+  }
+}

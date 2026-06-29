@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Dialog Framework
+    </ui:define>
+
+    <ui:define name="description">
+        Nested dialogs are supported to allow creating a dialog from another dialog. Demo here has 3 level of nested dialogs where last dialog returns data
+        back to the root.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/dialogframework"/>
+
+    <ui:define name="implementation">
+
+        <h:form id="rootform">
+            <p:growl id="growl" showDetail="true"/>
+
+            <div class="card">
+                <h5>DialogReturn with Button</h5>
+                <p:commandButton id="btn" value="View" icon="pi pi-home" action="#{dfRootView.openLevel1}">
+                    <p:ajax event="dialogReturn" listener="#{dfRootView.onReturnFromLevel1}" update="growl"/>
+                </p:commandButton>
+                <p:commandButton id="btnPlusFlash" value="View and pass object via flash" icon="pi pi-home" action="#{dfRootView.openLevel1WithFlash}" styleClass="p-ml-2">
+                    <p:ajax event="dialogReturn" listener="#{dfRootView.onReturnFromLevel1}" update="growl"/>
+                </p:commandButton>
+            </div>
+
+            <div class="card">
+                <h5>DialogReturn with Link</h5>
+                <p:commandLink id="lnk" value="View" action="#{dfRootView.openLevel1}" styleClass="p-text-bold">
+                    <p:ajax event="dialogReturn" listener="#{dfRootView.onReturnFromLevel1}" update="growl"/>
+                </p:commandLink>
+            </div>
+
+            <div class="card">
+                <h5>DialogReturn with a Menu</h5>
+                <p:menu>
+                    <p:submenu label="Dialog Framework">
+                        <p:menuitem value="View" action="#{dfRootView.openLevel1}">
+                            <p:ajax event="dialogReturn" listener="#{dfRootView.onReturnFromLevel1}" update="growl"/>
+                        </p:menuitem>
+                    </p:submenu>
+                </p:menu>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

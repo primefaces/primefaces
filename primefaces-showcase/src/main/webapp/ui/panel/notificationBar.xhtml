@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .top {
+                filter: alpha(opacity=80);
+                opacity: 0.8;
+                padding: 50px 0 0 50px;
+                z-index: 1000;
+            }
+        </style>
+
+    </ui:define>
+
+    <ui:define name="title">
+        NotificationBar
+    </ui:define>
+
+    <ui:define name="description">
+        NotificationBar is a fixed positioned panel either at the top or the bottom of the page.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/notificationbar"/>
+    <ui:param name="widgetLink" value="NotificationBar-1"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                <h:outputText value="PrimeFaces Rocks!" style="font-size:36px;"/>
+            </p:notificationBar>
+
+            <p:commandButton value="Show" onclick="PF('bar').show()" type="button" icon="pi pi-arrow-down"/>
+            <p:commandButton value="Hide" onclick="PF('bar').hide()" type="button" icon="pi pi-arrow-up"/>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

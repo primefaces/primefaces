@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:composite="http://java.sun.com/jsf/composite/composite"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        OutputLabel
+    </ui:define>
+
+    <ui:define name="description">
+        OutputLabel is an extension to standard outputLabel component.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/outputlabel"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:messages id="messages"/>
+                <h:panelGrid columns="2" cellpadding="7">
+                    <h:outputLabel for="name" value="Standard Label"/>
+                    <p:inputText id="name" required="true"/>
+
+                    <p:outputLabel for="@next" value="Extended Label"/>
+                    <p:inputText id="extended" required="true"/>
+
+                    <p:outputLabel for="@next" value="Number"/>
+                    <p:spinner id="number" value="0"/>
+
+                    <p:commandButton value="Submit" update="@form" styleClass="p-mt-3"/>
+                    <p:spacer />
+
+                    <!-- For testing, don't remove!
+                    <p:outputLabel for="@next" value="Label which considers @NotNull:" />
+                    <p:inputText id="nullable" value="#{outputLabelView.nullableValue}" />
+
+                    <p:outputLabel for="@next" value="Label which considers @NotNull:" />
+                    <p:inputText id="notNull" value="#{outputLabelView.value}" />
+
+                    <p:outputLabel for="@next" value="Label for input wrapped in composite:" />
+                    <composite:inputTextWrapper id="nullableInComposite" value="#{outputLabelView.nullableValue}" required="true" />
+
+                    <p:outputLabel for="@next" value="Label for input wrapped in composite, considering @NotNull:" />
+                    <composite:inputTextWrapper id="notNullInComposite" value="#{outputLabelView.value}" />
+
+                    <p:outputLabel for="@next" value="Label for input wrapped wrapped in composite:" />
+                    <composite:inputTextWrapper id="nullableInCompositeComposite" value="#{outputLabelView.nullableValue}" required="true" />
+
+                    <p:outputLabel for="@next" value="Label for input wrapped wrapped in composite, considering @NotNull:" />
+                    <composite:inputTextWrapper id="notNullInCompositeComposite" value="#{outputLabelView.value}" />
+                    -->
+                </h:panelGrid>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

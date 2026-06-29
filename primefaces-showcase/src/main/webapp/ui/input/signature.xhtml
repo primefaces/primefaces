@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Signature
+    </ui:define>
+
+    <ui:define name="description">
+        Signature is used to draw a signature as an input. Various options such as background color, foreground color, thickness are available
+        for customization. Signature also supports touch enabled devices and legacy browsers without canvas support.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/signature"/>
+    <ui:param name="widgetLink" value="Signature-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl>
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <p:signature style="width:400px;height:200px" widgetVar="sig" value="#{signatureView.value}"
+                             required="true" guideline="true"/>
+
+                <div style="margin:20px 0">
+                    <p:commandButton value="Submit" icon="pi pi-check" update="output"/>
+                    <p:commandButton value="Clear" icon="pi pi-times" type="button" onclick="PF('sig').clear()" styleClass="ui-button-flat p-ml-2"/>
+                </div>
+
+                <p:outputPanel id="output">
+                    <h:outputText rendered="#{not empty signatureView.value}" style="font-size:1.5rem" styleClass="p-d-block p-mb-2"
+                                  value="Your Signature" />
+                    <p:signature style="width:400px;height:200px;" value="#{signatureView.value}" readonly="true"
+                                 rendered="#{not empty signatureView.value}" backgroundColor="#eaeaea" color="#03a9f4"/>
+                </p:outputPanel>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

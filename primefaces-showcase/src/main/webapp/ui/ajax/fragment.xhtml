@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Ajax Framework <span class="subitem">Fragment</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Fragment component is used to define automatically partially process and update sections whenever
+        ajax request is triggered by a descandant component. In this example, required input field outside the fragment is ignored and
+        only the contents of the fragment are processed-updated automatically on button click since
+        button is inside the fragment. Fragment makes it easy to define partial ajax process and update without explicitly
+        defining component identifiers.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/fragment" />
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:inputText id="ignored" required="true" placeholder="Required field" />
+
+                <p:divider />
+
+                <p:fragment>
+                    <p:autoUpdate/>
+                    
+                    <h:panelGrid columns="4" cellpadding="7">
+                        <p:inputText id="txt" value="#{fragmentView.text}" placeholder="Fragment Field" />
+                        <p:commandButton value="Submit"/>
+                        <h:outputText value="#{fragmentView.text}"/>
+                    </h:panelGrid>
+                </p:fragment>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Hotkey
+    </ui:define>
+
+    <ui:define name="description">
+        Hotkey is used to bind a key or a key combination to an client side or server side event via ajax. In first example
+        use "left" and "right" keys to switch images and in second example you can do an ajax request with the (ctrl+shift+s) combination.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/hotkey"/>
+    <ui:param name="primefacesClientApiLink" value="interfaces/src_PrimeFaces.JQueryStatic.html#hotkeys"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5 class="p-mt-top">ImageSwitch Integration (Left-Right)</h5>
+                <p:imageSwitch effect="fade" widgetVar="switcher" slideshowAuto="false">
+                    <p:graphicImage name="demo/images/nature/nature1.jpg"/>
+                    <p:graphicImage name="demo/images/nature/nature2.jpg"/>
+                    <p:graphicImage name="demo/images/nature/nature3.jpg"/>
+                    <p:graphicImage name="demo/images/nature/nature4.jpg"/>
+                </p:imageSwitch>
+    
+                <p:hotkey bind="left" handler="PF('switcher').previous()"/>
+                <p:hotkey bind="right" handler="PF('switcher').next()"/>
+
+                <h5>Ajax Hotkey (ctrl + shift + s)</h5>
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+                <p:hotkey bind="ctrl+shift+s" update="msgs" action="#{hotkeyView.save}"/>
+
+                <h:panelGrid columns="2" cellpadding="7">
+                    <p:outputLabel for="text" value="Text"/>
+                    <p:inputText id="text" value="#{hotkeyView.text}"/>
+                </h:panelGrid>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

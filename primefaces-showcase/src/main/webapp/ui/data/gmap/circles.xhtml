@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+    </ui:define>
+
+    <ui:define name="title">
+        GMap <span class="subitem">Circles</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Any number of circles can be displayed on map. Circles can also respond to selection by via overlaySelect behavior.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/gmap"/>
+    <ui:param name="widgetLink" value="GMap-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form prependId="false">
+                <p:growl id="growl" life="3000"/>
+
+                <p:gmap id="gmap" center="36.880257,30.687417" zoom="13" type="HYBRID" style="width:100%;height:400px"
+                        model="#{circlesView.circleModel}">
+                    <p:ajax event="overlaySelect" listener="#{circlesView.onCircleSelect}" update="growl"/>
+                </p:gmap>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

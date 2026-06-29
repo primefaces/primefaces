@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TriStateCheckbox
+    </ui:define>
+
+    <ui:define name="description">
+        TriStateCheckbox add a new state to a checkbox value.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tristatecheckbox"/>
+    <ui:param name="widgetLink" value="TriStateCheckbox-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="growl" showDetail="true"/>
+
+                <h5 class="p-mt-0">Basic</h5>
+                <p:triStateCheckbox value="#{triStateCheckboxView.value1}"/>
+
+                <h5>Remote</h5>
+                <p:triStateCheckbox id="ajaxTriState" value="#{triStateCheckboxView.value2}">
+                    <p:ajax event="change" update="growl" listener="#{triStateCheckboxView.addMessage}"/>
+                </p:triStateCheckbox>
+
+                <h5>Custom Icons</h5>
+                <p:triStateCheckbox value="#{triStateCheckboxView.value3}" stateTwoIcon="pi pi-plus" stateThreeIcon="pi pi-minus"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:sc="http://primefaces.org/ui/showcase">
+
+    <ui:define name="head">
+    </ui:define>
+
+    <ui:define name="title">
+        Timeline <span class="subitem">Lazy loading of events</span>
+    </ui:define>
+
+    <ui:define name="description">
+        <p>
+            Timeline supports lazy loading of events during moving / zooming in the timeline.
+            This makes sense when event's loading is time-consuming. Events are loaded lazy
+            when <strong>p:ajax</strong> with <strong>event="lazyload"</strong> is attached to the
+            <strong>p:timeline</strong> tag.
+            The event class <strong>TimelineLazyLoadEvent</strong> contains one or two time ranges
+            the events should be loaded for (two times ranges occur when you zoom out the timeline).
+        </p>
+        <p>
+            <strong>Note:</strong> The "lazyload" listener is not invoked again when the visible time range
+            (incl. some hidden ranges defined by <strong>preloadFactor</strong>) already has lazy loaded events.
+        </p>
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="widgetLink" value="Timeline-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="growl" showSummary="true" showDetail="false">
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <div id="loadingText" style="font-weight:bold; margin:-5px 0 5px 0; visibility:hidden;">Loading ...
+                </div>
+
+                <p:timeline id="timeline" value="#{lazyTimelineView.model}"
+                            preloadFactor="#{lazyTimelineView.preloadFactor}"
+                            zoomMax="#{lazyTimelineView.zoomMax}" minHeight="170">
+                    <p:ajax event="lazyload" update="@none" listener="#{lazyTimelineView.onLazyLoad}"
+                            onstart="$('#loadingText').css('visibility', 'visible')"
+                            oncomplete="$('#loadingText').css('visibility', 'hidden')"/>
+                </p:timeline>
+
+                <h:panelGrid columns="2" style="margin-top:15px">
+                    <p:spinner id="spinner" value="#{lazyTimelineView.preloadFactor}"
+                               min="0" max="1" stepFactor="0.05"/>
+                    <p:commandButton value="Update Preload Factor" process="@this spinner" update="timeline"
+                                     action="#{lazyTimelineView.clearTimeline}"
+                                     style="margin-left:5px"/>
+                </h:panelGrid>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

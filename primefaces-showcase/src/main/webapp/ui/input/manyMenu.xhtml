@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        SelectManyMenu
+    </ui:define>
+
+    <ui:define name="description">
+        SelectManyMenu is used to choose multiple items from a list.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/selectmanymenu"/>
+    <ui:param name="widgetLink" value="SelectManyMenu"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5>Basic</h5>
+                <p:selectManyMenu value="#{selectManyView.selectedOptions}">
+                    <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
+                    <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+                    <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
+                </p:selectManyMenu>
+
+                <h5>Advanced</h5>
+                <p:selectManyMenu id="advanced" value="#{selectManyView.selectedCountries}"
+                                    converter="#{countryConverter}"
+                                    var="c" filter="true" filterMatchMode="contains" showCheckbox="true" styleClass="manymenu-advanced">
+                    <f:selectItems value="#{selectManyView.countries}" var="country" itemLabel="#{country.name}"
+                                    itemValue="#{country}"/>
+
+                    <p:column>
+                        <span class="flag flag-#{c.code}" style="width: 30px; height: 20px"/>
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText value="#{c.name}"/>
+                    </p:column>
+                </p:selectManyMenu>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

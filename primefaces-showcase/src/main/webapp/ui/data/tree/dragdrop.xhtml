@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Tree <span class="subitem">DragDrop</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Nodes can be reordered within the same tree or transferred between multiple trees using drag and drop.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tree"/>
+    <ui:param name="widgetLink" value="VerticalTree-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+                <h:panelGrid columns="3">
+                    <p:tree id="tree1" value="#{treeDNDView.root1}" var="node" selectionMode="single"
+                            selection="#{treeDNDView.selectedNode1}" style="width:16rem"
+                            draggable="true" droppable="true" dragdropScope="demo">
+                        <p:ajax event="dragdrop" listener="#{treeDNDView.onDragDrop}" update=":form:msgs"/>
+                        <p:treeNode>
+                            <h:outputText value="#{node}"/>
+                        </p:treeNode>
+                    </p:tree>
+
+                    <h:outputText styleClass="pi pi-sort-alt p-mx-5 text-secondary" style="transform: rotate(90deg); font-size: 3rem" />
+
+                    <p:tree id="tree2" value="#{treeDNDView.root2}" var="node" selectionMode="single"
+                            selection="#{treeDNDView.selectedNode2}" style="width:16rem"
+                            draggable="true" droppable="true" dragdropScope="demo">
+                        <p:ajax event="dragdrop" listener="#{treeDNDView.onDragDrop}" update=":form:msgs"/>
+                        <p:treeNode>
+                            <h:outputText value="#{node}"/>
+                        </p:treeNode>
+                    </p:tree>
+                </h:panelGrid>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Badge
+    </ui:define>
+
+    <ui:define name="description">
+        Badge is a small status indicator for another element.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/badge"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+	            <h5 class="p-mt-0">Numbers</h5>
+	            <p:badge value="2" styleClass="p-mr-2"></p:badge>
+	            <p:badge value="8" severity="success" styleClass="p-mr-2"></p:badge>
+	            <p:badge value="4" severity="info" styleClass="p-mr-2"></p:badge>
+	            <p:badge value="12" severity="warning" styleClass="p-mr-2"></p:badge>
+	            <p:badge value="3" severity="danger"></p:badge>
+
+	            <h5 class="p-mb-4">Positioned Badge</h5>
+	            <p:badge value="2">
+	                <i class="pi pi-bell" style="font-size: 2rem"/>
+	            </p:badge>
+	            <p:badge value="10+" severity="danger">
+	                <i class="pi pi-calendar p-ml-4" style="font-size: 2rem"/>
+	            </p:badge>
+	            <p:badge severity="danger">
+	                <i class="pi pi-envelope p-ml-4" style="font-size: 2rem"/>
+	            </p:badge>
+
+	            <h5>Button Badge</h5>
+	            <p:badge value="8">
+	                <p:commandButton value="Emails"/>
+	            </p:badge>
+	            <p:badge value="8" severity="danger">
+	                <p:commandButton value="Messages" icon="pi pi-users" styleClass="p-ml-4" />
+	            </p:badge>
+
+	            <h5>Sizes</h5>
+	            <p:badge value="2" styleClass="p-mr-2"></p:badge>
+	            <p:badge value="4" styleClass="p-mr-2" size="large" severity="warning"></p:badge>
+	            <p:badge value="6" size="xlarge" severity="success"></p:badge>
+
+	            <h5>Hidden</h5>
+	            <p:badge value="0" visible="false">
+	                <i class="pi pi-bell" style="font-size: 2rem"/>
+	            </p:badge>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

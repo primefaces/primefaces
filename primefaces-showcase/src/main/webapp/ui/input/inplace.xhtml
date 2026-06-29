@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+                
+    <ui:define name="title">
+        Inplace
+    </ui:define>
+
+    <ui:define name="description">
+        Inplace provides easy inplace editing and inline content display. For inplace editing, "save" and "cancel" ajax
+        behavior events are provided for customizing the use-case.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/inplace"/>
+    <ui:param name="widgetLink" value="Inplace-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5 class="p-mt-0">Basic</h5>
+                <p:inplace>
+                    <p:inputText value="Edit Me"/>
+                </p:inplace>
+
+                <h5>Edit</h5>
+                <p:inplace editor="true">
+                    <p:inputText value="#{inplaceView.text}" required="true" label="text"/>
+                </p:inplace>
+                
+                <h5>Double Click</h5>
+                <p:inplace label="Cities" effectSpeed="fast" event="dblclick">
+                    <p:selectOneMenu>
+                        <f:selectItem itemLabel="New York" itemValue="0"/>
+                        <f:selectItem itemLabel="London" itemValue="1"/>
+                        <f:selectItem itemLabel="Paris" itemValue="2"/>
+                        <f:selectItem itemLabel="Berlin" itemValue="3"/>
+                    </p:selectOneMenu>
+                </p:inplace>
+
+                <h5>Custom Content</h5>
+                <p:inplace effect="none">
+                    <f:facet name="output">
+                        Yes or No
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:selectBooleanCheckbox/>
+                    </f:facet>
+                </p:inplace>
+
+                <h5>Image</h5>
+                <p:inplace label="Show" effect="slide">
+                    <p:graphicImage name="/demo/images/nature/nature3.jpg"/>
+                </p:inplace>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

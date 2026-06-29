@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        SelectOneButton
+    </ui:define>
+
+    <ui:define name="description">
+        SelectOneButton is used to choose a single item from a list using buttons.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/selectonebutton"/>
+    <ui:param name="widgetLink" value="SelectOneButton-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:selectOneButton value="#{selectOneButtonView.option}">
+                    <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                    <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                    <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                </p:selectOneButton>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

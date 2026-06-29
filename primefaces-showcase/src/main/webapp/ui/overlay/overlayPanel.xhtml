@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Overlay Panel
+    </ui:define>
+
+    <ui:define name="description">
+        OverlayPanel is a generic container component that can overlay other components on page. Notable features are
+        custom positioning, configurable events and effects. Lazy content loading to reduce page load time is also supported via dynamic option, when enabled
+        overlayPanel will load the contents just before being shown.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/overlaypanel"/>
+    <ui:param name="widgetLink" value="OverlayPanel-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <h5>Basic</h5>
+                <p:commandButton id="basic" value="Show" type="button"/>
+                <p:overlayPanel for="basic" style="width:350px">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                        cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </p:overlayPanel>
+
+                <h5>Images</h5>
+                <p:commandButton id="images" type="button" icon="pi pi-image" />
+                <p:overlayPanel for="images" dismissable="false" showCloseIcon="true">
+                    <p:imageSwitch effect="fade">
+                        <ui:repeat value="#{imageSwitchView.images}" var="image">
+                            <p:graphicImage name="/demo/images/nature/#{image}"/>
+                        </ui:repeat>
+                    </p:imageSwitch>
+                </p:overlayPanel>
+
+                <h5>Choose Data</h5>
+                <p:growl id="msgs" showDetail="true" />
+
+                <p:commandButton id="movieBtn" value="Find" type="button" icon="pi pi-search" />
+                <p:overlayPanel for="movieBtn" dynamic="true" style="width:600px" widgetVar="moviePicker">
+                    <p:dataTable var="movie" value="#{movieView.movieList}" rows="5" paginator="true" selectionMode="single"
+                        selection="#{movieView.movie}" rowKey="#{movie.movie}">
+                        <p:ajax event="rowSelect" listener="#{movieView.onRowSelect}" update=":form:msgs" oncomplete="PF('moviePicker').hide()"/>
+
+                        <p:column headerText="Movie">
+                            <h:outputText value="#{movie.movie}"/>
+                        </p:column>
+
+                        <p:column headerText="Directed By">
+                            <h:outputText value="#{movie.directedBy}"/>
+                        </p:column>
+
+                        <p:column headerText="Genres">
+                            <h:outputText value="#{movie.genres}"/>
+                        </p:column>
+
+                        <p:column headerText="Run Time(min.)">
+                            <h:outputText value="#{movie.runTime}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:overlayPanel>
+
+                <h5>Data Iteration</h5>
+                <p:dataTable id="basicDT" var="product" value="#{dtSelectionView.products1}">
+                    <p:column style="width:32px;text-align: center">
+                        <p:commandButton update=":form:productDetail" styleClass="ui-button-flat"
+                                         oncomplete="PF('productOP').show('#{component.clientId}')"
+                                         icon="pi pi-search" title="View">
+                            <f:setPropertyActionListener value="#{product}"
+                                                         target="#{dtSelectionView.selectedProduct}"/>
+                        </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}"/>
+                    </p:column>
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}"/>
+                    </p:column>
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}"/>
+                    </p:column>
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}"/>
+                    </p:column>
+                </p:dataTable>
+
+                <p:overlayPanel widgetVar="productOP" dismissable="false" showCloseIcon="true" dynamic="true">
+                    <p:outputPanel id="productDetail" style="text-align:center;">
+                        <p:column rendered="#{not empty dtSelectionView.selectedProduct}">
+                            <div class="product">
+                                <div class="product-grid-item p-p-3 border-0">
+                                    <div class="product-grid-item-top">
+                                        <div>
+                                            <i class="pi pi-tag product-category-icon"/>
+                                            <span class="product-category">#{dtSelectionView.selectedProduct.category}</span>
+                                        </div>
+                                        <span class="product-badge status-#{dtSelectionView.selectedProduct.inventoryStatus.name().toLowerCase()}">#{dtSelectionView.selectedProduct.inventoryStatus.text}</span>
+                                    </div>
+                                    <div class="product-grid-item-content">
+                                        <p:graphicImage
+                                                name="demo/images/product/#{dtSelectionView.selectedProduct.image}"/>
+                                        <div class="product-name">#{dtSelectionView.selectedProduct.name}</div>
+                                        <div class="product-description">#{dtSelectionView.selectedProduct.description}</div>
+                                        <p:rating readonly="true" value="#{dtSelectionView.selectedProduct.rating}"/>
+                                    </div>
+                                    <div class="product-grid-item-bottom">
+                                        <h:outputText value="#{dtSelectionView.selectedProduct.price}"
+                                                      styleClass="product-price">
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                        <p:commandButton value="Add To Cart" icon="pi pi-shopping-cart"
+                                                         disabled="#{dtSelectionView.selectedProduct.inventoryStatus == 'OUTOFSTOCK'}">
+                                        </p:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:column>
+                    </p:outputPanel>
+                </p:overlayPanel>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

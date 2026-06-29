@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        StaticMessage
+    </ui:define>
+
+    <ui:define name="description">
+        StaticMessage component can be used to display a message without the use of a FacesMessages.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/staticmessage"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-4">
+                    <p:staticMessage severity="info" summary="INFO" detail="Message Content" style="width: 100%"/>
+                </div>
+                <div class="p-col-12 p-md-4">
+                    <p:staticMessage severity="warn" summary="WARN" detail="Message Content" style="width: 100%"/>
+                </div>
+                <div class="p-col-12 p-md-4">
+                    <p:staticMessage severity="error" summary="ERROR" detail="Message Content" style="width: 100%"/>
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Dialog Framework <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        An external page can be displayed in a dynamically generated dialog on runtime.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/dialogframework"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:commandButton value="View" icon="pi pi-home" action="#{dfView.viewProducts}" styleClass="p-mr-2" />
+                <p:commandButton value="Options" icon="pi pi-cog" action="#{dfView.viewProductsCustomized}" styleClass="ui-button-outlined"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/ui/df/viewProducts.xhtml">
+            <f:attribute name="flatten" value="true"/>
+        </p:tab>
+    </ui:define>
+
+</ui:composition>

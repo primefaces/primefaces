@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        KeyFilter
+    </ui:define>
+
+    <ui:define name="description">
+        KeyFilter can be used to filter keyboard input on specified input components.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/keyfilter"/>
+    <ui:param name="widgetLink" value="KeyFilter"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5>Number</h5>
+                <p:inputText>
+                    <p:keyFilter mask="num" />
+                </p:inputText>
+
+                <h5>Regex</h5>
+                <p:inputText>
+                    <p:keyFilter regEx="/[ABC]/i"/>
+                </p:inputText>
+
+                <h5>AutoComplete with TestFunction</h5>
+                <p:autoComplete id="autoComplete1" value="#{autoCompleteView.txt1}"
+                                completeMethod="#{autoCompleteView.completeText}"/>
+
+                <p:keyFilter for="autoComplete1" testFunction="return c == 'z';"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

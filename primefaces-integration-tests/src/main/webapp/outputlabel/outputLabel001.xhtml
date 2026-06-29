@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite/composite">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <h:panelGrid columns="2" cellpadding="7">
+
+                <p:outputLabel id="required" for="@next" value="Required"/>
+                <p:inputText id="inputrequired" required="true"/>
+
+                <p:outputLabel id="notrequired" for="@next" value="Not Required" indicateRequired="false"/>
+                <p:inputText required="true"/>
+
+                <p:outputLabel id="indicaterequired" for="@next" value="Indicate Required" indicateRequired="true"/>
+                <p:inputText required="false"/>
+
+                <p:outputLabel id="disabled" for="@next" value="Disabled"/>
+                <p:inputText required="true" disabled="true"/>
+
+                <p:outputLabel id="readonly" for="@next" value="Read Only"/>
+                <p:inputText required="true" readonly="true"/>
+
+                <p:outputLabel id="disabledSkipped" for="@next" value="Disabled Skipped" indicateRequired="autoSkipDisabled" />
+                <p:inputText required="true" disabled="true"/>
+
+                <p:outputLabel id="readonlySkipped" for="@next" value="Read Only Skipped" indicateRequired="autoSkipDisabled" />
+                <p:inputText required="true" readonly="true"/>
+
+                <p:outputLabel id="enabledNotSkipped" for="@next" value="Enabled Not Skipped" indicateRequired="autoSkipDisabled" />
+                <p:inputText required="true" disabled="false"/>
+
+                <p:outputLabel id="readonlyNotSkipped" for="@next" value="Read Only Not Skipped" indicateRequired="autoSkipDisabled" />
+                <p:inputText required="true" readonly="false"/>
+
+                <p:outputLabel id="noannotations" for="@next" value="Label with no annotations:"/>
+                <p:inputText value="#{outputLabel001.nullableValue}"/>
+
+                <p:outputLabel id="notnull" for="@next" value="Label which considers @NotNull:"/>
+                <p:inputText value="#{outputLabel001.notnull}"/>
+
+                <p:outputLabel id="notempty" for="@next" value="Label which considers @NotEmpty:"/>
+                <p:inputText value="#{outputLabel001.notempty}"/>
+
+                <p:outputLabel id="notblank" for="@next" value="Label which considers @NotBlank:"/>
+                <p:inputText value="#{outputLabel001.notblank}"/>
+
+                <p:outputLabel id="composite1" for="@next" value="Label for input wrapped in composite not required:"/>
+                <composite:inputTextWrapper value="#{outputLabel001.nullableValue}" required="false"/>
+
+                <p:outputLabel id="composite2" for="@next" value="Label for input wrapped in composite, considering @NotNull:"/>
+                <composite:inputTextWrapper value="#{outputLabel001.notnull}"/>
+
+                <p:outputLabel id="composite3" for="@next" value="Label for input wrapped in composite required:"/>
+                <composite:inputTextWrapper value="#{outputLabel001.nullableValue}" required="true"/>
+
+            </h:panelGrid>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

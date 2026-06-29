@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            /**
+             * Faces Validator
+             */
+            PrimeFaces.validator['custom.emailValidator'] = {
+
+                pattern: /\S+@\S+/,
+
+                validate: function (element, value) {
+                    //use element.data() to access validation metadata, in this case there is none.
+                    if (!this.pattern.test(value)) {
+                        throw {
+                            summary: 'Validation Error',
+                            detail: value + ' is not a valid email.',
+                            severity: 'error'
+                        }
+                    }
+                }
+            };
+
+            /**
+             * Bean validator
+             */
+            PrimeFaces.validator['Email'] = {
+
+                pattern: /\S+@\S+/,
+
+                MESSAGE_ID: 'org.primefaces.examples.validate.email.message',
+
+                validate: function (element, value) {
+                    var vc = PrimeFaces.validation.ValidationContext;
+
+                    if (!this.pattern.test(value)) {
+                        var msgStr = element.data('p-email-msg'),
+                            msg = msgStr ? {summary: 'Validation Error', detail: msgStr, severity: 'error'} : vc.getMessage(this.MESSAGE_ID);
+
+                        throw msg;
+                    }
+                }
+            };
+            //]]>
+        </script>
+    </ui:define>
+
+    <ui:define name="title">
+        Client Side Validation <span class="subitem">Custom</span>
+    </ui:define>
+
+    <ui:define name="description">
+        A custom client converter or a validator can be implemented easily. Both JSF and Bean Validation APIs are supported.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/csvJavascriptAPI"/>
+    <ui:param name="primefacesClientApiLink" value="interfaces/src_PrimeFaces.PrimeFaces.Validator.html" />
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl showDetail="true"/>
+
+                <h:panelGrid columns="4" cellpadding="7">
+                    <h:outputLabel for="email1" value="Email 1: (JSF Validation)"/>
+                    <p:inputText id="email1" value="#{customValidationView.text}">
+                        <f:validator validatorId="custom.emailValidator"/>
+                    </p:inputText>
+                    <p:message for="email1" display="tooltip"/>
+                    <h:outputText value="#{customValidationView.text}"/>
+
+                    <h:outputLabel for="email2" value="Email 2: (Bean Validation)"/>
+                    <p:inputText id="email2" value="#{customValidationView.email}"/>
+                    <p:message for="email2" display="tooltip"/>
+                    <h:outputText value="#{customValidationView.email}"/>
+                </h:panelGrid>
+                
+                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="p-mt-3" />
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/org/primefaces/showcase/view/csv/EmailValidator.java"/>
+
+        <p:tab title="/org/primefaces/showcase/view/csv/Email.java"/>
+
+        <p:tab title="/org/primefaces/showcase/view/csv/EmailConstraintValidator.java"/>
+
+        <p:tab title="/org/primefaces/showcase/view/csv/EmailClientValidationConstraint.java"/>
+    </ui:define>
+
+</ui:composition>

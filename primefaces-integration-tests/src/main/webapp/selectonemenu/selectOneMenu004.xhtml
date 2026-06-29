@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:selectOneMenu id="selectonemenu" value="#{selectOneMenu004.console}" dynamic="true">
+                <f:selectItem itemLabel="Select One" itemValue=""/>
+                <f:selectItem itemLabel="Xbox One" itemValue="Xbox One" />
+                <f:selectItem itemLabel="PS4" itemValue="PS4" itemDescription="Playstation 4" />
+                <f:selectItem itemLabel="PS5" itemValue="PS5" itemDisabled="true" />
+                <f:selectItem itemLabel="Wii U" itemValue="Wii U" />
+            </p:selectOneMenu>
+
+            <p:selectOneMenu id="selectonemenu2" value="#{selectOneMenu004.console2}" dynamic="true">
+                <f:selectItem itemLabel="Select One" itemValue=""/>
+                <f:selectItem itemLabel="Xbox One" itemValue="Xbox One" />
+                <f:selectItem itemLabel="PS4" itemValue="PS4" itemDescription="Playstation 4" />
+                <f:selectItem itemLabel="PS5" itemValue="PS5" itemDisabled="true" />
+                <f:selectItem itemLabel="Wii U" itemValue="Wii U" />
+            </p:selectOneMenu>
+
+            <p:commandButton id="button" update="@form" value="Submit" action="#{selectOneMenu004.submit()}" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

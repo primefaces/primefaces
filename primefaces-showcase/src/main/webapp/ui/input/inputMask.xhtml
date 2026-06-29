@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        InputMask
+    </ui:define>
+
+    <ui:define name="description">
+        InputMask component forces input to be formatted in a certain pattern.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/inputmask"/>
+    <ui:param name="widgetLink" value="InputMask"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-field p-col-12 p-md-4">
+                    <p:outputLabel for="date" value="Date"/>
+                    <p:inputMask id="date" value="#{maskView.date}" mask="99/99/9999"/>
+                </div>
+
+                <div class="p-field p-col-12 p-md-4">
+                    <p:outputLabel for="phone" value="Phone"/>
+                    <p:inputMask id="phone" value="#{maskView.phone}" mask="(999) 999-9999" validateMask="true"/>
+                </div>
+
+                <div class="p-field p-col-12 p-md-4">
+                    <p:outputLabel for="phoneWithExt" value="Phone with Ext:"/>
+                    <p:inputMask id="phoneWithExt" value="#{maskView.phoneExt}" mask="(999) 999-9999[ x99999]"/>
+                </div>
+
+                <div class="p-field p-col-12 p-md-4">
+                    <p:outputLabel for="taxId" value="Tax Id"/>
+                    <p:inputMask id="taxId" value="#{maskView.taxId}" mask="99-9999999" validateMask="true"/>
+                </div>
+
+                <div class="p-field p-col-12 p-md-4">
+                    <p:outputLabel for="ssn" value="SSN"/>
+                    <p:inputMask id="ssn" value="#{maskView.ssn}" mask="999-99-9999" validateMask="true"/>
+                </div>
+
+                <div class="p-field p-col-12 p-md-4">
+                    <p:outputLabel for="key" value="Product Key"/>
+                    <p:inputMask id="key" value="#{maskView.productKey}" mask="a*-999-a999" validateMask="true"/>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

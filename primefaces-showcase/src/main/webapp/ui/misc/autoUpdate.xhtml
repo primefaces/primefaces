@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        AutoUpdate
+    </ui:define>
+
+    <ui:define name="description">
+        AutoUpdate is a utility tag, which registers the attached/parent component to be updated automatically on each ajax request. 
+        All ajaxified components (includes p:ajax) provides an attribute, to mark the current request to ignore all autoUpdates.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/autoupdate"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:outputPanel styleClass="p-mb-3">
+                    <p:autoUpdate/>
+
+                    Time: #{autoUpdateView.time}
+                </p:outputPanel>
+
+                <p:commandButton value="AJAX request" update="@none" process="@this" styleClass="p-mr-2" />
+                <p:commandButton value="Ignore AutoUpdate" update="@none" process="@this" ignoreAutoUpdate="true"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

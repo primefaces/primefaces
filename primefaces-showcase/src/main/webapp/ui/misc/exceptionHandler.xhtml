@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ExceptionHandler
+    </ui:define>
+
+    <ui:define name="description">
+        PrimeFaces provides a powerful ExceptionHandler out of the box with following features:
+        <ul>
+            <li>featuring support for AJAX and non-AJAX requests</li>
+            <li>ability to use error-page configuration in web.xml</li>
+            <li>an EL extension called \#{pfExceptionHandler} to provide information about the exception</li>
+            <li>p:ajaxExceptionHandler component to customize AJAX exception handling on the current view</li>
+        </ul>
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/errorhandling"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5 class="p-mt-0">AJAX</h5>
+                <p:commandButton action="#{exceptionHandlerView.throwViewExpiredException}"
+                                 ajax="true"
+                                 value="Throw ViewExpiredException!" styleClass="p-mr-2" />
+                <p:commandButton action="#{exceptionHandlerView.throwNullPointerException}"
+                                 ajax="true"
+                                 value="Throw NullPointerException!"/>
+                <!-- IllegalStateException is not handled using ajaxExceptionHandlers below, so the error page is shown-->
+                <p:commandButton action="#{exceptionHandlerView.throwWrappedIllegalStateException}"
+                                 ajax="true"
+                                 value="Throw IllegalStateException!" styleClass="p-mr-2"/>
+
+                <h5>Non-AJAX</h5>
+                <p:commandButton action="#{exceptionHandlerView.throwViewExpiredException}"
+                                 ajax="false"
+                                 value="Throw ViewExpiredException!" styleClass="p-mr-2"/>
+                <!-- NullPointerException has no specific error-page defined in web.xml compared to ViewExpiredException -->
+                <!-- https://github.com/primefaces/showcase-facelift/blob/master/src/main/webapp/WEB-INF/web.xml -->
+                <p:commandButton action="#{exceptionHandlerView.throwNullPointerException}"
+                                 ajax="false"
+                                 value="Throw NullPointerException!"/>
+
+
+                <p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException"
+                                        update="exceptionDialog"
+                                        onexception="PF('exceptionDialog').show()" />
+
+                <p:ajaxExceptionHandler type="java.lang.NullPointerException"
+                                        update="exceptionDialog"
+                                        onexception="PF('exceptionDialog').show()"/>
+
+                <p:dialog id="exceptionDialog" header="Exception '#{pfExceptionHandler.type}' occured!"
+                          widgetVar="exceptionDialog"
+                          height="500px">
+                    Message: #{pfExceptionHandler.message} <br/>
+                    StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false"/> <br/>
+
+                    <p:button onclick="document.location.href = document.location.href;"
+                              value="Reload!"
+                              rendered="#{pfExceptionHandler.type == 'javax.faces.application.ViewExpiredException'}"/>
+                </p:dialog>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

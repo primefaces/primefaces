@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .box {
+                min-height: 100px;
+                min-width: 150px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 600;
+                margin: 2rem;
+                border-radius: 4px;
+                background-color: var(--surface-e);
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="content-section introduction">
+            <div class="feature-intro">
+                <h1>Elevation</h1>
+                <p>Elevation is an add-on utility of <a href="https://github.com/primefaces/primeflex">PrimeFlex</a> and used to specify the separation between surfaces and elements along the z-axis.</p>
+            </div>
+        </div>
+
+        <div class="content-section implementation">
+            <div class="p-grid">
+                <ui:repeat var="level" value="#{elevationView.levels}" varStatus="iterator">
+                    <div class="p-col">
+                        <div class="box p-shadow-#{iterator.index + 1}">
+                            p-shadow-#{iterator.index + 1}
+                        </div>
+                    </div>
+                </ui:repeat>
+            </div>
+        </div>
+
+        <div class="content-section documentation">
+            <p:tabView>
+                <p:tab title="Documentation">
+                    <h5>Getting Started</h5>
+                    <p>Elevation is added to an element using the <i>.p-shadow-{level}</i> class.</p>
+
+<pre class="language-xml"><code>
+&lt;div class="p-shadow-1"&gt;&lt;/div&gt;
+
+</code></pre>
+    
+                    <h5>Levels</h5>
+                    <p>There are 24 depths available varying from 1 to 24.</p>
+
+<pre class="language-xml"><code>
+&lt;div class="p-shadow-1"&gt;&lt;/div&gt;
+&lt;div class="p-shadow-24"&gt;&lt;/div&gt;
+
+</code></pre>
+
+                    <h5>Customization</h5>
+                    <p>A custom build with different values can be obtained from <a href="https://github.com/primefaces/primeflex">PrimeFlex</a> using the _variables.scss file.</p>
+                </p:tab>
+                <p:tab title="Source">
+<pre class="language-xml"><code>
+&lt;div class="p-grid"&gt;
+    &lt;ui:repeat var="level" value="#{elevationView.levels}" varStatus="iterator"&gt;
+        &lt;div class="p-col"&gt;
+            &lt;div class="box p-shadow-#{iterator.index + 1}"&gt;
+                p-shadow-\#{iterator.index + 1}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/ui:repeat&gt;
+&lt;/div&gt;
+
+</code></pre>                  
+                </p:tab>
+            </p:tabView>
+        </div>
+        
+    </ui:define>
+
+</ui:composition>

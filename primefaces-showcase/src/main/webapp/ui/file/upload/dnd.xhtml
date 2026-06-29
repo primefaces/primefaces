@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            body .ui-inputfield.ui-state-drag {
+                background: #ffffd6;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        FileUpload <span class="subitem">Drag and Drop</span>
+    </ui:define>
+
+    <ui:define name="description">
+        In supported browsers, a file can be selected by dragdrop from filesystem. FileUpload component itself is the drop zone.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/fileupload"/>
+    <ui:param name="widgetLink" value="FileUpload-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <h5>Basic</h5>
+                <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="true"
+                              update="messages" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+
+                <h5>Drop Zone</h5>
+                <div class="ui-fluid">
+                    <div class="p-field">
+                        <p:inputTextarea id="customDropZone" widgetVar="textarea"
+                                         rows="5" value="#{fileUploadView.dropZoneText}"/>
+                        <small>
+                            Drop on the text area to upload, or
+                            <p:link value="choose" onclick="PF('uploadDnd').show();return false" style="font-size:inherit"/>.
+                        </small>
+                    </div>
+                </div>
+                <p:fileUpload widgetVar="uploadDnd" listener="#{fileUploadView.handleFileUploadTextarea}"
+                              sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" dropZone="customDropZone"
+                              style="display: none"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

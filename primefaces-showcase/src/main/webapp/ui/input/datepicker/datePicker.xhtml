@@ -1,0 +1,228 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Anterior',
+                nextText: 'Siguiente',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Sólo hora',
+                timeText: 'Tiempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                millisecondText: 'Milisegundo',
+                currentText: 'Fecha actual',
+                ampm: false,
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText: 'Todo el día',
+                today: 'Hoy',
+                clear: 'Claro'
+            };
+            PrimeFaces.locales ['de'] = {
+                closeText: 'Schließen',
+                prevText: 'Zurück',
+                nextText: 'Weiter',
+                monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+                monthNamesShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+                dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+                dayNamesShort: ['Son', 'Mon', 'Die', 'Mit', 'Don', 'Fre', 'Sam'],
+                dayNamesMin: ['S', 'M', 'D', 'M ', 'D', 'F ', 'S'],
+                weekHeader: 'Woche',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Nur Zeit',
+                timeText: 'Zeit',
+                hourText: 'Stunde',
+                minuteText: 'Minute',
+                secondText: 'Sekunde',
+                millisecondText: 'Millisekunde',
+                currentText: 'Aktuelles Datum',
+                ampm: false,
+                month: 'Monat',
+                week: 'Woche',
+                day: 'Tag',
+                allDayText: 'Ganzer Tag',
+                today: 'Heute',
+                clear: 'Löschen'
+            };
+        </script>
+
+        <script type="text/javascript">
+            //<![CDATA[
+            function dateTemplateFunc(date) {
+                return '<span style="background-color:' + ((date.day < 21 && date.day > 10) ? '#81C784' : 'inherit') + ';border-radius:50%;width: 2.5rem;height: 2.5rem;line-height: 2.5rem;display: flex;align-items: center;justify-content: center;">' + date.day + '</span>';
+            }
+
+            //]]>
+        </script>
+
+        <style type="text/css">
+            .value {
+                font-weight: bold;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        DatePicker <span class="subitem">java.util.Date</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DatePicker is an input component to select datetime.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datepicker"/>
+    <ui:param name="widgetLink" value="DatePicker-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+                <h5 class="p-mt-0">Popup</h5>
+                <div class="ui-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="basic" value="Basic"/>
+                        <p:datePicker id="basic" value="#{calendarView.date}" />
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="multiselect" value="Multiple Selection"/>
+                        <p:datePicker id="multiselect" selectionMode="multiple" value="#{calendarView.multi}" readonlyInput="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="range" value="Range Selection"/>
+                        <p:datePicker id="range" selectionMode="range" value="#{calendarView.range}" readonlyInput="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="navigator" value="Navigator"/>
+                        <p:datePicker id="navigator" value="#{calendarView.date2}" monthNavigator="true" yearNavigator="true" showWeek="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="month" value="Month Picker"/>
+                        <p:datePicker id="month" view="month" value="#{calendarView.date3}" pattern="MM/yyyy" yearNavigator="true" yearRange="2000:2030"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="touch" value="Touch UI"/>
+                        <p:datePicker id="touch" value="#{calendarView.date4}" touchUI="true" showOtherMonths="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="dateTemplate" value="Date Template"/>
+                        <p:datePicker id="dateTemplate" value="#{calendarView.date5}" dateTemplate="dateTemplateFunc"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="disabledDD" value="Disabled Date/Day"/>
+                        <p:datePicker id="disabledDD" value="#{calendarView.date6}"
+                                      disabledDays="#{calendarView.invalidDays}"
+                                      disabledDates="#{calendarView.invalidDates}" readonlyInput="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="button" value="Button"/>
+                        <p:datePicker id="button" value="#{calendarView.date7}" showIcon="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="event" value="Select Event"/>
+                        <p:datePicker id="event" value="#{calendarView.date8}">
+                            <p:ajax event="dateSelect" listener="#{calendarView.onDateSelect}" update="msgs"/>
+                        </p:datePicker>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="spanish" value="Spanish"/>
+                        <p:datePicker id="spanish" value="#{calendarView.date9}" locale="es" monthNavigator="true"
+                                  pattern="yyyy-MMM-dd"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="german" value="German"/>
+                        <p:datePicker id="german" value="#{calendarView.dateDe}" locale="de" monthNavigator="true"
+                                  pattern="dd.MM.yyyy"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="buttonbar" value="Button Bar"/>
+                        <p:datePicker id="buttonbar" value="#{calendarView.date10}" showButtonBar="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="minmax" value="Min-Max"/>
+                        <p:datePicker id="minmax" value="#{calendarView.date11}" mindate="#{calendarView.minDate}"
+                                      maxdate="#{calendarView.maxDate}" readonlyInput="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="multi" value="Multiple Months"/>
+                        <p:datePicker id="multi" value="#{calendarView.date12}" numberOfMonths="3" monthNavigator="true" yearNavigator="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="time" value="Time"/>
+                        <p:datePicker id="time" value="#{calendarView.date13}" showTime="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="timeMinMax" value="Time (Min-Max)"/>
+                        <p:datePicker id="timeMinMax" value="#{calendarView.date16}" showTime="true"
+                                  mindate="#{calendarView.minDateTime}" maxdate="#{calendarView.maxDateTime}"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="timeDe" value="Time (German)"/>
+                        <p:datePicker id="timeDe" value="#{calendarView.dateTimeDe}" showTime="true" locale="de"
+                                  pattern="dd.MM.yyyy"/>
+
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="timeonly" value="Time Only"/>
+                        <p:datePicker id="timeonly" value="#{calendarView.date14}" timeOnly="true" pattern="HH:mm"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="timeonlyMinMax" value="Time Only (Min-Max)"/>
+                        <p:datePicker id="timeonlyMinMax" value="#{calendarView.date15}" timeOnly="true" pattern="HH:mm"
+                                  mindate="#{calendarView.minTime}" maxdate="#{calendarView.maxTime}"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="timeonlyMillis" value="Time Only with seconds and milliseconds"/>
+                        <p:datePicker id="timeonlyMillis" value="#{calendarView.date15}" timeOnly="true"
+                                      pattern="HH:mm:ss.SSS" showSeconds="true" showMilliseconds="true"/>
+                    </div>
+                </div>
+
+                <h5>Inline</h5>
+                <p:datePicker id="inline" value="#{calendarView.date1}" inline="true"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

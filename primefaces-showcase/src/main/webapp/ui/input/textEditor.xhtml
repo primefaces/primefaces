@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Text Editor
+    </ui:define>
+
+    <ui:define name="description">
+        Editor is an input component with rich text editing features.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/texteditor"/>
+    <ui:param name="widgetLink" value="TextEditor-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5 class="p-mt-0">Basic</h5>
+                <p:textEditor widgetVar="editor1" value="#{editorView.text}" height="300"  />
+
+                <h3 class="first">Custom Toolbar</h3>
+                <p:textEditor widgetVar="editor2" value="#{editorView.text2}" height="300" placeholder="Enter your content">
+                    <f:facet name="toolbar">
+                     <span class="ql-formats">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                    </span>
+                        <span class="ql-formats">
+                        <select class="ql-font"></select>
+                        <select class="ql-size"></select>
+                    </span>
+                    </f:facet>
+                </p:textEditor>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
+

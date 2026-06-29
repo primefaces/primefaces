@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Panel
+    </ui:define>
+
+    <ui:define name="description">
+        Panel is a grouping component with a header, content and footer.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/panel"/>
+    <ui:param name="widgetLink" value="Panel-1"/>
+
+    <ui:define name="implementation">
+        <h:form>
+            <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+            <h5 class="p-mt-0">Regular</h5>
+            <p:panel header="Header" footer="Movie Details">
+                <p class="p-m-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+            </p:panel>
+
+            <h5>Toggleable</h5>
+            <p:panel header="Header" toggleable="true" closable="true" toggleSpeed="500"
+                        closeSpeed="500" widgetVar="panel">
+
+                <p:ajax event="close" listener="#{panelView.onClose}" update="msgs"/>
+                <p:ajax event="toggle" listener="#{panelView.onToggle}" update="msgs"/>
+
+                <p class="p-m-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+
+                <f:facet name="options">
+                    <p:menu>
+                        <p:submenu label="Settings">
+                            <p:menuitem value="Toggle" url="#" icon="pi pi-clone" onclick="PF('panel').toggle()"/>
+                            <p:menuitem value="Remove" url="#" icon="pi pi-times" onclick="PF('panel').close()"/>
+                        </p:submenu>
+                    </p:menu>
+                </f:facet>
+            </p:panel>
+
+            <h5>Custom Toolbar</h5>
+            <p:panel id="custom" header="Header">
+                <p class="p-m-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+
+                <f:facet name="actions">
+                    <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+                            <h:outputText styleClass="ui-icon pi pi-question"/>
+                    </p:commandLink>
+                    <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+                        <h:outputText styleClass="ui-icon pi pi-star"/>
+                    </p:commandLink>
+                </f:facet>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        CommandLink
+    </ui:define>
+
+    <ui:define name="description">
+        CommandLink is an action component to process forms and invoke listeners remotely.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/commandlink"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="growl" life="2000"/>
+
+                <p:commandLink id="ajax" update="growl" action="#{buttonView.buttonAction}" style="margin-right:20px;">
+                    <h:outputText value="Ajax Post"/>
+                </p:commandLink>
+
+                <p:commandLink id="nonAjax" action="#{buttonView.buttonAction}" style="margin-right:20px;" ajax="false">
+                    <h:outputText value="Regular Post"/>
+                </p:commandLink>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

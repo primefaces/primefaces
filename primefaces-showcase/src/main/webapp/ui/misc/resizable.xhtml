@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">
+        Resizable
+    </ui:define>
+
+    <ui:define name="description">
+        Resizable adds resize handlers to the target component.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/resizable"/>
+    <ui:param name="widgetLink" value="Resizable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:panel id="basic" header="Basic" styleClass="p-mb-2">
+                Resizable Panel
+            </p:panel>
+            <p:resizable for="basic"/>
+
+            <p:panel id="aspectRatio" header="Aspect Ratio" styleClass="p-mb-2">
+                Resize with aspect ratio
+            </p:panel>
+            <p:resizable for="aspectRatio" aspectRatio="true"/>
+
+            <p:panel id="ghost" header="Ghost" styleClass="p-mb-2">
+                A ghost is displayed during resize
+            </p:panel>
+            <p:resizable for="ghost" ghost="true"/>
+
+            <p:panel id="animation" header="Animated" styleClass="p-mb-2">
+                Animation enabled while resizing
+            </p:panel>
+            <p:resizable for="animation" animate="true" effect="swing" effectDuration="normal"/>
+
+            <p:panel id="boundaries" header="Boundaries" style="width:300px;height:150px;" styleClass="p-mb-2">
+                Min and Max boundaries
+            </p:panel>
+            <p:resizable for="boundaries" minWidth="200" maxWidth="400" minHeight="100" maxHeight="200"/>
+
+            <p:panel id="grid" header="Grid" styleClass="p-mb-2">
+                Resize offset set to 20 pixels.
+            </p:panel>
+            <p:resizable for="grid" grid="20"/>
+
+            <p:panel id="handles" header="Handles" styleClass="p-mb-2">
+                Can be resized to any direction.
+            </p:panel>
+            <p:resizable for="handles" handles="e,w,n,se,sw,ne,nw"/>
+
+            <p:outputPanel id="containmentPanel" layout="block"
+                           style="width:400px;height:200px;border:2px solid var(--surface-d);">
+                <p:panel id="containment" header="Containment">
+                    Restricted to parent element boundaries.
+                </p:panel>
+                <p:resizable for="containment" containment="true"/>
+            </p:outputPanel>
+
+            <h5>Ajax Callback</h5>
+            <h:form>
+                <p:growl id="growl" showDetail="true"/>
+
+                <p:graphicImage id="nature" name="demo/images/nature/nature5.jpg" styleClass="p-shadow-2" />
+
+                <p:resizable for="nature" animate="true" ghost="true">
+                    <p:ajax listener="#{resizableView.onResize}" update="growl"/>
+                </p:resizable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

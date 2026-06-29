@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+	<title>PrimeFaces Test</title>
+	<style>
+		.flex-container {
+		    display: flex;
+		}
+		.flex-child {
+			flex: 1;
+			border: 2px solid yellow;
+		}
+		.flex-child:first-child {
+			margin-right: 20px;
+		} 
+	</style>
+</h:head>
+<h:body>
+	<h:form id="form">
+		<ol>
+			<li>filter on name with value BB2</li>
+			<li>change all BB2 row values to BB3, press Save [result=OK]</li>
+			<li>remove filter BB2, press Save [result=OK]</li>
+			<li>sort on code, press Save [result=WRONG] data rows switch with primefaces 10!</li>
+		</ol>
+		<p:messages>
+			<p:autoUpdate />
+		</p:messages>
+		<p:commandButton value="Reset" action="#{dataTable028.reset()}" process="@this" />
+		<p:commandButton value="Save" action="#{dataTable028.doSaveAll()}" id="cmdSave"
+			process="@this referenceTable" update="result referenceTable" />
+		<div class="card">
+			<p:dataTable id="referenceTable" widgetVar="referenceTableWidget" filterEvent="enter"
+				var="reference" value="#{dataTable028.references}"
+				paginator="true" rows="10" paginatorPosition="bottom" size="small">
+				<p:column field="id" />
+				<p:column sortBy="#{reference.domain}" filterBy="#{reference.domain}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Domain" />
+					</f:facet>
+					<f:facet name="filter">
+						<p:inputText styleClass="filter" onchange="PF('referenceTableWidget').filter()" />
+					</f:facet>
+					<p:selectOneMenu value="#{reference.domain}" label="Domain">
+						<f:selectItem itemLabel="EUR" itemValue="EUR" />
+						<f:selectItem itemLabel="USA" itemValue="USA" />
+					</p:selectOneMenu>
+				</p:column>
+				<p:column headerText="Code" sortBy="#{reference.code}" filterBy="#{reference.code}" filterMatchMode="contains">
+					<p:inputText value="#{reference.code}" />
+				</p:column>
+				<p:column headerText="Name" sortBy="#{reference.name}" filterBy="#{reference.name}" filterMatchMode="contains">
+					<p:inputText value="#{reference.name}" />
+				</p:column>
+			</p:dataTable>
+			<p:outputPanel class="flex-container" id="result">
+				<div class="flex-child" id="debugInitial">
+					<pre>#{dataTable028.startData}</pre>
+				</div>
+				<div class="flex-child" id="debugActual">
+					<pre>#{dataTable028.resultData}</pre>
+				</div>
+			</p:outputPanel>
+		</div>
+	</h:form>
+</h:body>
+</html>

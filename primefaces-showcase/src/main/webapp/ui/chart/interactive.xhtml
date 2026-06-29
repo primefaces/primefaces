@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .right div {
+                float: right;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Charts <span class="subitem">Interactive</span>
+    </ui:define>
+
+    <ui:define name="description">
+        When a series data is clicked, information can be passed to a backing bean using itemSelect ajax behavior.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="widgetLink" value="Chart-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="growl" showDetail="true"/>
+
+                <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
+                    <p:chart type="pie" model="#{chartView.pieModel1}" style="width:400px;height:300px">
+                        <p:ajax event="itemSelect" listener="#{chartView.itemSelect}" update="growl"/>
+                    </p:chart>
+
+                    <p:chart type="bar" model="#{chartView.barModel}" style="width:400px;height:300px">
+                        <p:ajax event="itemSelect" listener="#{chartView.itemSelect}" update="growl"/>
+                    </p:chart>
+                </h:panelGrid>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

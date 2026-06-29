@@ -1,0 +1,65 @@
+.ui-panelgrid {
+    border-collapse: collapse;
+}
+
+.ui-panelgrid .ui-panelgrid-header {
+    text-align: center;
+    padding: 4px 10px;
+}
+
+.ui-panelgrid .ui-panelgrid-footer {
+    text-align: left;
+    padding: 2px 5px;
+}
+
+.ui-panelgrid .ui-panelgrid-cell {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding: 4px 10px;
+}
+
+.ui-panelgrid.ui-noborder .ui-panelgrid-cell {
+    border: 0px none;
+}
+
+.ui-panelgrid.ui-noborder .ui-widget-content,
+.ui-panelgrid.ui-noborder .ui-widget-header {
+    border: 0px none;
+}
+
+.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-content.ui-widget-content, 
+.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-header.ui-widget-header,
+.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-footer.ui-widget-header,
+.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-header > tr.ui-widget-header, 
+.ui-panelgrid.ui-panelgrid-blank tbody > tr.ui-widget-content,
+.ui-panelgrid.ui-panelgrid-blank tbody > tr.ui-widget-content > td.ui-panelgrid-cell,
+.ui-panelgrid.ui-panelgrid-blank .ui-panelgrid-footer > tr.ui-widget-footer {
+    background: none;
+    border: 0 none;
+}
+
+.ui-panelgrid .ui-panelgrid-cell.ui-panelgrid-nopad {
+   padding: 0;
+}
+
+/* Grid CSS */
+.ui-panelgrid .p-grid .ui-panelgrid-cell,
+.ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
+    border: 0 none;
+}
+
+/* Responsive */
+@media (max-width: 640px) {       
+    .ui-panelgrid .ui-grid-responsive .ui-grid-row {
+        border-top: 1px solid #BCC7CF;
+    }
+    
+    .ui-panelgrid .ui-grid-responsive .ui-grid-row:first-child {
+        border-top: 0 none;
+    }
+    
+    .ui-panelgrid.ui-noborder .ui-grid-responsive .ui-grid-row {
+        border: 0 none;
+    }
+}

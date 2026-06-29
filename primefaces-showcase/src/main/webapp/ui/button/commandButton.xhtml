@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+                
+    <ui:define name="head">
+        <style type="text/css">
+            button.ui-button {
+                margin-right: .5rem;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        CommandButton
+    </ui:define>
+
+    <ui:define name="description">
+        CommandButton is an action component to process forms and invoke listeners remotely.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/commandbutton"/>
+    <ui:param name="widgetLink" value="CommandButton"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Basic</h5>
+            <p:commandButton type="button" value="Submit" />
+            <p:commandButton type="button" value="Disabled" disabled="true" />
+
+            <h5>Icons</h5>
+            <p:commandButton type="button" icon="pi pi-check" />
+            <p:commandButton type="button" value="Submit" icon="pi pi-check" />
+            <p:commandButton type="button" value="Submit" icon="pi pi-check" iconPos="right" />
+
+            <h5>Severities</h5>
+            <p:commandButton type="button" value="Primary" />
+            <p:commandButton type="button" value="Secondary" styleClass="ui-button-secondary" />
+            <p:commandButton type="button" value="Success" styleClass="ui-button-success" />
+            <p:commandButton type="button" value="Info" styleClass="ui-button-info" />
+            <p:commandButton type="button" value="Warning" styleClass="ui-button-warning" />
+            <p:commandButton type="button" value="Help" styleClass="ui-button-help" />
+            <p:commandButton type="button" value="Danger" styleClass="ui-button-danger" />
+
+            <h5>Raised Buttons</h5>
+            <p:commandButton type="button" value="Primary" styleClass="ui-button-raised" />
+            <p:commandButton type="button" value="Secondary" styleClass="ui-button-raised ui-button-secondary" />
+            <p:commandButton type="button" value="Success" styleClass="ui-button-raised ui-button-success" />
+            <p:commandButton type="button" value="Info" styleClass="ui-button-raised ui-button-info" />
+            <p:commandButton type="button" value="Warning" styleClass="ui-button-raised ui-button-warning" />
+            <p:commandButton type="button" value="Help" styleClass="ui-button-raised ui-button-help" />
+            <p:commandButton type="button" value="Danger" styleClass="ui-button-raised ui-button-danger" />
+
+            <h5>Rounded Buttons</h5>
+            <p:commandButton type="button" value="Primary" styleClass="rounded-button" />
+            <p:commandButton type="button" value="Secondary" styleClass="rounded-button ui-button-secondary" />
+            <p:commandButton type="button" value="Success" styleClass="rounded-button ui-button-success" />
+            <p:commandButton type="button" value="Info" styleClass="rounded-button ui-button-info" />
+            <p:commandButton type="button" value="Warning" styleClass="rounded-button ui-button-warning" />
+            <p:commandButton type="button" value="Help" styleClass="rounded-button ui-button-help" />
+            <p:commandButton type="button" value="Danger" styleClass="rounded-button ui-button-danger" />
+
+            <h5>Flat Buttons</h5>
+            <p:commandButton type="button" value="Primary" styleClass="ui-button-flat" />
+            <p:commandButton type="button" value="Secondary" styleClass="ui-button-secondary ui-button-flat" />
+            <p:commandButton type="button" value="Success" styleClass="ui-button-success ui-button-flat" />
+            <p:commandButton type="button" value="Info" styleClass="ui-button-info ui-button-flat" />
+            <p:commandButton type="button" value="Warning" styleClass="ui-button-warning ui-button-flat" />
+            <p:commandButton type="button" value="Help" styleClass="ui-button-help ui-button-flat" />
+            <p:commandButton type="button" value="Danger" styleClass="ui-button-danger ui-button-flat" />
+            <p:commandButton type="button" value="Plain" styleClass="ui-button-flat ui-button-plain" />
+
+            <h5>Raised Text Buttons</h5>
+            <p:commandButton type="button" value="Primary" styleClass="ui-button-raised ui-button-flat" />
+            <p:commandButton type="button" value="Secondary" styleClass="ui-button-raised ui-button-secondary ui-button-flat" />
+            <p:commandButton type="button" value="Success" styleClass="ui-button-raised ui-button-success ui-button-flat" />
+            <p:commandButton type="button" value="Info" styleClass="ui-button-raised ui-button-info ui-button-flat" />
+            <p:commandButton type="button" value="Warning" styleClass="ui-button-raised ui-button-warning ui-button-flat" />
+            <p:commandButton type="button" value="Help" styleClass="ui-button-raised ui-button-help ui-button-flat" />
+            <p:commandButton type="button" value="Danger" styleClass="ui-button-raised ui-button-danger ui-button-flat" />
+            <p:commandButton type="button" value="Plain" styleClass="ui-button-raised ui-button-flat ui-button-plain" />
+
+            <h5>Outlined Buttons</h5>
+            <p:commandButton type="button" value="Primary" styleClass="ui-button-outlined" />
+            <p:commandButton type="button" value="Secondary" styleClass="ui-button-outlined ui-button-secondary" />
+            <p:commandButton type="button" value="Success" styleClass="ui-button-outlined ui-button-success" />
+            <p:commandButton type="button" value="Info" styleClass="ui-button-outlined ui-button-info" />
+            <p:commandButton type="button" value="Warning" styleClass="ui-button-outlined ui-button-warning" />
+            <p:commandButton type="button" value="Help" styleClass="ui-button-outlined ui-button-help" />
+            <p:commandButton type="button" value="Danger" styleClass="ui-button-outlined ui-button-danger" />
+
+            <h5>Rounded Icon Buttons</h5>
+            <p:commandButton type="button" icon="pi pi-bookmark" styleClass="rounded-button ui-button-secondary" />
+            <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button ui-button-success" />
+            <p:commandButton type="button" icon="pi pi-user" styleClass="rounded-button ui-button-info" />
+            <p:commandButton type="button" icon="pi pi-bell" styleClass="rounded-button ui-button-warning" />
+            <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button ui-button-help" />
+            <p:commandButton type="button" icon="pi pi-times" styleClass="rounded-button ui-button-danger" />
+            <p:commandButton type="button" icon="pi pi-check" styleClass="rounded-button" />
+
+            <h5>Rounded Text Icon Buttons</h5>
+            <p:commandButton type="button" icon="pi pi-check" styleClass="rounded-button ui-button-flat" />
+            <p:commandButton type="button" icon="pi pi-bookmark" styleClass="rounded-button ui-button-secondary ui-button-flat" />
+            <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button ui-button-success ui-button-flat" />
+            <p:commandButton type="button" icon="pi pi-user" styleClass="rounded-button ui-button-info ui-button-flat" />
+            <p:commandButton type="button" icon="pi pi-bell" styleClass="rounded-button ui-button-warning ui-button-flat" />
+            <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button ui-button-help ui-button-flat" />
+            <p:commandButton type="button" icon="pi pi-times" styleClass="rounded-button ui-button-danger ui-button-flat" />
+            <p:commandButton type="button" icon="pi pi-filter" styleClass="rounded-button ui-button-flat ui-button-plain" />
+
+            <h5>Rounded and Outlined Icon Buttons</h5>
+            <p:commandButton type="button" icon="pi pi-check" styleClass="rounded-button ui-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-bookmark" styleClass="rounded-button ui-button-secondary ui-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button ui-button-success ui-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-user" styleClass="rounded-button ui-button-info ui-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-bell" styleClass="rounded-button ui-button-warning ui-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button ui-button-help ui-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-times" styleClass="rounded-button ui-button-danger ui-button-outlined" />
+        </div>
+    </ui:define>
+
+</ui:composition>

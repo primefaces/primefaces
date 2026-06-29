@@ -1,0 +1,143 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+    </ui:define>
+
+    <ui:define name="title">
+        SelectOneMenu
+    </ui:define>
+
+    <ui:define name="description">
+        SelectOneMenu is used to choose a single item from a list.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/selectonemenu"/>
+    <ui:param name="widgetLink" value="SelectOneMenu-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Basic"/>
+                        <p:selectOneMenu id="option" value="#{selectOneMenuView.selectedOption}">
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                            <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                            <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                            <f:facet name="footer">
+                                <p:divider styleClass="p-mt-0" />
+                                <h:outputText value="3 options" style="font-weight:bold;"/>
+                            </f:facet>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Grouping"/>
+                        <p:selectOneMenu id="group" value="#{selectOneMenuView.countryGroup}">
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItems value="#{selectOneMenuView.countriesGroup}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Editable"/>
+                        <p:selectOneMenu id="city" value="#{selectOneMenuView.city}" effect="fold" editable="true">
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItems value="#{selectOneMenuView.cities}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Label"/>
+                        <p:selectOneMenu id="labeled" value="#{selectOneMenuView.labeled}" label="Always Show Label"
+                                        alwaysDisplayLabel="true">
+                            <f:selectItems value="#{selectOneMenuView.cities}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Advanced"/>
+                        <p:selectOneMenu id="advanced" value="#{selectOneMenuView.country}" converter="#{countryConverter}"
+                                        panelStyle="width:180px" effect="fade" var="c"
+                                        filter="true" filterMatchMode="startsWith">
+
+                            <f:selectItems value="#{selectOneMenuView.countries}" var="country"
+                                        itemLabel="#{country.name}" itemValue="#{country}"/>
+
+                            <p:column style="width:10%">
+                                <span class="flag flag-#{c.code}" style="width: 30px; height: 20px"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Name"/>
+                                </f:facet>
+                                <h:outputText value="#{c.name}"/>
+                            </p:column>
+
+                            <f:facet name="footer">
+                                <h:outputText value="#{selectOneMenuView.countries.size()} countries"
+                                            style="font-weight:bold;" styleClass="p-py-1 p-d-block"/>
+                            </f:facet>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Lazy"/>
+                        <p:selectOneMenu id="lazy" value="#{selectOneMenuView.option}" dynamic="true">
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItems value="#{selectOneMenuView.options}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Hide NoSelection Option"/>
+                        <p:selectOneMenu id="hideNoselectionOption" value="#{selectOneMenuView.hideNoSelectOption}"
+                                        hideNoSelectionOption="#{not empty selectOneMenuView.hideNoSelectOption}">
+                            <p:ajax update="@this" process="@this"/>
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                            <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                            <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Long Item Label"/>
+                        <p:selectOneMenu id="longItemLabel" value="#{selectOneMenuView.longItemLabel}">
+                            <f:selectItem itemLabel="Zero" itemValue="0"/>
+                            <f:selectItem itemLabel="One" itemValue="1"/>
+                            <f:selectItem itemLabel="Two" itemValue="2"/>
+                            <f:selectItem itemLabel="Three" itemValue="3"/>
+                            <f:selectItem itemLabel="Four" itemValue="4"/>
+                            <f:selectItem itemLabel="Five" itemValue="5"/>
+                            <f:selectItem itemLabel="Six" itemValue="6"/>
+                            <f:selectItem itemLabel="Seven" itemValue="7"/>
+                            <f:selectItem itemLabel="Long item here not necessary in the end" itemValue="99"/>
+                            <f:selectItem itemLabel="Eight" itemValue="8"/>
+                            <f:selectItem itemLabel="Nine" itemValue="9"/>
+                            <f:selectItem itemLabel="Ten and not more than ten " itemValue="10"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="RTL"/>
+                        <p:selectOneMenu id="trl" value="#{selectOneMenuView.rtl}" dir="rtl">
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                            <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                            <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

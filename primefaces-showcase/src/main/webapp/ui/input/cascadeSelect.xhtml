@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        CascadeSelect
+    </ui:define>
+
+    <ui:define name="description">
+        CascadeSelect displays a nested structure of options.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/cascadeselect"/>
+    <ui:param name="widgetLink" value="CascadeSelect"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <h:form>
+                <p:growl id="message" showDetail="true"/>
+
+                <h5>Basic</h5>
+                <p:cascadeSelect value="#{cascadeSelectView.selection}" style="min-width: 14rem" placeholder="Select a City">
+                    <p:ajax event="itemSelect" listener="#{cascadeSelectView.onItemSelect}" update="message" />
+                    <f:selectItems value="#{cascadeSelectView.countries}"/>
+                </p:cascadeSelect>
+                
+                <h5>Custom Content</h5>
+                <p:cascadeSelect value="#{cascadeSelectView.selection2}" style="min-width: 14rem" placeholder="Select a City" var="place">
+                    <p:ajax event="itemSelect" listener="#{cascadeSelectView.onItemSelect}" update="message" />
+                    <f:selectItems value="#{cascadeSelectView.countries}"/>
+                    
+                    <f:facet name="content">
+                        <div class="country-item cascadeselect-item">
+                            <h:panelGroup styleClass="flag flag-#{place.code}" rendered="#{place.status == 'country'}"></h:panelGroup>
+                            <h:panelGroup styleClass="pi pi-compass p-mr-2" rendered="#{place.status == 'states'}"></h:panelGroup>
+                            <h:panelGroup styleClass="pi pi-map-marker p-mr-2" rendered="#{place.status == 'city'}"></h:panelGroup>
+                            <span>#{place.name}</span>
+                        </div>
+                    </f:facet>
+                </p:cascadeSelect>
+            </h:form>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

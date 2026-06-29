@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Charts <span class="subitem">Live</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Votes are updated live periodically using poll component and displayed on a pie chart.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="widgetLink" value="Chart-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:poll interval="3" update="votes"/>
+                <p:chart id="votes" type="pie" model="#{chartView.livePieModel}" style="width:400px;height:300px"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

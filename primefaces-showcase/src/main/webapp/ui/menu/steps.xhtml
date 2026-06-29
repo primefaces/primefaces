@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Steps <span class="subitem">Steps</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Steps components is an indicator for the steps in a workflow. Layout of steps component is optimized for responsive design.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/steps"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:steps>
+                <p:menuitem value="Personal"/>
+                <p:menuitem value="Seat Selection"/>
+                <p:menuitem value="Payment"/>
+                <p:menuitem value="Confirmation"/>
+            </p:steps>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">GridLines</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Gridlines are used to display borders between cells. Note: Legacy themes always display gridlines for backward compatibility.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable" />
+    <ui:param name="widgetLink" value="datatable-1" />
+
+    <ui:define name="implementation">
+        <h:form>
+            <div class="card">
+                <p:dataTable var="product" value="#{dtBasicView.products}" showGridlines="true">
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

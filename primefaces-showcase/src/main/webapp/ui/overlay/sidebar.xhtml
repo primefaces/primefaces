@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Sidebar
+    </ui:define>
+
+    <ui:define name="description">
+        Sidebar is a panel component displayed as an overlay.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/sidebar"/>
+    <ui:param name="widgetLink" value="Sidebar-1"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+
+            <p:sidebar widgetVar="sidebar1">
+                <h3>Left Sidebar</h3>
+            </p:sidebar>
+
+            <p:sidebar widgetVar="sidebar2" position="right">
+                <h3>Right Sidebar</h3>
+            </p:sidebar>
+
+            <p:sidebar widgetVar="sidebar3" position="top">
+                <h3>Top Sidebar</h3>
+            </p:sidebar>
+
+            <p:sidebar widgetVar="sidebar4" position="bottom">
+                <h3>Bottom Sidebar</h3>
+            </p:sidebar>
+
+            <p:sidebar widgetVar="sidebar5" fullScreen="true">
+                <h3>Full Screen Sidebar</h3>
+            </p:sidebar>
+
+            <p:commandButton icon="pi pi-arrow-right" type="button" onclick="PF('sidebar1').show()" styleClass="p-mr-2" />
+            <p:commandButton icon="pi pi-arrow-left" type="button" onclick="PF('sidebar2').show()" styleClass="p-mr-2" />
+            <p:commandButton icon="pi pi-arrow-down" type="button" onclick="PF('sidebar3').show()" styleClass="p-mr-2" />
+            <p:commandButton icon="pi pi-arrow-up" type="button" onclick="PF('sidebar4').show()" styleClass="p-mr-2" />
+            <p:commandButton icon="pi pi-external-link" type="button" onclick="PF('sidebar5').show()"/>
+
+        </div>
+    </ui:define>
+
+</ui:composition>

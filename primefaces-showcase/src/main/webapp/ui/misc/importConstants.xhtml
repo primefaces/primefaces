@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ImportConstants
+    </ui:define>
+
+    <ui:define name="description">
+        In older EL versions (&lt; 3.0), it's not possible to use constants or any other static fields/methods in an EL expression, 
+        as it is not really a good practive to create beans with getter/setter for each constants class, we provide an utils tag which allows to import constant fields in a page.
+        The constants can be accessed via the name of the class (default setting) or via a custom name (var attribute).
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/importconstants"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:importConstants type="org.primefaces.util.Constants" var="PFConstants"/>
+
+            <h5 class="p-mt-0">Library</h5>
+            <h:outputText value="#{PFConstants.LIBRARY}" />
+
+            <h5>DOWNLOAD_COOKIE</h5>
+            <h:outputText value="#{PFConstants.DOWNLOAD_COOKIE}" />
+        </div>
+    </ui:define>
+
+</ui:composition>

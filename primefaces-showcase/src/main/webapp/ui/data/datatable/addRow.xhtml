@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Add Row</span>
+    </ui:define>
+
+    <ui:define name="description">
+        A new row can be added by clicking the Add new button.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="msgs" showDetail="true"/>
+
+                <p:dataTable id="products1" widgetVar="products1" var="product" value="#{dtAddRowView.products1}"
+                             editable="true">
+                    <f:facet name="header">
+                        Row Editing with add functionality
+                    </f:facet>
+
+                    <p:ajax event="rowEdit" listener="#{dtAddRowView.onRowEdit}" update=":form:msgs"/>
+                    <p:ajax event="rowEditCancel" listener="#{dtAddRowView.onRowCancel}" update=":form:msgs"/>
+
+                    <p:column headerText="Code">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{product.code}"/></f:facet>
+                            <f:facet name="input"><p:inputText id="modelInput" value="#{product.code}"
+                                                               style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{product.name}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{product.name}" style="width:100%"
+                                                               label="Name"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Status">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{product.inventoryStatus}"/></f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu value="#{product.inventoryStatus}" style="width:100%">
+                                    <f:selectItems value="#{dtEditView.inventoryStatusList}" var="status"
+                                                   itemLabel="#{status}" itemValue="#{status}"/>
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Price">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{product.price}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{product.price}" style="width:100%"
+                                                               label="Price"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+
+                    <p:column style="width:6rem">
+                        <p:rowEditor/>
+                    </p:column>
+                </p:dataTable>
+
+                <div class="p-grid p-mt-3">
+                    <div class="p-col-12">
+                        <p:commandButton value="Add new row" process="@this" update=":form:msgs"
+                                         action="#{dtAddRowView.onAddNew()}" oncomplete="PF('products1').addRow();"/>
+                    </div>
+                </div>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

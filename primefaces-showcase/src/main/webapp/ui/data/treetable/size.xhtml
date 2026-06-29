@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TreeTable <span class="subitem">Size</span>
+    </ui:define>
+
+    <ui:define name="description">
+        In addition to a regular table, alternatives sizes are available.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="widgetLink" value="TreeTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <h5>Small TreeTable</h5>
+                <p:treeTable value="#{ttBasicView.root}" var="document" size="small">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h:form id="form2">
+                <h5>Regular TreeTable</h5>
+                <p:treeTable value="#{ttBasicView.root}" var="document">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h:form id="form3">
+                <h5>Large TreeTable</h5>
+                <p:treeTable value="#{ttBasicView.root}" var="document" size="large">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        InputNumber
+    </ui:define>
+
+    <ui:define name="description">
+        InputNumber formats input fields with numeric Strings. It supports currency symbols, minimum and maximum value, negative numbers, and a lot of round methods.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/inputnumber"/>
+    <ui:param name="widgetLink" value="InputNumber-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="input1" value="No Configuration"/>
+                        <p:inputNumber id="input1" value="#{inputNumberView.input1}" modifyValueOnWheel="false" />
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="input2" value="Currency"/>
+                        <p:inputNumber id="input2" value="#{inputNumberView.input2}" symbol=" CHF"
+                                        symbolPosition="s" decimalSeparator="," thousandSeparator="." />
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="input3" value="Min-Max"/>
+                        <p:inputNumber id="input3" value="#{inputNumberView.input3}" minValue="-1000.999"
+                                        maxValue="1000" decimalPlaces="3" />
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="input4" value="Custom Decimals"/>
+                        <p:inputNumber id="input4" value="#{inputNumberView.input4}" decimalPlaces="6" />
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="input5" value="Empty Display - Blank"/>
+                        <p:inputNumber id="input5" value="#{inputNumberView.input5}" symbol="%"
+                                        symbolPosition="s" required="true" emptyValue="empty" />
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="input6" value="Empty Display - Zero"/>
+                        <p:inputNumber id="input6" value="#{inputNumberView.input6}" symbol="%"
+                                        symbolPosition="s" emptyValue="zero" />
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="input7" value="Empty Display - Symbol"/>
+                        <p:inputNumber id="input7" value="#{inputNumberView.input7}" symbol="%"
+                                        symbolPosition="s" emptyValue="always" />
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="input8" value="Big Decimal"/>
+                        <p:inputNumber id="input8" value="#{inputNumberView.input8}" decimalPlaces="15" />
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

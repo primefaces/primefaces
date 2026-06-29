@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Reorder</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Both columns and rows can be reordered using dragdrop.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+            <div class="card">
+                <h5>Draggable Columns</h5>
+                <p:dataTable var="product" value="#{dtReorderView.products1}" draggableColumns="true">
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Draggable Rows</h5>
+                <p:dataTable var="product" value="#{dtReorderView.products2}" draggableRows="true">
+                    <p:ajax event="rowReorder" listener="#{dtReorderView.onRowReorder}" update=":form:msgs"/>
+
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

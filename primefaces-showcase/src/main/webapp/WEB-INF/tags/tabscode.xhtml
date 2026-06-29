@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <!-- EXAMPLE-SOURCE-START -->
+
+    <p:tabView var="entry" value="#{value}">
+        <p:tab title="#{entry.title}" >
+            <p:cache region="sources" key="#{entry}"
+                     disabled="#{facesContext.application.projectStage eq 'Development'}">
+<pre class="line-numbers"><code class="language-#{entry.type}">
+#{entry.value}
+
+</code></pre>
+            </p:cache>
+        </p:tab>
+
+        <f:facet name="static-tabs">
+            <ui:insert />
+        </f:facet>
+    </p:tabView>
+
+    <!-- EXAMPLE-SOURCE-END -->
+</ui:composition>

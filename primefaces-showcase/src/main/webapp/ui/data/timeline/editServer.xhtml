@@ -1,0 +1,159 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:sc="http://primefaces.org/ui/showcase">
+
+    <ui:define name="head">
+        <style type="text/css">
+            div.vis-item-content {
+                padding: 4px;
+                border-radius: 2px;
+                -moz-border-radius: 2px;
+            }
+
+            div.vis-item.vis-item-range {
+                border-width: 0;
+            }
+
+            #overlappedOrders {
+                margin-top: 20px;
+                width: 100%;
+            }
+
+            #overlappedOrders .ui-chkbox {
+                vertical-align: middle;
+                margin: 3px 5px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Timeline <span class="subitem">Editable events and server-side API</span>
+    </ui:define>
+
+    <ui:define name="description">
+        If the attribute editable is true, the events can be created, edited (content), changed (start / end time) and deleted.
+        Events can be created by double click on empty space.
+        Events can only be editable when the attribute selectable is true (default). Editable timeline can fire AJAX events select, change, changed, edit, add, delete.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="widgetLink" value="Timeline-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="growl" showSummary="true" showDetail="false">
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <p:timeline id="timeline" value="#{editServerTimelineView.model}" var="booking"
+                            zoomMax="#{editServerTimelineView.zoomMax}"
+                            start="#{editServerTimelineView.start}"
+                            end="#{editServerTimelineView.end}"
+                            editable="true" editableTime="#{editServerTimelineView.editableTime}"
+                            editableOverrideItems="true" minHeight="200" widgetVar="timelineWdgt">
+                    <p:ajax event="changed" update="@none" listener="#{editServerTimelineView.onChange}"/>
+                    <p:ajax event="edit" update="detailsBookingInner"
+                            listener="#{editServerTimelineView.onEdit}"
+                            oncomplete="PF('detailsBookingWdgt').show()"/>
+                    <p:ajax event="add" update="detailsBookingInner"
+                            listener="#{editServerTimelineView.onAdd}"
+                            oncomplete="PF('detailsBookingWdgt').show()"/>
+                    <p:ajax event="delete" update="deleteBookingInner"
+                            listener="#{editServerTimelineView.onDelete}"
+                            onstart="PF('timelineWdgt').cancelDelete()" oncomplete="PF('deleteBookingWdgt').show()"/>
+
+                    <f:facet name="loading">
+                         <h1>Loading please wait...</h1>
+                    </f:facet>
+
+                    <h:panelGrid columns="1">
+                        <h:outputText value="Room: #{booking.roomNumber}"/>
+                        <h:outputText value="Category: #{booking.category.label}"/>
+                        <h:outputText value="Phone: #{booking.phone}"/>
+                    </h:panelGrid>
+                </p:timeline>
+
+                <p:commandButton value="Toggle TimeChangeable" process="@this" update="timeline" style="margin-top:15px"
+                                 action="#{editServerTimelineView.toggleEditableTime}"/>
+
+                <!-- Booking details dialog -->
+                <p:dialog id="detailsBookingDlg" header="Booking Details" widgetVar="detailsBookingWdgt"
+                          showEffect="clip" hideEffect="clip">
+                    <h:panelGroup id="detailsBookingInner" layout="block">
+                        <h:panelGrid columns="2" columnClasses="bookingDetails1,bookingDetails2">
+                            <h:outputText value="Room"/>
+                            <p:inputText value="#{editServerTimelineView.event.data.roomNumber}"
+                                         rendered="#{not empty editServerTimelineView.event}"
+                                         required="true" label="Room"/>
+
+                            <h:outputText value="Category"/>
+                            <p:selectOneMenu value="#{editServerTimelineView.event.data.category}"
+                                             rendered="#{not empty editServerTimelineView.event}">
+                                <f:selectItem itemLabel="Standard" itemValue="STANDARD"/>
+                                <f:selectItem itemLabel="Superior" itemValue="SUPERIOR"/>
+                                <f:selectItem itemLabel="Deluxe" itemValue="DELUXE"/>
+                                <f:selectItem itemLabel="Junior" itemValue="JUNIOR"/>
+                                <f:selectItem itemLabel="Executive Suite" itemValue="EXECUTIVE_SUITE"/>
+                            </p:selectOneMenu>
+
+                            <h:outputText value="From"/>
+                            <p:calendar value="#{editServerTimelineView.event.startDate}"
+                                        rendered="#{not empty editServerTimelineView.event}"
+                                        pattern="dd/MM/yyyy HH:mm" required="true" label="From"/>
+
+                            <h:outputText value="Until"/>
+                            <p:calendar value="#{editServerTimelineView.event.endDate}"
+                                        rendered="#{not empty editServerTimelineView.event}"
+                                        pattern="dd/MM/yyyy HH:mm" label="Until"/>
+
+                            <h:outputText value="Phone"/>
+                            <p:inputMask value="#{editServerTimelineView.event.data.phone}" mask="(9999) 999-999"
+                                         rendered="#{not empty editServerTimelineView.event}"/>
+
+                            <h:outputText value="Comment"/>
+                            <p:inputTextarea value="#{editServerTimelineView.event.data.comment}" autoResize="false"
+                                             rendered="#{not empty editServerTimelineView.event}"/>
+                        </h:panelGrid>
+                    </h:panelGroup>
+
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">
+                            <p:commandButton value="Save" process="detailsBookingDlg" update="@none"
+                                             action="#{editServerTimelineView.saveDetails}"
+                                             oncomplete="if(!args.validationFailed){PF('detailsBookingWdgt').hide();}"/>
+                            <p:commandButton type="button" value="Close" onclick="PF('detailsBookingWdgt').hide()"/>
+                        </h:panelGroup>
+                    </f:facet>
+                </p:dialog>
+
+                <!-- Booking delete dialog -->
+                <p:dialog id="deleteBookingDlg" header="Booking Details" widgetVar="deleteBookingWdgt"
+                          showEffect="clip" hideEffect="clip" dynamic="true">
+                    <h:panelGroup id="deleteBookingInner" layout="block" style="margin:10px;">
+                        <h:outputText value="#{editServerTimelineView.deleteMessage}"/>
+                    </h:panelGroup>
+
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">
+                            <p:commandButton value="Delete" process="deleteBookingDlg" update="@none"
+                                             action="#{editServerTimelineView.delete}"
+                                             oncomplete="PF('deleteBookingWdgt').hide()"/>
+                            <p:commandButton type="button" value="Close" onclick="PF('deleteBookingWdgt').hide()"/>
+                        </h:panelGroup>
+                    </f:facet>
+                </p:dialog>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+
+    </ui:define>
+
+</ui:composition>

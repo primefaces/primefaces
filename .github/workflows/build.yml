@@ -1,0 +1,26 @@
+name: CI
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Java ${{ matrix.java }} - ${{ matrix.jsfimpl }}
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [8]
+        jsfimpl: [ 'mojarra-2.3', 'myfaces-2.3']
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          cache: 'maven'
+      - name: Build
+        run: mvn clean install -Pjsdoc,minify -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+      - name: Integration Tests
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}

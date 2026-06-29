@@ -1,0 +1,29 @@
+-jqplot
+-categoryaxisrenderer
+-pierenderer
+-barrenderer
+-donutrenderer
+-enhancedlegendrenderer
+-enhancedpielegendrenderer
+-bubblerenderer
+-ohlcrenderer
+-metergaugerenderer
+-canvastextrenderer
+-canvasaxistickrenderer
+-canvasaxislabelrenderer
+-cursor
+-highlighter
+-dateAxisRenderer
+-pointLabels
+
+
+Extensions
+- Added z-index to highlighter
+- Applied following patch to fix #452 https://bitbucket.org/cleonello/jqplot/pull-request/22/fix-for-issue-514-adjusting-position-with/diff
+- Added hidden series fix to exported image; https://github.com/primefaces/primefaces/issues/1505 (Line 9258)
+- Added the legend of hidden series fix to exported image; https://github.com/primefaces/primefaces/issues/1555 (Line 9185-9190)
+- Added fontWeight option fix; https://github.com/primefaces/primefaces/issues/1829 (Line 17594 and 17635)
+- It throws an JS error with Jqplot 1.0.9; https://github.com/primefaces/primefaces/issues/3821 (Line 20768)
+- Device Ratio Issues; https://github.com/primefaces/primefaces/issues/4655 (Line 9319)
+- Fixed 'disable series' for stacked series; https://github.com/primefaces/primefaces/issues/5198 (Line 14909, 14910, 14979, 15013-15024)
+- Legend Export As Image (https://github.com/primefaces/primefaces/issues/5789) Line 9287-9309

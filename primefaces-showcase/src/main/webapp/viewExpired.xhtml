@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    
+    <ui:define name="head">
+        <meta http-equiv="refresh" content="0;url=#{request.contextPath}/index.xhtml" />
+        <style type="text/css">
+            .content-source {
+                display: none
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Error <span class="subitem">View Expired</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Message: #{pfExceptionHandler.message}
+    </ui:define>
+
+    <ui:define name="implementation">
+        <h1>Session expired</h1>
+        <h3>You will be redirected to index page</h3>
+        <p><a href="#{request.contextPath}/index.xhtml">Click here if redirect didn't work or when you're impatient</a>.</p>
+
+        <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
+    </ui:define>
+
+</ui:composition>

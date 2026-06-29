@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Ajax Framework <span class="subitem">Partial Process</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Partial processing enables executing certain components while ignoring others during a request.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/ajaxProcessing?id=partial-processing"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h:panelGrid id="grid" cellpadding="7" columns="2" styleClass="p-mb-3">
+                    <p:outputLabel for="firstname" value="Firstname:"/>
+                    <p:inputText id="firstname" value="#{processView.firstname}"/>
+
+                    <p:outputLabel for="middle" value="Middle:"/>
+                    <p:inputText id="middle" value="#{processView.middlename}"/>
+
+                    <p:outputLabel for="surname" value="Surname:"/>
+                    <p:inputText id="surname" value="#{processView.lastname}" required="true"
+                                 requiredMessage="Surname is required"/>
+                </h:panelGrid>
+
+                <p:commandButton value="All" id="btnAll" process="@all" update="grid msgs" action="#{processView.save}" styleClass="p-mr-2"/>
+                <p:commandButton value="Form" id="btnForm" process="@form" update="grid msgs" action="#{processView.save}" styleClass="p-mr-2"/>
+                <p:commandButton value="This" id="btnThis" process="@this" update="grid msgs" action="#{processView.save}" styleClass="p-mr-2" resetValues="true" />
+                <p:commandButton value="None" id="btnNone" process="@none" update="grid msgs" action="#{processView.save}" styleClass="p-mr-2" resetValues="true" />
+                <p:commandButton value="Parent" id="btnParent" process="@parent" update="grid msgs" action="#{processView.save}" styleClass="p-mr-2"/>
+                <p:commandButton value="This Surname" id="btnSurname" process="@this,surname" update="grid msgs" action="#{processView.save}"/>
+
+                <p:messages id="msgs"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

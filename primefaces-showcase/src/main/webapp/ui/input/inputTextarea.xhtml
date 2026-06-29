@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        InputTextarea
+    </ui:define>
+
+    <ui:define name="description">
+        InputTextarea extends standard InputTextarea with autoComplete, autoResize, remaining characters counter and theming features.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/inputtextarea"/>
+    <ui:param name="widgetLink" value="InputTextarea"/>
+
+    <ui:define name="implementation">
+
+        <p:growl id="growl" showSummary="true" showDetail="true" keepAlive="true" life="3000">
+            <p:autoUpdate/>
+        </p:growl>
+
+        <div class="card">
+            <h:form>
+                <h5>AutoResize</h5>
+                <p:inputTextarea rows="6" cols="33"/>
+
+                <h5>Remaining Chars</h5>
+                <p:inputTextarea rows="5" cols="30" counter="display" maxlength="10"
+                                 counterTemplate="{0} characters remaining." autoResize="false"/>
+                <h:outputText id="display" class="p-d-block" />
+
+                <h5>AutoComplete</h5>
+                <p>Following inputTextarea send a query for each word that has at least 4 characters to the complete method. Try typing "PrimeFaces".</p>
+                <p:inputTextarea rows="10" cols="50" completeMethod="#{inputTextareaView.completeArea}" queryDelay="750"
+                                 minQueryLength="4">
+                    <p:ajax event="itemSelect" listener="#{inputTextareaView.onSelect}"/>
+                </p:inputTextarea>
+            </h:form>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

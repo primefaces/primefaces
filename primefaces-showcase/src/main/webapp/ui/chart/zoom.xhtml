@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Charts <span class="subitem">Zoom</span>
+    </ui:define>
+
+    <ui:define name="description">
+        A specific part on Cartesian Charts can be zoomed using mouse drag.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="widgetLink" value="Chart-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:chart type="line" model="#{chartView.zoomModel}" style="height:300px;" widgetVar="chart"/>
+            <br/>
+            <p:commandButton type="button" value="Reset" icon="pi pi-ban" onclick="PF('chart').resetZoom()"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

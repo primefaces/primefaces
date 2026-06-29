@@ -1,0 +1,292 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        SpeedDial
+    </ui:define>
+
+    <ui:define name="description">
+        When pressed, a floating action button can display multiple primary actions that can be performed on a page.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/speeddial"/>
+    <ui:param name="widgetLink" value="SpeedDial-1"/>
+
+    <ui:define name="head">
+        <style type="text/css">
+            .speeddial-linear-demo .ui-speeddial-direction-up {
+                left: calc(50% - 2rem);
+                bottom: 0;
+            }
+
+            .speeddial-linear-demo .ui-speeddial-direction-down {
+                left: calc(50% - 2rem);
+                top: 0;
+            }
+
+            .speeddial-linear-demo .ui-speeddial-direction-left {
+                right: 0;
+                top: calc(50% - 2rem);
+            }
+
+            .speeddial-linear-demo .ui-speeddial-direction-right {
+                left: 0;
+                top: calc(50% - 2rem);
+            }
+
+            .speeddial-circle-demo .ui-speeddial-circle {
+                top: calc(50% - 2rem);
+                left: calc(50% - 2rem);
+            }
+
+            .speeddial-circle-demo .ui-speeddial-semi-circle.ui-speeddial-direction-up {
+                 left: calc(50% - 2rem);
+                 bottom: 0;
+            }
+
+            .speeddial-circle-demo .ui-speeddial-semi-circle.ui-speeddial-direction-down {
+                 left: calc(50% - 2rem);
+                 top: 0;
+            }
+
+            .speeddial-circle-demo .ui-speeddial-semi-circle.ui-speeddial-direction-left {
+                 right: 0;
+                 top: calc(50% - 2rem);
+            }
+
+            .speeddial-circle-demo .ui-speeddial-semi-circle.ui-speeddial-direction-right {
+                 left: 0;
+                 top: calc(50% - 2rem);
+            }
+
+            .speeddial-circle-demo .ui-speeddial-quarter-circle.ui-speeddial-direction-up-left {
+                 right: 0;
+                 bottom: 0;
+            }
+
+            .speeddial-circle-demo .ui-speeddial-quarter-circle.ui-speeddial-direction-up-right {
+                 left: 0;
+                 bottom: 0;
+            }
+
+            .speeddial-circle-demo .ui-speeddial-quarter-circle.ui-speeddial-direction-down-left {
+                 right: 0;
+                 top: 0;
+            }
+
+            .speeddial-circle-demo .ui-speeddial-quarter-circle.ui-speeddial-direction-down-right {
+                 left: 0;
+                 top: 0;
+            }
+
+            .speeddial-tooltip-demo .ui-speeddial-direction-up.speeddial-left {
+                 left: 0;
+                 bottom: 0;
+            }
+
+            .speeddial-tooltip-demo .ui-speeddial-direction-up.speeddial-right {
+                 right: 0;
+                 bottom: 0;
+            }
+
+            .speeddial-delay-demo .ui-speeddial-direction-up {
+                left: calc(50% - 2rem);
+                bottom: 0;
+            }
+
+            .speeddial-mask-demo .ui-speeddial-direction-up {
+                right: 0;
+                bottom: 0;
+            }
+
+            .speeddial-dynamicitem-demo .ui-speeddial-direction-down {
+                left: calc(50% - 2rem);
+                top: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="implementation">
+
+        <h:form id="speedDialForm">
+            <p:tooltip />
+            <p:growl id="messages" showDetail="true"/>
+
+            <div class="card">
+                <h5>Linear</h5>
+                <div class="speeddial-linear-demo" style="position: relative; height: 500px">
+                    <p:speedDial direction="up">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial direction="down">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial direction="left">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial direction="right">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Circle, Semi-Circle and Quarter-Circle</h5>
+                <div class="speeddial-circle-demo" style="position: relative; height: 500px">
+                    <p:speedDial radius="80" type="circle" buttonStyleClass="ui-button-warning">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial radius="80" direction="up" type="semi-circle">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial radius="80" direction="down" type="semi-circle">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial radius="80" direction="left" type="semi-circle">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial radius="80" direction="right" type="semi-circle">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial radius="120" direction="up-left" type="quarter-circle" buttonStyleClass="ui-button-success">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial radius="120" direction="up-right" type="quarter-circle" buttonStyleClass="ui-button-success">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial radius="120" direction="down-left" type="quarter-circle" buttonStyleClass="ui-button-success">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial radius="120" direction="down-right" type="quarter-circle" buttonStyleClass="ui-button-success">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Tooltip and Keep Open</h5>
+                <div class="speeddial-tooltip-demo" style="position: relative; height: 350px">
+                    <p:speedDial direction="up" styleClass="speeddial-right" buttonStyleClass="ui-button-danger"
+                                 keepOpen="true">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages" title="Add"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages" title="Update"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages" title="Delete"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic" title="Upload"/>
+                        <p:menuitem icon="pi pi-external-link" title="PrimeFaces" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+
+                    <p:speedDial direction="up" styleClass="speeddial-left" buttonStyleClass="ui-button-help"
+                                 keepOpen="true">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages" title="Add"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages" title="Update"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages" title="Delete"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic" title="Upload"/>
+                        <p:menuitem icon="pi pi-external-link" title="PrimeFaces" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Transition Duration and Icon</h5>
+                <div class="speeddial-delay-demo" style="position: relative; height: 350px">
+                    <p:speedDial direction="up" transitionDelay="80" showIcon="pi pi-bars" hideIcon="pi pi-times"
+                                 buttonStyleClass="ui-button-outlined">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Mask and No Rotate Animation</h5>
+                <div class="speeddial-mask-demo" style="position: relative; height: 350px">
+                    <p:speedDial direction="up" mask="true" showIcon="pi pi-bars" hideIcon="pi pi-times"
+                                 rotateAnimation="false">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic"/>
+                        <p:menuitem icon="pi pi-external-link" url="https://www.primefaces.org"/>
+                    </p:speedDial>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>Dynamic Items and Badge</h5>
+                <div class="speeddial-dynamicitem-demo" style="position: relative; height: 350px">
+                    <p:speedDial badge="#{speedDialView.badgeModel}" direction="down" model="#{speedDialView.model}" />
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
