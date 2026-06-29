@@ -60,7 +60,6 @@ public class PrimeConfiguration {
     private String[] exceptionTypesToIgnoreInLogging;
     private final String multiViewStateStore;
     private final boolean markInputAsInvalidOnErrorMsg;
-    private boolean licenseValid = false;
 
     // internal config
     private final boolean stringConverterAvailable;
