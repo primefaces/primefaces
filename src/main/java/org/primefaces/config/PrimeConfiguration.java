@@ -115,9 +115,6 @@ public class PrimeConfiguration {
         if (csp) {
             cspPolicy = externalContext.getInitParameter(Constants.ContextParams.CSP_POLICY);
         }
-
-        String licenseKey = externalContext.getInitParameter(Constants.ContextParams.LTS_LICENSE_KEY);
-        String passKey = externalContext.getInitParameter(Constants.ContextParams.LTS_PASS_KEY);
     }
 
     protected boolean resolveValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {

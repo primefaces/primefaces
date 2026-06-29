@@ -48,8 +48,6 @@ public class Constants {
         public static final String CSP = "primefaces.CSP";
         public static final String CSP_POLICY = "primefaces.CSP_POLICY";
         public static final String HIDE_RESOURCE_VERSION = "primefaces.HIDE_RESOURCE_VERSION";
-        public static final String LTS_LICENSE_KEY = "primefaces.lts.LICENSE_KEY";
-        public static final String LTS_PASS_KEY = "primefaces.lts.PASS_KEY";
 
         private ContextParams() {
 
