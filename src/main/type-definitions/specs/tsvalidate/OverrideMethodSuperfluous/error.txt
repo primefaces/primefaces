@@ -1,0 +1,6 @@
+Error: Program failed to validate:
+Error: [tsSuperfluousOverride] at Bar (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/OverrideMethodSuperfluous/input.d.ts:14:20)
+'@override' or '@inheritdoc found on property 'foo' of type 'Bar', but it does not override any parent methods. Remove these tags.
+
+Error: [tsSuperfluousOverride] at Bar (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/OverrideMethodSuperfluous/input.d.ts:22:20)
+'@override' or '@inheritdoc found on property 'foo' of type 'Bar', but it does not override any parent methods. Remove these tags.

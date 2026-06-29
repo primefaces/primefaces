@@ -1,0 +1,249 @@
+.ui-tree {
+    width: 300px;
+    position: relative;
+}
+            
+.ui-tree .ui-tree-container {
+    margin: 0;
+    padding: 3px;
+    white-space: nowrap;
+    overflow: auto;
+}
+
+.ui-tree .ui-treenode-children {
+    margin: 0;
+    padding: 0 0 0 16px;
+}
+
+.ui-tree .ui-treenode {
+    background-attachment: scroll;
+    background-color: transparent;
+    background-image: none;
+    background-position: 0 0;
+    background-repeat: repeat-y;
+    list-style: none outside none;
+    margin: 0;
+    padding: 1px 0 0;
+}
+
+.ui-tree .ui-tree-toggler {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ui-tree .ui-treenode-icon {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ui-tree .ui-treenode-label {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 3px;
+}
+
+.ui-tree .ui-tree-selectable .ui-treenode-label,
+.ui-tree .ui-tree-selectable .ui-treenode-icon {
+    cursor: pointer;
+}
+
+.ui-tree .ui-treenode-label.ui-state-hover,
+.ui-tree .ui-treenode-label.ui-state-highlight {
+    font-weight: normal;
+    border: 0 none;
+}
+
+.ui-tree .ui-treenode-leaf-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.ui-tree .ui-chkbox-box {
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    float: left;
+}
+
+.ui-tree .ui-chkbox {
+    display: inline-block;
+}
+
+/** Horizontal Tree **/
+.ui-tree-horizontal {
+    width:auto;
+    padding:10px 0px;
+    overflow:auto;
+}
+
+.ui-tree.ui-tree-horizontal table,
+.ui-tree.ui-tree-horizontal tr,
+.ui-tree.ui-tree-horizontal td {
+    border-collapse: collapse;
+    margin:0;
+    padding:0;
+    vertical-align: middle;
+}
+
+.ui-tree.ui-tree-horizontal .ui-tree-toggler,
+.ui-tree.ui-tree-horizontal .ui-treenode-icon {
+    vertical-align: bottom;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode-label {
+    outline: 0 none;
+}
+
+.ui-tree-horizontal .ui-treenode-content {
+    font-weight: normal;
+}
+
+.ui-tree-horizontal .ui-treenode-content.ui-tree-selectable {
+    cursor: pointer;
+}
+
+.ui-tree-horizontal .ui-treenode-parent .ui-treenode-content {
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.ui-tree-horizontal .ui-treenode-parent .ui-treenode-content {
+    padding: 0.4em 1em 0.4em 0.2em;
+}
+
+.ui-tree-horizontal .ui-treenode-leaf .ui-treenode-content {
+    padding: 0.4em 1em;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode {
+    background: url("#{resource['primefaces:tree/images/line.gif']}") repeat-x scroll center center transparent;
+    padding: 5px 40px;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode.ui-treenode-leaf,
+.ui-tree.ui-tree-horizontal .ui-treenode.ui-treenode-collapsed {
+    padding-right:0px;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode-children {
+    padding:0;
+    margin:0;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode-connector {
+    width: 1px;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode-connector-table {
+    height: 100%;
+    width: 1px;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode-connector-line {
+    background: url("#{resource['primefaces:tree/images/line.gif']}") repeat-y scroll 0 0 transparent;
+    width: 1px;
+}
+
+.ui-tree.ui-tree-horizontal table {
+	height:0px;
+}
+
+.ui-tree.ui-tree-horizontal .ui-chkbox {
+    vertical-align: bottom;
+    margin-right: 3px;
+}
+
+.ui-tree.ui-state-disabled .ui-tree-toggler,
+.ui-tree.ui-state-disabled .ui-tree-selectable .ui-treenode-label,
+.ui-tree.ui-state-disabled .ui-tree-selectable .ui-treenode-icon,
+.ui-tree.ui-state-disabled .ui-chkbox-box {
+    cursor: default;
+}
+
+/** RTL **/
+.ui-tree.ui-tree-rtl {
+    direction: rtl;
+}
+
+.ui-tree.ui-tree-rtl .ui-treenode-children {
+    padding: 0 16px 0 0;
+}
+
+/** DragDrop **/
+.ui-tree-droppoint {
+    list-style: none outside none;
+    height: 4px;
+    margin: 0;
+    padding: 0;
+}
+
+.ui-tree-droppoint.ui-state-hover {
+    border: 0 none;
+}
+
+.ui-treenode-content.ui-state-hover {
+    font-weight: inherit;
+}
+
+.ui-tree-draghelper.ui-state-highlight {
+    background: none transparent;
+}
+
+.ui-tree .ui-tree-scrollertop,
+.ui-tree .ui-tree-scrollerbottom {
+    height: 10px;
+    width: 100%;
+    position: absolute;
+}
+
+.ui-tree .ui-tree-scrollertop {
+    top: 0;
+}
+
+.ui-tree .ui-tree-scrollerbottom {
+    bottom: 0;
+}
+
+.ui-tree .ui-treenode-content .ui-chkbox.ui-selection {
+    display: none;
+}
+
+.ui-tree .ui-treenode-content.ui-tree-selectable .ui-chkbox.ui-selection {
+    display: inline-block;
+}
+
+.ui-tree.ui-tree-checkbox-all .ui-treenode-content .ui-chkbox.ui-selection {
+    display: inline-block;
+}
+
+.ui-tree .ui-treenode-outline {
+    outline: 1px dotted;
+}
+
+/** Filter **/
+.ui-tree-filter-container {
+    margin: 0.4em 0.5em 0.1em;
+    padding: 0;
+    position: relative;
+}
+
+.ui-tree-filter-container .ui-icon {
+    position: absolute;
+    right: 2px;
+    top: 5px;
+}
+
+.ui-tree-filter.ui-inputfield {
+    box-shadow: none;
+    padding-left: 2%;
+    padding-right: 12%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/** Fluid **/
+.ui-fluid .ui-tree {
+    width: 100%;
+}

@@ -1,0 +1,33 @@
+List of Plugins
+- jQuery UI Core
+- jQuery UI Interactions: Draggable, Droppable, Resizable, Selectable, Sortable
+- jQuery UI Widgets: Datepicker, Slider
+- jQuery UI Effects
+- Timepicker (https://github.com/trentrichardson/jQuery-Timepicker-Addon)
+- MouseWheel (https://github.com/jquery/jquery-mousewheel)
+- Input Mask (https://github.com/RobinHerbots/Inputmask)
+- Rangy Text (https://github.com/timdown/rangy)
+- Cursor Position (https://github.com/beviz/jquery-caret-position-getter)
+- Browser (https://github.com/gabceb/jquery-browser-plugin/releases)
+- Autosize (https://github.com/jackmoore/autosize)
+- Touch Punch (https://github.com/RWAP/jquery-ui-touch-punch custom fork of https://github.com/furf/jquery-ui-touch-punch)
+
+
+
+Extensions:
+
+jquery.autosize.js:
+- Added fix to autosize from https://github.com/jackmoore/autosize/issues/225
+
+jquery.ui.timepicker.js:
+- Added fix to timepicker from https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848
+- Fix timeOnlyTitle XSS (https://github.com/primefaces/primefaces/issues/4385)
+
+jquery.ui.pfextensions:
+- Added gotoToday selection fix (https://github.com/primefaces/primefaces/issues/1420)
+- Sortable performance fix (/https://github.com/primefaces/primefaces/issues/3675)
+- Timepicker Fix (https://github.com/primefaces/primefaces/issues/2811)
+- Timepicker Fix (https://github.com/primefaces/primefaces/issues/3765)
+- Datepicker Position Fix (https://github.com/primefaces/primefaces/issues/4295)
+- Datepicker Position Fix (https://github.com/primefaces/primefaces/issues/4719)
+- Datepicker style fix (https://github.com/primefaces/primefaces/issues/5374)

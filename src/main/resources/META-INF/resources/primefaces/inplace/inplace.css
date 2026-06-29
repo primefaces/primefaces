@@ -1,0 +1,4 @@
+.ui-inplace .ui-inplace-display {cursor: pointer;border:0px none !important;}
+.ui-inplace .ui-inplace-disabled {cursor: default;}
+.ui-inplace .ui-inplace-content {}
+.ui-inplace .ui-inplace-editor {margin-left:0.1em;}

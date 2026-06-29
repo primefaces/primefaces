@@ -1,0 +1,3 @@
+Error: Program failed to validate:
+Error: [tsSuperfluousOverride] at Foo (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/InheritDocTypeError/input.d.ts:1:41)
+Type 'Foo' specifies '@inheritdoc' in doc comments, but does not have any base types. Use '@extends' or '@implements' to specify at least one base type.
