@@ -131,6 +131,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
     protected void encodeRequiredIndicator(ResponseWriter writer, OutputLabel component) throws IOException {
         writer.startElement("span", component);
         writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         writer.write("*");
         writer.endElement("span");
     }
