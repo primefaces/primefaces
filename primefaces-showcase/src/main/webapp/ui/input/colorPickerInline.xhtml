@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+
+    <ui:define name="title">
+        Color Picker
+    </ui:define>
+
+    <ui:define name="description">
+        ColorPicker has an inline mode but it can only be used globally and popup and inline mode cannot be used on the same page.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/colorpicker" />
+    <ui:param name="widgetLink" value="ColorPicker-1" />
+
+    <ui:define name="implementation">
+        <h:form>
+            <div class="card">
+                <p:growl>
+                    <p:autoUpdate />
+                </p:growl>
+
+                <h5>Inline</h5>
+
+                <p:colorPicker id="inline" mode="inline" value="#{colorView.ajax}"
+                    formatToggle="true" theme="large">
+                     <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                </p:colorPicker>
+                
+                <p:commandButton value="Save" update="@form" action="#{colorView.save}" icon="pi pi-check" styleClass="mt-4"/>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

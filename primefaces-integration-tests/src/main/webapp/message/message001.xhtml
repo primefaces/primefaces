@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+
+		<h:form id="form">
+			<p:inputText id="val1" />
+			<p:message id="message" for="val1" severity="error" showDetail="true" showSummary="true" />
+			<p:commandButton id="buttonAction1" value="Submit (single)" update="@form" action="#{message001.action1}" />
+			<p:commandButton id="buttonAction2" value="Submit (multiple)" update="@form" action="#{message001.action2}" />
+		</h:form>
+
+	</h:body>
+</f:view>
+
+</html>

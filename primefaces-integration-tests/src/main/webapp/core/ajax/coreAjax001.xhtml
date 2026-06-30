@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <div style="height: 1000px">
+                <div style="height:500px; background-color: red;"></div>
+                <div style="height:2500px; background-color: blue;">
+                    <h:inputText id="inputTextValue" value="#{coreAjax001.value}" />
+                    <p:selectOneMenu id="selectonemenu" value="#{coreAjax001.value}">
+                        <f:selectItems value="#{coreAjax001.values}" />
+                        <p:ajax update="@form" />
+                    </p:selectOneMenu>
+                    <p:commandButton id="button1" value="test1" action="#{coreAjax001.test1}" update="@form" />
+                    <p:commandButton id="button2" value="test2" action="#{coreAjax001.test2}" update="@form" />
+                </div>
+                <div style="height:500px; background-color: green;">
+                    <h:inputText id="inputtext" value="#{coreAjax001.text}" />
+                </div>
+            </div>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache:config
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns:ehcache='http://www.ehcache.org/v3'
+        xsi:schemaLocation="http://www.ehcache.org/v3 https://www.ehcache.org/schema/ehcache-core-3.8.xsd">
+
+    <ehcache:cache alias="sources">
+        <ehcache:key-type>java.lang.String</ehcache:key-type>
+        <ehcache:value-type>java.lang.Object</ehcache:value-type>
+        <ehcache:resources>
+            <ehcache:heap unit="entries">200</ehcache:heap>
+        </ehcache:resources>
+    </ehcache:cache>
+
+    <ehcache:cache alias="contents">
+        <ehcache:key-type>java.lang.String</ehcache:key-type>
+        <ehcache:value-type>java.lang.Object</ehcache:value-type>
+        <ehcache:resources>
+            <ehcache:heap unit="entries">200</ehcache:heap>
+        </ehcache:resources>
+    </ehcache:cache>
+</ehcache:config>

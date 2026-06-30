@@ -1,0 +1,10 @@
+datatable
+	langs
+		id: 4
+		type: INTERPRETED
+		name: TypeScript
+	langs
+		id: 5
+		type: INTERPRETED
+		name: Python
+datatable

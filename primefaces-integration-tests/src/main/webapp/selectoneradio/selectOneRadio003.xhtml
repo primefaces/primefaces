@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:selectOneRadio id="selectoneradio" value="#{selectOneRadio003.value}" layout="custom">
+                <f:selectItems value="#{selectOneRadio003.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver.id}"/>
+            </p:selectOneRadio>
+
+            <h:panelGrid columns="2" cellpadding="5">
+                <p:radioButton id="opt1" for="selectoneradio" itemIndex="0"/>
+                <p:outputLabel id="label1" for="opt1" value="Lewis"/>
+
+                <p:radioButton id="opt2" for="selectoneradio" itemIndex="1"/>
+                <p:outputLabel id="label2" for="opt2" value="Max"/>
+
+                <p:radioButton id="opt3" for="selectoneradio" itemIndex="2"/>
+                <p:outputLabel id="label3" for="opt3" value="Charles"/>
+
+                <p:radioButton id="opt4" for="selectoneradio" itemIndex="3"/>
+                <p:outputLabel id="label4" for="opt4" value="Lando"/>
+            </h:panelGrid>
+
+            <p:commandButton id="submit" update="@form" value="Submit"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

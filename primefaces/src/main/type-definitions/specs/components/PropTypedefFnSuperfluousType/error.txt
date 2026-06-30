@@ -1,0 +1,2 @@
+Error: [tagSuperfluousTypedef] Found type signature on @typedef {(x: boolean) => RegExp} TheType, but method tags (@param, @return etc.) are present already. Remove the type signature.
+at <unknown> (${PROJECT_BASEDIR}/src/main/type-definitions/specs/components/PropTypedefFnSuperfluousType/input.js:12:9)

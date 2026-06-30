@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+             <p:dataTable id="datatable" value="#{dataTable038.rowValues}" var="rowValue" paginator="true" rows="25">
+                <f:event type="postAddToView" listener="#{dataTable038.doRegisterPopulateDataTable}" />
+                
+                <p:column headerText="static column 1 (ok)" id="col_s1">
+                    <h:outputText id="ot_s1" value="s#{rowValue}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

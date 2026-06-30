@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+
+            <p:remoteCommand name="updateUploadedFiles" update="uploadedfiles"/>
+            <p:fileUpload id="fileupload" widgetVar="fileUpload"
+                          listener="#{fileUploadHandler.handleFileUpload}" 
+                          mode="advanced" dragDropSupport="false" multiple="true"
+                          oncomplete="if ( !PF('fileUpload').files.length ) updateUploadedFiles();"
+                          fileLimit="4" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/"/>
+
+            <p:dataTable id="uploadedfiles" var="file" value="#{fileUploadView.uploadedFiles}">
+                <p:column headerText="Name">
+                    <h:outputText value="#{file.fileName}" />
+                </p:column>
+
+                <p:column headerText="Size">
+                    <h:outputText value="#{file.size}" />
+                </p:column>
+
+                <p:column headerText="Error">
+                    <h:outputText value="#{file.errorMessage}" />
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

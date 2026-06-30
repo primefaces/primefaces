@@ -1,0 +1,27 @@
+datatable
+	langs
+		id: 1
+		type: COMPILED
+		name: Java
+		first_appeared: 1995
+	langs
+		id: 2
+		type: COMPILED
+		name: C#
+		first_appeared: 2000
+	langs
+		id: 3
+		type: INTERPRETED
+		name: JavaScript
+		first_appeared: 1995
+	langs
+		id: 4
+		type: INTERPRETED
+		name: TypeScript
+		first_appeared: 2012
+	langs
+		id: 5
+		type: INTERPRETED
+		name: Python
+		first_appeared: 1990
+datatable

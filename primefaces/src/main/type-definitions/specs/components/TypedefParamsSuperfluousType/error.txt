@@ -1,0 +1,2 @@
+Error: [tagSuperfluousTypedef] Found type signature on @typedef {string} Test.TypedefParamsSuperfluousType.Extern.Foobar, but method tags (@param, @return etc.) are present already. Remove the type signature.
+at <unknown> (${PROJECT_BASEDIR}/src/main/type-definitions/specs/components/TypedefParamsSuperfluousType/input.js:8:1)

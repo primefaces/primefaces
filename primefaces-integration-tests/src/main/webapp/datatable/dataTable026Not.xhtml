@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <style>
+                html .ui-datatable table { table-layout: auto; }
+                td, th { white-space: nowrap; max-width: 120px; font-size: .75rem; }
+            </style>
+
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable026.employees}" var="employee"
+                         filteredValue="#{dataTable026.filteredEmployees}" filterEvent="enter">
+
+                <p:column headerText="ID" field="id"/>
+                <p:column headerText="salary notEquals" field="salary" filterMatchMode="notEquals"
+                          converter="javax.faces.Integer"/>
+                <p:column headerText="last login notBetween" field="lastLoginDateTime" filterMatchMode="notBetween">
+                    <f:facet name="filter">
+                        <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateTimeFilter"
+                                      pattern="yyyy-MM-dd" rangeSeparator="-">
+                            <f:convertDateTime type="localDateTime"/>
+                        </p:datePicker>
+                    </f:facet>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+            <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+            <p:commandButton id="buttonResetTable" value="Reset" update="@form" action="#{dataTable026.resetTable()}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

@@ -1,0 +1,28 @@
+.ui-overlaypanel {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    display: none;
+}
+
+.ui-overlaypanel-content {
+    padding: 0.5em 1em;
+}
+
+.ui-overlaypanel-close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.ui-overlaypanel-mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    user-select: none;
+}
