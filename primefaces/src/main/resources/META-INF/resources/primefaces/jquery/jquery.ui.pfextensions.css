@@ -1,0 +1,24 @@
+/* PrimeFaces Extensions */
+.ui-datepicker-trigger.ui-button-icon-only .ui-button-text {
+    padding: 0.3em;
+}
+
+.ui-icon { 
+    display: block; 
+    vertical-align: baseline;
+    margin-top: 0px;
+}
+
+/* https://stackoverflow.com/a/62109988/502366 */
+.ui-helper-hidden-accessible {
+    border: 0 !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    position: absolute !important;
+    height: 1px !important;
+    width: 1px !important;
+    overflow: hidden !important;
+    clip: rect(1px, 1px, 1px, 1px) !important; /* Legacy Browsers */
+    clip-path: inset(50%) !important; /* Modern Browsers */
+    white-space: nowrap !important;
+}

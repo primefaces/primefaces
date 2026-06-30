@@ -1,0 +1,65 @@
+<!-- EXAMPLE-SOURCE-START -->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Responsive Dialog</title>
+    <h:outputStylesheet name="css/primeflex3.css" library="showcase"/>
+</h:head>
+
+<h:body>
+    <h:form>
+        <p:messages>
+            <p:autoUpdate />
+        </p:messages>
+
+        <div class="formgrid grid">
+            <div class="field col-12 md:col-6">
+                <p:outputLabel for="@next">Firstname</p:outputLabel>
+                <p:inputText id="firstname" value="#{dfResponsiveView.firstname}" styleClass="w-full" />
+            </div>
+            <div class="field col-12 md:col-6">
+                <p:outputLabel for="@next">Lastname</p:outputLabel>
+                <p:inputText id="lastname" value="#{dfResponsiveView.lastname}" styleClass="w-full" />
+            </div>
+            <div class="field col-12">
+                <p:selectBooleanCheckbox itemLabel="show more" value="#{dfResponsiveView.showMore}">
+                    <p:ajax update="@form" process="@form" />
+                </p:selectBooleanCheckbox>
+            </div>
+        </div>
+        <p:outputPanel styleClass="formgrid grid" rendered="#{dfResponsiveView.showMore}">
+            <div class="field col-12">
+                <p:outputLabel for="@next">Street</p:outputLabel>
+                <p:inputText id="street" value="#{dfResponsiveView.street}" styleClass="w-full" />
+            </div>
+            <div class="field col-12 md:col-4">
+                <p:outputLabel for="@next">Zip-Code</p:outputLabel>
+                <p:inputText id="zip" value="#{dfResponsiveView.zip}" styleClass="w-full" />
+            </div>
+            <div class="field col-12 md:col-8">
+                <p:outputLabel for="@next">City</p:outputLabel>
+                <p:inputText id="city" value="#{dfResponsiveView.city}" styleClass="w-full" />
+            </div>
+            <div class="field col-12">
+                <p:selectBooleanCheckbox itemLabel="show even more" value="#{dfResponsiveView.showEvenMore}">
+                    <p:ajax update="@form" process="@form" />
+                </p:selectBooleanCheckbox>
+            </div>
+        </p:outputPanel>
+        <p:outputPanel styleClass="formgrid grid" rendered="#{dfResponsiveView.showEvenMore}">
+            <div class="field col-12">
+                <p:outputLabel for="@next">Notice</p:outputLabel>
+                <p:inputTextarea id="notice" value="#{dfResponsiveView.street}" styleClass="w-full" rows="100" cols="80" />
+            </div>
+        </p:outputPanel>
+        <div>
+            <p:commandButton value="show message" action="#{dfResponsiveView.showMessage()}" styleClass="mr-2" />
+            <p:commandButton value="close" action="#{dfResponsiveView.closeDialog()}" />
+        </div>
+    </h:form>
+</h:body>
+
+</html>

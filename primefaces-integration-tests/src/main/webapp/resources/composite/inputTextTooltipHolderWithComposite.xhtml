@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:composite="http://xmlns.jcp.org/jsf/composite/composite">
+
+<cc:interface>
+	<cc:attribute name="value" type="java.lang.String" />
+	<cc:attribute name="tooltip" type="java.lang.String" />
+	<cc:attribute name="required" type="java.lang.Boolean" />
+	<cc:editableValueHolder name="input" />
+</cc:interface>
+
+<cc:implementation>
+	<span id="#{cc.clientId}"> <composite:inputTextTooltip id="input"
+			value="#{cc.attrs.value}" tooltip="#{cc.attrs.tooltip}"
+			required="#{cc.attrs.required}">
+			<cc:insertChildren />
+		</composite:inputTextTooltip>
+	</span>
+</cc:implementation>
+</html>

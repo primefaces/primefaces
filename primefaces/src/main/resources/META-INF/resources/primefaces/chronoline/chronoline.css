@@ -1,0 +1,110 @@
+.ui-chronoline {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.ui-chronoline-left .ui-chronoline-event-opposite {
+    text-align: right;
+}
+
+.ui-chronoline-left .ui-chronoline-event-content {
+    text-align: left;
+}
+
+.ui-chronoline-right .ui-chronoline-event {
+    flex-direction: row-reverse;
+}
+
+.ui-chronoline-right .ui-chronoline-event-opposite {
+    text-align: left;
+}
+
+.ui-chronoline-right .ui-chronoline-event-content {
+    text-align: right;
+}
+
+.ui-chronoline-vertical.ui-chronoline-alternate .ui-chronoline-event:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.ui-chronoline-vertical.ui-chronoline-alternate .ui-chronoline-event:nth-child(odd) .ui-chronoline-event-opposite {
+    text-align: right;
+}
+
+.ui-chronoline-vertical.ui-chronoline-alternate .ui-chronoline-event:nth-child(odd) .ui-chronoline-event-content {
+    text-align: left;
+}
+
+.ui-chronoline-vertical.ui-chronoline-alternate .ui-chronoline-event:nth-child(even) .ui-chronoline-event-opposite {
+    text-align: left;
+}
+
+.ui-chronoline-vertical.ui-chronoline-alternate .ui-chronoline-event:nth-child(even) .ui-chronoline-event-content {
+    text-align: right;
+}
+
+.ui-chronoline-event {
+    display: flex;
+    position: relative;
+    min-height: 70px;
+}
+
+.ui-chronoline-event:last-child {
+    min-height: 0;
+}
+
+.ui-chronoline-event-opposite {
+    flex: 1;
+    padding: 0 1rem;
+}
+
+.ui-chronoline-event-content {
+    flex: 1;
+    padding: 0 1rem;
+}
+
+.ui-chronoline-event-separator {
+    flex: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.ui-chronoline-event-marker {
+    display: flex;
+    align-self: baseline;
+}
+
+.ui-chronoline-event-connector {
+    flex-grow: 1;
+}
+
+.ui-chronoline-horizontal {
+    flex-direction: row;
+}
+
+.ui-chronoline-horizontal .ui-chronoline-event {
+    flex-direction: column;
+    flex: 1;
+}
+
+.ui-chronoline-horizontal .ui-chronoline-event:last-child {
+    flex: 0;
+}
+
+.ui-chronoline-horizontal .ui-chronoline-event-separator {
+    flex-direction: row;
+}
+
+.ui-chronoline-horizontal .ui-chronoline-event-connector  {
+    width: 100%;
+}
+
+.ui-chronoline-bottom .ui-chronoline-event {
+    flex-direction: column-reverse;
+}
+
+.ui-chronoline-horizontal.ui-chronoline-alternate .ui-chronoline-event:nth-child(even) {
+    flex-direction: column-reverse;
+}

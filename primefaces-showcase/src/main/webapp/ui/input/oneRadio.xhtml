@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            .grid-radio td {
+                padding: .5rem;
+            }
+            .legend {
+                display: inline-block;
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: .25rem;
+                vertical-align: sub;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        SelectOneRadio
+    </ui:define>
+
+    <ui:define name="description">
+        SelectOneRadio is used to choose a single item from a collection.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/selectoneradio"/>
+    <ui:param name="widgetLink" value="SelectOneRadio"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5 class="mt-0">Line Direction</h5>
+                <p:selectOneRadio id="line" value="#{radioView.line}" layout="lineDirection">
+                    <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                    <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                    <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                </p:selectOneRadio>
+
+                <h5>Page Direction</h5>
+                <p:selectOneRadio id="page" value="#{radioView.page}" layout="pageDirection">
+                    <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                    <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                    <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                </p:selectOneRadio>
+                
+                <h5>Responsive + Unselectable</h5>
+                <p:selectOneRadio id="city2" value="#{radioView.city2}" layout="responsive" columns="3" unselectable="true">
+                    <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                </p:selectOneRadio>
+                
+                
+                <h5>Grid (deprecated)</h5>
+                <p:selectOneRadio id="city" value="#{radioView.city}" layout="grid" columns="3" styleClass="grid-radio">
+                    <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                </p:selectOneRadio>
+                
+
+                <h5>Custom Layout (Facet)</h5>
+                <p:selectOneRadio id="customRadio" value="#{radioView.color}">
+                    <f:selectItem itemLabel="Red" itemValue="Red"/>
+                    <f:selectItem itemLabel="Green" itemValue="Green"/>
+                    <f:selectItem itemLabel="Blue" itemValue="Blue"/>
+
+                    <f:facet name="custom">
+                        <span class="field-radiobutton">
+                            <p:radioButton id="facet1" for="customRadio" itemIndex="0"/>
+                            <p:outputLabel for="facet1">
+                                <span class="legend" style="background:red"/> Red
+                            </p:outputLabel>
+                        </span>
+                        <span class="field-radiobutton">
+                            <p:radioButton id="facet2" for="customRadio" itemIndex="1"/>
+                            <p:outputLabel for="facet2">
+                                <span class="legend" style="background:green"/> Green
+                            </p:outputLabel>
+                        </span>
+                        <span class="field-radiobutton">
+                            <p:radioButton id="facet3" for="customRadio" itemIndex="2"/>
+                            <p:outputLabel for="facet3">
+                                <span class="legend" style="background:blue"/> Blue
+                            </p:outputLabel>
+                        </span>
+                    </f:facet>
+                </p:selectOneRadio>
+
+                <h5>Custom Layout (Referenced)</h5>
+                <p:selectOneRadio id="customRadio2" value="#{radioView.color2}" layout="custom">
+                    <f:selectItem itemLabel="Red" itemValue="Red"/>
+                    <f:selectItem itemLabel="Green" itemValue="Green"/>
+                    <f:selectItem itemLabel="Blue" itemValue="Blue"/>
+                </p:selectOneRadio>
+
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:radioButton id="ref1" for="customRadio2" itemIndex="0"/>
+                    <span class="legend" style="background:red"/>
+                    <p:outputLabel for="ref1" value="Red"/>
+
+                    <p:radioButton id="ref2" for="customRadio2" itemIndex="1"/>
+                    <span class="legend" style="background:green"/>
+                    <p:outputLabel for="ref2" value="Green"/>
+
+                    <p:radioButton id="ref3" for="customRadio2" itemIndex="2"/>
+                    <span class="legend" style="background:blue"/>
+                    <p:outputLabel for="ref3" value="Blue"/>
+                </h:panelGrid>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

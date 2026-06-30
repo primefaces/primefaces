@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Signature
+    </ui:define>
+
+    <ui:define name="description">
+        Signature is used to draw a signature as an input. Various options such as background color, foreground color, thickness are available
+        for customization. Signature also supports touch enabled devices as well as typeable text.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/signature" />
+    <ui:param name="widgetLink" value="Signature-1" />
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl>
+                    <p:autoUpdate />
+                </p:growl>
+
+                <p:outputPanel id="input">
+                    <p:outputLabel for="@next" value="Signature:" style="font-size:1.5rem" styleClass="block mb-2" />
+                    <p:signature id="signature" widgetVar="sig" style="width:400px;height:200px" value="#{signatureView.value}" required="true" guideline="true"
+                         textValue="#{signatureView.text}" base64Value="#{signatureView.base64}" />
+                </p:outputPanel>
+
+                <div style="margin:20px 0">
+                    <p:commandButton value="Submit" icon="pi pi-check" update="output signature" />
+                    <p:commandButton value="Clear" icon="pi pi-times" type="button" onclick="PF('sig').clear()" styleClass="ui-button-flat ml-2" />
+                </div>
+
+                <p:outputPanel id="output">
+                    <h:outputText rendered="#{not empty signatureView.value}" style="font-size:1.5rem" styleClass="block mb-2" value="Your Signature" />
+                    <p:signature id="signed" widgetVar="signed" style="width:400px;height:200px;" value="#{signatureView.value}"
+                        textValue="#{signatureView.text}" readonly="true" rendered="#{not empty signatureView.value}" backgroundColor="#eaeaea"
+                        color="#1769aa" />
+                </p:outputPanel>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

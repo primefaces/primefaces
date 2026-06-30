@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+
+		<h:form id="form">
+			<p:messages id="msgs" showDetail="true" />
+
+			<div class="ui-fluid grid formgrid">
+				<div class="field">
+					<p:outputLabel value="Spanish a. m. / p. m." />
+					<p:datePicker id="spanish" value="#{datePicker015.spanish}"
+						pattern="MM/dd/yyyy hh:mm a" showIcon="true" monthNavigator="true"
+						yearNavigator="true" showTime="true" readonlyInput="true"
+						timeInput="true" showOnFocus="false" hourFormat="12"
+						touchUI="false" showButtonBar="true" resolverStyle="strict"
+						locale="es" />
+				</div>
+				<div class="field">
+					<p:outputLabel value="German vorm. / nachm." />
+					<p:datePicker id="german" value="#{datePicker015.german}"
+						pattern="MM/dd/yyyy hh:mm a" showIcon="true" monthNavigator="true"
+						yearNavigator="true" showTime="true" readonlyInput="true"
+						timeInput="true" showOnFocus="false" hourFormat="12"
+						touchUI="true" showButtonBar="true" resolverStyle="strict"
+						locale="de" />
+				</div>
+				<div class="field">
+					<p:outputLabel value="English AM / PM" />
+					<p:datePicker id="english" value="#{datePicker015.english}"
+						pattern="MM/dd/yyyy hh:mm a" showIcon="true" monthNavigator="true"
+						yearNavigator="true" showTime="true" readonlyInput="true"
+						timeInput="true" showOnFocus="false" hourFormat="12"
+						touchUI="true" showButtonBar="true" resolverStyle="strict"
+						locale="en" />
+				</div>
+			</div>
+
+			<p:commandButton id="button" value="Submit" update="@form"
+				action="#{datePicker015.submit()}" />
+		</h:form>
+
+	</h:body>
+</f:view>
+
+</html>

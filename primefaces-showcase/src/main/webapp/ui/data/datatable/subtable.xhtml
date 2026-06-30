@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">SubTable</span>
+    </ui:define>
+
+    <ui:define name="description">
+        SubTable is a helper component for grouping.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable" />
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+        <h:form>
+            <div class="card">
+                <p:dataTable var="team" value="#{subTableView.teams}">
+                    <f:facet name="header">
+                        NBA Teams
+                    </f:facet>
+
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" headerText="Team"/>
+                            <p:column colspan="2" headerText="Stats"/>
+                        </p:row>
+                        <p:row>
+                            <p:column headerText="Wins"/>
+                            <p:column headerText="Losses"/>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:subTable var="stats" value="#{team.stats}">
+                        <f:facet name="header">
+                            <h:outputText value="#{team.name}"/>
+                        </f:facet>
+                        <p:column>
+                            <h:outputText value="#{stats.season}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{stats.win}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{stats.loss}"/>
+                        </p:column>
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column footerText="Totals: " class="text-right font-bold"/>
+                                <p:column footerText="#{team.allWins}" class="font-bold"/>
+                                <p:column footerText="#{team.allLosses}" class="font-bold"/>
+                            </p:row>
+                        </p:columnGroup>
+                    </p:subTable>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

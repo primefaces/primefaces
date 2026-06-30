@@ -1,0 +1,98 @@
+.ui-carousel {
+    display: flex;
+    flex-direction: column;
+}
+
+.ui-carousel-content {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.ui-carousel-prev,
+.ui-carousel-next {
+    align-self: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.ui-carousel-prev.ui-link,
+.ui-carousel-next.ui-link {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.ui-carousel-prev.ui-link:hover,
+.ui-carousel-next.ui-link:hover {
+    text-decoration: none;
+}
+
+.ui-carousel-prev.ui-state-disabled,
+.ui-carousel-next.ui-state-disabled {
+    pointer-events: none;
+}
+
+.ui-carousel-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.ui-carousel-items-content {
+    overflow: hidden;
+    width: 100%;
+}
+
+.ui-carousel-items-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.ui-carousel-indicators {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.ui-carousel-indicator > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ui-carousel-indicator > button.ui-link {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Vertical */
+.ui-carousel-vertical .ui-carousel-container {
+    flex-direction: column;
+}
+
+.ui-carousel-vertical .ui-carousel-items-container {
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Keyboard Support */
+.ui-items-hidden .ui-carousel-item {
+    visibility: hidden;
+}
+
+.ui-items-hidden .ui-carousel-item.ui-carousel-item-active {
+    visibility: visible;
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:dialog header="Modal Dialog (visible)" id="dlg" widgetVar="dlg" modal="true" height="100" closeable="true" visible="true">
+                Hello I should be visible immediately on page load!
+            </p:dialog>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

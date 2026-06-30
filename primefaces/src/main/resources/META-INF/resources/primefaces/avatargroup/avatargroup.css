@@ -1,0 +1,8 @@
+.ui-avatar-group .ui-avatar + .ui-avatar {
+    margin-left: -1rem;
+}
+
+.ui-avatar-group {
+    display: flex;
+    align-items: center;
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <h1>Basic</h1>
+            <p:commandButton id="btnShow" value="Show" type="button"/>
+            <p:commandButton id="btnUpdate" value="Update" update="@form"/>
+            <p:commandButton id="btnDestroy" value="Destroy" actionListener="#{overlayPanel001.destroy}" update="@form"/>
+            <p:overlayPanel id="overlaypanel" for="btnShow" showDelay="100" style="width:350px" rendered="#{overlayPanel001.rendered}">
+                <p>Content of overlay panel.</p>
+            </p:overlayPanel>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

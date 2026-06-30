@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:dataTable id="datatable" value="#{dataTable009.progLanguages}" var="lang" filteredValue="#{dataTable009.filteredProgLanguages}"
+                         filterEvent="enter" widgetVar="progLanguagesTables">
+                <p:ajax event="filter" listener="#{dataTable009.filterListener}" update="form:msgs"></p:ajax>
+
+                <p:column headerText="ID" sortBy="#{lang.id}">
+                    <h:outputText value="#{lang.id}"/>
+                </p:column>
+
+                <p:column headerText="Name" sortBy="#{lang.name}" filterBy="#{lang.name}" filterMatchMode="contains">
+                    <h:outputText value="#{lang.name}"/>
+                </p:column>
+
+                <p:column headerText="First appeared" sortBy="#{lang.firstAppeared}" filterBy="#{lang.firstAppeared}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('progLanguagesTables').filter()" id="firstAppearedFilter">
+                            <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{dataTable009.firstAppearedYearsWithProgLanguages()}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <p:selectOneMenu value="#{lang.firstAppeared}" id="firstAppeared">
+                        <f:selectItems value="#{dataTable009.allYearsSince1990}" />
+                    </p:selectOneMenu>
+                </p:column>
+            </p:dataTable>
+
+            <p:commandButton id="buttonReportFilteredProgLanguages" value="report filtered ProgLanguages" update="@form" action="#{dataTable009.reportFilteredProgLanguages}"/>
+            <p:commandButton id="buttonJsfImpl" value="show jsf impl" action="#{dataTable009.addJsfImplMessage}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ImageCompare
+    </ui:define>
+
+    <ui:define name="description">
+        ImageCompare provides a graphical interface to compare to similar images.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/imagecompare"/>
+    <ui:param name="widgetLink" value="ImageCompare"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:imageCompare leftImage="/resources/demo/images/compare/lara-ps3.png"
+                            rightImage="/resources/demo/images/compare/lara-ps4.png"
+                            width="450" height="435"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

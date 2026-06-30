@@ -1,0 +1,103 @@
+name: Defect report
+description: Create a report to help us improve PrimeFaces
+title: 'Replace_With_Component_Name: Brief_Bug_Description'
+labels: ":lady_beetle: defect,:bangbang: needs-triage"
+body:
+  - type: markdown
+    attributes:
+      # yamllint disable rule:line-length
+      value: |
+        <h2>This is the issue tracker of the PrimeFaces (JSF / Java) community edition</h2>
+        There is <strong>no guarantee in receiving an immediate response</strong> when you create an issue here!<br/>
+        PrimeFaces PRO will guarantee response within 1 business day.<br/>
+        For more information please read <a href="https://github.com/primefaces/primefaces/blob/master/README.md#community--elite--pro">Community <> Elite <> Pro</a>.
+      # yamllint enable rule:line-length
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproducer
+    attributes:
+      label: Reproducer
+      # yamllint disable rule:line-length
+      description: |
+        You'll have better chance to receive an answer and a solution if you add a GitHub link or zip file of your reproducer. Clone https://github.com/primefaces/primefaces-test.git to create one.
+
+        **NOTE:** Use the latest `master-SNAPSHOT` in your reproducer.
+
+        Describe the steps to take using your reproducer to encounter the issue. For example:
+
+          1. Go to '...'
+          2. Click on '...'
+          3. Scroll down to '...'
+          4. See error
+
+        We encourage you provide a reproducer. If you are unable to, at least provide us with a sample XHTML and bean.
+      # yamllint enable rule:line-length
+    validations:
+      required: false
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: false
+  - type: dropdown
+    id: pf-edition
+    attributes:
+      label: PrimeFaces edition
+      description: Note that this is the **Community** issue tracker!
+      multiple: false
+      options:
+        - Community
+        - Elite
+  - type: input
+    id: pf-version
+    attributes:
+      label: PrimeFaces version
+      placeholder: x.x.x
+    validations:
+      required: true
+  - type: input
+    id: theme
+    attributes:
+      label: Theme
+      description: Theme you are using.
+      placeholder: e.g. Saga, Arya, etc
+    validations:
+      required: false
+  - type: dropdown
+    id: jsf-implementation
+    attributes:
+      label: JSF implementation
+      multiple: false
+      options:
+        - Mojarra
+        - MyFaces
+        - All
+    validations:
+      required: true
+  - type: input
+    id: jsf-version
+    attributes:
+      label: JSF version
+      placeholder: x.x
+    validations:
+      required: true
+  - type: input
+    id: java-version
+    attributes:
+      label: Java version
+    validations:
+      required: true
+  - type: input
+    id: browsers
+    attributes:
+      label: Browser(s)
+      description: If the issue only occures in specific browsers (or versions), mention them here.
+      placeholder: e.g. Chrome 100.0.4896.127 (Official Build) (arm64) macOS

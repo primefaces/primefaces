@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:p="http://primefaces.org/ui">
+
+<cc:interface componentType="inputTextComponent">
+	<cc:attribute name="value" type="java.lang.String" />
+	<cc:attribute name="tooltip" type="java.lang.String" />
+	<cc:attribute name="required" type="java.lang.Boolean" />
+	<cc:editableValueHolder name="" />
+</cc:interface>
+
+<cc:implementation>
+	<cc:insertChildren />
+	<span> <input id="#{cc.clientId}" name="#{cc.clientId}"
+		type="text" value="#{cc.attrs.value}" /> <p:tooltip
+			for="#{cc.clientId}" value="#{cc.attrs.tooltip}" />
+	</span>
+</cc:implementation>
+</html>

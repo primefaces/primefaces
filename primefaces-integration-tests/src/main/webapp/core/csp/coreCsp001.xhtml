@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" />
+        
+            <h:panelGrid columns="3" cellpadding="7" styleClass="mb-3">
+                <p:outputLabel for="firstname" value="Firstname:" />
+                <p:inputText id="firstname" value="#{coreCsp001.firstname}" required="true" label="Firstname">
+                    <f:validateLength minimum="2" />
+                </p:inputText>
+                <p:message for="firstname" display="icon" />
+        
+                <p:outputLabel for="lastname" value="Lastname:" />
+                <p:inputText id="lastname" value="#{coreCsp001.lastname}" label="Lastname" required="true">
+                    <f:validateLength minimum="2" />
+                    <p:ajax update="msgLastname" event="keyup" />
+                </p:inputText>
+                <p:message for="lastname" id="msgLastname" display="icon" />
+        
+            </h:panelGrid>
+        
+            <p:commandButton id="btnSave" value="Save" update="@form" action="#{coreCsp001.save}" icon="pi pi-check" />
+        
+            <h:commandLink id="lnkNewPage" action="#{coreCsp001.openInNewPage()}" value="Open in new page" target="_blank">
+            </h:commandLink>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

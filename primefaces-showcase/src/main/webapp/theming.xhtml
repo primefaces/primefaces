@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            .designer-image,
+            .architecture-image {
+                width: 75%;
+                margin: 0 auto;
+                display: block;
+                margin-top: 2rem;
+                margin-bottom: 2rem;
+            }
+            
+            @media screen and (max-width: 960px) {
+                .designer-image,
+                .architecture-image {
+                    width: 100%;
+                }
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Theming
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="content-section documentation">
+            <h1>Theming</h1>
+            <p>Choose from a variety of themes or develop your own theme easily.</p>
+
+            <h5>Architecture</h5>
+            <p>PrimeFaces is a design agnostic library so unlike other UI libraries it does not enforce a certain styling such as material or bootstrap. In order to achieve this, styling has been
+                separated into core and theme. Core resides inside PrimeFaces to implement the structure of the components such as positioning whereas theme brings the colors, paddings
+                and margins.</p>
+            <p:graphicImage name="images/architecture.jpg" library="showcase" styleClass="architecture-image" />
+                
+            <h5>Built-in Themes</h5>
+            <p>PrimeFaces ships with three free themes to choose from named <i>saga</i> (default), <i>vela</i> and <i>arya</i>. Even more themes such as <i>material</i> and <i>bootstrap</i> are available at <i>primefaces-sass-theme</i>
+                repository at <a href="https://github.com/primefaces/primefaces-sass-theme/tree/main/themes">github</a>. For a live preview of themes, use the configurator 
+                <span class="border-round inline-flex border-1 w-2rem h-2rem p-0 align-items-center justify-content-center bg-primary">
+                    <span class="pi pi-cog"></span>
+                </span> to switch themes. 
+            </p>
+            
+            <p>A theme is configured by setting the <i>primefaces.THEME</i> context parameter.</p>  
+
+<pre><code class="language-xml">
+&lt;context-param&gt;
+    &lt;param-name&gt;primefaces.THEME&lt;/param-name&gt;
+    &lt;param-value&gt;arya&lt;/param-value&gt;
+&lt;/context-param&gt;
+    
+</code></pre>
+            
+            <h5>Custom Theme</h5>
+            <p>Themes are created with SASS using the <i>primefaces-sass-theme</i> project available at <a href="https://github.com/primefaces/primefaces-sass-theme">github</a>. 
+                This repository contains all the scss files for the components and the variables of all open source themes so that you may customize an existing theme or create your own. The scss variables used in a theme are available at the <a href="https://www.primefaces.org/designer/api/primefaces/13.0.0/">SASS API</a> documentation.</p>
+
+            <p>There are 2 alternatives to create your own theme. First option is using the Visual Editor and second one is compiling a theme with sass using the <i>primefaces-sass-theme</i> repository.</p>
+
+            <h6>Visual Editor</h6>
+            <p><a href="https://www.primefaces.org/designer-jsf">Visual Editor</a> is an easy way to quickly customize an existing theme without dealing with the details of the SASS API. The editor allows changing common settings like primary color for built-in themes. 
+                Once you have completed the design, click the download button to access the generated <i>theme.css</i> file and import it to your project as an asset. See the <i>Apply Theme</i> section below for details.</p>
+
+            <h6>Theme SCSS</h6>
+            <p>
+                The theme scss is available as open source at <a href="http://github.com/primefaces/primefaces-sass-theme">primefaces-sass-theme</a> repository. The <i>theme-base</i> folder contains the theming structure of the components, themes under
+                <i>themes</i> folder import the base and define the SCSS variables. The <i>themes</i> folder also contains all the built-in themes so you can customize their code as well.
+            </p>
+            <p>
+                To create your own theme, <a href="https://github.com/primefaces/primefaces-sass-theme/releases">download</a> the release matching your PrimeFaces version and access the <i>themes/mytheme</i> folder. You may also choose another theme 
+                like <i>material</i> or <i>bootstrap</i> as your base. The sass variables to customize are available under the <i>variables</i> folder. The <i>_fonts</i> file can be used to define a custom font for your project whereas the optional <i>_extensions</i> file is provided to add overrides to the components designs. The
+                <i>theme.scss</i> file imports the theme files along with the <i>theme-base</i> folder at the root to combine everything together. Next step would be compilation of the scss that can either be command line or within your project with a maven plugin.
+            </p>
+
+            <p>Once your theme is ready run the following command at the root of the <i>primefaces-sass-theme </i>project to compile it as css.</p>
+<pre><code class="language-xml">
+mvn dart-sass:compile-sass
+        
+    </code></pre>
+
+            <h6>Apply Theme</h6>
+
+            <p>Give a name to your theme e.g. <i>mycooltheme</i> then copy and import the generated theme.css file in your application to <i>WEB-INF/resources/primefaces-mycooltheme/theme.css</i> and finally set the <i>primefaces.THEME</i> context parameter. The <i>primefaces-</i> prefix
+            is required to distinguish the resources as a theme.</p>
+    
+<pre><code class="language-xml">
+    &lt;context-param&gt;
+        &lt;param-name&gt;primefaces.THEME&lt;/param-name&gt;
+        &lt;param-value&gt;mycooltheme&lt;/param-value&gt;
+    &lt;/context-param&gt;
+        
+</code></pre>
+
+            <p>If you'd like to package the theme in a jar file for reuse it in more projects, the location of the theme should be at the <i>WEB-INF/resources/primefaces-mycooltheme/theme.css</i> path folder inside a jar.</p>
+        </div>
+    </ui:define>
+    
+</ui:composition>

@@ -1,0 +1,135 @@
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2009-2025 PrimeTek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package org.primefaces.csp;
+
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
+public class CspState {
+
+    private FacesContext context;
+    private Map<String, Map<String, String>> eventHandlers;
+    private String nonce;
+    private boolean initialized = false;
+
+    public CspState(FacesContext context) {
+        this.context = context;
+        this.eventHandlers = new HashMap<>(10);
+    }
+
+    /**
+     * Retrieves or generates a nonce (number used once) for Content Security Policy (CSP).
+     *
+     * For AJAX requests and postbacks, it validates the existing nonce.
+     * For non-AJAX requests, it generates a new nonce.
+     *
+     * @return the nonce as a Base64 encoded string
+     * @throws CspException if there's a nonce mismatch or validation fails
+     */
+    public String getNonce() {
+        if (nonce == null) {
+            if (context.isPostback() || context.getPartialViewContext().isAjaxRequest()) {
+                String nonceRequest = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.NONCE_PARAM);
+                nonceRequest = Objects.toString(nonceRequest, Constants.EMPTY_STRING);
+                String nonceViewState = Constants.EMPTY_STRING;
+                Map<String, Object> viewMap = context.getViewRoot().getViewMap(false);
+                if (viewMap != null) {
+                    nonceViewState = Objects.toString(viewMap.get(Constants.RequestParams.NONCE_PARAM), Constants.EMPTY_STRING);
+                    if (context.isPostback() && LangUtils.isNotBlank(nonceViewState) && !Objects.equals(nonceViewState, nonceRequest)) {
+                        throw new CspException("CSP nonce mismatch");
+                    }
+                }
+
+                nonce = LangUtils.isNotBlank(nonceViewState) ? nonceViewState : nonceRequest;
+
+                // in case of a forward, we might create a new nonce here
+                // but it also means that the request had NO CSP request param... is this valid?
+                if (LangUtils.isBlank(nonce) && isForward(context)) {
+                    nonce = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+                }
+
+                validate(nonce);
+            }
+            else {
+                nonce = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+                if (!context.getViewRoot().isTransient()) {
+                    context.getViewRoot().getViewMap(true).put(Constants.RequestParams.NONCE_PARAM, nonce);
+                }
+            }
+        }
+
+        return nonce;
+    }
+
+    protected boolean isForward(FacesContext context) {
+        Object request = context.getExternalContext().getRequest();
+        if (request instanceof HttpServletRequest) {
+            return ((HttpServletRequest) request).getAttribute("javax.servlet.forward.request_uri") != null;
+        }
+        return false;
+    }
+
+    /**
+     * Currently the script nonce is user-supplied input, so we have to validate it to prevent header/XSS injections.
+     *
+     * @param nonce the nonce to validate
+     * @throws CspException if any errors validating the nonce
+     */
+    private void validate(String nonce) throws CspException {
+        if (LangUtils.isEmpty(nonce)) {
+            throw new CspException("Missing CSP nonce");
+        }
+        try {
+            String decodedNonce = new String(Base64.getDecoder().decode(nonce), StandardCharsets.UTF_8);
+            UUID.fromString(decodedNonce);
+        }
+        catch (Exception e) {
+            throw new CspException("Invalid CSP nonce", e);
+        }
+    }
+
+    public Map<String, Map<String, String>> getEventHandlers() {
+        return eventHandlers;
+    }
+
+    /**
+     * To prevent CSP from being initialized twice for any reason check if we already have run once when calling initialize.
+     *
+     * @return true if CSP has already been initialized, false if not.
+     */
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    public void setInitialized(boolean initialized) {
+        this.initialized = initialized;
+    }
+
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <h:outputStylesheet>
+            .prog-lang-list-item {
+                padding: 1rem;
+            }
+        </h:outputStylesheet>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataView id="dataview" value="#{dataView001.progLanguages}" var="lang" paginator="true" rows="3" layout="list"
+                        gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+                <f:facet name="header">
+                    Basic
+                </f:facet>
+
+                <p:dataViewListItem>
+                    <div class="prog-lang-list-item">
+                        #{lang.id} - #{lang.name}, First appeared: #{lang.firstAppeared}
+                    </div>
+                </p:dataViewListItem>
+
+                <p:dataViewGridItem>
+                    #{lang.id} - #{lang.name}<br/>
+                    First appeared: #{lang.firstAppeared}
+                </p:dataViewGridItem>
+            </p:dataView>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

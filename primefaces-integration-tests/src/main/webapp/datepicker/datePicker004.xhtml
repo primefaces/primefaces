@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form1">
+            <!-- Utilizes only Hours and Minutes -->
+            <p:datePicker id="dpHours"
+                          value="#{datePicker004.localDateTimeHours}"
+                          pattern="MM/dd/yyyy"/>
+            <p:commandButton id="btnHours" value="Hours" update="@form"/>
+        </h:form>
+        <br/>
+        <h:form id="form2">
+            <!-- #6458 showSeconds="true" automatically detected because of pattern contains 's' -->
+            <!-- #6459 showTime="true" automatically detected because of LocalDateTime -->
+            <!-- #6810 showButtonBar="true" Clear button not clearing time -->
+            <p:datePicker id="dpSeconds"
+                          value="#{datePicker004.localDateTimeSeconds}"
+                          pattern="MM/dd/yyyy HH:mm:ss"
+                          showButtonBar="true"/>
+            <p:commandButton id="btnSeconds" value="Seconds" update="@form"/>
+        </h:form>
+        <br/>
+        <h:form id="form3">
+            <!-- #7448 showMilliseconds="true" automatically detected because of pattern contains 'S'-->
+            <p:datePicker id="dpMilliseconds"
+                          value="#{datePicker004.localDateTimeMilliseconds}"
+                          pattern="MM/dd/yyyy HH:mm:ss.SSS"
+                          showButtonBar="true"/>
+            <p:commandButton id="btnMilliseconds" value="Milliseconds" update="@form"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

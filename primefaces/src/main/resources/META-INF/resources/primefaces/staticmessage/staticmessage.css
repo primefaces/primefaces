@@ -1,0 +1,30 @@
+.ui-staticmessage {
+    position: relative;
+    padding: 0.5rem 0.5rem;
+}
+
+.ui-staticmessage .ui-messages-close {
+    position: absolute;
+    cursor: pointer;
+    top: -.75rem;
+    right: -.75rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 2rem;
+    padding: 0;
+    user-select: none;
+    text-align: center;
+    background-color: inherit;
+    color: inherit;
+}
+
+.ui-staticmessage .ui-messages-close .ui-icon {
+    color: inherit;
+}
+
+.ui-staticmessage .ui-messages-close .ui-icon-close:before {
+    font-family: "primeicons" !important;
+    content: "\e90b";
+}
