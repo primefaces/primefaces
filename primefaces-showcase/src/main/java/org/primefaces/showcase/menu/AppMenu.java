@@ -45,19 +45,19 @@ public class AppMenu {
         //GENERAL CATEGORY START
         List<MenuItem> generalMenuItems = new ArrayList<>();
         generalMenuItems.add(new MenuItem("Get Started", "/getstarted"));
-        generalMenuItems.add(new MenuItem("Long Term Support (LTS)", "/lts"));
-        generalMenuItems.add(new MenuItem("PRO Support", "/support"));
         generalMenuItems.add(new MenuItem("TagLib", "/taglib", "New"));
         generalMenuItems.add(new MenuItem("Documentation", "https://primefaces.github.io/primefaces/16_0_0/#/"));
         menuCategories.add(new MenuCategory("General", generalMenuItems));
         //GENERAL CATEGORY END
 
         //THEMING CATEGORY START
+        /*
         List<MenuItem> themingMenuItems = new ArrayList<>();
         themingMenuItems.add(new MenuItem("Overview", "/theming"));
         themingMenuItems.add(new MenuItem("Colors", "/colors"));
         themingMenuItems.add(new MenuItem("SASS API", "https://www.primefaces.org/designer/api/primefaces/13.0.0/"));
         menuCategories.add(new MenuCategory("Theming", themingMenuItems));
+        */
         //THEMING CATEGORY END
 
         //CORE CATEGORY START
@@ -98,6 +98,7 @@ public class AppMenu {
         coreMenuItems.add(new MenuItem("Accessiblity", "/accessibility"));
         coreMenuItems.add(new MenuItem("PrimeFlex", "/primeflex/setup"));
         coreMenuItems.add(new MenuItem("PrimeIcons", "/icons"));
+        coreMenuItems.add(new MenuItem("Theming", "/theming"));
         menuCategories.add(new MenuCategory("Core", coreMenuItems));
         //CORE FRAMEWORK CATEGORY END
 
