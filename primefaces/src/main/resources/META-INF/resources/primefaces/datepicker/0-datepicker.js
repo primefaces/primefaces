@@ -2774,7 +2774,7 @@
 
         showOverlay: function() {
             // Return immediately if a document click listener is set, or if the datepicker is inline, already visible, or lacks a transition
-            if (this.documentClickListener || this.options.inline || this.isPanelVisible() || !this.transition) {
+            if (this.options.disabled || this.documentClickListener || this.options.inline || this.isPanelVisible() || !this.transition) {
                 return;
             }
             var $this = this;
