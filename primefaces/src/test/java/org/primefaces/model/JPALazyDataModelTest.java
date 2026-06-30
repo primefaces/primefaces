@@ -25,12 +25,9 @@ package org.primefaces.model;
 
 import org.primefaces.mock.FacesContextMock;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -58,58 +55,55 @@ class JPALazyDataModelTest {
     }
 
     @Test
-    void count_recordsOneCall() {
+    void countExecutesSingleQuery() {
         Fixture fixture = createFixture(null);
 
         int count = fixture.model.count(Collections.emptyMap());
 
         assertEquals(5, count);
-        assertEquals(Collections.singletonList("count()"), fixture.model.getCalls());
         Mockito.verify(fixture.countTypedQuery, Mockito.times(1)).getSingleResult();
     }
 
     @Test
-    void load_recordsOneCall() {
+    void loadExecutesSingleQuery() {
         Fixture fixture = createFixture(null);
 
         List<TestEntity> result = fixture.model.load(0, 3, Collections.emptyMap(), Collections.emptyMap());
 
         assertEquals(3, result.size());
-        assertEquals(Collections.singletonList("load(first=0, size=3)"), fixture.model.getCalls());
         Mockito.verify(fixture.entityTypedQuery, Mockito.times(1)).setFirstResult(0);
         Mockito.verify(fixture.entityTypedQuery, Mockito.times(1)).setMaxResults(3);
         Mockito.verify(fixture.entityTypedQuery, Mockito.times(1)).getResultList();
     }
 
     @Test
-    void getRowData_withoutConverter_queriesByRowKey() {
+    void getRowDataWithoutConverterQueriesByRowKey() {
         Fixture fixture = createFixture(null);
 
         TestEntity entity = fixture.model.getRowData("1");
 
         assertNotNull(entity);
         assertEquals("1", entity.getId());
-        assertEquals(Collections.singletonList("getRowData(rowKey=1)"), fixture.model.getCalls());
         Mockito.verify(fixture.entityManager, Mockito.times(1)).createQuery(fixture.entityQuery);
         Mockito.verify(fixture.entityTypedQuery, Mockito.times(1)).getSingleResult();
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    void getRowData_withConverter_doesNotQueryDatabase() {
+    void getRowDataWithConverterDoesNotQueryDatabase() {
         Fixture fixture = createFixture(new TestEntityConverter());
 
         TestEntity entity = fixture.model.getRowData("1");
 
         assertNotNull(entity);
         assertEquals("1", entity.getId());
-        assertEquals(Collections.singletonList("getRowData(rowKey=1)"), fixture.model.getCalls());
         Mockito.verify(fixture.entityManager, Mockito.never()).createQuery(Mockito.any(CriteriaQuery.class));
         Mockito.verify(fixture.criteriaBuilder, Mockito.never()).createQuery(Mockito.any(Class.class));
     }
 
     @SuppressWarnings("unchecked")
     private static Fixture createFixture(Converter<TestEntity> converter) {
+        JPALazyDataModel<TestEntity> model = new JPALazyDataModel<>();
         EntityManager em = Mockito.mock(EntityManager.class);
         CriteriaBuilder cb = Mockito.mock(CriteriaBuilder.class);
         CriteriaQuery<Long> countQuery = Mockito.mock(CriteriaQuery.class);
@@ -141,8 +135,7 @@ class JPALazyDataModelTest {
                 new TestEntity("3", "c")));
         Mockito.when(entityTypedQuery.getSingleResult()).thenReturn(new TestEntity("1", "a"));
 
-        TrackingJPALazyDataModel model = new TrackingJPALazyDataModel();
-        JPALazyDataModel.Builder<TestEntity, TrackingJPALazyDataModel> builder =
+        JPALazyDataModel.Builder<TestEntity, JPALazyDataModel<TestEntity>> builder =
                 new JPALazyDataModel.Builder<>(model)
                         .entityClass(TestEntity.class)
                         .entityManager(() -> em);
@@ -160,14 +153,14 @@ class JPALazyDataModelTest {
     }
 
     private static class Fixture {
-        final TrackingJPALazyDataModel model;
+        final JPALazyDataModel<TestEntity> model;
         final EntityManager entityManager;
         final CriteriaBuilder criteriaBuilder;
         final TypedQuery<Long> countTypedQuery;
         final CriteriaQuery<TestEntity> entityQuery;
         final TypedQuery<TestEntity> entityTypedQuery;
 
-        Fixture(TrackingJPALazyDataModel model, EntityManager entityManager, CriteriaBuilder criteriaBuilder,
+        Fixture(JPALazyDataModel<TestEntity> model, EntityManager entityManager, CriteriaBuilder criteriaBuilder,
                 TypedQuery<Long> countTypedQuery,
                 CriteriaQuery<TestEntity> entityQuery, TypedQuery<TestEntity> entityTypedQuery) {
             this.model = model;
@@ -176,40 +169,6 @@ class JPALazyDataModelTest {
             this.countTypedQuery = countTypedQuery;
             this.entityQuery = entityQuery;
             this.entityTypedQuery = entityTypedQuery;
-        }
-    }
-
-    private static class TrackingJPALazyDataModel extends JPALazyDataModel<TestEntity> {
-
-        private static final long serialVersionUID = 1L;
-
-        private final List<String> calls = new ArrayList<>();
-
-        public List<String> getCalls() {
-            return calls;
-        }
-
-        private void record(String method, Object... args) {
-            String argsStr = Arrays.stream(args).map(String::valueOf).collect(Collectors.joining(", "));
-            calls.add(String.format("%s(%s)", method, argsStr));
-        }
-
-        @Override
-        public int count(Map<String, FilterMeta> filterBy) {
-            record("count");
-            return super.count(filterBy);
-        }
-
-        @Override
-        public List<TestEntity> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-            record("load", "first=" + first, "size=" + pageSize);
-            return super.load(first, pageSize, sortBy, filterBy);
-        }
-
-        @Override
-        public TestEntity getRowData(String rowKey) {
-            record("getRowData", "rowKey=" + rowKey);
-            return super.getRowData(rowKey);
         }
     }
 
