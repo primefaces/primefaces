@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="message" showDetail="true"/>
+
+            <p:commandButton id="confirm" value="Confirm" action="#{confirmPopup001.confirm}" update="message" styleClass="p-mr-2" icon="pi pi-check">
+                <p:confirm type="popup" header="Confirmation" message="Are you sure you want to proceed?" icon="pi pi-exclamation-triangle"/>
+            </p:commandButton>
+
+            <p:commandButton id="delete" value="Delete" action="#{confirmPopup001.delete}" update="message" styleClass="ui-button-danger" icon="pi pi-times">
+                <p:confirm type="popup" header="Confirmation" message="Do you want to delete this record?" icon="pi pi-info-circle"/>
+            </p:commandButton>
+
+            <p:confirmPopup id="confirmpopup" global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes"/>
+                <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            </p:confirmPopup>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

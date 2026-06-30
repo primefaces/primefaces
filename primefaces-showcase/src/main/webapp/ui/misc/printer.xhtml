@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Printer
+    </ui:define>
+
+    <ui:define name="description">
+        Printer is used to print a certain component instead of the whole page.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/printer"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:commandButton value="Print" type="button" icon="pi pi-print" styleClass="shadow-1 mb-3 mr-2">
+
+                <p:printer target="image"/>
+            </p:commandButton>
+            <p:commandButton value="Print (custom configuration)" type="button" icon="pi pi-print" styleClass="shadow-1 mb-3">
+                <p:printer target="pnlPrint" configuration="globalStyles: true, title: 'Nature Image Header', timeout: 1000"/>
+            </p:commandButton>
+
+            <p:outputPanel id="pnlPrint">
+               <p:graphicImage id="image" name="demo/images/nature/nature10.jpg"/>
+            </p:outputPanel>
+        </div>
+    </ui:define>
+
+</ui:composition>

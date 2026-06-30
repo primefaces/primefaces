@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" 
+    xmlns:f="http://xmlns.jcp.org/jsf/core" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:composite="http://xmlns.jcp.org/jsf/composite/composite" 
+    template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Float Label
+    </ui:define>
+
+    <ui:define name="description">
+        All input text components support floating labels by adding ( <mark>.ui-float-label</mark> ) to wrapper class.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/outputlabel" />
+
+    <ui:define name="implementation">
+        <div class="card" style="width: 100%">
+            <h:form>
+                <div class="grid ui-fluid mt-3 floatlabel-demo">
+                    <div class="col-12 md:col-6">
+                        <div class="field">
+                            <span class="ui-float-label"> 
+                                <p:inputText /> 
+                                <p:outputLabel for="@previous" value="InputText" />
+                            </span>
+                        </div>
+                        <div class="field">
+                            <span class="ui-float-label ui-input-icon-left"> 
+                                <i class="pi pi-search" /> 
+                                <p:inputText />
+                                <p:outputLabel for="@previous" value="Left Icon" styleClass="ml-4" />
+                            </span>
+                        </div>
+                        <div class="field">
+                            <span class="ui-float-label ui-input-icon-right"> 
+                               <p:inputText /> 
+                               <p:outputLabel for="@previous" value="Right Icon" /> 
+                               <i class="pi pi-spin pi-spinner" />
+                            </span>
+                        </div>
+                        <div class="field">
+                            <span class="ui-float-label"> 
+                               <p:inputMask mask="99/99/9999" /> 
+                               <p:outputLabel for="@previous" value="InputMask" />
+                            </span>
+                        </div>
+                        <div class="field">
+                            <span class="ui-float-label"> 
+                               <p:inputNumber /> 
+                               <p:outputLabel for="@previous" value="InputNumber" />
+                            </span>
+                        </div>
+                        <div class="field">
+                            <span class="ui-float-label"> 
+                                  <p:chips /> 
+                                  <p:outputLabel for="@previous" value="Chips" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 md:col-6">
+                        <div class="field">
+                            <div class="ui-inputgroup">
+                                <span class="ui-inputgroup-addon"> <i class="pi pi-user" />
+                                </span> <span class="ui-float-label" style="width: 100%"> <p:inputText /> <p:outputLabel
+                                        for="@previous" value="InputGroup" />
+                                </span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <span class="ui-float-label"> 
+                               <p:autoComplete /> 
+                               <p:outputLabel for="@previous" value="AutoComplete" />
+                            </span>
+                        </div>
+                        <div class="field">
+                            <span class="ui-float-label"> 
+                               <p:datePicker /> 
+                               <p:outputLabel for="@previous" value="Datepicker" />
+                            </span>
+                        </div>
+                        <div class="field">
+                            <span class="ui-float-label"> 
+                               <p:selectOneMenu id="cities" autoWidth="false">
+                                    <f:selectItem itemLabel="" itemValue="" />
+                                    <f:selectItem itemLabel="New York" itemValue="New York" />
+                                    <f:selectItem itemLabel="Rome" itemValue="Rome" />
+                                    <f:selectItem itemLabel="London" itemValue="London" />
+                                    <f:selectItem itemLabel="Istanbul" itemValue="Istanbul" />
+                                    <f:selectItem itemLabel="Paris" itemValue="Paris" />
+                                </p:selectOneMenu> 
+                                <p:outputLabel for="@previous" value="Dropdown" />
+                            </span>
+                        </div>
+                        <div class="field">
+                            <span class="ui-float-label"> 
+                               <p:inputTextarea rows="3" cols="30" /> 
+                               <p:outputLabel for="@previous" value="Textarea" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

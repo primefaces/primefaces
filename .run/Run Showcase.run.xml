@@ -1,0 +1,37 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Showcase" type="MavenRunConfiguration" factoryName="Maven">
+    <MavenSettings>
+      <option name="myGeneralSettings" />
+      <option name="myRunnerSettings" />
+      <option name="myRunnerParameters">
+        <MavenRunnerParameters>
+          <option name="cmdOptions" />
+          <option name="profiles">
+            <set />
+          </option>
+          <option name="goals">
+            <list>
+              <option value="clean" />
+              <option value="package" />
+              <option value="jetty:run" />
+            </list>
+          </option>
+          <option name="multimoduleDir" />
+          <option name="pomFileName" />
+          <option name="profilesMap">
+            <map>
+              <entry key="non-ee" value="true" />
+              <entry key="myfaces-2.3" value="true" />
+            </map>
+          </option>
+          <option name="projectsCmdOptionValues">
+            <list />
+          </option>
+          <option name="resolveToWorkspace" value="false" />
+          <option name="workingDirPath" value="$PROJECT_DIR$/primefaces-showcase" />
+        </MavenRunnerParameters>
+      </option>
+    </MavenSettings>
+    <method v="2" />
+  </configuration>
+</component>

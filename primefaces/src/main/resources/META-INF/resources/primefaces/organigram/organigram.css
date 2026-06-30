@@ -1,0 +1,184 @@
+.ui-organigram {
+    position: relative;
+}
+
+.ui-organigram .controls {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 35px;
+    height: 70px;
+}
+
+.ui-organigram .control {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.ui-organigram .control.zoom-in {
+    background-image: url("#{resource['primefaces:organigram/zoom-in.png']}");
+}
+
+.ui-organigram .control.zoom-out {
+    background-image: url("#{resource['primefaces:organigram/zoom-out.png']}");
+}
+
+.ui-organigram > ul {
+    display: none;
+}
+
+.ui-organigram .target {
+    overflow: auto;
+    position: relative;
+    height: 100%;
+}
+
+.ui-organigram .target > * {
+    overflow: hidden;
+    padding: 5px;
+    max-width: 100%;
+}
+
+.ui-organigram .line {
+    height: 20px;
+    width: 2px;
+    border-color: black;
+    border-style: solid;
+    border-width: 0px;
+}
+
+.ui-organigram .line.small {
+    height: 10px;
+    font-size: 0px;
+}
+
+.ui-organigram .line.down {
+    background-color: black;
+    margin: 0px auto;
+}
+
+.ui-organigram .line.top {
+    border-top-width: 2px;
+}
+
+.ui-organigram .line.left {
+    border-right-width: 1px;
+}
+
+.ui-organigram .line.right {
+    border-left-width: 1px;
+}
+
+.ui-organigram td {
+    text-align: center;
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+}
+
+.ui-organigram tr {
+    padding: 0;
+    margin: 0;
+}
+
+.ui-organigram .ui-organigram-node {
+    width: 110px;
+    min-height: 20px;
+
+    margin: 0 2px;
+    padding: 2px;
+
+    position: relative;
+    display: inline-block;
+
+    font-size: 14px;
+    color: white;
+
+    -webkit-box-shadow: 3px 3px 6px -4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 3px 3px 6px -4px rgba(0,0,0,0.75);
+    box-shadow: 3px 3px 6px -4px rgba(0,0,0,0.75);
+
+    background: #9c53e0;
+    background: -moz-linear-gradient(top, #9c53e0 0%, #8a2be2 100%);
+    background: -webkit-linear-gradient(top, #9c53e0 0%,#8a2be2 100%);
+    background: linear-gradient(to bottom, #9c53e0 0%,#8a2be2 100%);
+}
+
+.ui-organigram .ui-organigram-icon-container {
+    width: 100%;
+    height: 16px;
+}
+
+.ui-organigram .ui-organigram-node .ui-organigram-icon {
+    display: inline-block;
+    margin-top: -1px;
+}
+
+.ui-organigram .ui-organigram-node .ui-organigram-icon.left {
+    float: left;
+}
+
+.ui-organigram .ui-organigram-node .ui-organigram-icon.right {
+    float: right;
+}
+
+.ui-organigram .ui-organigram-node .ui-organigram-node-content {
+    clear: both;
+    word-wrap: break-word;
+}
+
+.ui-organigram .ui-organigram-node.draggable {
+    cursor: pointer;
+}
+
+.ui-organigram .ui-organigram-node.selectable {
+    cursor: pointer;
+}
+
+.ui-organigram .ui-organigram-node.drag-active {
+    opacity: 0.6;
+}
+
+.ui-organigram .ui-organigram-node.drop-hover {
+    opacity: 1;
+}
+
+.ui-organigram .ui-organigram-node.selected {
+    -webkit-box-shadow: inset 0px 0px 30px -5px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 0px 0px 30px -5px rgba(0,0,0,0.75);
+    box-shadow: inset 0px 0px 30px -5px rgba(0,0,0,0.75);
+}
+
+.ui-organigram .ui-organigram-node.level-1 {
+    background: #02a7f2;
+    background: -moz-linear-gradient(top, #02a7f2 0%, #0289d2 100%);
+    background: -webkit-linear-gradient(top, #02a7f2 0%,#0289d2 100%);
+    background: linear-gradient(to bottom, #02a7f2 0%,#0289d2 100%);
+}
+
+.ui-organigram .ui-organigram-node.level-2 {
+    background: #ffc86b;
+    background: -moz-linear-gradient(top, #ffc86b 0%, #ffac1e 100%);
+    background: -webkit-linear-gradient(top, #ffc86b 0%,#ffac1e 100%);
+    background: linear-gradient(to bottom, #ffc86b 0%,#ffac1e 100%);
+}
+
+.ui-organigram .ui-organigram-node.level-3 {
+    background: #88c048;
+    background: -moz-linear-gradient(top, #88c048 0%, #69a038 100%);
+    background: -webkit-linear-gradient(top, #88c048 0%,#69a038 100%);
+    background: linear-gradient(to bottom, #88c048 0%,#69a038 100%);
+}
+
+.ui-organigram .ui-organigram-node.level-4 {
+    background: #f77a31;
+    background: -moz-linear-gradient(top, #f77a31 0%, #d82d1e 100%);
+    background: -webkit-linear-gradient(top, #f77a31 0%,#d82d1e 100%);
+    background: linear-gradient(to bottom, #f77a31 0%,#d82d1e 100%);
+}
+
+.ui-organigram .ui-organigram-node .expander {
+    cursor: pointer;
+    float: right;
+}

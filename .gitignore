@@ -1,0 +1,57 @@
+/target/
+**/target/**
+.settings/
+nbactions.xml
+.DS_STORE
+.idea/
+*.iml
+**/pom.xml.versionsBackup
+*~
+.classpath
+.
+.project
+.vscode/
+.checkstyle
+.factorypath
+nb-configuration.xml
+faces-config.NavData
+dependency-reduced-pom.xml
+/primefaces/src/main/type-definitions/src/PrimeFaces-modules.d.ts
+/primefaces/src/main/type-definitions/src/PrimeFaces.d.ts
+
+# Selenium Drivers
+*.exe
+
+# Created by https://www.gitignore.io/api/node
+# Edit at https://www.gitignore.io/?templates=node
+
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+/primefaces-showcase/src/main/resources/META-INF/resources/primefaces-bootstrap4-*/
+
+# End of https://www.gitignore.io/api/node
+/primefaces-showcase/target/
+/primefaces-cli/target/
+/primefaces/target/

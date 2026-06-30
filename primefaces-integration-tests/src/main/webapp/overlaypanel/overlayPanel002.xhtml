@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <h1>Dialog</h1>
+            <p:commandButton id="btnDialog" value="Dialog" type="button" icon="pi pi-external-link" onclick="PF('dlg1').show()"/>
+
+            <p:dialog id="dialog" header="Header" widgetVar="dlg1" minHeight="40" width="500">
+                <p:outputPanel id="dialogPanel">
+                    <p:commandButton id="btnShow" value="Show" type="button"/>
+                    <p:commandButton id="btnUpdate" value="Update" update="dialogPanel"/>
+                    <p:commandButton id="btnDestroy" value="Destroy" actionListener="#{overlayPanel002.destroy}" update="dialogPanel"/>
+                    <p:commandButton id="btnAppend" value="Append" actionListener="#{overlayPanel002.appendToSomething}" update="dialogPanel"/>
+                    <p:overlayPanel id="overlaypanel" for="btnShow" rendered="#{overlayPanel002.rendered}" appendTo="#{overlayPanel002.appendTo}">
+                        <p>Content of overlay panel.</p>
+                    </p:overlayPanel>
+                </p:outputPanel>
+            </p:dialog>
+
+            <p:panel id="panel">
+
+            </p:panel>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

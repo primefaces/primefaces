@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        CommandLink
+    </ui:define>
+
+    <ui:define name="description">
+        CommandLink is an action component to process forms and invoke listeners remotely.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/commandlink"/>
+    <ui:param name="widgetLink" value="CommandLink"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="growl" life="2000"/>
+
+                <h5 class="mt-0">Basic</h5>
+                <p:commandLink id="ajax" update="growl" action="#{buttonView.buttonAction}" class="mr-4"
+                               value="Ajax Post"/>
+
+                <p:commandLink id="nonAjax" action="#{buttonView.buttonAction}" class="mr-4" ajax="false"
+                               value="Regular Post"/>
+
+                <p:commandLink id="disabled" action="#{buttonView.buttonAction}" disabled="true"
+                               value="Disabled"/>
+
+                <h5>Disable on Ajax</h5>
+                <p:commandLink id="disableOnAjax" action="#{buttonBasicView.sleep()}" value="Sleep"/>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

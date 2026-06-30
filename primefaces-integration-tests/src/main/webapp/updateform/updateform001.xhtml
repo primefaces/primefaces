@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head/>
+
+    <h:body>
+
+         <h:form id="form">
+
+            <h:outputText value="Date:" />
+            <p:calendar id="calendar" yearRange="c-5:c+5" showOn="button" navigator="true" value="#{updateForm001.date}">
+                <p:ajax event="dateSelect" process="@this" update="@form" listener="#{updateForm001.dateSelect}" />
+                <p:ajax event="change" process="@this" update="@form" listener="#{updateForm001.dateSelect}" />
+            </p:calendar>
+            <br />
+
+            <h:outputText value="Number 0:" />
+            <p:inputNumber id="inputnumber0" value="#{updateForm001.number0}">
+                <p:ajax process="@this" update="@form" />
+            </p:inputNumber>
+            <br />
+
+            <p:inputText id="inputtext1" value="#{updateForm001.text1}">
+                <p:ajax process="@this" update="@form" />
+            </p:inputText>
+            <p:inputNumber id="inputnumber1" value="#{updateForm001.number1}">
+                <p:ajax process="@this" update="@form" />
+            </p:inputNumber>
+            <br />
+
+            <p:inputText id="inputtext2" value="#{updateForm001.text2}">
+                <p:ajax process="@this" update="@form" />
+            </p:inputText>
+            <p:inputNumber id="inputnumber2" value="#{updateForm001.number2}">
+                <p:ajax process="@this" update="@form" />
+            </p:inputNumber>
+            <br />
+
+            <p:inputText id="inputtext3" value="#{updateForm001.text3}">
+                <p:ajax process="@this" update="@form" />
+            </p:inputText>
+            <p:inputNumber id="inputnumber3" value="#{updateForm001.number3}">
+                <p:ajax process="@this" update="@form" />
+            </p:inputNumber>
+            <br />
+
+            <p:inputText id="inputtext4" value="#{updateForm001.text4}">
+                <p:ajax process="@this" update="@form" />
+            </p:inputText>
+            <p:inputNumber id="inputnumber4" value="#{updateForm001.number4}">
+                <p:ajax process="@this" update="@form" />
+            </p:inputNumber>
+            <br />
+
+            <p:inputTextarea id="inputtextarea1" value="#{updateForm001.longtext1}">
+                <p:ajax process="@this" update="@form" />
+            </p:inputTextarea>
+            <br />
+
+            <p:commandButton id="button" update="@form" value="Submit" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages/>
+
+            <p:datePicker id="datepicker1" value="#{datePicker013.localDateTime1}"
+                          pattern="yyyy-MM-dd HH:mm:ss" showTime="true"/>
+            <p:datePicker id="datepicker2" value="#{datePicker013.localDateTime2}"
+                          pattern="yyyy-MM-dd HH:mm:ss" showTime="true">
+                <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
+            </p:datePicker>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

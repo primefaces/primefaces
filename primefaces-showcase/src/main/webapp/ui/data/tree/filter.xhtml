@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Tree <span class="subitem">Filter</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Filtering updates the node based on the constraints.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tree"/>
+    <ui:param name="widgetLink" value="VerticalTree-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5>Basic</h5>
+                <p:tree value="#{treeBasicView.root}" var="node" filterBy="#{node}">
+                    <p:treeNode>
+                        <h:outputText value="#{node}"/>
+                    </p:treeNode>
+                </p:tree>
+
+                <h5>Custom</h5>
+                <p:tree value="#{treeBasicView.root}" var="node" filterFunction="#{treeBasicView.customFilter}">
+                    <p:treeNode>
+                        <h:outputText value="#{node}"/>
+                    </p:treeNode>
+                </p:tree>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

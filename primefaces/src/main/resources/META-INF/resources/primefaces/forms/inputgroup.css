@@ -1,0 +1,97 @@
+.ui-inputgroup {   
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.ui-inputgroup .ui-inputgroup-addon,
+.ui-inputgroup .ui-inputgroup-addon-checkbox {
+    display: inline-block;
+    text-align: center;
+    min-width: 1.5em;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.ui-inputgroup .ui-inputgroup-addon {
+    padding: 4px;
+}
+
+.ui-inputgroup .ui-inputgroup-addon-checkbox {
+    padding: 1px;
+}
+
+.ui-inputgroup .ui-inputgroup-addon + .ui-inputgroup-addon {
+    border-left: 0 none;
+}
+
+.ui-inputgroup .ui-inputtext,
+.ui-inputgroup .ui-inputtextarea,
+.ui-inputgroup .ui-password,
+.ui-inputgroup .ui-autocomplete-input,
+.ui-inputgroup .ui-chips-container,
+.ui-inputgroup .ui-spinner-input {
+    padding-left: .5em;
+}
+
+.ui-inputgroup > .ui-inputtext:not(:first-child),
+.ui-inputgroup > .ui-inputtextarea:not(:first-child),
+.ui-inputgroup > .ui-password:not(:first-child),
+.ui-inputgroup > .ui-inputnumber:not(:first-child) > .ui-inputtext,
+.ui-inputgroup > .ui-inputmask:not(:first-child),
+.ui-inputgroup > .ui-calendar:not(:first-child) > .ui-inputfield,
+.ui-inputgroup > .ui-chips:not(:first-child) > .ui-chips-container,
+.ui-inputgroup > .ui-selectonemenu:not(:first-child),
+.ui-inputgroup > .ui-selectonebutton:not(:first-child) > .ui-button,
+.ui-inputgroup > .ui-autocomplete:not(:first-child) > .ui-autocomplete-input,
+.ui-inputgroup > .ui-spinner:not(:first-child),
+.ui-inputgroup > .ui-spinner:not(:first-child) > .ui-spinner-input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 0 none;
+}
+
+.ui-inputgroup > .ui-inputtext:not(:last-child),
+.ui-inputgroup > .ui-inputtextarea:not(:last-child),
+.ui-inputgroup > .ui-password:not(:last-child),
+.ui-inputgroup > .ui-inputnumber:not(:last-child) > .ui-inputtext,
+.ui-inputgroup > .ui-inputmask:not(:last-child),
+.ui-inputgroup > .ui-selectonemenu:not(:last-child),
+.ui-inputgroup > .ui-calendar:not(:last-child) > .ui-inputfield,
+.ui-inputgroup > .ui-chips:not(:last-child) > .ui-chips-container,
+.ui-inputgroup > .ui-selectonebutton:not(:last-child) > .ui-button,
+.ui-inputgroup > .ui-autocomplete:not(:last-child) > .ui-autocomplete-input,
+.ui-inputgroup > .ui-spinner:not(:last-child),
+.ui-inputgroup > .ui-spinner:not(:last-child) > .ui-spinner-input,
+.ui-inputgroup > .ui-spinner:not(:last-child) > .ui-spinner-button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0 none;
+}
+
+.ui-inputgroup .ui-button {
+    margin-right: 0;
+    border-radius: 0;
+}
+
+.ui-inputgroup .ui-inputgroup-addon-checkbox .ui-chkbox {
+    margin-right: 0;
+    vertical-align: bottom;
+    position: relative;
+    top: 2px;
+}
+
+.ui-inputgroup .ui-button .ui-button-text {
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+.ui-fluid .ui-inputgroup .ui-button {
+    width: auto;
+}
+
+.ui-fluid .ui-inputgroup .ui-button-icon-only {
+    min-width: 2.2em;
+}
