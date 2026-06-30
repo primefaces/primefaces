@@ -56,7 +56,7 @@ class JPALazyDataModelTest {
 
     @Test
     void countExecutesSingleQuery() {
-        Fixture fixture = createFixture(null);
+        Fixture fixture = createMocksForCount();
 
         int count = fixture.model.count(Collections.emptyMap());
 
@@ -66,7 +66,7 @@ class JPALazyDataModelTest {
 
     @Test
     void loadExecutesSingleQuery() {
-        Fixture fixture = createFixture(null);
+        Fixture fixture = createMocksForLoad();
 
         List<TestEntity> result = fixture.model.load(0, 3, Collections.emptyMap(), Collections.emptyMap());
 
@@ -78,7 +78,7 @@ class JPALazyDataModelTest {
 
     @Test
     void getRowDataWithoutConverterQueriesByRowKey() {
-        Fixture fixture = createFixture(null);
+        Fixture fixture = createMocksForGetRowDataWithoutConverter();
 
         TestEntity entity = fixture.model.getRowData("1");
 
@@ -91,7 +91,7 @@ class JPALazyDataModelTest {
     @Test
     @SuppressWarnings("unchecked")
     void getRowDataWithConverterDoesNotQueryDatabase() {
-        Fixture fixture = createFixture(new TestEntityConverter());
+        Fixture fixture = createMocksForGetRowDataWithConverter();
 
         TestEntity entity = fixture.model.getRowData("1");
 
@@ -101,40 +101,8 @@ class JPALazyDataModelTest {
         Mockito.verify(fixture.criteriaBuilder, Mockito.never()).createQuery(Mockito.any(Class.class));
     }
 
-    @SuppressWarnings("unchecked")
-    private static Fixture createFixture(Converter<TestEntity> converter) {
+    private static JPALazyDataModel<TestEntity> createModel(EntityManager em, Converter<TestEntity> converter) {
         JPALazyDataModel<TestEntity> model = new JPALazyDataModel<>();
-        EntityManager em = Mockito.mock(EntityManager.class);
-        CriteriaBuilder cb = Mockito.mock(CriteriaBuilder.class);
-        CriteriaQuery<Long> countQuery = Mockito.mock(CriteriaQuery.class);
-        CriteriaQuery<TestEntity> entityQuery = Mockito.mock(CriteriaQuery.class);
-        Root<TestEntity> root = Mockito.mock(Root.class);
-        TypedQuery<Long> countTypedQuery = Mockito.mock(TypedQuery.class);
-        TypedQuery<TestEntity> entityTypedQuery = Mockito.mock(TypedQuery.class);
-        Expression<Long> countExpression = Mockito.mock(Expression.class);
-        Path<Object> idPath = Mockito.mock(Path.class);
-        Predicate predicate = Mockito.mock(Predicate.class);
-
-        Mockito.when(em.getCriteriaBuilder()).thenReturn(cb);
-        Mockito.when(cb.createQuery(Long.class)).thenReturn(countQuery);
-        Mockito.when(cb.createQuery(TestEntity.class)).thenReturn(entityQuery);
-        Mockito.when(countQuery.from(TestEntity.class)).thenReturn(root);
-        Mockito.when(entityQuery.from(TestEntity.class)).thenReturn(root);
-        Mockito.when(cb.count(root)).thenReturn(countExpression);
-        Mockito.when(countQuery.select(countExpression)).thenReturn(countQuery);
-        Mockito.when(entityQuery.select(root)).thenReturn(entityQuery);
-        Mockito.when(root.get("id")).thenReturn(idPath);
-        Mockito.when(cb.equal(idPath, "1")).thenReturn(predicate);
-        Mockito.when(entityQuery.where(predicate)).thenReturn(entityQuery);
-        Mockito.when(em.createQuery(countQuery)).thenReturn(countTypedQuery);
-        Mockito.when(em.createQuery(entityQuery)).thenReturn(entityTypedQuery);
-        Mockito.when(countTypedQuery.getSingleResult()).thenReturn(5L);
-        Mockito.when(entityTypedQuery.getResultList()).thenReturn(Arrays.asList(
-                new TestEntity("1", "a"),
-                new TestEntity("2", "b"),
-                new TestEntity("3", "c")));
-        Mockito.when(entityTypedQuery.getSingleResult()).thenReturn(new TestEntity("1", "a"));
-
         JPALazyDataModel.Builder<TestEntity, JPALazyDataModel<TestEntity>> builder =
                 new JPALazyDataModel.Builder<>(model)
                         .entityClass(TestEntity.class)
@@ -148,8 +116,92 @@ class JPALazyDataModelTest {
                     .rowKeyProvider(entity -> entity.getId());
         }
         builder.build();
+        return model;
+    }
 
-        return new Fixture(model, em, cb, countTypedQuery, entityQuery, entityTypedQuery);
+    @SuppressWarnings("unchecked")
+    private static JpaContext createJpaContext() {
+        EntityManager em = Mockito.mock(EntityManager.class);
+        CriteriaBuilder cb = Mockito.mock(CriteriaBuilder.class);
+        Root<TestEntity> root = Mockito.mock(Root.class);
+        Mockito.when(em.getCriteriaBuilder()).thenReturn(cb);
+        return new JpaContext(em, cb, root);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Fixture createMocksForCount() {
+        JpaContext ctx = createJpaContext();
+        CriteriaQuery<Long> countQuery = Mockito.mock(CriteriaQuery.class);
+        TypedQuery<Long> countTypedQuery = Mockito.mock(TypedQuery.class);
+        Expression<Long> countExpression = Mockito.mock(Expression.class);
+
+        Mockito.when(ctx.criteriaBuilder.createQuery(Long.class)).thenReturn(countQuery);
+        Mockito.when(countQuery.from(TestEntity.class)).thenReturn(ctx.root);
+        Mockito.when(ctx.criteriaBuilder.count(ctx.root)).thenReturn(countExpression);
+        Mockito.when(countQuery.select(countExpression)).thenReturn(countQuery);
+        Mockito.when(ctx.entityManager.createQuery(countQuery)).thenReturn(countTypedQuery);
+        Mockito.when(countTypedQuery.getSingleResult()).thenReturn(5L);
+
+        return new Fixture(createModel(ctx.entityManager, null), ctx.entityManager, ctx.criteriaBuilder,
+                countTypedQuery, null, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Fixture createMocksForLoad() {
+        JpaContext ctx = createJpaContext();
+        CriteriaQuery<TestEntity> entityQuery = Mockito.mock(CriteriaQuery.class);
+        TypedQuery<TestEntity> entityTypedQuery = Mockito.mock(TypedQuery.class);
+
+        Mockito.when(ctx.criteriaBuilder.createQuery(TestEntity.class)).thenReturn(entityQuery);
+        Mockito.when(entityQuery.from(TestEntity.class)).thenReturn(ctx.root);
+        Mockito.when(entityQuery.select(ctx.root)).thenReturn(entityQuery);
+        Mockito.when(ctx.entityManager.createQuery(entityQuery)).thenReturn(entityTypedQuery);
+        Mockito.when(entityTypedQuery.getResultList()).thenReturn(Arrays.asList(
+                new TestEntity("1", "a"),
+                new TestEntity("2", "b"),
+                new TestEntity("3", "c")));
+
+        return new Fixture(createModel(ctx.entityManager, null), ctx.entityManager, ctx.criteriaBuilder,
+                null, entityQuery, entityTypedQuery);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Fixture createMocksForGetRowDataWithoutConverter() {
+        JpaContext ctx = createJpaContext();
+        CriteriaQuery<TestEntity> entityQuery = Mockito.mock(CriteriaQuery.class);
+        TypedQuery<TestEntity> entityTypedQuery = Mockito.mock(TypedQuery.class);
+        Path<Object> idPath = Mockito.mock(Path.class);
+        Predicate predicate = Mockito.mock(Predicate.class);
+
+        Mockito.when(ctx.criteriaBuilder.createQuery(TestEntity.class)).thenReturn(entityQuery);
+        Mockito.when(entityQuery.from(TestEntity.class)).thenReturn(ctx.root);
+        Mockito.when(entityQuery.select(ctx.root)).thenReturn(entityQuery);
+        Mockito.when(ctx.root.get("id")).thenReturn(idPath);
+        Mockito.when(ctx.criteriaBuilder.equal(idPath, "1")).thenReturn(predicate);
+        Mockito.when(entityQuery.where(predicate)).thenReturn(entityQuery);
+        Mockito.when(ctx.entityManager.createQuery(entityQuery)).thenReturn(entityTypedQuery);
+        Mockito.when(entityTypedQuery.getSingleResult()).thenReturn(new TestEntity("1", "a"));
+
+        return new Fixture(createModel(ctx.entityManager, null), ctx.entityManager, ctx.criteriaBuilder,
+                null, entityQuery, entityTypedQuery);
+    }
+
+    private static Fixture createMocksForGetRowDataWithConverter() {
+        JpaContext ctx = createJpaContext();
+        return new Fixture(createModel(ctx.entityManager, new TestEntityConverter()), ctx.entityManager,
+                ctx.criteriaBuilder, null, null, null);
+    }
+
+    private static class JpaContext {
+        final EntityManager entityManager;
+        final CriteriaBuilder criteriaBuilder;
+        final Root<TestEntity> root;
+
+        JpaContext(EntityManager entityManager, CriteriaBuilder criteriaBuilder, Root<TestEntity> root) {
+            this.entityManager = entityManager;
+            this.criteriaBuilder = criteriaBuilder;
+            this.root = root;
+        }
     }
 
     private static class Fixture {
