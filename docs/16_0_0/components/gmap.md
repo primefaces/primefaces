@@ -2,8 +2,6 @@
 
 GMap is a map component integrated with Google Maps API V3.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.GMap-1.html)
-
 ## Getting started with GMap
 First thing to do is placing V3 of the Google Maps API that the GMap is based on. Make sure to
 register an API key for your map and replace `YOUR_API_KEY` in the script.

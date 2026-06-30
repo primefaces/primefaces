@@ -2,8 +2,6 @@
 
 Captcha is a form validation component based on Recaptcha API V2.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Captcha-1.html)
-
 ## Getting Started with Captcha
 Catpcha is implemented as an input component with a built-in validator that is integrated with
 reCaptcha or hCaptcha. First thing to do is to sign up to reCaptcha/hCaptcha to get public&private keys. Once you have

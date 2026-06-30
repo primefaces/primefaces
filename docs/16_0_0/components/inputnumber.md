@@ -3,8 +3,6 @@
 InputNumber formats input fields with numeric Strings. It supports currency symbols, minimum
 and maximum value, negative numbers, and a lot of round methods.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.InputNumber-1.html)
-
 !> WARNING: If you use `minValue>0` or `maxValue<0` it will behave in unexpectedly. AutoNumeric will force the users to always have a valid value in the input, hence preventing them to clear the field. PrimeFaces has automatically disabled this with `overrideMinMaxLimits-invalid` as per this AutoNumeric issue: https://github.com/autoNumeric/autoNumeric/issues/543
 
 ## Getting Started with InputNumber

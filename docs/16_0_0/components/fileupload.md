@@ -3,8 +3,6 @@
 FileUpload goes beyond the browser input type="file" functionality and features an HTML5
 powered rich solution with graceful degradation for legacy browsers.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.FileUpload-1.html)
-
 ## Simple FileUpload
 Simple FileUpload mode works with a plain HTML `input type=file`.
 AJAX uploads are not supported in simple upload, however AJAX is used to automatically upload the file when using `auto=true`.

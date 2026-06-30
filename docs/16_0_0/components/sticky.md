@@ -3,8 +3,6 @@
 Sticky component positions other components as fixed so that these components stay in window
 viewport during scrolling.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Sticky-1.html)
-
 ## Getting started with Sticky
 Sticky requires a target to keep in viewport on scroll. Here is a sticky toolbar;
 

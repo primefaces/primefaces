@@ -2,8 +2,6 @@
 
 SelectOneMenu is an extended version of the standard SelectOneMenu.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectOneMenu-1.html)
-
 ## Getting started with SelectOneMenu
 Basic SelectOneMenu usage is same as the standard one.
 

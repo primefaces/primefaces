@@ -3,8 +3,6 @@
 ConfirmDialog is a replacement to the legacy javascript confirmation box. Skinning, customization
 and avoiding popup blockers are notable advantages over classic javascript confirmation.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ConfirmDialog-1.html)
-
 ## Getting started with ConfirmDialog
 ConfirmDialog has two modes; global and non-global. Non-Global mode is almost same as the
 dialog component used with a simple client side api, _show()_ and _hide()_.

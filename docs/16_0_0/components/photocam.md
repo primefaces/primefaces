@@ -2,8 +2,6 @@
 
 PhotoCam is used to take photos with webcam and send them to the Faces backend model.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.PhotoCam-1.html)
-
 ## Getting started with PhotoCam
 Capture is triggered via client side api’s _capture_ method. Also a method expression is necessary to
 invoke when an image is captured. Sample below captures an image and saves it to a directory.

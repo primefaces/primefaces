@@ -2,8 +2,6 @@
 
 KeyFilter is used to filter keyboard input on specified input components.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.KeyFilter.html)
-
 ## Getting Started with KeyFilter
 KeyFilter can either be attached to an input using for property or by being nested inside the target
 input component. Filtering is applied using regex, mask or testFunction properties.

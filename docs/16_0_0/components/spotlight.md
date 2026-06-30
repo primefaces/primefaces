@@ -2,8 +2,6 @@
 
 Spotlight highlights a certain component on page.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Spotlight.html)
-
 ## Getting started with Spotlight
 Spotlight is accessed using client side api. Clicking the button highlights the panel below;
 

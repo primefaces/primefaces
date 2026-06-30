@@ -2,8 +2,6 @@
 
 PickList is used for transferring data between two different collections.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.PickList-1.html)
-
 ## Getting started with PickList
 You need to create custom model called _org.primefaces.model.DualListModel_ to use PickList. As
 the name suggests it consists of two lists, one is the source list and the other is the target. As the first

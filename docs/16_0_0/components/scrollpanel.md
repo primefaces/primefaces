@@ -3,8 +3,6 @@
 ScrollPanel is used to display scrollable content with theme aware scrollbars instead of native
 browser scrollbars.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ScrollPanel.html)
-
 ## Getting started with ScrollPanel
 In order to get scrollable content, width and/or height should be defined.
 

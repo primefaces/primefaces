@@ -2,8 +2,6 @@
 
 Rating component features a star based rating system.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Rating-1.html)
-
 ## Getting Started with Rating
 Rating is an input component that takes an integer variable as its value.
 

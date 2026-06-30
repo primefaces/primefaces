@@ -2,8 +2,6 @@
 
 SelectManyMenu is an extended version of the standard SelectManyMenu.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectManyMenu.html)
-
 ## Getting started with SelectManyMenu
 SelectManyMenu usage is same as the standard one.
 

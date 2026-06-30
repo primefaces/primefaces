@@ -3,8 +3,6 @@
 Growl is based on the Mac’s growl notification widget and used to display FacesMessages in an
 overlay.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Growl.html)
-
 ## Getting Started with Growl
 Growl usage is similar to standard h:messages component. Simply place growl anywhere on your
 page, since messages are displayed as an overlay, the location of growl in Jakarta Faces page does not matter.

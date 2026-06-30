@@ -3,8 +3,6 @@
 Tooltip goes beyond the legacy HTML title attribute by providing custom effects, events, HTML content
 and advance theme support.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Tooltip-1.html)
-
 ## Getting started with the Tooltip
 Tooltip can be used by attaching it to a target component. Tooltip value can also be retrieved from
 target’s title, so following are same;

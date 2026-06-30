@@ -7,8 +7,6 @@ like placing a hidden button and writing javascript for every form in your app. 
 solves this problem by normalizing the command(e.g. button or link) to submit the form with on
 enter key press.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DefaultCommand.html)
-
 ## Getting Started with the DefaultCommand
 DefaultCommand must be nested inside a form requires _target_ option to reference a clickable
 command. Example below triggers _btn2_ when enter key is pressed. Note that an input must have

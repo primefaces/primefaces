@@ -4,8 +4,6 @@ DataList presents a collection of data in list layout with several display types
 
 > DataGrid is deprecated, use  [DataView](/components/dataview.md) instead.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataList.html)
-
 ## Getting started with the DataList
 Since DataList is a data iteration component, it renders it’s children for each data represented with
 _var_ option. See itemType section for more information about the possible values.

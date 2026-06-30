@@ -2,8 +2,6 @@
 
 Log component is a visual console to display logs on Jakarta Faces pages.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Log-1.html)
-
 ## Getting started with Log
 Log component is used simply as adding the component to the page.
 

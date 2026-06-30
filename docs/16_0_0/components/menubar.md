@@ -2,8 +2,6 @@
 
 Menubar is a horizontal navigation component.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Menubar.html)
-
 ## Getting started with Menubar
 Submenus and menuitems as child components are required to compose the menubar.
 

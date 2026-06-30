@@ -2,8 +2,6 @@
 
 When pressed, a floating action button can display multiple primary actions that can be performed on a page.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SpeedDial-1.html)
-
 ## Getting Started with SpeedDial
 When pressed, a floating action button can display multiple primary actions that can be performed on a page. It has a
 collection of additional options defined by the menuitem. SpeedDial's position is calculated according to the

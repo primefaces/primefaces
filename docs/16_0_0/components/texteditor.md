@@ -2,8 +2,6 @@
 
 Editor is an input component with rich text editing capabilities based on Quill.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TextEditor-1.html)
-
 ## Getting started with the Editor
 !> TextEditor requires the [`owasp-java-html-sanitizer`](https://search.maven.org/artifact/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer) dependency added to your pom.xml to prevent XSS.
 

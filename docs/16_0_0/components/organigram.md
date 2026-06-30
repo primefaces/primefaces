@@ -2,8 +2,6 @@
 
 Organigram is a data component to display an organizational hierarchy.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Organigram.html)
-
 ## Getting Started with Organigram
 Organigram requires an instance of OrganigramNode interface as its value to define the root, a
 default implementation _DefaultOrganigramNode_ is provided. Each node has a type where each

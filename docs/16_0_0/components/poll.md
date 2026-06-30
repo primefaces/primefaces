@@ -2,8 +2,6 @@
 
 Poll is an ajax component that has the ability to send periodical ajax requests.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Poll-1.html)
-
 ## Getting started with Poll
 Poll below invokes increment method on CounterBean every 2 seconds and _txt_count_ is updated
 with the new value of the count variable. Note that poll must be nested inside a form.

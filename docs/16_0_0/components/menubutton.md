@@ -2,8 +2,6 @@
 
 MenuButton displays different commands in a popup menu.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.MenuButton.html)
-
 ## Getting started with the MenuButton
 MenuButton consists of one ore more menuitems. Following menubutton example has three
 menuitems, first one is used triggers an action with ajax, second one does the similar but without

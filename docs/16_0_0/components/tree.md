@@ -2,8 +2,6 @@
 
 Tree is used for displaying hierarchical data and creating site navigations.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.BaseTree-1.html)
-
 ## Getting started with the Tree
 Tree is populated with a _org.primefaces.model.TreeNode_ instance which corresponds to the root.
 

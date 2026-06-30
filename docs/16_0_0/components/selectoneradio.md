@@ -2,8 +2,6 @@
 
 SelectOneRadio is an extended version of the standard SelectOneRadio with theme integration.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectOneRadio.html)
-
 ## Getting started with SelectOneRadio
 SelectOneRadio usage is same as the standard one.
 

@@ -2,8 +2,6 @@
 
 SelectOneButton is an input component to do a single select.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectOneButton-1.html)
-
 ## Getting started with SelectOneButton
 SelectOneButton usage is same as selectOneRadio component, buttons just replace the radios.
 

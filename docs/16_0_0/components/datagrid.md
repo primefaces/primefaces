@@ -4,8 +4,6 @@ DataGrid displays a collection of data in a grid layout.
 
 > DataGrid is deprecated, use  [DataView](/components/dataview.md) instead.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataGrid.html)
-
 ## Getting started with the DataGrid
 A list of cars will be used throughout the datagrid, datalist and datatable examples.
 

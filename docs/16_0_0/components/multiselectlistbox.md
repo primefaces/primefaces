@@ -3,8 +3,6 @@
 MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child
 relationship.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.MultiSelectListbox.html)
-
 ## Getting started with MultiSelectListbox
 MultiSelectListbox needs a collection of SelectItemGroups.
 

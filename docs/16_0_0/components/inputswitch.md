@@ -2,8 +2,6 @@
 
 InputSwitch is used to select a boolean value.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.InputSwitch.html)
-
 ## Getting started with InputSwitch
 InputSwitch requires a boolean reference as the value.
 

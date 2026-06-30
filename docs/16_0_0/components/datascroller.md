@@ -2,8 +2,6 @@
 
 DataScroller displays a collection of data with on demand loading using scrolling.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataScroller-1.html)
-
 ## Getting started with the DataScroller
 DataScroller requires a collection of data to display, when the page is scrolled down, datascroller
 will do a request with ajax to fetch the new chunk of data and append them at the bottom.

@@ -3,8 +3,6 @@
 Password component is an extended version of standard inputSecret component with theme
 integration and strength indicator.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Password.html)
-
 ## Getting Started with Password
 Password is an input component and used just like a standard input text. When _feedback_ option is
 enabled a password strength indicator is displayed.

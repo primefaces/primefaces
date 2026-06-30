@@ -2,8 +2,6 @@
 
 Printer allows sending a specific Jakarta Faces component to the printer, not the whole page.
 
-[See the jQuery print method in the JavaScript API Docs.](../jsdocs/modules/src_PrimeFaces.html#printJS)
-
 ## Getting started with the Printer
 Printer is attached to any command component like a button or a link. Examples below
 demonstrates how to print a simple output text or a particular image on page;

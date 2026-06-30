@@ -2,8 +2,6 @@
 
 ContextMenu provides an overlay menu displayed on mouse right-click event.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ContextMenu-1.html)
-
 ## Getting started with ContextMenu
 ContextMenu is created with submenus and menuitems. Optional for attribute defines which
 component the contextMenu is attached to. When for is not defined, contextMenu is attached to the

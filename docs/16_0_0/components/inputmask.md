@@ -2,8 +2,6 @@
 
 InputMask forces an input to fit in a defined mask template.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.InputMask.html)
-
 ## Getting Started with InputMask
 InputMask below enforces input to be in 99/99/9999 date format.
 

@@ -2,8 +2,6 @@
 
 IdleMonitor watches user actions on a page and notify callbacks in case they go idle or active again.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.IdleMonitor-1.html)
-
 ## Getting Started with IdleMonitor
 To begin with, you can hook-in to client side events that are called when a user goes idle or
 becomes active again. Example below toggles visibility of a dialog to respond these events.

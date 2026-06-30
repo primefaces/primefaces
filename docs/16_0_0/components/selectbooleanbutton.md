@@ -2,8 +2,6 @@
 
 SelectBooleanButton is used to select a binary decision with a toggle button.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectBooleanButton.html)
-
 ## Getting started with SelectBooleanButton
 SelectBooleanButton usage is similar to selectBooleanCheckbox.
 

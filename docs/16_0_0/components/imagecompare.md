@@ -2,8 +2,6 @@
 
 ImageCompare provides a user interface to compare two images.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ImageCompare.html)
-
 ## Getting started with ImageCompare
 ImageCompare is created with two images with same height and width. It is required to set width
 and height of the images as well.

@@ -2,8 +2,6 @@
 
 Dashboard provides a portal like layout with drag&drop based reorder capabilities.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Dashboard.html)
-
 ## Getting started with Dashboard
 Dashboard is backed by a DashboardModel and consists of panel components.
 

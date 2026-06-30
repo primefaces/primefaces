@@ -2,8 +2,6 @@
 
 Effect component is based on the jQuery UI effects library.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Effect-1.html)
-
 ## Getting started with Effect
 Effect component needs a trigger and target which is effect’s parent by default. In example below
 clicking outputText (trigger) will run the pulsate effect on outputText(target) itself.

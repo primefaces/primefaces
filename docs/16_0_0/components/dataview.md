@@ -2,8 +2,6 @@
 
 DataView displays data in grid or list layout.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataView-1.html)
-
 ## Getting started with the DataView
 A list of cars will be used throughout the examples.
 

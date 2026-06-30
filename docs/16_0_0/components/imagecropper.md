@@ -3,8 +3,6 @@
 ImageCropper allows cropping a certain region of an image. A new image is created containing the
 cropped area and assigned to a CroppedImage instanced on the server side.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ImageCropper.html)
-
 ## Getting started with the ImageCropper
 ImageCropper is an input component and image to be cropped is provided via the _image_ attribute.
 The cropped area of the original image is used to create a new image, this new image can be

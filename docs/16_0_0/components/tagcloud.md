@@ -2,8 +2,6 @@
 
 TagCloud displays a collection of tag with different strengths.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TagCloud.html)
-
 ## Getting started with the TagCloud
 TagCloud requires a backend TagCloud model to display.
 

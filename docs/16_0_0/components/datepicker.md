@@ -5,8 +5,6 @@ ajax selection and more.
 
 > DatePicker is designed to replace the old p:calendar component.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DatePicker-1.html)
-
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.time.LocalDate in single selection mode which is the default.
 

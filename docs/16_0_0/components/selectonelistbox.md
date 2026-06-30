@@ -2,8 +2,6 @@
 
 SelectOneListbox is an extended version of the standard selectOneListbox component.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectOneListbox.html)
-
 ## Getting started with SelectOneListbox
 SelectOneListbox usage is same as the standard one.
 

@@ -4,8 +4,6 @@ Signature is used to draw a signature as an input. Various options such as backg
 foreground color, thickness are available for customization. Signature also supports touch enabled
 devices and legacy browsers without canvas support.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Signature-1.html)
-
 ## Getting started with Signature
 Value is interpreted as JSON so at backing bean should be a string value.
 

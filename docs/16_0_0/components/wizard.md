@@ -3,8 +3,6 @@
 Wizard provides an ajax enhanced UI to implement a workflow easily in a single page. Wizard
 consists of several child tab components where each tab represents a step in the process.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Wizard-1.html)
-
 ## Getting Started with Wizard
 Each step in the flow is represented with a tab. As an example following wizard is used to create a
 new user in a total of 4 steps where last step is for confirmation of the information provided in first

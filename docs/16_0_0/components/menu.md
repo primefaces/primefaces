@@ -2,8 +2,6 @@
 
 Menu is a navigation component with submenus and menuitems.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Menu.html)
-
 ## Getting started with the Menu
 A menu is composed of submenus and menuitems.
 

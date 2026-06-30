@@ -2,8 +2,6 @@
 
 Treetable is is used for displaying hierarchical data in tabular format.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TreeTable-1.html)
-
 ## Getting started with the TreeTable
 Similar to the Tree, TreeTable is populated with an _org.primefaces.model.TreeNode_ instance that
 corresponds to the root node. TreeNode API has a hierarchical data structure and represents the data

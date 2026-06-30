@@ -2,8 +2,6 @@
 
 ImageSwitch component is a simple image gallery component.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ImageSwitch.html)
-
 ## Getting Started with ImageSwitch
 ImageSwitch component needs a set of images to display. Provide the image collection as a set of
 children components.
