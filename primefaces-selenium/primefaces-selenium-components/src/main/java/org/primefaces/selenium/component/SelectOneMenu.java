@@ -206,7 +206,14 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
 
     @Override
     public WebElement getAssignedLabel() {
-        return getWebDriver().findElement(By.cssSelector("label[for='" + getId() + (isEditable() ? "_focus" : "_label") + "']"));
+        if (isEditable()) {
+            // editable menus expose a real, labelable <input>, so the label references it via "for"
+            return getWebDriver().findElement(By.cssSelector("label[for='" + getId() + "_editableInput']"));
+        }
+        // non-editable menus have no labelable element (the focusable element is a <span>), so "for" is omitted
+        // and the association is carried by aria-labelledby on that span
+        String labelledBy = getLabel().getDomAttribute("aria-labelledby");
+        return getWebDriver().findElement(By.id(labelledBy));
     }
 
     @Override

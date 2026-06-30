@@ -266,6 +266,21 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(13)
+    @DisplayName("SelectOneMenu: GitHub #15009 non-editable label must omit 'for' (span is not a labelable element)")
+    void labelForOmittedWhenNonEditable(Page page) {
+        // Arrange
+        OutputLabel outputLabel = page.outputLabel;
+
+        // Act
+
+        // Assert - a <label for> may only reference a labelable element; the non-editable menu's focusable
+        // element is a <span>, so 'for' must be omitted and the association handled via aria-labelledby instead.
+        assertNull(outputLabel.getDomAttribute("for"));
+        assertNoJavascriptErrors();
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);

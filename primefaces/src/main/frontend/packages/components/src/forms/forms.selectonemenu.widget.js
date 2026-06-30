@@ -157,7 +157,8 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         }
 
         if (!this.cfg.editable) {
-            // work-around because clicking a label referring to a div/span (not input) via for-attribute does focus this div/span
+            // non-editable menus omit the label "for" (a <span> is not labelable), so wire click-to-focus
+            // from the aria-labelledby label to the focusable span ourselves
             var labeledBy = this.label.attr('aria-labelledby');
             this.labeledBy = null;
             if (labeledBy) {

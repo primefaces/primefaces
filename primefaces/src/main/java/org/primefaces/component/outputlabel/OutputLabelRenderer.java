@@ -103,7 +103,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
         renderDomEvents(context, component, HTML.LABEL_EVENTS);
         renderRTLDirection(context, component);
 
-        if (!isValueBlank(_for) && forState != null) {
+        if (!isValueBlank(_for) && forState != null && forState.getClientId() != null) {
             writer.writeAttribute("for", forState.getClientId(), "for");
         }
 
@@ -211,7 +211,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
         public void invokeContextCallback(FacesContext context, UIComponent target) {
             if (target instanceof InputHolder) {
                 InputHolder inputHolder = ((InputHolder) target);
-                state.setClientId(inputHolder.getInputClientId());
+                state.setClientId(inputHolder.getLabelClientId());
                 inputHolder.setAriaLabelledBy(clientId);
             }
             else {

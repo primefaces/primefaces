@@ -193,6 +193,14 @@ public class SelectOneMenu extends SelectOneMenuBaseImpl {
     }
 
     @Override
+    public String getLabelClientId() {
+        // GitHub #15009: a <label for> may only reference a labelable element.
+        // When editable, point at the visible "_editableInput" text field; otherwise the only focusable element
+        // is the non-labelable "_label" span, so omit "for" and rely on aria-labelledby instead.
+        return isEditable() ? getClientId(getFacesContext()) + "_editableInput" : null;
+    }
+
+    @Override
     public String getValidatableInputClientId() {
         return getClientId(getFacesContext()) + "_input";
     }
