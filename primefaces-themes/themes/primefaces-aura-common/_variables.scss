@@ -592,7 +592,7 @@ $growlPadding:1rem !default;
 $messageBorderWidth:0 0 0 3px !default;
 
 //overlays
-$overlayContentBorder:0 none !default;
+$overlayContentBorder:1px solid $shade300 !default;
 $overlayContainerShadow:0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0,0,0,.12) !default;
 
 //dialog
@@ -647,7 +647,7 @@ $menuBg:$shade000 !default;
 $menuBorder:1px solid $shade300 !default;
 $menuListPadding: 0.25rem 0.25rem !default;
 $menuitemTextColor:$shade700 !default;
-$menuitemIconColor:$shade600 !default;
+$menuitemIconColor:$shade500 !default;
 $menuitemHoverBg:$shade200 !default;
 $menuitemTextHoverColor:$shade700 !default;
 $menuitemHoverIconColor:$shade700 !default;
@@ -667,9 +667,9 @@ $breadcrumbSeparatorColor:$menuitemTextColor !default;
 
 $submenuHeaderMargin:0 !default;
 $submenuHeaderPadding: 0.5rem 0.75rem !default;
-$submenuHeaderBg:#ffffff !default;
+$submenuHeaderBg:none !default;
 $submenuHeaderBorder:0 none !default;
-$submenuHeaderTextColor:$shade700 !default;
+$submenuHeaderTextColor:$surface500 !default;
 $submenuHeaderFontWeight:700 !default;
 $submenuHeaderFontSize:1rem !default;
 
