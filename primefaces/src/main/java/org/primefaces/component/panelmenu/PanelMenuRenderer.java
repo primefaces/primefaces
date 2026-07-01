@@ -82,6 +82,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
 
     protected void encodeRootSubmenu(FacesContext context, PanelMenu component, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String icon = submenu.getIcon();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
         styleClass = styleClass == null ? PanelMenu.PANEL_CLASS : PanelMenu.PANEL_CLASS + " " + styleClass;
@@ -89,6 +90,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
         String headerClass = expanded ? PanelMenu.ACTIVE_HEADER_CLASS : PanelMenu.INACTIVE_HEADER_CLASS;
         String headerIconClass = expanded ? PanelMenu.ACTIVE_TAB_HEADER_ICON_CLASS : PanelMenu.INACTIVE_TAB_HEADER_ICON_CLASS;
         String contentClass = expanded ? PanelMenu.ACTIVE_ROOT_SUBMENU_CONTENT : PanelMenu.INACTIVE_ROOT_SUBMENU_CONTENT;
+        boolean hasIcon = (icon != null);
 
         //wrapper
         writer.startElement("div", null);
@@ -107,6 +109,13 @@ public class PanelMenuRenderer extends BaseMenuRenderer<PanelMenu> {
         writer.startElement("span", null);
         writer.writeAttribute("class", headerIconClass, null);
         writer.endElement("span");
+
+        //user icon
+        if (hasIcon) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", "ui-icon " + icon, null);
+            writer.endElement("span");
+        }
 
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
