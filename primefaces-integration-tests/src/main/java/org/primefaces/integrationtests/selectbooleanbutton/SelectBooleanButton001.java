@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.selectbooleanbutton;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.faces.application.FacesMessage;
@@ -37,7 +38,7 @@ import lombok.Data;
 @Data
 public class SelectBooleanButton001 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private boolean value;
 
     public void addMessage() {

@@ -43,7 +43,6 @@ import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -514,7 +513,7 @@ public class TaglibMojo extends AbstractMojo {
     private Collection<Class<?>> getAllProjectClasses() {
         String b = project.getBuild().getOutputDirectory();
 
-        try (Stream<Path> stream = Files.walk(Paths.get(b))) {
+        try (Stream<Path> stream = Files.walk(Path.of(b))) {
             final Collection<Class<?>> classes = new ArrayList<>();
             stream.filter(f -> f.toString().endsWith(".class"))
                     .forEach(f -> {

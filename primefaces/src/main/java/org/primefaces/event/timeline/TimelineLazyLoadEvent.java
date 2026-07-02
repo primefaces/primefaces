@@ -25,6 +25,7 @@ package org.primefaces.event.timeline;
 
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 import jakarta.faces.component.UIComponent;
@@ -32,7 +33,7 @@ import jakarta.faces.component.behavior.Behavior;
 
 public class TimelineLazyLoadEvent extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     /**
      * start time of the first time range for lazy loading

@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.staticmessage;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.faces.application.FacesMessage;
@@ -37,7 +38,7 @@ import lombok.Data;
 @Data
 public class StaticMessage001 implements Serializable {
 
-    private static final long serialVersionUID = -3664548553854145624L;
+    @Serial private static final long serialVersionUID = -3664548553854145624L;
 
     private boolean closed;
 

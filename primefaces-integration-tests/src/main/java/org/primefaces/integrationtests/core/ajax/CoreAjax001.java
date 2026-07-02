@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.core.ajax;
 
 import org.primefaces.PrimeFaces;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ import lombok.Data;
 @Data
 public class CoreAjax001 implements Serializable {
 
-    private static final long serialVersionUID = 8797995450720503195L;
+    @Serial private static final long serialVersionUID = 8797995450720503195L;
 
     private List<String> values = new ArrayList<>(Arrays.asList("a", "b", "c"));
     private String value;

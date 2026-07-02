@@ -23,9 +23,11 @@
  */
 package org.primefaces.model.diagram.connector;
 
+import java.io.Serial;
+
 public class FlowChartConnector extends Connector {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private int stub = 30;
 

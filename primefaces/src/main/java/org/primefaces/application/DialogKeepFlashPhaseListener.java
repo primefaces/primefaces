@@ -26,6 +26,8 @@ package org.primefaces.application;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
+import java.io.Serial;
+
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.Flash;
 import jakarta.faces.event.PhaseEvent;
@@ -37,7 +39,7 @@ import jakarta.faces.event.PhaseListener;
  */
 public class DialogKeepFlashPhaseListener implements PhaseListener {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     public void beforePhase(PhaseEvent event) {

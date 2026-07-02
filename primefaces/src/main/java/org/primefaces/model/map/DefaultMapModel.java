@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.map;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +34,7 @@ import java.util.logging.Logger;
 
 public class DefaultMapModel<T> implements MapModel<T>, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = Logger.getLogger(DefaultMapModel.class.getName());
 

@@ -48,8 +48,8 @@ public class DateTimeConverter extends jakarta.faces.convert.DateTimeConverter i
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        if (component instanceof DatePicker) {
-            return getAsObject(context, (DatePicker) component, value);
+        if (component instanceof DatePicker picker) {
+            return getAsObject(context, picker, value);
         }
         return super.getAsObject(context, component, value);
     }

@@ -27,6 +27,7 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ import jakarta.faces.event.PhaseListener;
 
 public class AutoUpdatePhaseListener implements PhaseListener {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     public void beforePhase(PhaseEvent phaseEvent) {

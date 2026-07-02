@@ -209,8 +209,8 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
 
         @Override
         public void invokeContextCallback(FacesContext context, UIComponent target) {
-            if (target instanceof InputHolder) {
-                InputHolder inputHolder = ((InputHolder) target);
+            if (target instanceof InputHolder holder) {
+                InputHolder inputHolder = holder;
                 state.setClientId(inputHolder.getInputClientId());
                 inputHolder.setAriaLabelledBy(clientId);
             }
@@ -218,8 +218,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
                 state.setClientId(target.getClientId(context));
             }
 
-            if (target instanceof UIInput) {
-                UIInput input = (UIInput) target;
+            if (target instanceof UIInput input) {
 
                 if (value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
                     ValueExpression ve = label.getValueExpression("value");

@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,7 +39,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Employee implements Serializable {
-    private static final long serialVersionUID = 4840835873002977452L;
+    @Serial private static final long serialVersionUID = 4840835873002977452L;
     private Integer id;
     private String firstName;
     private String lastName;

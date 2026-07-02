@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.filter;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,7 +33,7 @@ import jakarta.faces.context.FacesContext;
 
 public class InFilterConstraint extends EqualsFilterConstraint {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
@@ -44,8 +45,8 @@ public class InFilterConstraint extends EqualsFilterConstraint {
         if (filter.getClass().isArray()) {
             collection = Arrays.asList((Object[]) filter);
         }
-        else if (filter instanceof Collection) {
-            collection = (Collection<?>) filter;
+        else if (filter instanceof Collection<?> collection1) {
+            collection = collection1;
         }
         else {
             collection = Collections.singletonList(filter);

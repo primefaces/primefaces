@@ -23,6 +23,7 @@
  */
 package org.primefaces.event;
 
+import java.io.Serial;
 import java.util.List;
 
 import jakarta.faces.component.UIComponent;
@@ -30,7 +31,7 @@ import jakarta.faces.component.behavior.Behavior;
 
 public class TransferEvent extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private List<?> items;
     private boolean add;

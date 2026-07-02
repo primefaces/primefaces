@@ -31,6 +31,7 @@ import org.primefaces.showcase.service.ProductService;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -58,7 +59,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 @RequestScoped
 public class CustomizedDocumentsView implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private List<Product> products;
 

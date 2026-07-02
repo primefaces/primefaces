@@ -29,6 +29,8 @@ import org.primefaces.context.PrimeFacesContext;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 
+import java.io.Serial;
+
 import jakarta.faces.application.ProjectStage;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -40,7 +42,7 @@ import org.owasp.encoder.Encode;
 
 public class CspPhaseListener implements PhaseListener {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private Lazy<Boolean> enabled;
     private Lazy<Boolean> policyProvided;

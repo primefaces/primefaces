@@ -26,12 +26,14 @@ package org.primefaces.event.map;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.Marker;
 
+import java.io.Serial;
+
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 
 public class MarkerDragEvent<T> extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private Marker<T> marker;
 

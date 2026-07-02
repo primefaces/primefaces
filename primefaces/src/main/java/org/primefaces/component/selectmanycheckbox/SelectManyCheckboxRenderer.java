@@ -141,10 +141,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            if (selectItem instanceof SelectItemGroup) {
+            if (selectItem instanceof SelectItemGroup group) {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", "ui-selectmanycheckbox-responsive-group", null);
-                encodeGroupLabel(context, component, (SelectItemGroup) selectItem);
+                encodeGroupLabel(context, component, group);
                 writer.endElement("div");
 
                 if (flex) {
@@ -152,7 +152,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
                     writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(true), null);
                 }
 
-                for (SelectItem childSelectItem : ((SelectItemGroup) selectItem).getSelectItems()) {
+                for (SelectItem childSelectItem : group.getSelectItems()) {
                     colMod = idx % columns;
                     if (!flex && !lineDirection && colMod == 0) {
                         writer.startElement("div", null);

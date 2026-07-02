@@ -61,8 +61,8 @@ public class AjaxBehaviorHandler extends PrimeClientBehaviorHandler<AjaxBehavior
             // if we would do it lazy later, we would loose the FaceletContext and the method can't be resolved
             Class<? extends BehaviorEvent> eventMappingClass = null;
 
-            if (parent instanceof PrimeClientBehaviorHolder) {
-                Map<String, Class<? extends BehaviorEvent>> mapping = ((PrimeClientBehaviorHolder) parent).getBehaviorEventMapping();
+            if (parent instanceof PrimeClientBehaviorHolder holder) {
+                Map<String, Class<? extends BehaviorEvent>> mapping = holder.getBehaviorEventMapping();
                 if (mapping != null) {
                     eventMappingClass = mapping.get(eventName);
                 }

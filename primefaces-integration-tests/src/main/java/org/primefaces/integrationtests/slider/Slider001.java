@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.slider;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -36,7 +37,7 @@ import lombok.Data;
 @Data
 public class Slider001 implements Serializable {
 
-    private static final long serialVersionUID = -1382444427572306080L;
+    @Serial private static final long serialVersionUID = -1382444427572306080L;
 
     private int val1;
 

@@ -27,6 +27,7 @@ import org.primefaces.util.Callbacks;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -40,7 +41,7 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
 
     public static final DefaultStreamedContent DUMMY = new DefaultStreamedContent();
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private Callbacks.SerializableSupplier<InputStream> stream;
     private String contentType;
     private String name;

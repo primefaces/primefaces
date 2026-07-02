@@ -25,13 +25,14 @@ package org.primefaces.model;
 
 import org.primefaces.util.LangUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DialogFrameworkOptions implements Serializable {
 
-    private static final long serialVersionUID = 8394142502801415235L;
+    @Serial private static final long serialVersionUID = 8394142502801415235L;
 
     private String widgetVar;
     private boolean modal = false;

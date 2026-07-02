@@ -90,8 +90,8 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBaseImpl {
 
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
-            if (child instanceof Column) {
-                columns.add((Column) child);
+            if (child instanceof Column column) {
+                columns.add(column);
             }
         }
 

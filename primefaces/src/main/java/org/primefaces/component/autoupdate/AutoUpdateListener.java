@@ -25,6 +25,7 @@ package org.primefaces.component.autoupdate;
 
 import org.primefaces.util.LangUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ import jakarta.faces.event.PreRenderComponentEvent;
  */
 public class AutoUpdateListener implements ComponentSystemEventListener, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private static final String COMPONENT_CLIENT_IDS = AutoUpdateListener.class.getName() + ".COMPONENT_CLIENT_IDS";
 

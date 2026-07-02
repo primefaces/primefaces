@@ -141,8 +141,8 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
         renderARIARequired(context, component);
         renderARIAInvalid(context, component);
 
-        if (component instanceof InputHolder) {
-            InputHolder inputHolder = ((InputHolder) component);
+        if (component instanceof InputHolder holder) {
+            InputHolder inputHolder = holder;
             String labelledBy = inputHolder.getAriaLabelledBy();
             if (LangUtils.isNotBlank(labelledBy)) {
                 writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
@@ -155,8 +155,8 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
         }
 
         String ariaDescribedBy = null;
-        if (component instanceof InputAware) {
-            ariaDescribedBy = ((InputAware) component).getAriaDescribedBy();
+        if (component instanceof InputAware aware) {
+            ariaDescribedBy = aware.getAriaDescribedBy();
             if (LangUtils.isNotBlank(ariaDescribedBy)) {
                 String target = SearchExpressionUtils.resolveClientIds(ariaDescribedBy, component);
                 writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target, null);

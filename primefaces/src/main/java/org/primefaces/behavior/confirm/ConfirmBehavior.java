@@ -50,8 +50,8 @@ public class ConfirmBehavior extends ConfirmBehaviorBaseImpl {
         UIComponent component = behaviorContext.getComponent();
 
         if (isDisabled()) {
-            if (component instanceof Confirmable) {
-                ((Confirmable) component).setConfirmationScript(null);
+            if (component instanceof Confirmable confirmable) {
+                confirmable.setConfirmationScript(null);
             }
 
             return null;
@@ -79,7 +79,7 @@ public class ConfirmBehavior extends ConfirmBehaviorBaseImpl {
 
         source = (source == null) ? component.getClientId(context) : source;
 
-        if (component instanceof Confirmable) {
+        if (component instanceof Confirmable confirmable1) {
             String sourceProperty = (source == null || "this".equals(source)) ? "source:this" : "source:\"" + source + "\"";
             String icon = getIcon();
 
@@ -97,7 +97,7 @@ public class ConfirmBehavior extends ConfirmBehaviorBaseImpl {
                                                    + ",icon:\"" + (icon == null ? "" : icon)
                                                    + "\",beforeShow:" + beforeShow
                                                    + "});return false;";
-            ((Confirmable) component).setConfirmationScript(script);
+            confirmable1.setConfirmationScript(script);
 
             return null;
         }

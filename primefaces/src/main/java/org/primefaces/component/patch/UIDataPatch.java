@@ -28,6 +28,7 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -1376,8 +1377,8 @@ public abstract class UIDataPatch extends UIData {
         List<UIColumn> renderedColumns = new ArrayList<>(getChildCount());
         if (getChildCount() > 0) {
         	for (UIComponent child : getChildren()) {
-        		if (child instanceof UIColumn && child.isRendered()) {
-        			renderedColumns.add((UIColumn)child);
+        		if (child instanceof UIColumn column && child.isRendered()) {
+        			renderedColumns.add(column);
         		}
         	}
         }
@@ -1654,8 +1655,7 @@ public abstract class UIDataPatch extends UIData {
         Map<String, SavedState> saved = (Map<String,SavedState>)
             getStateHelper().get(PropertyKeys.saved);
         // Restore state for this component (if it is a EditableValueHolder)
-        if (component instanceof EditableValueHolder) {
-            EditableValueHolder input = (EditableValueHolder) component;
+        if (component instanceof EditableValueHolder input) {
             String clientId = component.getClientId(context);
 
             SavedState state = (saved == null ? null : saved.get(clientId));
@@ -1669,8 +1669,7 @@ public abstract class UIDataPatch extends UIData {
                 // calling setValue() always resets "localValueSet" to true.
                 input.setLocalValueSet(state.isLocalValueSet());
             }
-        } else if (component instanceof UIForm) {
-            UIForm form = (UIForm) component;
+        } else if (component instanceof UIForm form) {
             String clientId = component.getClientId(context);
             SavedState state = (saved == null ? null : saved.get(clientId));
             if (state == null) {
@@ -1729,8 +1728,7 @@ public abstract class UIDataPatch extends UIData {
         // Save state for this component (if it is a EditableValueHolder)
         Map<String, SavedState> saved = (Map<String, SavedState>)
               getStateHelper().get(PropertyKeys.saved);
-        if (component instanceof EditableValueHolder) {
-            EditableValueHolder input = (EditableValueHolder) component;
+        if (component instanceof EditableValueHolder input) {
             SavedState state = null;
             String clientId = component.getClientId(context);
             if (saved == null) {
@@ -1751,8 +1749,7 @@ public abstract class UIDataPatch extends UIData {
             } else if (saved != null) {
             	getStateHelper().remove(PropertyKeys.saved, clientId);
             }
-        } else if (component instanceof UIForm) {
-            UIForm form = (UIForm) component;
+        } else if (component instanceof UIForm form) {
             String clientId = component.getClientId(context);
             SavedState state = null;
             if (saved == null) {
@@ -1793,7 +1790,7 @@ public abstract class UIDataPatch extends UIData {
         "NonSerializableFieldInSerializableClass" })
 class SavedState implements Serializable {
 
-    private static final long serialVersionUID = 2920252657338389849L;
+    @Serial private static final long serialVersionUID = 2920252657338389849L;
     private Object submittedValue;
     private boolean submitted;
 
@@ -1861,7 +1858,7 @@ class SavedState implements Serializable {
 class WrapperEvent extends FacesEvent {
 
 
-    private static final long serialVersionUID = -1064272913195655452L;
+    @Serial private static final long serialVersionUID = -1064272913195655452L;
 
     public WrapperEvent(UIComponent component, FacesEvent event, int rowIndex) {
         super(component);

@@ -69,8 +69,7 @@ public class StackRenderer extends BaseMenuRenderer<Stack> {
             writer.writeAttribute("id", clientId + "_stack", "id");
 
             for (MenuElement element : elements) {
-                if (element.isRendered() && element instanceof MenuItem) {
-                    MenuItem menuItem = (MenuItem) element;
+                if (element.isRendered() && element instanceof MenuItem menuItem) {
                     String containerStyle = menuItem.getContainerStyle();
                     String containerStyleClass = menuItem.getContainerStyleClass();
 

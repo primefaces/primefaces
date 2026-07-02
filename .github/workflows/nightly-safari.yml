@@ -14,7 +14,7 @@ jobs:
     name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
     strategy:
       matrix:
-        java: [11]
+        java: [17]
         profile: [ 'headless,safari,csp,theme-nova,mojarra-4.0' ]
 
     steps:

@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.cascadeselect;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ import lombok.Data;
 @Data
 public class CascadeSelect001 implements Serializable {
 
-    private static final long serialVersionUID = -4524605633263059204L;
+    @Serial private static final long serialVersionUID = -4524605633263059204L;
 
     private List<SelectItem> gpus;
 

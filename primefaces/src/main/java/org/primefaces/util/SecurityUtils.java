@@ -67,14 +67,14 @@ public final class SecurityUtils {
         Objects.requireNonNull(value, "Roles value can't be null");
 
         Stream<?> results = null;
-        if (value instanceof String) {
-            results = Stream.of(((String) value).split(",")).map(String::trim);
+        if (value instanceof String string) {
+            results = Stream.of(string.split(",")).map(String::trim);
         }
-        else if (value instanceof Object[]) {
-            results = Stream.of((Object[]) value);
+        else if (value instanceof Object[] objects) {
+            results = Stream.of(objects);
         }
-        else if (value instanceof Collection) {
-            results = ((Collection<?>) value).stream();
+        else if (value instanceof Collection<?> collection) {
+            results = collection.stream();
         }
         else {
             results = Stream.of(value);

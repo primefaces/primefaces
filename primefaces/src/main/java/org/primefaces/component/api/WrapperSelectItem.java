@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.api;
 
+import java.io.Serial;
+
+
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UISelectItem;
 import jakarta.faces.model.SelectItem;
@@ -32,7 +35,7 @@ import jakarta.faces.model.SelectItem;
  */
 public class WrapperSelectItem extends SelectItem {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     /**
      * Owning component like `{@code <f:selectitem>} or {@code <f:selectitems>}
