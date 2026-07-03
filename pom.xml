@@ -6,7 +6,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-parent</artifactId>
     <packaging>pom</packaging>
-    <version>13.0.27</version>
+    <version>13.0.28-SNAPSHOT</version>
     <name>primefaces</name>
     <url>https://www.primefaces.org</url>
 
