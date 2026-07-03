@@ -497,9 +497,9 @@ public class AppMenu {
         List<MenuItem> uploadMenuItems = new ArrayList<>();
         uploadMenuItems.add(new MenuItem("Simple", "/ui/file/upload/simple"));
         uploadMenuItems.add(new MenuItem("Advanced", "/ui/file/upload/advanced"));
-        fileMenuItems.add(new MenuItem("File Upload", uploadMenuItems));
+        fileMenuItems.add(new MenuItem("FileUpload", uploadMenuItems));
 
-        fileMenuItems.add(new MenuItem("File Download", "/ui/file/download"));
+        fileMenuItems.add(new MenuItem("FileDownload", "/ui/file/download"));
         menuCategories.add(new MenuCategory("File", fileMenuItems));
         //FILE CATEGORY END
 
