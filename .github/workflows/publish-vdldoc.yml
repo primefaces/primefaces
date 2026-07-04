@@ -1,4 +1,4 @@
-name: Generate VDL Documentation
+name: Publish VDL Documentation
 
 on:
   workflow_dispatch:

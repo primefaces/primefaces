@@ -1,4 +1,4 @@
-name: Stale Issues
+name: Issue Stale Checker
 on:
   schedule:
     - cron: "0 1 * * *"
