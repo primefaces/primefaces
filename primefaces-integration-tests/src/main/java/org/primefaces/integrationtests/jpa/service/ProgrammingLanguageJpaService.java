@@ -60,6 +60,11 @@ public class ProgrammingLanguageJpaService {
         }
     }
 
+    public boolean isProgrammingLanguageTableInitialized() {
+        Long count = entityManager.createQuery("SELECT COUNT(p) FROM ProgrammingLanguageJpaEntity p", Long.class).getSingleResult();
+        return count > 0;
+    }
+
     public List<ProgrammingLanguageJpaEntity> findAll() {
         return entityManager.createQuery("SELECT p FROM ProgrammingLanguageJpaEntity p",
                 ProgrammingLanguageJpaEntity.class).getResultList();

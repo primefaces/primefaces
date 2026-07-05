@@ -64,6 +64,9 @@ public class DataTable050 implements Serializable {
     }
 
     private void seedData() {
+        if (jpaService.isProgrammingLanguageTableInitialized()) {
+            return;
+        }
         List<ProgrammingLanguageJpaEntity> languages = new ArrayList<>();
         languages.add(new ProgrammingLanguageJpaEntity("Java", 1995, ProgrammingLanguageJpaEntity.ProgrammingLanguageType.COMPILED));
         languages.add(new ProgrammingLanguageJpaEntity("C#", 2000, ProgrammingLanguageJpaEntity.ProgrammingLanguageType.COMPILED));
