@@ -10,10 +10,6 @@
 
 [![PrimeFaces Hero](https://www.primefaces.org/wp-content/uploads/2021/10/PrimeFaces-GitHub-2021Q4.jpg "PrimeFaces Hero")](https://www.primefaces.org/showcase)
 
-# PrimeFaces
-
-This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.org) for more information.
-
 [![PrimeFaces Logo](https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo_new.png)](https://www.primefaces.org/showcase)
 
 ### Overview
@@ -66,10 +62,10 @@ Feature development and bug fixes may also be sponsored. If you are interested i
 
 Version | Status | JSF version | Java version | Documentation | Showcase
 ------------ | ------------- | ------------- | -------------  | ------------- | ------------- |
-unreleased | unreleased | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/16_0_0/#/) | [HTTPS](https://primefaces-showcase-zvbjj.ondigitalocean.app/)
-![15.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=15&color=cyan) | STS | ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/15_0_0/#/) | [HTTPS](https://primefaces15-showcase-f233g.ondigitalocean.app/)
-![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan) | LTS | ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/14_0_0/#/) | [HTTPS](https://primefaces14-showcase-ifqw8.ondigitalocean.app/)
-![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/13_0_0/#/) |
+unreleased | Active | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/16_0_0/#/) | [HTTPS](https://primefaces-showcase-zvbjj.ondigitalocean.app/)
+![15.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=15&color=cyan) | Maintenance | ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/15_0_0/#/) | [HTTPS](https://primefaces15-showcase-f233g.ondigitalocean.app/)
+![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan) | Security | ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/14_0_0/#/) | [HTTPS](https://primefaces14-showcase-ifqw8.ondigitalocean.app/)
+![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan) | Security| ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) - ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/13_0_0/#/) |
 
 <details>
   <summary>Archive</summary>
@@ -77,10 +73,10 @@ unreleased | unreleased | ![JSF40](https://img.shields.io/badge/JSF-4.0-green.sv
 
 Version | Status | JSF version | Java version | Documentation
 ------------ | ------------- | ------------- | ------------- | ------------- |
-![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/12_0_0/#/) 
-![11.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=11&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/11_0_0/#/)
-![10.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=10&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF30](https://img.shields.io/badge/JSF-3.0-yellow.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/10_0_0/#/)
-![8.0](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=8&color=cyan) | LTS | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/8_0/#/)
+![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan) | Security | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/12_0_0/#/) 
+![11.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=11&color=cyan) | Security | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/11_0_0/#/)
+![10.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=10&color=cyan) | Security | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF30](https://img.shields.io/badge/JSF-3.0-yellow.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/10_0_0/#/)
+![8.0](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=8&color=cyan) | Security | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [HTML](https://primefaces.github.io/primefaces/8_0/#/)
 ![7.0](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=7&color=cyan) | Legacy | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) | ![Java](https://img.shields.io/badge/Java%207+-red.svg) | [HTML](https://primefaces.github.io/primefaces/7_0/#/)
 ![6.2](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=6.2&color=cyan) | Legacy | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) | ![Java](https://img.shields.io/badge/Java%206+-red.svg) | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
 ![6.1](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=6.1&color=cyan) | Legacy | ![JSF20](https://img.shields.io/badge/JSF-2.0-red.svg) -  ![JSF23](https://img.shields.io/badge/JSF-2.3-yellow.svg) | ![Java](https://img.shields.io/badge/Java%205+-red.svg) | [PDF](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
