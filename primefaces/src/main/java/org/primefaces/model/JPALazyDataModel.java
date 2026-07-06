@@ -109,14 +109,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         return query.getSingleResult().intValue();
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Also calls {@link #setWrappedData(Object)} with the loaded page so that
-     * {@link #getRowData(String)} can resolve row keys in-memory without an
-     * extra database query.
-     * </p>
-     */
     @Override
     public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         EntityManager em = entityManager.get();
@@ -141,7 +133,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         if (resultEnricher != null) {
             resultEnricher.accept(result);
         }
-        setWrappedData(result);
         return result;
     }
 

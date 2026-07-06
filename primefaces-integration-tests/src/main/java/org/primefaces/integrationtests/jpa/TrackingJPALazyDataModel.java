@@ -64,7 +64,11 @@ public class TrackingJPALazyDataModel<T> extends JPALazyDataModel<T> {
     public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy,
             Map<String, FilterMeta> filterBy) {
         getTracker().recordLoadCall(first, pageSize);
-        return super.load(first, pageSize, sortBy, filterBy);
+        List<T> result = super.load(first, pageSize, sortBy, filterBy);
+        // Mirror what DataTable does after load(): set wrappedData so that getRowData()
+        // can resolve row keys in-memory without an extra database query.
+        setWrappedData(result);
+        return result;
     }
 
     @Override

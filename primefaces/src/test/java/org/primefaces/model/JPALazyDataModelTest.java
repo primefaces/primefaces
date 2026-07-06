@@ -208,7 +208,8 @@ class JPALazyDataModelTest {
                 Arrays.asList(new TestEntity("1", "a"), new TestEntity("2", "b"), new TestEntity("3", "c")));
 
         JPALazyDataModel<TestEntity> model = createModel(ctx.entityManager, null);
-        model.load(0, 3, Collections.emptyMap(), Collections.emptyMap());
+        // Simulate what DataTable does after load(): set wrappedData so getRowData() resolves in-memory
+        model.setWrappedData(model.load(0, 3, Collections.emptyMap(), Collections.emptyMap()));
 
         return new Fixture(model, ctx.entityManager, ctx.criteriaBuilder, null, entityQuery, entityTypedQuery);
     }
