@@ -109,6 +109,14 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         return query.getSingleResult().intValue();
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Also calls {@link #setWrappedData(Object)} with the loaded page so that
+     * {@link #getRowData(String)} can resolve row keys in-memory without an
+     * extra database query.
+     * </p>
+     */
     @Override
     public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         EntityManager em = entityManager.get();
@@ -133,6 +141,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         if (resultEnricher != null) {
             resultEnricher.accept(result);
         }
+        setWrappedData(result);
         return result;
     }
 
@@ -318,29 +327,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
 
         return join == null ? root.get(fieldName) : join.get(fieldName);
-    }
-
-    @Override
-    public T getRowData(String rowKey) {
-        if (rowKeyConverter != null) {
-            return super.getRowData(rowKey);
-        }
-
-        Object convertedRowKey = ComponentUtils.convertToType(rowKey, rowKeyType, LOGGER);
-
-        EntityManager em = entityManager.get();
-
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityClass);
-        Root<T> root = cq.from(entityClass);
-        cq.select(root).where(criteriaBuilder.equal(root.get(rowKeyField), convertedRowKey));
-
-        TypedQuery<T> query = em.createQuery(cq);
-        T result = query.getSingleResult();
-        if (resultEnricher != null) {
-            resultEnricher.accept(List.of(result));
-        }
-        return result;
     }
 
     @Override
