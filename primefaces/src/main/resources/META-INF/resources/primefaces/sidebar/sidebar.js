@@ -118,6 +118,10 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     _show: function() {
         this.jq.addClass('ui-sidebar-active');
+        this.jq.attr({
+            'aria-hidden': 'false',
+            'aria-modal': String(this.cfg.modal)
+        });
         this.jq.css('z-index', String(this.cfg.baseZIndex + (++PrimeFaces.zindex)));
 
         this.postShow();
@@ -151,6 +155,10 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
 
         this.jq.removeClass('ui-sidebar-active');
+        this.jq.attr({
+            'aria-hidden': 'true',
+            'aria-modal': 'false'
+        });
         this.onHide();
 
         if(this.cfg.modal) {
@@ -219,8 +227,8 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
     applyARIA: function() {
         this.jq.attr({
             'role': 'dialog'
-            ,'aria-hidden': !this.cfg.visible
-            ,'aria-modal': this.cfg.modal && this.cfg.visible
+            ,'aria-hidden': String(!this.cfg.visible)
+            ,'aria-modal': String(!!(this.cfg.modal && this.cfg.visible))
         });
 
         if(this.cfg.showCloseIcon) {
