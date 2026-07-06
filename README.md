@@ -19,20 +19,47 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 ### Overview
 ***
 
-[PrimeFaces](https://www.primefaces.org/) is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more. Here are [some of the users](https://www.primefaces.org/whouses) who notified us or subscribed to a [PrimeFaces Support Service](https://www.primefaces.org/support).
+[PrimeFaces](https://www.primefaces.org/) is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more.
 
-### Community <> LTS <> Pro
-***
+### Community Edition (Open Source)
 
-This is the open source code and issue tracker of the PrimeFaces master (a.k.a. community version).  
-Please check the following link for informations about [Long Term Support (LTS)](https://www.primefaces.org/showcase/lts.xhtml) and [PRO](https://www.primefaces.org/support/)  
+This repository contains the open-source code and issue tracker of **PrimeFaces (community edition)**.
 
-What does that mean?
-- PrimeFaces is developed by PrimeTek and the open source community.
-- The most contributors here on GitHub are working on PrimeFaces in their spare time.
-- PrimeTek pushes fixes and new features from their closed source LTS and Pro repositories to the community edition.
-- We, the community on GitHub, only provide support for issues, which are reproducible with the current major release or SNAPSHOT.
-- We are NOT able to port bugfixes to LTS releases. This is up to PrimeTek and can e.g. be triggered with [PrimeFaces PRO](https://www.primefaces.org/support/). You can also ask questions in the [LTS Discussions](https://github.com/orgs/primefaces/discussions/categories/primefaces-lts).
+PrimeFaces is now fully open source and maintained by the community.
+The project has been handed over by PrimeTek to the open-source community, and ongoing development depends on contributors and sponsors.
+
+### Development model
+
+PrimeFaces follows a simple lifecycle:
+
+* **Active**
+
+  * Current development branch
+  * New features, improvements, and bug fixes are accepted
+  * This is the main focus of contributors
+
+* **Maintenance**
+
+  * Stable releases after feature completion
+  * Only bug fixes are applied
+  * No new features are introduced
+
+* **Security**
+
+  * Older supported versions
+  * Only security-related fixes and critical issues are addressed
+
+### Community-driven development
+
+* PrimeFaces is now fully driven by the open-source community.
+* Development, maintenance, and issue handling are done by volunteers and contributors in their spare time.
+* Active development relies heavily on community involvement and sponsorship.
+
+We welcome GitHub Sponsorships of active developers to support ongoing work and ensure sustainable development of new features and improvements.
+
+If you use PrimeFaces in production, consider supporting the project through sponsorship. This helps maintain momentum across active development, maintenance, and security releases.
+
+Feature development and bug fixes may also be sponsored. If you are interested in sponsoring a specific issue or feature, please ask directly in the relevant issue discussion.
 
 ### Versions
 ***
