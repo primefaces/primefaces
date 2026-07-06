@@ -1,42 +1,49 @@
-name: Issue Auto-Comment
+name: Label To Issues and PRs
 
 on:
   issues:
-    types: [labeled]
+    types: [opened, reopened]
+  pull_request:
+    types: [opened, reopened]
 
 permissions:
+  contents: read
   issues: write
+  pull-requests: write
 
 jobs:
-  comment:
+  label:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/github-script@v8
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const comments = {
-              "Resolution: Cannot Replicate":
-                "We're unable to replicate your issue. If you are able to create a [PrimeFaces Test Reproducer](https://github.com/primefaces/primefaces-test) or add additional details, please edit this issue. This issue will be closed if there is no activity within 20 days.",
-
-              "Resolution: Duplicate":
-                "This issue is a duplicate and has already been reported and fixed. Please review the closed issues for the upcoming milestone release.",
-
-              "Status: Needs Reproducer":
-                "Please provide an executable example using the [PrimeFaces Test](https://github.com/primefaces/primefaces-test) project. This issue will be closed if there is no activity within 20 days."
-            };
-
-            const body = comments[context.payload.label.name];
-
-            if (!body) {
-              console.log(`No comment configured for label '${context.payload.label.name}'`);
-              return;
-            }
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body
-            });
+      - name: Update labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            NUMBER="${{ github.event.issue.number }}"
+            gh issue edit "$NUMBER" \
+              --add-label "Status: Needs Triage" \
+              --remove-label "Resolution: By Design" \
+              --remove-label "Resolution: Cannot Replicate" \
+              --remove-label "Resolution: Duplicate" \
+              --remove-label "Resolution: Help Wanted" \
+              --remove-label "Resolution: Invalid" \
+              --remove-label "Resolution: Needs Issue" \
+              --remove-label "Resolution: Needs More Information" \
+              --remove-label "Resolution: Needs Revision" \
+              --remove-label "Resolution: Wontfix"
+          else
+            NUMBER="${{ github.event.pull_request.number }}"
+            gh pr edit "$NUMBER" \
+              --add-label "Status: Needs Triage" \
+              --remove-label "Resolution: By Design" \
+              --remove-label "Resolution: Cannot Replicate" \
+              --remove-label "Resolution: Duplicate" \
+              --remove-label "Resolution: Help Wanted" \
+              --remove-label "Resolution: Invalid" \
+              --remove-label "Resolution: Needs Issue" \
+              --remove-label "Resolution: Needs More Information" \
+              --remove-label "Resolution: Needs Revision" \
+              --remove-label "Resolution: Wontfix"
+          fi
