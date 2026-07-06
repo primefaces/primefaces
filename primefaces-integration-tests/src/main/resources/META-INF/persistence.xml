@@ -5,7 +5,7 @@
              version="3.0">
     <persistence-unit name="integration-test" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>org.primefaces.integrationtests.jpa.entity.ProgrammingLanguageJpaEntity</class>
+        <class>org.primefaces.integrationtests.jpa.entity.CountryJpaEntity</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:integration-test;DB_CLOSE_DELAY=-1"/>

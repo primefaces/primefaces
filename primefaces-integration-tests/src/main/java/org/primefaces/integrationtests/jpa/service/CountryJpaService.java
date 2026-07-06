@@ -23,7 +23,7 @@
  */
 package org.primefaces.integrationtests.jpa.service;
 
-import org.primefaces.integrationtests.jpa.entity.ProgrammingLanguageJpaEntity;
+import org.primefaces.integrationtests.jpa.entity.CountryJpaEntity;
 import org.primefaces.util.Callbacks.SerializableSupplier;
 
 import java.util.List;
@@ -34,7 +34,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
 @ApplicationScoped
-public class ProgrammingLanguageJpaService {
+public class CountryJpaService {
 
     @Inject
     private EntityManager entityManager;
@@ -43,12 +43,17 @@ public class ProgrammingLanguageJpaService {
         return () -> entityManager;
     }
 
-    public void saveAll(List<ProgrammingLanguageJpaEntity> languages) {
+    public boolean isInitialized() {
+        Long count = entityManager.createQuery("SELECT COUNT(c) FROM CountryJpaEntity c", Long.class).getSingleResult();
+        return count > 0;
+    }
+
+    public void saveAll(List<CountryJpaEntity> countries) {
         EntityTransaction tx = entityManager.getTransaction();
         tx.begin();
         try {
-            for (ProgrammingLanguageJpaEntity language : languages) {
-                entityManager.persist(language);
+            for (CountryJpaEntity country : countries) {
+                entityManager.persist(country);
             }
             tx.commit();
         }
@@ -58,15 +63,5 @@ public class ProgrammingLanguageJpaService {
             }
             throw e;
         }
-    }
-
-    public boolean isProgrammingLanguageTableInitialized() {
-        Long count = entityManager.createQuery("SELECT COUNT(p) FROM ProgrammingLanguageJpaEntity p", Long.class).getSingleResult();
-        return count > 0;
-    }
-
-    public List<ProgrammingLanguageJpaEntity> findAll() {
-        return entityManager.createQuery("SELECT p FROM ProgrammingLanguageJpaEntity p",
-                ProgrammingLanguageJpaEntity.class).getResultList();
     }
 }

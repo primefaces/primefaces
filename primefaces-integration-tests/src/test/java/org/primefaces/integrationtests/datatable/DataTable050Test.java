@@ -31,6 +31,8 @@ import org.primefaces.selenium.component.SelectBooleanButton;
 import org.primefaces.selenium.component.model.Msg;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -63,9 +65,9 @@ class DataTable050Test extends AbstractDataTableTest {
 
         // Assert
         assertRowsMatch(dataTable, List.of(
-                new ExpectedLanguage(1, "Java"),
-                new ExpectedLanguage(2, "C#"),
-                new ExpectedLanguage(3, "JavaScript")));
+                new ExpectedCountry(1, "Albania"),
+                new ExpectedCountry(2, "Algeria"),
+                new ExpectedCountry(3, "Angola")));
         assertHistory(page, "count()", "load(first=0, size=3)");
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -82,9 +84,9 @@ class DataTable050Test extends AbstractDataTableTest {
 
         // Assert
         assertRowsMatch(dataTable, List.of(
-                new ExpectedLanguage(4, "TypeScript"),
-                new ExpectedLanguage(5, "Python"),
-                new ExpectedLanguage(6, "C++")));
+                new ExpectedCountry(4, "Argentina"),
+                new ExpectedCountry(5, "Armenia"),
+                new ExpectedCountry(6, "Australia")));
         assertHistory(page,
                 "count()",
                 "load(first=0, size=3)",
@@ -186,13 +188,13 @@ class DataTable050Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert
-        assertSelections(page.messages, "1,2,3,4,5,6,7,8,9,10");
+        assertSelections(page.messages, buildIds(1, 98));
         assertHistory(page,
                 "count()",
                 "load(first=0, size=3)", // after toggleSelectPageOnly re-render
                 "count()",
                 "load(first=0, size=3)", // after toggleSelectAllCheckBox
-                "load(first=0, size=10)", // select-all loads all rows to resolve selection
+                "load(first=0, size=98)", // select-all loads all rows to resolve selection
                 "count()",
                 "load(first=0, size=3)"); // after submit (full-form re-render)
         assertConfiguration(dataTable.getWidgetConfiguration());
@@ -214,7 +216,7 @@ class DataTable050Test extends AbstractDataTableTest {
         assertSelections(page.messages, "1,3");
 
         // Act - apply filter
-        dataTable.filter("Name", "Java");
+        dataTable.filter("Name", "United");
         page.submit.click();
 
         // Assert - selection 1 and 3 survive filter
@@ -284,7 +286,11 @@ class DataTable050Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
-    private void assertRowsMatch(DataTable dataTable, List<ExpectedLanguage> expected) {
+    private static String buildIds(int from, int to) {
+        return IntStream.rangeClosed(from, to).mapToObj(Integer::toString).collect(Collectors.joining(","));
+    }
+
+    private void assertRowsMatch(DataTable dataTable, List<ExpectedCountry> expected) {
         List<org.primefaces.selenium.component.model.datatable.Row> rows = dataTable.getRows();
         assertEquals(expected.size(), rows.size());
         for (int i = 0; i < expected.size(); i++) {
@@ -295,7 +301,7 @@ class DataTable050Test extends AbstractDataTableTest {
 
     private void assertSelections(Messages messages, String selections) {
         Msg message = messages.getMessage(0);
-        assertTrue(message.getSummary().contains("Selected ProgrammingLanguage(s)"));
+        assertTrue(message.getSummary().contains("Selected Country(s)"));
         assertEquals(selections, message.getDetail());
     }
 
@@ -343,11 +349,11 @@ class DataTable050Test extends AbstractDataTableTest {
         }
     }
 
-    private static class ExpectedLanguage {
+    private static class ExpectedCountry {
         final int id;
         final String name;
 
-        ExpectedLanguage(int id, String name) {
+        ExpectedCountry(int id, String name) {
             this.id = id;
             this.name = name;
         }

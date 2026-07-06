@@ -40,9 +40,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProgrammingLanguageJpaEntity implements Serializable {
+public class CountryJpaEntity implements Serializable {
 
-    private static final long serialVersionUID = 398626647627541586L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,19 +50,19 @@ public class ProgrammingLanguageJpaEntity implements Serializable {
 
     private String name;
 
-    private Integer firstAppeared;
+    private Integer population;
 
     @Enumerated(EnumType.STRING)
-    private ProgrammingLanguageType type;
+    private Continent continent;
 
-    public ProgrammingLanguageJpaEntity(String name, Integer firstAppeared, ProgrammingLanguageType type) {
+    public CountryJpaEntity(String name, Integer population, Continent continent) {
         this.name = name;
-        this.firstAppeared = firstAppeared;
-        this.type = type;
+        this.population = population;
+        this.continent = continent;
     }
 
-    public enum ProgrammingLanguageType {
-        COMPILED,
-        INTERPRETED
+    // Regions as listed in UN Demographic Yearbook 2023, Annex I.
+    public enum Continent {
+        AFRICA, NORTH_AMERICA, SOUTH_AMERICA, ASIA, EUROPE, AUSTRALIA_AND_NEWZEALAND
     }
 }

@@ -19,9 +19,9 @@
             <p:dataTable id="datatable"
                          value="#{dataTable050.lazyDataModel}"
                          lazy="true"
-                         var="lang"
-                         selection="#{dataTable050.selectedProgLanguages}"
-                         rowKey="#{lang.id}"
+                         var="country"
+                         selection="#{dataTable050.selectedCountries}"
+                         rowKey="#{country.id}"
                          paginator="true"
                          rows="3"
                          selectionPageOnly="#{dataTable050.selectionPageOnly}"
@@ -31,9 +31,11 @@
 
                 <p:column headerText="ID" field="id"/>
 
-                <p:column headerText="Name" field="name" filterBy="#{lang.name}" filterMatchMode="contains"/>
+                <p:column headerText="Name" field="name" filterBy="#{country.name}" filterMatchMode="contains"/>
 
-                <p:column headerText="First appeared" field="firstAppeared"/>
+                <p:column headerText="Population (M)" field="population"/>
+
+                <p:column headerText="Continent" field="continent"/>
 
             </p:dataTable>
 

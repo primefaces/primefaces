@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.jpa;
 
 import org.primefaces.integrationtests.datatable.LazyDataModelCallTracker;
-import org.primefaces.integrationtests.jpa.entity.ProgrammingLanguageJpaEntity;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.JPALazyDataModel;
 import org.primefaces.model.SortMeta;
@@ -32,24 +31,26 @@ import org.primefaces.util.Callbacks.SerializableSupplier;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.persistence.EntityManager;
 
-public class TrackingJPALazyDataModel extends JPALazyDataModel<ProgrammingLanguageJpaEntity> {
+public class TrackingJPALazyDataModel<T> extends JPALazyDataModel<T> {
 
     private static final long serialVersionUID = 1L;
 
     private final String beanName;
 
-    public TrackingJPALazyDataModel(SerializableSupplier<EntityManager> entityManagerSupplier, String beanName) {
+    public TrackingJPALazyDataModel(SerializableSupplier<EntityManager> entityManagerSupplier, String beanName,
+            Class<T> entityClass, Function<T, Integer> rowKeyProvider) {
         this.beanName = beanName;
         new JPALazyDataModel.Builder<>(this)
-                .entityClass(ProgrammingLanguageJpaEntity.class)
+                .entityClass(entityClass)
                 .entityManager(entityManagerSupplier)
                 .rowKeyField("id")
                 .rowKeyType(Integer.class)
-                .rowKeyProvider(ProgrammingLanguageJpaEntity::getId)
+                .rowKeyProvider(rowKeyProvider::apply)
                 .build();
     }
 
@@ -60,14 +61,14 @@ public class TrackingJPALazyDataModel extends JPALazyDataModel<ProgrammingLangua
     }
 
     @Override
-    public List<ProgrammingLanguageJpaEntity> load(int first, int pageSize, Map<String, SortMeta> sortBy,
+    public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy,
             Map<String, FilterMeta> filterBy) {
         getTracker().recordLoadCall(first, pageSize);
         return super.load(first, pageSize, sortBy, filterBy);
     }
 
     @Override
-    public ProgrammingLanguageJpaEntity getRowData(String rowKey) {
+    public T getRowData(String rowKey) {
         getTracker().recordGetRowDataCall(rowKey);
         return super.getRowData(rowKey);
     }
