@@ -268,16 +268,17 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(13)
-    @DisplayName("SelectOneMenu: GitHub #15009 non-editable label must omit 'for' (span is not a labelable element)")
-    void labelForOmittedWhenNonEditable(Page page) {
+    @DisplayName("SelectOneMenu: GitHub #15009 non-editable label 'for' must reference the hidden native select")
+    void labelForReferencesHiddenSelect(Page page) {
         // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
         OutputLabel outputLabel = page.outputLabel;
 
         // Act
 
-        // Assert - a <label for> may only reference a labelable element; the non-editable menu's focusable
-        // element is a <span>, so 'for' must be omitted and the association handled via aria-labelledby instead.
-        assertNull(outputLabel.getDomAttribute("for"));
+        // Assert - the visible focusable element is a non-labelable <span>, so 'for' must reference
+        // the hidden native "_input" <select> instead, which is a real labelable element.
+        assertEquals(selectOneMenu.getId() + "_input", outputLabel.getDomAttribute("for"));
         assertNoJavascriptErrors();
     }
 
