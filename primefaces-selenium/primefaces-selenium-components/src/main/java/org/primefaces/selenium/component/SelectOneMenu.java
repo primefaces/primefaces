@@ -206,7 +206,9 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
 
     @Override
     public WebElement getAssignedLabel() {
-        return getWebDriver().findElement(By.cssSelector("label[for='" + getId() + (isEditable() ? "_focus" : "_label") + "']"));
+        // editable menus expose a real, labelable <input>; non-editable menus have no labelable focusable
+        // element (the visible one is a <span>), so the label references the hidden native "_input" select instead
+        return getWebDriver().findElement(By.cssSelector("label[for='" + getId() + (isEditable() ? "_editableInput" : "_input") + "']"));
     }
 
     @Override

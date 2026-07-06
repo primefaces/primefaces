@@ -27,6 +27,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.OutputLabel;
 import org.primefaces.selenium.component.SelectOneMenu;
 import org.primefaces.selenium.component.model.Msg;
 
@@ -95,6 +96,21 @@ class SelectOneMenu006Test extends AbstractPrimePageTest {
         assertEquals("SelectOneMenu", selectOneMenu.getAssignedLabelText());
     }
 
+    @Test
+    @Order(4)
+    @DisplayName("SelectOneMenu: GitHub #15009 editable label 'for' must reference the visible editable input")
+    void labelForReferencesEditableInput(Page page) {
+        // Arrange
+        OutputLabel outputLabel = page.outputLabel;
+
+        // Act
+
+        // Assert - editable menu has a real, visible <input> ("_editableInput"); the label's 'for' must point at it
+        // so native click-to-focus works and the target is a labelable element.
+        assertEquals("form:selectonemenu_editableInput", outputLabel.getDomAttribute("for"));
+        assertNoJavascriptErrors();
+    }
+
     private void assertMessage(Page page, int index, String summary, String detail) {
         Msg message = page.messages.getMessage(index);
         assertEquals(summary, message.getSummary());
@@ -108,6 +124,9 @@ class SelectOneMenu006Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:outputlabel")
+        OutputLabel outputLabel;
+
         @FindBy(id = "form:selectonemenu")
         SelectOneMenu selectOneMenu;
 

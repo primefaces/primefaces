@@ -193,6 +193,14 @@ public class SelectOneMenu extends SelectOneMenuBaseImpl {
     }
 
     @Override
+    public String getLabelClientId() {
+        // GitHub #15009: a <label for> may only reference a labelable element.
+        // The visible "_label" span isn't labelable, so point at the hidden native "_input" select instead
+        // (editable mode uses the visible "_editableInput" text field).
+        return getClientId(getFacesContext()) + (isEditable() ? "_editableInput" : "_input");
+    }
+
+    @Override
     public String getValidatableInputClientId() {
         return getClientId(getFacesContext()) + "_input";
     }
