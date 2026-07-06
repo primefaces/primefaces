@@ -15,7 +15,7 @@
 [![PrimeFaces Logo](https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo_new.png)](https://www.primefaces.org/showcase)
 ***
 
-[PrimeFaces](https://www.primefaces.org/) is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more.
+PrimeFaces is one of the most popular UI libraries in Jakarta EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more.
 
 ### Community Edition (Open Source)
 
@@ -182,7 +182,7 @@ Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-Visit the [Release Checklist](https://github.com/primefaces/primefaces/wiki/Release-Checklist) for how to release an LTS or STS version.
+Visit the [Release Checklist](https://github.com/primefaces/primefaces/wiki/Release-Checklist) for how to release an version.
 
 ### License
 ***
