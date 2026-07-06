@@ -89,6 +89,38 @@ class JPALazyDataModelTest {
     }
 
     @Test
+    void rowSelectionQueriesDatabasePerSelectedRow() {
+        // Mirrors the full server-side call sequence of DataTable050Test#rowSelection:
+        // initial render: count() + load(first=0, size=3)
+        // checkbox click decodes selection: getRowData(rowKey=1) + getRowData(rowKey=3)
+        // form submit re-renders table: count() + load(first=0, size=3)
+        Fixture fixture = createMocksForRowSelectionWorkflow();
+
+        // Arrange - initial render
+        fixture.model.count(Collections.emptyMap());
+        fixture.model.load(0, 3, Collections.emptyMap(), Collections.emptyMap());
+
+        // Act - row selection decodes each selected row key via a DB lookup
+        TestEntity entity1 = fixture.model.getRowData("1");
+        TestEntity entity3 = fixture.model.getRowData("3");
+
+        // Assert - selection
+        assertNotNull(entity1);
+        assertEquals("1", entity1.getId());
+        assertNotNull(entity3);
+        assertEquals("3", entity3.getId());
+
+        // Act - form submit re-renders the table
+        fixture.model.count(Collections.emptyMap());
+        fixture.model.load(0, 3, Collections.emptyMap(), Collections.emptyMap());
+
+        // Assert - full call counts over the whole workflow
+        Mockito.verify(fixture.countTypedQuery, Mockito.times(2)).getSingleResult();
+        Mockito.verify(fixture.entityTypedQuery, Mockito.times(2)).getResultList();
+        Mockito.verify(fixture.entityTypedQuery, Mockito.times(2)).getSingleResult();
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     void getRowDataWithConverterDoesNotQueryDatabase() {
         Fixture fixture = createMocksForGetRowDataWithConverter();
@@ -184,6 +216,46 @@ class JPALazyDataModelTest {
 
         return new Fixture(createModel(ctx.entityManager, null), ctx.entityManager, ctx.criteriaBuilder,
                 null, entityQuery, entityTypedQuery);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Fixture createMocksForRowSelectionWorkflow() {
+        JpaContext ctx = createJpaContext();
+        // count query
+        CriteriaQuery<Long> countQuery = Mockito.mock(CriteriaQuery.class);
+        TypedQuery<Long> countTypedQuery = Mockito.mock(TypedQuery.class);
+        Expression<Long> countExpression = Mockito.mock(Expression.class);
+        Mockito.when(ctx.criteriaBuilder.createQuery(Long.class)).thenReturn(countQuery);
+        Mockito.when(countQuery.from(TestEntity.class)).thenReturn(ctx.root);
+        Mockito.when(ctx.criteriaBuilder.count(ctx.root)).thenReturn(countExpression);
+        Mockito.when(countQuery.select(countExpression)).thenReturn(countQuery);
+        Mockito.when(ctx.entityManager.createQuery(countQuery)).thenReturn(countTypedQuery);
+        Mockito.when(countTypedQuery.getSingleResult()).thenReturn(100L);
+
+        // load + getRowData query (share the same CriteriaQuery<TestEntity> mock)
+        CriteriaQuery<TestEntity> entityQuery = Mockito.mock(CriteriaQuery.class);
+        TypedQuery<TestEntity> entityTypedQuery = Mockito.mock(TypedQuery.class);
+        Path<Object> idPath = Mockito.mock(Path.class);
+        Predicate predicate1 = Mockito.mock(Predicate.class);
+        Predicate predicate3 = Mockito.mock(Predicate.class);
+        List<TestEntity> page1 = Arrays.asList(new TestEntity("1", "a"), new TestEntity("2", "b"), new TestEntity("3", "c"));
+
+        Mockito.when(ctx.criteriaBuilder.createQuery(TestEntity.class)).thenReturn(entityQuery);
+        Mockito.when(entityQuery.from(TestEntity.class)).thenReturn(ctx.root);
+        Mockito.when(entityQuery.select(ctx.root)).thenReturn(entityQuery);
+        Mockito.when(ctx.root.get("id")).thenReturn(idPath);
+        Mockito.when(ctx.criteriaBuilder.equal(idPath, "1")).thenReturn(predicate1);
+        Mockito.when(ctx.criteriaBuilder.equal(idPath, "3")).thenReturn(predicate3);
+        Mockito.when(entityQuery.where(predicate1)).thenReturn(entityQuery);
+        Mockito.when(entityQuery.where(predicate3)).thenReturn(entityQuery);
+        Mockito.when(ctx.entityManager.createQuery(entityQuery)).thenReturn(entityTypedQuery);
+        Mockito.when(entityTypedQuery.getResultList()).thenReturn(page1);
+        Mockito.when(entityTypedQuery.getSingleResult())
+                .thenReturn(new TestEntity("1", "a"))
+                .thenReturn(new TestEntity("3", "c"));
+
+        return new Fixture(createModel(ctx.entityManager, null), ctx.entityManager, ctx.criteriaBuilder,
+                countTypedQuery, entityQuery, entityTypedQuery);
     }
 
     private static Fixture createMocksForGetRowDataWithConverter() {
