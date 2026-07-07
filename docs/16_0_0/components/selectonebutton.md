@@ -5,6 +5,34 @@ SelectOneButton is an input component to do a single select.
 ## Getting started with SelectOneButton
 SelectOneButton usage is same as selectOneRadio component, buttons just replace the radios.
 
+## Accessibility
+
+The options are backed by native radio inputs: the group is rendered as a `role="radiogroup"` element, each visible
+button text is a `label` element bound to its hidden radio input, and keyboard interaction (Tab into the group, arrow
+keys to move the selection, Space to select) is native browser behavior.
+
+Use `p:outputLabel` to give the radio group an accessible name; it renders a valid `for` attribute pointing at the
+first radio input and additionally names the group via `aria-labelledby`:
+
+```xhtml
+<p:outputLabel for="paymentMethod" value="Payment method"/>
+<p:selectOneButton id="paymentMethod" value="#{buttonView.paymentMethod}">
+    <f:selectItem itemLabel="PayPal" itemValue="PayPal"/>
+    <f:selectItem itemLabel="Cash" itemValue="Cash"/>
+</p:selectOneButton>
+```
+
+Without an attached `p:outputLabel`, the `label` attribute is rendered as `aria-label` on the radio group:
+
+```xhtml
+<p:selectOneButton value="#{buttonView.paymentMethod}" label="Payment method">
+    ...
+</p:selectOneButton>
+```
+
+Keyboard focus lands on the hidden radio inputs; the widget reflects it by adding the `ui-state-focus` class to the
+corresponding button container.
+
 ## Custom Layout
 SelectOneButton provides a flexible layout option so that buttons can be located anywhere on the page with custom styling.
 
@@ -84,3 +112,5 @@ the list of structural style classes;
 | Class | Applies | 
 | --- | --- | 
 .ui-selectonebutton | Main container element.
+.ui-button | Container element of an option.
+.ui-button-text | Visible label element of an option.
