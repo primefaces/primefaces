@@ -27,6 +27,7 @@ import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
+import jakarta.faces.component.UINamingContainer;
 
 @FacesComponent(value = SelectOneButton.COMPONENT_TYPE, namespace = SelectOneButton.COMPONENT_FAMILY)
 @FacesComponentInfo(description = "SelectOneButton is an input component to do a single select.")
@@ -40,5 +41,15 @@ public class SelectOneButton extends SelectOneButtonBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneButton";
 
     public static final String STYLE_CLASS = "ui-selectonebutton ui-buttonset ui-widget";
+
+    @Override
+    public String getInputClientId() {
+        return getClientId(getFacesContext()) + UINamingContainer.getSeparatorChar(getFacesContext()) + 0;
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return getInputClientId();
+    }
 
 }
