@@ -32,7 +32,6 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
@@ -88,6 +87,9 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute(HTML.ARIA_ROLE, "radiogroup", null);
+        encodeGroupLabel(context, component);
+        renderARIARequired(context, component);
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
@@ -96,6 +98,17 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
         encodeSelectItems(context, component, selectItems);
 
         writer.endElement("div");
+    }
+
+    protected void encodeGroupLabel(FacesContext context, SelectOneButton component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String labelledBy = component.getAriaLabelledBy();
+        if (LangUtils.isNotBlank(labelledBy)) {
+            writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, "label");
+        }
+        else if (LangUtils.isNotBlank(component.getLabel())) {
+            writer.writeAttribute(HTML.ARIA_LABEL, component.getLabel(), "label");
+        }
     }
 
     protected void encodeSelectItems(FacesContext context, SelectOneButton component, List<SelectItem> selectItems) throws IOException {
@@ -144,32 +157,34 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
         //button
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute(HTML.ARIA_ROLE, "radio", null);
-        writer.writeAttribute(HTML.ARIA_CHECKED, Objects.toString(selected), null);
-        writer.writeAttribute("tabindex", component.getTabindex(), null);
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);
         }
 
-        //input
+        //input: carries focus, keyboard interaction and accessibility, like selectOneRadio
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-        writer.writeAttribute("tabindex", "-1", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, LangUtils.isEmpty(option.getDescription()) ? option.getLabel() : option.getDescription(), null);
+        writer.writeAttribute("tabindex", component.getTabindex(), null);
 
         if (selected) {
             writer.writeAttribute("checked", "checked", null);
         }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
-        renderAccessibilityAttributes(context, component);
+        // no renderAccessibilityAttributes here: the group aria attributes belong to the
+        // radiogroup root; a per-input aria-labelledby would override the item label element
+        renderValidationMetadata(context, component);
         writer.endElement("input");
 
         //item label
-        writer.startElement("span", null);
+        writer.startElement("label", null);
+        writer.writeAttribute("for", id, null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
         if (option.isEscape()) {
@@ -179,7 +194,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
             writer.write(option.getLabel());
         }
 
-        writer.endElement("span");
+        writer.endElement("label");
 
         writer.endElement("div");
     }
@@ -193,6 +208,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
             writer.startElement("span", component);
             writer.writeAttribute("id", component.getClientId(context), "id");
             writer.writeAttribute(HTML.ARIA_ROLE, "radiogroup", null);
+            encodeGroupLabel(context, component);
             if (style != null) {
                 writer.writeAttribute("style", style, "style");
             }
