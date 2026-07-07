@@ -169,8 +169,8 @@ of structural style classes;
 .ui-picklist-button-move-bottom | Move bottom button
 .ui-picklist-button-add | Add button
 .ui-picklist-button-add-all | Add all button
+.ui-picklist-button-remove | Remove button
 .ui-picklist-button-remove-all | Remove all button
-.ui-picklist-button-add | Add button
 .ui-picklist-vertical | Container element of a vertical picklist
 
 As skinning style classes are global, see the main theming section for more information.
