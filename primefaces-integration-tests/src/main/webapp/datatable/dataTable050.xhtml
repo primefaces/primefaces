@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:dataTable id="datatable"
+                         value="#{dataTable050.lazyDataModel}"
+                         lazy="true"
+                         var="country"
+                         selection="#{dataTable050.selectedCountries}"
+                         rowKey="#{country.id}"
+                         paginator="true"
+                         rows="3"
+                         selectionPageOnly="#{dataTable050.selectionPageOnly}"
+            >
+                <p:ajax event="page" update="form:loadCallCount form:fullHistory"/>
+                <p:column selectionBox="true" style="width:16px;text-align:center"/>
+
+                <p:column headerText="ID" field="id"/>
+
+                <p:column headerText="Name" field="name" filterBy="#{country.name}" filterMatchMode="contains"/>
+
+                <p:column headerText="Population (M)" field="population"/>
+
+                <p:column headerText="Continent" field="continent"/>
+
+            </p:dataTable>
+
+            <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable050.submit}"/>
+            <p:selectBooleanButton id="toggleSelectPageOnly" value="#{dataTable050.selectionPageOnly}"
+                                   onLabel="Page only" offLabel="All pages">
+                <p:ajax update="@form"/>
+            </p:selectBooleanButton>
+
+            <h:inputHidden id="loadCallCount" value="#{dataTable050.lazyDataModelCallTracker.loadCallCount}"/>
+            <h:inputHidden id="fullHistory" value="#{dataTable050.lazyDataModelCallTracker.fullHistoryString}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

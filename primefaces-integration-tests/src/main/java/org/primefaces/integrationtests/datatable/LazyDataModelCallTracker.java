@@ -48,6 +48,22 @@ public class LazyDataModelCallTracker implements Serializable {
     }
 
     /**
+     * Records a count() call.
+     */
+    public void recordCountCall() {
+        calls.add("count()");
+    }
+
+    /**
+     * Records a getRowData() call with its parameter.
+     *
+     * @param rowKey the row key passed to getRowData
+     */
+    public void recordGetRowDataCall(String rowKey) {
+        calls.add(String.format("getRowData(rowKey=%s)", rowKey));
+    }
+
+    /**
      * Clears all tracking history.
      */
     public void reset() {
