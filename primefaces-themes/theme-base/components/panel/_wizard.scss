@@ -1,6 +1,9 @@
 body {
   .ui-wizard {
     .ui-wizard-step-titles {
+      padding: 0;
+      margin: 0;
+
       .ui-wizard-step-title {
         border: $panelHeaderBorder;
         background: $panelHeaderBg;
@@ -9,6 +12,7 @@ body {
         margin: 0;
         border-right: 0 none;
         border-radius: 0;
+        list-style-type: none;
 
         &:first-child {
           @include border-radius-left($borderRadius);
