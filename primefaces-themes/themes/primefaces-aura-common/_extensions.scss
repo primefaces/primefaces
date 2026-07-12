@@ -54,4 +54,13 @@ body {
       border: none;
     }
   }
+
+  .ui-messages {
+    .ui-messages-info .ui-messages-info-icon,
+    .ui-messages-warn .ui-messages-warn-icon,
+    .ui-messages-error .ui-messages-error-icon,
+    .ui-messages-fatal .ui-messages-fatal-icon {
+      line-height: normal;
+    }
+  }
 }
