@@ -1,50 +1,38 @@
 # Contributing to PrimeFaces
 
-First of all, thank you for considering contributing to PrimeFaces!
+Thank you for your interest in contributing to PrimeFaces!
 
-PrimeFaces is now a community-driven, MIT-licensed open source project. Contributions of all sizes are welcome, whether you're fixing a typo, improving documentation, fixing bugs, adding tests, or implementing new features.
+PrimeFaces is a community-driven, MIT-licensed open source project. Contributions of all kinds are welcome, whether you're fixing a bug, improving documentation, adding tests, enhancing accessibility, improving performance, or implementing a new feature.
 
 Please take a few minutes to review these guidelines before opening an issue or pull request.
 
-## Code of Conduct
-
-By participating in this project, you agree to abide by our Code of Conduct. Please help us keep the community welcoming, respectful, and inclusive for everyone.
-
-## Before You Start
-
-Before beginning work on a new feature or large change:
-
-* Search existing issues and pull requests to avoid duplicate work.
-* For significant changes, open an issue first so the community can discuss the proposed design.
-* Keep pull requests focused on a single logical change whenever possible.
-
-Small bug fixes and documentation improvements generally do not require prior discussion.
-
 ## Reporting Bugs
+
+Before opening a new issue, please search the existing issues to determine whether it has already been reported.
 
 When reporting a bug, please include as much information as possible:
 
 * PrimeFaces version
-* Jakarta Faces implementation and version (Mojarra/MyFaces)
+* Jakarta Faces implementation and version (Mojarra or MyFaces)
 * Application server
 * Java version
 * Browser (if applicable)
 * A minimal reproducer, preferably based on the PrimeFaces Showcase or a small GitHub repository
-* Stack traces, screenshots, or recordings when applicable
+* Stack traces, screenshots, or recordings where appropriate
 
-Clear reproduction steps greatly increase the chances of a quick fix.
+Clear reproduction steps significantly improve the chances of a quick resolution.
 
-## Suggesting Features
+## Feature Requests
 
-Feature requests are welcome.
+Feature requests are always welcome.
 
 Please describe:
 
-* The problem you're trying to solve
-* Why the feature would benefit other users
-* Any proposed API or implementation ideas (optional)
+* The problem you're trying to solve.
+* Why the feature would benefit the community.
+* Any proposed API or implementation ideas (optional).
 
-Well-explained use cases are much more valuable than implementation details.
+For larger features or API changes, we encourage opening an issue first to discuss the proposed design before investing significant implementation effort.
 
 ## Development Workflow
 
@@ -55,56 +43,98 @@ Well-explained use cases are much more valuable than implementation details.
 5. Ensure the project builds successfully.
 6. Submit a pull request.
 
-Please keep pull requests as focused as possible.
+Please keep pull requests focused on a single logical change whenever possible.
 
-## Coding Guidelines
+## General guidelines
 
-Please follow the existing code style and conventions used throughout the project.
+Our commit guidelines mirror those of OpenStack:
 
-When submitting code:
+* Only one logical change per commit.
+* Do not mix whitespace changes with functional code changes.
+* Do not mix unrelated functional changes.
+* When writing a commit message:
 
-* Write clear, maintainable code.
-* Avoid unrelated formatting-only changes.
-* Update documentation when behavior changes.
-* Include tests whenever practical.
-* Keep public APIs backwards compatible unless the change is intentional and discussed.
+  * Describe **why** a change is being made.
+  * Do not assume the reviewer understands what the original problem was.
+  * Do not assume the code is self-evident or self-documenting.
+  * Describe any limitations of the current implementation.
+* Keep pull requests focused on a single feature or bug fix.
+* Follow the existing coding style and conventions throughout the project.
+* Include tests whenever practical when fixing bugs or adding functionality.
+* Review all code carefully before submitting, including any AI-generated code.
 
-## Commit Messages
+## Performance guidelines
 
-Use clear and descriptive commit messages.
+PrimeFaces is a UI component library where performance matters. Please keep performance in mind when contributing.
 
-Examples:
+Use index-based loops instead of enhanced `for-each` loops when iterating over `ArrayList`s, especially when traversing the Faces component tree.
 
+See:
+https://issues.apache.org/jira/browse/MYFACES-3130
+
+Our loops usually look like:
+
+```java
+for (int i = 0; i < component.getChildCount(); i++) {
+    UIComponent child = component.getChildren().get(i);
+    ...
+}
 ```
-Fix DataTable row selection with lazy loading
 
-Improve TreeTable keyboard accessibility
+This has two benefits:
 
-Add support for Jakarta Faces 5
-```
+* Avoids creating an internal `List` instance when there are no children, as the list is lazily initialized by the Faces implementation (`component.getChildCount()` instead of `component.getChildren().size()`).
+* Avoids creating a new iterator instance on each loop. While modern JVMs optimize this well, reducing object allocation also reduces GC pressure.
 
-Small, logically grouped commits make reviews easier.
+## Detailed Java code quality standards
+
+* All code must compile and run on Java 11.
+* All comments, class names, variable names, method names, log messages, and other identifiers must be in English.
+* All new source files should include the standard PrimeFaces MIT license header where applicable.
+* Follow the standard Java naming conventions for classes, methods, variables, and constants.
+* Maximum line length is **160 characters**.
+* Use **4 spaces** for indentation. Do not use tabs.
+* Line endings should be UNIX (`\n`).
+* All `.java` source files should contain only ASCII characters. All `.properties` files should use ISO-8859-1 encoding.
+* Avoid unnecessary autoboxing and unboxing of primitive numeric types.
+* Every class should define an explicit constructor, even when it is the default constructor, and include a call to `super()`.
+* Use `/* ... */` comments to explain algorithms that involve non-trivial design decisions. Avoid comments that merely restate the code.
+* All public classes and public methods intended for users should include comprehensive Javadoc.
+* The project also defines additional coding rules in `checkstyle.xml`. Please ensure your code complies with these rules before submitting a pull request.
+
+## Detailed HTML/XML code quality standards
+
+* All tags, CSS classes, IDs, filenames, and other identifiers must be in English.
+* Prefer lowercase for HTML/XML artifacts. The only exceptions are `DOCTYPE` and `CDATA`.
+* All HTML should be XML-valid (properly closed tags, quoted attributes, etc.).
+* Maximum line length is **160 characters**.
+* Use **4 spaces** for indentation. Do not use tabs.
+* Line endings should be UNIX (`\n`).
+* All `.html` and `.xml` files should contain only ASCII characters.
+* XHTML self-closing tags should include a space before `/>`.
+* Inline JavaScript must be enclosed in a commented `<![CDATA[ ... ]]>` block where applicable.
 
 ## Pull Request Checklist
 
-Before submitting a pull request, please verify:
+Before submitting your pull request, please verify:
 
 * [ ] The project builds successfully.
 * [ ] Existing tests pass.
 * [ ] New functionality includes tests where appropriate.
 * [ ] Documentation has been updated if necessary.
-* [ ] The pull request is focused on a single change.
-* [ ] Commit messages clearly describe the changes.
+* [ ] The pull request addresses a single feature or bug fix.
+* [ ] Commit messages clearly explain the purpose of the change.
+* [ ] Code complies with the project's coding standards and Checkstyle rules.
 
 ## AI-assisted Contributions
 
-Use of AI coding assistants is welcome.
+The use of AI coding assistants is welcome.
 
-If an AI tool materially contributed to a change, it is appreciated (but not required) to credit it in the commit message using a `Co-authored-by` trailer. Please include the model name and version whenever possible, as model versions differ in behavior over time.
+If an AI tool materially contributed to a change, we encourage (but do not require) you to credit it in the commit message using a `Co-authored-by` trailer. Please include the model name and version whenever possible, since model behavior changes over time.
 
 Examples:
 
-```
+```text
 Co-authored-by: Claude Opus 4.8 <noreply@anthropic.com>
 
 Co-authored-by: GitHub Copilot (GPT-5) <copilot@github.com>
@@ -125,17 +155,33 @@ Use whatever model and version your tool actually reports.
 ### Why we ask for this
 
 * **Traceability** — makes it easier to identify AI-assisted changes when investigating regressions, security issues, or licensing questions.
-* **Accountability** — identifies the specific tool and model used instead of a generic "AI" label. Different models often produce different results.
-* **Responsibility** — the human contributor remains responsible for every submitted change. Please review, understand, test, and stand behind any AI-generated code before submitting it.
+* **Accountability** — identifies the specific tool and model used instead of a generic "AI" label.
+* **Transparency** — helps future contributors understand how changes were produced.
+* **Responsibility** — the human contributor remains responsible for every submitted change. Review, understand, test, and stand behind any AI-generated code before submitting it.
 
-AI assistance does not reduce the expectations for code quality, testing, documentation, or review.
+AI-generated code is expected to meet the same performance, style, testing, documentation, and review standards as any manually written contribution.
 
-## Licensing
+## Code Reviews
+
+All contributions are reviewed by project maintainers.
+
+During review, you may be asked to:
+
+* Improve documentation.
+* Add or update tests.
+* Revise the implementation.
+* Address review comments.
+
+Code review is a collaborative process intended to improve the quality, maintainability, and long-term health of PrimeFaces.
+
+## License
 
 By submitting a contribution, you agree that your contribution will be licensed under the project's MIT License.
 
 ## Thank You
 
-PrimeFaces exists because of its community.
+PrimeFaces has been successful because of its community.
 
-Whether you're reporting bugs, improving documentation, reviewing pull requests, answering questions, or contributing code, your help is greatly appreciated.
+Whether you're reporting bugs, answering questions, improving documentation, reviewing pull requests, or contributing code, your help is greatly appreciated.
+
+Thank you for helping make PrimeFaces better for everyone!
