@@ -162,6 +162,10 @@
     .blocked-scroll {
         overflow: hidden;
     }
+
+    .layout-submenu {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 800px) {
