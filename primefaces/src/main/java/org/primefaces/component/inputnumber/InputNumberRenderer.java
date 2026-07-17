@@ -88,8 +88,7 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
             }
             else {
                 // Coerce submittedValue to (effective) range of [minValue, maxValue]
-                BigDecimal value = new BigDecimal(submittedValue);
-                submittedValue = coerceValueInRange(context, value, component).toString();
+                submittedValue = formatValueToRender(context, component, submittedValue);
             }
         }
         catch (NumberFormatException ex) {
@@ -109,18 +108,36 @@ public class InputNumberRenderer extends InputRenderer<InputNumber> {
         else {
             // Rendered value must always be inside the effective interval [minValue, maxValue],
             // or else AutoNumeric will throw an error and the component will be broken
-            BigDecimal decimalToRender;
             try {
-                decimalToRender = new BigDecimal(valueToRender);
+                valueToRender = formatValueToRender(context, component, valueToRender);
             }
-            catch (Exception e) {
+            catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a decimal value;", e);
             }
-            valueToRender = formatForPlugin(coerceValueInRange(context, decimalToRender, component));
         }
 
         encodeMarkup(context, component, value, valueToRender);
         encodeScript(context, component, value, valueToRender);
+    }
+
+    /**
+     * Formats a numeric string for AutoNumeric, coercing to the effective [minValue, maxValue] range.
+     * When {@code leadingZero=keep} and the value is in range, returns the original string so leading zeros are preserved.
+     *
+     * @param context faces context
+     * @param component the InputNumber component
+     * @param valueToRender the numeric string to format
+     * @return the formatted value for the plugin
+     */
+    protected String formatValueToRender(FacesContext context, InputNumber component, String valueToRender) {
+        BigDecimal decimalToRender = new BigDecimal(valueToRender);
+        BigDecimal coerced = coerceValueInRange(context, decimalToRender, component);
+        // leadingZero=keep: preserve original string (e.g. "000123") when in range;
+        // BigDecimal formatting would strip leading zeros
+        if ("keep".equalsIgnoreCase(component.getLeadingZero()) && decimalToRender.compareTo(coerced) == 0) {
+            return valueToRender;
+        }
+        return formatForPlugin(coerced);
     }
 
     protected void encodeMarkup(FacesContext context, InputNumber component, Object value, String valueToRender)
