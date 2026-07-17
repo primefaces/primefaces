@@ -158,33 +158,22 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     public abstract String calculateWidgetPattern();
 
     /**
-     * @see <a href="https://github.com/RobinHerbots/Inputmask/blob/5.x/README_date.md">Inputmask README_date</a>
+     * Converts a Java date pattern to the format understood by the InputMask plugin.
+     *
+     * @see <a href="https://robinherbots.github.io/Inputmask/#/documentation/datetime">Inputmask datetime documentation</a>
      * @param patternTemplate the date pattern
      * @return the value converted for InputMask plugin
      */
     public String convertPattern(String patternTemplate) {
-        // switch capital and lower M's for InputMask
-        char[] chars = patternTemplate.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            char c = chars[i];
-            if (c == 'm' || c == 'M') {
-                if (Character.isUpperCase(c)) {
-                    chars[i] = Character.toLowerCase(c);
-                }
-                else if (Character.isLowerCase(c)) {
-                    chars[i] = Character.toUpperCase(c);
-                }
-            }
-        }
-        String pattern = new String(chars);
+        String pattern = patternTemplate;
         int countY = LangUtils.countMatches(pattern, 'y');
-        int countM = LangUtils.countMatches(pattern, 'm');
+        int countM = LangUtils.countMatches(pattern, 'M');
         int countD = LangUtils.countMatches(pattern, 'd');
         if (countD == 1) {
             pattern = pattern.replace("d", "dd");
         }
         if (countM == 1) {
-            pattern = pattern.replace("m", "mm");
+            pattern = pattern.replace("M", "MM");
         }
         if (countY == 1) {
             pattern = pattern.replace("y", "yy");
