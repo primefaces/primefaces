@@ -425,12 +425,12 @@
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-api</artifactId>
-                    <version>4.0.3</version>
+                    <version>4.0.4-SNAPSHOT</version>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-impl</artifactId>
-                    <version>4.0.3</version>
+                    <version>4.0.4-SNAPSHOT</version>
                 </dependency>
             </dependencies>
             <build>
@@ -445,12 +445,12 @@
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-api</artifactId>
-                    <version>4.1.2</version>
+                    <version>4.1.4-SNAPSHOT</version>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-impl</artifactId>
-                    <version>4.1.2</version>
+                    <version>4.1.4-SNAPSHOT</version>
                 </dependency>
             </dependencies>
             <build>
