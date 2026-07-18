@@ -29,6 +29,7 @@ import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
+import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.time.LocalDateTime;
 
@@ -61,12 +62,11 @@ class DatePicker017Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: mask='true' accepts manual typed input and submits the value")
     void maskManualTyping(Page page) {
         // Arrange
-        DatePicker datePicker = page.datePicker;
+        DatePicker datePicker = page.datePickerEmpty;
 
         // Act
-        datePicker.clear();
-        datePicker.getInput().sendKeys("19021978115519");
-        datePicker.hidePanel();
+        datePicker.getInput().click();
+        ComponentUtils.sendKeys(datePicker.getInput(), "19021978115519");
         page.button.click();
 
         // Assert
@@ -84,7 +84,7 @@ class DatePicker017Test extends AbstractDatePickerTest {
         WebElement panel = datePicker.showPanel();
 
         // Act
-        incrementTimeSegment(panel, "ui-second-picker");
+        incrementTimeSegment(panel);
 
         // Assert
         assertTime(panel, "0", "0", "1");
@@ -104,28 +104,35 @@ class DatePicker017Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: mask clears incomplete input on blur by default (maskAutoClear)")
     void maskAutoClearIncomplete(Page page) {
         // Arrange
-        DatePicker datePicker = page.datePicker;
+        DatePicker datePicker = page.datePickerEmpty;
 
-        // Act
-        datePicker.clear();
-        datePicker.getInput().sendKeys("1902");
-        datePicker.hidePanel();
+        // Act - type incomplete date
+        datePicker.getInput().click();
+        ComponentUtils.sendKeys(datePicker.getInput(), "1902");
+
+        // Assert - mask partially filled
+        assertEquals("19/02/____ __:__:__", datePicker.getInputValue());
+
+        // Act - blur and submit
         page.button.click();
 
-        // Assert
+        // Assert - incomplete value cleared
         assertNoJavascriptErrors();
         assertEquals("", datePicker.getInputValue());
     }
 
-    protected void incrementTimeSegment(WebElement panel, String pickerClass) {
+    protected void incrementTimeSegment(WebElement panel) {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
-        WebElement picker = panel.findElement(By.className(pickerClass));
+        WebElement picker = panel.findElement(By.className("ui-second-picker"));
         picker.findElement(By.className("ui-picker-up")).click();
     }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:datepicker")
         DatePicker datePicker;
+
+        @FindBy(id = "form:datepickerEmpty")
+        DatePicker datePickerEmpty;
 
         @FindBy(id = "form:button")
         CommandButton button;

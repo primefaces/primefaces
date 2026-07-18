@@ -40,6 +40,7 @@ public class DatePicker017 implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private LocalDateTime localDateTime;
+    private LocalDateTime dateTimeEmpty;
 
     @PostConstruct
     public void init() {

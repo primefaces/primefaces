@@ -17,6 +17,10 @@
             <p:datePicker id="datepicker" value="#{datePicker017.localDateTime}"
                           pattern="dd/MM/yyyy HH:mm:ss" showTime="true" mask="true"/>
 
+            <p:datePicker id="datepickerEmpty" value="#{datePicker017.dateTimeEmpty}"
+                          pattern="dd/MM/yyyy HH:mm:ss" mask="true"
+                          showOnFocus="false"/>
+
             <p:commandButton id="button" value="Submit" update="@form"/>
         </h:form>
 
