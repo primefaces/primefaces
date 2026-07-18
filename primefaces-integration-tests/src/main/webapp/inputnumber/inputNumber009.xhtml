@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <!-- String-bound value with leadingZero=keep must preserve leading zeros on decode/encode -->
+            <p:inputNumber id="inputnumber" value="#{inputNumber009.value}"
+                           leadingZero="keep" decimalPlaces="0" padControl="false" thousandSeparator=""/>
+
+            <p:commandButton id="button" update="@form" value="Submit"/>
+
+            <p:outputPanel id="output">#{inputNumber009.value}</p:outputPanel>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
