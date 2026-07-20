@@ -39,6 +39,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -50,6 +51,7 @@ class InputNumberTest {
     private ELContext elContext;
     private InputNumber inputNumber;
     private ValueExpression valueExpression;
+    private Object capturedSubmittedValue;
 
     @BeforeEach
     void setup() {
@@ -62,12 +64,19 @@ class InputNumberTest {
         inputNumber = mock(InputNumber.class);
         when(inputNumber.getClientId(context)).thenReturn("");
         when(inputNumber.isValid()).thenReturn(true);
-        when(inputNumber.getSubmittedValue()).thenCallRealMethod();
-        doCallRealMethod().when(inputNumber).setSubmittedValue(anyString());
+        // Mojarra 4.0.19+ stores submittedValue in TransientStateHelper; real methods
+        // on a Mockito mock cannot persist it, so capture via stubbing instead.
+        capturedSubmittedValue = null;
+        when(inputNumber.getSubmittedValue()).thenAnswer(invocation -> capturedSubmittedValue);
+        doAnswer(invocation -> {
+            capturedSubmittedValue = invocation.getArgument(0);
+            return null;
+        }).when(inputNumber).setSubmittedValue(any());
     }
 
     @AfterEach
     void teardown() {
+        capturedSubmittedValue = null;
         valueExpression = null;
         inputNumber = null;
         elContext = null;
