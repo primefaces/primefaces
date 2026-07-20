@@ -35,6 +35,7 @@ import org.primefaces.util.LangUtils;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
@@ -113,11 +114,14 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
 
             int columnsCount = getExportableColumns(table).size();
             pdfTable = new PdfPTable(columnsCount);
+            pdfTable.setComplete(false);
+            document.add(pdfTable);
             super.exportTable(context, table, index);
+            pdfTable.setComplete(true);
             document.add(pdfTable);
         }
         catch (DocumentException e) {
-            throw new IOException(e.getMessage());
+            throw new IOException(e.getMessage(), e);
         }
     }
 
@@ -268,5 +272,11 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
         }
 
         addCell(pdfTable, cell);
+    }
+
+    @Override
+    protected void exportRowsPortion(FacesContext context, DataTable table, List<Object> rowsPortion) {
+        super.exportRowsPortion(context, table, rowsPortion);
+        document.add(pdfTable);
     }
 }
