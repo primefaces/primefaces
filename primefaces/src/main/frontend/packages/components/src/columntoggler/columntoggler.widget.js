@@ -681,7 +681,7 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
      * @return {number} The calculated `colspan` for the rows.
      */
     calculateColspan() {
-	const visibleColumns = this.itemContainer
+	    const visibleColumns = this.itemContainer
             .find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box.ui-state-active')
             .length;
 
