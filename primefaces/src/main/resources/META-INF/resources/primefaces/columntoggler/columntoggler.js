@@ -636,7 +636,15 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      * @return {number} The calculated `colspan` for the rows.
      */
     calculateColspan: function() {
-        return this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box.ui-state-active').length;
+        const visibleColumns = this.itemContainer
+            .find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box.ui-state-active')
+            .length;
+
+        const visibleStaticColumns = this.thead
+            .find('> tr > th.ui-static-column:not(.ui-helper-hidden)')
+            .length;
+
+        return visibleColumns + visibleStaticColumns;
     },
 
     /**
