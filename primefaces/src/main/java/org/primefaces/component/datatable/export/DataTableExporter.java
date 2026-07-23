@@ -34,10 +34,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import jakarta.faces.context.FacesContext;
 
 public abstract class DataTableExporter<P, O extends ExporterOptions> extends TableExporter<DataTable, P, O> {
+
+    private static final Logger LOGGER = Logger.getLogger(DataTableExporter.class.getName());
 
     private static final int NO_ROW_INDEX_REQUIRED = Integer.MIN_VALUE;
 
@@ -114,11 +118,13 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
                 do {
                     items = lazyDataModel.load(offset, batchSize, table.getActiveSortMeta(), table.getActiveFilterMeta());
                     lazyDataModel.setWrappedData(items);
-                    for (int rowIndex = 0; rowIndex < items.size(); rowIndex++) {
-                        exportRow(context, table, rowIndex);
-                    }
+                    exportRowsPortion(context, table, items);
                     offset += items.size();
-                } while ((bufferized && !items.isEmpty()) || (!bufferized && offset < batchSize));
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        float procent = lazyDataModel.getRowCount() != 0 ? 100F * offset / lazyDataModel.getRowCount() : Float.NaN;
+                        LOGGER.fine(String.format("Exported %1$d of %2$d (%3$.0f%%) items", offset, lazyDataModel.getRowCount(), procent));
+                    }
+                } while (!Thread.currentThread().isInterrupted() && ((bufferized && !items.isEmpty()) || (!bufferized && offset < batchSize)));
 
                 //restore
                 table.setRowIndex(-1);
@@ -137,6 +143,12 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
 
             //restore
             table.setFirst(first);
+        }
+    }
+
+    protected void exportRowsPortion(FacesContext context, DataTable table, List<Object> rowsPortion) {
+        for (int rowIndex = 0; rowIndex < rowsPortion.size(); rowIndex++) {
+            exportRow(context, table, rowIndex);
         }
     }
 
