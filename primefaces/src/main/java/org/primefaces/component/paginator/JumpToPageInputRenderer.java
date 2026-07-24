@@ -36,8 +36,15 @@ public class JumpToPageInputRenderer implements PaginatorElementRenderer {
     @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String id = buildId(context, pageable, "jumpToPage");
 
         writer.startElement("input", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("type", "number", null);
+        writer.writeAttribute("min", 1, null);
+        writer.writeAttribute("max", pageable.getPageCount(), null);
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", UIPageableData.PAGINATOR_JTP_INPUT_CLASS, null);
         writer.writeAttribute("value", pageable.getPage() + 1, null);
         writer.endElement("input");
