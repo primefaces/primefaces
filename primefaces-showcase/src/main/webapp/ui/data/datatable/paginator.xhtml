@@ -10,16 +10,19 @@
     </ui:define>
 
     <ui:define name="description">
-        DataTable provides a highly customizable ajax paginator.
+        DataTable provides a highly customizable ajax paginator. The paginatorTemplate selects which elements are
+        rendered, e.g. page links, a jump-to-page input or a jump-to-page dropdown.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable"/>
     <ui:param name="widgetLink" value="DataTable-1"/>
 
     <ui:define name="implementation">
-        <div class="card">
-            <h:form>
-                <p:dataTable var="customer" value="#{dtPaginatorView.customers}" rows="10"
+
+        <h:form id="form">
+            <div class="card">
+                <h5 style="margin-top:0">Basic</h5>
+                <p:dataTable id="basic" var="customer" value="#{dtPaginatorView.customers}" rows="10"
                              paginator="true" paginatorPosition="both"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -50,8 +53,84 @@
                     </f:facet>
 
                 </p:dataTable>
-            </h:form>
-        </div>
+            </div>
+
+            <div class="card">
+                <h5>Page Links</h5>
+                <p:dataTable id="pageLinks" var="customer" value="#{dtPaginatorView.customers}" rows="10"
+                             paginator="true" pageLinks="5"
+                             paginatorTemplate="{FirstPageLink} {PageLinks} {LastPageLink}">
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{customer.name}" />
+                    </p:column>
+
+                    <p:column headerText="Country">
+                        <h:outputText value="#{customer.country.name}" />
+                    </p:column>
+
+                    <p:column headerText="Company">
+                        <h:outputText value="#{customer.company}" />
+                    </p:column>
+
+                    <p:column headerText="Representative">
+                        <h:outputText value="#{customer.representative.name}" />
+                    </p:column>
+
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Jump to page by numbered input</h5>
+                <p:dataTable id="jumpInput" var="customer" value="#{dtPaginatorView.customers}" rows="10"
+                             paginator="true" paginatorPosition="both"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {JumpToPageInput} {NextPageLink} {LastPageLink}">
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{customer.name}" />
+                    </p:column>
+
+                    <p:column headerText="Country">
+                        <h:outputText value="#{customer.country.name}" />
+                    </p:column>
+
+                    <p:column headerText="Company">
+                        <h:outputText value="#{customer.company}" />
+                    </p:column>
+
+                    <p:column headerText="Representative">
+                        <h:outputText value="#{customer.representative.name}" />
+                    </p:column>
+
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Jump to page by dropdown</h5>
+                <p:dataTable id="jumpDropdown" var="customer" value="#{dtPaginatorView.customers}" rows="10"
+                             paginator="true"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {JumpToPageDropdown} {NextPageLink} {LastPageLink}">
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{customer.name}" />
+                    </p:column>
+
+                    <p:column headerText="Country">
+                        <h:outputText value="#{customer.country.name}" />
+                    </p:column>
+
+                    <p:column headerText="Company">
+                        <h:outputText value="#{customer.company}" />
+                    </p:column>
+
+                    <p:column headerText="Representative">
+                        <h:outputText value="#{customer.representative.name}" />
+                    </p:column>
+
+                </p:dataTable>
+            </div>
+        </h:form>
+
     </ui:define>
 
 </ui:composition>
