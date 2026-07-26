@@ -3,7 +3,8 @@
  * Carousel is a content slider featuring various customization options.
  *
  * @prop {boolean} allowAutoplay Whether autoplay is allowed or not.
- * @prop {HTMLStyleElement} carouselStyle Style element with the custom CSS for the carousel. 
+ * @prop {string} ariaPageLabel ARIA LABEL attribute for the page links.
+ * @prop {HTMLStyleElement} carouselStyle Style element with the custom CSS for the carousel.
  * @prop {boolean} circular Whether the viewport is circular or not.
  * @prop {JQuery} content The DOM element for the content of the carousel that shows the carousel.
  * @prop {JQuery} container The DOM element for the container of the carousel that contains items container and buttons.
@@ -106,6 +107,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.cloneItems();
         }
 
+        this.renderAria();
         this.calculatePosition();
         this.updatePage();
         this.bindEvents();
@@ -124,6 +126,16 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.stopAutoplay();
 
         this._super(cfg);
+    },
+
+    /**
+     * Renders ARIA labels for the carousel navigation elements.
+     * @private
+     */
+    renderAria: function () {
+        this.ariaPageLabel = PrimeFaces.getAriaLabel('carousel.PAGE_LABEL');
+        this.prevNav.attr('aria-label', PrimeFaces.getAriaLabel('carousel.PREV_PAGE_LABEL'));
+        this.nextNav.attr('aria-label', PrimeFaces.getAriaLabel('carousel.NEXT_PAGE_LABEL'));
     },
 
     /**
@@ -656,7 +668,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
         if (this.cfg.paginator) {
             for (var i = 0; i < this.totalIndicators; i++) {
-                indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i ? 'ui-state-highlight' : '') + '"><button class="ui-link" type="button"></button></li>';
+                indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i ? 'ui-state-highlight' : '') + '"><button class="ui-link" type="button" aria-label="' + this.ariaPageLabel.replace('{page}', (i+1)) + '"></button></li>';
             }
         }
         

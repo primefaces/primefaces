@@ -1463,7 +1463,10 @@
                 'colorpicker.SWATCH': 'Color swatch',
                 'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.',
                 'spinner.INCREASE': 'Increase Value',
-                'spinner.DECREASE': 'Decrease Value'
+                'spinner.DECREASE': 'Decrease Value',
+                'carousel.PAGE_LABEL': 'Page {page}',
+                'carousel.PREV_PAGE_LABEL': 'Previous Page',
+                'carousel.NEXT_PAGE_LABEL': 'Next Page'
             }
         }
 
