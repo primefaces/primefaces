@@ -212,6 +212,11 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh(cfg) {
+        if (this.cfg.dynamic && this.isDynamicLoaded && this.panel.length) {
+            this.unbindPanelEvents();
+            this.panel.remove();
+        }
+
         super.refresh(cfg);
     }
 
