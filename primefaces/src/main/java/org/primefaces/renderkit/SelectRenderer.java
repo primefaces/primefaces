@@ -31,10 +31,13 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.RandomAccess;
+import java.util.Set;
 
 import jakarta.el.ELException;
 import jakarta.el.ExpressionFactory;
@@ -150,8 +153,8 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
     }
 
     protected SelectItem createSelectItem(FacesContext context, UISelectItems uiSelectItems, Object value, Object label) {
-        String var = (String) uiSelectItems.getAttributes().get("var");
         Map<String, Object> attrs = uiSelectItems.getAttributes();
+        String var = (String) attrs.get("var");
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
         if (var != null) {
@@ -191,8 +194,8 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
         if (value instanceof SelectItemGroup) {
             return value;
         }
-        String var = (String) uiSelectItems.getAttributes().get("var");
         Map<String, Object> attrs = uiSelectItems.getAttributes();
+        String var = (String) attrs.get("var");
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
         if (var != null) {
@@ -290,6 +293,16 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
         if (valueArray != null) {
             if (!valueArray.getClass().isArray()) {
                 return valueArray.equals(itemValue);
+            }
+
+            // fast path for the common Object[] model value, avoiding reflective Array.get/getLength per option
+            if (valueArray instanceof Object[]) {
+                for (Object value : (Object[]) valueArray) {
+                    if (isSelectValueEqual(context, component, itemValue, value, converter)) {
+                        return true;
+                    }
+                }
+                return false;
             }
 
             int length = Array.getLength(valueArray);
@@ -398,6 +411,14 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
 
         List<String> validSubmittedValues = new ArrayList<>();
 
+        // resolve the converter once instead of per select-item
+        Converter converter = component.getConverter();
+        // submittedValues holds Strings; use a set for O(1) membership instead of a linear scan per item
+        // (oldValues are model values with possibly asymmetric equals, so they keep the LangUtils.contains scan)
+        Set<String> submittedValuesSet = (submittedValues == null || submittedValues.length == 0)
+                ? Collections.emptySet()
+                : new HashSet<>(Arrays.asList(submittedValues));
+
         // loop attached SelectItems - other values are not allowed
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
@@ -414,10 +435,10 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
                 }
             }
             else {
-                String selectItemVal = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
+                String selectItemVal = getOptionAsString(context, component, converter, selectItem.getValue());
 
                 if (selectItem.isDisabled()) {
-                    if (LangUtils.contains(submittedValues, selectItemVal) && !LangUtils.contains(oldValues, selectItemVal)) {
+                    if (submittedValuesSet.contains(selectItemVal) && !LangUtils.contains(oldValues, selectItemVal)) {
                         // disabled select item has been selected
                         // #13954: ignore it silently for now
                         //throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
@@ -427,7 +448,7 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
                     }
                 }
                 else {
-                    if (LangUtils.contains(submittedValues, selectItemVal)) {
+                    if (submittedValuesSet.contains(selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
                     }
                 }

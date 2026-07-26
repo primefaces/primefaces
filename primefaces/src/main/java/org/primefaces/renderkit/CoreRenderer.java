@@ -608,15 +608,19 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
             parameters.forEach((k, v) -> params.put(k, v.get(0)));
         }
 
-        //append params
+        //append params - append directly to the shared builder instead of a stream + joined intermediate string
         if (!params.isEmpty()) {
             request.append("PrimeFaces.addSubmitParam('").append(submitId).append("',{");
 
-            request.append(
-                    params.entrySet().stream()
-                            .map(e -> "'" + e.getKey() + "':'" + EscapeUtils.forJavaScript(String.valueOf(e.getValue())) + "'")
-                            .collect(Collectors.joining(","))
-            );
+            boolean first = true;
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                if (!first) {
+                    request.append(",");
+                }
+                request.append("'").append(entry.getKey()).append("':'")
+                        .append(EscapeUtils.forJavaScript(String.valueOf(entry.getValue()))).append("'");
+                first = false;
+            }
 
             request.append("})");
         }

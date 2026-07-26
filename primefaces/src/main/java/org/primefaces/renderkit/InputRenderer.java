@@ -60,11 +60,18 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
     }
 
     protected boolean isDisabled(UIInput component) {
-        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")));
+        // prefer the typed accessor when available, otherwise fall back to the attribute map
+        if (component instanceof InputAware) {
+            return ((InputAware) component).isDisabled();
+        }
+        return LangUtils.toBoolean(component.getAttributes().get("disabled"));
     }
 
     protected boolean isReadOnly(UIInput component) {
-        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
+        if (component instanceof InputAware) {
+            return ((InputAware) component).isReadonly();
+        }
+        return LangUtils.toBoolean(component.getAttributes().get("readonly"));
     }
 
     protected boolean shouldDecode(UIInput component) {

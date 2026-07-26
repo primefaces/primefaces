@@ -91,6 +91,21 @@ public class LangUtils {
     }
 
     /**
+     * Coerces an arbitrary value to a boolean. Avoids the {@code String.valueOf(...)} allocation of the common
+     * {@link Boolean}/{@code null} cases while remaining equivalent to
+     * {@code Boolean.parseBoolean(String.valueOf(value))}.
+     *
+     * @param value the value to coerce, may be {@code null}
+     * @return {@code true} if the value is {@link Boolean#TRUE} or a String equal (ignoring case) to {@code "true"}
+     */
+    public static boolean toBoolean(Object value) {
+        if (value instanceof Boolean) {
+            return (Boolean) value;
+        }
+        return value != null && Boolean.parseBoolean(value.toString());
+    }
+
+    /**
      * Returns either the passed in String, or if the String is
      * whitespace, empty ("") or {@code null}, the value of {@code defaultStr}.
      *

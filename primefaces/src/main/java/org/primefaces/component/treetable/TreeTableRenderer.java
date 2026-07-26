@@ -47,6 +47,7 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
@@ -480,7 +481,8 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         String parentRowKey = treeNode.getParent() != null ? treeNode.getParent().getRowKey() : null;
         component.setRowKey(root, rowKey);
         String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
-        int depth = rowKey.split(UITree.SEPARATOR).length - 1;
+        int level = rowKey.split(UITree.SEPARATOR).length;
+        int depth = level - 1;
         boolean selectionEnabled = component.isSelectionEnabled();
         boolean selectable = treeNode.isSelectable() && selectionEnabled;
         boolean checkboxSelection = selectionEnabled && component.isCheckboxSelectionMode();
@@ -489,23 +491,15 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         boolean nativeElements = component.isNativeElements();
         List<UIColumn> columns = component.getColumns();
 
-        String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
-        rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
-        rowStyleClass = rowStyleClass + " " + treeNode.getType();
-        rowStyleClass = rowStyleClass + " ui-node-level-" + (rowKey.split("_").length);
-
-        if (partialSelected) {
-            rowStyleClass = rowStyleClass + " " + TreeTable.PARTIAL_SELECTED_CLASS;
-        }
-
-        String userRowStyleClass = component.getRowStyleClass();
-        if (userRowStyleClass != null) {
-            rowStyleClass = rowStyleClass + " " + userRowStyleClass;
-        }
-
-        if (component.isEditingRow()) {
-            rowStyleClass = rowStyleClass + " " + TreeTable.EDITING_ROW_CLASS;
-        }
+        String rowStyleClass = getStyleClassBuilder(context)
+                .add(selected, TreeTable.SELECTED_ROW_CLASS, TreeTable.ROW_CLASS)
+                .add(selectable, TreeTable.SELECTABLE_NODE_CLASS)
+                .add(treeNode.getType())
+                .add(true, "ui-node-level-", level)
+                .add(partialSelected, TreeTable.PARTIAL_SELECTED_CLASS)
+                .add(component.getRowStyleClass())
+                .add(component.isEditingRow(), TreeTable.EDITING_ROW_CLASS)
+                .build();
 
         writer.startElement("tr", null);
         writer.writeAttribute("id", component.getClientId(context) + "_node_" + rowKey, null);
@@ -522,9 +516,11 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
             writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         }
 
+        // empty unless resizable/toggleable/reorderable columns are used; isEmpty() skips the getColumnKey() argument per cell
+        Map<String, ColumnMeta> columnMetaMap = component.getColumnMeta();
         for (int i = 0; i < columns.size(); i++) {
             UIColumn column = columns.get(i);
-            ColumnMeta columnMeta = component.getColumnMeta().get(column.getColumnKey(component, rowKey));
+            ColumnMeta columnMeta = columnMetaMap.isEmpty() ? null : columnMetaMap.get(column.getColumnKey(component, rowKey));
 
             if (column.isDynamic()) {
                 ((DynamicColumn) column).applyModel();

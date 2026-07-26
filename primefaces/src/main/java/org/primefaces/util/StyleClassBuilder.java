@@ -49,6 +49,21 @@ public class StyleClassBuilder {
         return add(condition, styleClass).add(!condition, notStyleClass);
     }
 
+    /**
+     * Appends {@code styleClass + suffix} only when the condition is true. Avoids the eager string
+     * concatenation of the {@code styleClass + suffix} argument when the condition is false, which
+     * matters in per-cell rendering loops.
+     */
+    public StyleClassBuilder add(boolean condition, String styleClass, int suffix) {
+        if (condition) {
+            if (sb.length() != 0) {
+                sb.append(Constants.SPACE);
+            }
+            sb.append(styleClass).append(suffix);
+        }
+        return this;
+    }
+
     public StyleClassBuilder add(String styleClass) {
         return add(LangUtils.isNotBlank(styleClass), styleClass);
     }
