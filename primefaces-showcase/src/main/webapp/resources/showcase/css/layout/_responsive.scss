@@ -89,6 +89,20 @@
             max-width: 100%;
         }
 
+        // On mobile there is no right rail, so flow the submenu
+        // (RESOURCES / ON THIS PAGE) inline within the content instead
+        // of keeping it sticky in the (now missing) second grid column.
+        .layout-submenu {
+            grid-column: 1;
+            grid-row: auto;
+            position: static;
+            top: auto;
+            max-width: 100%;
+            width: 100%;
+            padding: 1.5rem var(--layout-page-padding-x);
+            border-left: none;
+        }
+
         .content-section {
             &.introduction {
                 flex-direction: column;
