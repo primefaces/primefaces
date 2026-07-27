@@ -109,22 +109,29 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
         writer.startElement("div", null);
         writer.writeAttribute("class", UIPageableData.PAGINATOR_CENTER_CONTENT_CLASS, null);
         String[] elements = pageable.getPaginatorTemplate().split(" ");
-        for (String element : elements) {
-            PaginatorElementRenderer renderer = PAGINATOR_ELEMENTS.get(element);
-            if (renderer != null) {
-                renderer.render(context, pageable);
-            }
-            else {
-                if (element.startsWith("{") && element.endsWith("}")) {
-                    UIComponent elementFacet = pageable.getFacet(element);
-                    if (elementFacet != null) {
-                        elementFacet.encodeAll(context);
-                    }
+        // expose the currently rendered position so element renderers can build unique ids (e.g. jump-to-page input)
+        context.getAttributes().put(PaginatorElementRenderer.PAGINATOR_POSITION_KEY, position);
+        try {
+            for (String element : elements) {
+                PaginatorElementRenderer renderer = PAGINATOR_ELEMENTS.get(element);
+                if (renderer != null) {
+                    renderer.render(context, pageable);
                 }
                 else {
-                    writer.write(element + " ");
+                    if (element.startsWith("{") && element.endsWith("}")) {
+                        UIComponent elementFacet = pageable.getFacet(element);
+                        if (elementFacet != null) {
+                            elementFacet.encodeAll(context);
+                        }
+                    }
+                    else {
+                        writer.write(element + " ");
+                    }
                 }
             }
+        }
+        finally {
+            context.getAttributes().remove(PaginatorElementRenderer.PAGINATOR_POSITION_KEY);
         }
         // end center facet
         writer.endElement("div");
