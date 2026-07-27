@@ -76,6 +76,12 @@
     -webkit-box-shadow: none;
 }
 
+.ui-paginator .ui-paginator-jtp-input {
+    /* fit the live page count: one ch per digit plus room for padding and the number spinner */
+    width: calc(var(--p-jtp-digits, 3) * 1ch + 2.5rem);
+    text-align: center;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
     .ui-paginator .ui-paginator-pages {

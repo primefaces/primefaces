@@ -26,10 +26,42 @@ package org.primefaces.component.paginator;
 import org.primefaces.component.api.Pageable;
 
 import java.io.IOException;
+import java.util.Objects;
 
+import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 
 public interface PaginatorElementRenderer {
 
+    /**
+     * Key under which the currently rendered paginator position ({@code "top"} or {@code "bottom"}) is stored in the
+     * {@link FacesContext} attributes while a paginator is being encoded, so element renderers can build unique ids.
+     */
+    String PAGINATOR_POSITION_KEY = "primefaces.paginator.Position";
+
     void render(FacesContext context, Pageable pageable) throws IOException;
+
+    /**
+     * Builds a stable id for an interactive paginator element so AJAX focus restoration can re-focus it. The plain
+     * {@code clientId + suffix} is used by default; only when the paginator is rendered at both positions is the
+     * {@code top}/{@code bottom} position appended to keep the id unique within the document.
+     *
+     * @param context the current {@link FacesContext}
+     * @param pageable the paginator being rendered
+     * @param suffix the element-specific suffix (e.g. {@code "jumpToPage"})
+     * @return the id to render on the element
+     */
+    default String buildId(FacesContext context, Pageable pageable, String suffix) {
+        char separator = UINamingContainer.getSeparatorChar(context);
+        String id = pageable.getClientId(context) + separator + suffix;
+
+        if ("both".equalsIgnoreCase(pageable.getPaginatorPosition())) {
+            String position = Objects.toString(context.getAttributes().get(PAGINATOR_POSITION_KEY), null);
+            if (position != null) {
+                id += "_" + position;
+            }
+        }
+
+        return id;
+    }
 }

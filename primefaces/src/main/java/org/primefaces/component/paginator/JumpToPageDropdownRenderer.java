@@ -39,8 +39,12 @@ public class JumpToPageDropdownRenderer implements PaginatorElementRenderer {
         ResponseWriter writer = context.getResponseWriter();
         int currentPage = pageable.getPage();
         int pageCount = pageable.getPageCount();
+        String id = buildId(context, pageable, "jumpToPage");
 
         writer.startElement("select", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", UIPageableData.PAGINATOR_JTP_SELECT_CLASS, null);
         writer.writeAttribute("value", LocaleUtils.formatInteger(context, pageable.getPage()), null);
 
