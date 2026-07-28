@@ -31,7 +31,12 @@ PrimeFaces.widget.Messages = PrimeFaces.widget.BaseWidget.extend({
 
         var severityContainer =  this.jq.children('div.ui-messages-' + msg.severity);
         if (severityContainer.length === 0) {
-            severityContainer = this.jq.append(
+            /*
+             * jQuery's append() returns the container it was called on, not the appended element. Create the
+             * severity box separately and use appendTo() so that severityContainer refers to the new box only.
+             * Otherwise the message below would be added to the <ul> of every severity box in this widget.
+             */
+            severityContainer = $(
                  '<div class="ui-messages-' + msg.severity + '">' +
                     (this.cfg.closable ? '<a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;" role="button" aria-label="'+closeLabel+'">' +
                         '<span class="ui-icon ui-icon-close"></span>' +
@@ -40,7 +45,7 @@ PrimeFaces.widget.Messages = PrimeFaces.widget.BaseWidget.extend({
                     '<ul>' +
 
                     '</ul>' +
-                '</div>');
+                '</div>').appendTo(this.jq);
         }
 
         severityContainer.find('ul').append(
