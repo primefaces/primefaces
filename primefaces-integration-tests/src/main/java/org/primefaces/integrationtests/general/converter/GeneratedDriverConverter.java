@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.general.converter;
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.GeneratedDriverService;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -36,6 +37,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 @Named
+@ApplicationScoped
 @FacesConverter(value = "generatedDriverConverter", managed = true)
 public class GeneratedDriverConverter implements Converter {
 
