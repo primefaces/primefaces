@@ -5,6 +5,10 @@ on:
   push:
     branches: [ master, main ]
 
+# The last step commits the regenerated docs and pushes them back.
+permissions:
+  contents: write
+
 env:
   JAVA_VERSION: '21'
   JAVA_DISTRO: 'temurin'

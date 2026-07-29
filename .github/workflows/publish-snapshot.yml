@@ -6,6 +6,9 @@ on:
     types: [completed]
     branches: [master]
 
+permissions:
+  contents: read
+
 jobs:
   publish-snapshot:
     runs-on: ubuntu-latest

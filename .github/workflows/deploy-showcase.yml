@@ -9,6 +9,12 @@ on:
       - 15.X
   workflow_dispatch:
 
+# The docker push to ghcr.io authenticates with GITHUB_TOKEN; the
+# DigitalOcean deploy uses its own token.
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest

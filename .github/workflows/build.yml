@@ -9,6 +9,9 @@ on:
     paths-ignore:
       - '**/**.md'
 
+permissions:
+  contents: read
+
 env:
     MAVEN_OPTS: >-
         -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
