@@ -5119,29 +5119,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             update: function(event, ui) {
                 var fromIndex = ui.item.data('ri');
-                var fromNode = ui.item;
-                var itemIndex = ui.item.index();
-                var toIndex = $this.paginator ? $this.paginator.getFirst() + itemIndex : itemIndex;
-                var isDirectionUp = fromIndex >= toIndex;
 
                 // #5296 must not count header group rows
                 // #6557 must not count expanded rows
-                if (isDirectionUp) {
-                    for (let i = 0; i <= toIndex; i++) {
-                        fromNode = fromNode.next('tr');
-                        if (fromNode.hasClass('ui-rowgroup-header') || fromNode.hasClass('ui-expanded-row-content')){
-                            toIndex--;
-                        }
-                    }
-                } else {
-                    fromNode.prevAll('tr').each(function() {
-                        var node = $(this);
-                        if (node.hasClass('ui-rowgroup-header') || node.hasClass('ui-expanded-row-content')){
-                            toIndex--;
-                        }
-                    });
-                }
-                toIndex = Math.max(toIndex, 0);
+                var itemIndex = ui.item.prevAll('tr').not('.ui-rowgroup-header').not('.ui-expanded-row-content').length;
+                var toIndex = $this.paginator ? $this.paginator.getFirst() + itemIndex : itemIndex;
 
                 $this.syncRowParity();
 
