@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces"
+      xmlns:h="jakarta.faces.html">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataTable id="datatable" value="#{dataTable050.progLanguages}" var="lang" rowKey="#{lang.id}" draggableRows="true">
+                <p:ajax event="rowReorder" listener="#{dataTable050.onRowReorder}" update="@form"/>
+
+                <p:column style="width:2rem">
+                    <p:rowToggler/>
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{lang.name}"/>
+                </p:column>
+
+                <p:rowExpansion>
+                    <h:outputText value="Expansion of #{lang.name}"/>
+                </p:rowExpansion>
+            </p:dataTable>
+
+            <h:outputText id="order" value="#{dataTable050.order}"/>
+            <h:outputText id="fromIndex" value="#{dataTable050.fromIndex}"/>
+            <h:outputText id="toIndex" value="#{dataTable050.toIndex}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
