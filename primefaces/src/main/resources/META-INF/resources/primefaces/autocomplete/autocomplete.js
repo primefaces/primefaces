@@ -932,6 +932,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if (!this.cfg.completeEndpoint) {
             this.requestId = this.requestId + 1 || 1;
             var currentRequestId = this.requestId;
+            // #15078 capture the dynamic-load decision now, since `isDynamicLoaded` is mutable and can
+            // flip (via hide() or another request's oncomplete) before this request's response is handled
+            var wasDynamicLoadRequested = this.cfg.dynamic && !this.isDynamicLoaded;
             options = {
                 source: this.id,
                 process: this.id,
@@ -945,7 +948,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             if (this.requestId !== currentRequestId) {
                                 return;
                             }
-                            if (this.cfg.dynamic && !this.isDynamicLoaded) {
+                            if (wasDynamicLoadRequested) {
                                 this.panel = $(content);
                                 this.appendPanel();
                                 this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
@@ -955,7 +958,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             }
 
                             if (this.cfg.cache) {
-                                if (this.cfg.queryMode !== 'server' && !this.isDynamicLoaded && this.cache[query]) {
+                                if (this.cfg.queryMode !== 'server' && !wasDynamicLoadRequested && this.cache[query]) {
                                     this.panel.html(this.cache[query]);
                                 } else {
                                     this.cache[query] = content;
@@ -982,7 +985,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 options.params.push({ name: this.id + '_clientCache', value: true });
             }
 
-            if (this.cfg.dynamic && !this.isDynamicLoaded) {
+            if (wasDynamicLoadRequested) {
                 options.params.push({ name: this.id + '_dynamicload', value: true });
             }
         }
