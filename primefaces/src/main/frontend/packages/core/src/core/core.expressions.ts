@@ -5,6 +5,33 @@ import { utils } from "./core.utils.js";
  * The class providing the entry point for functions related to search expressions. 
  */
 export class SearchExpressionFacade {
+
+    /**
+     * Resolves the `<form>` element enclosing the given source element, used to resolve the `@form` keyword.
+     *
+     * Usually this is just the closest `<form>` ancestor. But the source element may have been relocated
+     * elsewhere in the DOM by an overlay widget (e.g. a `p:tieredMenu` with `overlay="true"` that moves its
+     * whole markup, including custom facet content, to the document body). In that case the source element
+     * may no longer have a `<form>` ancestor at all, even though it logically still belongs to one.
+     *
+     * To support this, form controls that get relocated this way keep a `form` attribute pointing back to
+     * their original enclosing form (see `Menu#preserveFormAssociation`). The native `HTMLElement.form`
+     * property resolves this HTML5 form association correctly, whether the element is a DOM descendant of
+     * the form or merely references it via the `form` attribute, so it is tried first. See GitHub #15036.
+     * @param source the source element where to start the search.
+     * @return A jQuery object with the resolved form, or an empty jQuery object if none was found.
+     */
+    resolveClosestForm(source: JQuery): JQuery {
+        var form = source.closest('form');
+        if (form.length === 0) {
+            var associatedForm = source.prop('form');
+            if (associatedForm) {
+                form = $(associatedForm);
+            }
+        }
+        return form;
+    }
+
     /**
      * Takes a search expression that may contain multiple components, separated by commas or whitespaces. Resolves
      * each search expression to the component it refers to and returns a JQuery object with the DOM elements of
@@ -64,7 +91,7 @@ export class SearchExpressionFacade {
                             $(expression.substring(2, expression.length - 1)));
                 }
                 else if (expression == '@form') {
-                    const form = source.closest('form')[0];
+                    const form = this.resolveClosestForm(source)[0];
                     if (form === undefined) {
                         core.error("Could not resolve @form for source '" + source.attr('id') + "'");
                     }
@@ -133,7 +160,7 @@ export class SearchExpressionFacade {
                     }
                 }
                 else if (expression == '@form') {
-                    var form = source.closest('form');
+                    var form = this.resolveClosestForm(source);
                     if (form.length == 0) {
                         core.error("Could not resolve @form for source '" + source.attr('id') + "'");
                     }

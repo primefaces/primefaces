@@ -122,6 +122,14 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
         // register trigger and events
         this.bindTrigger();
 
+        // GitHub #15036: custom components (e.g. an inputText) may have been placed inside one of this
+        // menu's facets ("start"/"end"/"options"). Since this menu is about to be relocated elsewhere in
+        // the DOM (usually to the document body), any such component would end up outside of its
+        // enclosing <form> and would no longer be picked up by AJAX requests (partial submit / @form
+        // resolution both rely on walking up the DOM to find the form). Preserve the association via the
+        // HTML5 "form" attribute before the move happens.
+        this.preserveFormAssociation($menu);
+
         if (!this.cfg.appendTo) {
             this.cfg.appendTo = '@(body)';
         }
@@ -133,6 +141,22 @@ export class Menu<Cfg extends MenuCfg = MenuCfg>  extends PrimeFaces.widget.Base
 
         //dialog support
         this.setupDialogSupport();
+    }
+
+    /**
+     * Sets the HTML5 `form` attribute on every form control (`input`, `select`, `textarea`, `button`)
+     * inside the given overlay element that does not already have one. This keeps those controls
+     * associated with their original enclosing form even after the overlay element is moved elsewhere in
+     * the DOM (e.g. appended to the document body), so their values are still picked up when the form is
+     * serialized for an AJAX request. See GitHub #15036.
+     * @param $menu The overlay element that is about to be relocated in the DOM.
+     */
+    protected preserveFormAssociation($menu: JQuery): void {
+        var form = $menu.closest('form');
+        var formId = form.attr('id');
+        if (formId) {
+            $menu.find('input, select, textarea, button').not('[form]').attr('form', formId);
+        }
     }
 
     /**
