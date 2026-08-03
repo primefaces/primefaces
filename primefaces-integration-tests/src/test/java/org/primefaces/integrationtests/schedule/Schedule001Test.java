@@ -114,7 +114,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // check with different clientTimeZone and (server)timeZone - settings ------------------------
         // Arrange
-        setDifferingServerAndClientTimezone(page);
+        setDifferingServerAndClientTimezone(page, false);
 
         // Act
         selectSlot(page, "10:00:00");
@@ -139,10 +139,14 @@ public class Schedule001Test extends AbstractPrimePageTest {
      * Wait until the AJAX queue is empty and the event is rendered and clickable before selecting it.
      */
     private void selectScheduleEvent(Schedule schedule) {
+        waitForScheduledRenderedAndClickable();
+        schedule.select("fc-daygrid-event");
+    }
+
+    private void waitForScheduledRenderedAndClickable() {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(
-                By.cssSelector("#form\\:schedule .fc-daygrid-event")));
-        schedule.select("fc-daygrid-event");
+                By.cssSelector(".fc-daygrid-event")));
     }
 
     private void selectSlot(Page page, String time) {
@@ -176,7 +180,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // check with different clientTimeZone and (server)timeZone - settings ------------------------
         // Arrange
-        setDifferingServerAndClientTimezone(page);
+        setDifferingServerAndClientTimezone(page, true);
 
         // Act
         selectScheduleEvent(schedule);
@@ -240,7 +244,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // check with different clientTimeZone and (server)timeZone - settings ------------------------
         // Arrange
-        setDifferingServerAndClientTimezone(page);
+        setDifferingServerAndClientTimezone(page, true);
 
         // Assert
         eventTime = "";
@@ -258,9 +262,19 @@ public class Schedule001Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
-    private void setDifferingServerAndClientTimezone(Page page) {
-        page.timeZone.select(ALTERNATIV_SERVER_TIMEZONE);
-        page.clientTimeZone.select(ALTERNATIV_CLIENT_TIMEZONE);
+    /**
+     *
+     * @param waitAfterSelect Wait for rendered and clickable elements afters changing settings. (Only makes sense when events are available.)
+     */
+    private void setDifferingServerAndClientTimezone(Page page, boolean waitAfterSelect) {
+        page.timeZone.select(ALTERNATIV_SERVER_TIMEZONE); // this results in two ajax-calls
+        if (waitAfterSelect) {
+            waitForScheduledRenderedAndClickable();
+        }
+        page.clientTimeZone.select(ALTERNATIV_CLIENT_TIMEZONE); // now make the second selection which als results in two ajax-calls
+        if (waitAfterSelect) {
+            waitForScheduledRenderedAndClickable();
+        }
     }
 
     private int calcOffsetInHoursBetweenClientAndServerAndTimezone(ZonedDateTime zonedDateTime) {
