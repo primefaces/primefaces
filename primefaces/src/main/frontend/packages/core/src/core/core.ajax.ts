@@ -668,9 +668,8 @@ export class AjaxRequest {
             form = expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.formId);
         }
         else {
-            //look for a parent of source, or a form it is explicitly associated with via the HTML5 "form"
-            //attribute (e.g. a control inside an overlay that was relocated in the DOM, see #15036)
-            form = expressions.SearchExpressionFacade.resolveClosestForm($source);
+            //look for a parent of source
+            form = $source.closest('form');
 
             //source has no parent form so use first form in document
             if (form.length === 0) {
