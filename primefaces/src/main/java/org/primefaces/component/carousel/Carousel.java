@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.carousel;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.event.PageChangeEvent;
 
 import java.util.Map;
@@ -34,6 +35,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Carousel.COMPONENT_TYPE, namespace = Carousel.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Carousel is a content slider featuring various customization options.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
