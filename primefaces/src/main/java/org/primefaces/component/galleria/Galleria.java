@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.galleria;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Galleria.COMPONENT_TYPE, namespace = Galleria.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Galleria is a content gallery component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "galleria/galleria.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
