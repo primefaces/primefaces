@@ -10,6 +10,7 @@
     </h:head>
 
     <h:body>
+        <h:form id="form">
             <p:outputLabel id="lblValue" style="display: block;"
                 value="value: #{tieredMenu001.value eq null ? 'null' : tieredMenu001.value}"/>
 
@@ -20,11 +21,11 @@
                     process="@this" update="menuInput lblValue"/>
 
                 <f:facet name="end">
-                    <h:form id="form">
-                       <p:inputText id="menuInput" value="#{tieredMenu001.value}" style="width: 8em;">
-                           <p:ajax event="change" process="@form" update="@this lblValue"/>
-                       </p:inputText>
-                    </h:form/>
+                    <h:form id="inputForm">
+                        <p:inputText id="menuInput" value="#{tieredMenu001.value}" style="width: 8em;">
+                            <p:ajax event="change" process="@form" update="menuInput lblValue"/>
+                        </p:inputText>
+                    </h:form>
                 </f:facet>
             </p:tieredMenu>
         </h:form>

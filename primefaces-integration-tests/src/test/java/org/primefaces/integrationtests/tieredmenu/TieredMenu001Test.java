@@ -80,16 +80,16 @@ class TieredMenu001Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
-        @FindBy(id = "trigger")
+        @FindBy(id = "form:trigger")
         WebElement trigger;
 
-        @FindBy(id = "item1")
+        @FindBy(id = "form:item1")
         WebElement item1;
 
         @FindBy(id = "form:menuInput")
         InputText menuInput;
 
-        @FindBy(id = "lblValue")
+        @FindBy(id = "form:lblValue")
         WebElement lblValue;
 
         @Override
