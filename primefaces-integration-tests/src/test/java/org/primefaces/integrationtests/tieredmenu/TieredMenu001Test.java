@@ -86,7 +86,7 @@ class TieredMenu001Test extends AbstractPrimePageTest {
         @FindBy(id = "form:item1")
         WebElement item1;
 
-        @FindBy(id = "form:menuInput")
+        @FindBy(id = "inputForm:menuInput")
         InputText menuInput;
 
         @FindBy(id = "form:lblValue")
