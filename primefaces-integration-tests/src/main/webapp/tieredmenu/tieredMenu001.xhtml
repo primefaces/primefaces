@@ -22,7 +22,7 @@
                 <f:facet name="end">
                     <h:form id="form">
                        <p:inputText id="menuInput" value="#{tieredMenu001.value}" style="width: 8em;">
-                           <p:ajax event="change" process="@form" update="menuInput lblValue"/>
+                           <p:ajax event="change" process="@form" update="@this lblValue"/>
                        </p:inputText>
                     </h:form/>
                 </f:facet>
