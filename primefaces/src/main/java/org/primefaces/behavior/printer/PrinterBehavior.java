@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.behavior.printer;
 
+import org.primefaces.cdk.api.FacesBehaviorInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -35,6 +36,7 @@ import jakarta.faces.context.FacesContext;
 import org.json.JSONObject;
 
 @FacesBehavior(PrinterBehavior.BEHAVIOR_ID)
+@FacesBehaviorInfo(description = "Printer allows sending a specific Faces component to the printer, not the whole page.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "printer/printer.js")

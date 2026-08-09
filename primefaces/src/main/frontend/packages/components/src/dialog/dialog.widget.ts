@@ -444,6 +444,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
 
         if(this.cfg.modal) {
             this.enableModality();
+            this.bindDismissibleMaskListener();
         }
     }
 
@@ -494,6 +495,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             this.jq.hide(this.cfg.hideEffect, duration, 'normal', () => {
                 if(this.cfg.modal) {
                     this.disableModality();
+                    this.unbindDismissibleMaskListener();
                 }
                 this.onHide();
             });
@@ -502,6 +504,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             this.jq.hide();
             if(this.cfg.modal) {
                 this.disableModality();
+                this.unbindDismissibleMaskListener();
             }
             this.onHide(duration);
         }
@@ -621,6 +624,36 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             this.addDestroyListener(function() {
                 $(document).off('keydown.dialog_' + this.id);
             });
+        }
+    }
+
+    /**
+     * Binds a click event listener to the dialog mask that enables dismissing (hiding)
+     * the dialog when the mask is clicked, if the dialog is modal and the dismissibleMask option is enabled.
+     * The event is namespaced with the dialog's id to allow precise unbinding later.
+     * Prevents the default and stops propagation if the dialog is topmost and visible.
+     */
+    protected bindDismissibleMaskListener(): void {
+        if (this.cfg.dismissibleMask && this.cfg.modal) {
+            var $this = this;
+            $(".ui-dialog.ui-widget.ui-hidden-container:visible").on('click.mask_' + this.id, function (e) {
+                if (!e.isDefaultPrevented() && $(e.target).is(this)) {
+                    $this.hide();
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+        }
+    }
+
+    /**
+     * Removes the click event listener from the dialog mask that was used for dismissing
+     * (hiding) the dialog when the mask is clicked. This only unbinds the event if the dialog
+     * is modal and the dismissibleMask option is enabled.
+     */
+    protected unbindDismissibleMaskListener(): void {
+        if (this.cfg.dismissibleMask && this.cfg.modal) {
+            $(".ui-dialog.ui-widget.ui-hidden-container").off('click.mask_' + this.id);
         }
     }
 
@@ -1206,7 +1239,10 @@ export class ConfirmDialog<Cfg extends ConfirmDialogCfg = ConfirmDialogCfg> exte
     showMessage(msg: Partial<PrimeType.hook.confirm.ConfirmMessage>): void {
         // Execute any code specified to run before showing the message
         if (msg.beforeShow) {
-            PrimeFaces.csp.eval(msg.beforeShow);
+            const beforeShowResult = PrimeFaces.csp.evalResult(msg.beforeShow);
+            if (beforeShowResult === false) {
+                return;
+            }
         }
 
         // Set icon if provided, or hide it otherwise
@@ -1307,6 +1343,7 @@ export class DynamicDialog<Cfg extends DynamicDialogCfg = DynamicDialogCfg> exte
 
         if(this.cfg.modal) {
             this.enableModality();
+            this.bindDismissibleMaskListener();
         }
     }
 

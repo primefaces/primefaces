@@ -37,6 +37,11 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
     menuitemLinks: JQuery = $();
 
     /**
+     * DOM elements with the headers of each menu item (with children).
+     */
+    headers: JQuery = $();
+
+    /**
      * Name of the HTML5 Local Store that is used to store the state of this plain menu (expanded / collapsed
      * menu items).
      */
@@ -46,6 +51,7 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
         super.init(cfg);
 
         this.menuitemLinks = this.jq.find('.ui-menuitem-link:not(.ui-state-disabled)');
+        this.headers = this.jq.find('> .ui-menu-list > .ui-widget-header');
 
         this.bindEvents();
         this.bindToggleable();
@@ -58,16 +64,21 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
      */
     private bindToggleable(): void {
         if (!this.cfg.toggleable) return;
-
+        
+        var $this = this;
         this.cfg.statefulGlobal = Boolean(this.cfg.statefulGlobal);
-        this.collapsedIds = [];
+        // Initialize collapsedIds with currently collapsed headers
+        this.collapsedIds = this.headers.filter(function() {
+            return $(this).find('> h3 > .ui-icon').hasClass('ui-icon-triangle-1-e');
+        }).map(function() {
+            return $(this).attr('id') ?? '';
+        }).get().filter(function(id) {
+            return id !== '';
+        });
         this.createStorageKey();
         this.restoreState();
 
-        var $this = this;
-        var headers = this.jq.find('> .ui-menu-list > .ui-widget-header');
-        
-        headers.on('mouseover.menu', function() {
+        this.headers.on('mouseover.menu', function() {
             $(this).addClass('ui-state-hover');
         }).on('mouseout.menu', function() {
             $(this).removeClass('ui-state-hover');
@@ -283,13 +294,23 @@ export class PlainMenu<Cfg extends PlainMenuCfg = PlainMenuCfg> extends Menu<Cfg
 
         if (collapsedIdsAsString) {
             this.collapsedIds = collapsedIdsAsString.split(',');
+        } else {
+            this.collapsedIds = [];
+        }
 
-            for (let collapsedId of this.collapsedIds) {
-                if (collapsedId) {
-                    this.collapseSubmenu($(PrimeFaces.escapeClientId(collapsedId)), false);
+        // Iterate through headers once: collapse items in collapsedIds, expand others
+        var $this = this;
+        this.headers.each(function() {
+            var header = $(this);
+            var id = header.attr('id');
+            if (id) {
+                if ($this.collapsedIds.indexOf(id) !== -1) {
+                    $this.collapseSubmenu(header, false);
+                } else {
+                    $this.expandSubmenu(header, false);
                 }
             }
-        }
+        });
     }
 
     /**

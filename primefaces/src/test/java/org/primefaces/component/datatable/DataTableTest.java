@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,6 +60,9 @@ class DataTableTest {
 
         when(exprVE.getExpressionString()).thenReturn("#{car.wrapper.year}");
         assertEquals("wrapper.year", column.resolveField(context, exprVE));
+
+        when(exprVE.getExpressionString()).thenReturn("#{car['year']}");
+        assertEquals("year", column.resolveField(context, exprVE));
 
         when(exprVE.getExpressionString()).thenReturn("#{car}");
         assertNull(column.resolveField(context, exprVE));

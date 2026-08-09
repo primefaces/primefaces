@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -62,7 +62,7 @@ public class OrganigramRenderer extends CoreRenderer<Organigram> {
     protected void decodeSelection(FacesContext context, Organigram component) {
 
         if (ComponentUtils.isRequestSource(component, context)) {
-            boolean selectionEnabled = component.getValueExpression("selection") != null;
+            boolean selectionEnabled = component.getValueExpression(Organigram.PropertyKeys.selection) != null;
 
             if (selectionEnabled) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -78,7 +78,7 @@ public class OrganigramRenderer extends CoreRenderer<Organigram> {
     }
 
     protected void assignSelection(FacesContext context, Organigram component, OrganigramNode node) {
-        ValueExpression ve = component.getValueExpression("selection");
+        ValueExpression ve = component.getValueExpression(Organigram.PropertyKeys.selection);
         ve.setValue(context.getELContext(), node);
     }
 
@@ -95,7 +95,7 @@ public class OrganigramRenderer extends CoreRenderer<Organigram> {
         Map<String, UIOrganigramNode> nodeMapping = lookupNodeMapping(component);
 
         // checks if a node is currently selected to render the node as selected later
-        boolean selectionEnabled = component.getValueExpression("selection") != null;
+        boolean selectionEnabled = component.getValueExpression(Organigram.PropertyKeys.selection) != null;
         OrganigramNode selection = null;
 
         if (selectionEnabled) {

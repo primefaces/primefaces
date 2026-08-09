@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.inputtextarea;
 
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
+import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.LangUtils;
 
@@ -39,6 +42,8 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = InputTextarea.COMPONENT_TYPE, namespace = InputTextarea.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "InputTextarea is an extension to standard inputTextarea with autoComplete, autoResize, and remaining characters counter.")
+@FacesComponentHandler(InputTextareaHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
@@ -47,13 +52,14 @@ public class InputTextarea extends InputTextareaBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputTextarea";
     public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default";
-    private static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "query");
+    private static final List<PrimeClientBehaviorEventKeys> UNOBTRUSIVE_EVENT_KEYS = LangUtils.unmodifiableList(
+            ClientBehaviorEventKeys.itemSelect, ClientBehaviorEventKeys.query);
 
     private List suggestions;
 
     @Override
-    public Collection<String> getUnobstrusiveEventNames() {
-        return UNOBSTRUSIVE_EVENT_NAMES;
+    public Collection<PrimeClientBehaviorEventKeys> getUnobtrusiveClientBehaviorEventKeys() {
+        return UNOBTRUSIVE_EVENT_KEYS;
     }
 
     @Override

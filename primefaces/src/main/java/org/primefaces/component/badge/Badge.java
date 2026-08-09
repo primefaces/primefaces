@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.badge;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.model.badge.BadgeModel;
 import org.primefaces.model.badge.DefaultBadgeModel;
 
@@ -31,6 +32,7 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Badge.COMPONENT_TYPE, namespace = Badge.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Badge is a small status indicator for another element like a button or a link.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Badge extends BadgeBaseImpl {
 
@@ -46,6 +48,8 @@ public class Badge extends BadgeBaseImpl {
     public static final String SEVERITY_SUCCESS_CLASS = "ui-badge-success";
     public static final String SEVERITY_WARNING_CLASS = "ui-badge-warning";
     public static final String SEVERITY_DANGER_CLASS = "ui-badge-danger";
+    public static final String SEVERITY_SECONDARY_CLASS = "ui-badge-secondary";
+    public static final String SEVERITY_HELP_CLASS = "ui-badge-help";
     public static final String LABEL_CLASS = "ui-badge-label";
     public static final String ICON_CLASS = "ui-badge-icon";
 

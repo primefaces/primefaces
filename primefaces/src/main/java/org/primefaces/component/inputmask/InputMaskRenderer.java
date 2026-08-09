@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,16 +56,19 @@ public class InputMaskRenderer extends InputRenderer<InputMask> {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
-            // #6469/#11958 strip mask characters in case of optional values
             String mask = component.getMask();
-            if (isMaskOptional(mask)) {
-                submittedValue = submittedValue.replace(component.getSlotChar(), Constants.EMPTY_STRING);
-            }
+            if (LangUtils.isNotBlank(mask)) {
 
-            if (component.isValidateMask() && !LangUtils.isEmpty(submittedValue) && LangUtils.isNotBlank(mask)) {
-                Pattern pattern = translateMaskIntoRegex(context, mask);
-                if (!pattern.matcher(submittedValue).matches()) {
-                    submittedValue = Constants.EMPTY_STRING;
+                // #6469/#11958 strip mask characters in case of optional values
+                if (isMaskOptional(mask)) {
+                    submittedValue = submittedValue.replace(component.getSlotChar(), Constants.EMPTY_STRING);
+                }
+
+                if (component.isValidateMask() && LangUtils.isNotEmpty(submittedValue)) {
+                    Pattern pattern = translateMaskIntoRegex(context, mask);
+                    if (!pattern.matcher(submittedValue).matches()) {
+                        submittedValue = Constants.EMPTY_STRING;
+                    }
                 }
             }
 

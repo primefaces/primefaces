@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,23 @@
  */
 package org.primefaces.component.contextmenu;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = ContextMenu.COMPONENT_TYPE, namespace = ContextMenu.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "ContextMenu provides an overlay menu displayed on mouse right-click event.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
-public class ContextMenu extends ContextMenuBase {
+public class ContextMenu extends ContextMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ContextMenu";
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-contextmenu ui-widget ui-widget-content ui-helper-clearfix ui-shadow";
 }

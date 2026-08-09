@@ -2,32 +2,6 @@
 
 Media component is used for embedding multimedia content.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | media
-| Component Class | org.primefaces.component.media.Media
-| Component Type | org.primefaces.component.Media
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.MediaRenderer
-| Renderer Class | org.primefaces.component.media.MediaRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-value | null | String | Media source to play.
-player | null | String | Type of the player, possible values are "quicktime","windows","real" and "pdf".
-width | null | String | Width of the player.
-height | null | String | Height of the player.
-style | null | String | Style of the player.
-styleClass | null | String | StyleClass of the player.
-cache | true | Boolean | Controls browser caching mode of the resource.
-
 ## Getting started with Media
 In its simplest form media component requires a source to play;
 

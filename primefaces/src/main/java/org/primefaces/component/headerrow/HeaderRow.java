@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.headerrow;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = HeaderRow.COMPONENT_TYPE, namespace = HeaderRow.COMPONENT_FAMILY)
-public class HeaderRow extends HeaderRowBase {
+@FacesComponentInfo(description = "HeaderRow is a helper component for row grouping.")
+public class HeaderRow extends HeaderRowBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.HeaderRow";
 
@@ -34,8 +37,8 @@ public class HeaderRow extends HeaderRowBase {
         return isRendered()
                 && (getField() != null
                 || getGroupBy() != null
-                || getValueExpression(PropertyKeys.field.name()) != null
-                || getValueExpression(PropertyKeys.groupBy.name()) != null);
+                || getValueExpression(PropertyKeys.field) != null
+                || getValueExpression(PropertyKeys.groupBy) != null);
 
     }
 }

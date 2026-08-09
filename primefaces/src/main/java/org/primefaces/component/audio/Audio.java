@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,13 @@
  */
 package org.primefaces.component.audio;
 
-import org.primefaces.component.api.UIMediaBaseImpl;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Audio.COMPONENT_TYPE, namespace = Audio.COMPONENT_FAMILY)
-public class Audio extends UIMediaBaseImpl {
+@FacesComponentInfo(description = "Audio is a media component that embeds an audio player.")
+public class Audio extends AudioBaseImpl {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AudioRenderer";

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.cdk.api.behavior;
 
 import org.primefaces.cdk.api.PrimePropertyKeys;
+import org.primefaces.cdk.api.state.ValueExpressionStateHelper;
 import org.primefaces.cdk.api.utils.ReflectionUtils;
 
 import java.beans.BeanDescriptor;

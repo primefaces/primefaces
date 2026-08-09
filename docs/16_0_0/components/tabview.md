@@ -2,50 +2,6 @@
 
 TabView is a container component to group content in tabs.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TabView-1.html)
-
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | tabView
-| Component Class | org.primefaces.component. tabview.TabView
-| Component Type | org.primefaces.component.TabView
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.TabViewRenderer
-| Renderer Class | org.primefaces.component.tabview.TabViewRenderer
-
-## Attributes
-
-| Name           | Default | Type       | Description |
-| -------------- | ------- | ---------- | --- |
-| id             | null    | String     | Unique identifier of the component.
-| rendered       | true    | Boolean    | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding        | null    | Object     | An el expression that maps to a server side UIComponent instance in a backing bean.
-| widgetVar      | null    | String     | Variable name of the client side widget.
-| activeIndex    | 0       | Integer    | Index of the active tab.
-| effect         | null    | String     | Name of the transition effect.
-| effectDuration | null    | String     | Duration of the transition effect.
-| dynamic        | false   | Boolean    | Enables lazy loading of inactive tabs.
-| cache          | true    | Boolean    | When tab contents are lazy loaded by ajax toggleMode, caching only retrieves the tab contents once and subsequent toggles of a cached tab does not communicate with server. If caching is turned off, tab contents are reloaded from server each time tab is clicked.
-| onTabChange    | null    | String     | Client side callback to execute when a tab is clicked.
-| onTabShow      | null    | String     | Client side callback to execute when a tab is shown.
-| onTabClose     | null    | String     | Client side callback to execute on tab close.
-| style          | null    | String     | Inline style of the main container.
-| styleClass     | null    | String     | Style class of the main container.
-| var            | null    | String     | Name of iterator to refer an item in collection.
-| varStatus      | null    | String     | Name of the exported request scoped variable to represent state of the iteration same as in ui:repeat varStatus.
-| value          | null    | Object     | Collection model to display dynamic tabs.
-| orientation    | top     | String     | Orientation of tab headers.
-| dir            | ltr     | String     | Defines text direction, valid values are ltr and rtl.
-| scrollable     | false   | Boolean    | When enabled, tab headers can be scrolled horizontally instead of wrapping.
-| prependId      | true    | Boolean    | TabView is a naming container thus prepends its id to its children by default, a false value turns this behavior off except for dynamic tabs.
-| tabindex       | 0       | String     | Position of the element in the tabbing order.
-| touchable      | null    | Boolean    | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
-| multiViewState | false   | Boolean    | Whether to keep TabView state across views, defaults to false.
-| focusOnError   | false   | Boolean    | Whether to focus the first tab that contains an error after form submission.
-| focusOnLastActiveTab   | false   | Boolean    | Whether to focus on the last active tab that a user selected.
-
 ## Getting started with the TabView
 TabView requires one more child tab components to display. Titles can also be defined by using
 “title” facet.
@@ -94,26 +50,6 @@ specifies the speed of the effect, _slow_ , _normal_ (default) and _fast_ are th
     //tabs
 </p:tabView>
 ```
-
-## AJAX Behavior Events
-_tabChange_ and _tabClose_ are the ajax behavior events of TabView that are executed when a Tab is
-changed and closed respectively. Here is an example of a tabChange behavior implementation;
-
-```xhtml
-<p:tabView>
-    <p:ajax event="tabChange" listener="#{bean.onChange}" />
-    //tabs
-</p:tabView>
-```
-```java
-public void onChange(TabChangeEvent event) {
-    //Tab activeTab = event.getTab();
-    //...
-}
-```
-Your listener(if defined) will be invoked with an _org.primefaces.event.TabChangeEvent_ instance
-that contains a reference to the new active tab and the AccordionPanel itself. For tabClose event,
-listener will be passed an instance of _org.primefaces.event.TabCloseEvent._
 
 ## Dynamic Number of Tabs
 When the tabs to display are not static, use the built-in iteration feature similar to ui:repeat.
@@ -173,6 +109,7 @@ Widget: _PrimeFaces.widget.TabView_
 | --- | --- | --- | --- |
 select(index) | index: Index of tab to display | void | Activates tab with given index
 selectTab(index) | index: Index of tab to display | void | (Deprecated, use select instead) Activates tab with given index
+selectTabById(id, silent) | id: The client ID or expression | boolean | Selects the tab with the given client ID or expression. Returns true if the tab was found and selected, false otherwise.
 disable(index) | index: Index of tab to disable | void | Disables tab with given index
 enable(index) | index: Index of tab to enable | void | Enables tab with given index
 remove(index) | index: Index of tab to remove | void | Removes tab with given index

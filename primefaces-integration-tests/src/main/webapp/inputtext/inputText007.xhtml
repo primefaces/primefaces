@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:outputLabel for="@next" value="Custom validator"/>
+            <p:inputText id="validator" value="#{inputText007.validatorValue}"
+                         validator="#{inputText007.validate}" validatorMessage="Custom validator failed!"/>
+            <br/>
+
+            <p:outputLabel for="@next" value="Converter"/>
+            <p:inputText id="converter" value="#{inputText007.numberValue}" converterMessage="Custom converter failed!">
+                <f:convertNumber integerOnly="true"/>
+            </p:inputText>
+            <br/>
+
+            <p:outputLabel for="@next" value="ValueChangeListener"/>
+            <p:inputText id="vcl" value="#{inputText007.vclValue}"
+                         valueChangeListener="#{inputText007.valueChanged}"/>
+            <br/>
+            Last changed: <h:outputText id="lastChanged" value="#{inputText007.lastChangedValue}"/>
+
+            <p:commandButton id="button" update="@form" value="Submit"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

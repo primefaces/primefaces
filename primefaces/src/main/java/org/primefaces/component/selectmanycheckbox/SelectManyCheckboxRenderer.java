@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -68,7 +68,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
         ResponseWriter writer = context.getResponseWriter();
         String layout = component.getLayout();
         if (LangUtils.isEmpty(layout)) {
-            layout = FacetUtils.shouldRenderFacet(component.getFacet("custom")) ? "custom" : "lineDirection";
+            layout = FacetUtils.shouldRenderFacet(component.getCustomFacet()) ? "custom" : "lineDirection";
         }
         boolean custom = ("custom".equals(layout));
 

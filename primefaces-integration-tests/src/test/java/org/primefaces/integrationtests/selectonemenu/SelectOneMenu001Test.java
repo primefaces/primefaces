@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.OutputLabel;
 import org.primefaces.selenium.component.SelectBooleanCheckbox;
 import org.primefaces.selenium.component.SelectOneMenu;
 
@@ -250,6 +251,37 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
         assertEquals("SelectOneMenu", selectOneMenu.getAssignedLabelText());
     }
 
+    @Test
+    @Order(12)
+    @DisplayName("SelectOneMenu: ensure aria-labelledby is set from OutputLabel")
+    void ariaLabelledBy(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+        OutputLabel outputLabel = page.outputLabel;
+
+        // Act
+
+        // Assert
+        assertEquals(outputLabel.getId(), selectOneMenu.getLabel().getDomAttribute("aria-labelledby"));
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("SelectOneMenu: GitHub #15009 non-editable label 'for' must reference the hidden native select")
+    void labelForReferencesHiddenSelect(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+        OutputLabel outputLabel = page.outputLabel;
+
+        // Act
+
+        // Assert - the visible focusable element is a non-labelable <span>, so 'for' must reference
+        // the hidden native "_input" <select> instead, which is a real labelable element.
+        assertEquals(selectOneMenu.getId() + "_input", outputLabel.getDomAttribute("for"));
+        assertNoJavascriptErrors();
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
@@ -261,6 +293,10 @@ class SelectOneMenu001Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
+        @FindBy(id = "form:outputlabel")
+        OutputLabel outputLabel;
+
         @FindBy(id = "form:selectonemenu")
         SelectOneMenu selectOneMenu;
 

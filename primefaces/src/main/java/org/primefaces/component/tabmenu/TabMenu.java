@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,23 @@
  */
 package org.primefaces.component.tabmenu;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = TabMenu.COMPONENT_TYPE, namespace = TabMenu.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "TabMenu is a navigation component that displays menuitems as tabs.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class TabMenu extends TabMenuBase {
+public class TabMenu extends TabMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TabMenu";
 
     public static final String CONTAINER_CLASS = "ui-tabmenu ui-widget ui-widget-content";
-    public static final String NAVIGATOR_CLASS = "ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header";
+    public static final String NAVIGATOR_CLASS = "ui-tabmenu-nav ui-helper-clearfix ui-widget-header";
     public static final String INACTIVE_TAB_HEADER_CLASS = "ui-tabmenuitem";
     public static final String ACTIVE_TAB_HEADER_CLASS = "ui-tabmenuitem ui-state-active";
 }

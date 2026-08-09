@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +46,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -66,6 +67,7 @@ import org.apache.commons.io.input.BoundedInputStream;
 @FacesRenderer(rendererType = ImageCropper.DEFAULT_RENDERER, componentFamily = ImageCropper.COMPONENT_FAMILY)
 public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
 
+    private static final Logger LOGGER = Logger.getLogger(ImageCropperRenderer.class.getName());
     private static final Pattern IMAGE_TYPE_PATTERN = Pattern.compile("^image/([^;]+);?.*$");
 
     @Override
@@ -90,10 +92,16 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         String image = clientId + "_image";
         String select = null;
 
+        int viewMode = component.getViewMode();
+        if (viewMode <= 0 || viewMode > 3) {
+            LOGGER.warning("ImageCropper: viewMode='" + viewMode + "' is not valid or not supported and has been changed to viewMode='1'.");
+            viewMode = 1;
+        }
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, image)
                 .attr("image", image)
-                .attr("viewMode", component.getViewMode(), 0)
+                .attr("viewMode", viewMode)
                 .attr("aspectRatio", component.getAspectRatio(), Double.MIN_VALUE)
                 .attr("responsive", component.isResponsive(), true)
                 .attr("zoomOnTouch", component.isZoomOnTouch(), true)
@@ -166,7 +174,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         writer.writeAttribute("alt", alt, null);
 
         String src = DynamicContentSrcBuilder.build(context, component,
-                component.getValueExpression(ImageCropperBase.PropertyKeys.image.name()),
+                component.getValueExpression(ImageCropper.PropertyKeys.image),
                 new Lazy<>(component::getImage), component.isCache(), true);
         writer.writeAttribute("src", src, null);
 
@@ -266,7 +274,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         String originalFileName = null;
 
         // try to evaluate as Resource object, otherwise we would need to handle the Resource#resourcePath which would be more awkward
-        ValueExpression imageVE = component.getValueExpression(ImageCropperBase.PropertyKeys.image.toString());
+        ValueExpression imageVE = component.getValueExpression(ImageCropper.PropertyKeys.image);
         Resource resource = ResourceUtils.evaluateResourceExpression(context, imageVE);
         if (resource != null) {
             inputStream = resource.getInputStream();
@@ -279,8 +287,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
                 imagePath = (String) imageObject;
                 originalFileName = imagePath;
 
-                boolean isExternal = imagePath.startsWith("http");
-
+                boolean isExternal = imagePath.startsWith("http://") || imagePath.startsWith("https://");
                 if (isExternal) {
                     URL url;
                     try {
@@ -290,8 +297,14 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
                         throw new FacesException(e);
                     }
                     URLConnection urlConnection = url.openConnection();
-                    inputStream = urlConnection.getInputStream();
+                    urlConnection.setConnectTimeout(5_000);
+                    urlConnection.setReadTimeout(10_000);
+                    urlConnection.connect();
                     contentType = urlConnection.getContentType();
+                    if (contentType == null || !contentType.startsWith("image/")) {
+                        throw new FacesException("ImageCropper: external URL did not return an image content-type: " + contentType);
+                    }
+                    inputStream = urlConnection.getInputStream();
                 }
                 else {
                     ExternalContext externalContext = context.getExternalContext();

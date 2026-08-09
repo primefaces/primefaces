@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -102,4 +102,78 @@ public interface PrimePropertyKeys {
      * @return the implicit default value as a string
      */
     String getImplicitDefaultValue();
+
+    /**
+     * Whether this property is hidden from the generated taglib.
+     *
+     * <p>Hidden properties are still fully generated (getter, setter, StateHelper entry),
+     * but are excluded from taglib output.</p>
+     *
+     * @return true if the property should be omitted from the taglib, false otherwise
+     */
+    boolean isHidden();
+
+
+    public static final class Literal implements PrimePropertyKeys {
+
+        private final Class<?> type;
+        private final String name;
+        private final String description;
+        private final boolean required;
+        private final String defaultValue;
+        private final String implicitDefaultValue;
+        private final boolean hidden;
+
+        public Literal(Class<?> type, String name, String description, boolean required, String defaultValue,
+                       String implicitDefaultValue, boolean hidden) {
+            this.type = type;
+            this.name = name;
+            this.description = description;
+            this.required = required;
+            this.defaultValue = defaultValue;
+            this.implicitDefaultValue = implicitDefaultValue;
+            this.hidden = hidden;
+        }
+
+        public static Literal of(String name, Property property) {
+            return new Literal(property.type(), name, property.description(),
+                    property.required(), property.defaultValue(), property.implicitDefaultValue(), false);
+        }
+
+        @Override
+        public Class<?> getType() {
+            return type;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String getDescription() {
+            return description;
+        }
+
+        @Override
+        public boolean isRequired() {
+            return required;
+        }
+
+        @Override
+        public String getDefaultValue() {
+            return defaultValue;
+        }
+
+        @Override
+        public String getImplicitDefaultValue() {
+            return implicitDefaultValue;
+        }
+
+        @Override
+        public boolean isHidden() {
+            return hidden;
+        }
+    }
+
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -145,7 +145,7 @@ public class ToolbarRenderer extends CoreRenderer<Toolbar> {
             return false;
         }
         else {
-            return FacetUtils.shouldRenderFacet(component.getFacet("left")) || FacetUtils.shouldRenderFacet(component.getFacet("right"));
+            return FacetUtils.shouldRenderFacet(component.getLeftFacet()) || FacetUtils.shouldRenderFacet(component.getRightFacet());
         }
     }
 

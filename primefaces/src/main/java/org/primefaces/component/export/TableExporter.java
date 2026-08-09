@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.component.rowtoggler.RowToggler;
+import org.primefaces.component.tooltip.Tooltip;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -500,7 +501,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
             }
         }
         else if (component instanceof CellEditor) {
-            return getComponentValue(context, component.getFacet("output"));
+            return getComponentValue(context, ((CellEditor) component).getOutputFacet());
         }
         else if (component instanceof HtmlGraphicImage) {
             return (String) component.getAttributes().get("alt");
@@ -509,6 +510,9 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
             return Constants.EMPTY_STRING;
         }
         else if (component instanceof RowToggler) {
+            return Constants.EMPTY_STRING;
+        }
+        else if (component instanceof Tooltip) {
             return Constants.EMPTY_STRING;
         }
         else {

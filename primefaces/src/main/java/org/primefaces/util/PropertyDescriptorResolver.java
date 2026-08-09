@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -66,18 +66,21 @@ public interface PropertyDescriptorResolver {
             PropertyDescriptor pd = null;
             Class<?> parent = klazz;
 
-            for (String property : NESTED_EXPRESSION_PATTERN.split(expression)) {
+            for (String property : splitExpression(expression)) {
                 pd = getSimpleProperty(parent, property);
                 parent = pd.getPropertyType();
             }
 
-            return Objects.requireNonNull(pd);
+            Objects.requireNonNull(pd);
+            // cache the full (possibly nested) expression so subsequent lookups skip the split + walk
+            pdCache.computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>()).put(expression, pd);
+            return pd;
         }
 
         @Override
         public Object getValue(Object obj, String expression) {
             try {
-                for (String property : NESTED_EXPRESSION_PATTERN.split(expression)) {
+                for (String property : splitExpression(expression)) {
                     obj = getSimpleProperty(obj.getClass(), property).getReadMethod().invoke(obj);
                     if (obj == null) {
                         break;
@@ -94,7 +97,7 @@ public interface PropertyDescriptorResolver {
         @Override
         public void setValue(Object obj, String expression, Object value) {
             try {
-                String[] expressions = NESTED_EXPRESSION_PATTERN.split(expression);
+                String[] expressions = splitExpression(expression);
 
                 for (int i = 0; i < expressions.length; i++) {
                     String property = expressions[i];
@@ -123,6 +126,18 @@ public interface PropertyDescriptorResolver {
         @Override
         public void flush() {
             pdCache.clear();
+        }
+
+        /**
+         * Splits a (possibly nested) property expression on {@code .}. Avoids allocating a regex
+         * {@link java.util.regex.Matcher} for the common non-nested case (e.g. {@code "name"}), which
+         * is the innermost primitive of the in-memory sort/filter path.
+         */
+        private static String[] splitExpression(String expression) {
+            if (expression.indexOf('.') < 0) {
+                return new String[] {expression};
+            }
+            return NESTED_EXPRESSION_PATTERN.split(expression);
         }
 
         private PropertyDescriptor getSimpleProperty(Class<?> klazz, String property) {

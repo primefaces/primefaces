@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.PrimeSelect;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +36,7 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
 
-public abstract class SelectOneRenderer<T extends UISelectOne> extends SelectRenderer<T> {
+public abstract class SelectOneRenderer<T extends UISelectOne & PrimeSelect> extends SelectRenderer<T> {
 
     @Override
     public void decode(FacesContext context, T component) {

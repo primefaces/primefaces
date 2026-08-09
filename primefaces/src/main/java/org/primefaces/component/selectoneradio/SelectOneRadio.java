@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectoneradio;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.LangUtils;
 
 import java.util.List;
@@ -33,12 +34,13 @@ import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = SelectOneRadio.COMPONENT_TYPE, namespace = SelectOneRadio.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "SelectOneRadio is an extended version of the standard SelectOneRadio.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class SelectOneRadio extends SelectOneRadioBase {
+public class SelectOneRadio extends SelectOneRadioBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneRadio";
 
@@ -60,23 +62,4 @@ public class SelectOneRadio extends SelectOneRadioBase {
         return getRadioButtonId(getFacesContext(), 0);
     }
 
-    @Override
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
-    }
-
-    @Override
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
-    }
-
-    @Override
-    public String getAriaDescribedBy() {
-        return (String) getStateHelper().get("ariaDescribedBy");
-    }
-
-    @Override
-    public void setAriaDescribedBy(String ariaDescribedBy) {
-        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
-    }
 }

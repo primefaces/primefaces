@@ -17,16 +17,16 @@
     <name>PrimeFaces</name>
 
     <properties>
-        <jakarta.jar.skip>false</jakarta.jar.skip>
         <cyclonedx.skip>true</cyclonedx.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
-        <mockito.version>5.20.0</mockito.version>
+        <mockito.version>5.23.0</mockito.version>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
-        <node.version>v22.11.0</node.version>
+        <node.version>v22.21.1</node.version>
         <yarn.version>v1.22.22</yarn.version>
         <frontend.directory>${basedir}/src/main/frontend</frontend.directory>
         <frontend.node.env>development</frontend.node.env>
         <sonar.skip>false</sonar.skip>
+        <vdl.skip>true</vdl.skip>
     </properties>
 
     <dependencies>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20250517</version>
+            <version>20260719</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -253,19 +253,25 @@
                 <plugin>
                     <groupId>com.github.matinh.vdldoc</groupId>
                     <artifactId>vdldoc-maven-plugin</artifactId>
-                    <version>2.1</version>
+                    <version>2.3</version>
                     <dependencies>
                         <dependency>
                             <groupId>org.omnifaces</groupId>
                             <artifactId>vdldoc</artifactId>
-                            <version>3.2</version>
+                            <version>4.0</version>
                         </dependency>
                     </dependencies>
+                    <configuration>
+					   <srcDirectory>${project.build.outputDirectory}</srcDirectory>
+                       <includes>
+                           <include>**/primefaces.taglib.xml</include>
+                       </includes>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.cyclonedx</groupId>
                     <artifactId>cyclonedx-maven-plugin</artifactId>
-                    <version>2.9.1</version>
+                    <version>2.9.3</version>
                     <executions>
                         <execution>
                             <phase>package</phase>
@@ -310,6 +316,31 @@
 
         <plugins>
             <plugin>
+                <groupId>org.primefaces</groupId>
+                <artifactId>primefaces-cdk-impl</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-taglib</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <uri>http://primefaces.org/ui</uri>
+                            <shortName>primefaces</shortName>
+                            <displayName>PrimeFaces</displayName>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.json</groupId>
+                        <artifactId>json</artifactId>
+                        <version>20260719</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
@@ -334,6 +365,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
+                    <compilerArgs>
+                        <compilerArg>-parameters</compilerArg>
+                    </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.primefaces</groupId>
@@ -474,7 +508,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>2.7.0</version>
+                <version>2.7.1</version>
                 <executions>
                     <execution>
                         <id>aggregate-download-licenses</id>
@@ -585,7 +619,7 @@
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
-                    <minimizeJar>true</minimizeJar>
+                    <minimizeJar>false</minimizeJar>
                     <createSourcesJar>false</createSourcesJar>
                     <shadeSourcesContent>true</shadeSourcesContent>
                     <relocations>
@@ -637,7 +671,7 @@
                                 <exclude>META-INF/*.SF</exclude>
                                 <exclude>META-INF/*.DSA</exclude>
                                 <exclude>META-INF/*.RSA</exclude>
-								<exclude>META-INF/versions/**</exclude>
+                                <exclude>META-INF/versions/**</exclude>
                             </excludes>
                         </filter>
                     </filters>
@@ -662,11 +696,11 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>xml-maven-plugin</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
                 <executions>
                     <execution>
                         <id>minify-xml</id>
-                        <phase>process-resources</phase>
+                        <phase>process-classes</phase>
                         <goals>
                             <goal>transform</goal>
                         </goals>
@@ -694,7 +728,7 @@
                 <executions>
                     <execution>
                         <id>rename-xml-file</id>
-                        <phase>process-resources</phase>
+                        <phase>process-classes</phase>
                         <configuration>
                             <target>
                                 <copy file="${project.build.directory}/classes/META-INF/primefaces.taglib.xml" tofile="${project.build.directory}/classes/META-INF/primefaces.urn.taglib.xml"/>
@@ -735,7 +769,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.4</version>
+                <version>3.5.6</version>
                 <configuration>
                     <!--
                     see https://stackoverflow.com/questions/79278490/mockito-is-currently-self-attaching-to-enable-the-inline-mock-maker-this-will-n
@@ -756,11 +790,11 @@
                 <maven.test.skip>true</maven.test.skip>
                 <maven.javadoc.skip>true</maven.javadoc.skip>
                 <maven.source.skip>true</maven.source.skip>
-                <jakarta.jar.skip>false</jakarta.jar.skip>
                 <checkstyle.skip>true</checkstyle.skip>
                 <xml.formatter.skip>true</xml.formatter.skip>
                 <frontend.node.env>development</frontend.node.env>
                 <cyclonedx.skip>true</cyclonedx.skip>
+                <vdl.skip>true</vdl.skip>
                 <license.skipCheckLicense>true</license.skipCheckLicense>
                 <license.skipAddThirdParty>true</license.skipAddThirdParty>
                 <license.skipAggregateDownloadLicenses>true</license.skipAggregateDownloadLicenses>
@@ -771,6 +805,36 @@
             <id>debug</id>
             <build>
                  <finalName>${project.artifactId}-debug-${project.version}</finalName>
+            </build>
+        </profile>
+        <!-- GitHub Actions Profile to run VDL and others only in CI pipeline-->
+        <profile>
+            <id>vdl</id>
+            <properties>
+                <vdl.skip>false</vdl.skip>
+                <checkstyle.skip>true</checkstyle.skip>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+            <build>
+                <defaultGoal>clean package</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.matinh.vdldoc</groupId>
+                        <artifactId>vdldoc-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-vdl</id>
+                                <phase>process-classes</phase>
+                                <configuration>
+                                    <skip>${vdl.skip}</skip>
+                                </configuration>
+                                <goals>
+                                    <goal>vdldoc</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
         <profile>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -68,10 +68,10 @@ public class CellEditFeature implements DataTableFeature {
         }
 
         if (table.isCellEditCancelRequest(context) || table.isCellEditInitRequest(context)) {
-            column.getCellEditor().getFacet("input").encodeAll(context);
+            column.getCellEditor().getInputFacet().encodeAll(context);
         }
         else {
-            column.getCellEditor().getFacet("output").encodeAll(context);
+            column.getCellEditor().getOutputFacet().encodeAll(context);
         }
 
         if (column.isDynamic()) {

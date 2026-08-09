@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,10 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.cdk.api.Function;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.InputAware;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
@@ -613,25 +615,32 @@ public class ComponentUtils {
 
         // replace 'id=' and 'source:' values
         encodedComponent = ID_PATTERN.matcher(encodedComponent).replaceAll(" id=\"$1" + separator + index + "\"");
-        encodedComponent = SOURCE_PATTERN.matcher(encodedComponent).replaceAll(" source:&quot;$1" + separator + index + "&quot;");
+        // avoid a second full-document regex pass when there is no CSP inline source binding (the common case)
+        if (encodedComponent.indexOf("source:&quot;") >= 0) {
+            encodedComponent = SOURCE_PATTERN.matcher(encodedComponent).replaceAll(" source:&quot;$1" + separator + index + "&quot;");
+        }
 
         originalWriter.write(encodedComponent);
     }
 
 
+    @Function(name = "dynamicColumnValue", description = "Gets the value of the current column."
+            + " This is only required when p:columns and field is used with a nested expression like user.name.")
     public static Object getDynamicColumnValue(UIComponent component) {
         org.primefaces.component.api.UIColumn column =
                 ComponentTraversalUtils.closest(org.primefaces.component.api.UIColumn.class, component);
-        UITable table =
+        UITable<?> table =
                 ComponentTraversalUtils.closest(UITable.class, (UIComponent) column);
 
         return table.getFieldValue(FacesContext.getCurrentInstance(), column);
     }
 
+    @Function(name = "dynamicColumnValueAsString", description = "Gets the value of the current column converted to string."
+            + " This is only required when p:columns and field is used with a nested expression like user.name.")
     public static String getDynamicColumnValueAsString(UIComponent component) {
         org.primefaces.component.api.UIColumn column =
                 ComponentTraversalUtils.closest(org.primefaces.component.api.UIColumn.class, component);
-        UITable table =
+        UITable<?> table =
                 ComponentTraversalUtils.closest(UITable.class, (UIComponent) column);
 
         return table.getConvertedFieldValue(FacesContext.getCurrentInstance(), column);
@@ -745,8 +754,12 @@ public class ComponentUtils {
     }
 
     public static boolean isDisabledOrReadonly(UIInput component) {
-        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")))
-                || Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
+        if (component instanceof InputAware) {
+            InputAware inputAware = (InputAware) component;
+            return inputAware.isDisabled() || inputAware.isReadonly();
+        }
+        return LangUtils.toBoolean(component.getAttributes().get("disabled"))
+                || LangUtils.toBoolean(component.getAttributes().get("readonly"));
     }
 
     public static boolean isUIRepeat(UIComponent component) {
@@ -789,14 +802,16 @@ public class ComponentUtils {
                     + "; Create a Converter for it!");
         }
 
+        UIComponent currentComponent = UIComponent.getCurrentComponent(context);
+
         // first convert the object to string
         String stringValue = sourceConverter == null
                 ? value.toString()
-                : sourceConverter.getAsString(context, UIComponent.getCurrentComponent(context), value);
+                : sourceConverter.getAsString(context, currentComponent, value);
 
         // now convert the string to the required target
         try {
-            return targetConverter.getAsObject(context, UIComponent.getCurrentComponent(context), stringValue);
+            return targetConverter.getAsObject(context, currentComponent, stringValue);
         }
         catch (ConverterException e) {
             logger.log(Level.INFO, e, () -> "Could not convert '" + stringValue + "' to " + valueType + " via " + targetConverter.getClass().getName());

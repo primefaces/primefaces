@@ -213,7 +213,7 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
         this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
-        this.toggler.attr('aria-label', collapsed ? this.getAriaLabel('collapseRow') : this.getAriaLabel('expandRow'))
+        this.toggler.attr('aria-label', collapsed ? this.getAriaLabel('collapseRow') : this.getAriaLabel('expandRow'));
 
         if (this.hasBehavior('toggle')) {
             this.callBehavior('toggle');
@@ -273,7 +273,9 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
         var $this = this;
 
         this.toggler = $(this.jqId + '_toggler');
+        this.toggler.attr('role', 'button');
         this.toggleStateHolder = $(this.jqId + '_collapsed');
+        this.toggler.attr('aria-label', this.cfg.collapsed ? this.getAriaLabel('collapseRow') : this.getAriaLabel('expandRow'));
 
         this.toggler.on("click", function() {
             $this.toggle();

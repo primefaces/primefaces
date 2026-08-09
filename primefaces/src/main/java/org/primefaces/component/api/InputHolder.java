@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Property;
+
 /**
  * InputHolder is implemented by input components who has an input field along with complex markup like spinner, autocomplete.
  */
@@ -39,20 +41,30 @@ public interface InputHolder {
     String getValidatableInputClientId();
 
     /**
+     * @return the client id the {@code for} attribute of a {@code <label>} should reference, or {@code null} to omit
+     *         {@code for} entirely (e.g. when the component has no labelable element and relies on {@code aria-labelledby}).
+     */
+    default String getLabelClientId() {
+        return getInputClientId();
+    }
+
+    /**
      * @return Client id of the label for aria
      */
-    String getLabelledBy();
+    @Property(internal = true)
+    String getAriaLabelledBy();
 
     /**
      * Sets the id of the label for aria.
      *
      * @param id the id
      */
-    void setLabelledBy(String id);
+    void setAriaLabelledBy(String id);
 
     /**
      * @return The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
      */
+    @Property(description = "The aria-describedby attribute is used to define a component id that describes the current element for accessibility.")
     String getAriaDescribedBy();
 
     /**

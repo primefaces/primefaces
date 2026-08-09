@@ -229,7 +229,7 @@ export class SlideMenu<Cfg extends SlideMenuCfg = SlideMenuCfg> extends Menu<Cfg
         this.menuItem = this.menuList.children('li.ui-menuitem ');
         this.backButton = this.menuItem.children('a.ui-menuitem-link');
 
-        this.submenus.width(this.jq.width() ?? 0);
+        this.submenus.outerWidth(this.jq.outerWidth() ?? 0);
         this.wrapper.height((this.rootList.outerHeight(true) ?? 0) + (this.backButton.outerHeight(true) ?? 0));
         this.content.height(this.rootList.outerHeight(true) ?? 0);
         this.backward.attr('style', 'display: none;');

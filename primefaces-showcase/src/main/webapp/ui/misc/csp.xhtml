@@ -60,9 +60,9 @@
                         <br/>
                         <p:tabView>
                             <p:tab title="XHTML">
-                            <pre name="code" class="brush:xml">
+                            <pre class="line-numbers"><code class="language-xml">
 &#x3C;p:button onclick=&#x22;alert(&#x27;PASS&#x27;); return false;&#x22; value=&#x22;Check functionality&#x22; /&#x3E;
-                            </pre>
+                            </code></pre>
                             </p:tab>
                         </p:tabView>
                     </p:tab>
@@ -83,14 +83,14 @@
                         <br/>
                         <p:tabView>
                             <p:tab title="XHTML">
-                            <pre name="code" class="brush:xml">
+                            <pre class="line-numbers"><code class="language-xml">
 &#x3C;script&#x3E;
     function foo() {
         alert(&#x27;PASS&#x27;);
     }
 &#x3C;/script&#x3E;
 &#x3C;p:button onclick=&#x22;foo(); return false;&#x22; value=&#x22;Check functionality&#x22; /&#x3E;
-                            </pre>
+                            </code></pre>
                             </p:tab>
                         </p:tabView>
                     </p:tab>
@@ -111,11 +111,11 @@
                         <br/>
                         <p:tabView>
                             <p:tab title="XHTML">
-                            <pre name="code" class="brush:xml">
+                            <pre class="line-numbers"><code class="language-xml">
 &#x3C;a id=&#x22;link&#x22; href=&#x22;javascript:window.cspScriptExecuted=true;&#x22;&#x3E;link&#x3C;/a&#x3E;&#x3C;br/&#x3E;&#x3C;br/&#x3E;
 &#x3C;p:button value=&#x22;Check functionality&#x22; onclick=&#x22;window.cspScriptExecuted=false; document.getElementById(&#x27;link&#x27;).click();
     if (!window.cspScriptExecuted) alert(&#x27;PASS&#x27;); return false;&#x22; /&#x3E;
-                            </pre>
+                            </code></pre>
                             </p:tab>
                         </p:tabView>
                     </p:tab>
@@ -131,9 +131,9 @@
                         <br/>
                         <p:tabView>
                             <p:tab title="XHTML">
-                            <pre name="code" class="brush:xml">
+                            <pre class="line-numbers"><code class="language-xml">
 &#x3C;p:commandButton value=&#x22;Check functionality&#x22; onstart=&#x22;alert(&#x27;PASS&#x27;);&#x22; /&#x3E;
-                            </pre>
+                            </code></pre>
                             </p:tab>
                         </p:tabView>
                     </p:tab>
@@ -151,11 +151,11 @@
                         <br/>
                         <p:tabView>
                             <p:tab title="XHTML">
-                            <pre name="code" class="brush:xml">
+                            <pre class="line-numbers"><code class="language-xml">
 &#x3C;h:commandButton value=&#x22;Check functionality&#x22;&#x3E;
     &#x3C;f:ajax event=&#x22;click&#x22; onevent=&#x22;alert(&#x27;PASS&#x27;)&#x22; /&#x3E;
 &#x3C;/h:commandButton&#x3E;
-                            </pre>
+                            </code></pre>
                             </p:tab>
                         </p:tabView>
                     </p:tab>
@@ -173,11 +173,11 @@
                         <br/>
                         <p:tabView>
                             <p:tab title="XHTML">
-                            <pre name="code" class="brush:xml">
+                            <pre class="line-numbers"><code class="language-xml">
 &#x3C;p:inputText&#x3E;
     &#x3C;p:ajax event=&#x22;change&#x22; onstart=&#x22;alert(&#x27;PASS&#x27;);&#x22; /&#x3E;
 &#x3C;/p:inputText&#x3E;
-                            </pre>
+                            </code></pre>
                             </p:tab>
                         </p:tabView>
                     </p:tab>
@@ -194,9 +194,9 @@
                         <br/>
                         <p:tabView>
                             <p:tab title="XHTML">
-                            <pre name="code" class="brush:xml">
+                            <pre class="line-numbers"><code class="language-xml">
 &#x3C;p:commandButton value=&#x22;Check functionality&#x22; actionListener=&#x22;\#{cspView.executeScript}&#x22; /&#x3E;
-                            </pre>
+                            </code></pre>
                             </p:tab>
                         </p:tabView>
                     </p:tab>
@@ -216,9 +216,9 @@
                         <br/>
                         <p:tabView>
                             <p:tab title="XHTML">
-                            <pre name="code" class="brush:xml">
+                            <pre class="line-numbers"><code class="language-xml">
 &#x3C;p:button value=&#x22;Check functionality&#x22; onclick=&#x22;try { eval(&#x27;1==1&#x27;); } catch(e) { console.log(e); return false; } alert(&#x27;PASS&#x27;); return false;&#x22; /&#x3E;
-                            </pre>
+                            </code></pre>
                             </p:tab>
                         </p:tabView>
                     </p:tab>
@@ -238,9 +238,9 @@
                         <br/>
                         <p:tabView>
                             <p:tab title="XHTML">
-                            <pre name="code" class="brush:xml">
+                            <pre class="line-numbers"><code class="language-xml">
 &#x3C;p:button value=&#x22;Check functionality&#x22; onclick=&#x22;try { window.setTimeout(&#x27;alert(1)&#x27;,1000); } catch(e) { console.log(e); return false; } window.setTimeout(function() { alert(&#x27;PASS&#x27;); },1000); return false;&#x22; /&#x3E;
-                            </pre>
+                            </code></pre>
                             </p:tab>
                         </p:tabView>
                     </p:tab>
@@ -261,8 +261,8 @@
                         <br/>
                         <p:tabView>
                             <p:tab title="XHTML">
-                            <pre name="code" class="brush:xml">
-&#x3C;p:commandButton value=&#x22;Check functionality&#x22; update=&#x22;xss-out&#x22; process=&#x22;xss-in&#x22; onstart=&#x22;window.cspScriptExecuted=false;&#x22; oncomplete=&#x22;if (!window.cspScriptExecuted) alert(&#x27;PASS&#x27;);&#x22; /&#x3E;                            </pre>
+                            <pre class="line-numbers"><code class="language-xml">
+&#x3C;p:commandButton value=&#x22;Check functionality&#x22; update=&#x22;xss-out&#x22; process=&#x22;xss-in&#x22; onstart=&#x22;window.cspScriptExecuted=false;&#x22; oncomplete=&#x22;if (!window.cspScriptExecuted) alert(&#x27;PASS&#x27;);&#x22; /&#x3E;                            </code></pre>
                             </p:tab>
                         </p:tabView>
                     </p:tab>

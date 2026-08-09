@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:selectManyCheckbox id="selectmanycheckbox" value="#{selectManyCheckbox001.selectedDrivers}"
+                                  layout="lineDirection" converter="realDriverConverter">
+                <f:selectItems value="#{selectManyCheckbox001.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver}"/>
+                <p:ajax process="@this"/>
+            </p:selectManyCheckbox>
+
+            <p:commandButton id="button" update="@form" value="Submit" action="#{selectManyCheckbox001.submit}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

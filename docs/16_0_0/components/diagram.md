@@ -4,32 +4,6 @@ Diagram is generic component to create visual elements and connect them on a web
 used on modern browsers and VML on IE 8 and below. Component is highly flexible in terms of
 api, events and theming.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Diagram-1.html)
-
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | diagram
-| Component Class | org.primefaces.component.diagram.Diagram
-| Component Type | org.primefaces.component.Diagram
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.DiagramRenderer
-| Renderer Class | org.primefaces.component.diagram.DiagramRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget
-| value | null | String | Model of the diagram.
-| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
-| style | null | String | Inline style of the diagram.
-| styleClass | null | String | Style class of the diagram.
-
 ## Getting started with the Diagram
 Diagram requires a backend model to display.
 
@@ -147,12 +121,3 @@ as source and to receive new connections it should be a target. Ajax event callb
 ElementA.setSource(true);
 ElementB.setTarget(true);
 ```
-## Ajax Behavior Events
-Diagram provides ajax behavior event callbacks invoked by interactive diagrams.
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| connect | org.primefaces.event.diagram.ConnectEvent | On new connection.
-| disconnect | org.primefaces.event.diagram.DisconnectEvent | When a connection is removed.
-| connectionChange | org.primefaces.event.diagram.ConnectionChangeEvent | When a connection has changed.
-| positionChange | org.primefaces.event.diagram.PositionChangeEvent | When the position of a draggable element has changed.

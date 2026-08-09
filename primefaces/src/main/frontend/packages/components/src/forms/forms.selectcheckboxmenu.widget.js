@@ -279,7 +279,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
     renderItems() {
         var $this = this;
 
-        this.itemContainer = $('<ul id="'+this.id+'_list" class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-helper-reset"></ul>')
+        this.itemContainer = $('<ul id="'+this.id+'_list" class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget"></ul>')
             .appendTo(this.itemContainerWrapper);
 
         //check if inputs must be grouped
@@ -375,7 +375,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
                 $this.jq.removeClass('ui-state-hover');
                 $this.triggers.removeClass('ui-state-hover');
             }
-        }).on('mousedown.selectCheckboxMenu', function(e) {
+        }).on('click.selectCheckboxMenu', function(e) {
             if (!$this.disabled) {
                 if ($this.cfg.multiple && $(e.target).is('.ui-selectcheckboxmenu-token-icon')) {
                     return;
@@ -387,7 +387,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
 
                 $this.togglePanel();
             }
-        }).on('click.selectCheckboxMenu', function(e) {
+
             $this.keyboardTarget.trigger('focus');
             e.preventDefault();
         });

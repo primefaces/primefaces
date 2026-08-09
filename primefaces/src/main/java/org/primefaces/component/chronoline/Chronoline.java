@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,15 @@
  */
 package org.primefaces.component.chronoline;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Chronoline.COMPONENT_TYPE, namespace = Chronoline.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Chronoline visualizes a series of chained events.")
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Chronoline extends ChronolineBase {
+public class Chronoline extends ChronolineBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chronoline";
 

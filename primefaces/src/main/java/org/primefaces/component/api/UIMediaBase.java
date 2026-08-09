@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,28 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.Lazy;
 
-import java.io.IOException;
-
+import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponentBase;
 import jakarta.faces.context.FacesContext;
 
 /**
  * Base class for HTML5 audio and video components.
  */
+@FacesComponentBase
 public abstract class UIMediaBase extends UIComponentBase implements StyleAware {
 
-    public String resolveSource(FacesContext context) throws IOException {
+    public String resolveSource(FacesContext context) {
         try {
             return DynamicContentSrcBuilder.build(context, this, this.getValueExpression("value"),
                     new Lazy<>(() -> this.getValue()), this.isCache(), true);
         }
         catch (Exception ex) {
-            throw new IOException(ex);
+            throw new FacesException(ex);
         }
     }
 

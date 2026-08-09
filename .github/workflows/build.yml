@@ -9,6 +9,9 @@ on:
     paths-ignore:
       - '**/**.md'
 
+permissions:
+  contents: read
+
 env:
     MAVEN_OPTS: >-
         -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
@@ -24,9 +27,9 @@ jobs:
       matrix:
         java: [11, 25]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
@@ -35,7 +38,7 @@ jobs:
         run: mvn clean install -T1C -Pminify --batch-mode --show-version
       - name: Sonar Cloud
         if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 25
-        run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Pquick -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{secrets.SONAR_TOKEN}} -fprimefaces/pom.xml
+        run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Pquick -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{secrets.SONAR_TOKEN}} -fprimefaces/pom.xml
         # new approach with code-coverage does not work as of 2024/12 because
         # "Failed to execute goal org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar (default-cli) on project primefaces-parent: Could not find a default branch for project with key 'org.primefaces:primefaces-parent'. Make sure project exists. -> [Help 1]"
         # setting sonar.skip=true in the parent-pom.xml does not work either because this results in skipping the whole project, setting sonar.skip=false for modules does not compensate for this
@@ -73,9 +76,9 @@ jobs:
           - java: 25
             facesimpl: 'myfaces-4.1'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
@@ -83,9 +86,9 @@ jobs:
       - name: Build
         run: mvn clean install -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true --batch-mode --show-version
       - name: Integration Tests
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-aura,csp,${{ matrix.facesimpl }}
       - name: Upload failure-screenshots
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:
           name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}

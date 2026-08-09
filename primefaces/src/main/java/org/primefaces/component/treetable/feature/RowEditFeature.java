@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,7 +58,7 @@ public class RowEditFeature implements TreeTableFeature {
             for (UIColumn column : tt.getColumns()) {
                 for (UIComponent grandkid : column.getChildren()) {
                     if (grandkid instanceof CellEditor) {
-                        UIComponent inputFacet = grandkid.getFacet("input");
+                        UIComponent inputFacet = ((CellEditor) grandkid).getInputFacet();
 
                         if (inputFacet instanceof EditableValueHolder) {
                             ((EditableValueHolder) inputFacet).resetValue();

@@ -2,48 +2,36 @@
 
 SelectOneButton is an input component to do a single select.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectOneButton-1.html)
-
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | selectOneButton
-| Component Class | org.primefaces.component.selectonebutton.SelectOneButton
-| Component Type | org.primefaces.component.SelectOneButton
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.SelectOneButtonRenderer
-| Renderer Class | org.primefaces.component.selectonebutton.SelectOneButtonRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-converterMessage | null | String | Message to be displayed when conversion fails.
-disabled | false | Boolean | Disables the component.
-hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
-immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-label | null | String | User presentable name.
-layout | null | String | Layout of the buttons, valid values are null (default) or "custom".
-onchange | null | String | Callback to execute on value change.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-required | false | Boolean | Marks component as required
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the container.
-tabindex | 0 | String | Position of the element in the tabbing order.
-unselectable | true | Boolean | Whether selection can be cleared.
-validator | null | MethodExpr | A method expression that refers to a method validating the input
-validatorMessage | null | String | Message to be displayed when validation fields.
-value | null | Object | Value of the component referring to a List.
-valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
-widgetVar | null | String | Name of the client side widget.
-
 ## Getting started with SelectOneButton
 SelectOneButton usage is same as selectOneRadio component, buttons just replace the radios.
+
+## Accessibility
+
+The options are backed by native radio inputs: the group is rendered as a `role="radiogroup"` element, each visible
+button text is a `label` element bound to its hidden radio input, and keyboard interaction (Tab into the group, arrow
+keys to move the selection, Space to select) is native browser behavior.
+
+Use `p:outputLabel` to give the radio group an accessible name; it renders a valid `for` attribute pointing at the
+first radio input and additionally names the group via `aria-labelledby`:
+
+```xhtml
+<p:outputLabel for="paymentMethod" value="Payment method"/>
+<p:selectOneButton id="paymentMethod" value="#{buttonView.paymentMethod}">
+    <f:selectItem itemLabel="PayPal" itemValue="PayPal"/>
+    <f:selectItem itemLabel="Cash" itemValue="Cash"/>
+</p:selectOneButton>
+```
+
+Without an attached `p:outputLabel`, the `label` attribute is rendered as `aria-label` on the radio group:
+
+```xhtml
+<p:selectOneButton value="#{buttonView.paymentMethod}" label="Payment method">
+    ...
+</p:selectOneButton>
+```
+
+Keyboard focus lands on the hidden radio inputs; the widget reflects it by adding the `ui-state-focus` class to the
+corresponding button container.
 
 ## Custom Layout
 SelectOneButton provides a flexible layout option so that buttons can be located anywhere on the page with custom styling.
@@ -108,17 +96,6 @@ This is implemented by adding custom components to a facet named `custom`.
 
 Custom buttons should have `role="radio"` attribute and be placed within the custom facet. The order of buttons should match the order of selectItems. When a custom facet is present, the layout is automatically set to "custom".
 
-## Ajax Behavior Events
-
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `change`  
-**Available Events:** `change`  
-
-```xhtml
-<p:ajax event="change" listener="#{bean.handlechange}" update="msgs" />
-```
-
 ## Client Side API
 Widget: _PrimeFaces.widget.SelectOneButton_
 
@@ -135,3 +112,5 @@ the list of structural style classes;
 | Class | Applies | 
 | --- | --- | 
 .ui-selectonebutton | Main container element.
+.ui-button | Container element of an option.
+.ui-button-text | Visible label element of an option.

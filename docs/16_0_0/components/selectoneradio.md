@@ -2,52 +2,6 @@
 
 SelectOneRadio is an extended version of the standard SelectOneRadio with theme integration.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectOneRadio.html)
-
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | selectOneRadio
-| Component Class | org.primefaces.component.selectoneradio.SelectOneRadio
-| Component Type | org.primefaces.component.SelectOneRadio
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.SelectOneRadioRenderer
-| Renderer Class | org.primefaces.component.selectoneradio.SelectOneRadioRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component referring to a List.
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-required | false | Boolean | Marks component as required
-validator | null | MethodExpr | A method expression that refers to a method validating the input
-valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-converterMessage | null | String | Message to be displayed when conversion fails.
-validatorMessage | null | String | Message to be displayed when validation fields.
-widgetVar | null | String | Name of the client side widget.
-disabled | false | Boolean | Disables the component.
-label | null | String | User presentable name. 
-layout | lineDirection | String | Layout of the radiobuttons, valid values are lineDirection , pageDirection , custom, and responsive.
-flex | false | Boolean | Use modern PrimeFlex-Grid in responsive mode instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
-columns | 12 | Integer | Number of columns in responsive layout.
-onchange | null | String | Callback to execute on value change.
-onclick | null | String | Callback to execute on click of a radio.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the container.
-tabindex | null | String | Specifies the tab order of element in tab navigation.
-unselectable | false | Boolean | Unselectable mode when true clicking a radio again will clear the selection. Default false.
-hideNoSelectionOption | false | Boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
-readonly | false | Boolean | Flag indicating that this input element will prevent changes by the user.
-columnClasses | null | String | Comma separated list of column style classes.
-ariaDescribedBy | null | String | The aria-describedby attribute is used to define a component id that describes the current element for accessibility.
-
 ## Getting started with SelectOneRadio
 SelectOneRadio usage is same as the standard one.
 
@@ -115,17 +69,6 @@ index of the selectItem.
 
 For the better accessibility support, you might want to wrap each custom radio button in an element
 with a `role="radio"` attribute.
-
-## Ajax Behavior Events
-
-The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
-  
-**Default Event:** `change`  
-**Available Events:** `change`  
-
-```xhtml
-<p:ajax event="change" listener="#{bean.handlechange}" update="msgs" />
-```
 
 ## Client Side API
 Widget: _PrimeFaces.widget.SelectOneRadio_

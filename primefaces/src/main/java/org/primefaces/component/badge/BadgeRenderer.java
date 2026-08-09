@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -105,6 +105,8 @@ public class BadgeRenderer extends CoreRenderer<Badge> {
                     .add("success".equals(severity), Badge.SEVERITY_SUCCESS_CLASS)
                     .add("warning".equals(severity), Badge.SEVERITY_WARNING_CLASS)
                     .add("danger".equals(severity), Badge.SEVERITY_DANGER_CLASS)
+                    .add("secondary".equals(severity), Badge.SEVERITY_SECONDARY_CLASS)
+                    .add("help".equals(severity), Badge.SEVERITY_HELP_CLASS)
                     .build();
 
         if (renderChildren) {

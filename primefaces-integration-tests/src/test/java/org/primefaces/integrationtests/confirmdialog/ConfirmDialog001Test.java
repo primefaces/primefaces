@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -211,9 +212,11 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.nonAjax.click();
 
         // Act
-        dialog.getYesButton().click();
+        PrimeSelenium.guardHttp(dialog.getYesButton()).click();
 
         // Assert
+        PrimeSelenium.waitGui().until(ExpectedConditions.and(PrimeExpectedConditions.documentLoaded(),
+                PrimeExpectedConditions.visibleAndAnimationComplete(page.message)));
         assertEquals("Full page submitted", page.message.getMessage(0).getDetail());
         assertDialog(page, false);
     }

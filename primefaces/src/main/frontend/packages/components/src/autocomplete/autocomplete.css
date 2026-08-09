@@ -35,6 +35,7 @@
 .ui-autocomplete-panel .ui-autocomplete-list {
     padding: 0.4em;
     border: 0 none;
+    margin: 0;
 }
 
 .ui-autocomplete-panel .ui-autocomplete-list-item {

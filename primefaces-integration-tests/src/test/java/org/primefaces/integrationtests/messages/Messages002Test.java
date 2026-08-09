@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,19 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.model.Msg;
+import org.primefaces.selenium.component.model.Severity;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.FindBy;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class Messages002Test extends AbstractPrimePageTest {
@@ -50,6 +57,25 @@ public class Messages002Test extends AbstractPrimePageTest {
         PrimeSelenium.executeScript("PF('messagesClosable').appendMessage({severity:'info', summary:'Info'});");
 
         assertDisplayed(page.messagesClosable.getCloseButton("info"));
+    }
+
+    @Test
+    @DisplayName("client-side appendMessage: each message only shows in the box of its own severity; GitHub #15080")
+    public void testMultipleSeverities(Page page) {
+        PrimeSelenium.executeScript("PF('messages').appendMessage({severity:'error', summary:'Error'});"
+                    + "PF('messages').appendMessage({severity:'warn', summary:'Warn 1'});"
+                    + "PF('messages').appendMessage({severity:'warn', summary:'Warn 2'});"
+                    + "PF('messages').appendMessage({severity:'info', summary:'Info'});");
+
+        assertEquals(Arrays.asList("Error"), summariesOf(page.messages, Severity.ERROR));
+        assertEquals(Arrays.asList("Warn 1", "Warn 2"), summariesOf(page.messages, Severity.WARN));
+        assertEquals(Arrays.asList("Info"), summariesOf(page.messages, Severity.INFO));
+    }
+
+    private static List<String> summariesOf(Messages messages, Severity severity) {
+        return messages.getMessagesBySeverity(severity).stream()
+                    .map(Msg::getSummary)
+                    .collect(Collectors.toList());
     }
 
     public static class Page extends AbstractPrimePage {

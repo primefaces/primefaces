@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,8 +34,8 @@ public class MoveScriptsToBottomState implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Map<String, List<Map<String, String>>> includes;
-    private Map<String, List<String>> inlines;
+    private final Map<String, List<Map<String, String>>> includes;
+    private final Map<String, List<String>> inlines;
     private int savedInlineTags;
     private boolean deferred;
 

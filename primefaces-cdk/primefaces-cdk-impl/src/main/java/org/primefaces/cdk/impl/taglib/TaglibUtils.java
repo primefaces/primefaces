@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,22 +24,39 @@
 package org.primefaces.cdk.impl.taglib;
 
 import org.primefaces.cdk.api.FacesBehaviorHandler;
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesBehaviorInfo;
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
+import org.primefaces.cdk.api.FacesConverterInfo;
+import org.primefaces.cdk.api.FacesTagHandler;
+import org.primefaces.cdk.api.FacesValidatorInfo;
 import org.primefaces.cdk.api.Function;
 import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.cdk.api.converter.PrimeConverterHandler;
+import org.primefaces.cdk.api.validator.PrimeValidatorHandler;
+import org.primefaces.cdk.impl.CdkUtils;
+import org.primefaces.cdk.impl.container.BehaviorInfo;
+import org.primefaces.cdk.impl.container.ComponentInfo;
+import org.primefaces.cdk.impl.container.ConverterInfo;
+import org.primefaces.cdk.impl.container.FunctionInfo;
+import org.primefaces.cdk.impl.container.TagHandlerInfo;
+import org.primefaces.cdk.impl.container.ValidatorInfo;
+import org.primefaces.cdk.spi.taglib.TagType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import jakarta.faces.component.FacesComponent;
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.FacesBehavior;
+import jakarta.faces.validator.FacesValidator;
+import jakarta.faces.view.facelets.ComponentHandler;
 import jakarta.faces.view.facelets.TagHandler;
 
 public final class TaglibUtils {
@@ -55,7 +72,7 @@ public final class TaglibUtils {
     public static String getRendererType(Class<?> componentClass) throws IllegalAccessException {
         String rendererType = null;
         try {
-            Field field = componentClass.getDeclaredField(DEFAULT_RENDERER_NAME);
+            Field field = componentClass.getField(DEFAULT_RENDERER_NAME);
             rendererType = (String) field.get(null);
         }
         catch (NoSuchFieldException e) {
@@ -66,19 +83,66 @@ public final class TaglibUtils {
     }
 
     private static String getTagName(Class<?> clazz) {
+        FacesBehaviorInfo facesBehaviorInfo = clazz.getAnnotation(FacesBehaviorInfo.class);
+        if (facesBehaviorInfo != null && !facesBehaviorInfo.name().isEmpty()) {
+            return facesBehaviorInfo.name();
+        }
+
+        FacesComponentInfo facesComponentInfo = clazz.getAnnotation(FacesComponentInfo.class);
+        if (facesComponentInfo != null && !facesComponentInfo.name().isEmpty()) {
+            return facesComponentInfo.name();
+        }
+
+        FacesValidatorInfo facesValidatorInfo = clazz.getAnnotation(FacesValidatorInfo.class);
+        if (facesValidatorInfo != null && !facesValidatorInfo.name().isEmpty()) {
+            return facesValidatorInfo.name();
+        }
+
+        FacesConverterInfo facesConverterInfo = clazz.getAnnotation(FacesConverterInfo.class);
+        if (facesConverterInfo != null && !facesConverterInfo.name().isEmpty()) {
+            return facesConverterInfo.name();
+        }
+
+        FacesTagHandler facesTagHandler = clazz.getAnnotation(FacesTagHandler.class);
+        if (facesTagHandler != null && !facesTagHandler.name().isEmpty()) {
+            return facesTagHandler.name();
+        }
+
         String name = String.valueOf(clazz.getSimpleName().charAt(0)).toLowerCase() +
                 clazz.getSimpleName().substring(1);
         if (name.endsWith("Behavior")) {
             name = name.substring(0, name.length() - "Behavior".length());
         }
+        else if (name.endsWith("TagHandler")) {
+            name = name.substring(0, name.length() - "TagHandler".length());
+        }
+        else if (name.endsWith("Converter")) {
+            name = name.substring(0, name.length() - "Converter".length());
+        }
+        else if (name.endsWith("Validator")) {
+            name = name.substring(0, name.length() - "Validator".length());
+        }
         return name;
     }
 
-    private static String getComponentDescription(Class<?> componentClass) {
-        FacesComponentDescription annotation = componentClass.getAnnotation(FacesComponentDescription.class);
-        return annotation == null ? null : annotation.value();
-    }
+    private static String getDescription(Class<?> clazz) {
+        FacesComponentInfo facesComponentInfo = clazz.getAnnotation(FacesComponentInfo.class);
+        if (facesComponentInfo != null) return facesComponentInfo.description();
 
+        FacesBehaviorInfo facesBehaviorInfo = clazz.getAnnotation(FacesBehaviorInfo.class);
+        if (facesBehaviorInfo != null) return facesBehaviorInfo.description();
+
+        FacesValidatorInfo facesValidatorInfo = clazz.getAnnotation(FacesValidatorInfo.class);
+        if (facesValidatorInfo != null) return facesValidatorInfo.description();
+
+        FacesConverterInfo facesConverterInfo = clazz.getAnnotation(FacesConverterInfo.class);
+        if (facesConverterInfo != null) return facesConverterInfo.description();
+
+        FacesTagHandler facesTagHandler = clazz.getAnnotation(FacesTagHandler.class);
+        if (facesTagHandler != null) return facesTagHandler.description();
+
+        return null;
+    }
 
     private static String getComponentType(Class<?> componentClass) {
         FacesComponent annotation = componentClass.getAnnotation(FacesComponent.class);
@@ -104,7 +168,7 @@ public final class TaglibUtils {
             StringBuilder signature = new StringBuilder();
             signature.append(method.getReturnType().getName());
             signature.append(" ");
-            signature.append(functionName);
+            signature.append(method.getName());
             signature.append("(");
 
             Class<?>[] paramTypes = method.getParameterTypes();
@@ -129,32 +193,61 @@ public final class TaglibUtils {
         return functions;
     }
 
-    public static ComponentInfo getComponentInfo(Class<?> componentClass) throws IllegalAccessException {
+    public static ComponentInfo getComponentInfo(Class<?> componentClass) throws IllegalAccessException, ClassNotFoundException {
         ComponentInfo info = new ComponentInfo(componentClass,
-                getComponentDescription(componentClass),
+                getDescription(componentClass),
                 getComponentType(componentClass),
                 getRendererType(componentClass),
-                getTagName(componentClass));
+                getTagName(componentClass),
+                getComponentHandlerClass(componentClass));
 
-        findAllProperties(componentClass, true).stream()
-                .map(property -> TaglibUtils.findPropertyInfo(componentClass, property))
-                .filter(Objects::nonNull)
-                .forEach(propertyInfo -> info.getProperties().add(propertyInfo));
+        info.setProperties(findAllProperties(componentClass, TagType.COMPONENT));
 
         return info;
     }
 
-    public static BehaviorInfo getBehaviorInfo(Class<?> behaviorClass) throws IllegalAccessException {
+    public static BehaviorInfo getBehaviorInfo(Class<?> behaviorClass) throws IllegalAccessException, ClassNotFoundException {
         BehaviorInfo info = new BehaviorInfo(behaviorClass,
+                getDescription(behaviorClass),
                 getBehaviorId(behaviorClass),
                 getRendererType(behaviorClass),
                 getTagName(behaviorClass),
-                getHandlerClass(behaviorClass));
+                getBehaviorHandlerClass(behaviorClass));
 
-        findAllProperties(behaviorClass, false).stream()
-                .map(property -> TaglibUtils.findPropertyInfo(behaviorClass, property))
-                .filter(Objects::nonNull)
-                .forEach(propertyInfo -> info.getProperties().add(propertyInfo));
+        info.setProperties(findAllProperties(behaviorClass, TagType.BEHAVIOR));
+
+        return info;
+    }
+
+    public static ValidatorInfo getValidatorInfo(Class<?> validatorClass) throws ClassNotFoundException {
+        ValidatorInfo info = new ValidatorInfo(validatorClass,
+                getDescription(validatorClass),
+                getValidatorId(validatorClass),
+                getTagName(validatorClass),
+                PrimeValidatorHandler.class);
+
+        info.setProperties(findAllProperties(validatorClass, TagType.VALIDATOR));
+
+        return info;
+    }
+
+    public static ConverterInfo getConverterInfo(Class<?> converterClass) throws ClassNotFoundException {
+        ConverterInfo info = new ConverterInfo(converterClass,
+                getDescription(converterClass),
+                getTagName(converterClass),
+                PrimeConverterHandler.class);
+
+        info.setProperties(findAllProperties(converterClass, TagType.CONVERTER));
+
+        return info;
+    }
+
+    public static TagHandlerInfo getTagHandlerInfo(Class<?> tagHandlerClass) throws ClassNotFoundException {
+        TagHandlerInfo info = new TagHandlerInfo(tagHandlerClass,
+                getDescription(tagHandlerClass),
+                getTagName(tagHandlerClass));
+
+        info.setProperties(findAllProperties(tagHandlerClass, TagType.TAG_HANDLER));
 
         return info;
     }
@@ -176,119 +269,43 @@ public final class TaglibUtils {
         }
     }
 
-    private static Class<? extends TagHandler> getHandlerClass(Class<?> behaviorClass) {
+    private static String getValidatorId(Class<?> validatorClass) {
+        try {
+            FacesValidator annotation = validatorClass.getAnnotation(FacesValidator.class);
+            String value = annotation.value();
+            if (value != null && !value.isEmpty()) {
+                return value;
+            }
+
+            // Fall back to fully qualified class name
+            return validatorClass.getName();
+        }
+        catch (Exception e) {
+            LOG.log(Level.WARNING, "Failed to get validator ID for " + validatorClass.getName(), e);
+            return validatorClass.getName();
+        }
+    }
+
+    private static Class<? extends TagHandler> getBehaviorHandlerClass(Class<?> behaviorClass) {
         FacesBehaviorHandler annotation = behaviorClass.getAnnotation(FacesBehaviorHandler.class);
         return annotation == null ? null : annotation.value();
     }
 
-    private static PropertyInfo findPropertyInfo(Class<?> clazz, String name) {
-        Method getter = findGetter(clazz, name);
-        if (getter == null && !("id".equals(name) || "binding".equals(name)  || "rendered".equals(name) )) {
-            return null;
-        }
-
-        Property property = findProperty(clazz, name);
-        PropertyInfo propertyInfo = new PropertyInfo(name,
-                property == null ? null : property.description(),
-                getter == null ? null : getter.getReturnType(),
-                property == null ? false : property.required(),
-                property == null ? null : property.defaultValue(),
-                property == null ? null : property.implicitDefaultValue());
-
-        if (propertyInfo.getDescription() == null) {
-            switch (name) {
-                case "id":
-                    propertyInfo.setDescription("Unique identifier of the component in a namingContainer.");
-                    propertyInfo.setImplicitDefaultValue("generated");
-                    break;
-                case "binding":
-                    propertyInfo.setDescription("An el expression referring to a server side UIComponent instance in a backing bean.");
-                    break;
-                case "rendered":
-                    propertyInfo.setDescription("Boolean value to specify the rendering of the component, when set to false component will not be rendered.");
-                    break;
-            }
-        }
-        if (propertyInfo.getType() == null) {
-            switch (name) {
-                case "binding":
-                    propertyInfo.setType(UIComponent.class);
-                    break;
-            }
-        }
-
-        return propertyInfo;
+    private static Class<? extends ComponentHandler> getComponentHandlerClass(Class<?> componentClass) {
+        FacesComponentHandler annotation = componentClass.getAnnotation(FacesComponentHandler.class);
+        return annotation == null ? null : annotation.value();
     }
 
-    private static Property findProperty(Class<?> clazz, String name) {
-        Class<?> current = clazz;
+    private static Map<String, Property> findAllProperties(Class<?> clazz, TagType tagType) throws ClassNotFoundException {
+        Map<String, Property> properties = new TreeMap<>(); // sorted by property name
 
-        while (current != null && current != Object.class) {
-            for (Method method : current.getDeclaredMethods()) {
-                Property property = method.getAnnotation(Property.class);
-                if (property != null && isGetterForProperty(method, name)) {
-                    return property;
-                }
-            }
-            current = current.getSuperclass();
-        }
-
-        return null;
-    }
-
-    private static Method findGetter(Class<?> clazz, String name) {
-        Class<?> current = clazz;
-
-        while (current != null && current != Object.class) {
-            for (Method method : current.getDeclaredMethods()) {
-                if (isGetterForProperty(method, name)) {
-                    return method;
-                }
-            }
-            current = current.getSuperclass();
-        }
-
-        return null;
-    }
-
-    private static boolean isGetterForProperty(Method method, String propertyName) {
-        String methodName = method.getName();
-
-        // Handle "is" prefix for boolean getters
-        if (methodName.startsWith("is") && methodName.length() > 2) {
-            String extracted = methodName.substring(2);
-            if (extracted.equalsIgnoreCase(propertyName)) {
-                return true;
-            }
-        }
-
-        // Handle "get" prefix for regular getters
-        if (methodName.startsWith("get") && methodName.length() > 3) {
-            String extracted = methodName.substring(3);
-            if (extracted.equalsIgnoreCase(propertyName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static List<String> findAllProperties(Class<?> clazz, boolean component) {
-        List<String> properties = new ArrayList<>();
-        if (component) {
-            properties.add("id");
-            properties.add("rendered");
-            properties.add("binding");
-        }
-
-        Class<?> cls = clazz;
-        while (cls != null && !cls.equals(Object.class)) {
-            // Look for nested PropertyKeys enum
-            for (Class<?> innerClass : cls.getDeclaredClasses()) {
-                if (innerClass.isEnum() && innerClass.getSimpleName().equals("PropertyKeys")) {
-                    Object[] enumConstants = innerClass.getEnumConstants();
+        if (tagType == TagType.COMPONENT || tagType == TagType.BEHAVIOR || tagType == TagType.VALIDATOR || tagType == TagType.CONVERTER) {
+            // Superclass = BaseImpl
+            for (Class<?> inner : clazz.getSuperclass().getDeclaredClasses()) {
+                if (inner.getSimpleName().equals("PropertyKeys")) {
+                    Object[] enumConstants = inner.getEnumConstants();
                     if (enumConstants == null) {
-                        continue;
+                        return null;
                     }
 
                     for (Object enumConstant : enumConstants) {
@@ -297,17 +314,28 @@ public final class TaglibUtils {
                             propertyName = ((PrimePropertyKeys) enumConstant).getName();
                         }
 
-                        if (properties.contains(propertyName)) {
+                        if (properties.containsKey(propertyName) || CdkUtils.shouldIgnoreProperty(clazz, propertyName)) {
                             continue;
                         }
 
-                        properties.add(propertyName);
+                        properties.put(propertyName,
+                                Property.Literal.of((PrimePropertyKeys) enumConstant));
                     }
                 }
             }
+        }
 
-            // Move up to the superclass
-            cls = cls.getSuperclass();
+        if (tagType == TagType.TAG_HANDLER) {
+            Class<?> cls = clazz;
+            while (cls != null && !cls.equals(Object.class)) {
+                for (Field field : cls.getDeclaredFields()) {
+                    Property property = field.getAnnotation(Property.class);
+                    if (property != null) {
+                        properties.put(field.getName(), property);
+                    }
+                }
+                cls = cls.getSuperclass();
+            }
         }
 
         return properties;

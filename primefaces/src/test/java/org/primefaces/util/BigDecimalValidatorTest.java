@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ package org.primefaces.util;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
@@ -40,21 +39,6 @@ class BigDecimalValidatorTest {
 
     private static final DecimalFormat US = (DecimalFormat) DecimalFormat.getInstance(Locale.US);
     private static final DecimalFormat EC = (DecimalFormat) DecimalFormat.getInstance(new Locale("es", "EC"));
-    private static final DecimalFormat CUSTOM = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(new Locale("es", "US")));
-
-    private static int getVersion() {
-        String version = System.getProperty("java.version");
-        if (version.startsWith("1.")) {
-            version = version.substring(2, 3);
-        }
-        else {
-            int dot = version.indexOf(".");
-            if (dot != -1) {
-                version = version.substring(0, dot);
-            }
-        }
-        return Integer.parseInt(version);
-    }
 
     /**
      * Test Valid currency values

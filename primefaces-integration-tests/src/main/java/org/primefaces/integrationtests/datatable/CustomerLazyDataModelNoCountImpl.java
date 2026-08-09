@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,17 +45,6 @@ public class CustomerLazyDataModelNoCountImpl extends LazyDataModel<Customer> {
 
     public CustomerLazyDataModelNoCountImpl(List<Customer> datasource) {
         this.datasource = datasource;
-    }
-
-    @Override
-    public Customer getRowData(String rowKey) {
-        for (Customer customer : datasource) {
-            if (customer.getId() == Integer.parseInt(rowKey)) {
-                return customer;
-            }
-        }
-
-        return null;
     }
 
     @Override

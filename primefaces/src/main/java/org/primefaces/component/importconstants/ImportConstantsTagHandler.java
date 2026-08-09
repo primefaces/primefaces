@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.importconstants;
 
+import org.primefaces.cdk.api.FacesTagHandler;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.LangUtils;
 
@@ -44,16 +46,22 @@ import jakarta.faces.view.facelets.TagHandler;
 /**
  * {@link TagHandler} for the <code>ImportConstants</code> component.
  */
+@FacesTagHandler(description = "Utility tag to import constants.")
 public class ImportConstantsTagHandler extends TagHandler {
 
-    private final TagAttribute typeTagAttribute;
-    private final TagAttribute varTagAttribute;
+    @Property(description = "The constants class.", required = true, type = String.class)
+    private final TagAttribute type;
+
+    @Property(description = "The EL variable which can be used to obtain the constants.",
+            defaultValue = "Name of the class without package.",
+            type = String.class)
+    private final TagAttribute var;
 
     public ImportConstantsTagHandler(TagConfig config) {
         super(config);
 
-        typeTagAttribute = super.getRequiredAttribute("type");
-        varTagAttribute = super.getAttribute("var");
+        type = super.getRequiredAttribute("type");
+        var = super.getAttribute("var");
     }
 
     @Override
@@ -61,16 +69,16 @@ public class ImportConstantsTagHandler extends TagHandler {
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
-        Class<?> type = getClassFromAttribute(typeTagAttribute, ctx);
+        Class<?> type = getClassFromAttribute(this.type, ctx);
         Map<String, Object> constants = getConstants(facesContext, type);
 
         // Create alias/var expression
         String var;
-        if (varTagAttribute == null) {
+        if (this.var == null) {
             var = type.getSimpleName(); // fall back to class name
         }
         else {
-            var = varTagAttribute.getValue(ctx);
+            var = this.var.getValue(ctx);
         }
 
         ctx.setAttribute(var, constants);

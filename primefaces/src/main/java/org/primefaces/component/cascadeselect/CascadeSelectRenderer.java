@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -190,7 +190,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer<CascadeSelect> {
     protected void encodeListItems(FacesContext context, CascadeSelect component, SelectItem[] selectItems) throws IOException {
         if (selectItems != null && selectItems.length > 0) {
             ResponseWriter writer = context.getResponseWriter();
-            UIComponent contentFacet = component.getFacet("content");
+            UIComponent contentFacet = component.getContentFacet();
             Converter converter = ComponentUtils.getConverter(context, component);
             String var = component.getVar();
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.component.paginator;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIPageableData;
+import org.primefaces.util.LocaleUtils;
 
 import java.io.IOException;
 
@@ -38,14 +39,18 @@ public class JumpToPageDropdownRenderer implements PaginatorElementRenderer {
         ResponseWriter writer = context.getResponseWriter();
         int currentPage = pageable.getPage();
         int pageCount = pageable.getPageCount();
+        String id = buildId(context, pageable, "jumpToPage");
 
         writer.startElement("select", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", UIPageableData.PAGINATOR_JTP_SELECT_CLASS, null);
-        writer.writeAttribute("value", pageable.getPage(), null);
+        writer.writeAttribute("value", LocaleUtils.formatInteger(context, pageable.getPage()), null);
 
         for (int i = 0; i < pageCount; i++) {
             writer.startElement("option", null);
-            writer.writeAttribute("value", i, null);
+            writer.writeAttribute("value", LocaleUtils.formatInteger(context, i), null);
 
             if (i == currentPage) {
                 writer.writeAttribute("selected", "selected", null);

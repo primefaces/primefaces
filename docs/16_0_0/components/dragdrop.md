@@ -2,54 +2,7 @@
 
 Drag&Drop utilities of PrimeFaces consists of two components; Draggable and Droppable.
 
-[See the draggable widget in the JavaScript API Docs:](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Draggable-1.html)
-
-[See the droppable widget in the JavaScript API Docs:](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Droppable-1.html)
-
 ##  Draggable
-
-### Info
-
-| Name | Value |
-| --- | --- |
-| Tag | draggable
-| Component Class | org.primefaces.component.dnd.Draggable
-| Component Type | org.primefaces.component.Draggable
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.DraggableRenderer
-| Renderer Class | org.primefaces.component.dnd.DraggableRenderer
-
-### Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget
-| proxy | false | Boolean | Displays a proxy element instead of actual element.
-| dragOnly | false | Boolean | Specifies a draggable that can’t be dropped.
-| for | null | String | Id of the component to add draggable behavior
-| disabled | false | Boolean | Disables draggable behavior when true.
-| axis | null | String | Specifies drag axis, valid values are ‘x’ and ‘y’.
-| containment | null | String | Constraints dragging within the boundaries of containment element
-| helper | null | String | Helper element to display when dragging
-| revert | false | Boolean | Reverts draggable to it’s original position when not dropped onto a valid droppable
-| snap | false | Boolean | Draggable will snap to edge of near elements
-| snapMode | null | String | Specifies the snap mode. Valid values are ‘both’, ‘inner’ and ‘outer’.
-| snapTolerance | 20 | Integer | Distance from the snap element in pixels to trigger snap.
-| zindex | null | Integer | ZIndex to apply during dragging.
-| handle | null | String | Specifies a handle for dragging.
-| opacity | 1 | Double | Defines the opacity of the helper during dragging.
-| stack | null | String | In stack mode, draggable overlap is controlled automatically using the provided selector, dragged item always overlays other draggables.
-| grid | null | String | Dragging happens in every x and y pixels.
-| scope | null | String | Scope key to match draggables and droppables.
-| cursor | crosshair | String | CSS cursor to display in dragging.
-| dashboard | null | String | Id of the dashboard to connect with.
-| appendTo | null | String | A search expression to define which element to append the draggable helper to.
-| onStart | null | String | Client side callback to execute when dragging starts.
-| onDrag | null | String | Client side callback to execute while dragging.
-| onStop | null | String | Client side callback to execute when dragging stops.
 
 ### Getting started with Draggable
 Any component can be enhanced with draggable behavior, basically this is achieved by defining the
@@ -200,29 +153,6 @@ If _for_ attribute is omitted, parent component becomes droppable.
 <p:outputPanel id="slot" styleClass="slot">
     <p:droppable />
 </p:outputPanel>
-```
-### Ajax Behavior Events
-_drop_ is the only and default ajax behavior event provided by droppable that is processed when a
-valid draggable is dropped. In case you define a listener it’ll be executed by passing an
-_org.primefaces.event.DragDrop_ event instance parameter holding information about the dragged
-and dropped components.
-
-Following example shows how to enable draggable images to be dropped on droppables.
-
-```xhtml
-<p:graphicImage id="messi" value="barca/messi_thumb.jpg" />
-<p:draggable for="messi"/>
-<p:outputPanel id="zone" styleClass="slot" />
-<p:droppable for="zone">
-    <p:ajax listener="#{ddController.onDrop}" />
-</p:droppable>
-```
-```java
-public void onDrop(DragDropEvent ddEvent) {
-    String draggedId = ddEvent.getDragId(); //Client id of dragged component
-    String droppedId = ddEvent.getDropId(); //Client id of dropped component
-    Object data = ddEvent.getData(); //Model object of a datasource
-}
 ```
 
 ### onDrop

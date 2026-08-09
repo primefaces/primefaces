@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,12 @@
  */
 package org.primefaces.component.media;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Media.COMPONENT_TYPE, namespace = Media.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Media is a component that displays multimedia content such as PDF, videos and music.")
 public class Media extends MediaBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Media";

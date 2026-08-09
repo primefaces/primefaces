@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -108,8 +108,8 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
     }
 
     public List<String> getLabels() {
-        return getCheckboxes().stream()
-                    .map(WebElement::getText)
+        return getItems().stream()
+                    .map(SelectItem::getLabel)
                     .collect(Collectors.toList());
     }
 
@@ -141,5 +141,12 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
 
     public boolean isSelected(int index) {
         return getItems().get(index).isSelected();
+    }
+
+    public List<String> getSelectedLabels() {
+        return getItems().stream()
+                    .filter(SelectItem::isSelected)
+                    .map(SelectItem::getLabel)
+                    .collect(Collectors.toList());
     }
 }

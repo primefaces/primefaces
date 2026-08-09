@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.selectbooleanbutton;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 
@@ -30,16 +31,27 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = SelectBooleanButton.COMPONENT_TYPE, namespace = SelectBooleanButton.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "SelectBooleanButton is used to select a binary decision with a toggle button.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class SelectBooleanButton extends SelectBooleanButtonBase {
+public class SelectBooleanButton extends SelectBooleanButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanButton";
 
     public static final String STYLE_CLASS = "ui-selectbooleanbutton ui-widget";
+
+    @Override
+    public String getInputClientId() {
+        return this.getClientId(getFacesContext()) + "_input";
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return this.getInputClientId();
+    }
 
     public String resolveStyleClass(boolean checked, boolean disabled) {
         String icon = checked ? getOnIcon() : getOffIcon();
@@ -62,6 +74,13 @@ public class SelectBooleanButton extends SelectBooleanButtonBase {
 
         if (!isValid()) {
             styleClass = styleClass + " ui-state-error";
+        }
+
+        if ("small".equals(getSize())) {
+            styleClass = styleClass + " ui-button-sm";
+        }
+        else if ("large".equals(getSize())) {
+            styleClass = styleClass + " ui-button-lg";
         }
 
         String userStyleClass = getStyleClass();

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.dataview;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = DataViewListItem.COMPONENT_TYPE, namespace = DataViewListItem.COMPONENT_FAMILY)
-public class DataViewListItem extends DataViewListItemBase {
+@FacesComponentInfo(description = "dataViewListItem is a helper component for DataView to add list items.")
+public class DataViewListItem extends DataViewListItemBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataViewListItem";
 }

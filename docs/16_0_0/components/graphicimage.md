@@ -7,53 +7,6 @@ Legacy way to do this is to come up with a Servlet that does the streaming, Grap
 
 !> Dynamic content streaming has a limitation inside iterating components like _p:dataTable_ or _ui:repeat_. See: [Dynamic content rendering / streaming](/core/dynamiccontent?id=iterating-component-support)
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | graphicImage
-| Component Class | org.primefaces.component.graphicimage.GraphicImage
-| Component Type | org.primefaces.component.GraphicImage
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.GraphicImageRenderer
-| Renderer Class | org.primefaces.component.graphicimage.GraphicImageRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-alt | null | String | Alternate text for the image
-cache | false | String | Enables/Disables browser from caching the image
-dir | null | String | Direction of the text displayed
-height | null | String | Height of the image
-ismap | false | Boolean | Specifies to use a server-side image map
-lang | null | String | Language code
-library | null | String | Library name of the image.
-name | null | String | Name of the image.
-onclick | null | String | onclick DOM event handler
-ondblclick | null | String | ondblclick DOM event handler
-onkeydown | null | String | onkeydown DOM event handler
-onkeypress | null | String | onkeypress DOM event handler
-onkeyup | null | String | onkeyup DOM event handler
-onmousedown | null | String | onmousedown DOM event handler
-onmousemove | null | String | onmousemove DOM event handler
-onmouseout | null | String | onmouseout DOM event handler
-onmouseover | null | String | onmouseover DOM event handler
-onmouseup | null | String | onmouseup DOM event handler
-sizes | null | String | One or more strings separated by commas, indicating a set of source sizes.
-srcset | null | String | One or more strings separated by commas, indicating possible image sources for the user agent to use.
-stream | true | Boolean | Defines if the image is streamed or rendered directly as data uri / base64 with ViewScoped support.
-style | null | String | Style of the image
-styleClass | null | String | Style class of the image
-title | null | String | Title of the image
-url | null | String | Alias to value attribute
-usemap | null | String | Name of the client side map
-value | null | Object | Binary data to stream or context relative path.
-width | null | String | Width of the image
-
 ## Getting started with GraphicImage
 GraphicImage requires an _org.primefaces.model.StreamedContent_ content as it’s value for dynamic
 images. StreamedContent is an interface and PrimeFaces provides a built-in implementation called

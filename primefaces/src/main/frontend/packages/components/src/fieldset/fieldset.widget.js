@@ -66,6 +66,7 @@ PrimeFaces.widget.Fieldset = class Fieldset extends PrimeFaces.widget.BaseWidget
                 if(e.key === 'Enter') {
                     $this.toggle(e);
                     e.preventDefault();
+                    e.stopPropagation();
                 }
             });
         }

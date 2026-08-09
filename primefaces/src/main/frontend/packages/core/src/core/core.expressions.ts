@@ -37,7 +37,8 @@ export class SearchExpressionFacade {
 
                 // just a id
                 if (expression.indexOf("@") == -1) {
-                    const element = document.getElementById(expression);
+                    const cleanedExpression = expression.startsWith("#") ? expression.substring(1) : expression;
+                    const element = document.getElementById(cleanedExpression);
                     if (element !== null) {
                         elements = elements.add($(element));
                     }

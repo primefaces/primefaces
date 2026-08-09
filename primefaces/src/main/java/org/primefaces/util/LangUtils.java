@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,7 +53,7 @@ import jakarta.xml.bind.DatatypeConverter;
 
 public class LangUtils {
 
-    public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+    public static final Object[] EMPTY_OBJECT_ARRAY = {};
     private static final Pattern CAPITAL_CASE = Pattern.compile("(?<=.)(?=\\p{Lu})");
     private static final Pattern DIACRITICS_PATTERN = Pattern.compile("\\p{M}");
 
@@ -68,7 +68,7 @@ public class LangUtils {
         return !isEmpty(value);
     }
 
-    public static boolean isBlank(String str) {
+    public static boolean isBlank(CharSequence str) {
         if (str == null) {
             return true;
         }
@@ -86,8 +86,23 @@ public class LangUtils {
         return true;
     }
 
-    public static boolean isNotBlank(String value) {
+    public static boolean isNotBlank(CharSequence value) {
         return !isBlank(value);
+    }
+
+    /**
+     * Coerces an arbitrary value to a boolean. Avoids the {@code String.valueOf(...)} allocation of the common
+     * {@link Boolean}/{@code null} cases while remaining equivalent to
+     * {@code Boolean.parseBoolean(String.valueOf(value))}.
+     *
+     * @param value the value to coerce, may be {@code null}
+     * @return {@code true} if the value is {@link Boolean#TRUE} or a String equal (ignoring case) to {@code "true"}
+     */
+    public static boolean toBoolean(Object value) {
+        if (value instanceof Boolean) {
+            return (Boolean) value;
+        }
+        return value != null && Boolean.parseBoolean(value.toString());
     }
 
     /**
@@ -296,8 +311,10 @@ public class LangUtils {
         return Collections.unmodifiableList(Arrays.asList(args));
     }
 
+    @SafeVarargs
     public static <E> Set<E> newLinkedHashSet(E... elements) {
-        Set<E> set = new LinkedHashSet<>(elements.length);
+        int size = (int) Math.ceil(elements.length / 0.75);
+        Set<E> set = new LinkedHashSet<>(size);
         Collections.addAll(set, elements);
         return set;
     }

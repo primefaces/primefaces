@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,7 @@
  */
 package org.primefaces.renderkit;
 
-import org.primefaces.component.api.AbstractPrimeHtmlInputText;
-import org.primefaces.component.api.AbstractPrimeHtmlInputTextArea;
+import org.primefaces.component.api.InputAware;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
@@ -61,11 +60,18 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
     }
 
     protected boolean isDisabled(UIInput component) {
-        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")));
+        // prefer the typed accessor when available, otherwise fall back to the attribute map
+        if (component instanceof InputAware) {
+            return ((InputAware) component).isDisabled();
+        }
+        return LangUtils.toBoolean(component.getAttributes().get("disabled"));
     }
 
     protected boolean isReadOnly(UIInput component) {
-        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
+        if (component instanceof InputAware) {
+            return ((InputAware) component).isReadonly();
+        }
+        return LangUtils.toBoolean(component.getAttributes().get("readonly"));
     }
 
     protected boolean shouldDecode(UIInput component) {
@@ -106,8 +112,8 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
      * "aria-required" if the component is required
      * "aria-invalid" if the component is invalid
      * "aria-labelledby" if the component has a labelledby attribute
-     * "disabled" and "aria-disabled" if the component is disabled
-     * "readonly" and "aria-readonly" if the component is readonly
+     * "disabled" if the component is disabled
+     * "readonly" if the component is readonly
      * </pre>
      * @param context the {@link FacesContext}
      * @param component the {@link UIInput} component to add attributes for
@@ -144,7 +150,7 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
 
         if (component instanceof InputHolder) {
             InputHolder inputHolder = ((InputHolder) component);
-            String labelledBy = inputHolder.getLabelledBy();
+            String labelledBy = inputHolder.getAriaLabelledBy();
             if (LangUtils.isNotBlank(labelledBy)) {
                 writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
             }
@@ -156,15 +162,12 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
         }
 
         String ariaDescribedBy = null;
-        if (component instanceof AbstractPrimeHtmlInputText) {
-            ariaDescribedBy = ((AbstractPrimeHtmlInputText) component).getAriaDescribedBy();
-        }
-        else if (component instanceof AbstractPrimeHtmlInputTextArea) {
-            ariaDescribedBy = ((AbstractPrimeHtmlInputTextArea) component).getAriaDescribedBy();
-        }
-        if (LangUtils.isNotBlank(ariaDescribedBy)) {
-            String target = SearchExpressionUtils.resolveClientIds(ariaDescribedBy, component);
-            writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target, null);
+        if (component instanceof InputAware) {
+            ariaDescribedBy = ((InputAware) component).getAriaDescribedBy();
+            if (LangUtils.isNotBlank(ariaDescribedBy)) {
+                String target = SearchExpressionUtils.resolveClientIds(ariaDescribedBy, component);
+                writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, target, null);
+            }
         }
 
         if (disabled) {

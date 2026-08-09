@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.component.paginator;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIPageableData;
+import org.primefaces.util.LocaleUtils;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -52,15 +53,15 @@ public class CurrentPageReportRenderer implements PaginatorElementRenderer {
 
         String output = template;
         output = PATTERN_CURRENT_PAGE.matcher(output).replaceAll(
-                Integer.toString(currentPage));
+                LocaleUtils.formatInteger(context, currentPage));
         output = PATTERN_TOTAL_PAGES.matcher(output).replaceAll(
-                Integer.toString(pageCount));
+                LocaleUtils.formatInteger(context, pageCount));
         output = PATTERN_TOTAL_RECORDS.matcher(output).replaceAll(
-                Integer.toString(pageable.getRowCount()));
+                LocaleUtils.formatInteger(context, pageable.getRowCount()));
         output = PATTERN_START_RECORD.matcher(output).replaceAll(
-                Integer.toString(Math.min(pageable.getFirst() + 1, pageable.getRowCount())));
+                LocaleUtils.formatInteger(context, Math.min(pageable.getFirst() + 1, pageable.getRowCount())));
         output = PATTERN_END_RECORD.matcher(output).replaceAll(
-                Integer.toString(Math.min(pageable.getFirst() + pageable.getRowsToRender(), pageable.getRowCount())));
+                LocaleUtils.formatInteger(context, Math.min(pageable.getFirst() + pageable.getRowsToRender(), pageable.getRowCount())));
 
         writer.startElement("span", null);
         writer.writeAttribute("class", UIPageableData.PAGINATOR_CURRENT_CLASS, null);

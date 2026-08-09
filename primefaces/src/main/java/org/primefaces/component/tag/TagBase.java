@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,14 @@
  */
 package org.primefaces.component.tag;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.StyleAware;
 
-import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.component.UIOutput;
 
-public abstract class TagBase extends UIComponentBase implements StyleAware {
+@FacesComponentBase
+public abstract class TagBase extends UIOutput implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -46,7 +48,7 @@ public abstract class TagBase extends UIComponentBase implements StyleAware {
     @Property(description = "Icon of the tag.")
     public abstract String getIcon();
 
-    @Property(description = "Severity of the tag, valid options are \"info\", \"success\", \"warning\", and \"danger\".")
+    @Property(description = "Severity of the tag, valid options are \"info\", \"success\", \"warning\", \"danger\", \"help\", and \"secondary\".")
     public abstract String getSeverity();
 
     @Property(defaultValue = "false", description = "Whether to display the tag with rounded corners.")

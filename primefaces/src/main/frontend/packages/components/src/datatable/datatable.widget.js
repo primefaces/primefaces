@@ -776,12 +776,21 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     bindClearFilterEvent(filter) {
         var $this = this;
 
-        filter.off('search').on('search', function(e) {
+        filter.off('search.filterClear').on('search.filterClear', function(e) {
             // only care when 'X'' is clicked
             if ($(this).val() == "") {
                 $this.filter();
             }
         });
+
+        // #14480 Safari does not trigger 'search' event on clear button
+        if (PrimeFaces.env.browser.safari) {
+            filter.off('input.filterClear').on('input.filterClear', function(e) {
+                if (this.value === "") {
+                    $this.filter();
+                }
+            });
+        }
     }
 
     /**
@@ -4831,15 +4840,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      */
     removeSelection(rowKey) {
         if(this.selection.includes('@all')) {
-            // GitHub #3535 if @all was previously selected just select values on page
-            this.clearSelection();
-            var rows = this.tbody.children('tr');
-            for(var i = 0; i < rows.length; i++) {
-                var rowMeta = this.getRowMeta(rows.eq(i));
-                if(rowMeta.key !== rowKey) {
-                    this.addSelection(rowMeta.key);
-                }
-            }
+            // GitHub #14538,#3535: Keep @all and add negative rowKey to mark this row as unselected
+            this.selection.push('!' + rowKey);
         }
         else {
             this.selection = $.grep(this.selection, function(value) {
@@ -4854,7 +4856,14 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {number} rowKey Key of the row to add.
      */
     addSelection(rowKey) {
-        if(!this.isSelected(rowKey)) {
+        if(this.selection.includes('@all')) {
+            // GitHub #14538,#3535: Remove the deselection marker if it exists (reselecting a deselected row)
+            var deselectionMarker = '!' + rowKey;
+            this.selection = $.grep(this.selection, function(value) {
+                return value !== deselectionMarker;
+            });
+        }
+        else if(!this.isSelected(rowKey)) {
             this.selection.push(rowKey);
         }
     }
@@ -5034,6 +5043,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 //save order
                 $this.saveColumnOrder();
 
+                // update headers
+                $this.headers = $this.thead.find('> tr > th');
+
                 //fire colReorder event
                 if($this.hasBehavior('colReorder')) {
                     var ext = null;
@@ -5108,29 +5120,11 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             },
             update: function(event, ui) {
                 var fromIndex = ui.item.data('ri');
-                var fromNode = ui.item;
-                var itemIndex = ui.item.index();
-                var toIndex = $this.paginator ? $this.paginator.getFirst() + itemIndex : itemIndex;
-                var isDirectionUp = fromIndex >= toIndex;
 
                 // #5296 must not count header group rows
                 // #6557 must not count expanded rows
-                if (isDirectionUp) {
-                    for (let i = 0; i <= toIndex; i++) {
-                        fromNode = fromNode.next('tr');
-                        if (fromNode.hasClass('ui-rowgroup-header') || fromNode.hasClass('ui-expanded-row-content')){
-                            toIndex--;
-                        }
-                    }
-                } else {
-                    fromNode.prevAll('tr').each(function() {
-                        var node = $(this);
-                        if (node.hasClass('ui-rowgroup-header') || node.hasClass('ui-expanded-row-content')){
-                            toIndex--;
-                        }
-                    });
-                }
-                toIndex = Math.max(toIndex, 0);
+                var itemIndex = ui.item.prevAll('tr').not('.ui-rowgroup-header').not('.ui-expanded-row-content').length;
+                var toIndex = $this.paginator ? $this.paginator.getFirst() + itemIndex : itemIndex;
 
                 $this.syncRowParity();
 
@@ -5380,7 +5374,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
                 $this.stickyContainer.hide();
                 $this.resizeTimeout = PrimeFaces.queueTask(function() {
-                    $this.stickyContainer.css({ left: orginTableContent.offset().left + 'px', 'z-index': PrimeFaces.nextZindex() });
+                    $this.stickyContainer.css({ left: orginTableContent.offset().left + 'px', 'z-index': PrimeFaces.utils.nextStickyZindex() });
                     $this.stickyContainer.width(table.outerWidth());
                     // Dispatch the scroll event on the window
                     window.dispatchEvent(new Event('scroll'));
@@ -5856,8 +5850,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         // reset the position and column widths if scrollable
         if(this.scrollBody) {
-            // reset scroll position to left-top.
-            this.scrollBody.scrollTop(0).scrollLeft(0); 
+            // reset scroll position to top.
+            this.scrollBody.scrollTop(0);
 
             // reset the column widths if the first row exists
             const firstRow = this.firstRow();

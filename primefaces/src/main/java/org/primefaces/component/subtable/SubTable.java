@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.subtable;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.api.ColumnAware;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.model.ColumnMeta;
@@ -35,7 +36,8 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.event.PhaseId;
 
 @FacesComponent(value = SubTable.COMPONENT_TYPE, namespace = SubTable.COMPONENT_FAMILY)
-public class SubTable extends SubTableBase implements ColumnAware {
+@FacesComponentInfo(description = "SubTable is a helper component of datatable used for grouping.")
+public class SubTable extends SubTableBaseImpl implements ColumnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";
 

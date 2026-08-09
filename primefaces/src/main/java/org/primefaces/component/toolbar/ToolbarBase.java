@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,19 @@
  */
 package org.primefaces.component.toolbar;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.component.api.StyleAware;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
 
-
-public abstract class ToolbarBase extends UIComponentBase {
+@FacesComponentBase
+public abstract class ToolbarBase extends UIComponentBase implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ToolbarRenderer";
-
-    public enum PropertyKeys {
-
-        style,
-        styleClass
-    }
 
     public ToolbarBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -47,20 +46,10 @@ public abstract class ToolbarBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Facet(description = "Left content of the toolbar.")
+    public abstract UIComponent getLeftFacet();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Facet(description = "Right content of the toolbar.")
+    public abstract UIComponent getRightFacet();
 
 }

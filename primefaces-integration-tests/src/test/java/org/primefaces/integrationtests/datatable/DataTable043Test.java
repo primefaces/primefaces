@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -50,6 +51,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * DataTable #11135: support composite as filter.
  *
  */
+@Tag("DataTable-filter")
+@Tag("DataTable-paginator")
 class DataTable043Test extends AbstractDataTableTest {
 
     @Test
@@ -151,7 +154,6 @@ class DataTable043Test extends AbstractDataTableTest {
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        System.out.println("DataTable Config = " + cfg);
         assertTrue(cfg.has("paginator"));
         assertEquals("wgtTable", cfg.getString("widgetVar"));
         assertEquals(0, cfg.getInt("tabindex"));

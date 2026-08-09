@@ -15,7 +15,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | Apache POI | org.apache.poi | poi-ooxml | 5.4.0 | Optional | DataExporter (Excel XLSX Office 2003) |
 | RSS Reader | com.apptasticsoftware | rssreader | 3.9.1 | Optional | FeedReader |
 | Okapi | uk.org.okapibarcode | okapibarcode | 0.5.0 | Optional | Barcode |
-| owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer | 20240325.1 | Optional | TextEditor |
+| owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer | 20260101.1 | Optional | TextEditor |
 | XDEV Chart.js Java Model | software.xdev | chartjs-java-model | 2.6.0 | Optional | Charts |
 
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these

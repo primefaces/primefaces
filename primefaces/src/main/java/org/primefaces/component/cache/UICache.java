@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,15 @@
  */
 package org.primefaces.component.cache;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.visit.VisitContext;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = UICache.COMPONENT_TYPE, namespace = UICache.COMPONENT_FAMILY)
-public class UICache extends UICacheBase {
+@FacesComponentInfo(name = "cache", description = "Cache component is used to reduce page load time by caching the content after initial rendering.")
+public class UICache extends UICacheBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Cache";
 

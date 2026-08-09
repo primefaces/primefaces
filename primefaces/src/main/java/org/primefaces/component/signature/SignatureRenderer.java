@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -112,7 +112,7 @@ public class SignatureRenderer extends InputRenderer<Signature> {
                 .attr("fontFamily", signature.getFontFamily(), null)
                 .attr("fontSize", signature.getFontSize(), 40)
                 .attr("ariaLabel", signature.getAriaLabel(), null)
-                .attr("ariaLabelledBy", signature.getLabelledBy(), null)
+                .attr("ariaLabelledBy", signature.getAriaLabelledBy(), null)
                 .attr("tabindex", signature.getTabindex(), "0")
                 .callback("onchange", "function()", signature.getOnchange());
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -195,6 +195,12 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         String buttonClass = SplitButton.MENU_ICON_BUTTON_CLASS;
         if (component.isDisabled()) {
             buttonClass += " ui-state-disabled";
+        }
+        if ("small".equals(component.getSize())) {
+            buttonClass += " ui-button-sm";
+        }
+        else if ("large".equals(component.getSize())) {
+            buttonClass += " ui-button-lg";
         }
 
         writer.startElement("button", component);

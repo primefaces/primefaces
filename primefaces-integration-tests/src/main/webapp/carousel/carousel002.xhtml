@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:carousel id="carousel" widgetVar="carouselWidget" value="#{carousel002.items}" var="item"
+                        page="#{carousel002.page}" numVisible="1" numScroll="1" style="max-width: 400px;">
+                <p:ajax event="pageChange" listener="#{carousel002.onPageChange}" />
+                <div class="carousel-item-content">
+                    <h:outputText value="#{item}" styleClass="item-label" />
+                </div>
+            </p:carousel>
+
+            <p:commandButton id="button" value="Submit" update="@form" action="#{carousel002.submit}" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

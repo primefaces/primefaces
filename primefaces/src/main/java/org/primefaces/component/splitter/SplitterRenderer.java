@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -132,7 +132,7 @@ public class SplitterRenderer extends CoreRenderer<Splitter> {
         writer.writeAttribute(HTML.ARIA_ROLE, "presentation", null);
         writer.writeAttribute("data-size", component.getSize(), null);
         writer.writeAttribute("data-minsize", component.getMinSize(), null);
-        if (component.getStyle() != null) {
+        if (LangUtils.isNotBlank(component.getStyle())) {
             writer.writeAttribute("style", component.getStyle(), "style");
         }
 

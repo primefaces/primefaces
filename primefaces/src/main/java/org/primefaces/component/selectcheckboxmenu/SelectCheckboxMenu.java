@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,14 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.column.Column;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -41,16 +39,16 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.BehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = SelectCheckboxMenu.COMPONENT_TYPE, namespace = SelectCheckboxMenu.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "SelectCheckboxMenu is a multi select component that displays options in an overlay.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
+public class SelectCheckboxMenu extends SelectCheckboxMenuBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectCheckboxMenu";
 
@@ -65,8 +63,8 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     public static final String FILTER_CLASS = "ui-selectcheckboxmenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String CLOSER_CLASS = "ui-selectcheckboxmenu-close";
     public static final String ITEMS_WRAPPER_CLASS = "ui-selectcheckboxmenu-items-wrapper";
-    public static final String LIST_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-helper-reset";
-    public static final String TABLE_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-table ui-widget-content ui-widget ui-helper-reset";
+    public static final String LIST_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget";
+    public static final String TABLE_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-table ui-widget-content ui-widget";
     public static final String ITEM_CLASS = "ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-helper-clearfix";
     public static final String ROW_ITEM_GROUP_CLASS = "ui-selectcheckboxmenu-item-group ui-selectcheckboxmenu-row ui-widget-content";
     public static final String ROW_ITEM_CLASS = "ui-selectcheckboxmenu-item ui-selectcheckboxmenu-row ui-widget-content";
@@ -77,31 +75,6 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     public static final String TOKEN_ICON_CLASS = "ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close";
     public static final String CHECKBOX_INPUT_CLASS = "ui-selectcheckboxmenu-item-input";
 
-    private static final String DEFAULT_EVENT = "change";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("change", null)
-            .put("toggleSelect", ToggleSelectEvent.class)
-            .put("itemSelect", SelectEvent.class)
-            .put("itemUnselect", UnselectEvent.class)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return DEFAULT_EVENT;
-    }
-
     @Override
     public String getInputClientId() {
         return getClientId(getFacesContext()) + "_focus";
@@ -110,26 +83,6 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     @Override
     public String getValidatableInputClientId() {
         return getClientId(getFacesContext());
-    }
-
-    @Override
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
-    }
-
-    @Override
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
-    }
-
-    @Override
-    public String getAriaDescribedBy() {
-        return (String) getStateHelper().get("ariaDescribedBy");
-    }
-
-    @Override
-    public void setAriaDescribedBy(String ariaDescribedBy) {
-        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
     }
 
     public List<Column> getColumns() {
@@ -147,26 +100,25 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-
-        if (eventName != null && event instanceof AjaxBehaviorEvent) {
+        if (isAjaxBehaviorEventSource(event)) {
+            FacesContext context = getFacesContext();
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
-            if ("toggleSelect".equals(eventName)) {
+
+            if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.toggleSelect)) {
                 String clientId = getClientId(context);
                 boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));
                 ToggleSelectEvent toggleSelectEvent = new ToggleSelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), checked);
                 toggleSelectEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(toggleSelectEvent);
             }
-            else if ("itemSelect".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.itemSelect)) {
                 Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
                 SelectEvent<?> selectEvent = new SelectEvent<>(this, ((AjaxBehaviorEvent) event).getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(selectEvent);
             }
-            else if ("itemUnselect".equals(eventName)) {
+            else if (isAjaxBehaviorEvent(event, ClientBehaviorEventKeys.itemUnselect)) {
                 Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
                 UnselectEvent<?> unselectEvent = new UnselectEvent<>(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());

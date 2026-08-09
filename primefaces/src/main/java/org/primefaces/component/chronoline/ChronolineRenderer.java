@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -91,7 +91,7 @@ public class ChronolineRenderer extends CoreRenderer<Chronoline> {
 
     protected void encodeOppositeContent(FacesContext context, Chronoline component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent oppositeFacet = component.getFacet("opposite");
+        UIComponent oppositeFacet = component.getOppositeFacet();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Chronoline.EVENT_OPPOSITE_CLASS, null);
@@ -108,7 +108,7 @@ public class ChronolineRenderer extends CoreRenderer<Chronoline> {
 
     protected void encodeSeparator(FacesContext context, Chronoline component, boolean isLastItem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent markerFacet = component.getFacet("marker");
+        UIComponent markerFacet = component.getMarkerFacet();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Chronoline.EVENT_SEPARATOR_CLASS, null);

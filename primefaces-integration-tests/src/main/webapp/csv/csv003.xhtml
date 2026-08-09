@@ -41,7 +41,7 @@
 
                     <p:outputLabel for="@next" value="Time (@Past)"/>
                     <p:inputText id="datePast" value="#{csv003.datePast}">
-                        <f:convertDateTime pattern="HH:mm:ss"/>
+                        <f:convertDateTime pattern="HH:mm:ss" timeZone="UTC" />
                     </p:inputText>
                     <p:message for="@previous" id="msgDatePast"/>
                     <h:outputText value="#{csv003.datePast}"/>
@@ -55,7 +55,7 @@
                 
                     <p:outputLabel for="@next" value="DateTime (@Future)"/>
                     <p:inputText id="dateFuture" value="#{csv003.dateFuture}">
-                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="UTC"/>
                     </p:inputText>
                     <p:message for="@previous" id="msgDateFuture"/>
                     <h:outputText value="#{csv003.dateFuture}"/>

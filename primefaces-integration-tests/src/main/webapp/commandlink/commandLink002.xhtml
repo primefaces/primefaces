@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+    <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+        <h:head/>
+
+        <h:body>
+            <h:form id="form">
+                <p:messages id="messages" showDetail="true"/>
+
+                <p:commandLink id="linkConfirm" value="Confirm"
+                               update="messages"
+                               action="#{commandLink002.confirm}">
+                    <p:confirm header="Confirmation" message="Are you sure you want to proceed?"
+                               icon="pi pi-exclamation-triangle"/>
+                </p:commandLink>
+
+                <p:confirmDialog id="confirmdialog" global="true" showEffect="fade" hideEffect="fade"
+                                 responsive="true" width="350">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat" icon="pi pi-times"/>
+                </p:confirmDialog>
+            </h:form>
+        </h:body>
+    </f:view>
+
+</html>

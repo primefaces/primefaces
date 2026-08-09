@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,8 @@
 package org.primefaces.component.accordionpanel;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
@@ -46,6 +48,8 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = AccordionPanel.COMPONENT_TYPE, namespace = AccordionPanel.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "AccordionPanel is a container component that displays content in stacked format.")
+@FacesComponentHandler(AccordionPanelHandler.class)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -55,14 +59,14 @@ public class AccordionPanel extends AccordionPanelBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.AccordionPanel";
 
-    public static final String CONTAINER_CLASS = "ui-accordion ui-widget ui-helper-reset ui-hidden-container";
-    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-state-active";
-    public static final String TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default";
-    public static final String TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
-    public static final String TAB_HEADER_ICON_RTL_CLASS = "ui-icon ui-icon-triangle-1-w";
-    public static final String ACTIVE_TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
-    public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-helper-reset ui-widget-content";
-    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-helper-reset ui-widget-content ui-helper-hidden";
+    public static final String CONTAINER_CLASS = "ui-accordion ui-widget ui-hidden-container";
+    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-state-default ui-state-active";
+    public static final String TAB_HEADER_CLASS = "ui-accordion-header ui-state-default";
+    public static final String TAB_HEADER_ICON_CLASS = "ui-accordion-toggler ui-icon ui-icon-triangle-1-s";
+    public static final String TAB_HEADER_ICON_RTL_CLASS = "ui-accordion-toggler ui-icon ui-icon-triangle-1-s";
+    public static final String ACTIVE_TAB_HEADER_ICON_CLASS = "ui-accordion-toggler ui-icon ui-icon-triangle-1-n";
+    public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-widget-content";
+    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-widget-content ui-helper-hidden";
 
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");

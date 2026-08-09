@@ -2,34 +2,6 @@
 
 Terminal is an ajax powered web based terminal that brings desktop terminals to Jakarta Faces.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Terminal.html)
-
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | terminal
-| Component Class | org.primefaces.component.terminal.Terminal
-| Component Type | org.primefaces.component.Terminal
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.TerminalRenderer
-| Renderer Class | org.primefaces.component.terminal.TerminalRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-welcomeMessage | null | String | Welcome message to be displayed on initial load.
-prompt | prime $ | String | Primary prompt text.
-commandHandler | null | MethodExpr | Method to be called with arguments to process.
-widgetVar | null | String | Name of the client side widget.
-escape | true | Boolean | Defines if the terminal is escaped or not.
-
 ## Getting started with the Terminal
 A command handler is required to interpret commands entered in terminal.
 
@@ -59,13 +31,6 @@ terminal nested inside a dialog;
 <p:commandButton type="button" Value="Apply Focus" onclick="PF('term').focus();"/>
 <p:terminal widgetVar="term" commandHandler="#{terminalBean.handleCommand}" />
 ```
-
-## Ajax Behavior Events
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| command | jakarta.faces.event.AjaxBehaviorEvent | On submission of any command in the terminal.
-
 
 ## Skinning
 Terminal resides in a main container which _style_ and _styleClass_ attributes apply. Following is the

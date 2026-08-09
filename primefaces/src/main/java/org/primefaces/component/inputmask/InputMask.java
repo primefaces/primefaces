@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,19 @@
  */
 package org.primefaces.component.inputmask;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = InputMask.COMPONENT_TYPE, namespace = InputMask.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "InputMask forces an input to fit in a defined mask template.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "inputmask/inputmask.js")
-public class InputMask extends InputMaskBase {
+public class InputMask extends InputMaskBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputMask";
 

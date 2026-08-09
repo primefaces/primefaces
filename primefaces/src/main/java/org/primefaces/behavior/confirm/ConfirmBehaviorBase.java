@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,11 @@
  */
 package org.primefaces.behavior.confirm;
 
+import org.primefaces.cdk.api.FacesBehaviorBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.cdk.api.behavior.PrimeClientBehavior;
 
+@FacesBehaviorBase
 public abstract class ConfirmBehaviorBase extends PrimeClientBehavior {
 
     @Property(description = "Source component to attach confirmation to.")

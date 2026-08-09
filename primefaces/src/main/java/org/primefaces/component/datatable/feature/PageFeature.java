@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,11 +40,11 @@ public class PageFeature implements DataTableFeature {
 
         boolean isPageState = table.isPageStateRequest(context);
 
-        if (!isPageState) {
-            table.loadLazyDataIfEnabled();
-        }
-
+        // For full-update requests (partialUpdate="false") the load and tbody encoding is
+        // deferred to preRender/render, which runs immediately after all features. Loading
+        // here would be redundant — the data would be thrown away and loaded again in preRender.
         if (!isPageState && !table.isFullUpdateRequest(context)) {
+            table.loadLazyDataIfEnabled();
             renderer.encodeTbody(context, table, true);
         }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,8 @@ package org.primefaces.model;
 import java.io.Serializable;
 
 public class ColumnMeta implements Serializable {
+
+    private static final long serialVersionUID = 1325154657445654368L;
 
     private String columnKey;
 

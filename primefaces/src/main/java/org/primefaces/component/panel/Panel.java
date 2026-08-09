@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 package org.primefaces.component.panel;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.cdk.api.FacesComponentDescription;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.CloseEvent;
@@ -44,7 +44,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = Panel.COMPONENT_TYPE, namespace = Panel.COMPONENT_FAMILY)
-@FacesComponentDescription("Panel is a grouping component for other components, notable features are toggling, closing and built-in popup menu.")
+@FacesComponentInfo(description = "Panel is a grouping component for other components, notable features are toggling, closing and built-in popup menu.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -56,11 +56,14 @@ public class Panel extends PanelBaseImpl {
 
     public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content";
     public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-helper-clearfix";
+    public static final String PANEL_TITLEBAR_TOGGLEABLE_CLASS = "ui-panel-titlebar-toggleable";
     public static final String PANEL_TITLE_CLASS = "ui-panel-title";
     public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-state-default";
     public static final String PANEL_CONTENT_CLASS = "ui-panel-content ui-widget-content";
     public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
     public static final String PANEL_ACTIONS_CLASS = "ui-panel-actions";
+    public static final String PANEL_COLLAPSED_CLASS = "ui-hidden-container";
+    public static final String PANEL_COLLAPSED_HORIZONTAL_CLASS = "ui-panel-collapsed-h";
 
     public Menu getOptionsMenu() {
         UIComponent optionsFacet = getOptionsFacet();

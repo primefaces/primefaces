@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.radiobutton;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.expression.SearchExpressionUtils;
 
 import jakarta.faces.application.ResourceDependency;
@@ -31,11 +32,12 @@ import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = RadioButton.COMPONENT_TYPE, namespace = RadioButton.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "RadioButton is a helper component of SelectOneRadio to implement custom layouts.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class RadioButton extends RadioButtonBase {
+public class RadioButton extends RadioButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RadioButton";
 
@@ -49,25 +51,5 @@ public class RadioButton extends RadioButtonBase {
     @Override
     public String getValidatableInputClientId() {
         return getInputClientId();
-    }
-
-    @Override
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
-    }
-
-    @Override
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
-    }
-
-    @Override
-    public String getAriaDescribedBy() {
-        return (String) getStateHelper().get("ariaDescribedBy");
-    }
-
-    @Override
-    public void setAriaDescribedBy(String ariaDescribedBy) {
-        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
     }
 }

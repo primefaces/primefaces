@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,18 +41,15 @@ class CurrencyValidatorTest {
     private static String usDollar;
     private static String ukPound;
     private static String brazilReal;
-    private static String customCurrencySymbol;
     private static DecimalFormat uk = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.UK);
     private static DecimalFormat us = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.US);
     private static DecimalFormat brazil = (DecimalFormat) DecimalFormat.getCurrencyInstance(new Locale("pt", "BR"));
-    private static DecimalFormat custom = (DecimalFormat) DecimalFormat.getCurrencyInstance(new Locale("es", "US"));
 
     @BeforeAll
     protected static void setUp() throws Exception {
         usDollar = us.getDecimalFormatSymbols().getCurrencySymbol();
         ukPound = uk.getDecimalFormatSymbols().getCurrencySymbol();
         brazilReal = brazil.getDecimalFormatSymbols().getCurrencySymbol();
-        customCurrencySymbol = custom.getDecimalFormatSymbols().getCurrencySymbol();
     }
 
 

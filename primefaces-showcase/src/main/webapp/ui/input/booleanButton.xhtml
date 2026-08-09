@@ -15,6 +15,7 @@
 
     <ui:param name="documentationLink" value="/components/selectbooleanbutton"/>
     <ui:param name="widgetLink" value="SelectBooleanButton"/>
+    <ui:param name="tagName" value="selectBooleanButton"/>
 
     <ui:define name="implementation">
         <div class="card">
@@ -30,6 +31,12 @@
 
                 <h5>Icon Only</h5>
                 <p:selectBooleanButton onIcon="pi pi-check" offIcon="pi pi-times" />
+
+                <h5>Sizes</h5>
+                <p:selectBooleanButton onLabel="Yes" offLabel="No" size="small" styleClass="w-4rem mr-4"/>
+                <p:selectBooleanButton onLabel="Yes" offLabel="No" styleClass="w-5rem mr-4"/>
+                <p:selectBooleanButton onLabel="Yes" offLabel="No" size="large" styleClass="w-6rem"/>
+
             </h:form>
         </div>
     </ui:define>

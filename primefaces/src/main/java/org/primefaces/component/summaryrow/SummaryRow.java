@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,15 @@
  */
 package org.primefaces.component.summaryrow;
 
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = SummaryRow.COMPONENT_TYPE, namespace = SummaryRow.COMPONENT_FAMILY)
-public class SummaryRow extends SummaryRowBase {
+@FacesComponentInfo(description = "SummaryRow is a helper component for data grouping.")
+@FacesComponentHandler(SummaryRowHandler.class)
+public class SummaryRow extends SummaryRowBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SummaryRow";
 }

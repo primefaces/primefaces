@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -204,7 +204,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
 
                     List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
                     params.add(new ClientBehaviorContext.Parameter(
-                            Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
+                            Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBTRUSIVE));
 
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
                             context, component, behaviorEvent, clientId, params);
@@ -240,7 +240,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
                         }
                     }
                 }
-                else if (shouldRenderAttribute(eventValue)) {
+                else if (shouldRenderAttribute(domEvent, eventValue)) {
                     builder.append(eventValue);
                 }
 
@@ -282,9 +282,9 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
                 throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (shouldRenderAttribute(value)) {
+        if (shouldRenderAttribute(attribute, value)) {
             String stringValue = value.toString();
-            if ("true".equalsIgnoreCase(stringValue)) {
+            if (HTML.BOOLEAN_HTML_ATTRS.contains(attribute) && "true".equalsIgnoreCase(stringValue)) {
                 writer.writeAttribute(attribute, true, attribute);
             }
             else {
@@ -478,10 +478,11 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
      *   <li>All other types: always render (returns {@code true}).</li>
      * </ul>
      *
+     * @param attribute the HTML attribute
      * @param value the value to check for rendering suitability
      * @return {@code true} if the value should be rendered, {@code false} otherwise
      */
-    protected boolean shouldRenderAttribute(Object value) {
+    protected boolean shouldRenderAttribute(String attribute, Object value) {
         if (value == null) {
             return false;
         }
@@ -511,9 +512,10 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
                 return number.shortValue() != Short.MIN_VALUE;
             }
         }
-        else if (value instanceof String) {
+        else if (value instanceof String && "false".equalsIgnoreCase((String) value)
+                && HTML.BOOLEAN_HTML_ATTRS.contains(attribute)) {
             // #14390: passthrough attribute with "false" should be treated like boolean false
-            return !"false".equalsIgnoreCase((String) value);
+            return false;
         }
 
         return true;
@@ -606,15 +608,19 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
             parameters.forEach((k, v) -> params.put(k, v.get(0)));
         }
 
-        //append params
+        //append params - append directly to the shared builder instead of a stream + joined intermediate string
         if (!params.isEmpty()) {
             request.append("PrimeFaces.addSubmitParam('").append(submitId).append("',{");
 
-            request.append(
-                    params.entrySet().stream()
-                            .map(e -> "'" + e.getKey() + "':'" + EscapeUtils.forJavaScript(String.valueOf(e.getValue())) + "'")
-                            .collect(Collectors.joining(","))
-            );
+            boolean first = true;
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                if (!first) {
+                    request.append(",");
+                }
+                request.append("'").append(entry.getKey()).append("':'")
+                        .append(EscapeUtils.forJavaScript(String.valueOf(entry.getValue()))).append("'");
+                first = false;
+            }
 
             request.append("})");
         }
@@ -643,11 +649,19 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
 
         if (clientBehaviors != null && !clientBehaviors.isEmpty()) {
             boolean written = false;
-            Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
-                    ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
+            Collection<String> eventNames;
+            if (component instanceof MixedClientBehaviorHolder) {
+                eventNames = ((MixedClientBehaviorHolder) component).getUnobtrusiveClientBehaviorEventKeys().stream()
+                        .map(k -> k.getName())
+                        .collect(Collectors.toList());
+            }
+            else {
+                eventNames = clientBehaviors.keySet();
+            }
+
             String clientId = ((UIComponent) component).getClientId(context);
             List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
-            params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
+            params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBTRUSIVE));
 
             writer.write(",behaviors:{");
             for (Iterator<String> eventNameIterator = eventNames.iterator(); eventNameIterator.hasNext();) {

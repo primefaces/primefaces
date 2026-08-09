@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,13 @@
  */
 package org.primefaces.component.galleria;
 
-import java.util.Collections;
-import java.util.Map;
+import org.primefaces.cdk.api.FacesComponentInfo;
 
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
-import jakarta.faces.event.BehaviorEvent;
 
 @FacesComponent(value = Galleria.COMPONENT_TYPE, namespace = Galleria.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Galleria is a content gallery component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "galleria/galleria.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -56,8 +55,4 @@ public class Galleria extends GalleriaBaseImpl {
     public static final String THUMBNAIL_ITEM_CLASS = "ui-galleria-thumbnail-item";
     public static final String THUMBNAIL_ITEM_CONTENT_CLASS = "ui-galleria-thumbnail-item-content";
 
-    @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return Collections.emptyMap();
-    }
 }

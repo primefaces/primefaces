@@ -597,7 +597,10 @@ export class Core {
      * @return A CSS ID selector for the given ID.
      */
     escapeClientId(id: string): string {
-        return "#" + id.replace(/[:|]/g,"\\$&");
+        // If the id already starts with '#', remove it to avoid double-escaping, but keep escaping all chars.
+        const rawId = id.startsWith("#") ? id.substring(1) : id;
+        // Escape ':' and '|' for jQuery usage.
+        return "#" + rawId.replace(/([:|])/g, "\\$1");
     }
 
     /**
@@ -1125,7 +1128,7 @@ export class Core {
         }).on('pfAjaxComplete' + namespace, function(e, xhr, settings, args) {
             if (isXhrSource.call(this, widget, settings)) {
                 widget.ajaxCount--;
-                if (widget.ajaxCount > 0 || !args || args.redirect) {
+                if (widget.ajaxCount > 0 || args?.redirect) {
                     return;
                 }
 
@@ -2118,11 +2121,13 @@ export class Core {
     }
 
     /**
-     * Logs the current PrimeFaces and jQuery version to console.
+     * Returns the current PrimeFaces and jQuery version as a string and logs it to the console.
+     * @returns The current PrimeFaces and jQuery version as a string.
      */
-    version(): void {
+    version(): string {
         const version = 'PrimeFaces ' + this.VERSION + ' (jQuery ' + jQuery.fn.jquery + ' / UI ' + $.ui.version + ')';
         console.log(version);
+        return version;
     }
 
     /**

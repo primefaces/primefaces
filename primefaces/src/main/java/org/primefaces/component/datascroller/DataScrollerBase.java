@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,27 @@
  */
 package org.primefaces.component.datascroller;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.cdk.api.FacesBehaviorEvent;
+import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeUIData;
+import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
 
-import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
-public abstract class DataScrollerBase extends PrimeUIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+@FacesComponentBase
+@FacesBehaviorEvents({
+    @FacesBehaviorEvent(name = "load", event = AjaxBehaviorEvent.class, defaultEvent = true, description = "Fired when the data is loaded.")
+})
+public abstract class DataScrollerBase extends PrimeUIData implements Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DataScrollerRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        style,
-        styleClass,
-        chunkSize,
-        mode,
-        scrollHeight,
-        buffer,
-        virtualScroll,
-        startAtBottom
-    }
 
     public DataScrollerBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -57,75 +54,31 @@ public abstract class DataScrollerBase extends PrimeUIData implements Widget, Cl
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
+    @Facet(description = "Header content of the datascroller.")
+    public abstract UIComponent getHeaderFacet();
 
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
+    @Facet(description = "Loader content of the datascroller.")
+    public abstract UIComponent getLoaderFacet();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Facet(description = "Loading content of the datascroller.")
+    public abstract UIComponent getLoadingFacet();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Property(defaultValue = "0", description = "Number of items to fetch.")
+    public abstract int getChunkSize();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Property(defaultValue = "document", description = "Defines the target to listen for scroll event, valid values are \"document\" and \"inline\".")
+    public abstract String getMode();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
+    @Property(description = "Defines pixel height of the viewport in inline mode.")
+    public abstract String getScrollHeight();
 
-    public int getChunkSize() {
-        return (Integer) getStateHelper().eval(PropertyKeys.chunkSize, 0);
-    }
+    @Property(defaultValue = "10", description = "Percentage height of the buffer between the bottom of the page and the scroll position to initiate " +
+            "the load for the new chunk. Value is defined in integer and default is 10 meaning load would happen after 90% of the viewport is scrolled down.")
+    public abstract int getBuffer();
 
-    public void setChunkSize(int chunkSize) {
-        getStateHelper().put(PropertyKeys.chunkSize, chunkSize);
-    }
+    @Property(defaultValue = "false", description = "Loads data on demand as the scrollbar gets close to the bottom.")
+    public abstract boolean isVirtualScroll();
 
-    public String getMode() {
-        return (String) getStateHelper().eval(PropertyKeys.mode, "document");
-    }
-
-    public void setMode(String mode) {
-        getStateHelper().put(PropertyKeys.mode, mode);
-    }
-
-    public String getScrollHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.scrollHeight, null);
-    }
-
-    public void setScrollHeight(String scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
-
-    public int getBuffer() {
-        return (Integer) getStateHelper().eval(PropertyKeys.buffer, 10);
-    }
-
-    public void setBuffer(int buffer) {
-        getStateHelper().put(PropertyKeys.buffer, buffer);
-    }
-
-    public boolean isVirtualScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.virtualScroll, false);
-    }
-
-    public void setVirtualScroll(boolean virtualScroll) {
-        getStateHelper().put(PropertyKeys.virtualScroll, virtualScroll);
-    }
-
-    public boolean isStartAtBottom() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.startAtBottom, false);
-    }
-
-    public void setStartAtBottom(boolean startAtBottom) {
-        getStateHelper().put(PropertyKeys.startAtBottom, startAtBottom);
-    }
+    @Property(defaultValue = "false", description = "If the scrollAtBottom is enabled, scroll position is at bottom and data loading starts from the bottom.")
+    public abstract boolean isStartAtBottom();
 }

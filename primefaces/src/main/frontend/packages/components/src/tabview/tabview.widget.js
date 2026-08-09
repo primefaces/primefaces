@@ -856,4 +856,31 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
         PrimeFaces.invokeDeferredRenders(this.id);
     }
 
+    /**
+     * Selects the tab with the given ID. The ID can be a full client ID (e.g., "form:tabView:tabFoo")
+     * or a partial ID relative to this tab view (e.g., "tabFoo" or ":tabFoo").
+     * @param {string | HTMLElement | JQuery | undefined | null} tabId Client ID of the tab to select.
+     * @param {boolean} [silent=false] Controls whether events are triggered. When `true`, the
+     * `onTabChange` callback and AJAX events are not fired.
+     * @return {boolean} `true` if the tab was found and selected, `false` otherwise.
+     */
+    selectTabById(tabId, silent) {
+        if (!tabId) {
+            return false;
+        }
+
+        const tabPanel = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, tabId);
+        if (tabPanel.length === 0) {
+            return false;
+        }
+
+        // Get the index of the panel within the panelContainer
+        const tabIndex = this.panelContainer.children().index(tabPanel);
+        if (tabIndex === -1) {
+            return false;
+        }
+
+        return this.select(tabIndex, silent);
+    }
+
 }

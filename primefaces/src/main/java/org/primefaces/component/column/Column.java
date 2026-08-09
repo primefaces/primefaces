@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.column;
 
+import org.primefaces.cdk.api.FacesComponentHandler;
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
@@ -36,7 +38,10 @@ import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Column.COMPONENT_TYPE, namespace = Column.COMPONENT_FAMILY)
-public class Column extends ColumnBase {
+@FacesComponentInfo(description =
+        "Column is an extended version of the standard column used by various PrimeFaces components like datatable, treetable and more.")
+@FacesComponentHandler(ColumnHandler.class)
+public class Column extends ColumnBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Column";
 
@@ -92,5 +97,10 @@ public class Column extends ColumnBase {
             }
         }
         return headerText;
+    }
+
+    @Override
+    public String getFilterMatchMode() {
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, DEFAULT_FILTER_MATCH_MODE.operator());
     }
 }

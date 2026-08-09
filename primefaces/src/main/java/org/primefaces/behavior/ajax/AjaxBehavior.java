@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 package org.primefaces.behavior.ajax;
 
 import org.primefaces.cdk.api.FacesBehaviorHandler;
-import org.primefaces.component.api.AjaxSource;
+import org.primefaces.cdk.api.FacesBehaviorInfo;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -37,10 +37,11 @@ import jakarta.faces.event.AjaxBehaviorListener;
 
 @FacesBehavior(AjaxBehavior.BEHAVIOR_ID)
 @FacesBehaviorHandler(AjaxBehaviorHandler.class)
+@FacesBehaviorInfo(description = "AjaxBehavior is an extension to standard f:ajax.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
-public class AjaxBehavior extends AjaxBehaviorBaseImpl implements AjaxSource {
+public class AjaxBehavior extends AjaxBehaviorBaseImpl {
 
     public static final String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
 
@@ -57,17 +58,17 @@ public class AjaxBehavior extends AjaxBehaviorBaseImpl implements AjaxSource {
     }
 
     public boolean isImmediateSet() {
-        return getStateHelper().eval(PropertyKeys.immediate, null) != null;
+        return getStateHelper().eval(PropertyKeys.immediate, null) != null || (getValueExpression(PropertyKeys.immediate.toString()) != null);
     }
 
     @Override
     public boolean isPartialSubmitSet() {
-        return getStateHelper().eval(PropertyKeys.partialSubmit, null) != null;
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
 
     @Override
     public boolean isResetValuesSet() {
-        return getStateHelper().eval(PropertyKeys.resetValues, null) != null;
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
 
     @Override

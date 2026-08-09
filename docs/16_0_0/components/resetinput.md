@@ -4,20 +4,6 @@ Input components keep their local values at state when validation fails. ResetIn
 the cached values from state so that components retrieve their values from the backing bean model
 instead.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | resetInput
-| ActionListener Class | org.primefaces.component.resetinput.ResetInputActionListener
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-target | null | String | Comma or white space separated list of component identifiers.
-clearModel | false | Boolean | Whether to assign | null | values to bound values as well.
-
 ## Getting started with ResetInput
 ResetInput is attached to action source components like commandButton and commandLink.
 

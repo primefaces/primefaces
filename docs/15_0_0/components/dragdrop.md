@@ -221,7 +221,9 @@ Following example shows how to enable draggable images to be dropped on droppabl
 public void onDrop(DragDropEvent ddEvent) {
     String draggedId = ddEvent.getDragId(); //Client id of dragged component
     String droppedId = ddEvent.getDropId(); //Client id of dropped component
-    Object data = ddEvent.getData(); //Model object of a datasource
+    // get the dropped object (in this case a GraphicImage)
+    FacesContext context = FacesContext.getCurrentInstance();
+    GraphicImage droppedComponent = (GraphicImage) context.getViewRoot().findComponent(draggedId);
 }
 ```
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,16 +31,13 @@ import java.lang.annotation.Target;
 /**
  * Marks an abstract component base class for implementation generation.
  *
- * <p>Use this annotation on abstract classes ending with "Base" to generate
- * an implementation class even when the class has no {@link Property} or
- * {@link Facet} annotations. This is useful for components that only need
- * the generated PrimeComponent interface implementation.</p>
+ * <p>Use this annotation on abstract classes to generate an implementation class.</p>
  *
  * <p>Example:</p>
  * <pre>{@code
  * @FacesComponentBase
  * public abstract class InputTextBase extends HtmlInputText {
- *     // No properties/facets, but generates InputTextBaseImpl
+ *
  * }
  * }</pre>
  *

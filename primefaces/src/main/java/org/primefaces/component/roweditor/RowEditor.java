@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.roweditor;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = RowEditor.COMPONENT_TYPE, namespace = RowEditor.COMPONENT_FAMILY)
-public class RowEditor extends RowEditorBase {
+@FacesComponentInfo(description = "RowEditor is a helper component for datatable.")
+public class RowEditor extends RowEditorBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowEditor";
 }

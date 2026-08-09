@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -200,8 +200,10 @@ public class PrimeFaces {
         UIViewRoot root = facesContext.getViewRoot();
         for (String expression : expressions) {
             List<UIComponent> components = SearchExpressionUtils.contextlessResolveComponents(facesContext, root, expression);
-            for (UIComponent component : components) {
-                component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+            if (components != null && !components.isEmpty()) {
+                for (UIComponent component : components) {
+                    component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+                }
             }
         }
     }

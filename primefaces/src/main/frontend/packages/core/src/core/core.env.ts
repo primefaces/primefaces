@@ -1,7 +1,6 @@
 import { core } from "./core.js";
 import type { BaseWidgetCfg } from "./core.widget.js";
-
-import type { Matchs } from "jquery.browser";
+import type { JQueryBrowser } from "../../../jquery/jquery-plugins/src/jquery.browser.d.ts";
 
 /**
  * The class with functionality related to the browser environment, such as information about the current browser.
@@ -27,7 +26,7 @@ export class Environment {
     /**
      * The current browser type.
      */
-    browser: Matchs | null = null;
+    browser: JQueryBrowser.BrowserDetection | null = null;
     /**
      * `true` if the user's current OS setting prefers dark mode, `false` otherwise.
      */
@@ -47,10 +46,10 @@ export class Environment {
      */
     constructor() {
         this.browser = jQBrowser;
-        this.mobile = this.browser.mobile ?? false;
+        this.mobile = this.browser.mobile!;
         this.touch = 'ontouchstart' in window || window.navigator.maxTouchPoints > 0 || this.mobile === true;
-        this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent) || (/mac/i.test(window.navigator.userAgent) && this.touch);
-        this.android = /(android)/i.test(window.navigator.userAgent);
+        this.ios = this.browser.ios! || (this.browser.mac! && this.touch);
+        this.android = this.browser.android!;
         this.preferredColorSchemeDark = this.evaluateMediaQuery('(prefers-color-scheme: dark)');
         this.preferredColorSchemeLight = !this.preferredColorSchemeDark;
         this.prefersReducedMotion =  this.evaluateMediaQuery('(prefers-reduced-motion: reduce)');

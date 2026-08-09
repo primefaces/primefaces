@@ -22,30 +22,12 @@ The CDK consists of four main parts:
 
 The CDK provides base classes to simplify component and behavior development.
 
-### Component Base Classes
 
-**`PrimeComponent`** - Interface that all generated components implement
-```java
-public interface PrimeComponent {
-    PrimePropertyKeys[] getPropertyKeys();
-    PrimeFacetKeys[] getFacetKeys();
-    // ... other component lifecycle methods
-}
-```
-
-#### Typical Component Structure
-
-```
-DataTableBase             (abstract, @Property/@Facet)
-    ↓ extends
-DataTableBaseImpl         (generated, abstract, implements PrimeComponent, PrimePropertyKeys, PrimeFacetKeys)
-    ↓ extends  
-DataTable                 (concrete, @FacesComponent)
-```
-### Behavior Base Classes
+### Behavior Classes
 
 **`PrimeClientBehavior`** - Base class for custom behaviors
 ```java
+@FacesBehaviorBase
 public abstract class AjaxBehaviorBase extends PrimeClientBehavior {
 
     @Property
@@ -55,6 +37,7 @@ public abstract class AjaxBehaviorBase extends PrimeClientBehavior {
 ```java
 @FacesBehavior(AjaxBehavior.BEHAVIOR_ID)
 @FacesBehaviorHandler(AjaxBehaviorHandler.class)
+@FacesBehaviorDescription("AjaxBehavior is an extension to standard f:ajax.")
 public class AjaxBehavior extends AjaxBehaviorBaseImpl implements AjaxSource {
     public static final String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
 
@@ -80,7 +63,6 @@ public class AjaxBehaviorHandler extends PrimeClientBehaviorHandler<AjaxBehavior
     }
 ```
 
-
 #### Typical Behavior Structure
 
 ```
@@ -91,16 +73,69 @@ ConfirmBehaviorBaseImpl   (generated, abstract, PropertyKeys, getAllProperties()
 ConfirmBehavior           (concrete, @FacesBehavior, @FacesBehaviorHandler)
 ```
 
+### Component Classes
+
+**`PrimeComponent`** - Interface that all generated components implement
+```java
+public interface PrimeComponent {
+    PrimePropertyKeys[] getPropertyKeys();
+    PrimeFacetKeys[] getFacetKeys();
+    // ... other component lifecycle methods
+}
+```
+
+#### Typical Component Structure
+
+```
+DataTableBase             (abstract, @Property/@Facet)
+    ↓ extends
+DataTableBaseImpl         (generated, abstract, implements PrimeComponent, PrimePropertyKeys, PrimeFacetKeys)
+    ↓ extends  
+DataTable                 (concrete, @FacesComponent)
+```
+
+### TagHandler Classes
+
+```java
+@FacesTagHandler("Input components keep their local values at state when validation fails." +
+        " ResetInput is used to clear the cached values from state so that components retrieve their values from the backing bean model instead.")
+public class ResetInputTagHandler extends TagHandler {
+
+    @Property(description = "Comma or white-space separated list of component ids.", required = true)
+    private final TagAttribute target;
+
+    @Property(description = "Whether to assign null values to bound values as well.", type = Boolean.class)
+    private final TagAttribute clearModel;
+
+    public ResetInputTagHandler(TagConfig tagConfig) {
+        super(tagConfig);
+        target = getRequiredAttribute("target");
+        clearModel = getAttribute("clearModel");
+    }
+    
+    ...
+}
+```
 
 ## API Annotations
 
-### `@ComponentBase`
-Marks an abstract class for implementation generation, if no other CDK annotations are present.
+### `@FacesComponentBase`
+Marks an abstract component class for implementation generation, if no other CDK annotations are present.
 
 ```java
-@ComponentBase
+@FacesComponentBase
 public abstract class InputTextBase extends HtmlInputText {
-    // Empty component, generates InputTextBaseImpl with PrimeComponent
+
+}
+```
+
+### `@FacesBehaviorBase`
+Marks an abstract behavior class for implementation generation, if no other CDK annotations are present.
+
+```java
+@FacesBehaviorBase
+public abstract class AjaxBehaviorBase extends PrimeClientBehavior {
+
 }
 ```
 
@@ -155,6 +190,18 @@ Specifies a custom tag handler for a behavior.
 public class AjaxBehavior extends AjaxBehaviorBaseImpl implements AjaxSource {
     public static final String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
     
+}
+```
+
+### `@FacesComponentHandler`
+Specifies a custom tag handler for a component.
+
+```java
+@FacesComponent(value = Tree.COMPONENT_TYPE, namespace = Tree.COMPONENT_FAMILY)
+@FacesComponentDescription("Tree is is used for displaying hierarchical data and creating site navigations.")
+@FacesComponentHandler(TreeHandler.class)
+public class Tree extends TreeBaseImpl {
+
 }
 ```
 

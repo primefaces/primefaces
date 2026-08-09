@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,19 @@
  */
 package org.primefaces.component.lifecycle;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Lifecycle.COMPONENT_TYPE, namespace = Lifecycle.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Lifecycle component displays JSF lifecycle phase execution times for performance monitoring.")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "lifecycle/lifecycle.js")
 @ResourceDependency(library = "primefaces", name = "lifecycle/lifecycle.css")
-public class Lifecycle extends LifecycleBase {
+public class Lifecycle extends LifecycleBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Lifecycle";
 

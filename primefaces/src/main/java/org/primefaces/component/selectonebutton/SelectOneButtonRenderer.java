@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -64,7 +64,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
     protected void encodeMarkup(FacesContext context, SelectOneButton component) throws IOException {
         String layout = component.getLayout();
         if (LangUtils.isEmpty(layout)) {
-            layout = FacetUtils.shouldRenderFacet(component.getFacet("custom")) ? "custom" : null;
+            layout = FacetUtils.shouldRenderFacet(component.getCustomFacet()) ? "custom" : null;
         }
         boolean custom = "custom".equals(layout);
 
@@ -87,6 +87,9 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute(HTML.ARIA_ROLE, "radiogroup", null);
+        encodeGroupLabel(context, component);
+        renderARIARequired(context, component);
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
@@ -95,6 +98,17 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
         encodeSelectItems(context, component, selectItems);
 
         writer.endElement("div");
+    }
+
+    protected void encodeGroupLabel(FacesContext context, SelectOneButton component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String labelledBy = component.getAriaLabelledBy();
+        if (LangUtils.isNotBlank(labelledBy)) {
+            writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, "label");
+        }
+        else if (LangUtils.isNotBlank(component.getLabel())) {
+            writer.writeAttribute(HTML.ARIA_LABEL, component.getLabel(), "label");
+        }
     }
 
     protected void encodeSelectItems(FacesContext context, SelectOneButton component, List<SelectItem> selectItems) throws IOException {
@@ -132,38 +146,45 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
 
-        String buttonStyle = HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS;
-        buttonStyle = selected ? buttonStyle + " ui-state-active" : buttonStyle;
-        buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
+        String styleClass = getStyleClassBuilder(context)
+                .add(HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS)
+                .add(selected, "ui-state-active")
+                .add(disabled, "ui-state-disabled")
+                .add("small".equals(component.getSize()), "ui-button-sm")
+                .add("large".equals(component.getSize()), "ui-button-lg")
+                .build();
 
         //button
         writer.startElement("div", null);
-        writer.writeAttribute("class", buttonStyle, null);
-        writer.writeAttribute(HTML.ARIA_ROLE, "radio", null);
-        writer.writeAttribute("tabindex", component.getTabindex(), null);
+        writer.writeAttribute("class", styleClass, null);
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);
         }
 
-        //input
+        //input: carries focus, keyboard interaction and accessibility, like selectOneRadio
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-        writer.writeAttribute("tabindex", "-1", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, LangUtils.isEmpty(option.getDescription()) ? option.getLabel() : option.getDescription(), null);
+        writer.writeAttribute("tabindex", component.getTabindex(), null);
 
         if (selected) {
             writer.writeAttribute("checked", "checked", null);
         }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
-        renderAccessibilityAttributes(context, component);
+        // no renderAccessibilityAttributes here: the group aria attributes belong to the
+        // radiogroup root; a per-input aria-labelledby would override the item label element
+        renderValidationMetadata(context, component);
         writer.endElement("input");
 
         //item label
-        writer.startElement("span", null);
+        writer.startElement("label", null);
+        writer.writeAttribute("for", id, null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
         if (option.isEscape()) {
@@ -173,13 +194,13 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
             writer.write(option.getLabel());
         }
 
-        writer.endElement("span");
+        writer.endElement("label");
 
         writer.endElement("div");
     }
 
     protected void encodeCustomLayout(FacesContext context, SelectOneButton component) throws IOException {
-        UIComponent customFacet = component.getFacet("custom");
+        UIComponent customFacet = component.getCustomFacet();
         if (FacetUtils.shouldRenderFacet(customFacet)) {
             ResponseWriter writer = context.getResponseWriter();
             String style = component.getStyle();
@@ -187,6 +208,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
             writer.startElement("span", component);
             writer.writeAttribute("id", component.getClientId(context), "id");
             writer.writeAttribute(HTML.ARIA_ROLE, "radiogroup", null);
+            encodeGroupLabel(context, component);
             if (style != null) {
                 writer.writeAttribute("style", style, "style");
             }
@@ -270,7 +292,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
 
     protected void encodeScript(FacesContext context, SelectOneButton component) throws IOException {
         String layout = component.getLayout();
-        if (LangUtils.isEmpty(layout) && FacetUtils.shouldRenderFacet(component.getFacet("custom"))) {
+        if (LangUtils.isEmpty(layout) && FacetUtils.shouldRenderFacet(component.getCustomFacet())) {
             layout = "custom";
         }
         boolean custom = "custom".equals(layout);

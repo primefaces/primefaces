@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.behavior.validate;
 
+import org.primefaces.cdk.api.FacesBehaviorInfo;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.Constants;
@@ -36,6 +37,8 @@ import jakarta.faces.component.behavior.ClientBehaviorContext;
 import jakarta.faces.component.behavior.FacesBehavior;
 
 @FacesBehavior(ClientValidatorBehavior.BEHAVIOR_ID)
+@FacesBehaviorInfo(description = "ClientValidator is a behavior element used in Client Side Validation to do instant validation in case you do not want"
+        + " to wait for the users to fill in the form and hit commandButton/commandLink.")
 public class ClientValidatorBehavior extends ClientValidatorBehaviorBaseImpl {
 
     public static final String BEHAVIOR_ID = "org.primefaces.behavior.ClientValidatorBehavior";

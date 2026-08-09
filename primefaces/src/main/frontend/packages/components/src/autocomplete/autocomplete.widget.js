@@ -212,6 +212,11 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh(cfg) {
+        if (this.cfg.dynamic && this.isDynamicLoaded && this.panel.length) {
+            this.unbindPanelEvents();
+            this.panel.remove();
+        }
+
         super.refresh(cfg);
     }
 
@@ -928,6 +933,9 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
         if (!this.cfg.completeEndpoint) {
             this.requestId = this.requestId + 1 || 1;
             var currentRequestId = this.requestId;
+            // #15078 capture the dynamic-load decision now, since `isDynamicLoaded` is mutable and can
+            // flip (via hide() or another request's oncomplete) before this request's response is handled
+            var wasDynamicLoadRequested = this.cfg.dynamic && !this.isDynamicLoaded;
             options = {
                 source: this.id,
                 process: this.id,
@@ -941,7 +949,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
                             if (this.requestId !== currentRequestId) {
                                 return;
                             }
-                            if (this.cfg.dynamic && !this.isDynamicLoaded) {
+                            if (wasDynamicLoadRequested) {
                                 this.panel = $(content);
                                 this.appendPanel();
                                 this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
@@ -951,7 +959,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
                             }
 
                             if (this.cfg.cache) {
-                                if (this.cfg.queryMode !== 'server' && !this.isDynamicLoaded && this.cache[query]) {
+                                if (this.cfg.queryMode !== 'server' && !wasDynamicLoadRequested && this.cache[query]) {
                                     this.panel.html(this.cache[query]);
                                 } else {
                                     this.cache[query] = content;
@@ -978,7 +986,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
                 options.params.push({ name: this.id + '_clientCache', value: true });
             }
 
-            if (this.cfg.dynamic && !this.isDynamicLoaded) {
+            if (wasDynamicLoadRequested) {
                 options.params.push({ name: this.id + '_dynamicload', value: true });
             }
         }
@@ -992,7 +1000,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
                 data: { query: query },
                 dataType: 'json'
             }).done(function(suggestions) {
-                var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-helper-reset" role="listbox">';
+                var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget" role="listbox">';
                 suggestions.suggestions.forEach(function(suggestion, index) {
                     var labelEncoded = $("<div>").text(suggestion.label).html();
                     var itemValue = labelEncoded;
@@ -1003,7 +1011,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
                 });
                 if (suggestions.moreAvailable && $this.cfg.moreText) {
                     var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
-                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded, true) + '</li>';
+                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext" role="option" aria-label="' + $this.cfg.moreText + '">' + PrimeFaces.escapeHTML(moreTextEncoded, true) + '</li>';
                 }
                 html += '</ul>';
 
@@ -1635,12 +1643,12 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
      */
     findWrapperTag(wrapper) {
         if (wrapper.is('ul')) {
-            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-helper-reset" role="listbox">';
+            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget" role="listbox">';
             this.wrapperEndTag = '</ul>';
         }
         else {
             var header = wrapper.find('> table > thead');
-            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-helper-reset" role="listbox">' +
+            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget" role="listbox">' +
                 (header.length ? header.eq(0).outherHTML : '') +
                 '<tbody>';
             this.wrapperEndTag = '</tbody></table>';

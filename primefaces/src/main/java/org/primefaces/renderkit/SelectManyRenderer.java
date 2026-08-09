@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.PrimeSelect;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,7 @@ import jakarta.faces.FacesException;
 import jakarta.faces.component.UISelectMany;
 import jakarta.faces.context.FacesContext;
 
-public abstract class SelectManyRenderer<T extends UISelectMany> extends SelectRenderer<T> {
+public abstract class SelectManyRenderer<T extends UISelectMany & PrimeSelect> extends SelectRenderer<T> {
 
     @Override
     public void decode(FacesContext context, T component) {

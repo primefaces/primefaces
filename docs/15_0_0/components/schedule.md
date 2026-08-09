@@ -30,6 +30,7 @@ columnHeaderFormat | null | String | Format for column headers. (eg `timeGridWee
 dir | ltr | String | Defines direction of schedule. Valid values are "ltr" (default) and "rtl".
 displayEventEnd | null | String | Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.
 draggable | true | Boolean | When true, events are draggable.
+escape | true | Boolean | Defines whether html would be escaped or not for tooltip content and more.
 extender | null | String | Name of JavaScript function to extend the options of the underlying FullCalendar plugin.
 height | null | String | Sets the height of the entire calendar, including header and footer. By default, this option is unset and the calendar’s height is calculated by aspectRatio. If "auto" is specified, the view’s contents will assume a natural height and no scrollbars will be used.
 initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If omitted, the schedule starts on the current date

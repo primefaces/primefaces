@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.component.inputtextarea;
 
 import org.primefaces.cdk.api.FacesBehaviorEvent;
 import org.primefaces.cdk.api.FacesBehaviorEvents;
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.AbstractPrimeHtmlInputTextArea;
 import org.primefaces.component.api.CountCharactersAware;
@@ -33,9 +34,12 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.event.SelectEvent;
 
 import jakarta.el.MethodExpression;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
+@FacesComponentBase
 @FacesBehaviorEvents({
-    @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected.")
+    @FacesBehaviorEvent(name = "itemSelect", event = SelectEvent.class, description = "Fires when an item is selected."),
+    @FacesBehaviorEvent(name = "query", event = AjaxBehaviorEvent.class, description = "Fires when a search query is triggered.")
 })
 public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea implements Widget, CountCharactersAware, MixedClientBehaviorHolder {
 

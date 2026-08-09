@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,19 @@
  */
 package org.primefaces.component.subtable;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
+
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIData;
 
+@FacesComponentBase
 public abstract class SubTableBase extends UIData {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SubTableRenderer";
-
-    public enum PropertyKeys {
-    }
 
     protected enum InternalPropertyKeys {
         columnMeta
@@ -46,4 +49,14 @@ public abstract class SubTableBase extends UIData {
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Override
+    @Property(internal = true)
+    public abstract boolean isRowStatePreserved();
+
+    @Facet(description = "Header content of the subtable.")
+    public abstract UIComponent getHeaderFacet();
+
+    @Facet(description = "Footer content of the subtable.")
+    public abstract UIComponent getFooterFacet();
 }

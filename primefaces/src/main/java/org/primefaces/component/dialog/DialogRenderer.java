@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -76,6 +76,7 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
                 .attr("my", component.getMy(), null)
                 .attr("position", component.getPosition(), null)
                 .attr("closeOnEscape", component.isCloseOnEscape(), false)
+                .attr("dismissibleMask", component.isDismissibleMask(), false)
                 .attr("fitViewport", component.isFitViewport(), false)
                 .attr("responsive", component.isResponsive(), true)
                 .attr("cache", component.isCache(), true)
@@ -147,7 +148,7 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
     protected void encodeHeader(FacesContext context, Dialog component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String header = component.getHeader();
-        UIComponent headerFacet = component.getFacet("header");
+        UIComponent headerFacet = component.getHeaderFacet();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.TITLE_BAR_CLASS, null);
@@ -179,7 +180,7 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
         }
 
         //Actions
-        UIComponent actionsFacet = component.getFacet("actions");
+        UIComponent actionsFacet = component.getActionsFacet();
         if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Dialog.DIALOG_ACTIONS_CLASS, null);
@@ -193,7 +194,7 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
     protected void encodeFooter(FacesContext context, Dialog component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String footer = component.getFooter();
-        UIComponent footerFacet = component.getFacet("footer");
+        UIComponent footerFacet = component.getFooterFacet();
 
         if (footer == null && (footerFacet == null || !footerFacet.isRendered())) {
             return;

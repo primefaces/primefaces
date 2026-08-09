@@ -241,7 +241,7 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
         }
         if ($this.hasBehavior('open') || $this.cfg.parent) {
             $this.input.on('open.colorpicker', function(e) {
-                $this.callBehavior('open');
+                $this.callBehavior('open', undefined, false);
                 
                 if ($this.cfg.parent) {
                    // #11076 dialog support of input

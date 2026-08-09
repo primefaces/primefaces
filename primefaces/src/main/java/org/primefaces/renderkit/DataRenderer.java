@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,6 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -63,8 +62,6 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
             .put("{JumpToPageDropdown}", new JumpToPageDropdownRenderer())
             .put("{JumpToPageInput}", new JumpToPageInputRenderer())
             .build();
-
-    private static final Pattern HTML_TAG_PATTERN = Pattern.compile("\\<.*?\\>");
 
     public static void addPaginatorElement(String element, PaginatorElementRenderer renderer) {
         PAGINATOR_ELEMENTS.put(element, renderer);
@@ -112,22 +109,29 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
         writer.startElement("div", null);
         writer.writeAttribute("class", UIPageableData.PAGINATOR_CENTER_CONTENT_CLASS, null);
         String[] elements = pageable.getPaginatorTemplate().split(" ");
-        for (String element : elements) {
-            PaginatorElementRenderer renderer = PAGINATOR_ELEMENTS.get(element);
-            if (renderer != null) {
-                renderer.render(context, pageable);
-            }
-            else {
-                if (element.startsWith("{") && element.endsWith("}")) {
-                    UIComponent elementFacet = pageable.getFacet(element);
-                    if (elementFacet != null) {
-                        elementFacet.encodeAll(context);
-                    }
+        // expose the currently rendered position so element renderers can build unique ids (e.g. jump-to-page input)
+        context.getAttributes().put(PaginatorElementRenderer.PAGINATOR_POSITION_KEY, position);
+        try {
+            for (String element : elements) {
+                PaginatorElementRenderer renderer = PAGINATOR_ELEMENTS.get(element);
+                if (renderer != null) {
+                    renderer.render(context, pageable);
                 }
                 else {
-                    writer.write(element + " ");
+                    if (element.startsWith("{") && element.endsWith("}")) {
+                        UIComponent elementFacet = pageable.getFacet(element);
+                        if (elementFacet != null) {
+                            elementFacet.encodeAll(context);
+                        }
+                    }
+                    else {
+                        writer.write(element + " ");
+                    }
                 }
             }
+        }
+        finally {
+            context.getAttributes().remove(PaginatorElementRenderer.PAGINATOR_POSITION_KEY);
         }
         // end center facet
         writer.endElement("div");

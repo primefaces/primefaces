@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -245,10 +245,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
             writer.writeAttribute("tabindex", tabIndex, null);
             writer.writeAttribute("autocomplete", component.getAutocomplete(), null);
             encodeAriaLabel(writer, component);
-
-            if (component.isDisabled()) {
-                writer.writeAttribute("disabled", "disabled", null);
-            }
             renderAccessibilityAttributes(context, component);
 
             String valueToRender = ComponentUtils.getValueToRender(context, component);
@@ -294,11 +290,27 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
             //for keyboard accessibility and ScreenReader
             writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
 
+            if (component.isDisabled()) {
+                writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
+            }
+
+            if (component.isRequired()) {
+                writer.writeAttribute(HTML.ARIA_REQUIRED, "true", null);
+            }
+
+            if (!component.isValid()) {
+                writer.writeAttribute(HTML.ARIA_INVALID, "true", null);
+            }
+
             encodeAriaLabel(writer, component);
             renderARIACombobox(context, component);
-            renderAccessibilityAttributes(context, component);
             renderPassThruAttributes(context, component, HTML.TAB_INDEX);
             renderDomEvents(context, component, HTML.BLUR_FOCUS_EVENTS);
+
+            String labelledBy = component.getAriaLabelledBy();
+            if (LangUtils.isNotBlank(labelledBy)) {
+                writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
+            }
 
             String label = component.getLabel();
             if (label != null) {
@@ -394,7 +406,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
     }
 
     protected void encodePanelFooter(FacesContext context, SelectOneMenu component) throws IOException {
-        UIComponent facet = component.getFacet("footer");
+        UIComponent facet = component.getFooterFacet();
         if (!FacetUtils.shouldRenderFacet(facet)) {
             return;
         }

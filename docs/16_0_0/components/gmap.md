@@ -2,46 +2,6 @@
 
 GMap is a map component integrated with Google Maps API V3.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.GMap-1.html)
-
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | gmap
-| Component Class | org.primefaces.component.gmap.GMap
-| Component Type | org.primefaces.component.Gmap
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.GmapRenderer
-| Renderer Class | org.primefaces.component.gmap.GmapRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component.
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-| widgetVar | null | String | Name of the client side widget.
-| apiKey | null | String | Google Maps API key. Required for asynchronous loading if Google Maps is not already loaded via script tag.
-| apiVersion | weekly | String | Google Maps API version. Only used for asynchronous loading. Valid values: 'weekly', 'beta', 'alpha', or a specific version number.
-| center | null | String | Center point of the map.
-| disabledDoubleClickZoom | false | Boolean | Disables zooming on mouse double click.
-| disableDefaultUI | false | Boolean | Disables default UI controls
-| draggable | true | Boolean | Defines draggability of map.
-| fitBounds | true | Boolean | Defines if center and zoom should be calculated automatically to contain all markers on the map.
-| libraries | null | String | Comma-separated list of additional Google Maps libraries to load (e.g., 'places,geometry'). Only used for asynchronous loading.
-| mapTypeControl | true | Boolean | Defines visibility of map type control.
-| model | null | MapModel | An org.primefaces.model.MapModel instance.
-| navigationControl | true | Boolean | Defines visibility of navigation control.
-| onPointClick | null | String | Javascript callback to execute when a point on map is clicked.
-| scrollWheel | false | Boolean | Controls scrollwheel zooming on the map.
-| streetView | false | Boolean | Controls street view support.
-| style | null | String | Inline style of the map container.
-| styleClass | null | String | Style class of the map container.
-| type | null | String | There are four types of maps available: roadmap, satellite, hybrid, and terrain.
-| zoom | 8 | Integer | Defines the initial zoom level.
-
 ## Getting started with GMap
 First thing to do is placing V3 of the Google Maps API that the GMap is based on. Make sure to
 register an API key for your map and replace `YOUR_API_KEY` in the script.
@@ -262,51 +222,10 @@ public void onGeocode(GeocodeEvent event) {
 }
 ```
 
-## AJAX Behavior Events
-GMap provides many custom AJAX behavior events for you to hook-in to various features.
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-| geocode | org.primefaces.event.map.GeocodeEvent | When the map is geocoded
-| markerDrag | org.primefaces.event.map.MarkerDragEvent | When a marker is dragged.
-| overlayDblSelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is double clicked.
-| overlaySelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is selected.
-| pointDblSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is double clicked.
-| pointSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is selected.
-| reverseGeocode | org.primefaces.event.map.ReverseGeocodeEvent | When a geocode is reversed.
-| stateChange | org.primefaces.event.map.StateChangeEvent | When map state changes.
-
-Following example displays a FacesMessage about the selected marker with growl component.
-
-```xhtml
-<h:form>
-    <p:growl id="growl" />
-    <p:gmap center="41.381542, 2.122893" zoom="15" type="hybrid" style="width:600px;height:400px" model="#{mapBean.model}">
-        <p:ajax event="overlaySelect" listener="#{mapBean.onMarkerSelect}" update="growl" />
-    </p:gmap>
-</h:form>
-```
-```java
-public class MapBean {
-    private MapModel model;
-    public MapBean() {
-        model = new DefaultMapModel();
-        //add markers
-    }
-    public MapModel getModel() {
-        return model
-    }
-    public void onMarkerSelect(OverlaySelectEvent event) {
-        Marker selectedMarker = (Marker) event.getOverlay();
-        //add facesmessage
-    }
-}
-```
 ## InfoWindow
 A common use case is displaying an info window when a marker is selected. _gmapInfoWindow_ is
 used to implement this special use case. Following example, displays an info window that contains
 an image of the selected marker data.
-
 
 ```xhtml
 <h:form>

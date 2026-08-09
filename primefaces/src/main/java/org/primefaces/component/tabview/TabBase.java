@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,14 @@
  */
 package org.primefaces.component.tabview;
 
+import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 
+@FacesComponentBase
 public abstract class TabBase extends UIPanel {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -48,7 +50,7 @@ public abstract class TabBase extends UIPanel {
     @Facet(description = "Allows to add custom options to the tab header.")
     public abstract UIComponent getOptionsFacet();
 
-    @Facet(description = "Allows to place HTML in the title. Alternative to title.")
+    @Facet(description = "Allows custom HTML in the title. Alternative to title.")
     public abstract UIComponent getTitleFacet();
 
     @Property(description = "Title text of the tab.")

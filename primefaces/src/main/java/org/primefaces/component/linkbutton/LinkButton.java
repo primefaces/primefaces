@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.linkbutton;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.ComponentUtils;
 
 import java.util.List;
@@ -34,12 +35,14 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIParameter;
 
 @FacesComponent(value = LinkButton.COMPONENT_TYPE, namespace = LinkButton.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "LinkButton is a styled link component with button-like appearance and icon support.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class LinkButton extends LinkButtonBase {
+public class LinkButton extends LinkButtonBaseImpl {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
     public static final String COMPONENT_TYPE = "org.primefaces.component.LinkButton";
 
     @Override

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,10 +32,12 @@ public class DualListModel<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<T> source = new ArrayList<>();
-    private List<T> target = new ArrayList<>();
+    private List<T> source;
+    private List<T> target;
 
     public DualListModel() {
+        this.source = new ArrayList<>();
+        this.target = new ArrayList<>();
     }
 
     public DualListModel(List<T> source, List<T> target) {

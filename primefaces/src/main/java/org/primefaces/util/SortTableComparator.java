@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,6 +52,7 @@ public class SortTableComparator implements Comparator<Object> {
     private final String var;
     private final Collator collator;
     private final BeanPropertyMapper mapper;
+    private final PrimeApplicationContext applicationContext;
     private final AtomicInteger compareResult = new AtomicInteger(0);
 
     public SortTableComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper) {
@@ -62,6 +63,8 @@ public class SortTableComparator implements Comparator<Object> {
         this.locale = table.resolveDataLocale(context);
         this.collator = Collator.getInstance(locale);
         this.mapper = Objects.requireNonNull(mapper, "mapper is necessary to extract property value");
+        // resolve once per sort instead of once per comparison (2 x n log n lookups)
+        this.applicationContext = PrimeApplicationContext.getCurrentInstance(context);
     }
 
     @Override
@@ -87,8 +90,8 @@ public class SortTableComparator implements Comparator<Object> {
     }
 
     private int compareWithMapper(SortMeta sortMeta, Object o1, Object o2) {
-        final Object fv1 = mapper.map(context, var, sortMeta, o1);
-        final Object fv2 = mapper.map(context, var, sortMeta, o2);
+        final Object fv1 = mapper.map(context, applicationContext, var, sortMeta, o1);
+        final Object fv2 = mapper.map(context, applicationContext, var, sortMeta, o2);
         return compare(context, sortMeta, fv1, fv2, collator, locale);
     }
 
@@ -154,7 +157,7 @@ public class SortTableComparator implements Comparator<Object> {
         }
 
         @Override
-        public Object map(FacesContext context, String var, SortMeta sortMeta, Object obj) {
+        public Object map(FacesContext context, PrimeApplicationContext applicationContext, String var, SortMeta sortMeta, Object obj) {
             ValueExpression ve = sortMeta.getSortBy();
             context.getExternalContext().getRequestMap().put(var, obj);
             return ve.getValue(context.getELContext());
@@ -164,8 +167,8 @@ public class SortTableComparator implements Comparator<Object> {
     public static class TreeNodeSortByVEMapper extends SortByVEMapper {
 
         @Override
-        public Object map(FacesContext context, String var, SortMeta sortMeta, Object obj) {
-            return super.map(context, var, sortMeta, ((TreeNode) obj).getData());
+        public Object map(FacesContext context, PrimeApplicationContext applicationContext, String var, SortMeta sortMeta, Object obj) {
+            return super.map(context, applicationContext, var, sortMeta, ((TreeNode) obj).getData());
         }
     }
 
@@ -177,10 +180,8 @@ public class SortTableComparator implements Comparator<Object> {
         }
 
         @Override
-        public Object map(FacesContext context, String var, SortMeta sortMeta, Object obj) {
-            PropertyDescriptorResolver propResolver =
-                    PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
-            return propResolver.getValue(obj, sortMeta.getField());
+        public Object map(FacesContext context, PrimeApplicationContext applicationContext, String var, SortMeta sortMeta, Object obj) {
+            return applicationContext.getPropertyDescriptorResolver().getValue(obj, sortMeta.getField());
         }
     }
 
@@ -188,6 +189,6 @@ public class SortTableComparator implements Comparator<Object> {
 
         boolean isValueExprBased();
 
-        Object map(FacesContext context, String var, SortMeta sortMeta, Object obj);
+        Object map(FacesContext context, PrimeApplicationContext applicationContext, String var, SortMeta sortMeta, Object obj);
     }
 }

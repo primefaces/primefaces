@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,15 @@
  */
 package org.primefaces.component.toolbar;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Toolbar.COMPONENT_TYPE, namespace = Toolbar.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Toolbar is a horizontal grouping component for commands and other content.")
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Toolbar extends ToolbarBase {
+public class Toolbar extends ToolbarBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Toolbar";
 

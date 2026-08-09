@@ -1,0 +1,65 @@
+name: Publish VDL Documentation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master, main ]
+
+# The last step commits the regenerated docs and pushes them back.
+permissions:
+  contents: write
+
+env:
+  JAVA_VERSION: '21'
+  JAVA_DISTRO: 'temurin'
+  BRANCH: 'master'
+
+jobs:
+  generate-vdldoc:
+    runs-on: ubuntu-latest
+    if: github.repository == 'primefaces/primefaces'
+    name: Generate VDL Documentation
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
+        with:
+          distribution: ${{ env.JAVA_DISTRO }}
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Build PrimeFaces
+        run: mvn -B -T1C --no-transfer-progress clean install -pl primefaces -am -DskipTests -Dcheckstyle.skip
+
+      - name: Generate VDL Documentation
+        working-directory: primefaces
+        run: mvn -B -T1C --no-transfer-progress -Pvdl
+
+      - name: Copy VDL Documentation
+        run: |
+          rsync -av --delete primefaces/target/site/vdldoc/ docs/vdldoc/
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if [ -n "$(git status --porcelain docs/vdldoc/)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.changes == 'true'
+        run: |
+          git add docs/vdldoc/
+          git diff --cached --quiet || git commit -m "Update VDL documentation [skip ci]"
+          git push

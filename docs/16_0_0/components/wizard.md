@@ -3,51 +3,6 @@
 Wizard provides an ajax enhanced UI to implement a workflow easily in a single page. Wizard
 consists of several child tab components where each tab represents a step in the process.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Wizard-1.html)
-
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | wizard
-| Component Class | org.primefaces.component.wizard.Wizard
-| Component Type | org.primefaces.component.Wizard
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.WizardRenderer
-| Renderer Class | org.primefaces.component.wizard.WizardRenderer
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component.
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| step | 0 | String | Id of the current step in flow
-| style | null | String | Style of the main wizard container element.
-| styleClass | null | String | Style class of the main wizard container element.
-| flowListener | null | MethodExpr | Server side listener to invoke when wizard attempts to go forward or back.
-| highlightCompletedSteps | false | Boolean | If true, all completed steps are highlighted. If false, only the current step is highlighted.
-| showNavBar | true | Boolean | Specifies visibility of default navigator arrows.
-| showStepStatus | true | Boolean | Specifies visibility of default step title bar.
-| disableOnAjax | true | Boolean | If true, back and next navigation buttons will be disabled during Ajax requests triggered by the button.
-| onback | null | String | Javascript event handler to be invoked when flow goes back.
-| onnext | null | String | Javascript event handler to be invoked when flow goes forward.
-| nextLabel | null | String | Label of next navigation button.
-| backLabel | null | String | Label of back navigation button.
-| widgetVar | null | String | Name of the client side widget
-| updateModelOnPrev | false | Boolean | If yes, the model will be updated when the "Back" button is clicked. Default is false.
-| effect | null | String | Animation effect to use when showing and hiding wizard step. Default is no animation.
-| effectDuration | 400 | Integer | Duration of the animation effect in milliseconds.
-
-## Ajax Behavior Events
-Wizard provides custom ajax behavior events to configure the built-in AJAX requests.
-
-| Event | Listener Parameter | Fired |
-| --- | --- | --- |
-next | jakarta.faces.event.AjaxBehaviorEvent | When "next" is triggered
-back | jakarta.faces.event.AjaxBehaviorEvent | When "back" is triggered
-
 ## Getting Started with Wizard
 Each step in the flow is represented with a tab. As an example following wizard is used to create a
 new user in a total of 4 steps where last step is for confirmation of the information provided in first

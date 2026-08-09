@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.splitbutton;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuModel;
@@ -41,12 +42,13 @@ import jakarta.faces.event.AbortProcessingException;
 import jakarta.faces.event.FacesEvent;
 
 @FacesComponent(value = SplitButton.COMPONENT_TYPE, namespace = SplitButton.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "SplitButton displays a default command and additional ones in an overlay.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class SplitButton extends SplitButtonBase {
+public class SplitButton extends SplitButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SplitButton";
 
@@ -94,6 +96,13 @@ public class SplitButton extends SplitButtonBase {
             styleClass = styleClass + " ui-state-disabled";
         }
 
+        if ("small".equals(getSize())) {
+            styleClass = styleClass + " ui-button-sm";
+        }
+        else if ("large".equals(getSize())) {
+            styleClass = styleClass + " ui-button-lg";
+        }
+
         return styleClass;
     }
 
@@ -107,12 +116,12 @@ public class SplitButton extends SplitButtonBase {
 
     @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit) != null);
     }
 
     @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues) != null);
     }
 
     @Override
@@ -136,7 +145,7 @@ public class SplitButton extends SplitButtonBase {
     }
 
     public int getElementsCount() {
-        List elements = getElements();
+        List<MenuElement> elements = getElements();
 
         return (elements == null) ? 0 : elements.size();
     }

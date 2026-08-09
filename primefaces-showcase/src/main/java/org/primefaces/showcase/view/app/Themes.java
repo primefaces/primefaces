@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,13 @@ public class Themes {
 
     @PostConstruct
     public void init() {
+        Category primeUIX = new Category("PrimeUIX");
+        primeUIX.getThemes().add(
+                new Theme("aura-light-emerald", "Aura Light Emerald", "images/themes/aura-light-emerald.svg", false));
+        primeUIX.getThemes().add(
+                new Theme("aura-dark-emerald", "Aura Dark Emerald", "images/themes/aura-dark-emerald.svg", true));
+        categories.add(primeUIX);
+
         Category primeOne = new Category("PrimeOne");
         primeOne.getThemes().add(
                 new Theme("saga-blue", "Saga Blue", "images/themes/saga.png", false));

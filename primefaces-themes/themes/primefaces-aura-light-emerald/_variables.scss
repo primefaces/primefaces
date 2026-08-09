@@ -1,0 +1,18 @@
+@use 'sass:color';
+
+@import '../primefaces-aura-common/primitive';
+
+$primaryColor: $emerald-500 !default;
+$primaryTextColor: #ffffff !default;
+$primaryLightColor: color.scale($primaryColor, $lightness: 60%) !default;
+$primaryDarkColor: color.scale($primaryColor, $lightness: -10%) !default;
+$primaryDarkerColor: color.scale($primaryColor, $lightness: -20%) !default;
+
+$highlightTextColor: $emerald-700 !default;
+
+@import '../primefaces-aura-common/variables';
+@import '../primefaces-aura-common/fonts';
+
+
+
+

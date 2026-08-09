@@ -2,45 +2,6 @@
 
 Resizable component is used to make another Jakarta Faces component resizable.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Resizable-1.html)
-
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | resizable
-| Component Class | org.primefaces.component.resizable.Resizable
-| Component Type | org.primefaces.component.Resizable
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ResizableRenderer
-| Renderer Class | org.primefaces.component.resizable.ResizableRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-widgetVar | null | String | Name of the client side widget.
-for | null | String | Identifier of the target component to make resizable.
-aspectRatio | false | Boolean | Defines if aspectRatio should be kept or not.
-proxy | false | Boolean | Displays proxy element instead of actual element.
-handles | null | String | Specifies the resize handles.
-ghost | false | Boolean | In ghost mode, resize helper is displayed as the original element with less opacity.
-animate | false | Boolean | Enables animation.
-effect | swing | String | Effect to use in animation.
-effectDuration | normal | String | Effect duration of animation.
-maxWidth | null | Integer | Maximum width boundary in pixels.
-maxHeight | null | Integer | Maximum height boundary in pixels.
-minWidth | 10 | Integer | Minimum width boundary in pixels.
-minHeight | 10 | Integer | Maximum height boundary in pixels.
-containment | false | Boolean | Sets resizable boundaries as the parents size.
-grid | 1 | Integer | Snaps resizing to grid structure.
-onStart | null | String | Client side callback to execute when resizing begins.
-onResize | null | String | Client side callback to execute during resizing.
-onStop | null | String | Client side callback to execute after resizing end.
-
 ## Getting started with Resizable
 Resizable is used by setting _for_ option as the identifier of the target.
 
@@ -127,26 +88,6 @@ Following is the list of available effect names;
              - easeInBounce
              - easeOutBounce
              - easeInOutBounce
-
-## Ajax Behavior Events
-Resizable provides default and only _resize_ event that is called on resize end. In case you have a
-listener defined, it will be called by passing an _org.primefaces.event.ResizeEvent_ instance as a
-parameter_._
-
-```xhtml
-<h:inputTextarea id="area" value="Resize me if you need more space" />
-<p:resizable for="area">
-   <p:ajax listener="#{resizeBean.handleResize}">
-</p:resizable>
-```
-```java
-public class ResizeBean {
-   public void handleResize(ResizeEvent event) {
-      int width = event.getWidth();
-      int height = event.getHeight();
-   }
-}
-```
 
 ## Client Side Callbacks
 Resizable has three client side callbacks you can use to hook-in your javascript; _onStart_ , _onResize_

@@ -2,46 +2,6 @@
 
 OutputLabel is a an extension to the standard outputLabel component.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | outputLabel
-| Component Class | org.primefaces.component.outputlabel.OutputLabel
-| Component Type | org.primefaces.component.OutputLabel
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.OutputLabelRenderer
-| Renderer Class | org.primefaces.component.outputlabel.OutputLabelRenderer
-
-## Attributes
-
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | String | Label to display.
-accesskey | null | String | The accesskey attribute is a standard HTML attribute that sets the access key that transfers focus to this element when pressed.
-dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
-escape | true | Boolean | Defines if value should be escaped or not.
-for | null | String | Component to attach the label to.
-tabindex | null | String | Position in tabbing order.
-title | null | String | Advisory tooltip information.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-onblur | null | String | Client side callback to execute when component loses focus.
-onclick | null | String | Client side callback to execute when component is clicked.
-ondblclick | null | String | Client side callback to execute when component is double clicked.
-onfocus | null | String | Client side callback to execute when component receives focus.
-onkeydown | null | String | Client side callback to execute when a key is pressed down over component.
-onkeypress | null | String | Client side callback to execute when a key is pressed and released over component.
-onkeyup | null | String | Client side callback to execute when a key is released over component.
-onmousedown | null | String | Client side callback to execute when a pointer is pressed down over component.
-onmouseout | null | String | Client side callback to execute when a pointer is moved away from component.
-onmouseover | null | String | Client side callback to execute when a pointer is moved onto component.
-onmouseup | null | String | Client side callback to execute when a pointer is released over component.
-indicateRequired | auto | String | auto, autoSkipDisabled, true or false. Displays * symbol if the input is required.
-
 ## Getting Started with OutputLabel
 Usage is same as standard outputLabel, an input component is associated with for attribute.
 

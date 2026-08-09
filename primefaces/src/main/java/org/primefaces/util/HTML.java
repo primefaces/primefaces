@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,9 @@
  */
 package org.primefaces.util;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class HTML {
 
@@ -241,6 +243,38 @@ public class HTML {
         "onwaiting"
     );
 
+    public static final Set<String> BOOLEAN_HTML_ATTRS = Collections.unmodifiableSet(Set.of(
+            "allowfullscreen",
+            "alpha",
+            "async",
+            "autofocus",
+            "autoplay",
+            "checked",
+            "controls",
+            "default",
+            "defer",
+            "disabled",
+            "formnovalidate",
+            "headingreset",
+            "inert",
+            "ismap",
+            "itemscope",
+            "loop",
+            "multiple",
+            "muted",
+            "nomodule",
+            "novalidate",
+            "open",
+            "playsinline",
+            "readonly",
+            "required",
+            "reversed",
+            "selected",
+            "shadowrootclonable",
+            "shadowrootcustomelementregistry",
+            "shadowrootdelegatesfocus",
+            "shadowrootserializable"));
+
     public static final List<String> COMMON_EVENTS = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT);
 
     public static final List<String> OUTPUT_EVENTS = LangUtils.concat(COMMON_EVENTS, BLUR_FOCUS_EVENTS);
@@ -315,6 +349,7 @@ public class HTML {
     public static final String ARIA_ROLE_NONE = "none";
     public static final String ARIA_ROLE_OPTION = "option";
     public static final String ARIA_ROLE_SEPARATOR = "separator";
+    public static final String ARIA_ROLE_TEXTBOX = "textbox";
 
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
     public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-button-icon-only";

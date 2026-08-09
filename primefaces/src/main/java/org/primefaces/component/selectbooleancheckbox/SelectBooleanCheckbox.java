@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,18 @@
  */
 package org.primefaces.component.selectbooleancheckbox;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = SelectBooleanCheckbox.COMPONENT_TYPE, namespace = SelectBooleanCheckbox.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "SelectBooleanCheckbox is an extended version of the standard checkbox with theme integration.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class SelectBooleanCheckbox extends SelectBooleanCheckboxBase {
+public class SelectBooleanCheckbox extends SelectBooleanCheckboxBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanCheckbox";
 
@@ -50,25 +53,5 @@ public class SelectBooleanCheckbox extends SelectBooleanCheckboxBase {
     @Override
     public String getValidatableInputClientId() {
         return this.getInputClientId();
-    }
-
-    @Override
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
-    }
-
-    @Override
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
-    }
-
-    @Override
-    public String getAriaDescribedBy() {
-        return (String) getStateHelper().get("ariaDescribedBy");
-    }
-
-    @Override
-    public void setAriaDescribedBy(String ariaDescribedBy) {
-        getStateHelper().put("ariaDescribedBy", ariaDescribedBy);
     }
 }

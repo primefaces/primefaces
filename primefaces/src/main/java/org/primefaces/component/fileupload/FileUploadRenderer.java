@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -171,6 +171,11 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
             encodeButton(context, component.getCancelLabel(), cancelCssClassBuilder, component.getCancelIcon(), component.getCancelButtonTitle());
         }
 
+        UIComponent headerFacet = component.getHeaderFacet();
+        if (FacetUtils.shouldRenderFacet(headerFacet)) {
+            headerFacet.encodeAll(context);
+        }
+
         writer.endElement("div");
 
         renderChildren(context, component);
@@ -179,7 +184,7 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
 
-        UIComponent emptyFacet = component.getFacet("empty");
+        UIComponent emptyFacet = component.getEmptyFacet();
         if (FacetUtils.shouldRenderFacet(emptyFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", FileUpload.EMPTY_CLASS, null);

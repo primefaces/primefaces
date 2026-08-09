@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -72,6 +72,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
                 .add(component.getStyleClass());
 
         EditableValueHolderState forState = null;
+        String forClientId = null;
 
         final String indicateRequired = component.getIndicateRequired();
         boolean isAuto = "auto".equals(indicateRequired) || "autoSkipDisabled".equals(indicateRequired);
@@ -88,6 +89,8 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
             else {
                 callback.invokeContextCallback(context, forComponent);
             }
+
+            forClientId = callback.getForClientId();
         }
 
         boolean withRequiredIndicator = "true".equals(indicateRequired)
@@ -103,8 +106,8 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
         renderDomEvents(context, component, HTML.LABEL_EVENTS);
         renderRTLDirection(context, component);
 
-        if (!isValueBlank(_for) && forState != null) {
-            writer.writeAttribute("for", forState.getClientId(), "for");
+        if (!isValueBlank(_for) && forClientId != null) {
+            writer.writeAttribute("for", forClientId, "for");
         }
 
         if (value != null) {
@@ -131,6 +134,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
     protected void encodeRequiredIndicator(ResponseWriter writer, OutputLabel component) throws IOException {
         writer.startElement("span", component);
         writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         writer.write("*");
         writer.endElement("span");
     }
@@ -195,6 +199,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
         private final String value;
         private final StyleClassBuilder styleClassBuilder;
         private final boolean isAuto;
+        private String forClientId;
 
         public ContextCallbackFor(String clientId, String indicateRequired, boolean isAuto, UIComponent label,
                                   StyleClassBuilder styleClassBuilder, String value) {
@@ -209,12 +214,14 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
         @Override
         public void invokeContextCallback(FacesContext context, UIComponent target) {
             if (target instanceof InputHolder) {
+                // a component may expose a dedicated labelable element (or none) for the "for" attribute,
+                // which can differ from its server-side input client id
                 InputHolder inputHolder = ((InputHolder) target);
-                state.setClientId(inputHolder.getInputClientId());
-                inputHolder.setLabelledBy(clientId);
+                forClientId = inputHolder.getLabelClientId();
+                inputHolder.setAriaLabelledBy(clientId);
             }
             else {
-                state.setClientId(target.getClientId(context));
+                forClientId = target.getClientId(context);
             }
 
             if (target instanceof UIInput) {
@@ -268,6 +275,10 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
 
         public EditableValueHolderState getState() {
             return state;
+        }
+
+        public String getForClientId() {
+            return forClientId;
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
         UIComponent component = behaviorContext.getComponent();
 
-        ClientBehaviorRenderingMode renderingMode = ClientBehaviorRenderingMode.OBSTRUSIVE;
+        ClientBehaviorRenderingMode renderingMode = ClientBehaviorRenderingMode.OBTRUSIVE;
 
         Collection<ClientBehaviorContext.Parameter> behaviorParameters = behaviorContext.getParameters();
         if (behaviorParameters != null && !behaviorParameters.isEmpty()) {

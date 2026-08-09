@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import org.primefaces.clientwindow.PrimeClientWindowUtils;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
@@ -202,9 +203,9 @@ public class HeadRenderer extends Renderer<UIComponent> {
         writer.write("if(window.PrimeFaces){");
 
         writer.write("PrimeFaces.settings={");
-        writer.write("locale:'" + LocaleUtils.getCurrentLocale(context) + "',");
+        writer.write("locale:'" + EscapeUtils.forJavaScript(LocaleUtils.getCurrentLocale(context).toString()) + "',");
         writer.write("viewId:'" + context.getViewRoot().getViewId() + "',");
-        writer.write("contextPath:'" + externalContext.getRequestContextPath() + "',");
+        writer.write("contextPath:'" + EscapeUtils.forJavaScript(externalContext.getRequestContextPath()) + "',");
         writer.write("cookiesSecure:" + (requestContext.isSecure() && configuration.isCookiesSecure()));
 
         if (configuration.getCookiesSameSite() != null) {
@@ -235,9 +236,9 @@ public class HeadRenderer extends Renderer<UIComponent> {
                     writer.write(',');
                 }
 
-                String errorPageUrl = context.getExternalContext().getRequestContextPath() + entry.getValue();
+                String errorPageUrl = EscapeUtils.forJavaScript(externalContext.getRequestContextPath()) + entry.getValue();
                 errorPageUrl = context.getApplication().evaluateExpressionGet(context, errorPageUrl, String.class);
-                errorPageUrl = context.getExternalContext().encodeActionURL(errorPageUrl);
+                errorPageUrl = externalContext.encodeActionURL(errorPageUrl);
 
                 writer.write("'" + (entry.getKey() == null ? "" : entry.getKey()) + "':'" + errorPageUrl + "'");
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,15 @@
  */
 package org.primefaces.component.skeleton;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Skeleton.COMPONENT_TYPE, namespace = Skeleton.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Skeleton is a placeholder to display instead of the actual content.")
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Skeleton extends SkeletonBase {
+public class Skeleton extends SkeletonBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Skeleton";
 
     public static final String STYLE_CLASS = "ui-skeleton ui-widget";

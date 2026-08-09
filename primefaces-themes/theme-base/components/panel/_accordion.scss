@@ -83,6 +83,10 @@ body {
         &.ui-icon-triangle-1-s {
           @include icon-override("\e902");
         }
+
+        &.ui-icon-triangle-1-n {
+          @include icon-override('\e903');
+        }
       }
 
       .ui-panel-titlebar-icon {

@@ -10,13 +10,13 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | Servlet | | | 3.0+ | Required | Apache Tomcat, Eclipse Jetty, ... |
 | Expression Language | | | 2.2+ | Required | Apache Tomcat, Eclipse Jetty, ... |
 | Bean Validation | | | 1.1+ | Optional | Apache BVal, Hibernate Validator, ... |
-| Libre OpenPDF | com.github.librepdf | openpdf | 1.4.1 | Optional | DataExporter (PDF) |
-| Apache POI | org.apache.poi | poi | 5.3.0 | Optional | DataExporter (Excel XLS or XML) |
-| Apache POI | org.apache.poi | poi-ooxml | 5.4.0 | Optional | DataExporter (Excel XLSX Office 2003) |
-| RSS Reader | com.apptasticsoftware | rssreader | 3.9.1 | Optional | FeedReader |
-| Okapi | uk.org.okapibarcode | okapibarcode | 0.5.0 | Optional | Barcode |
-| owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer | 20240325.1 | Optional | TextEditor |
-| XDEV Chart.js Java Model | software.xdev | chartjs-java-model | 2.6.0 | Optional | Charts |
+| Libre OpenPDF | com.github.librepdf | openpdf | 1.4.2 | Optional | DataExporter (PDF) |
+| Apache POI | org.apache.poi | poi | 5.5.1 | Optional | DataExporter (Excel XLS or XML) |
+| Apache POI | org.apache.poi | poi-ooxml | 5.5.1 | Optional | DataExporter (Excel XLSX Office 2003) |
+| RSS Reader | com.apptasticsoftware | rssreader | 3.12.0 | Optional | FeedReader |
+| Okapi | uk.org.okapibarcode | okapibarcode | 0.5.2 | Optional | Barcode |
+| owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer | 20260101.1 | Optional | TextEditor |
+| XDEV Chart.js Java Model | software.xdev | chartjs-java-model | 2.9.0 | Optional | Charts |
 
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these
 dependencies may also work but not tested.

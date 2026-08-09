@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.tabview;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.util.FacetUtils;
 
@@ -31,6 +32,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = Tab.COMPONENT_TYPE, namespace = Tab.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Tab is a generic container component used by other components like TabView and AccordionPanel.")
 public class Tab extends TabBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tab";

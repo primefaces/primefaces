@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -195,7 +195,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         page.nonAjax.click();
 
         // Act
-        dialog.getYesButton().click();
+        PrimeSelenium.guardHttp(dialog.getYesButton()).click();
 
         // Assert
         assertEquals("Full page submitted", page.message.getMessage(0).getDetail());

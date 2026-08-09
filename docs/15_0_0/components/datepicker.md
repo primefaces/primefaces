@@ -59,7 +59,7 @@ ajax selection and more.
 | label | null | String | A localized user presentable name.
 | lang | null | String | Code describing the language used in the generated markup for this component.
 | locale | null | Object | Locale to be used for labels and conversion.
-| mask | null | String | Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to inputMask component for more information about custom templates..
+| mask | null | String | Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to inputMask component for more information about custom templates. The `mask` property is invalid in conjuction with multiple or range selection mode.
 | maskAutoClear | true | Boolean | Clears the field on blur when incomplete input is entered
 | maskSlotChar | '_' | String | Placeholder in mask template.  Default to `_`.
 | maxDateCount | null | Integer | Defines the maximum number of selectable dates in multiple selection mode.
@@ -206,6 +206,8 @@ Multiple dates or a range of dates can be selected by setting the _selectionMode
 ```xhtml
 <p:datePicker value="#{dateBean.dates}" selectionMode="multiple" />
 ```
+
+!> The `mask` property cannot be used together with multiple or range selection modes.
 
 ## Ajax Behavior Events
 The following AJAX behavior events are available for this component. If no event is specified the default event is called.

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -157,10 +157,10 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
             TimelineModel<Object, Object> model = timeline.getValue();
             List<TimelineGroup<Object>> groups = timelineRenderer.calculateGroupsFromModel(model);
-            UIComponent groupFacet = timeline.getFacet("group");
+            UIComponent groupFacet = timeline.getGroupFacet();
             // buffer for groups' content
             Map<String, String> groupsContent = new HashMap<>();
-            UIComponent eventTitleFacet = timeline.getFacet("eventTitle");
+            UIComponent eventTitleFacet = timeline.getEventTitleFacet();
 
             ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
 

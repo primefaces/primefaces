@@ -3,22 +3,6 @@
 The legacy way to present dynamic binary data to the client is to write a `servlet` or a `servlet filter` and
 stream the binary data. FileDownload presents an easier way to do the same.
 
-## Info
-
-| Name | Value |
-| --- | --- |
-| Tag | fileDownload
-| ActionListener Class | org.primefaces.component.filedownload.FileDownloadActionListener
-
-## Attributes
-
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-| value | null | StreamedContent | A streamed content instance.
-| contentDisposition | attachment | String | Specifies display mode on non-AJAX downloads.
-| monitorKey | null | String | Optional key to support monitoring multiple filedownloads on same page.
-| store | false | Boolean | Controls the `no-store` attribute on the cache control header. Default is to include `no-store`.
-
 ## Getting started with FileDownload
 A user command action is required to trigger the file-download process.
 

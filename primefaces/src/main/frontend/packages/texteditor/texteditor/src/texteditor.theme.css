@@ -17,6 +17,15 @@
 	color: var(--text-color);
 }
 
+.ql-editor ol li[data-list="bullet"]::before {
+	content: none;
+}
+
+.ql-editor li[data-list=bullet] > .ql-ui:before {
+	content: "\2022";
+	text-align: center;
+}
+
 @media (pointer: coarse) {
 	.ql-snow.ql-toolbar button:hover:not(.ql-active),
 	.ql-snow .ql-toolbar button:hover:not(.ql-active) {

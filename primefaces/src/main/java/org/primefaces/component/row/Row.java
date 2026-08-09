@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.row;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Row.COMPONENT_TYPE, namespace = Row.COMPONENT_FAMILY)
-public class Row extends RowBase {
+@FacesComponentInfo(description = "Row is a helper component for datatable.")
+public class Row extends RowBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Row";
 }

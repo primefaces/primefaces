@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -62,6 +62,8 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer<LinkButton> {
                     .add(isTextAndIcon && "left".equals(component.getIconPos()), HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS)
                     .add(isTextAndIcon && "right".equals(component.getIconPos()), HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
                     .add(disabled, "ui-state-disabled")
+                    .add("small".equals(component.getSize()), "ui-button-sm")
+                    .add("large".equals(component.getSize()), "ui-button-lg")
                     .build();
 
         writer.startElement("span", component);

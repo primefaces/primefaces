@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,11 @@
  */
 package org.primefaces.cdk.impl.subclass;
 
+import org.primefaces.cdk.api.FacesBehaviorBase;
 import org.primefaces.cdk.api.FacesBehaviorEvent;
-import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.FacesConverterBase;
+import org.primefaces.cdk.api.FacesValidatorBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.PrimeClientBehaviorEventKeys;
 import org.primefaces.cdk.api.PrimeFacetKeys;
@@ -33,17 +35,17 @@ import org.primefaces.cdk.api.PrimePropertyKeys;
 import org.primefaces.cdk.api.Property;
 import org.primefaces.cdk.api.component.PrimeClientBehaviorHolder;
 import org.primefaces.cdk.api.component.PrimeComponent;
+import org.primefaces.cdk.impl.CdkUtils;
+import org.primefaces.cdk.impl.container.BehaviorEventInfo;
+import org.primefaces.cdk.impl.container.FacetInfo;
+import org.primefaces.cdk.impl.container.PropertyInfo;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,23 +59,23 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
+
+import jakarta.faces.component.UIComponent;
 
 /**
  * Generates implementation classes for JSF component and behavior base classes.
  *
- * <p>Processes abstract classes ending with "Base" that are annotated with {@code @FacesComponentBase}.
- * Scans the class hierarchy and implemented interfaces for {@code @Property}, {@code @Facet},
- * and {@code @FacesBehaviorEvent} annotations.</p>
+ * <p>Processes abstract classes annotated with {@code @FacesComponentBase} or
+ * {@code @FacesBehaviorBase}. Delegates all hierarchy scanning to
+ * {@link HierarchyScanner}, which handles both compiled dependency classes
+ * (via reflection) and in-round source classes (via the Element API).</p>
  *
  * <p>Generated classes include:</p>
  * <ul>
@@ -83,6 +85,7 @@ import javax.tools.JavaFileObject;
  *   <li>PrimeComponent interface implementation for non-behaviors</li>
  * </ul>
  *
+ * @see HierarchyScanner
  * @see Property
  * @see Facet
  * @see FacesBehaviorEvent
@@ -91,21 +94,26 @@ import javax.tools.JavaFileObject;
 @SupportedAnnotationTypes({
     "org.primefaces.cdk.api.Property",
     "org.primefaces.cdk.api.Facet",
-    "org.primefaces.cdk.api.FacesComponentBase",
+    "org.primefaces.cdk.api.FacesBehaviorBase",
     "org.primefaces.cdk.api.FacesBehaviorEvent",
-    "org.primefaces.cdk.api.FacesBehaviorEvents"
+    "org.primefaces.cdk.api.FacesBehaviorEvents",
+    "org.primefaces.cdk.api.FacesComponentBase",
+    "org.primefaces.cdk.api.FacesConverterBase",
+    "org.primefaces.cdk.api.FacesValidatorBase"
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class AnnotationProcessor extends AbstractProcessor {
 
     private Filer filer;
     private Messager messager;
+    private HierarchyScanner scanner;
 
     @Override
     public synchronized void init(ProcessingEnvironment env) {
         super.init(env);
         this.filer = env.getFiler();
         this.messager = env.getMessager();
+        this.scanner = new HierarchyScanner(env);
     }
 
     @Override
@@ -116,612 +124,183 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         Set<TypeElement> componentsToGenerate = new HashSet<>();
 
-        // Collect base classes marked with @FacesComponentBase OR ending with "Base"
         for (Element e : roundEnv.getElementsAnnotatedWith(FacesComponentBase.class)) {
             if (e.getKind() == ElementKind.CLASS && e.getModifiers().contains(Modifier.ABSTRACT)) {
-                TypeElement typeElement = (TypeElement) e;
-                componentsToGenerate.add(typeElement);
+                componentsToGenerate.add((TypeElement) e);
             }
         }
 
-        // Collect annotated properties and facets by their declaring type
-        Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType = new HashMap<>();
-        Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType = new HashMap<>();
-        Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType = new HashMap<>();
-
-        collectAnnotatedMethods(roundEnv, Property.class, annotatedPropertiesByType, componentsToGenerate);
-        collectAnnotatedMethods(roundEnv, Facet.class, annotatedFacetsByType, componentsToGenerate);
-        collectAnnotatedBehaviorEvents(roundEnv, annotatedBehaviorEventsByType, componentsToGenerate);
-
-        // Scan class hierarchies for inherited annotations
-        Map<TypeElement, Set<ExecutableElement>> propertyTargets = new HashMap<>();
-        Map<TypeElement, Set<ExecutableElement>> facetTargets = new HashMap<>();
-        Map<TypeElement, List<BehaviorEventInfo>> behaviorEventTargets = new HashMap<>();
-
-        for (TypeElement classElement : componentsToGenerate) {
-            Set<ExecutableElement> allProperties = new LinkedHashSet<>();
-            Set<ExecutableElement> allFacets = new LinkedHashSet<>();
-            List<BehaviorEventInfo> allBehaviorEvents = new ArrayList<>();
-
-            scanHierarchyForAnnotations(classElement, annotatedPropertiesByType, annotatedFacetsByType,
-                    annotatedBehaviorEventsByType, allProperties, allFacets, allBehaviorEvents);
-
-            if (!allProperties.isEmpty()) {
-                propertyTargets.put(classElement, allProperties);
-            }
-            if (!allFacets.isEmpty()) {
-                facetTargets.put(classElement, allFacets);
-            }
-            if (!allBehaviorEvents.isEmpty()) {
-                behaviorEventTargets.put(classElement, allBehaviorEvents);
+        for (Element e : roundEnv.getElementsAnnotatedWith(FacesBehaviorBase.class)) {
+            if (e.getKind() == ElementKind.CLASS && e.getModifiers().contains(Modifier.ABSTRACT)) {
+                componentsToGenerate.add((TypeElement) e);
             }
         }
 
-        // Check for subclasses that inherit properties/facets/behavior events
-        discoverSubclasses(roundEnv, annotatedPropertiesByType, annotatedFacetsByType, annotatedBehaviorEventsByType,
-                componentsToGenerate, propertyTargets, facetTargets, behaviorEventTargets);
+        for (Element e : roundEnv.getElementsAnnotatedWith(FacesValidatorBase.class)) {
+            if (e.getKind() == ElementKind.CLASS && e.getModifiers().contains(Modifier.ABSTRACT)) {
+                componentsToGenerate.add((TypeElement) e);
+            }
+        }
 
-        // Generate implementation classes
+        for (Element e : roundEnv.getElementsAnnotatedWith(FacesConverterBase.class)) {
+            if (e.getKind() == ElementKind.CLASS && e.getModifiers().contains(Modifier.ABSTRACT)) {
+                componentsToGenerate.add((TypeElement) e);
+            }
+        }
+
         for (TypeElement classElement : componentsToGenerate) {
-            generateComponent(classElement, annotatedPropertiesByType, annotatedFacetsByType,
-                    propertyTargets, facetTargets, behaviorEventTargets);
+            generateComponent(classElement);
         }
 
         return true;
     }
 
     /**
-     * Collects methods annotated with the specified annotation type.
+     * Scans the full hierarchy of {@code classElement} via {@link HierarchyScanner},
+     * applies generation-time concerns (id injection, PrimeComponent interface scan,
+     * setter resolution, sorting), then writes the {@code *Impl} source file.
      */
-    private void collectAnnotatedMethods(RoundEnvironment roundEnv,
-                                         Class<? extends Annotation> annotationType,
-                                         Map<TypeElement, Set<ExecutableElement>> methodsByType,
-                                         Set<TypeElement> componentsToGenerate) {
+    private void generateComponent(TypeElement classElement) {
+        HierarchyScannerResult hierarchyScannerResult = scanner.scan(classElement);
+        boolean isComponent = classElement.getAnnotation(FacesComponentBase.class) != null;
 
-        for (Element e : roundEnv.getElementsAnnotatedWith(annotationType)) {
-            if (e.getKind() != ElementKind.METHOD) {
-                continue;
-            }
-
-            ExecutableElement method = (ExecutableElement) e;
-            String name = method.getSimpleName().toString();
-
-            if (!isGetterName(name)) {
-                messager.printMessage(Diagnostic.Kind.WARNING,
-                        "@" + annotationType.getSimpleName() + " found on non-getter method " + name +
-                                " in " + method.getEnclosingElement());
-                continue;
-            }
-
-            TypeElement owner = (TypeElement) method.getEnclosingElement();
-            methodsByType.computeIfAbsent(owner, k -> new LinkedHashSet<>()).add(method);
-
-            // Add to generation set if it's an abstract class ending with "Base" OR has @FacesComponentBase
-            if (owner.getKind() == ElementKind.CLASS &&
-                    owner.getModifiers().contains(Modifier.ABSTRACT) &&
-                    (owner.getSimpleName().toString().endsWith("Base") ||
-                            owner.getAnnotation(FacesComponentBase.class) != null)) {
-                componentsToGenerate.add(owner);
-            }
-        }
-    }
-
-    /**
-     * Collects behavior events annotated with {@code @FacesBehaviorEvents} or {@code @FacesBehaviorEvent}.
-     */
-    private void collectAnnotatedBehaviorEvents(RoundEnvironment roundEnv,
-                                                 Map<TypeElement, List<BehaviorEventInfo>> behaviorEventsByType,
-                                                 Set<TypeElement> componentsToGenerate) {
-        for (Element e : roundEnv.getElementsAnnotatedWith(FacesBehaviorEvents.class)) {
-            if (e.getKind() != ElementKind.CLASS && e.getKind() != ElementKind.INTERFACE) {
-                continue;
-            }
-
-            TypeElement typeElement = (TypeElement) e;
-            List<BehaviorEventInfo> events = extractBehaviorEvents(typeElement);
-
-            if (!events.isEmpty()) {
-                behaviorEventsByType.put(typeElement, events);
-
-                // Add to generation set if it's an abstract Base class
-                if (typeElement.getKind() == ElementKind.CLASS &&
-                        typeElement.getModifiers().contains(Modifier.ABSTRACT) &&
-                        typeElement.getSimpleName().toString().endsWith("Base")) {
-                    componentsToGenerate.add(typeElement);
-                }
-            }
-        }
-
-        for (Element e : roundEnv.getElementsAnnotatedWith(FacesBehaviorEvent.class)) {
-            if (e.getKind() != ElementKind.CLASS && e.getKind() != ElementKind.INTERFACE) {
-                continue;
-            }
-
-            TypeElement typeElement = (TypeElement) e;
-            List<BehaviorEventInfo> events = extractBehaviorEvents(typeElement);
-
-            if (!events.isEmpty()) {
-                behaviorEventsByType.put(typeElement, events);
-
-                // Add to generation set if it's an abstract Base class
-                if (typeElement.getKind() == ElementKind.CLASS &&
-                        typeElement.getModifiers().contains(Modifier.ABSTRACT) &&
-                        typeElement.getSimpleName().toString().endsWith("Base")) {
-                    componentsToGenerate.add(typeElement);
-                }
-            }
-        }
-    }
-
-    /**
-     * Discovers subclasses that should be generated based on inherited annotations.
-     */
-    private void discoverSubclasses(RoundEnvironment roundEnv,
-                                    Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
-                                    Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
-                                    Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType,
-                                    Set<TypeElement> componentsToGenerate,
-                                    Map<TypeElement, Set<ExecutableElement>> propertyTargets,
-                                    Map<TypeElement, Set<ExecutableElement>> facetTargets,
-                                    Map<TypeElement, List<BehaviorEventInfo>> behaviorEventTargets) {
-        for (Element root : roundEnv.getRootElements()) {
-            if (root.getKind() != ElementKind.CLASS) {
-                continue;
-            }
-            TypeElement candidate = (TypeElement) root;
-
-            if (!candidate.getModifiers().contains(Modifier.ABSTRACT)) continue;
-            // Check if ends with "Base" OR has @FacesComponentBase annotation
-            if (!candidate.getSimpleName().toString().endsWith("Base") &&
-                    candidate.getAnnotation(FacesComponentBase.class) == null) {
-                continue;
-            }
-            if (componentsToGenerate.contains(candidate)) {
-                continue;
-            }
-
-            boolean shouldGenerate = inheritsAnnotations(candidate, annotatedPropertiesByType, annotatedFacetsByType, annotatedBehaviorEventsByType);
-
-            if (shouldGenerate) {
-                componentsToGenerate.add(candidate);
-
-                Set<ExecutableElement> allProperties = new LinkedHashSet<>();
-                Set<ExecutableElement> allFacets = new LinkedHashSet<>();
-                List<BehaviorEventInfo> allBehaviorEvents = new ArrayList<>();
-
-                scanHierarchyForAnnotations(candidate, annotatedPropertiesByType, annotatedFacetsByType,
-                        annotatedBehaviorEventsByType, allProperties, allFacets, allBehaviorEvents);
-
-                if (!allProperties.isEmpty()) {
-                    propertyTargets.put(candidate, allProperties);
-                }
-                if (!allFacets.isEmpty()) {
-                    facetTargets.put(candidate, allFacets);
-                }
-                if (!allBehaviorEvents.isEmpty()) {
-                    behaviorEventTargets.put(candidate, allBehaviorEvents);
-                }
-            }
-        }
-    }
-
-    /**
-     * Checks if a class inherits annotations from superclasses or interfaces.
-     */
-    private boolean inheritsAnnotations(TypeElement candidate,
-                                        Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
-                                        Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
-                                        Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType) {
-        for (TypeElement owner : annotatedPropertiesByType.keySet()) {
-            if (!candidate.equals(owner) && isSubtype(candidate, owner)) {
-                return true;
-            }
-        }
-
-        for (TypeElement owner : annotatedFacetsByType.keySet()) {
-            if (!candidate.equals(owner) && isSubtype(candidate, owner)) {
-                return true;
-            }
-        }
-
-        for (TypeElement owner : annotatedBehaviorEventsByType.keySet()) {
-            if (!candidate.equals(owner) && isSubtype(candidate, owner)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Generates the implementation class for a component.
-     */
-    private void generateComponent(TypeElement classElement,
-                                   Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
-                                   Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
-                                   Map<TypeElement, Set<ExecutableElement>> propertyTargets,
-                                   Map<TypeElement, Set<ExecutableElement>> facetTargets,
-                                   Map<TypeElement, List<BehaviorEventInfo>> behaviorEventTargets) {
+        // --- Properties ---
+        // Start from the scan result and key by name for override/injection logic.
         Map<String, PropertyInfo> propsMap = new LinkedHashMap<>();
+        for (PropertyInfo p : hierarchyScannerResult.getProperties()) {
+            propsMap.put(p.getName(), p);
+        }
+
+        // Inject synthetic "id" property for components only when absent.
+        if (isComponent) {
+            if (!propsMap.containsKey("id")) {
+                Property property = Property.Literal.of("Unique identifier of the component in a namingContainer.",
+                        false,
+                        "",
+                        "generated", false, String.class, false);
+                propsMap.put("id", new PropertyInfo("id", property));
+            }
+            if (!propsMap.containsKey("binding")) {
+                Property property = Property.Literal.of("An EL expression referring to a server side UIComponent instance in a backing bean.",
+                        false,
+                        "",
+                        "generated", false, UIComponent.class, false);
+                propsMap.put("binding", new PropertyInfo("binding", property));
+            }
+            if (!propsMap.containsKey("rendered")) {
+                Property property = Property.Literal.of("Unique identifier of the component in a namingContainer.",
+                        false,
+                        "",
+                        "generated", false, Boolean.class, false);
+                propsMap.put("rendered", new PropertyInfo("rendered", property));
+            }
+        }
+
+        // Pull in properties/facets declared on the PrimeComponent interface itself.
         Map<String, FacetInfo> facetsMap = new LinkedHashMap<>();
-
-        // Build property infos
-        Set<ExecutableElement> propertyGetters = propertyTargets.get(classElement);
-        if (propertyGetters != null) {
-            for (ExecutableElement getter : propertyGetters) {
-                String propName = extractPropertyName(getter.getSimpleName().toString());
-
-                if (!propsMap.containsKey(propName)) {
-                    String returnType = getter.getReturnType().toString();
-                    Property annotation = getter.getAnnotation(Property.class);
-                    ExecutableElement setterFound = findAbstractSetter(classElement, propName, getter.getReturnType());
-
-                    PropertyInfo info = new PropertyInfo(propName, returnType, getter, setterFound, annotation);
-                    propsMap.put(propName, info);
-                }
-            }
+        for (FacetInfo f : hierarchyScannerResult.getFacets()) {
+            facetsMap.put(f.getName(), f);
         }
 
-        List<String> ignores = Arrays.asList("attributes", "behaviors", "rendererType", "bindings", "passThroughAttributes", "systemEventListeners");
-        Set<PropertyInfo> inheritedPropertyKeys = collectInheritedPropertyKeys(classElement);
-
-        // Add inherited property keys that aren't already defined
-        for (PropertyInfo inheritedKey : inheritedPropertyKeys) {
-            if (!propsMap.containsKey(inheritedKey.getName()) && !ignores.contains(inheritedKey.getName())) {
-                propsMap.put(inheritedKey.getName(), inheritedKey);
-            }
-        }
-        if (!propsMap.containsKey("id")) {
-            propsMap.put("id", new PropertyInfo("id", "java.lang.String", null, null,
-                    "Unique identifier of the component in a namingContainer.", "", "", false));
-        }
-
-        // Build facet infos
-        Set<ExecutableElement> facetGetters = facetTargets.get(classElement);
-        if (facetGetters != null) {
-            for (ExecutableElement getter : facetGetters) {
-                String facetName = extractFacetName(getter.getSimpleName().toString());
-
-                if (!facetsMap.containsKey(facetName)) {
-                    String returnType = getter.getReturnType().toString();
-                    Facet annotation = getter.getAnnotation(Facet.class);
-
-                    FacetInfo info = new FacetInfo(facetName, returnType, getter, annotation);
-                    facetsMap.put(facetName, info);
-                }
-            }
-        }
-
-        boolean isBehavior = isBehaviorClass(classElement);
-        List<BehaviorEventInfo> behaviorEventInfos = behaviorEventTargets.getOrDefault(classElement, new ArrayList<>());
-
-        // Scan PrimeComponent interface for additional properties/facets
-        if (!isBehavior) {
+        if (isComponent) {
             scanPrimeComponentInterface(propsMap, facetsMap);
         }
 
-        List<PropertyInfo> props = propsMap.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .map(Map.Entry::getValue)
+        // Sort alphabetically — stable, predictable generated output.
+        List<String> priority = List.of("id", "rendered", "binding", "widgetVar");
+        List<PropertyInfo> props = propsMap.values().stream()
+                .sorted(Comparator
+                        // 1. priority order
+                        .comparingInt((PropertyInfo p) -> {
+                            int idx = priority.indexOf(p.getName());
+                            return idx >= 0 ? idx : Integer.MAX_VALUE;
+                        })
+                        // 2. fallback alphabetical
+                        .thenComparing(PropertyInfo::getName)
+                )
                 .collect(Collectors.toList());
         List<FacetInfo> facets = facetsMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
+        List<BehaviorEventInfo> events = hierarchyScannerResult.getBehaviorEvents();
 
         try {
-            generateImplementation(classElement, props, facets, behaviorEventInfos, isBehavior);
+            generateImplementation(classElement, props, facets, events, isComponent);
         }
         catch (IOException ioe) {
             messager.printMessage(Diagnostic.Kind.ERROR,
-                    "Failed to generate implementation for " + classElement.getQualifiedName() +
-                            ": " + ioe.getMessage());
+                    "Failed to generate implementation for " + classElement.getQualifiedName()
+                            + ": " + ioe.getMessage());
         }
     }
 
     /**
-     * Scans the class hierarchy and interfaces for {@code @Property}, {@code @Facet}, and behavior event annotations.
-     */
-    private void scanHierarchyForAnnotations(TypeElement element,
-                                             Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
-                                             Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
-                                             Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType,
-                                             Set<ExecutableElement> allProperties,
-                                             Set<ExecutableElement> allFacets,
-                                             List<BehaviorEventInfo> allBehaviorEvents) {
-        Set<TypeElement> visited = new HashSet<>();
-        scanHierarchyRecursive(element, annotatedPropertiesByType, annotatedFacetsByType,
-                annotatedBehaviorEventsByType, allProperties, allFacets, allBehaviorEvents, visited);
-    }
-
-    /**
-     * Recursively scans hierarchy to collect annotations, preventing infinite loops.
-     */
-    private void scanHierarchyRecursive(TypeElement element,
-                                        Map<TypeElement, Set<ExecutableElement>> annotatedPropertiesByType,
-                                        Map<TypeElement, Set<ExecutableElement>> annotatedFacetsByType,
-                                        Map<TypeElement, List<BehaviorEventInfo>> annotatedBehaviorEventsByType,
-                                        Set<ExecutableElement> allProperties,
-                                        Set<ExecutableElement> allFacets,
-                                        List<BehaviorEventInfo> allBehaviorEvents,
-                                        Set<TypeElement> visited) {
-        if (!visited.add(element)) {
-            return;
-        }
-
-        Set<ExecutableElement> props = annotatedPropertiesByType.get(element);
-        if (props != null) {
-            allProperties.addAll(props);
-        }
-
-        Set<ExecutableElement> facets = annotatedFacetsByType.get(element);
-        if (facets != null) {
-            allFacets.addAll(facets);
-        }
-
-        List<BehaviorEventInfo> behaviorEvents = annotatedBehaviorEventsByType.get(element);
-        if (behaviorEvents != null) {
-            // Add behavior events, avoiding duplicates by name
-            for (BehaviorEventInfo event : behaviorEvents) {
-                boolean exists = false;
-                for (BehaviorEventInfo existing : allBehaviorEvents) {
-                    if (existing.getName().equals(event.getName())) {
-                        exists = true;
-                        break;
-                    }
-                }
-                if (!exists) {
-                    allBehaviorEvents.add(event);
-                }
-            }
-        }
-
-        // Scan superclass
-        TypeMirror superclass = element.getSuperclass();
-        if (superclass != null) {
-            Element superElement = processingEnv.getTypeUtils().asElement(superclass);
-            if (superElement instanceof TypeElement &&
-                    !superElement.toString().equals("java.lang.Object")) {
-                scanHierarchyRecursive((TypeElement) superElement, annotatedPropertiesByType,
-                        annotatedFacetsByType, annotatedBehaviorEventsByType, allProperties, allFacets, allBehaviorEvents, visited);
-            }
-        }
-
-        // Scan interfaces
-        for (TypeMirror interfaceType : element.getInterfaces()) {
-            Element interfaceElement = processingEnv.getTypeUtils().asElement(interfaceType);
-            if (interfaceElement instanceof TypeElement) {
-                scanHierarchyRecursive((TypeElement) interfaceElement, annotatedPropertiesByType,
-                        annotatedFacetsByType, annotatedBehaviorEventsByType, allProperties, allFacets, allBehaviorEvents, visited);
-            }
-        }
-    }
-
-    /**
-     * Extracts behavior events from {@code @FacesBehaviorEvents} or {@code @FacesBehaviorEvent} annotations.
-     */
-    private List<BehaviorEventInfo> extractBehaviorEvents(TypeElement classElement) {
-        List<BehaviorEventInfo> events = new ArrayList<>();
-
-        for (AnnotationMirror am : classElement.getAnnotationMirrors()) {
-            String annotationType = am.getAnnotationType().toString();
-
-            if (annotationType.equals(FacesBehaviorEvents.class.getName())) {
-                extractMultipleEvents(am, events);
-            }
-            else if (annotationType.equals(FacesBehaviorEvent.class.getName())) {
-                BehaviorEventInfo eventInfo = extractEventInfo(am);
-                if (eventInfo != null) {
-                    events.add(eventInfo);
-                }
-            }
-        }
-
-        return events;
-    }
-
-    /**
-     * Extracts multiple events from {@code @FacesBehaviorEvents} annotation.
-     */
-    private void extractMultipleEvents(AnnotationMirror am, List<BehaviorEventInfo> events) {
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : am.getElementValues().entrySet()) {
-            if (entry.getKey().getSimpleName().toString().equals("value")) {
-                @SuppressWarnings("unchecked")
-                List<? extends AnnotationValue> eventAnnotations =
-                        (List<? extends AnnotationValue>) entry.getValue().getValue();
-
-                for (AnnotationValue av : eventAnnotations) {
-                    AnnotationMirror eventAm = (AnnotationMirror) av.getValue();
-                    BehaviorEventInfo eventInfo = extractEventInfo(eventAm);
-                    if (eventInfo != null) {
-                        events.add(eventInfo);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Extracts event information from a {@code @FacesBehaviorEvent} annotation mirror.
-     */
-    private BehaviorEventInfo extractEventInfo(AnnotationMirror eventAnnotation) {
-        String name = null;
-        String eventClass = null;
-        String description = "";
-        boolean implicit = false;
-        boolean defaultEvent = false;
-
-        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
-                eventAnnotation.getElementValues().entrySet()) {
-            String key = entry.getKey().getSimpleName().toString();
-
-            switch (key) {
-                case "name":
-                    name = (String) entry.getValue().getValue();
-                    break;
-                case "event":
-                    TypeMirror typeMirror = (TypeMirror) entry.getValue().getValue();
-                    eventClass = typeMirror.toString();
-                    break;
-                case "description":
-                    description = (String) entry.getValue().getValue();
-                    break;
-                case "implicit":
-                    implicit = (boolean) entry.getValue().getValue();
-                    break;
-                case "defaultEvent":
-                    defaultEvent = (boolean) entry.getValue().getValue();
-                    break;
-            }
-        }
-
-        if (name != null && eventClass != null) {
-            return new BehaviorEventInfo(name, eventClass, description, implicit, defaultEvent);
-        }
-
-        return null;
-    }
-
-    /**
-     * Scans {@code PrimeComponent} interface for additional properties and facets.
+     * Scans the {@link PrimeComponent} interface for {@code @Property} and {@code @Facet}
+     * annotations that every component must expose, adding any that are not already present.
      */
     private void scanPrimeComponentInterface(Map<String, PropertyInfo> propsMap,
                                              Map<String, FacetInfo> facetsMap) {
-        try {
-            TypeElement primeComponentElement = processingEnv.getElementUtils()
-                    .getTypeElement(PrimeComponent.class.getName());
+        TypeElement primeComponent = processingEnv.getElementUtils()
+                .getTypeElement(PrimeComponent.class.getName());
 
-            if (primeComponentElement == null) {
-                messager.printMessage(Diagnostic.Kind.WARNING,
-                        "PrimeComponent interface not found on classpath");
-                return;
-            }
-
-            for (Element enclosed : primeComponentElement.getEnclosedElements()) {
-                if (enclosed.getKind() != ElementKind.METHOD) {
-                    continue;
-                }
-
-                ExecutableElement method = (ExecutableElement) enclosed;
-                String methodName = method.getSimpleName().toString();
-
-                // Check for @Property
-                Property propertyAnnotation = method.getAnnotation(Property.class);
-                if (propertyAnnotation != null && isGetterName(methodName)) {
-                    String propName = extractPropertyName(methodName);
-                    if (!propsMap.containsKey(propName)) {
-                        String returnType = method.getReturnType().toString();
-                        PropertyInfo info = new PropertyInfo(propName, returnType, method, null, propertyAnnotation);
-                        propsMap.put(propName, info);
-                    }
-                }
-
-                // Check for @Facet
-                Facet facetAnnotation = method.getAnnotation(Facet.class);
-                if (facetAnnotation != null && isGetterName(methodName)) {
-                    String facetName = extractFacetName(methodName);
-                    if (!facetsMap.containsKey(facetName)) {
-                        String returnType = method.getReturnType().toString();
-                        FacetInfo info = new FacetInfo(facetName, returnType, method, facetAnnotation);
-                        facetsMap.put(facetName, info);
-                    }
-                }
-            }
-        }
-        catch (Exception e) {
+        if (primeComponent == null) {
             messager.printMessage(Diagnostic.Kind.WARNING,
-                    "Failed to scan PrimeComponent interface: " + e.getMessage());
+                    "PrimeComponent interface not found on classpath");
+            return;
         }
-    }
 
-    /**
-     * Checks if a class is a behavior by examining its name.
-     */
-    private boolean isBehaviorClass(TypeElement classElement) {
-        return classElement.getSimpleName().toString().contains("Behavior");
-    }
+        for (Element enclosed : primeComponent.getEnclosedElements()) {
+            if (enclosed.getKind() != ElementKind.METHOD) {
+                continue;
+            }
+            ExecutableElement method = (ExecutableElement) enclosed;
+            String methodName = method.getSimpleName().toString();
 
-    /**
-     * Extracts facet name from getter method name (e.g., "getHeaderFacet" → "header").
-     */
-    private String extractFacetName(String methodName) {
-        String name = extractPropertyName(methodName);
-        if (name.endsWith("Facet")) {
-            return name.substring(0, name.length() - 5);
-        }
-        return name;
-    }
-
-    /**
-     * Checks if method name follows getter naming convention.
-     */
-    private boolean isGetterName(String name) {
-        return name.startsWith("get") || name.startsWith("is");
-    }
-
-    /**
-     * Checks if sub is a subtype of sup.
-     */
-    private boolean isSubtype(TypeElement sub, TypeElement sup) {
-        return !sub.equals(sup) && processingEnv.getTypeUtils().isSubtype(sub.asType(), sup.asType());
-    }
-
-    /**
-     * Finds an abstract setter method in the class hierarchy.
-     * Returns null if a concrete setter exists (no generation needed).
-     */
-    private ExecutableElement findAbstractSetter(TypeElement classElement, String propertyName,
-                                                 TypeMirror getterType) {
-        String expectedSetterName = "set" + capitalize(propertyName);
-
-        TypeElement current = classElement;
-        while (current != null && !current.getQualifiedName().toString().equals("java.lang.Object")) {
-            for (Element enclosed : current.getEnclosedElements()) {
-                if (enclosed.getKind() != ElementKind.METHOD) continue;
-                ExecutableElement method = (ExecutableElement) enclosed;
-
-                if (!method.getSimpleName().toString().equals(expectedSetterName)) continue;
-                if (method.getParameters().size() != 1) continue;
-
-                String paramType = method.getParameters().get(0).asType().toString();
-                if (!paramType.equals(getterType.toString())) continue;
-
-                if (!method.getModifiers().contains(Modifier.ABSTRACT)) {
-                    return null; // Concrete setter exists
-                }
-                return method;
+            if (!HierarchyScanner.isGetterName(methodName)) {
+                continue;
             }
 
-            TypeMirror sup = current.getSuperclass();
-            if (sup == null || sup.toString().equals("java.lang.Object")) break;
-            Element supElement = processingEnv.getTypeUtils().asElement(sup);
-            if (!(supElement instanceof TypeElement)) break;
-            current = (TypeElement) supElement;
-        }
+            Property propertyAnnotation = method.getAnnotation(Property.class);
+            if (propertyAnnotation != null) {
+                String propName = HierarchyScanner.extractPropertyName(methodName);
+                if (!propsMap.containsKey(propName)) {
+                    propsMap.put(propName,
+                            new PropertyInfo(propName, propertyAnnotation, method.getReturnType().toString()));
+                }
+            }
 
-        return null;
+            Facet facetAnnotation = method.getAnnotation(Facet.class);
+            if (facetAnnotation != null) {
+                String facetName = HierarchyScanner.extractFacetName(methodName);
+                if (!facetsMap.containsKey(facetName)) {
+                    facetsMap.put(facetName,
+                            new FacetInfo(facetName,
+                                    method.getReturnType().toString(),
+                                    method,
+                                    facetAnnotation));
+                }
+            }
+        }
     }
 
-    /**
-     * Generates the implementation class with properties, facets, and events.
-     */
     private void generateImplementation(TypeElement classElement, List<PropertyInfo> props,
                                         List<FacetInfo> facets,
                                         List<BehaviorEventInfo> behaviorEventInfos,
-                                        boolean isBehavior) throws IOException {
-        String pkg = processingEnv.getElementUtils().getPackageOf(classElement).getQualifiedName().toString();
+                                        boolean isComponent) throws IOException {
+        String pkg = processingEnv.getElementUtils()
+                .getPackageOf(classElement).getQualifiedName().toString();
         String baseName = classElement.getSimpleName().toString();
         String genName = baseName + "Impl";
-
         boolean hasEvents = !behaviorEventInfos.isEmpty();
 
         JavaFileObject source = filer.createSourceFile(pkg + "." + genName, classElement);
 
         try (PrintWriter w = new PrintWriter(source.openWriter())) {
             writePackageAndImports(w, pkg, hasEvents);
-            writeClassDeclaration(w, genName, baseName, isBehavior, hasEvents);
+            writeClassDeclaration(w, genName, baseName, isComponent, hasEvents);
             writePropertyKeys(w, props);
-            writeFacetKeys(w, facets, isBehavior);
+            writeFacetKeys(w, facets, isComponent);
             writeClientBehaviorEventKeys(w, behaviorEventInfos, hasEvents);
             writePropertyMethods(w, props);
             writeFacetMethods(w, facets);
@@ -729,14 +308,12 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         messager.printMessage(Diagnostic.Kind.NOTE,
-                "Generated " + genName + " for " + classElement.getQualifiedName() +
-                        " with " + props.size() + " properties, " + facets.size() + " facets, and " +
-                        behaviorEventInfos.size() + " events.");
+                "Generated " + genName + " for " + classElement.getQualifiedName()
+                        + " with " + props.size() + " properties, "
+                        + facets.size() + " facets, and "
+                        + behaviorEventInfos.size() + " events.");
     }
 
-    /**
-     * Writes package declaration and imports.
-     */
     private void writePackageAndImports(PrintWriter w, String pkg, boolean hasEvents) {
         w.println("package " + pkg + ";");
         w.println();
@@ -754,25 +331,22 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println();
     }
 
-    /**
-     * Writes class declaration with interfaces.
-     */
     private void writeClassDeclaration(PrintWriter w, String genName, String baseName,
-                                       boolean isBehavior, boolean hasEvents) {
+                                       boolean isComponent, boolean hasEvents) {
         w.println("/**");
         w.println(" * Generated implementation of " + baseName + ".");
         w.println(" * Generated by PrimeFaces CDK.");
         w.println(" */");
-        w.println("@Generated(value = \"" + AnnotationProcessor.class.getName() +
-                "\", date = \"" + new Date() + "\")");
+        w.println("@Generated(value = \"" + AnnotationProcessor.class.getName()
+                + "\", date = \"" + new Date() + "\")");
         w.print("public abstract class " + genName + " extends " + baseName);
-        if (!isBehavior || hasEvents) {
+        if (isComponent || hasEvents) {
             w.print(" implements ");
-            if (!isBehavior) {
+            if (isComponent) {
                 w.print(PrimeComponent.class.getName());
             }
             if (hasEvents) {
-                if (!isBehavior) {
+                if (isComponent) {
                     w.print(", ");
                 }
                 w.print(PrimeClientBehaviorHolder.class.getName());
@@ -782,202 +356,25 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println();
     }
 
-    /**
-     * Collects PropertyKeys from parent classes using reflection and Element API.
-     */
-    private Set<PropertyInfo> collectInheritedPropertyKeys(TypeElement classElement) {
-        Set<PropertyInfo> propertyInfos = new LinkedHashSet<>();
-
-        TypeElement current = classElement.getSuperclass() != null ?
-                (TypeElement) processingEnv.getTypeUtils().asElement(classElement.getSuperclass()) : null;
-
-        while (current != null &&
-                !current.getQualifiedName().toString().equals("java.lang.Object")) {
-
-            String className = current.getQualifiedName().toString();
-            boolean foundViaReflection = false;
-
-            // Try reflection first (works for compiled classes with package-private PropertyKeys)
-            try {
-                Class<?> clazz = Class.forName(className, false,
-                        this.getClass().getClassLoader());
-                collectPropertyKeysViaReflection(clazz, current, propertyInfos);
-                foundViaReflection = true;
-            }
-            catch (ClassNotFoundException e) {
-                // Expected for classes being compiled in this round
-            }
-            catch (Exception e) {
-                messager.printMessage(Diagnostic.Kind.WARNING,
-                        "Reflection failed for " + className + ": " + e.getMessage());
-            }
-
-            // Fallback to Element API if reflection didn't work
-            if (!foundViaReflection) {
-                collectPropertyKeysFromElement(current, propertyInfos);
-            }
-
-            // Move to superclass
-            TypeMirror superclass = current.getSuperclass();
-            if (superclass == null) break;
-            Element superElement = processingEnv.getTypeUtils().asElement(superclass);
-            current = (superElement instanceof TypeElement) ?
-                    (TypeElement) superElement : null;
-        }
-
-        return propertyInfos;
-    }
-
-    /**
-     * Collects PropertyKeys using reflection (works for package-private enums).
-     */
-    private void collectPropertyKeysViaReflection(Class<?> clazz, TypeElement typeElement,
-                                                  Set<PropertyInfo> propertyInfos) {
-        try {
-            // getDeclaredClasses() returns ALL nested classes including package-private!
-            for (Class<?> innerClass : clazz.getDeclaredClasses()) {
-                if (innerClass.isEnum() &&
-                        innerClass.getSimpleName().equals("PropertyKeys")) {
-
-                    // Get enum constants
-                    Object[] enumConstants = innerClass.getEnumConstants();
-                    if (enumConstants != null) {
-                        messager.printMessage(Diagnostic.Kind.NOTE,
-                                "Found " + enumConstants.length + " PropertyKeys in " +
-                                        clazz.getName() + " via reflection");
-
-                        for (Object constant : enumConstants) {
-                            String keyName = ((Enum<?>) constant).name();
-
-                            // Try to find getter method for this property
-                            String returnType = findPropertyReturnType(clazz, typeElement, keyName);
-
-                            // Create PropertyInfo with null getter/setter (inherited, no implementation needed)
-                            String description = "";
-                            String defaultValue = "";
-                            switch (keyName) {
-                                case "rendered":
-                                    description = "Boolean value to specify the rendering of the component, when set to false component will not be rendered.";
-                                    defaultValue = "true";
-                                    break;
-                                case "binding":
-                                    description = "An el expression referring to a server side UIComponent instance in a backing bean.";
-                                    break;
-                            }
-
-                            PropertyInfo info = new PropertyInfo(keyName, returnType, null, null, description, defaultValue, "", false);
-                            propertyInfos.add(info);
-                        }
-                    }
-                }
-            }
-        }
-        catch (Exception e) {
-            messager.printMessage(Diagnostic.Kind.WARNING,
-                    "Failed to scan " + clazz.getName() + " via reflection: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Collects PropertyKeys using Element API (works for classes being compiled).
-     */
-    private void collectPropertyKeysFromElement(TypeElement element, Set<PropertyInfo> propertyInfos) {
-        // Scan using Element API (only works for public/protected and same-package)
-        for (Element enclosed : element.getEnclosedElements()) {
-            if (enclosed.getKind() == ElementKind.ENUM &&
-                    enclosed.getSimpleName().toString().equals("PropertyKeys")) {
-
-                TypeElement enumElement = (TypeElement) enclosed;
-                for (Element enumConstant : enumElement.getEnclosedElements()) {
-                    if (enumConstant.getKind() == ElementKind.ENUM_CONSTANT) {
-                        String keyName = enumConstant.getSimpleName().toString();
-
-                        // Try to find getter method for this property
-                        String returnType = findPropertyReturnTypeFromElement(element, keyName);
-
-                        // Create PropertyInfo with null getter/setter (inherited, no implementation needed)
-                        PropertyInfo info = new PropertyInfo(keyName, returnType, null, null, "", "", "", false);
-                        propertyInfos.add(info);
-                    }
-                }
-
-                messager.printMessage(Diagnostic.Kind.NOTE,
-                        "Found PropertyKeys in " + element.getQualifiedName() + " via Element API");
-            }
-        }
-    }
-
-    /**
-     * Finds the return type of a property getter using reflection.
-     */
-    private String findPropertyReturnType(Class<?> clazz, TypeElement typeElement, String propertyName) {
-        // Try common getter naming patterns
-        String[] getterNames = {"get" + capitalize(propertyName), "is" + capitalize(propertyName)};
-
-        // Try reflection first
-        for (String getterName : getterNames) {
-            try {
-                java.lang.reflect.Method method = clazz.getDeclaredMethod(getterName);
-                return method.getReturnType().getName();
-            }
-            catch (NoSuchMethodException e) {
-                // Try next pattern
-            }
-        }
-
-        // Fallback to Element API
-        if (typeElement != null) {
-            return findPropertyReturnTypeFromElement(typeElement, propertyName);
-        }
-
-        // Default to Object if we can't determine
-        return "java.lang.Object";
-    }
-
-    /**
-     * Finds the return type of a property getter using Element API.
-     */
-    private String findPropertyReturnTypeFromElement(TypeElement element, String propertyName) {
-        String[] getterNames = {"get" + capitalize(propertyName), "is" + capitalize(propertyName)};
-
-        for (Element enclosed : element.getEnclosedElements()) {
-            if (enclosed.getKind() == ElementKind.METHOD) {
-                ExecutableElement method = (ExecutableElement) enclosed;
-                String methodName = method.getSimpleName().toString();
-
-                for (String getterName : getterNames) {
-                    if (methodName.equals(getterName) && method.getParameters().isEmpty()) {
-                        return method.getReturnType().toString();
-                    }
-                }
-            }
-        }
-
-        // Default to Object if we can't find the getter
-        return "java.lang.Object";
-    }
-
-    /**
-     * Writes PropertyKeys enum and getPropertyKeys method.
-     */
     private void writePropertyKeys(PrintWriter w, List<PropertyInfo> props) {
         w.println("    public enum PropertyKeys implements " + PrimePropertyKeys.class.getName() + " {");
         for (int i = 0; i < props.size(); i++) {
             PropertyInfo prop = props.get(i);
-            String type = prop.getType() + ".class";
-            type = type.replaceAll("<[^>]+>", "");
-            String description = prop.getDescription().replace("\"", "\\\"");
-            String defaultValue = prop.getDefaultValue().replace("\"", "\\\"");
+            String type = prop.getTypeName() == null ? prop.getAnnotation().type().getName() : prop.getTypeName();
+            String description = prop.getAnnotation().description().replace("\"", "\\\"");
+            String defaultValue = prop.getAnnotation().defaultValue().replace("\"", "\\\"");
             if (defaultValue.isEmpty()) {
-                defaultValue = getDefaultValueForPrimitive(prop.getType());
+                defaultValue = getDefaultValueForPrimitive(type);
             }
             if (defaultValue == null) {
                 defaultValue = "";
             }
-            String implicitDefaultValue = prop.getImplicitDefaultValue().replace("\"", "\\\"");
-            boolean required = prop.isRequired();
-            w.print("        " + escapeKeyword(prop.getName()) + "(\"" + prop.getName() + "\", " + type + ", \"" + description + "\", "
-                    + required + ", \"" + defaultValue + "\", \"" + implicitDefaultValue + "\")");
+            String implicitDefaultValue = prop.getAnnotation().implicitDefaultValue().replace("\"", "\\\"");
+            boolean required = prop.getAnnotation().required();
+            w.print("        " + escapeKeyword(prop.getName())
+                    + "(\"" + prop.getName() + "\", " + type.replaceAll("<[^>]+>", "") + ".class"
+                    + ", \"" + description + "\", " + required
+                    + ", \"" + defaultValue + "\", \"" + implicitDefaultValue + "\", " + prop.getAnnotation().internal() + ")");
             w.println(i < props.size() - 1 ? "," : "");
         }
         w.println(";");
@@ -988,48 +385,28 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("        private final boolean _required;");
         w.println("        private final String _defaultValue;");
         w.println("        private final String _implicitDefaultValue;");
+        w.println("        private final boolean _hidden;");
         w.println();
-        w.println("        PropertyKeys(String name, Class<?> type, String description, boolean required, String defaultValue, String implicitDefaultValue) {");
+        w.println("        PropertyKeys(String name, Class<?> type, String description, boolean required, String defaultValue, String implicitDefaultValue,"
+                + " boolean hidden) {");
         w.println("            this._name = name;");
         w.println("            this._type = type;");
         w.println("            this._description = description;");
         w.println("            this._required = required;");
         w.println("            this._defaultValue = defaultValue;");
         w.println("            this._implicitDefaultValue = implicitDefaultValue;");
+        w.println("            this._hidden = hidden;");
         w.println("        }");
         w.println();
-        w.println("        @Override");
-        w.println("        public String getName() {");
-        w.println("            return _name;");
-        w.println("        }");
-        w.println();
-        w.println("        @Override");
-        w.println("        public Class<?> getType() {");
-        w.println("            return _type;");
-        w.println("        }");
-        w.println();
-        w.println("        @Override");
-        w.println("        public String getDescription() {");
-        w.println("            return _description;");
-        w.println("        }");
-        w.println();
-        w.println("        @Override");
-        w.println("        public boolean isRequired() {");
-        w.println("            return _required;");
-        w.println("        }");
-        w.println();
-        w.println("        @Override");
-        w.println("        public String getDefaultValue() {");
-        w.println("            return _defaultValue;");
-        w.println("        }");
-        w.println();
-        w.println("        @Override");
-        w.println("        public String getImplicitDefaultValue() {");
-        w.println("            return _implicitDefaultValue;");
-        w.println("        }");
+        w.println("        @Override public String getName()              { return _name; }");
+        w.println("        @Override public Class<?> getType()            { return _type; }");
+        w.println("        @Override public String getDescription()       { return _description; }");
+        w.println("        @Override public boolean isRequired()          { return _required; }");
+        w.println("        @Override public String getDefaultValue()      { return _defaultValue; }");
+        w.println("        @Override public String getImplicitDefaultValue() { return _implicitDefaultValue; }");
+        w.println("        @Override public boolean isHidden() { return _hidden; }");
         w.println("    }");
         w.println();
-
         w.println("    @Override");
         w.println("    public " + PrimePropertyKeys.class.getName() + "[] getPropertyKeys() {");
         w.println("        return PropertyKeys.values();");
@@ -1037,66 +414,60 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println();
     }
 
-    /**
-     * Writes FacetKeys enum and getFacetKeys method.
-     */
-    private void writeFacetKeys(PrintWriter w, List<FacetInfo> facets, boolean isBehavior) {
-        if (!isBehavior) {
-            w.println("    public enum FacetKeys implements " + PrimeFacetKeys.class.getName() + " {");
-            for (int i = 0; i < facets.size(); i++) {
-                FacetInfo facet = facets.get(i);
-                String description = facet.getAnnotation().description().replace("\"", "\\\"");
-                w.print("        " + escapeKeyword(facet.getName()) + "(\"" + facet.getName() + "\", \"" + description + "\")");
-                w.println(i < facets.size() - 1 ? "," : "");
-            }
-            w.println(";");
-            w.println();
-            w.println("        private final String _name;");
-            w.println("        private final String _description;");
-            w.println();
-            w.println("        FacetKeys(String name, String description) {");
-            w.println("            this._name = name;");
-            w.println("            this._description = description;");
-            w.println("        }");
-            w.println();
-            w.println("        @Override");
-            w.println("        public String getName() {");
-            w.println("            return _name;");
-            w.println("        }");
-            w.println();
-            w.println("        @Override");
-            w.println("        public String getDescription() {");
-            w.println("            return _description;");
-            w.println("        }");
-            w.println();
-            w.println("    }");
-            w.println();
-
-            w.println("    @Override");
-            w.println("    public " + PrimeFacetKeys.class.getName() + "[] getFacetKeys() {");
-            w.println("        return FacetKeys.values();");
-            w.println("    }");
-            w.println();
+    private void writeFacetKeys(PrintWriter w, List<FacetInfo> facets, boolean isComponent) {
+        if (!isComponent) {
+            return;
         }
+        w.println("    public enum FacetKeys implements " + PrimeFacetKeys.class.getName() + " {");
+        for (int i = 0; i < facets.size(); i++) {
+            FacetInfo facet = facets.get(i);
+            String description = facet.getAnnotation().description().replace("\"", "\\\"");
+            w.print("        " + escapeKeyword(facet.getName())
+                    + "(\"" + facet.getName() + "\", \"" + description + "\")");
+            w.println(i < facets.size() - 1 ? "," : "");
+        }
+        w.println(";");
+        w.println();
+        w.println("        private final String _name;");
+        w.println("        private final String _description;");
+        w.println();
+        w.println("        FacetKeys(String name, String description) {");
+        w.println("            this._name = name;");
+        w.println("            this._description = description;");
+        w.println("        }");
+        w.println();
+        w.println("        @Override public String getName()        { return _name; }");
+        w.println("        @Override public String getDescription() { return _description; }");
+        w.println("    }");
+        w.println();
+        w.println("    @Override");
+        w.println("    public " + PrimeFacetKeys.class.getName() + "[] getFacetKeys() {");
+        w.println("        return FacetKeys.values();");
+        w.println("    }");
+        w.println();
     }
 
-    /**
-     * Writes BehaviorEventKeys enum and ClientBehaviorHolder methods.
-     */
-    private void writeClientBehaviorEventKeys(PrintWriter w, List<BehaviorEventInfo> events, boolean hasEvents) {
-        if (!hasEvents) return;
+    private void writeClientBehaviorEventKeys(PrintWriter w, List<BehaviorEventInfo> events,
+                                              boolean hasEvents) {
+        if (!hasEvents) {
+            return;
+        }
 
         BehaviorEventInfo defaultEvent = null;
 
-        // BehaviorEventKeys enum
-        w.println("    public enum ClientBehaviorEventKeys implements " + PrimeClientBehaviorEventKeys.class.getName() + " {");
+        w.println("    public enum ClientBehaviorEventKeys implements "
+                + PrimeClientBehaviorEventKeys.class.getName() + " {");
         for (int i = 0; i < events.size(); i++) {
             BehaviorEventInfo event = events.get(i);
-            String description = event.getDescription().replace("\"", "\\\"");
-            w.print("        " + escapeKeyword(event.getName()) + "(\"" + event.getName() + "\", " +
-                    event.getEventClass() + ".class, \"" + description + "\", " + event.isImplicit() + ", " + event.isDefaultEvent() + ")");
+            String description = event.getAnnotation().description().replace("\"", "\\\"");
+            w.print("        " + escapeKeyword(event.getName())
+                    + "(\"" + event.getName() + "\", "
+                    + event.getEventClassName() + ".class, \""
+                    + description + "\", "
+                    + event.getAnnotation().implicit() + ", "
+                    + event.getAnnotation().defaultEvent() + ")");
             w.println(i < events.size() - 1 ? "," : ";");
-            if (event.isDefaultEvent()) {
+            if (event.getAnnotation().defaultEvent() && defaultEvent == null) {
                 defaultEvent = event;
             }
         }
@@ -1107,8 +478,8 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("        private final boolean _implicit;");
         w.println("        private final boolean _defaultEvent;");
         w.println();
-        w.println("        ClientBehaviorEventKeys(String name, Class<? extends BehaviorEvent> type, String description, boolean implicit, ");
-        w.println("            boolean defaultEvent) {");
+        w.println("        ClientBehaviorEventKeys(String name, Class<? extends BehaviorEvent> type,");
+        w.println("                String description, boolean implicit, boolean defaultEvent) {");
         w.println("            this._name = name;");
         w.println("            this._type = type;");
         w.println("            this._description = description;");
@@ -1116,40 +487,19 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("            this._defaultEvent = defaultEvent;");
         w.println("        }");
         w.println();
-        w.println("        @Override");
-        w.println("        public String getName() {");
-        w.println("            return _name;");
-        w.println("        }");
-        w.println();
-        w.println("        @Override");
-        w.println("        public Class<? extends BehaviorEvent> getType() {");
-        w.println("            return _type;");
-        w.println("        }");
-        w.println();
-        w.println("        @Override");
-        w.println("        public String getDescription() {");
-        w.println("            return _description;");
-        w.println("        }");
-        w.println();
-        w.println("        @Override");
-        w.println("        public boolean isImplicit() {");
-        w.println("            return _implicit;");
-        w.println("        }");
-        w.println();
-        w.println("        @Override");
-        w.println("        public boolean isDefaultEvent() {");
-        w.println("            return _defaultEvent;");
-        w.println("        }");
+        w.println("        @Override public String getName()                              { return _name; }");
+        w.println("        @Override public Class<? extends BehaviorEvent> getType()     { return _type; }");
+        w.println("        @Override public String getDescription()                       { return _description; }");
+        w.println("        @Override public boolean isImplicit()                          { return _implicit; }");
+        w.println("        @Override public boolean isDefaultEvent()                      { return _defaultEvent; }");
         w.println("    }");
         w.println();
-
-        // Static fields and initializer
-        w.println("    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING;");
-        w.println("    private static final Collection<String> IMPLICIT_BEHAVIOR_EVENT_NAMES;");
-        w.println("    private static final Collection<String> EVENT_NAMES;");
+        w.println("    private static final java.util.Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING;");
+        w.println("    private static final java.util.Collection<String> IMPLICIT_BEHAVIOR_EVENT_NAMES;");
+        w.println("    private static final java.util.Collection<String> EVENT_NAMES;");
         w.println();
         w.println("    static {");
-        w.println("        Map<String, Class<? extends BehaviorEvent>> map = new java.util.HashMap<>();");
+        w.println("        java.util.Map<String, Class<? extends BehaviorEvent>> map = new java.util.HashMap<>();");
         w.println("        for (ClientBehaviorEventKeys key : ClientBehaviorEventKeys.values()) {");
         w.println("            map.put(key.getName(), key.getType());");
         w.println("        }");
@@ -1161,42 +511,35 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("        EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();");
         w.println("    }");
         w.println();
-
-        // ClientBehaviorHolder methods
         w.println("    @Override");
         w.println("    public " + PrimeClientBehaviorEventKeys.class.getName() + "[] getClientBehaviorEventKeys() {");
         w.println("        return ClientBehaviorEventKeys.values();");
         w.println("    }");
         w.println();
-
         w.println("    @Override");
         w.println("    public String getDefaultEventName() {");
-        w.println("        return " + (defaultEvent != null ? "\"" + defaultEvent.getName() + "\"" : "null") + ";");
+        w.println("        return " + (defaultEvent != null
+                ? "\"" + defaultEvent.getName() + "\""
+                : "null") + ";");
         w.println("    }");
         w.println();
-
         w.println("    @Override");
-        w.println("    public Collection<String> getImplicitBehaviorEventNames() {");
+        w.println("    public java.util.Collection<String> getImplicitBehaviorEventNames() {");
         w.println("        return IMPLICIT_BEHAVIOR_EVENT_NAMES;");
         w.println("    }");
         w.println();
-
         w.println("    @Override");
-        w.println("    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {");
+        w.println("    public java.util.Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {");
         w.println("        return BEHAVIOR_EVENT_MAPPING;");
         w.println("    }");
         w.println();
-
         w.println("    @Override");
-        w.println("    public Collection<String> getEventNames() {");
+        w.println("    public java.util.Collection<String> getEventNames() {");
         w.println("        return EVENT_NAMES;");
         w.println("    }");
         w.println();
     }
 
-    /**
-     * Writes property getter and setter methods.
-     */
     private void writePropertyMethods(PrintWriter w, List<PropertyInfo> props) {
         for (PropertyInfo p : props) {
             writeGetter(w, p);
@@ -1204,68 +547,76 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
     }
 
-    /**
-     * Writes facet getter methods.
-     */
     private void writeFacetMethods(PrintWriter w, List<FacetInfo> facets) {
         for (FacetInfo f : facets) {
             writeFacetGetter(w, f);
         }
     }
 
-    /**
-     * Writes a single facet getter method.
-     */
     private void writeFacetGetter(PrintWriter w, FacetInfo f) {
-        if (f.getGetterElement() == null) return;
-
-        String methodName = f.getGetterElement().getSimpleName().toString();
-
+        if (f.getGetterElement() == null) {
+            return;
+        }
         w.println("    @Override");
-        w.println("    public UIComponent " + methodName + "() {");
+        w.println("    public UIComponent " + f.getGetterElement().getSimpleName() + "() {");
         w.println("        return getFacet(FacetKeys." + escapeKeyword(f.getName()) + ");");
         w.println("    }");
         w.println();
     }
 
-    /**
-     * Writes a property getter method with StateHelper access or super call.
-     */
     private void writeGetter(PrintWriter w, PropertyInfo p) {
-        if (p.getGetterElement() == null) return;
-        if (p.isCallSuper()) return;
+        if (p.isImplementedGetterExists() || p.getAnnotation().skipAccessors()) {
+            return;
+        }
+        if ("id".equals(p.getName()) || "binding".equals(p.getName()) || "rendered".equals(p.getName())) {
+            return;
+        }
 
-        String type = p.getType();
-        String methodName = p.getGetterElement().getSimpleName().toString();
-
-        w.println("    @Override");
-        w.println("    public " + type + " " + methodName + "() {");
-
-        String defaultValue = p.getDefaultValue();
+        String type = p.getTypeName() == null ? p.getAnnotation().type().getName() : p.getTypeName();
+        String methodName = "boolean".equals(type)
+                ? "is" + CdkUtils.capitalize(p.getName())
+                : "get" + CdkUtils.capitalize(p.getName());
+        String defaultValue = p.getAnnotation().defaultValue();
         if (defaultValue == null || defaultValue.isBlank()) {
             defaultValue = getDefaultValueForPrimitive(type);
         }
 
+        w.println("    @Override");
+        w.println("    public " + type + " " + methodName + "() {");
         if (defaultValue != null) {
-            if (String.class.getName().equals(type)) {
-                w.println("        return (" + type + ") getStateHelper().eval(PropertyKeys." +
-                        escapeKeyword(p.getName()) + ", \"" + defaultValue + "\");");
-            }
-            else {
-                w.println("        return (" + type + ") getStateHelper().eval(PropertyKeys." +
-                        escapeKeyword(p.getName()) + ", " + defaultValue + ");");
-            }
+            String literal = String.class.getName().equals(type)
+                    ? "\"" + defaultValue + "\""
+                    : defaultValue;
+            w.println("        return (" + type + ") getStateHelper().eval(PropertyKeys."
+                    + escapeKeyword(p.getName()) + ", " + literal + ");");
         }
         else {
-            w.println("        return (" + type + ") getStateHelper().eval(PropertyKeys." + escapeKeyword(p.getName()) + ");");
+            w.println("        return (" + type + ") getStateHelper().eval(PropertyKeys."
+                    + escapeKeyword(p.getName()) + ");");
         }
         w.println("    }");
         w.println();
     }
 
-    /**
-     * Returns default value for primitive types.
-     */
+    private void writeSetter(PrintWriter w, PropertyInfo p) {
+        if ((p.isImplementedSetterExists() && p.isImplementedGetterExists()) || p.getAnnotation().skipAccessors()) {
+            return;
+        }
+        if ("id".equals(p.getName()) || "binding".equals(p.getName()) || "rendered".equals(p.getName())) {
+            return;
+        }
+
+        String setterName = "set" + CdkUtils.capitalize(p.getName());
+        String type = p.getTypeName() == null ? p.getAnnotation().type().getName() : p.getTypeName();
+        String param = escapeKeyword(p.getName());
+
+        w.println("    public void " + setterName + "(" + type + " " + param + ") {");
+        w.println("        getStateHelper().put(PropertyKeys." + escapeKeyword(p.getName())
+                + ", " + param + ");");
+        w.println("    }");
+        w.println();
+    }
+
     private String getDefaultValueForPrimitive(String type) {
         switch (type) {
             case "boolean":
@@ -1286,74 +637,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
     }
 
-    /**
-     * Writes a property setter method with StateHelper access or super call.
-     */
-    private void writeSetter(PrintWriter w, PropertyInfo p) {
-        if (!p.isGenerateSetter()) {
-            return;
-        }
-        if (p.isCallSuper()) {
-            return;
-        }
-
-        String setterName = "set" + capitalize(p.getName());
-        String type = p.getType();
-
-        if (p.getSetterElement() != null) {
-            w.println("    @Override");
-        }
-        w.println("    public void " + setterName + "(" + type + " " + escapeKeyword(p.getName()) + ") {");
-        w.println("        getStateHelper().put(PropertyKeys." + escapeKeyword(p.getName()) + ", " + escapeKeyword(p.getName()) + ");");
-        w.println("    }");
-        w.println();
-    }
-
-    /**
-     * Extracts property name from getter method name (e.g., "getValue" → "value").
-     */
-    private String extractPropertyName(String methodName) {
-        if (methodName.startsWith("get") || methodName.startsWith("set")) {
-            String core = methodName.substring(3);
-            return decap(core);
-        }
-        else if (methodName.startsWith("is")) {
-            String core = methodName.substring(2);
-            return decap(core);
-        }
-        return decap(methodName);
-    }
-
-    /**
-     * Decapitalizes a string (first character to lowercase).
-     */
-    private String decap(String s) {
-        if (s == null || s.isEmpty()) return s;
-        return Character.toLowerCase(s.charAt(0)) + s.substring(1);
-    }
-
-    /**
-     * Capitalizes a string (first character to uppercase).
-     */
-    private String capitalize(String s) {
-        if (s == null || s.isEmpty()) return s;
-        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
-    }
-
     private String escapeKeyword(String name) {
-        String[] javaKeywords = {
-            "abstract", "assert", "boolean", "break", "byte",
-            "case", "catch", "char", "class", "const",
-            "continue", "default", "do", "double", "else",
-            "enum", "extends", "final", "finally", "float",
-            "for", "goto", "if", "implements", "import",
-            "instanceof", "int", "interface", "long", "native",
-            "new", "package", "private", "protected", "public",
-            "return", "short", "static", "strictfp", "super",
-            "switch", "synchronized", "this", "throw", "throws",
-            "transient", "try", "void", "volatile", "while",
-            "true", "false", "null"
-        };
-        return Arrays.asList(javaKeywords).contains(name) ? "_" + name : name;
+        return CdkUtils.isJavaKeyword(name) ? "_" + name : name;
     }
 }

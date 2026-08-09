@@ -165,12 +165,23 @@ PrimeFaces.widget.TextEditor = class TextEditor extends PrimeFaces.widget.Deferr
             }
 
             // MS Edge spell check completion event
-            if (!e.relatedTarget && e.target === $this.editor.root) {
+            if (PrimeFaces.env.browser.msedge && !e.relatedTarget && e.target === $this.editor.root) {
                 return;
             }
 
             // Triggers selection-change event above
             $this.editor.blur();
+        });
+
+        // #14843: Replace &nbsp; with space in clipboard operations
+        this.editor.clipboard.addMatcher(Node.TEXT_NODE, function (node, delta) {
+            delta.ops.forEach(op => {
+                if (typeof op.insert === "string") {
+                    op.insert = op.insert.replace(/&nbsp;|\u00A0/g, " ");
+                }
+            });
+
+            return delta;
         });
     }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.HtmlSanitizer;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -84,7 +85,7 @@ public class TextEditorRenderer extends InputRenderer<TextEditor> {
         String valueToRender = sanitizeHtml(context, component, ComponentUtils.getValueToRender(context, component));
         String inputId = clientId + "_input";
         String editorId = clientId + "_editor";
-        UIComponent toolbar = component.getFacet("toolbar");
+        UIComponent toolbar = component.getToolbarFacet();
 
         String style = getStyleBuilder(context)
                 .add(component.getStyle())
@@ -94,6 +95,7 @@ public class TextEditorRenderer extends InputRenderer<TextEditor> {
 
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_TEXTBOX, null);
         writer.writeAttribute("class", styleClass, null);
         if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);

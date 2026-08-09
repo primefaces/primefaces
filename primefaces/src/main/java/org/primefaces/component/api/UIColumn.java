@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,7 +57,7 @@ public interface UIColumn {
     /**
      * Used to extract bean's property from a value expression in static columns (e.g. "#{car.year}" = year)
      */
-    Pattern STATIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+\\.([\\w.]+)}$");
+    Pattern STATIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+(?:\\.|\\[')([\\w.]+)(?:'\\])?}$");
 
     /**
      * Used to extract UIColumn#field if not defined. Supports strictly two kind of expressions:

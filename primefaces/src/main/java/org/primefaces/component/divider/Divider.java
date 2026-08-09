@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,15 @@
  */
 package org.primefaces.component.divider;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Divider.COMPONENT_TYPE, namespace = Divider.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Divider is used to separate contents.")
 @ResourceDependency(library = "primefaces", name = "components.css")
-public class Divider extends DividerBase {
+public class Divider extends DividerBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Divider";
 
     public static final String STYLE_CLASS = "ui-divider ui-widget";

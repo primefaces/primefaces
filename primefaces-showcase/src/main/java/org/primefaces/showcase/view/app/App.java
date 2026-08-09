@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ public class App implements Serializable {
 
     @Inject private Themes themes;
 
-    private String theme = "saga-blue";
+    private String theme = "aura-light-emerald";
     private boolean darkMode = false;
     private String inputStyle = "outlined";
     private Country locale = new Country(0, Locale.US);

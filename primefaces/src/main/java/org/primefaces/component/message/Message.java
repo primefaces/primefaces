@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,18 @@
  */
 package org.primefaces.component.message;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Message.COMPONENT_TYPE, namespace = Message.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Message is a pre-skinned extended version of the standard Faces message component with extensions.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Message extends MessageBase {
+public class Message extends MessageBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Message";
 }

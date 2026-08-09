@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,20 @@
  */
 package org.primefaces.component.chronoline;
 
+import org.primefaces.cdk.api.FacesComponentBase;
+import org.primefaces.cdk.api.Facet;
+import org.primefaces.cdk.api.Property;
 import org.primefaces.component.api.PrimeUIData;
+import org.primefaces.component.api.StyleAware;
 
-public abstract class ChronolineBase extends PrimeUIData {
+import jakarta.faces.component.UIComponent;
+
+@FacesComponentBase
+public abstract class ChronolineBase extends PrimeUIData implements StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ChronolineRenderer";
-
-    public enum PropertyKeys {
-        align,
-        layout,
-        style,
-        styleClass
-    }
 
     public ChronolineBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -47,35 +47,42 @@ public abstract class ChronolineBase extends PrimeUIData {
         return COMPONENT_FAMILY;
     }
 
-    public String getAlign() {
-        return (String) getStateHelper().eval(PropertyKeys.align, "left");
-    }
+    @Facet(description = "Opposite content of the chronoline.")
+    public abstract UIComponent getOppositeFacet();
 
-    public void setAlign(String align) {
-        getStateHelper().put(PropertyKeys.align, align);
-    }
+    @Facet(description = "Marker content of the chronoline.")
+    public abstract UIComponent getMarkerFacet();
 
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "vertical");
-    }
+    @Property(description = "Position of the chronoline bar relative to the content. Valid values are \"left\", \"right\" for vertical layout and \"top\", "
+            + "\"bottom\" for horizontal layout.", defaultValue = "left")
+    public abstract String getAlign();
 
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
-    }
+    @Property(description = "Orientation of the chronoline, valid values are \"vertical\" and \"horizontal\".", defaultValue = "vertical")
+    public abstract String getLayout();
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
+    @Override
+    @Property(internal = true)
+    public abstract String getRowIndexVar();
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
+    @Override
+    @Property(internal = true)
+    public abstract int getFirst();
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
+    @Override
+    @Property(internal = true)
+    public abstract boolean isLazy();
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    @Override
+    @Property(internal = true)
+    public abstract int getRows();
+
+    @Override
+    @Property(internal = true)
+    public abstract boolean isRowStatePreserved();
+
+    @Override
+    @Property(description = "Value of the data component.", required = true)
+    public Object getValue() {
+        return super.getValue();
     }
 }

@@ -98,8 +98,11 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
         this.itemContainer = this.panel.children('ul');
 
         var stateHolderId = this.tableId + "_columnTogglerState";
-        this.togglerStateHolder = $('<input type="hidden" id="' + stateHolderId + '" name="' + stateHolderId + '" autocomplete="off"></input>');
-        this.table.append(this.togglerStateHolder);
+        this.togglerStateHolder = $(PrimeFaces.escapeClientId(stateHolderId));
+        if (this.togglerStateHolder.length === 0) {
+            this.togglerStateHolder = $('<input type="hidden" id="' + stateHolderId + '" name="' + stateHolderId + '" autocomplete="off"></input>');
+            this.table.append(this.togglerStateHolder);
+        }
         this.togglerState = [];
 
         // select all checkbox
@@ -678,7 +681,15 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
      * @return {number} The calculated `colspan` for the rows.
      */
     calculateColspan() {
-        return this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box.ui-state-active').length;
+	    const visibleColumns = this.itemContainer
+            .find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box.ui-state-active')
+            .length;
+
+        const visibleStaticColumns = this.thead
+            .find('> tr > th.ui-static-column:not(.ui-helper-hidden)')
+            .length;
+
+        return visibleColumns + visibleStaticColumns;
     }
 
     /**

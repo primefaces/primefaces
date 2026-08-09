@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -50,6 +51,7 @@ class InputNumberTest {
     private ELContext elContext;
     private InputNumber inputNumber;
     private ValueExpression valueExpression;
+    private Object capturedSubmittedValue;
 
     @BeforeEach
     void setup() {
@@ -62,12 +64,19 @@ class InputNumberTest {
         inputNumber = mock(InputNumber.class);
         when(inputNumber.getClientId(context)).thenReturn("");
         when(inputNumber.isValid()).thenReturn(true);
-        when(inputNumber.getSubmittedValue()).thenCallRealMethod();
-        doCallRealMethod().when(inputNumber).setSubmittedValue(anyString());
+        // Mojarra 4.0.19+ stores submittedValue in TransientStateHelper; real methods
+        // on a Mockito mock cannot persist it, so capture via stubbing instead.
+        capturedSubmittedValue = null;
+        when(inputNumber.getSubmittedValue()).thenAnswer(invocation -> capturedSubmittedValue);
+        doAnswer(invocation -> {
+            capturedSubmittedValue = invocation.getArgument(0);
+            return null;
+        }).when(inputNumber).setSubmittedValue(any());
     }
 
     @AfterEach
     void teardown() {
+        capturedSubmittedValue = null;
         valueExpression = null;
         inputNumber = null;
         elContext = null;
@@ -77,6 +86,11 @@ class InputNumberTest {
     }
 
     private void setupValues(String submittedValue, boolean disabled, String minValue, String maxValue, boolean primitiveValueBinding) {
+        setupValues(submittedValue, disabled, minValue, maxValue, primitiveValueBinding, null);
+    }
+
+    private void setupValues(String submittedValue, boolean disabled, String minValue, String maxValue,
+            boolean primitiveValueBinding, String leadingZero) {
         Map<String, String> requestParams = new HashMap<>();
         requestParams.put("_hinput", submittedValue);
         when(externalContext.getRequestParameterMap()).thenReturn(requestParams);
@@ -88,6 +102,7 @@ class InputNumberTest {
         when(inputNumber.isReadonly()).thenReturn(disabled);
         when(inputNumber.getMinValue()).thenReturn(minValue);
         when(inputNumber.getMaxValue()).thenReturn(maxValue);
+        when(inputNumber.getLeadingZero()).thenReturn(leadingZero);
         valueExpression = mock(ValueExpression.class);
         when(inputNumber.getValueExpression(anyString())).thenReturn(valueExpression);
         if (primitiveValueBinding) {
@@ -194,6 +209,51 @@ class InputNumberTest {
         setupValues("1", true, "0", "2", false);
         renderer.decode(context, inputNumber);
         assertNull(inputNumber.getSubmittedValue());
+    }
+
+    @Test
+    void decodeLeadingZeroKeepPreservesLeadingZeros() {
+        setupValues("000123", false, null, null, false, "keep");
+        renderer.decode(context, inputNumber);
+        assertEquals("000123", inputNumber.getSubmittedValue());
+    }
+
+    @Test
+    void decodeLeadingZeroKeepStillCoercesOutOfRange() {
+        setupValues("000999", false, "0", "100", false, "keep");
+        renderer.decode(context, inputNumber);
+        assertEquals("100", inputNumber.getSubmittedValue());
+    }
+
+    @Test
+    void decodeLeadingZeroDenyStripsLeadingZeros() {
+        setupValues("000123", false, null, null, false, "deny");
+        renderer.decode(context, inputNumber);
+        assertEquals("123", inputNumber.getSubmittedValue());
+    }
+
+    @Test
+    void formatValueToRenderLeadingZeroKeepPreservesLeadingZeros() {
+        when(inputNumber.getLeadingZero()).thenReturn("keep");
+        when(inputNumber.getMinValue()).thenReturn(null);
+        when(inputNumber.getMaxValue()).thenReturn(null);
+        assertEquals("000123", renderer.formatValueToRender(context, inputNumber, "000123"));
+    }
+
+    @Test
+    void formatValueToRenderLeadingZeroKeepStillCoercesOutOfRange() {
+        when(inputNumber.getLeadingZero()).thenReturn("keep");
+        when(inputNumber.getMinValue()).thenReturn("0");
+        when(inputNumber.getMaxValue()).thenReturn("100");
+        assertEquals("100", renderer.formatValueToRender(context, inputNumber, "000999"));
+    }
+
+    @Test
+    void formatValueToRenderLeadingZeroDenyStripsLeadingZeros() {
+        when(inputNumber.getLeadingZero()).thenReturn("deny");
+        when(inputNumber.getMinValue()).thenReturn(null);
+        when(inputNumber.getMaxValue()).thenReturn(null);
+        assertEquals("123", renderer.formatValueToRender(context, inputNumber, "000123"));
     }
 
     @Test

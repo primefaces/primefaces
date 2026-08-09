@@ -349,6 +349,11 @@
         };
 
         this._mouse = function (e) {
+            var usePointer = (window.PointerEvent || window.navigator.msPointerEnabled);
+
+            var upEventType = usePointer ? "pointerup.k" : "mouseup.k";
+            var moveEventType = usePointer ? "pointermove.k" : "mousemove.k";
+
             var mouseMove = function (e) {
                 var v = s.xy2val(e.pageX, e.pageY);
 
@@ -365,13 +370,13 @@
 
             // Mouse events listeners
             k.c.d
-                .on("mousemove.k", mouseMove)
+                .on(moveEventType, mouseMove)
                 .on(
                     // Escape key cancel current change
                     "keyup.k",
                     function (e) {
                         if (e.keyCode === 27) {
-                            k.c.d.off("mouseup.k mousemove.k keyup.k");
+                            k.c.d.off(upEventType + " " + moveEventType + " keyup.k");
 
                             if (s.eH && s.eH() === false)
                                 return;
@@ -381,9 +386,9 @@
                     }
                 )
                 .on(
-                    "mouseup.k",
+                    upEventType,
                     function (e) {
-                        k.c.d.off('mousemove.k mouseup.k keyup.k');
+                        k.c.d.off(upEventType + " " + moveEventType + " keyup.k");
                         s.val(s.cv);
                     }
                 );
@@ -400,11 +405,14 @@
         };
 
         this._listen = function () {
+            var downEventType = (window.PointerEvent || window.navigator.msPointerEnabled) ? "pointerdown" : "mousedown";
+
             if (!this.o.readOnly) {
                 this.$c
                     .on(
-                        "mousedown",
+                        downEventType,
                         function (e) {
+                            e.stopPropagation();
                             e.preventDefault();
                             s._xy()._mouse(e);
                         }
@@ -412,6 +420,7 @@
                     .on(
                         "touchstart",
                         function (e) {
+                            e.stopPropagation();
                             e.preventDefault();
                             s._xy()._touch(e);
                         }

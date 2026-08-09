@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.button;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -34,11 +35,12 @@ import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Button.COMPONENT_TYPE, namespace = Button.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Button is an extension to the standard h:button component with skinning capabilities.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Button extends ButtonBase {
+public class Button extends ButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Button";
 
@@ -59,6 +61,13 @@ public class Button extends ButtonBase {
 
         if (isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
+        }
+
+        if ("small".equals(getSize())) {
+            styleClass = styleClass + " ui-button-sm";
+        }
+        else if ("large".equals(getSize())) {
+            styleClass = styleClass + " ui-button-lg";
         }
 
         String userStyleClass = getStyleClass();

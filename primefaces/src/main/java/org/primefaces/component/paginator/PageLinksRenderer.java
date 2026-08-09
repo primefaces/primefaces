@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.component.paginator;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIPageableData;
+import org.primefaces.util.LocaleUtils;
 
 import java.io.IOException;
 
@@ -59,7 +60,7 @@ public class PageLinksRenderer implements PaginatorElementRenderer {
             writer.writeAttribute("class", styleClass, null);
             writer.writeAttribute("tabindex", 0, null);
             writer.writeAttribute("type", "button", null);
-            writer.writeText((i + 1), null);
+            writer.writeText(LocaleUtils.formatInteger(context, i + 1), null);
             writer.endElement("button");
         }
 

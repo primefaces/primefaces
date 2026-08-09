@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -59,12 +59,18 @@ public class MenuItem implements Serializable {
     public MenuItem(String label, List<MenuItem> menuItems) {
         this.label = label;
         this.menuItems = menuItems;
+        for (MenuItem menuItem : menuItems) {
+            menuItem.setParent(this);
+        }
     }
 
     public MenuItem(String label, List<MenuItem> menuItems, String badge) {
         this.label = label;
         this.menuItems = menuItems;
         this.badge = badge;
+        for (MenuItem menuItem : menuItems) {
+            menuItem.setParent(this);
+        }
     }
 
     public String getLabel() {

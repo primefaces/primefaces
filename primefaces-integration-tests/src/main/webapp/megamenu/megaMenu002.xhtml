@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true" skipDetailIfEqualsSummary="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:megaMenu id="megamenu" orientation="vertical" autoDisplay="false">
+                <p:submenu label="Videos" icon="pi pi-fw pi-video" id="videos">
+                    <p:column>
+                        <p:submenu label="Video 1">
+                            <p:menuitem value="Video 1.1" id="video11" action="#{megaMenu001.someAction('Video 1.1')}"/>
+                            <p:menuitem value="Video 1.2" id="video12" action="#{megaMenu001.someAction('Video 1.2')}"/>
+                        </p:submenu>
+                    </p:column>
+                    <p:column>
+                        <p:submenu label="Video 2">
+                            <p:menuitem value="Video 2.1" id="video21" action="#{megaMenu001.someAction('Video 2.1')}"/>
+                            <p:menuitem value="Video 2.2" id="video22" action="#{megaMenu001.someAction('Video 2.2')}"/>
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+
+                <p:submenu label="Users" icon="pi pi-fw pi-users" id="users">
+                    <p:column>
+                        <p:submenu label="User 1">
+                            <p:menuitem value="User 1.1" id="user11" action="#{megaMenu001.someAction('User 1.1')}"/>
+                            <p:menuitem value="User 1.2" id="user12" action="#{megaMenu001.someAction('User 1.2')}"/>
+                        </p:submenu>
+                    </p:column>
+                    <p:column>
+                        <p:submenu label="User 2">
+                            <p:menuitem value="User 2.1" id="user21" action="#{megaMenu001.someAction('User 2.1')}"/>
+                            <p:menuitem value="User 2.2" id="user22" action="#{megaMenu001.someAction('User 2.2')}"/>
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+            </p:megaMenu>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

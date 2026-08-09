@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -523,7 +523,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
     }
 
     protected void encodeFooter(FacesContext context, AutoComplete component) throws IOException {
-        UIComponent footer = component.getFacet("footer");
+        UIComponent footer = component.getFooterFacet();
         if (FacetUtils.shouldRenderFacet(footer)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
@@ -548,8 +548,9 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         boolean pojo = var != null;
         boolean hasHeader = false;
 
-        for (int i = 0; i < component.getColums().size(); i++) {
-            Column column = component.getColums().get(i);
+        List<Column> columns = component.getColums();
+        for (int i = 0; i < columns.size(); i++) {
+            Column column = columns.get(i);
             if (column.isRendered() && (column.getHeaderText() != null || FacetUtils.shouldRenderFacet(column.getFacet("header")))) {
                 hasHeader = true;
                 break;
@@ -562,8 +563,8 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
         if (hasHeader) {
             writer.startElement("thead", component);
-            for (int i = 0; i < component.getColums().size(); i++) {
-                Column column = component.getColums().get(i);
+            for (int i = 0; i < columns.size(); i++) {
+                Column column = columns.get(i);
                 if (!column.isRendered()) {
                     continue;
                 }
@@ -665,7 +666,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
             boolean pojo, String var, String key, int rowNumber) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        UIComponent itemtip = component.getFacet("itemtip");
+        UIComponent itemtip = component.getItemtipFacet();
         boolean hasGroupByTooltip = (component.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         writer.startElement("li", null);
@@ -730,7 +731,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        UIComponent itemtip = component.getFacet("itemtip");
+        UIComponent itemtip = component.getItemtipFacet();
         boolean hasGroupByTooltip = (component.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         writer.startElement("tr", null);
@@ -754,8 +755,9 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
             }
         }
 
-        for (int i = 0; i < component.getColums().size(); i++) {
-            Column column = component.getColums().get(i);
+        List<Column> columns = component.getColums();
+        for (int i = 0; i < columns.size(); i++) {
+            Column column = columns.get(i);
             if (column.isRendered()) {
                 writer.startElement("td", null);
                 if (key != null) {
@@ -811,13 +813,13 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
                 .attr("queryMode", component.getQueryMode())
                 .attr("completeEndpoint", component.getCompleteEndpoint())
                 .attr("moreText", component.getMoreText())
-                .attr("hasFooter", FacetUtils.shouldRenderFacet(component.getFacet("footer")));
+                .attr("hasFooter", FacetUtils.shouldRenderFacet(component.getFooterFacet()));
 
         if (component.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", component.getCacheTimeout());
         }
 
-        if (FacetUtils.shouldRenderFacet(component.getFacet("itemtip"))) {
+        if (FacetUtils.shouldRenderFacet(component.getItemtipFacet())) {
             wb.attr("itemtip", true, false)
                     .attr("itemtipMyPosition", component.getItemtipMyPosition(), null)
                     .attr("itemtipAtPosition", component.getItemtipAtPosition(), null);
@@ -892,6 +894,8 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
             writer.startElement("td", null);
             writer.writeAttribute("colspan", colSize, null);
+            writer.writeAttribute(HTML.ARIA_LABEL, moreText, null);
+            writer.writeAttribute("data-item-label", moreText, null);
             writer.writeText(moreText, "moreText");
             writer.endElement("td");
 
@@ -901,6 +905,8 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
             writer.startElement("li", null);
             writer.writeAttribute("id", component.getClientId(context) + "_moretext", null);
             writer.writeAttribute("class", AutoComplete.MORE_TEXT_LIST_CLASS, null);
+            writer.writeAttribute(HTML.ARIA_LABEL, moreText, null);
+            writer.writeAttribute("data-item-label", moreText, null);
             writer.writeText(moreText, "moreText");
             writer.endElement("li");
         }

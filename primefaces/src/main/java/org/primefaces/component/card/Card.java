@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.card;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 
 @FacesComponent(value = Card.COMPONENT_TYPE, namespace = Card.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "Card is a flexible container component.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Card extends CardBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Card";

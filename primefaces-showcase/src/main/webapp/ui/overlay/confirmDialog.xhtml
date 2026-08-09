@@ -17,8 +17,15 @@
 
     <ui:param name="documentationLink" value="/components/confirmdialog"/>
     <ui:param name="widgetLink" value="ConfirmDialog-1"/>
+    <ui:param name="tagName" value="confirmDialog"/>
 
     <ui:define name="implementation">
+        <script>
+function checkConfirmation() {
+    console.log('ConfirmDialog BeforeShow!');
+    return true; // return false to not bring up the dialog
+}
+        </script>
         <div class="card">
             <h3>Global</h3>
             <h:form>
@@ -26,7 +33,7 @@
 
                 <p:commandButton value="Confirm" action="#{confirmView.confirm}" update="message" styleClass="mr-2"
                                  icon="pi pi-check">
-                    <p:confirm header="Confirmation" message="Are you sure you want to proceed?"
+                    <p:confirm header="Confirmation" message="Are you sure you want to proceed?" beforeShow="checkConfirmation();"
                                icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
 
@@ -69,7 +76,7 @@
                 <p:commandButton type="button" onclick="PF('cd').show()" value="Destroy World" icon="pi pi-trash"
                                  styleClass="ui-button-danger mr-2"/>
                 <p:confirmDialog message="Are you sure about destroying the world?" header="Initiating destroy process"
-                                 severity="alert" widgetVar="cd">
+                                 severity="alert" widgetVar="cd" dismissibleMask="true">
                     <p:commandButton value="Yes Sure" action="#{confirmView.delete}" update="message"
                                      oncomplete="PF('cd').hide()" styleClass="ui-button-danger"/>
                     <p:commandButton value="Not Yet" onclick="PF('cd').hide();" type="button"/>

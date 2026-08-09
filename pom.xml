@@ -73,9 +73,10 @@
         <maven.compiler.source>11</maven.compiler.source>
         <junit.version>5.13.4</junit.version>
         <poi.version>5.5.1</poi.version>
-        <jacoco.version>0.8.14</jacoco.version>
-        <tomcat.version>10.1.48</tomcat.version>
-        <slf4j.version>2.0.17</slf4j.version>
+        <jacoco.version>0.8.15</jacoco.version>
+        <tomcat.version>10.1.55</tomcat.version>
+        <slf4j.version>2.0.18</slf4j.version>
+        <dart-sass.version>1.79.6</dart-sass.version>
 
         <sonar.skip>true</sonar.skip>
         <sonar.coverage.jacoco.xmlReportPaths>../primefaces-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
@@ -97,6 +98,31 @@
         <module>primefaces-coverage</module>
     </modules>
 
+    <repositories>
+        <repository>
+            <id>sonatype-snapshots</id>
+            <name>Sonatype Snapshot Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>apache.snapshots</id>
+            <name>Apache Development Snapshot Repository</name>
+            <url>https://repository.apache.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+	
     <build>
         <directory>${build.output}</directory>
         <pluginManagement>
@@ -109,17 +135,17 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.14.1</version>
+                    <version>3.15.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.12.0</version>
                         <configuration>
-                        <sourcepath>${basedir}/src/main/java;</sourcepath>
-                        <doclint>none</doclint>
-                        <excludePackageNames>org.primefaces.shaded.*</excludePackageNames>
-                    </configuration>
+                            <legacyMode>true</legacyMode>
+                            <doclint>none</doclint>
+                            <excludePackageNames>org.primefaces.shaded.*</excludePackageNames>
+                        </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -129,17 +155,17 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>3.5.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.5.4</version>
+                    <version>3.5.6</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.5.4</version>
+                    <version>3.5.6</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -149,7 +175,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.6.1</version>
+                    <version>3.6.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -200,7 +226,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.5.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <propertiesEncoding>${project.build.sourceEncoding}</propertiesEncoding>
@@ -210,7 +236,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>5.0.0</version>
+                <version>5.1.1</version>
                 <configuration>
                     <licenseSets>
                         <licenseSet>
@@ -290,7 +316,7 @@
             <plugin>
                 <groupId>org.jreleaser</groupId>
                 <artifactId>jreleaser-maven-plugin</artifactId>
-                <version>1.21.0</version>
+                <version>1.25.0</version>
                 <inherited>false</inherited>
                 <configuration>
                     <jreleaser>
@@ -315,11 +341,22 @@
                                 </pomchecker>
                                 <mavenCentral>
                                     <sonatype>
-                                        <active>ALWAYS</active>
+                                        <active>RELEASE</active>
                                         <url>https://central.sonatype.com/api/v1/publisher</url>
                                         <stagingRepositories>target/staging-deploy</stagingRepositories>
                                     </sonatype>
                                 </mavenCentral>
+                                <nexus2>
+                                    <snapshot-deploy>
+                                        <active>SNAPSHOT</active>
+                                        <snapshotUrl>https://central.sonatype.com/repository/maven-snapshots/</snapshotUrl>
+                                        <applyMavenCentralRules>true</applyMavenCentralRules>
+                                        <snapshotSupported>true</snapshotSupported>
+                                        <closeRepository>true</closeRepository>
+                                        <releaseRepository>true</releaseRepository>
+                                        <stagingRepositories>target/staging-deploy</stagingRepositories>
+                                    </snapshot-deploy>
+                                </nexus2>
                             </maven>
                         </deploy>
                     </jreleaser>
@@ -371,7 +408,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.14</version>
+                        <version>0.8.15</version>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
@@ -409,13 +446,13 @@
             <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>jakarta.faces</artifactId>
-                <version>4.0.11</version>
+                <version>4.0.21</version>
             </dependency>
 
             <dependency>
                 <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
                 <artifactId>owasp-java-html-sanitizer</artifactId>
-                <version>20240325.1</version>
+                <version>20260313.1</version>
             </dependency>
 
             <!-- Data Exporter -->
@@ -453,7 +490,7 @@
             <dependency>
                 <groupId>uk.org.okapibarcode</groupId>
                 <artifactId>okapibarcode</artifactId>
-                <version>0.5.2</version>
+                <version>0.5.6</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.beust</groupId>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2025 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,20 @@
  */
 package org.primefaces.component.menubutton;
 
+import org.primefaces.cdk.api.FacesComponentInfo;
+
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = MenuButton.COMPONENT_TYPE, namespace = MenuButton.COMPONENT_FAMILY)
+@FacesComponentInfo(description = "MenuButton displays different commands in a popup menu.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class MenuButton extends MenuButtonBase {
+public class MenuButton extends MenuButtonBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.MenuButton";
 
