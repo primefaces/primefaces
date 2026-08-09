@@ -37,6 +37,8 @@ import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.event.data.PostRenderEvent;
 import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
@@ -832,7 +834,53 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         String filterId = column.getContainerClientId(context) + separator + "filter";
         Object filterValue = findFilterValueForColumn(context, component, column, filterId);
         String filterStyleClass = column.getFilterStyleClass();
-        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
+
+        List<MatchMode> matchModeOptions = MatchMode.parseOptions(column.getFilterMatchModeOptions());
+        if (matchModeOptions.isEmpty()) {
+            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
+        }
+        else {
+            String matchModeId = column.getContainerClientId(context) + separator + "filterMatchMode";
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.COLUMN_FILTER_CONTAINER_CLASS, null);
+            encodeFilterMatchModeSelect(context, component, column, writer, matchModeId, matchModeOptions);
+            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
+            writer.endElement("div");
+        }
+    }
+
+    protected void encodeFilterMatchModeSelect(FacesContext context, DataTable component, UIColumn column, ResponseWriter writer,
+            String matchModeId, List<MatchMode> matchModeOptions) throws IOException {
+
+        MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
+
+        writer.startElement("select", null);
+        writer.writeAttribute("id", matchModeId, null);
+        writer.writeAttribute("name", matchModeId, null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLASS, null);
+
+        for (MatchMode matchMode : matchModeOptions) {
+            writer.startElement("option", null);
+            writer.writeAttribute("value", matchMode.operator(), null);
+            if (matchMode == selected) {
+                writer.writeAttribute("selected", "selected", null);
+            }
+            writer.writeText(MessageFactory.getMessage(context, DataTable.FILTER_MATCH_MODE_LABEL_PREFIX + matchMode.name()), null);
+            writer.endElement("option");
+        }
+
+        writer.endElement("select");
+    }
+
+    protected MatchMode findFilterMatchModeForColumn(DataTable component, UIColumn column, List<MatchMode> matchModeOptions) {
+        if (!component.isReset()) {
+            FilterMeta filterMeta = component.getFilterByAsMap().get(column.getColumnKey());
+            if (filterMeta != null && matchModeOptions.contains(filterMeta.getMatchMode())) {
+                return filterMeta.getMatchMode();
+            }
+        }
+
+        return matchModeOptions.get(0);
     }
 
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,

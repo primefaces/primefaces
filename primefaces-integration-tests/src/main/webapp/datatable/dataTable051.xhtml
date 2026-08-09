@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <style>
+                html .ui-datatable table { table-layout: auto; }
+                td, th { white-space: nowrap; max-width: 120px; font-size: .75rem; }
+            </style>
+
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable051.employees}" var="employee"
+                         filteredValue="#{dataTable051.filteredEmployees}" filterEvent="enter">
+
+                <p:column headerText="ID" field="id" filterMatchMode="gt" filterMatchModeOptions="numeric"
+                          converter="jakarta.faces.Integer"/>
+
+                <p:column headerText="last name" field="lastName" filterMatchMode="contains" filterMatchModeOptions="text"/>
+
+            </p:dataTable>
+
+            <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

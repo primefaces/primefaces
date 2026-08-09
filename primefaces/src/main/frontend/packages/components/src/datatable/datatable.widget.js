@@ -691,7 +691,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
         this.cfg.filterDelay = this.cfg.filterDelay||300;
 
-        filterColumns.children('.ui-column-filter').each(function() {
+        filterColumns.find('.ui-column-filter, .ui-column-filter-mode').each(function() {
             var filter = $(this);
 
             if(filter.is("input[type='search']")) {
@@ -4501,8 +4501,14 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             }
         };
 
-        var standardFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter:not(:disabled):not([readonly])');
+        var standardFilters = this.thead.find('> tr > th.ui-filter-column .ui-column-filter:not(:disabled):not([readonly])');
         resetInputFields(standardFilters);
+
+        // reset filter match-mode dropdowns back to their first (default) option
+        var standardFilterModes = this.thead.find('> tr > th.ui-filter-column .ui-column-filter-mode:not(:disabled):not([readonly])');
+        standardFilterModes.each(function() {
+            this.selectedIndex = 0;
+        });
 
         var customFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter');
         customFilters.each(function() {
@@ -5386,7 +5392,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         }, { delay: null });
 
         //filter support
-        this.clone.find('.ui-column-filter').prop('disabled', true);
+        this.clone.find('.ui-column-filter, .ui-column-filter-mode').prop('disabled', true);
 
         // set original state upon loading
         updateStickyHeaderPosition();
@@ -5877,7 +5883,14 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {(() => void) | null} callback will be executed after animation is finished. (see jquery fadeToggle method)
      */
     toggleFilter(speed, callback) {
-        this.jq.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
+        // .ui-column-filter-container wraps a value input together with its filter match-mode <select>; toggle it
+        // as a whole and skip the nested .ui-column-filter input to avoid fading it twice.
+        var standaloneFilters = this.jq.find(".ui-column-filter").filter(function() {
+            return $(this).closest('.ui-column-filter-container').length === 0;
+        });
+        standaloneFilters
+            .add(this.jq.find(".ui-column-filter-container, .ui-column-customfilter"))
+            .fadeToggle(speed || 0, callback);
     }
 
 }

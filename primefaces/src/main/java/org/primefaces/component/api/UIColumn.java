@@ -179,6 +179,8 @@ public interface UIColumn {
 
     String getFilterMatchMode();
 
+    String getFilterMatchModeOptions();
+
     int getFilterMaxLength();
 
     CellEditor getCellEditor();

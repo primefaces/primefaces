@@ -76,8 +76,27 @@
     margin: .5rem auto auto auto;
 }
 
+.ui-datatable .ui-column-filter-container {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    margin: .5rem auto auto auto;
+}
+
+.ui-datatable .ui-column-filter-container .ui-column-filter {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.ui-datatable .ui-column-filter-mode {
+    flex: 0 0 auto;
+    width: auto;
+}
+
 .ui-datatable.ui-filter-toggleable thead .ui-column-customfilter,
-.ui-datatable.ui-filter-toggleable thead .ui-column-filter {
+.ui-datatable.ui-filter-toggleable thead .ui-column-filter,
+.ui-datatable.ui-filter-toggleable thead .ui-column-filter-container {
     display:none;
 }
 

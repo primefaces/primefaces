@@ -20,6 +20,9 @@
     <ui:define name="implementation">
         <div class="card">
             <h5>Column Filtering</h5>
+            <p>The <em>Activity</em> column uses <code>filterMatchModeOptions="numeric"</code> so users can pick the
+                comparator (equals, not equals, less than, greater than, less than or equal to, greater than or equal to)
+                from a dropdown next to the filter input at runtime.</p>
             <h:form>
                 <p:dataTable var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable"
                     emptyMessage="No customers found with given criteria"
@@ -84,7 +87,7 @@
                     </p:column>
 
                     <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt"
-                              converter="jakarta.faces.Integer">
+                              filterMatchModeOptions="numeric" converter="jakarta.faces.Integer">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
 

@@ -34,6 +34,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 public class HeaderCell extends Cell {
 
@@ -65,6 +66,38 @@ public class HeaderCell extends Cell {
         }
 
         return null;
+    }
+
+    /**
+     * Gets the filter match-mode dropdown for this column, if the column defines {@code filterMatchModeOptions}.
+     *
+     * @return the WebElement representing the filter match-mode {@code <select>}, or {@code null} if not present
+     */
+    public WebElement getColumnFilterMatchMode() {
+        if (getWebElement() != null) {
+            try {
+                return getWebElement().findElement(By.className("ui-column-filter-mode"));
+            }
+            catch (NoSuchElementException ex) {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Selects a match mode (comparator) from the column's filter match-mode dropdown and triggers the filter.
+     *
+     * @param matchModeOperator the operator value of the match mode option to select, e.g. "gt" or "equals"
+     */
+    public void setFilterMatchMode(String matchModeOperator) {
+        WebElement matchModeSelect = getColumnFilterMatchMode();
+        if (matchModeSelect == null) {
+            throw new NoSuchElementException("Column '" + this + "' does not define a filter match-mode dropdown");
+        }
+
+        PrimeSelenium.guardAjax(new Select(matchModeSelect)).selectByValue(matchModeOperator);
     }
 
     /**

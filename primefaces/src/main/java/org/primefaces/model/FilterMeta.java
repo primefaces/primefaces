@@ -36,6 +36,8 @@ import org.primefaces.util.LangUtils;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.el.ELContext;
@@ -54,6 +56,7 @@ public class FilterMeta implements Serializable {
     private ValueExpression filterBy;
     private Object filterValue; // should be null if empty string/collection/array/object
     private MatchMode matchMode = MatchMode.CONTAINS;
+    private List<MatchMode> matchModeOptions = Collections.emptyList();
     private FilterConstraint constraint;
     private boolean normalize = false;
     private boolean filterByGenerated;
@@ -99,7 +102,10 @@ public class FilterMeta implements Serializable {
             filterByGenerated = true;
         }
 
-        MatchMode matchMode = MatchMode.of(column.getFilterMatchMode());
+        List<MatchMode> matchModeOptions = MatchMode.parseOptions(column.getFilterMatchModeOptions());
+        MatchMode matchMode = matchModeOptions.isEmpty() || matchModeOptions.contains(MatchMode.of(column.getFilterMatchMode()))
+                ? MatchMode.of(column.getFilterMatchMode())
+                : matchModeOptions.get(0);
         FilterConstraint constraint = FilterConstraints.of(matchMode);
 
         if (column.getFilterFunction() != null) {
@@ -115,7 +121,7 @@ public class FilterMeta implements Serializable {
         }
         filterValue = LangUtils.normalize(filterValue, normalize);
 
-        return new FilterMeta(column.getColumnKey(),
+        FilterMeta filterMeta = new FilterMeta(column.getColumnKey(),
                               field,
                               constraint,
                               filterByVE,
@@ -123,6 +129,8 @@ public class FilterMeta implements Serializable {
                               matchMode,
                               normalize,
                               filterByGenerated);
+        filterMeta.setMatchModeOptions(matchModeOptions);
+        return filterMeta;
     }
 
     public static FilterMeta of(Object globalFilterValue, MethodExpression globalFilterFunction, boolean normalize) {
@@ -196,6 +204,22 @@ public class FilterMeta implements Serializable {
         this.matchMode = matchMode;
     }
 
+    /**
+     * The match modes an end user may pick from this filter's match-mode dropdown; empty when the column's
+     * match mode is fixed and no dropdown is rendered.
+     */
+    public List<MatchMode> getMatchModeOptions() {
+        return matchModeOptions;
+    }
+
+    public void setMatchModeOptions(List<MatchMode> matchModeOptions) {
+        this.matchModeOptions = matchModeOptions == null ? Collections.emptyList() : matchModeOptions;
+    }
+
+    public boolean isMatchModeSelectable() {
+        return !matchModeOptions.isEmpty();
+    }
+
     public boolean isGlobalFilter() {
         return GLOBAL_FILTER_KEY.equals(columnKey);
     }
@@ -257,6 +281,11 @@ public class FilterMeta implements Serializable {
 
         public Builder matchMode(MatchMode matchMode) {
             filterBy.matchMode = matchMode;
+            return this;
+        }
+
+        public Builder matchModeOptions(List<MatchMode> matchModeOptions) {
+            filterBy.setMatchModeOptions(matchModeOptions);
             return this;
         }
 

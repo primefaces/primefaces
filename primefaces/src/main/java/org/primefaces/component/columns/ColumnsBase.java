@@ -91,6 +91,12 @@ public abstract class ColumnsBase extends PrimeUIData implements UIColumn, Style
             implicitDefaultValue = "startsWith")
     public abstract String getFilterMatchMode();
 
+    @Property(description = "Enables the end user to pick the filter match mode (comparator) at runtime from a dropdown rendered next to the"
+            + " filter input. Accepts the shorthand keywords \"numeric\" (=, !=, <, >, <=, >=), \"text\" (contains, starts with, ends with, ...)"
+            + " or \"date\", or an explicit comma separated list of match modes, e.g. \"equals,notEquals,lt,gt,lte,gte\"."
+            + " When not set, the filter match mode is fixed to filterMatchMode and no dropdown is rendered.")
+    public abstract String getFilterMatchModeOptions();
+
     @Property(description = "Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.",
             defaultValue = "bottom")
     public abstract String getFilterPosition();

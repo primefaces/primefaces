@@ -30,6 +30,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
+import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.FacetUtils;
@@ -230,6 +231,22 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 }
                 catch (ConverterException ex) {
                     filterValue = null;
+                }
+
+                if (filterMeta.isMatchModeSelectable()) {
+                    String matchModeClientId = column instanceof DynamicColumn
+                            ? column.getContainerClientId(context) + separator + "filterMatchMode"
+                            : column.getClientId(context) + separator + "filterMatchMode";
+                    String submittedMatchMode = params.get(matchModeClientId);
+
+                    // only ever accept a match mode the page author explicitly allowed for this column
+                    filterMeta.getMatchModeOptions().stream()
+                            .filter(mode -> mode.operator().equals(submittedMatchMode))
+                            .findFirst()
+                            .ifPresent(mode -> {
+                                filterMeta.setMatchMode(mode);
+                                filterMeta.setConstraint(FilterConstraints.of(mode));
+                            });
                 }
             }
 
