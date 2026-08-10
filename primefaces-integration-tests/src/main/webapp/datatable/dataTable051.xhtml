@@ -17,14 +17,14 @@
             </p:messages>
 
             <p:dataTable id="datatable"
-                         value="#{dataTable050.lazyDataModel}"
+                         value="#{dataTable051.lazyDataModel}"
                          lazy="true"
                          var="country"
-                         selection="#{dataTable050.selectedCountries}"
+                         selection="#{dataTable051.selectedCountries}"
                          rowKey="#{country.id}"
                          paginator="true"
                          rows="3"
-                         selectionPageOnly="#{dataTable050.selectionPageOnly}"
+                         selectionPageOnly="#{dataTable051.selectionPageOnly}"
             >
                 <p:ajax event="page" update="form:loadCallCount form:fullHistory"/>
                 <p:column selectionBox="true" style="width:16px;text-align:center"/>
@@ -39,14 +39,14 @@
 
             </p:dataTable>
 
-            <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable050.submit}"/>
-            <p:selectBooleanButton id="toggleSelectPageOnly" value="#{dataTable050.selectionPageOnly}"
+            <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable051.submit}"/>
+            <p:selectBooleanButton id="toggleSelectPageOnly" value="#{dataTable051.selectionPageOnly}"
                                    onLabel="Page only" offLabel="All pages">
                 <p:ajax update="@form"/>
             </p:selectBooleanButton>
 
-            <h:inputHidden id="loadCallCount" value="#{dataTable050.lazyDataModelCallTracker.loadCallCount}"/>
-            <h:inputHidden id="fullHistory" value="#{dataTable050.lazyDataModelCallTracker.fullHistoryString}"/>
+            <h:inputHidden id="loadCallCount" value="#{dataTable051.lazyDataModelCallTracker.loadCallCount}"/>
+            <h:inputHidden id="fullHistory" value="#{dataTable051.lazyDataModelCallTracker.fullHistoryString}"/>
         </h:form>
 
     </h:body>

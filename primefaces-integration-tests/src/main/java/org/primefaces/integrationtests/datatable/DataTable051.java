@@ -46,7 +46,7 @@ import lombok.Data;
 @Named
 @ViewScoped
 @Data
-public class DataTable050 implements Serializable {
+public class DataTable051 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -61,7 +61,7 @@ public class DataTable050 implements Serializable {
     @PostConstruct
     public void init() {
         seedData();
-        lazyDataModel = new TrackingJPALazyDataModel<>(countryJpaService.entityManagerSupplier(), "dataTable050",
+        lazyDataModel = new TrackingJPALazyDataModel<>(countryJpaService.entityManagerSupplier(), "dataTable051",
                 CountryJpaEntity.class, CountryJpaEntity::getId);
     }
 

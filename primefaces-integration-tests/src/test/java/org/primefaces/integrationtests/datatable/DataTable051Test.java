@@ -54,7 +54,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("DataTable-selection")
 @Tag("DataTable-paginator")
 @Tag("DataTable-filter")
-class DataTable050Test extends AbstractDataTableTest {
+class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
@@ -337,7 +337,7 @@ class DataTable050Test extends AbstractDataTableTest {
 
         @Override
         public String getLocation() {
-            return "datatable/dataTable050.xhtml";
+            return "datatable/dataTable051.xhtml";
         }
 
         public int getLoadCallCount() {
