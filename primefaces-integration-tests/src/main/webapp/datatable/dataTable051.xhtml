@@ -35,6 +35,11 @@
                 <!-- every mode in the "boolean" preset is value-less (true/false/is null/is not null) - see GitHub #7427 -->
                 <p:column headerText="active" field="active" filterMatchModeOptions="boolean"/>
 
+                <!-- explicit fixed-pattern converter (not the locale-dependent default) so filter values typed
+                     as free text parse unambiguously - see GitHub #7427 -->
+                <p:column headerText="review date" field="reviewDate" filterMatchMode="equals" filterMatchModeOptions="date"
+                          converter="#{dataTable051.reviewDateConverter}"/>
+
             </p:dataTable>
 
             <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>

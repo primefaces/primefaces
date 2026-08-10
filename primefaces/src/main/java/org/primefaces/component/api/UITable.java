@@ -253,6 +253,12 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 else if (matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN) {
                     filterValue = convertMultiValueFilter(context, column, rawFilterValue, true);
                 }
+                else if (matchMode == MatchMode.LAST_N_DAYS || matchMode == MatchMode.NEXT_N_DAYS
+                        || matchMode == MatchMode.RELATIVE_DATE) {
+                    // #7427 the typed value is a plain number of days, not a date - the column's converter
+                    // (e.g. jakarta.faces.DateTime) would reject it, so parse it as an Integer directly
+                    filterValue = parseIntegerFilter(rawFilterValue);
+                }
                 else {
                     try {
                         // if no custom filter provided and conversion necessary, use UIColumn#converter instead
@@ -326,6 +332,24 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             return values.size() == 2 ? values : null;
         }
         return values.isEmpty() ? null : values;
+    }
+
+    /**
+     * Parses a raw filter value as a plain {@link Integer}, for the date match modes ("last N days", "next N
+     * days", "relative date") whose typed value is a number of days rather than a date. Returns {@code null}
+     * (inactive filter) for blank or unparsable input, e.g. while the user is still typing. See GitHub #7427.
+     */
+    default Object parseIntegerFilter(String rawFilterValue) {
+        if (LangUtils.isBlank(rawFilterValue)) {
+            return null;
+        }
+
+        try {
+            return Integer.valueOf(rawFilterValue.trim());
+        }
+        catch (NumberFormatException ex) {
+            return null;
+        }
     }
 
     default Object getFilterValue(UIColumn column) {

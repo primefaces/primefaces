@@ -29,8 +29,12 @@ import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.HeaderCell;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -54,6 +58,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("DataTable-filter")
 class DataTable051Test extends AbstractDataTableTest {
 
+    private static final DateTimeFormatter REVIEW_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     // mirrors DataTable051#init() exactly - the synthetic null/blank-lastName rows (see GitHub #7427: "is (not)
     // empty" / "is (not) null" need one of each to be distinguishable) also have ids > 5, so every existing
     // numeric "ID" filter assertion below must account for them too, not just the new text-mode ones.
@@ -70,8 +76,21 @@ class DataTable051Test extends AbstractDataTableTest {
         list.get(6).setActive(true);   // id 11, Margret Johnson
         list.get(7).setActive(false);  // id 533, Mary March
 
+        // #7427 relative-date match modes - computed against LocalDate.now() the same way as DataTable051#init()
+        LocalDate today = LocalDate.now();
+        list.get(0).setReviewDate(today);                  // id 1, Mike Master - today
+        list.get(1).setReviewDate(today.minusDays(1));      // id 2, Susan Pepper - yesterday
+        list.get(3).setReviewDate(today.plusDays(1));       // id 4, Chris Clark - tomorrow
+        list.get(4).setReviewDate(today.minusWeeks(1));     // id 5, James Bush - last week
+        list.get(5).setReviewDate(today.plusWeeks(1));      // id 6, Trish Mayer - next week
+        list.get(6).setReviewDate(today.minusMonths(1));    // id 11, Margret Johnson - last month
+        list.get(7).setReviewDate(today.plusMonths(1));     // id 533, Mary March - next month
+
         list.add(Employee.builder().id(900).firstName("Nolan").lastName(null).birthDate(LocalDate.of(1975, 6, 15)).build());
-        list.add(Employee.builder().id(901).firstName("Blanche").lastName("").birthDate(LocalDate.of(1985, 9, 20)).build());
+        list.add(Employee.builder().id(901).firstName("Blanche").lastName("").birthDate(LocalDate.of(1985, 9, 20))
+                .reviewDate(today.minusDays(100)).build());
+        list.add(Employee.builder().id(902).firstName("Yolanda").lastName("Young").reviewDate(today.minusYears(1)).build());
+        list.add(Employee.builder().id(903).firstName("Zack").lastName("Zimmer").reviewDate(today.plusYears(1)).build());
         return list;
     }
 
@@ -552,6 +571,399 @@ class DataTable051Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(18)
+    @DisplayName("DataTable: GitHub #7427 date \"is\"/\"is not\" (labeled differently than the shared numeric Equals/Not "
+            + "Equals) match an exact date")
+    void dateFilterIsIsNot(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        LocalDate today = LocalDate.now();
+
+        // Act - "equals" ("Is") is already the column's declared default match mode, so just filter directly
+        dataTable.filter("review date", today.format(REVIEW_DATE_FORMAT));
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> today.equals(e.getReviewDate()))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "is not" keeping the same typed value
+        dataTable.filterMatchMode("review date", "notEquals");
+
+        // Assert - a null reviewDate is (like every other match mode) also "not equal" to any given date
+        employeesFiltered = employees.stream()
+                .filter(e -> !today.equals(e.getReviewDate()))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(19)
+    @DisplayName("DataTable: GitHub #7427 date \"before\"/\"before or on\"/\"after\"/\"after or on\"")
+    void dateFilterBeforeAfterVariants(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        LocalDate today = LocalDate.now();
+        String todayStr = today.format(REVIEW_DATE_FORMAT);
+
+        // Act - "before"
+        dataTable.filterMatchMode("review date", "lt");
+        dataTable.filter("review date", todayStr);
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && e.getReviewDate().isBefore(today))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - "before or on"
+        dataTable.filterMatchMode("review date", "lte");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isAfter(today))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - "after"
+        dataTable.filterMatchMode("review date", "gt");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && e.getReviewDate().isAfter(today))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - "after or on"
+        dataTable.filterMatchMode("review date", "gte");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(today))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(20)
+    @DisplayName("DataTable: GitHub #7427 date \"between\"/\"not between\" match a \"min,max\" typed range")
+    void dateFilterBetweenNotBetween(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        LocalDate today = LocalDate.now();
+        LocalDate rangeStart = today.minusDays(7);
+        LocalDate rangeEnd = today.plusDays(7);
+        dataTable.filterMatchMode("review date", "between");
+
+        // Act
+        dataTable.filter("review date", rangeStart.format(REVIEW_DATE_FORMAT) + "," + rangeEnd.format(REVIEW_DATE_FORMAT));
+
+        // Assert - inclusive on both ends; a null reviewDate never matches "between"
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(rangeStart) && !e.getReviewDate().isAfter(rangeEnd))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "not between" keeping the same typed range
+        dataTable.filterMatchMode("review date", "notBetween");
+
+        // Assert - the negation of "between", so a null reviewDate DOES match (it was never "between" to begin with)
+        employeesFiltered = employees.stream()
+                .filter(e -> !(e.getReviewDate() != null && !e.getReviewDate().isBefore(rangeStart) && !e.getReviewDate().isAfter(rangeEnd)))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(21)
+    @DisplayName("DataTable: GitHub #7427 date \"is empty\"/\"is not empty\" behave like \"is (not) null\" for a "
+            + "non-string field")
+    void dateFilterIsEmptyIsNotEmpty(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.filterMatchMode("review date", "empty");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() == null)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("review date", "notEmpty");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(22)
+    @DisplayName("DataTable: GitHub #7427 date \"today\"/\"yesterday\"/\"tomorrow\" are value-less and hide the input")
+    void dateFilterTodayYesterdayTomorrow(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell reviewDateHeader = dataTable.getHeader().getCell("review date").get();
+        LocalDate today = LocalDate.now();
+
+        // Act
+        dataTable.filterMatchMode("review date", "today");
+
+        // Assert - value-less, same generic mechanism as every other preset's value-less modes
+        WebElement valueInput = reviewDateHeader.getColumnFilter();
+        assertTrue(valueInput.getAttribute("class").contains("ui-helper-hidden"));
+        assertFalse(valueInput.isEnabled());
+
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> today.equals(e.getReviewDate()))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("review date", "yesterday");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> today.minusDays(1).equals(e.getReviewDate()))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("review date", "tomorrow");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> today.plusDays(1).equals(e.getReviewDate()))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(23)
+    @DisplayName("DataTable: GitHub #7427 date \"this week\"/\"last week\"/\"next week\"")
+    void dateFilterThisLastNextWeek(Page page) {
+        // Arrange - compute week boundaries the same way DateFilterUtils.startOfWeek() does, rather than
+        // assuming a fixed relationship between "yesterday"/"tomorrow" and "this week" - which day of the week
+        // "today" happens to be when this test runs changes whether they fall in this week or the adjacent one
+        DataTable dataTable = page.dataTable;
+        LocalDate today = LocalDate.now();
+        LocalDate startOfThisWeek = startOfWeek(today);
+        LocalDate endOfThisWeek = startOfThisWeek.plusDays(6);
+        LocalDate startOfLastWeek = startOfThisWeek.minusWeeks(1);
+        LocalDate endOfLastWeek = startOfThisWeek.minusDays(1);
+        LocalDate startOfNextWeek = startOfThisWeek.plusWeeks(1);
+        LocalDate endOfNextWeek = startOfNextWeek.plusDays(6);
+
+        // Act
+        dataTable.filterMatchMode("review date", "thisWeek");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfThisWeek) && !e.getReviewDate().isAfter(endOfThisWeek))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("review date", "lastWeek");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfLastWeek) && !e.getReviewDate().isAfter(endOfLastWeek))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("review date", "nextWeek");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfNextWeek) && !e.getReviewDate().isAfter(endOfNextWeek))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(24)
+    @DisplayName("DataTable: GitHub #7427 date \"this month\"/\"last month\"/\"next month\"")
+    void dateFilterThisLastNextMonth(Page page) {
+        // Arrange - month boundaries computed dynamically for the same reason as the week test above
+        DataTable dataTable = page.dataTable;
+        LocalDate today = LocalDate.now();
+        LocalDate startOfThisMonth = today.withDayOfMonth(1);
+        LocalDate endOfThisMonth = today.withDayOfMonth(today.lengthOfMonth());
+        LocalDate startOfLastMonth = startOfThisMonth.minusMonths(1);
+        LocalDate endOfLastMonth = startOfThisMonth.minusDays(1);
+        LocalDate startOfNextMonth = startOfThisMonth.plusMonths(1);
+        LocalDate endOfNextMonth = startOfNextMonth.withDayOfMonth(startOfNextMonth.lengthOfMonth());
+
+        // Act
+        dataTable.filterMatchMode("review date", "thisMonth");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfThisMonth) && !e.getReviewDate().isAfter(endOfThisMonth))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("review date", "lastMonth");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfLastMonth) && !e.getReviewDate().isAfter(endOfLastMonth))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("review date", "nextMonth");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfNextMonth) && !e.getReviewDate().isAfter(endOfNextMonth))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(25)
+    @DisplayName("DataTable: GitHub #7427 date \"this year\"/\"last year\"/\"next year\"")
+    void dateFilterThisLastNextYear(Page page) {
+        // Arrange - a full year offset is always safely within its bucket regardless of where "today" falls
+        // within its own year (unlike a quarter offset, which needs care - see GitHub #7427 implementation notes)
+        DataTable dataTable = page.dataTable;
+        LocalDate today = LocalDate.now();
+
+        // Act
+        dataTable.filterMatchMode("review date", "thisYear");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && e.getReviewDate().getYear() == today.getYear())
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("review date", "lastYear");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && e.getReviewDate().getYear() == today.getYear() - 1)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("review date", "nextYear");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && e.getReviewDate().getYear() == today.getYear() + 1)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(26)
+    @DisplayName("DataTable: GitHub #7427 date \"last N days\"/\"next N days\" - the typed value is a plain number, "
+            + "not a date, so it bypasses the column's date converter")
+    void dateFilterLastNDaysNextNDays(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell reviewDateHeader = dataTable.getHeader().getCell("review date").get();
+        LocalDate today = LocalDate.now();
+        dataTable.filterMatchMode("review date", "lastNDays");
+
+        // Assert - the value input hints at the expected "number of days" syntax
+        assertEquals("e.g. 30", reviewDateHeader.getColumnFilter().getAttribute("placeholder"));
+
+        // Act
+        dataTable.filter("review date", "30");
+
+        // Assert - [today - 30, today]
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(today.minusDays(30)) && !e.getReviewDate().isAfter(today))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "next N days" keeping the same typed value
+        dataTable.filterMatchMode("review date", "nextNDays");
+
+        // Assert - [today, today + 30]
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(today) && !e.getReviewDate().isAfter(today.plusDays(30)))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(27)
+    @DisplayName("DataTable: GitHub #7427 date \"relative date\" matches within N days of today in either direction")
+    void dateFilterRelativeDate(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        LocalDate today = LocalDate.now();
+        dataTable.filterMatchMode("review date", "relativeDate");
+
+        // Act
+        dataTable.filter("review date", "10");
+
+        // Assert - [today - 10, today + 10]
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(today.minusDays(10)) && !e.getReviewDate().isAfter(today.plusDays(10)))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(28)
+    @DisplayName("DataTable: GitHub #7427 date filterMatchModeOptions labels the shared comparators \"Is\"/\"Before\"/"
+            + "\"After\" instead of the numeric preset's \"Equals\"/\"Less Than\"/\"Greater Than\"")
+    void dateFilterMatchModeLabels(Page page) {
+        // Arrange
+        HeaderCell reviewDateHeader = page.dataTable.getHeader().getCell("review date").get();
+
+        // Act
+        List<String> labels = new Select(reviewDateHeader.getColumnFilterMatchMode()).getOptions().stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        // Assert - date-specific overrides for the modes shared with the numeric preset
+        assertTrue(labels.contains("Is"), "Expected date-flavored labels, got: " + labels);
+        assertTrue(labels.contains("Is Not"), "Expected date-flavored labels, got: " + labels);
+        assertTrue(labels.contains("Before"), "Expected date-flavored labels, got: " + labels);
+        assertTrue(labels.contains("Before or On"), "Expected date-flavored labels, got: " + labels);
+        assertTrue(labels.contains("After"), "Expected date-flavored labels, got: " + labels);
+        assertTrue(labels.contains("After or On"), "Expected date-flavored labels, got: " + labels);
+        assertFalse(labels.contains("Equals"), "Should not fall back to the numeric preset's label: " + labels);
+
+        // Assert - the new relative-date modes use their own (preset-independent) labels
+        assertTrue(labels.contains("Today"), "Expected relative-date labels, got: " + labels);
+        assertTrue(labels.contains("Last N Days"), "Expected relative-date labels, got: " + labels);
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         assertEquals("wgtTable", cfg.getString("widgetVar"));
@@ -559,6 +971,11 @@ class DataTable051Test extends AbstractDataTableTest {
 
     private void assertEmployeeRows(DataTable dataTable, List<Employee> employees) {
         assertRows(dataTable, employees, Employee::getId);
+    }
+
+    private static LocalDate startOfWeek(LocalDate date) {
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        return date.with(TemporalAdjusters.previousOrSame(weekFields.getFirstDayOfWeek()));
     }
 
     public static class Page extends AbstractPrimePage {

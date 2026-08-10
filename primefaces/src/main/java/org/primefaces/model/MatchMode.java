@@ -107,6 +107,37 @@ public enum MatchMode {
      */
     ALL("all", false),
 
+    // -- relative-date predicates for filterMatchModeOptions="date", each computed against LocalDate.now() at
+    // the moment the filter runs - value-less, like IS_EMPTY/IS_TRUE/etc. See GitHub #7427.
+    IS_TODAY("today", false),
+    IS_YESTERDAY("yesterday", false),
+    IS_TOMORROW("tomorrow", false),
+    IS_THIS_WEEK("thisWeek", false),
+    IS_LAST_WEEK("lastWeek", false),
+    IS_NEXT_WEEK("nextWeek", false),
+    IS_THIS_MONTH("thisMonth", false),
+    IS_LAST_MONTH("lastMonth", false),
+    IS_NEXT_MONTH("nextMonth", false),
+    IS_THIS_QUARTER("thisQuarter", false),
+    IS_LAST_QUARTER("lastQuarter", false),
+    IS_NEXT_QUARTER("nextQuarter", false),
+    IS_THIS_YEAR("thisYear", false),
+    IS_LAST_YEAR("lastYear", false),
+    IS_NEXT_YEAR("nextYear", false),
+
+    /**
+     * Matches the last N days up to and including today; N is the typed filter value. See GitHub #7427.
+     */
+    LAST_N_DAYS("lastNDays"),
+    /**
+     * Matches the next N days starting today; N is the typed filter value. See GitHub #7427.
+     */
+    NEXT_N_DAYS("nextNDays"),
+    /**
+     * Matches within N days of today in either direction; N is the typed filter value. See GitHub #7427.
+     */
+    RELATIVE_DATE("relativeDate"),
+
     GLOBAL("global");
 
     /**
@@ -127,10 +158,21 @@ public enum MatchMode {
             IS_EMPTY, NOT_EMPTY, IS_NULL, NOT_NULL, MATCHES_REGEX, IN, NOT_IN));
 
     /**
-     * Preset of match modes offered for a {@code filterMatchModeOptions="date"} column filter.
+     * Preset of match modes offered for a {@code filterMatchModeOptions="date"} column filter: the comparators
+     * (labeled "Is"/"Is Not"/"Before"/"Before or On"/"After"/"After or On" for this preset specifically - see
+     * {@link org.primefaces.component.datatable.DataTableRenderer}), "(not) between", "is (not) empty", a set of
+     * relative-date predicates (today/yesterday/tomorrow, this/last/next week/month/quarter/year), and
+     * "last/next N days"/"relative date" (typed as a number of days). See GitHub #7427.
      */
     public static final List<MatchMode> DATE_OPTIONS = Collections.unmodifiableList(Arrays.asList(
-            EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS));
+            EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
+            BETWEEN, NOT_BETWEEN, IS_EMPTY, NOT_EMPTY,
+            IS_TODAY, IS_YESTERDAY, IS_TOMORROW,
+            IS_THIS_WEEK, IS_LAST_WEEK, IS_NEXT_WEEK,
+            IS_THIS_MONTH, IS_LAST_MONTH, IS_NEXT_MONTH,
+            IS_THIS_QUARTER, IS_LAST_QUARTER, IS_NEXT_QUARTER,
+            IS_THIS_YEAR, IS_LAST_YEAR, IS_NEXT_YEAR,
+            LAST_N_DAYS, NEXT_N_DAYS, RELATIVE_DATE));
 
     /**
      * Preset of match modes offered for a {@code filterMatchModeOptions="boolean"} column filter: "All" (no
@@ -204,6 +246,10 @@ public enum MatchMode {
             case IN:
             case NOT_IN:
                 return "value1, value2, ...";
+            case LAST_N_DAYS:
+            case NEXT_N_DAYS:
+            case RELATIVE_DATE:
+                return "e.g. 30";
             default:
                 return null;
         }

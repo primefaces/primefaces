@@ -45,6 +45,7 @@ public class Employee implements Serializable {
     private LocalDate birthDate;
     private Integer salary;
     private Boolean active;
+    private LocalDate reviewDate;
     private Role role;
     private LocalDateTime lastLoginDateTime;
     private Date lastLoginDate;

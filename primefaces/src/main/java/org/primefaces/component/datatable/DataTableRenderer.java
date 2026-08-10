@@ -842,16 +842,22 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         else {
             MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
             String matchModeId = column.getContainerClientId(context) + separator + "filterMatchMode";
+            // the 6 comparison modes (equals/lt/gt/...) are shared with the "numeric" preset ("Equals"/"Less
+            // Than"/...); the "date" preset specifically renders them as "Is"/"Before"/"After"/... instead - see
+            // resolveMatchModeMessageKey(). A custom comma list happening to contain the same modes keeps the
+            // generic labels, since there's no way to tell it apart from an arbitrary list at this point.
+            String rawMatchModeOptions = column.getFilterMatchModeOptions();
+            boolean datePreset = rawMatchModeOptions != null && "date".equals(rawMatchModeOptions.trim());
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_FILTER_CONTAINER_CLASS, null);
-            encodeFilterMatchModeSelect(context, writer, matchModeId, matchModeOptions, selected);
+            encodeFilterMatchModeSelect(context, writer, matchModeId, matchModeOptions, selected, datePreset);
             encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected);
             writer.endElement("div");
         }
     }
 
     protected void encodeFilterMatchModeSelect(FacesContext context, ResponseWriter writer,
-            String matchModeId, List<MatchMode> matchModeOptions, MatchMode selected) throws IOException {
+            String matchModeId, List<MatchMode> matchModeOptions, MatchMode selected, boolean datePreset) throws IOException {
 
         // Render "=", "!=", "<", "<=", ">", ">=" instead of spelled-out labels when every option in this dropdown
         // is a comparison operator (the "numeric"/"date" presets, or a custom list built purely from them) - this
@@ -866,7 +872,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLASS, null);
 
         for (MatchMode matchMode : matchModeOptions) {
-            String label = MessageFactory.getMessage(context, DataTable.FILTER_MATCH_MODE_LABEL_PREFIX + matchMode.name());
+            String label = MessageFactory.getMessage(context, resolveMatchModeMessageKey(matchMode, datePreset));
 
             writer.startElement("option", null);
             writer.writeAttribute("value", matchMode.operator(), null);
@@ -892,6 +898,29 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         writer.endElement("select");
+    }
+
+    /**
+     * Resolves the message key for a match-mode dropdown option's label. The 6 comparison modes are shared with
+     * the "numeric" preset ("Equals"/"Less Than"/...); the "date" preset renders them as "Is"/"Before"/"After"/...
+     * instead, via a separate {@code date.*} message key. See GitHub #7427.
+     */
+    protected String resolveMatchModeMessageKey(MatchMode matchMode, boolean datePreset) {
+        if (datePreset) {
+            switch (matchMode) {
+                case EQUALS:
+                case NOT_EQUALS:
+                case LESS_THAN:
+                case LESS_THAN_EQUALS:
+                case GREATER_THAN:
+                case GREATER_THAN_EQUALS:
+                    return DataTable.FILTER_MATCH_MODE_LABEL_PREFIX + "date." + matchMode.name();
+                default:
+                    break;
+            }
+        }
+
+        return DataTable.FILTER_MATCH_MODE_LABEL_PREFIX + matchMode.name();
     }
 
     protected MatchMode findFilterMatchModeForColumn(DataTable component, UIColumn column, List<MatchMode> matchModeOptions) {

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.convert.DateTimeConverter;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -64,10 +65,40 @@ public class DataTable051 implements Serializable {
         employees.get(6).setActive(true);   // id 11, Margret Johnson
         employees.get(7).setActive(false);  // id 533, Mary March
 
-        // #7427 "is (not) empty" / "is (not) null" need a null and a blank lastName to be distinguishable
+        // #7427 relative-date match modes ("today", "this week", "last N days", ...) are computed against
+        // LocalDate.now() at filter time, so the fixture dates are computed the same way here rather than
+        // hardcoded - hardcoded literals would silently go stale (and desync from DataTable051Test's mirrored
+        // copy) the day after this branch was written. +/-1 week/month/year is always safely within the
+        // corresponding "last/next" bucket regardless of where "today" falls within its own week/month/year.
+        LocalDate today = LocalDate.now();
+        employees.get(0).setReviewDate(today);                  // id 1, Mike Master - today
+        employees.get(1).setReviewDate(today.minusDays(1));      // id 2, Susan Pepper - yesterday
+        employees.get(3).setReviewDate(today.plusDays(1));       // id 4, Chris Clark - tomorrow
+        employees.get(4).setReviewDate(today.minusWeeks(1));     // id 5, James Bush - last week
+        employees.get(5).setReviewDate(today.plusWeeks(1));      // id 6, Trish Mayer - next week
+        employees.get(6).setReviewDate(today.minusMonths(1));    // id 11, Margret Johnson - last month
+        employees.get(7).setReviewDate(today.plusMonths(1));     // id 533, Mary March - next month
+
+        // #7427 "is (not) empty" / "is (not) null" need a null and a blank lastName to be distinguishable;
+        // Nolan's reviewDate is also left null for the same reason on the date column
         employees.add(Employee.builder().id(900).firstName("Nolan").lastName(null)
                 .birthDate(LocalDate.of(1975, 6, 15)).build());
         employees.add(Employee.builder().id(901).firstName("Blanche").lastName("")
-                .birthDate(LocalDate.of(1985, 9, 20)).build());
+                .birthDate(LocalDate.of(1985, 9, 20)).reviewDate(today.minusDays(100)).build());
+
+        // #7427 "last/next year" - a full year offset is always safely within the corresponding bucket,
+        // unlike a quarter offset (which can land 2 quarters back/forward depending on where "today" falls
+        // within its own quarter), so these get their own dedicated rows rather than reusing an existing one
+        employees.add(Employee.builder().id(902).firstName("Yolanda").lastName("Young")
+                .reviewDate(today.minusYears(1)).build());
+        employees.add(Employee.builder().id(903).firstName("Zack").lastName("Zimmer")
+                .reviewDate(today.plusYears(1)).build());
+    }
+
+    public DateTimeConverter getReviewDateConverter() {
+        DateTimeConverter converter = new DateTimeConverter();
+        converter.setPattern("yyyy-MM-dd");
+        converter.setType("localDate");
+        return converter;
     }
 }

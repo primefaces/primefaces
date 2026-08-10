@@ -35,6 +35,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MatchModeTest {
 
+    /** Every value-less MatchMode - the value <input> is hidden while any of these is selected. */
+    private static final List<MatchMode> VALUE_LESS_MODES = List.of(
+            MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY, MatchMode.IS_NULL, MatchMode.NOT_NULL,
+            MatchMode.IS_TRUE, MatchMode.IS_FALSE, MatchMode.ALL,
+            MatchMode.IS_TODAY, MatchMode.IS_YESTERDAY, MatchMode.IS_TOMORROW,
+            MatchMode.IS_THIS_WEEK, MatchMode.IS_LAST_WEEK, MatchMode.IS_NEXT_WEEK,
+            MatchMode.IS_THIS_MONTH, MatchMode.IS_LAST_MONTH, MatchMode.IS_NEXT_MONTH,
+            MatchMode.IS_THIS_QUARTER, MatchMode.IS_LAST_QUARTER, MatchMode.IS_NEXT_QUARTER,
+            MatchMode.IS_THIS_YEAR, MatchMode.IS_LAST_YEAR, MatchMode.IS_NEXT_YEAR);
+
     @Test
     void symbol_definedForComparisonOperators() {
         assertEquals("=", MatchMode.EQUALS.symbol());
@@ -66,20 +76,14 @@ class MatchModeTest {
     }
 
     @Test
-    void datePreset_isFullySymbolic() {
-        // DataTableRenderer renders "=", "!=", "<", ... instead of spelled-out labels only when every
-        // option in the dropdown has a symbol - DATE_OPTIONS consists entirely of comparison operators.
-        assertTrue(MatchMode.DATE_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
-    }
-
-    @Test
-    void textAndNumericPresets_areNotFullySymbolic() {
+    void textNumericAndDatePresets_areNotFullySymbolic() {
         // TEXT_OPTIONS mixes comparison operators (equals/notEquals) with string-matching operators
-        // (contains, startsWith, ...) that have no symbol. NUMERIC_OPTIONS, since it was extended with
-        // "between"/"is null"/"in list" (see GitHub #7427), is no longer purely comparison operators either -
-        // both dropdowns must keep spelled-out labels so their options read consistently.
+        // (contains, startsWith, ...) that have no symbol. NUMERIC_OPTIONS and DATE_OPTIONS, since both were
+        // extended with "between"/"is null"/"in list"/relative-date predicates (see GitHub #7427), are no longer
+        // purely comparison operators either - all three dropdowns keep spelled-out labels for consistency.
         assertFalse(MatchMode.TEXT_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
         assertFalse(MatchMode.NUMERIC_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
+        assertFalse(MatchMode.DATE_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
     }
 
     @Test
@@ -104,6 +108,9 @@ class MatchModeTest {
         assertEquals("min,max", MatchMode.NOT_BETWEEN.placeholderHint());
         assertEquals("value1, value2, ...", MatchMode.IN.placeholderHint());
         assertEquals("value1, value2, ...", MatchMode.NOT_IN.placeholderHint());
+        assertEquals("e.g. 30", MatchMode.LAST_N_DAYS.placeholderHint());
+        assertEquals("e.g. 30", MatchMode.NEXT_N_DAYS.placeholderHint());
+        assertEquals("e.g. 30", MatchMode.RELATIVE_DATE.placeholderHint());
     }
 
     @Test
@@ -111,25 +118,20 @@ class MatchModeTest {
         assertNull(MatchMode.EQUALS.placeholderHint());
         assertNull(MatchMode.CONTAINS.placeholderHint());
         assertNull(MatchMode.IS_EMPTY.placeholderHint());
+        assertNull(MatchMode.IS_TODAY.placeholderHint());
     }
 
     @Test
     void requiresValue_falseForValueLessPredicates() {
-        assertFalse(MatchMode.IS_EMPTY.requiresValue());
-        assertFalse(MatchMode.NOT_EMPTY.requiresValue());
-        assertFalse(MatchMode.IS_NULL.requiresValue());
-        assertFalse(MatchMode.NOT_NULL.requiresValue());
-        assertFalse(MatchMode.IS_TRUE.requiresValue());
-        assertFalse(MatchMode.IS_FALSE.requiresValue());
-        assertFalse(MatchMode.ALL.requiresValue());
+        for (MatchMode mode : VALUE_LESS_MODES) {
+            assertFalse(mode.requiresValue(), mode + " should be value-less");
+        }
     }
 
     @Test
     void requiresValue_trueForEverythingElse() {
-        List<MatchMode> valueLess = List.of(MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY, MatchMode.IS_NULL,
-                MatchMode.NOT_NULL, MatchMode.IS_TRUE, MatchMode.IS_FALSE, MatchMode.ALL);
         for (MatchMode mode : MatchMode.values()) {
-            if (valueLess.contains(mode)) {
+            if (VALUE_LESS_MODES.contains(mode)) {
                 continue;
             }
             assertTrue(mode.requiresValue(), mode + " should require a value");
@@ -183,6 +185,24 @@ class MatchModeTest {
     @Test
     void parseOptions_dateKeyword_returnsDatePreset() {
         assertEquals(MatchMode.DATE_OPTIONS, MatchMode.parseOptions("date"));
+        assertEquals(
+                List.of(MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN,
+                        MatchMode.LESS_THAN_EQUALS, MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS,
+                        MatchMode.BETWEEN, MatchMode.NOT_BETWEEN, MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY,
+                        MatchMode.IS_TODAY, MatchMode.IS_YESTERDAY, MatchMode.IS_TOMORROW,
+                        MatchMode.IS_THIS_WEEK, MatchMode.IS_LAST_WEEK, MatchMode.IS_NEXT_WEEK,
+                        MatchMode.IS_THIS_MONTH, MatchMode.IS_LAST_MONTH, MatchMode.IS_NEXT_MONTH,
+                        MatchMode.IS_THIS_QUARTER, MatchMode.IS_LAST_QUARTER, MatchMode.IS_NEXT_QUARTER,
+                        MatchMode.IS_THIS_YEAR, MatchMode.IS_LAST_YEAR, MatchMode.IS_NEXT_YEAR,
+                        MatchMode.LAST_N_DAYS, MatchMode.NEXT_N_DAYS, MatchMode.RELATIVE_DATE),
+                MatchMode.parseOptions("date"));
+    }
+
+    @Test
+    void datePreset_has28Modes() {
+        // See GitHub #7427 - 10 reused (6 comparators + between/not between + is (not) empty) + 18 new
+        // (15 value-less relative-date predicates + last/next N days + relative date)
+        assertEquals(28, MatchMode.DATE_OPTIONS.size());
     }
 
     @Test
