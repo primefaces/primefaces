@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -129,6 +130,10 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
         AtomicReference<Object> fieldValueHolder = new AtomicReference<>();
 
+        // the converted filter value is invariant across rows; memoize it per filter field + target class
+        // (the stream is sequential, so a plain map is safe here). Keyed value is [targetClass, convertedValue].
+        Map<String, Object[]> convertedFilterCache = new HashMap<>();
+
         return values.stream()
                 .filter(obj -> {
                     // always include the current obj in the result?
@@ -189,7 +194,16 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
                                 convertedFilterValue = filterValue;
                             }
                             else {
-                                convertedFilterValue = ComponentUtils.convertToType(filterValue, fieldValue.getClass(), LOGGER);
+                                // reuse the conversion across rows when the target class is stable (the common case)
+                                Class<?> targetClass = fieldValue.getClass();
+                                Object[] cached = convertedFilterCache.get(filterMeta.getField());
+                                if (cached != null && cached[0] == targetClass) {
+                                    convertedFilterValue = cached[1];
+                                }
+                                else {
+                                    convertedFilterValue = ComponentUtils.convertToType(filterValue, targetClass, LOGGER);
+                                    convertedFilterCache.put(filterMeta.getField(), new Object[] {targetClass, convertedFilterValue});
+                                }
                             }
                         }
 

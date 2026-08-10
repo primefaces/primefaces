@@ -2,8 +2,6 @@
 
 AjaxStatus is a global notifier for ajax requests.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.AjaxStatus-1.html)
-
 ## Getting Started with AjaxStatus
 AjaxStatus uses facets to represent the request status. Most common used facets are _start_ and
 _complete_. The _start_ facet will be visible once ajax request begins and stay visible until it’s completed.

@@ -167,7 +167,9 @@ App = {
         var currentPath = window.location.pathname;
 
         // Exact match: the link whose href matches the current page
-        this.menuLinks.filter('[href^="' + currentPath + '"]').addClass('router-link-active');
+        this.menuLinks.filter(function() {
+            return this.pathname === currentPath;
+        }).addClass('router-link-active');
 
         // Parent match: a submenu-link is active when the current page
         // lives under the same directory as its first-child URL

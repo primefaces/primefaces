@@ -2,8 +2,6 @@
 
 Resizable component is used to make another Jakarta Faces component resizable.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Resizable-1.html)
-
 ## Getting started with Resizable
 Resizable is used by setting _for_ option as the identifier of the target.
 

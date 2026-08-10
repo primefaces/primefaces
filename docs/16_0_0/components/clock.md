@@ -2,8 +2,6 @@
 
 Clock displays server or client datetime live.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Clock-1.html)
-
 ## Getting Started with Clock
 Clock has two modes, _client_ (default) and _server_. In simple mode, datetime is displayed by just
 adding component on page. On page load, clock is initialized and start running based on client time.

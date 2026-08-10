@@ -2,8 +2,6 @@
 
 Spinner is an input component to provide a numerical input via increment and decrement buttons.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Spinner.html)
-
 ## Getting Started with Spinner
 Spinner is an input component and used just like a standard input text.
 

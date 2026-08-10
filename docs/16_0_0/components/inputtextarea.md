@@ -3,8 +3,6 @@
 InputTextarea is an extension to standard inputTextarea with autoComplete, autoResize, remaining
 characters counter and theming features.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.InputTextarea.html)
-
 ## Getting Started with InputTextarea
 InputTextarea usage is same as standard inputTextarea;
 

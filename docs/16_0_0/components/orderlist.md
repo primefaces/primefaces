@@ -3,8 +3,6 @@
 OrderList is used to sort a collection featuring drag&drop based reordering, transition effects and
 pojo support.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.OrderList.html)
-
 ## Getting started with OrderList
 A list is required to use OrderList component.
 

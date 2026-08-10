@@ -2,8 +2,6 @@
 
 BlockUI is used to block interactivity of Jakarta Faces components with optional ajax integration.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.BlockUI.html)
-
 ## Getting Started with BlockUI
 BlockUI requires _trigger_ and _block_ attributes to be defined. With the special ajax integration, ajax
 requests whose source are the trigger components will block the ui onstart and unblock oncomplete.

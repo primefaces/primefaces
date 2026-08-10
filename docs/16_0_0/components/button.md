@@ -2,8 +2,6 @@
 
 Button is an extension to the standard h:button component with skinning capabilities.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Button.html)
-
 ## Getting Started with Button
 p:button usage is same as standard h:button, an outcome is necessary to navigate using GET
 requests. Assume you are at source.xhtml and need to navigate target.xhtml.

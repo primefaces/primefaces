@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,16 @@ public class SelectBooleanButton extends SelectBooleanButtonBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanButton";
 
     public static final String STYLE_CLASS = "ui-selectbooleanbutton ui-widget";
+
+    @Override
+    public String getInputClientId() {
+        return this.getClientId(getFacesContext()) + "_input";
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return this.getInputClientId();
+    }
 
     public String resolveStyleClass(boolean checked, boolean disabled) {
         String icon = checked ? getOnIcon() : getOffIcon();

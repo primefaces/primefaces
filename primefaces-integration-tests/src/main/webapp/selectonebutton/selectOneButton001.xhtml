@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:outputLabel id="outputlabel" value="Drivers Label" for="selectonebutton"/>
+            <p:selectOneButton id="selectonebutton" value="#{selectOneButton001.value}">
+                <f:selectItems value="#{selectOneButton001.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver.id}"/>
+                <p:ajax process="@this"/>
+            </p:selectOneButton>
+
+            <p:selectOneButton id="labelled" label="Standalone Label" value="#{selectOneButton001.value}">
+                <f:selectItems value="#{selectOneButton001.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver.id}"/>
+            </p:selectOneButton>
+
+            <p:commandButton id="submit" update="@form" value="Submit"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

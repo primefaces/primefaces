@@ -2,8 +2,6 @@
 
 Splitter is utilized to separate and resize panels.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Splitter.html)
-
 ## Getting Started
 Splitter requires two SplitterPanel components to wrap.
 

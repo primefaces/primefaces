@@ -2,8 +2,6 @@
 
 CascadeSelect displays a nested structure of options.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.CascadeSelect.html)
-
 ## Getting started with CascadeSelect
 
 ```java

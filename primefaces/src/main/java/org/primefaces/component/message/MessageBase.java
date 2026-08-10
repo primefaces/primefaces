@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -59,7 +59,7 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
     @Property(description = "Defines a list of keys and clientIds, which should NOT be rendered by this component. Separated by space or comma.")
     public abstract String getForIgnores();
 
-    @Property(defaultValue = "true", description = "Specifies if the summary of the FacesMessage should be displayed.")
+    @Property(defaultValue = "false", description = "Specifies if the summary of the FacesMessage should be displayed.")
     @Override
     public abstract boolean isShowSummary();
 

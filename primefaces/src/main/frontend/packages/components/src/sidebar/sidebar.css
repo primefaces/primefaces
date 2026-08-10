@@ -1,8 +1,9 @@
 .ui-sidebar {
     position: fixed;
     padding: .5em 1em;
-    -webkit-transition: transform .3s;
-    transition: transform .3s;
+    visibility: hidden;
+    -webkit-transition: transform .3s, visibility .3s;
+    transition: transform .3s, visibility .3s;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -54,6 +55,7 @@
 
 .ui-sidebar-left.ui-sidebar-active,
 .ui-sidebar-right.ui-sidebar-active {
+    visibility: visible;
     -webkit-transform: translateX(0);
     transform: translateX(0)
 }
@@ -75,6 +77,7 @@
 
 .ui-sidebar-top.ui-sidebar-active,
 .ui-sidebar-bottom.ui-sidebar-active {
+    visibility: visible;
     -webkit-transform: translateY(0);
     transform: translateY(0)
 }

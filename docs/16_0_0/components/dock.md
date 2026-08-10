@@ -2,8 +2,6 @@
 
 Dock component mimics the well known dock interface of Mac OS X.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Dock.html)
-
 ## Getting started with the Dock
 A dock is composed of menu items.
 

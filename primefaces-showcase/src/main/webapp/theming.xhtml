@@ -57,18 +57,18 @@
 </code></pre>
             
             <h5>Custom Theme</h5>
-            <p>Themes are created with SASS using the <i>primefaces-sass-theme</i> project available at <a href="https://github.com/primefaces/primefaces-sass-theme">github</a>. 
-                This repository contains all the scss files for the components and the variables of all open source themes so that you may customize an existing theme or create your own. The scss variables used in a theme are available at the <a href="https://www.primefaces.org/designer/api/primefaces/13.0.0/">SASS API</a> documentation.</p>
+            <p>Themes are created with SASS using the <i>primefaces-themes</i> project available at <a href="https://github.com/primefaces/primefaces/tree/master/primefaces-themes/">github</a>.
+                This directory contains all the scss files for the components and the variables of all open source themes so that you may customize an existing theme or create your own. The scss variables used in a theme are available at the <a href="https://www.primefaces.org/designer/api/primefaces/13.0.0/">SASS API</a> documentation.</p>
 
-            <p>The easiest way to create your own theme is compiling a theme with sass using the <i>primefaces-sass-theme</i> repository.</p>
+            <p>The easiest way to create your own theme is compiling a theme with sass using the existing files.</p>
 
             <h6>Theme SCSS</h6>
             <p>
-                The theme scss is available as open source at <a href="http://github.com/primefaces/primefaces-sass-theme">primefaces-sass-theme</a> repository. The <i>theme-base</i> folder contains the theming structure of the components, themes under
+                The theme scss is available as open source at <a href="https://github.com/primefaces/primefaces/tree/master/primefaces-themes">primefaces-themes</a> directory. The <i>theme-base</i> folder contains the theming structure of the components, themes under
                 <i>themes</i> folder import the base and define the SCSS variables. The <i>themes</i> folder also contains all the built-in themes so you can customize their code as well.
             </p>
             <p>
-                To create your own theme, <a href="https://github.com/primefaces/primefaces-sass-theme/releases">download</a> the release matching your PrimeFaces version and access the <i>themes/mytheme</i> folder. You may also choose another theme 
+                To create your own theme, <a href="https://github.com/primefaces/primefaces/tree/master/primefaces-themes">download</a> the release matching your PrimeFaces version and access the <i>themes/mytheme</i> folder. You may also choose another theme
                 like <i>material</i> or <i>bootstrap</i> as your base. The sass variables to customize are available under the <i>variables</i> folder. The <i>_fonts</i> file can be used to define a custom font for your project whereas the optional <i>_extensions</i> file is provided to add overrides to the components designs. The
                 <i>theme.scss</i> file imports the theme files along with the <i>theme-base</i> folder at the root to combine everything together. Next step would be compilation of the scss that can either be command line or within your project with a maven plugin.
             </p>

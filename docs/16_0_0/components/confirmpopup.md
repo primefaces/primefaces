@@ -2,8 +2,6 @@
 
 ConfirmPopup displays a confirmation overlay displayed relatively to its target.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ConfirmPopup-1.html)
-
 ## Getting started with ConfirmPopup
 ConfirmPopup has two modes; global and non-global. Non-Global mode is almost same as the
 dialog component or overlaypanel component used with a simple client side api, _show(selector)_ and _hide()_.

@@ -2,8 +2,6 @@
 
 Galleria is a content gallery component.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Galleria.html)
-
 ## Getting Started with Galleria
 Contents to displayed are defined as children of galleria;
 

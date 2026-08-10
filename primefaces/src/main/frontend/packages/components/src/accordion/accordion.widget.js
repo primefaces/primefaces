@@ -42,8 +42,8 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
         this.headers = this.jq.children('.ui-accordion-header');
         this.panels = this.jq.children('.ui-accordion-content');
         this.cfg.rtl = this.jq.hasClass('ui-accordion-rtl');
-        this.cfg.expandedIcon = 'ui-icon-triangle-1-s';
-        this.cfg.collapsedIcon = 'ui-icon-triangle-1-n';
+        this.cfg.expandedIcon = 'ui-icon-triangle-1-n';
+        this.cfg.collapsedIcon = 'ui-icon-triangle-1-s';
 
         this.initActive();
         this.bindEvents();

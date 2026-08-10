@@ -2,8 +2,6 @@
 
 SlideMenu is used to display nested submenus with sliding animation.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SlideMenu.html)
-
 ## Getting started with the SlideMenu
 SlideMenu consists of submenus and menuitems, submenus can be nested and each nested submenu
 will be displayed with a slide animation.

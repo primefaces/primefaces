@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -190,6 +190,14 @@ public class SelectOneMenu extends SelectOneMenuBaseImpl {
     @Override
     public String getInputClientId() {
         return getClientId(getFacesContext()) + (isEditable() ? "_focus" : "_label");
+    }
+
+    @Override
+    public String getLabelClientId() {
+        // GitHub #15009: a <label for> may only reference a labelable element.
+        // The visible "_label" span isn't labelable, so point at the hidden native "_input" select instead
+        // (editable mode uses the visible "_editableInput" text field).
+        return getClientId(getFacesContext()) + (isEditable() ? "_editableInput" : "_input");
     }
 
     @Override

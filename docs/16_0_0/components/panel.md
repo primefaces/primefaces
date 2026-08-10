@@ -2,8 +2,6 @@
 
 Panel is a grouping component with content toggle, close and menu integration.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Panel-1.html)
-
 ## Getting started with Panel
 Panel encapsulates other components.
 

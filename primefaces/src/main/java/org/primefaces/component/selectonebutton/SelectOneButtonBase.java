@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
@@ -40,7 +41,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 @FacesBehaviorEvents({
     @FacesBehaviorEvent(name = "change", event = AjaxBehaviorEvent.class, description = "Fires when the value of the button changes.", defaultEvent = true)
 })
-public abstract class SelectOneButtonBase extends UISelectOne implements Widget, StyleAware, PrimeSelect {
+public abstract class SelectOneButtonBase extends UISelectOne implements Widget, StyleAware, InputHolder, PrimeSelect {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

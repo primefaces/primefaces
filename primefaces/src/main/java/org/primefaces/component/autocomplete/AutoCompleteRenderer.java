@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -548,8 +548,9 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         boolean pojo = var != null;
         boolean hasHeader = false;
 
-        for (int i = 0; i < component.getColums().size(); i++) {
-            Column column = component.getColums().get(i);
+        List<Column> columns = component.getColums();
+        for (int i = 0; i < columns.size(); i++) {
+            Column column = columns.get(i);
             if (column.isRendered() && (column.getHeaderText() != null || FacetUtils.shouldRenderFacet(column.getFacet("header")))) {
                 hasHeader = true;
                 break;
@@ -562,8 +563,8 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
         if (hasHeader) {
             writer.startElement("thead", component);
-            for (int i = 0; i < component.getColums().size(); i++) {
-                Column column = component.getColums().get(i);
+            for (int i = 0; i < columns.size(); i++) {
+                Column column = columns.get(i);
                 if (!column.isRendered()) {
                     continue;
                 }
@@ -754,8 +755,9 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
             }
         }
 
-        for (int i = 0; i < component.getColums().size(); i++) {
-            Column column = component.getColums().get(i);
+        List<Column> columns = component.getColums();
+        for (int i = 0; i < columns.size(); i++) {
+            Column column = columns.get(i);
             if (column.isRendered()) {
                 writer.startElement("td", null);
                 if (key != null) {

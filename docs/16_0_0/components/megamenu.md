@@ -2,8 +2,6 @@
 
 MegaMenu is a horizontal navigation component that displays submenus together.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.MegaMenu.html)
-
 ## Getting Started with MegaMenu
 Layout of MegaMenu is grid based and root items require columns as children.
 

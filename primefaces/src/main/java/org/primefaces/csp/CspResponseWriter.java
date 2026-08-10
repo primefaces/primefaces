@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -95,15 +95,19 @@ public class CspResponseWriter extends ResponseWriterWrapper {
             lastId = (String) value;
         }
 
-        String lowerCaseName = name.toLowerCase();
-        if (lowerCaseName.startsWith("on") && DOM_EVENTS.contains(lowerCaseName)) {
-            if (value != null) {
-                if (lastEvents == null) {
-                    lastEvents = new HashMap<>(1);
+        // only 'on*' event attributes are relevant here; cheaply test the first two chars before
+        // doing the toLowerCase() + set lookup, which otherwise runs for every attribute of every component
+        if (name.length() > 2 && name.charAt(0) == 'o' && name.charAt(1) == 'n') {
+            String lowerCaseName = name.toLowerCase();
+            if (DOM_EVENTS.contains(lowerCaseName)) {
+                if (value != null) {
+                    if (lastEvents == null) {
+                        lastEvents = new HashMap<>(1);
+                    }
+                    lastEvents.put(name, (String) value);
                 }
-                lastEvents.put(name, (String) value);
+                return;
             }
-            return;
         }
 
         getWrapped().writeAttribute(name, value, property);
@@ -271,9 +275,10 @@ public class CspResponseWriter extends ResponseWriterWrapper {
         if (events != null && !events.isEmpty()) {
             for (Map.Entry<String, String> entry : events.entrySet()) {
                 String oldValue = entry.getValue();
-                // replace 'id=' and 'source:' values
-                String newValue = oldValue.replaceAll("\\sid=\"" + oldId + "\"", " id=\"" + newId + "\"");
-                newValue = newValue.replaceAll("source:\"" + oldId + "\"", " source:\"" + newId + "\"");
+                // replace 'id=' and 'source:' values - literal replace (no regex): faster and safe when the
+                // id contains regex metacharacters or '$'/'\' that replaceAll would misinterpret
+                String newValue = oldValue.replace(" id=\"" + oldId + "\"", " id=\"" + newId + "\"");
+                newValue = newValue.replace("source:\"" + oldId + "\"", "source:\"" + newId + "\"");
                 entry.setValue(newValue);
             }
             CspState cspState = this.cspState;

@@ -2,8 +2,6 @@
 
 SelectManyButton is a multi select component using button UI.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectManyButton.html)
-
 ## Getting started with SelectManyButton
 SelectManyButton usage is same as selectManyCheckbox, buttons just replace checkboxes.
 

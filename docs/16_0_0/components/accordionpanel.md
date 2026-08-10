@@ -1,8 +1,6 @@
 # AccordionPanel
 
 AccordionPanel is a container component that displays content in stacked format.
-                                  jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.AccordionPanel.html
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.AccordionPanel.html)
 
 ## Getting Started with AccordionPanel
 AccordionPanel consists of one or more tabs and each tab can group any content. Titles can also be

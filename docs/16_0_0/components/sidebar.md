@@ -2,8 +2,6 @@
 
 Sidebar is a panel component displayed as an overlay at the edges of the screen.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Sidebar-1.html)
-
 ## Getting started with the Sidebar
 Sidebar is used a container to other components and display is toggle using the show() and hide()
 methods of the widget.

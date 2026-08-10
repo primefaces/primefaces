@@ -2,8 +2,6 @@
 
 Chips is used to enter multiple values on an inputfield.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Chips.html)
-
 ## Getting started with Chips
 Value of the component should be a List where type of the elements it contains can be a string or a
 custom one if a converter is defined.

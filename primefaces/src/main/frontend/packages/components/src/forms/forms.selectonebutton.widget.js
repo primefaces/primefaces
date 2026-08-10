@@ -31,7 +31,8 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
     init(cfg) {
         super.init(cfg);
         this.cfg.unselectable = this.cfg.unselectable !== false;
-        this.facet = this.jq.attr('role') === 'radiogroup';
+        // the default layout root is also a radiogroup, so the role alone doesn't identify the facet span
+        this.facet = this.cfg.custom && this.jq.attr('role') === 'radiogroup';
         this.inputs = this.jq.find((this.facet ? '.ui-helper-hidden ' : '') + ':radio:not(:disabled)');
 
         //custom layout
@@ -81,23 +82,27 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
             $(this).removeClass('ui-state-hover');
         })
         .on('click.selectOneButton', (e) => {
+            // clicks on the native radio itself (e.g. fired by keyboard activation) are handled by the change listener
+            if ($(e.target).is(':radio')) {
+                return;
+            }
             this.handleButtonInteraction(e.currentTarget, e);
             e.stopPropagation();
             e.preventDefault();
         });
 
-        /* For keyboard accessibility */
-        this.buttons.off('focus.selectOneButton blur.selectOneButton keydown.selectOneButton')
-        .on('focus.selectOneButton', function() {
-            $(this).addClass('ui-state-focus');
+        /* keyboard interaction and focus are handled by the native radio inputs */
+        this.inputs.off('focus.selectOneButton blur.selectOneButton change.selectOneButton')
+        .on('focus.selectOneButton', (e) => {
+            $(e.currentTarget).closest('.ui-button').addClass('ui-state-focus');
         })
-        .on('blur.selectOneButton', function() {
-            $(this).removeClass('ui-state-focus');
+        .on('blur.selectOneButton', (e) => {
+            $(e.currentTarget).closest('.ui-button').removeClass('ui-state-focus');
         })
-        .on('keydown.selectOneButton', (e) => {
-            if (PrimeFaces.utils.isActionKey(e)) {
-                this.handleButtonInteraction(e.currentTarget, e);
-                e.preventDefault();
+        .on('change.selectOneButton', (e) => {
+            if (e.currentTarget.checked) {
+                const index = this.inputs.index(e.currentTarget);
+                this.select(this.buttons.eq(index));
             }
         });
     }
@@ -112,6 +117,8 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
         const button = $(target);
         const isActive = button.hasClass('ui-state-active');
 
+        button.find(':radio').trigger('focus');
+
         if(isActive) {
             this.unselect(button);
         }
@@ -125,22 +132,24 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
      * @param {JQuery} button A button of this widget to select.
      */
     select(button) {
-        this.buttons.filter('.ui-state-active').attr('aria-checked', 'false').removeClass('ui-state-active ui-state-hover');
-        
+        const active = this.buttons.filter('.ui-state-active');
+        active.removeClass('ui-state-active ui-state-hover');
+
         if (this.cfg.custom) {
+            active.attr('aria-checked', 'false');
             const index = this.buttons.index(button);
             if (index >= 0) {
                 this.inputs.prop('checked', false);
                 this.inputs.eq(index).prop('checked', true);
             }
+            button.attr('aria-checked', 'true');
         }
         else {
-            this.buttons.filter('.ui-state-active').find(':radio').prop('checked', false);
-            const radio = button.find(':radio');
-            radio.prop('checked', true);
+            active.find(':radio').prop('checked', false);
+            button.find(':radio').prop('checked', true);
         }
 
-        button.addClass('ui-state-active').attr('aria-checked', 'true');
+        button.addClass('ui-state-active');
 
         this.triggerChange();
     }
@@ -151,17 +160,17 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
      */
     unselect(button) {
         if(this.cfg.unselectable) {
-            button.removeClass('ui-state-active ui-state-hover').attr('aria-checked', 'false');
+            button.removeClass('ui-state-active ui-state-hover');
 
             if (this.cfg.custom) {
+                button.attr('aria-checked', 'false');
                 const index = this.buttons.index(button);
                 if (index >= 0) {
                     this.inputs.eq(index).prop('checked', false);
                 }
             }
             else {
-                const radio = button.find(':radio');
-                radio.prop('checked', false).trigger('change');
+                button.find(':radio').prop('checked', false);
             }
 
             this.triggerChange();

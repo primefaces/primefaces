@@ -21,8 +21,8 @@
             <p:tabView>
                 <p:tab title="Properties">
                     <p:dataTable value="#{cc.attrs.value.properties}" var="prop" stripedRows="true">
-                        <p:column headerText="Name" style="width:200px;" field="name" />
-                        <p:column headerText="Type" style="width:150px;" field="type.name">
+                        <p:column headerText="Name" style="width:200px;" field="name" filterMatchMode="contains" />
+                        <p:column headerText="Type" style="width:150px;" field="type.name" filterMatchMode="contains">
                             <span title="#{prop.type.name}">#{prop.type.simpleName}</span>
                         </p:column>
                         <p:column headerText="Required" style="width:50px;">
@@ -31,14 +31,14 @@
                         <p:column headerText="Default" style="width:160px;">
                             #{tagLibController.resolveDefaultValue(prop)}
                         </p:column>
-                        <p:column headerText="Description" field="description" />
+                        <p:column headerText="Description" field="description" filterMatchMode="contains" />
                     </p:dataTable>
                 </p:tab>
 
                 <p:tab title="Facets" rendered="#{cc.attrs.value.component}">
                     <p:dataTable value="#{cc.attrs.value.facets}" var="facet" stripedRows="true">
-                        <p:column headerText="Name" style="width:200px;" field="name"/>
-                        <p:column headerText="Description" field="description"/>
+                        <p:column headerText="Name" style="width:200px;" field="name" filterMatchMode="contains"/>
+                        <p:column headerText="Description" field="description" filterMatchMode="contains"/>
                     </p:dataTable>
                 </p:tab>
 
@@ -46,14 +46,14 @@
                     <p:dataTable value="#{cc.attrs.value.clientBehaviorsEvents}"
                                  var="prop"
                                  stripedRows="true">
-                        <p:column headerText="Name" style="width:200px;" field="name"/>
-                        <p:column headerText="Type" style="width:150px;" field="type.name">
+                        <p:column headerText="Name" style="width:200px;" field="name" filterMatchMode="contains"/>
+                        <p:column headerText="Type" style="width:150px;" field="type.name" filterMatchMode="contains">
                             <span title="#{prop.type.name}">#{prop.type.simpleName}</span>
                         </p:column>
                         <p:column headerText="Default" style="width:50px;">
                             #{prop.defaultEvent}
                         </p:column>
-                        <p:column headerText="Description" field="description"/>
+                        <p:column headerText="Description" field="description" filterMatchMode="contains"/>
                     </p:dataTable>
                 </p:tab>
 
@@ -61,9 +61,9 @@
                     <p:dataTable value="#{cc.attrs.value.resourceDependencies}"
                                  var="resourceDependency"
                                  stripedRows="true">
-                        <p:column field="name"/>
-                        <p:column field="library" />
-                        <p:column field="target" />
+                        <p:column field="name" filterMatchMode="contains"/>
+                        <p:column field="library" filterMatchMode="contains"/>
+                        <p:column field="target" filterMatchMode="contains"/>
                     </p:dataTable>
                 </p:tab>
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,21 @@ public class StyleClassBuilder {
 
     public StyleClassBuilder add(boolean condition, String styleClass, String notStyleClass) {
         return add(condition, styleClass).add(!condition, notStyleClass);
+    }
+
+    /**
+     * Appends {@code styleClass + suffix} only when the condition is true. Avoids the eager string
+     * concatenation of the {@code styleClass + suffix} argument when the condition is false, which
+     * matters in per-cell rendering loops.
+     */
+    public StyleClassBuilder add(boolean condition, String styleClass, int suffix) {
+        if (condition) {
+            if (sb.length() != 0) {
+                sb.append(Constants.SPACE);
+            }
+            sb.append(styleClass).append(suffix);
+        }
+        return this;
     }
 
     public StyleClassBuilder add(String styleClass) {

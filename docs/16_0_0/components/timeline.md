@@ -2,8 +2,6 @@
 
 Timeline is an interactive graph to visualize events in time.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Timeline-1.html)
-
 ## Getting started with the TimeLine
 TimeLine requires a value of org.primefaces.model.timeline.TimelineModel type. An event should
 be an instance of org.primefaces.model.timeline.TimelineEvent and included in model via add

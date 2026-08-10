@@ -2,8 +2,6 @@
 
 Fieldset is a grouping component as an extension to HTML fieldset.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Fieldset.html)
-
 ## Getting started with Fieldset
 Fieldset is used as a container component for its children.
 

@@ -2,8 +2,6 @@
 
 Schedule provides an Outlook Calendar, iCal like Jakarta Faces component to manage events which is based on FullCalendar.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Schedule-1.html)
-
 ## Getting started with Schedule
 Schedule needs to be backed by an _org.primefaces.model.ScheduleModel_ instance, a schedule
 model consists of _org.primefaces.model.ScheduleEvent_ instances.

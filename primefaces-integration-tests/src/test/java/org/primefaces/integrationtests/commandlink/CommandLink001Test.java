@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.commandlink;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandLink;
 import org.primefaces.selenium.component.Messages;
@@ -92,6 +93,8 @@ class CommandLink001Test extends AbstractPrimePageTest {
         PrimeSelenium.guardHttp(page.linkNonAjax).click();
 
         // Assert - full submit re-renders the page; counter reflects the single submit
+        PrimeSelenium.waitGui().until(ExpectedConditions.and(PrimeExpectedConditions.documentLoaded(),
+                PrimeExpectedConditions.visibleAndAnimationComplete(page.messages)));
         assertEquals("Submit", page.messages.getMessage(0).getSummary());
         assertEquals("Counter: 1", page.messages.getMessage(0).getDetail());
         assertEquals("1", page.counter.getText());

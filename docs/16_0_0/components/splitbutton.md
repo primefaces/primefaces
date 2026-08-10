@@ -2,8 +2,6 @@
 
 SplitButton displays a command by default and additional ones in an overlay.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SplitButton-1.html)
-
 ## Getting started with SplitButton
 SplitButton usage is similar to a regular commandButton. Additional commands are placed inside
 the component and displayed in an overlay. In example below, clicking the save button invokes save

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,21 +43,18 @@ public class DialogViewHandler extends ViewHandlerWrapper {
         String pfdlgcid = params.get(Constants.DialogFramework.CONVERSATION_PARAM);
         String url = super.getActionURL(context, viewId);
 
+        // not inside a dialog (the common case): return early and skip scanning every URL
+        if (pfdlgcid == null) {
+            return url;
+        }
+
         if (url.contains(Constants.DialogFramework.CONVERSATION_PARAM)) {
             return url;
         }
-        else {
-            if (pfdlgcid == null) {
-                return url;
-            }
-            else {
-                if (url.indexOf('?') == -1) {
-                    return url + "?pfdlgcid=" + pfdlgcid;
-                }
-                else {
-                    return url + "&pfdlgcid=" + pfdlgcid;
-                }
-            }
+
+        if (url.indexOf('?') == -1) {
+            return url + "?pfdlgcid=" + pfdlgcid;
         }
+        return url + "&pfdlgcid=" + pfdlgcid;
     }
 }

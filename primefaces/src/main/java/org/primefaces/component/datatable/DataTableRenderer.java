@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -629,7 +629,9 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             return;
         }
 
-        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey());
+        // empty unless resizable/toggleable/reorderable columns are used; isEmpty() skips the getColumnKey() argument
+        Map<String, ColumnMeta> columnMetaMap = table.getColumnMeta();
+        ColumnMeta columnMeta = columnMetaMap.isEmpty() ? null : columnMetaMap.get(column.getColumnKey());
 
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
@@ -659,7 +661,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 .add(!column.isToggleable(), DataTable.STATIC_COLUMN_CLASS)
                 .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
                 .add(column.getStyleClass())
-                .add(responsivePriority > 0, "ui-column-p-" + responsivePriority)
+                .add(responsivePriority > 0, "ui-column-p-", responsivePriority)
                 .build();
 
         if (sortable) {
@@ -895,7 +897,9 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             return;
         }
 
-        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey());
+        // empty unless resizable/toggleable/reorderable columns are used; isEmpty() skips the getColumnKey() argument
+        Map<String, ColumnMeta> columnMetaMap = table.getColumnMeta();
+        ColumnMeta columnMeta = columnMetaMap.isEmpty() ? null : columnMetaMap.get(column.getColumnKey());
 
         ResponseWriter writer = context.getResponseWriter();
 
@@ -911,7 +915,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 .add(DataTable.COLUMN_FOOTER_CLASS)
                 .add(column.getStyleClass())
                 .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
-                .add(responsivePriority > 0, "ui-column-p-" + responsivePriority)
+                .add(responsivePriority > 0, "ui-column-p-", responsivePriority)
                 .build();
 
         writer.startElement("td", null);
@@ -1261,7 +1265,11 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             return;
         }
 
-        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey(table, rowIndex));
+        // the map is empty unless resizable/toggleable/reorderable columns are used; the isEmpty() check
+        // skips the eagerly-evaluated column.getColumnKey(table, rowIndex) argument (context lookup + concat
+        // + String.replace) on every cell in the common case
+        Map<String, ColumnMeta> columnMetaMap = table.getColumnMeta();
+        ColumnMeta columnMeta = columnMetaMap.isEmpty() ? null : columnMetaMap.get(column.getColumnKey(table, rowIndex));
 
         boolean columnVisible = column.isVisible();
         if (columnMeta != null && columnMeta.getVisible() != null) {
@@ -1285,7 +1293,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 .add(!column.isSelectRow(), DataTable.UNSELECTABLE_COLUMN_CLASS)
                 .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
                 .add(column.getStyleClass())
-                .add(responsivePriority > 0, "ui-column-p-" + responsivePriority)
+                .add(responsivePriority > 0, "ui-column-p-", responsivePriority)
                 .build();
 
         int colspan = column.getColspan();

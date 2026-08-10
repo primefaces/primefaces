@@ -2,8 +2,6 @@
 
 AutoComplete provides live suggestions while an input is being typed.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.AutoComplete-1.html)
-
 ## Getting Started with AutoComplete
 AutoComplete is an input component so it requires a value as usual. Suggestions are loaded by
 calling a server side completeMethod that takes a single string parameter which is the text entered.

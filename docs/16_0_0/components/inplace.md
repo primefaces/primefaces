@@ -4,8 +4,6 @@ Inplace provides easy inplace editing and inline content display. Inplace consis
 display element is the initial clickable label and inline element is the hidden content that is
 displayed when display element is toggled.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Inplace-1.html)
-
 ## Getting Started with Inplace
 The inline component needs to be a child of inplace.
 

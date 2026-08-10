@@ -3,8 +3,6 @@
 Slider is used to provide input with various customization options like orientation, display modes
 and skinning.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Slider-1.html)
-
 ## Getting started with Slider
 Slider requires an input component to work with, _for_ attribute is used to set the id of the input
 component whose input will be provided by the slider.

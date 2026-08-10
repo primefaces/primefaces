@@ -3,8 +3,6 @@
 Mindmap is an interactive tool to visualize mindmap data featuring lazy loading, callbacks,
 animations and more.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Mindmap-1.html)
-
 ## Getting started with Mindmap
 Mindmap requires an instance of _org.primefaces.model.mindmap.MindmapNode_ as the root. Due to
 it’s lazy nature, a select ajax behavior must be provided to load children of selected node on the fly

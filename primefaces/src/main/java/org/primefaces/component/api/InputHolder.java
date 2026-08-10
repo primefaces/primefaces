@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2026 PrimeTek Informatics
+ * Copyright (c) 2009-2026 PrimeFaces
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,14 @@ public interface InputHolder {
      * @return Client id of the validatable input element
      */
     String getValidatableInputClientId();
+
+    /**
+     * @return the client id the {@code for} attribute of a {@code <label>} should reference, or {@code null} to omit
+     *         {@code for} entirely (e.g. when the component has no labelable element and relies on {@code aria-labelledby}).
+     */
+    default String getLabelClientId() {
+        return getInputClientId();
+    }
 
     /**
      * @return Client id of the label for aria

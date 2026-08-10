@@ -2,8 +2,6 @@
 
 TriStateCheckbox adds a new state to a checkbox value.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TriStateCheckbox-1.html)
-
 ## Getting started with TriStateCheckbox
 TriStateCheckbox supports three states: null (unchecked), true (checked), and false (indeterminate).
 

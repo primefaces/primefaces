@@ -8,8 +8,6 @@ If you use the OutputPanel just as simple placeholder, it's better to use anothe
 <div faces:id="..." faces:rendered="#{...}">...</div>
 ```
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.OutputPanel-1.html)
-
 OutputPanel has various uses cases such as placeholder, deferred loading and auto update.
 
 ## PlaceHolder

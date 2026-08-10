@@ -3,8 +3,6 @@
 Keyboard is an input component that uses a virtual keyboard to provide the input. Notable features
 are the customizable layouts and skinning capabilities.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Keyboard.html)
-
 ## Getting Started with Keyboard
 Keyboard is used just like a simple inputText, by default when the input gets the focus a keyboard is
 displayed.

@@ -2,8 +2,6 @@
 
 TabMenu is a navigation component that displays menuitems as tabs.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TabMenu.html)
-
 ## Getting started with TabMenu
 TabMenu requires menuitems as children components, each menuitem is rendered as a tab. Just like
 in any other menu component, menuitems can be utilized to do ajax requests, non-ajax requests and

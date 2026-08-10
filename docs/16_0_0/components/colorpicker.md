@@ -12,9 +12,6 @@ ColorPicker is an input component with a color palette based on [Coloris](https:
 * Client Side Validation (CSV) support
 * Color swatches
 
-
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ColorPicker-1.html)
-
 ## Getting started with ColorPicker
 ColorPicker’s value should be a hex string.
 

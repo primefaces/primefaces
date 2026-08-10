@@ -3,8 +3,6 @@
 Calendar is an input component used to select a date featuring display modes, paging, localization,
 ajax selection and more.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Calendar-1.html)
-
 ## Getting Started with Calendar
 Value of the calendar should be a java.time.LocalDate.
 
