@@ -48,14 +48,14 @@ public enum MatchMode {
     EXACT("exact"),
     NOT_EXACT("notExact"),
 
-    LESS_THAN("lt"),
-    LESS_THAN_EQUALS("lte"),
+    LESS_THAN("lt", "<"),
+    LESS_THAN_EQUALS("lte", "<="),
 
-    GREATER_THAN("gt"),
-    GREATER_THAN_EQUALS("gte"),
+    GREATER_THAN("gt", ">"),
+    GREATER_THAN_EQUALS("gte", ">="),
 
-    EQUALS("equals"),
-    NOT_EQUALS("notEquals"),
+    EQUALS("equals", "="),
+    NOT_EQUALS("notEquals", "!="),
 
     IN("in"),
     NOT_IN("notIn"),
@@ -85,13 +85,31 @@ public enum MatchMode {
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS));
 
     private final String operator;
+    private final String symbol;
 
     MatchMode(String operator) {
+        this(operator, null);
+    }
+
+    MatchMode(String operator, String symbol) {
         this.operator = operator;
+        this.symbol = symbol;
     }
 
     public String operator() {
         return operator;
+    }
+
+    /**
+     * The mathematical symbol for this match mode (e.g. {@code "<="} for {@link #LESS_THAN_EQUALS}), if it has one.
+     * Comparison operators shared by the {@code numeric} and {@code date} {@code filterMatchModeOptions} presets
+     * have a symbol; string-matching operators (contains, starts with, ...) do not, as they have no natural
+     * mathematical notation.
+     *
+     * @return the symbol, or {@code null} if this match mode has none
+     */
+    public String symbol() {
+        return symbol;
     }
 
     public static MatchMode of(String operator) {

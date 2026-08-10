@@ -36,7 +36,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -193,6 +195,31 @@ class DataTable051Test extends AbstractDataTableTest {
         assertEmployeeRows(dataTable, employeesFiltered);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("DataTable: GitHub #7427 numeric filterMatchModeOptions renders comparators as symbols, "
+            + "text filterMatchModeOptions keeps spelled-out labels")
+    void matchModeLabels(Page page) {
+        // Arrange
+        HeaderCell idHeader = page.dataTable.getHeader().getCell("ID").get();
+        HeaderCell lastNameHeader = page.dataTable.getHeader().getCell("last name").get();
+
+        // Act
+        List<String> idOptionLabels = new Select(idHeader.getColumnFilterMatchMode()).getOptions().stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+        List<String> lastNameOptionLabels = new Select(lastNameHeader.getColumnFilterMatchMode()).getOptions().stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        // Assert - the numeric preset is entirely comparison operators, so it renders as symbols
+        assertEquals(List.of("=", "!=", "<", "<=", ">", ">="), idOptionLabels);
+
+        // Assert - the text preset mixes comparison operators with string-matching ones, so it keeps words
+        assertTrue(lastNameOptionLabels.contains("Contains"), "Expected spelled-out labels, got: " + lastNameOptionLabels);
+        assertTrue(lastNameOptionLabels.contains("Equals"), "Expected spelled-out labels, got: " + lastNameOptionLabels);
     }
 
     private void assertConfiguration(JSONObject cfg) {

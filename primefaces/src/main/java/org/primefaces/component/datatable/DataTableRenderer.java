@@ -854,18 +854,33 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
         MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
 
+        // Render "=", "!=", "<", "<=", ">", ">=" instead of spelled-out labels when every option in this dropdown
+        // is a comparison operator (the "numeric"/"date" presets, or a custom list built purely from them) - this
+        // keeps the dropdown compact and matches common spreadsheet-style filter UIs. A dropdown mixing comparison
+        // operators with string-matching ones (e.g. the "text" preset, which also offers "equals"/"notEquals")
+        // keeps the spelled-out labels throughout so the options read consistently.
+        boolean useSymbols = matchModeOptions.stream().allMatch(mode -> mode.symbol() != null);
+
         writer.startElement("select", null);
         writer.writeAttribute("id", matchModeId, null);
         writer.writeAttribute("name", matchModeId, null);
         writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLASS, null);
 
         for (MatchMode matchMode : matchModeOptions) {
+            String label = MessageFactory.getMessage(context, DataTable.FILTER_MATCH_MODE_LABEL_PREFIX + matchMode.name());
+
             writer.startElement("option", null);
             writer.writeAttribute("value", matchMode.operator(), null);
             if (matchMode == selected) {
                 writer.writeAttribute("selected", "selected", null);
             }
-            writer.writeText(MessageFactory.getMessage(context, DataTable.FILTER_MATCH_MODE_LABEL_PREFIX + matchMode.name()), null);
+            if (useSymbols) {
+                writer.writeAttribute("title", label, null);
+                writer.writeText(matchMode.symbol(), null);
+            }
+            else {
+                writer.writeText(label, null);
+            }
             writer.endElement("option");
         }
 

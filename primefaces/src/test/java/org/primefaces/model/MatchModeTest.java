@@ -28,10 +28,54 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MatchModeTest {
+
+    @Test
+    void symbol_definedForComparisonOperators() {
+        assertEquals("=", MatchMode.EQUALS.symbol());
+        assertEquals("!=", MatchMode.NOT_EQUALS.symbol());
+        assertEquals("<", MatchMode.LESS_THAN.symbol());
+        assertEquals("<=", MatchMode.LESS_THAN_EQUALS.symbol());
+        assertEquals(">", MatchMode.GREATER_THAN.symbol());
+        assertEquals(">=", MatchMode.GREATER_THAN_EQUALS.symbol());
+    }
+
+    @Test
+    void symbol_undefinedForStringMatchingOperators() {
+        assertNull(MatchMode.CONTAINS.symbol());
+        assertNull(MatchMode.NOT_CONTAINS.symbol());
+        assertNull(MatchMode.STARTS_WITH.symbol());
+        assertNull(MatchMode.NOT_STARTS_WITH.symbol());
+        assertNull(MatchMode.ENDS_WITH.symbol());
+        assertNull(MatchMode.NOT_ENDS_WITH.symbol());
+        assertNull(MatchMode.EXACT.symbol());
+        assertNull(MatchMode.NOT_EXACT.symbol());
+        assertNull(MatchMode.IN.symbol());
+        assertNull(MatchMode.NOT_IN.symbol());
+        assertNull(MatchMode.BETWEEN.symbol());
+        assertNull(MatchMode.NOT_BETWEEN.symbol());
+        assertNull(MatchMode.GLOBAL.symbol());
+    }
+
+    @Test
+    void numericAndDatePresets_areFullySymbolic() {
+        // DataTableRenderer renders "=", "!=", "<", ... instead of spelled-out labels only when every
+        // option in the dropdown has a symbol - both presets consist entirely of comparison operators.
+        assertTrue(MatchMode.NUMERIC_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
+        assertTrue(MatchMode.DATE_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
+    }
+
+    @Test
+    void textPreset_isNotFullySymbolic() {
+        // TEXT_OPTIONS mixes comparison operators (equals/notEquals) with string-matching operators
+        // (contains, startsWith, ...) that have no symbol, so its dropdown must keep spelled-out labels.
+        assertFalse(MatchMode.TEXT_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
+    }
 
     @Test
     void parseOptions_blank_returnsEmptyList() {
