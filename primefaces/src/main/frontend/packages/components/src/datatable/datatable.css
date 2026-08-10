@@ -87,12 +87,15 @@
     margin: 0;
     width: auto;
     flex: 1 1 auto;
-    min-width: 0;
+    min-width: 2.5rem;
 }
 
 .ui-datatable .ui-column-filter-mode {
-    flex: 0 0 auto;
+    /* flex-shrink is allowed (unlike the value input, a <select> is sized by its widest <option>, which can
+       alone exceed a narrow column's width) so it also yields space rather than starving the value input. */
+    flex: 0 1 auto;
     width: auto;
+    min-width: 2.5rem;
 }
 
 .ui-datatable.ui-filter-toggleable thead .ui-column-customfilter,

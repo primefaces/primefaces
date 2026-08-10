@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.datatable;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.model.datatable.HeaderCell;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * DataTable: GitHub #7427 filterMatchModeOptions lets the end user pick a filter comparator
@@ -118,6 +120,34 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(4)
+    @DisplayName("DataTable: GitHub #7427 filter value input stays usable next to a narrow column's match-mode dropdown")
+    void numericFilterInputStaysUsableInNarrowColumn(Page page) {
+        // Arrange - "ID" is a narrow (style="width:120px"), fixed-layout column: the match-mode <select> and the
+        // value <input> share the same cramped space, which is exactly what made the value input collapse to
+        // zero width in the showcase's "Activity" column (see GitHub #7427).
+        DataTable dataTable = page.dataTable;
+        HeaderCell idHeader = dataTable.getHeader().getCell("ID").get();
+
+        // Act - switch to the option with the longest label so the <select> is at its widest
+        dataTable.filterMatchMode("ID", "gte");
+
+        // Assert - the value input must still render with a real, usable width, not be squeezed to ~0
+        int filterInputWidth = idHeader.getColumnFilter().getSize().getWidth();
+        assertTrue(filterInputWidth > 20, "Filter value input width was " + filterInputWidth
+                + "px - too narrow to be usable, likely squeezed out by the match-mode dropdown");
+
+        // Act - and it must still be possible to actually type a value into it
+        dataTable.filter("ID", "5");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId() >= 5).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(5)
     @DisplayName("DataTable: GitHub #7427 text filterMatchModeOptions defaults to the column's filterMatchMode")
     void textFilterDefaultMatchMode(Page page) {
         // Arrange
@@ -136,7 +166,7 @@ class DataTable051Test extends AbstractDataTableTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     @DisplayName("DataTable: GitHub #7427 text filterMatchModeOptions lets the user switch the comparator")
     void textFilterSwitchMatchMode(Page page) {
         // Arrange
