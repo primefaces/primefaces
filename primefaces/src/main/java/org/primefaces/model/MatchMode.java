@@ -63,6 +63,29 @@ public enum MatchMode {
     BETWEEN("between"),
     NOT_BETWEEN("notBetween"),
 
+    /**
+     * Matches when the field value is {@code null} or an empty/blank string. See GitHub #7427.
+     */
+    IS_EMPTY("empty", false),
+    /**
+     * Matches when the field value is neither {@code null} nor an empty/blank string. See GitHub #7427.
+     */
+    NOT_EMPTY("notEmpty", false),
+    /**
+     * Matches when the field value is strictly {@code null}, unlike {@link #IS_EMPTY} which also matches a
+     * non-null but blank string. See GitHub #7427.
+     */
+    IS_NULL("null", false),
+    /**
+     * Matches when the field value is not {@code null} (a blank string still matches). See GitHub #7427.
+     */
+    NOT_NULL("notNull", false),
+    /**
+     * Matches when the field value, as a string, matches the filter value interpreted as a regular expression.
+     * See GitHub #7427.
+     */
+    MATCHES_REGEX("regex"),
+
     GLOBAL("global");
 
     /**
@@ -73,10 +96,12 @@ public enum MatchMode {
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS));
 
     /**
-     * Preset of match modes offered for a {@code filterMatchModeOptions="text"} column filter.
+     * Preset of match modes offered for a {@code filterMatchModeOptions="text"} column filter: the classic string
+     * operators plus "is (not) empty", "is (not) null", "matches regex" and "(not) in list". See GitHub #7427.
      */
     public static final List<MatchMode> TEXT_OPTIONS = Collections.unmodifiableList(Arrays.asList(
-            CONTAINS, NOT_CONTAINS, STARTS_WITH, NOT_STARTS_WITH, ENDS_WITH, NOT_ENDS_WITH, EQUALS, NOT_EQUALS));
+            CONTAINS, NOT_CONTAINS, STARTS_WITH, NOT_STARTS_WITH, ENDS_WITH, NOT_ENDS_WITH, EQUALS, NOT_EQUALS,
+            IS_EMPTY, NOT_EMPTY, IS_NULL, NOT_NULL, MATCHES_REGEX, IN, NOT_IN));
 
     /**
      * Preset of match modes offered for a {@code filterMatchModeOptions="date"} column filter.
@@ -86,14 +111,24 @@ public enum MatchMode {
 
     private final String operator;
     private final String symbol;
+    private final boolean requiresValue;
 
     MatchMode(String operator) {
-        this(operator, null);
+        this(operator, null, true);
     }
 
     MatchMode(String operator, String symbol) {
+        this(operator, symbol, true);
+    }
+
+    MatchMode(String operator, boolean requiresValue) {
+        this(operator, null, requiresValue);
+    }
+
+    MatchMode(String operator, String symbol, boolean requiresValue) {
         this.operator = operator;
         this.symbol = symbol;
+        this.requiresValue = requiresValue;
     }
 
     public String operator() {
@@ -110,6 +145,18 @@ public enum MatchMode {
      */
     public String symbol() {
         return symbol;
+    }
+
+    /**
+     * Whether this match mode needs a filter value to be typed in, e.g. {@link #CONTAINS} does but
+     * {@link #IS_EMPTY} does not - the mode alone is the entire predicate. A column's filter value
+     * {@code <input>} is hidden while a match mode with {@code requiresValue() == false} is selected.
+     * See GitHub #7427.
+     *
+     * @return {@code true} unless this match mode is a value-less predicate
+     */
+    public boolean requiresValue() {
+        return requiresValue;
     }
 
     public static MatchMode of(String operator) {

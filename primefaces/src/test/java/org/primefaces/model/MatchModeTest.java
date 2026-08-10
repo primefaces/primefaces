@@ -78,6 +78,33 @@ class MatchModeTest {
     }
 
     @Test
+    void textPreset_includesAllSevenAdditionalModes() {
+        // See GitHub #7427 - "is (not) empty", "is (not) null", "matches regex" and "(not) in list"
+        assertTrue(MatchMode.TEXT_OPTIONS.containsAll(List.of(
+                MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY, MatchMode.IS_NULL, MatchMode.NOT_NULL,
+                MatchMode.MATCHES_REGEX, MatchMode.IN, MatchMode.NOT_IN)));
+    }
+
+    @Test
+    void requiresValue_falseForValueLessPredicates() {
+        assertFalse(MatchMode.IS_EMPTY.requiresValue());
+        assertFalse(MatchMode.NOT_EMPTY.requiresValue());
+        assertFalse(MatchMode.IS_NULL.requiresValue());
+        assertFalse(MatchMode.NOT_NULL.requiresValue());
+    }
+
+    @Test
+    void requiresValue_trueForEverythingElse() {
+        for (MatchMode mode : MatchMode.values()) {
+            if (mode == MatchMode.IS_EMPTY || mode == MatchMode.NOT_EMPTY
+                    || mode == MatchMode.IS_NULL || mode == MatchMode.NOT_NULL) {
+                continue;
+            }
+            assertTrue(mode.requiresValue(), mode + " should require a value");
+        }
+    }
+
+    @Test
     void parseOptions_blank_returnsEmptyList() {
         assertTrue(MatchMode.parseOptions(null).isEmpty());
         assertTrue(MatchMode.parseOptions("").isEmpty());

@@ -701,8 +701,11 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             else {
                 PrimeFaces.skinSelect(filter);
                 $this.bindChangeFilter(filter);
+                if (filter.hasClass('ui-column-filter-mode')) {
+                    $this.toggleFilterValueInput(filter);
+                }
             }
-            
+
         });
         
         // ARIA labels for filters
@@ -749,8 +752,28 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         filter.off('change')
         .on('change', function() {
+            if (filter.hasClass('ui-column-filter-mode')) {
+                $this.toggleFilterValueInput(filter);
+            }
             $this.filter();
         });
+    }
+
+    /**
+     * Shows/enables or hides/disables (and clears) the value `<input>` next to a filter match-mode `<select>`,
+     * based on whether the newly selected match mode requires a value - e.g. "is empty" or "is null" is a
+     * complete predicate on its own and has no value to type. See GitHub #7427.
+     * @private
+     * @param {JQuery} modeSelect the `.ui-column-filter-mode` `<select>` whose selection changed (or was just rendered)
+     */
+    toggleFilterValueInput(modeSelect) {
+        var requiresValue = modeSelect.find('option:selected').data('requiresValue') !== false;
+        var valueInput = modeSelect.siblings('.ui-column-filter');
+
+        valueInput.toggleClass('ui-helper-hidden', !requiresValue).prop('disabled', !requiresValue);
+        if (!requiresValue) {
+            valueInput.val('');
+        }
     }
 
     /**
@@ -4505,9 +4528,13 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         resetInputFields(standardFilters);
 
         // reset filter match-mode dropdowns back to their first (default) option
+        var $this = this;
         var standardFilterModes = this.thead.find('> tr > th.ui-filter-column .ui-column-filter-mode:not(:disabled):not([readonly])');
         standardFilterModes.each(function() {
             this.selectedIndex = 0;
+            // #7427 the first option may require a value (the common case) even if a value-less one (e.g.
+            // "is empty") was selected before the reset - sync the value input's hidden/disabled state back
+            $this.toggleFilterValueInput($(this));
         });
 
         var customFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter');

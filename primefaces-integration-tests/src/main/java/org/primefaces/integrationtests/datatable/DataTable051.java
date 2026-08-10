@@ -24,6 +24,8 @@
 package org.primefaces.integrationtests.datatable;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.annotation.PostConstruct;
@@ -48,6 +50,13 @@ public class DataTable051 implements Serializable {
 
     @PostConstruct
     public void init() {
-        employees = service.getEmployees();
+        // copy (don't mutate the shared, application-scoped EmployeeService list used by other DataTable tests)
+        employees = new ArrayList<>(service.getEmployees());
+
+        // #7427 "is (not) empty" / "is (not) null" need a null and a blank lastName to be distinguishable
+        employees.add(Employee.builder().id(900).firstName("Nolan").lastName(null)
+                .birthDate(LocalDate.of(1975, 6, 15)).build());
+        employees.add(Employee.builder().id(901).firstName("Blanche").lastName("")
+                .birthDate(LocalDate.of(1985, 9, 20)).build());
     }
 }

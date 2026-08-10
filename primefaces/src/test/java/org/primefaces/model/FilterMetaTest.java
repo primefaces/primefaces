@@ -76,4 +76,39 @@ class FilterMetaTest {
         filterMeta.setMatchMode(MatchMode.GREATER_THAN);
         assertEquals(MatchMode.GREATER_THAN, filterMeta.getMatchMode());
     }
+
+    @Test
+    void isActive_falseWithoutValue_whenMatchModeRequiresOne() {
+        FilterMeta filterMeta = FilterMeta.builder()
+                .field("name")
+                .filterBy(mock(ValueExpression.class))
+                .matchMode(MatchMode.CONTAINS)
+                .build();
+
+        assertFalse(filterMeta.isActive());
+    }
+
+    @Test
+    void isActive_trueWithValue() {
+        FilterMeta filterMeta = FilterMeta.builder()
+                .field("name")
+                .filterBy(mock(ValueExpression.class))
+                .matchMode(MatchMode.CONTAINS)
+                .filterValue("foo")
+                .build();
+
+        assertTrue(filterMeta.isActive());
+    }
+
+    @Test
+    void isActive_trueWithoutValue_whenMatchModeIsValueLess() {
+        // See GitHub #7427 - "is empty"/"is null" are a complete predicate on their own
+        FilterMeta filterMeta = FilterMeta.builder()
+                .field("name")
+                .filterBy(mock(ValueExpression.class))
+                .matchMode(MatchMode.IS_EMPTY)
+                .build();
+
+        assertTrue(filterMeta.isActive());
+    }
 }

@@ -837,22 +837,21 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
         List<MatchMode> matchModeOptions = MatchMode.parseOptions(column.getFilterMatchModeOptions());
         if (matchModeOptions.isEmpty()) {
-            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
+            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, true);
         }
         else {
+            MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
             String matchModeId = column.getContainerClientId(context) + separator + "filterMatchMode";
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_FILTER_CONTAINER_CLASS, null);
-            encodeFilterMatchModeSelect(context, component, column, writer, matchModeId, matchModeOptions);
-            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
+            encodeFilterMatchModeSelect(context, writer, matchModeId, matchModeOptions, selected);
+            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected.requiresValue());
             writer.endElement("div");
         }
     }
 
-    protected void encodeFilterMatchModeSelect(FacesContext context, DataTable component, UIColumn column, ResponseWriter writer,
-            String matchModeId, List<MatchMode> matchModeOptions) throws IOException {
-
-        MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
+    protected void encodeFilterMatchModeSelect(FacesContext context, ResponseWriter writer,
+            String matchModeId, List<MatchMode> matchModeOptions, MatchMode selected) throws IOException {
 
         // Render "=", "!=", "<", "<=", ">", ">=" instead of spelled-out labels when every option in this dropdown
         // is a comparison operator (the "numeric"/"date" presets, or a custom list built purely from them) - this
@@ -871,6 +870,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
             writer.startElement("option", null);
             writer.writeAttribute("value", matchMode.operator(), null);
+            // read by datatable.widget.js to hide/disable the value input for a value-less match mode (e.g. "is empty")
+            // written as a literal "true"/"false" string - a Boolean value is special-cased by ResponseWriter
+            // impls as a plain HTML boolean attribute (name="name" if true, omitted entirely if false)
+            writer.writeAttribute("data-requires-value", String.valueOf(matchMode.requiresValue()), null);
             if (matchMode == selected) {
                 writer.writeAttribute("selected", "selected", null);
             }
@@ -899,11 +902,15 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     }
 
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
-        String filterId, String filterStyleClass, Object filterValue) throws IOException {
+        String filterId, String filterStyleClass, Object filterValue, boolean requiresValue) throws IOException {
 
         filterStyleClass = filterStyleClass == null
                            ? DataTable.COLUMN_INPUT_FILTER_CLASS
                            : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
+        if (!requiresValue) {
+            // #7427 the selected match mode (e.g. "is empty") is itself the entire predicate - no value to type
+            filterStyleClass += " ui-helper-hidden";
+        }
 
         writer.startElement("input", null);
         writer.writeAttribute("id", filterId, null);
@@ -912,6 +919,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("class", filterStyleClass, null);
         writer.writeAttribute("value", filterValue, null);
         writer.writeAttribute("autocomplete", "off", null);
+
+        if (!requiresValue) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         if (disableTabbing) {
             writer.writeAttribute("tabindex", "-1", null);

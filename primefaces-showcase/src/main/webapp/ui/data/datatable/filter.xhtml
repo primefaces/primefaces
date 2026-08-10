@@ -20,8 +20,13 @@
     <ui:define name="implementation">
         <div class="card">
             <h5>Column Filtering</h5>
-            <p>The <em>Activity</em> column uses <code>filterMatchModeOptions="numeric"</code> so users can pick the
-                comparator (=, !=, &lt;, &lt;=, &gt;, &gt;=) from a dropdown next to the filter input at runtime.</p>
+            <p>The <em>Name</em> column uses <code>filterMatchModeOptions="text"</code> so users can pick the
+                comparator from a dropdown next to the filter input at runtime: the classic string operators
+                (contains, starts with, ends with, equals - and their negations), the value-less "is (not) empty"
+                and "is (not) null" (the filter input hides itself for these), "matches regex", and "in list" /
+                "not in list" (comma-separated, e.g. <code>Acme, Globex, Initech</code>). The <em>Activity</em>
+                column uses <code>filterMatchModeOptions="numeric"</code>, shown as symbols (=, !=, &lt;, &lt;=,
+                &gt;, &gt;=).</p>
             <h:form>
                 <p:dataTable var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable"
                     emptyMessage="No customers found with given criteria"
@@ -45,7 +50,8 @@
                         </div>
                     </f:facet>
 
-                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains" filterPlaceholder="Filter By Name">
+                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains"
+                              filterMatchModeOptions="text" filterPlaceholder="Filter By Name">
                         <h:outputText value="#{customer.name}" />
                     </p:column>
 

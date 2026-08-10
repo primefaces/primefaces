@@ -98,6 +98,11 @@
     min-width: 2.5rem;
 }
 
+.ui-datatable .ui-column-filter.ui-helper-hidden {
+    /* #7427 hidden while a value-less match mode (e.g. "is empty") is selected - the mode is the whole predicate */
+    display: none;
+}
+
 .ui-datatable.ui-filter-toggleable thead .ui-column-customfilter,
 .ui-datatable.ui-filter-toggleable thead .ui-column-filter,
 .ui-datatable.ui-filter-toggleable thead .ui-column-filter-container {

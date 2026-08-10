@@ -53,6 +53,11 @@ public final class FilterConstraints {
             .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
             .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
             .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new BetweenFilterConstraint()))
+            .put(MatchMode.IS_EMPTY, new IsEmptyFilterConstraint())
+            .put(MatchMode.NOT_EMPTY, new NegationFilterConstraintWrapper(new IsEmptyFilterConstraint()))
+            .put(MatchMode.IS_NULL, new IsNullFilterConstraint())
+            .put(MatchMode.NOT_NULL, new NegationFilterConstraintWrapper(new IsNullFilterConstraint()))
+            .put(MatchMode.MATCHES_REGEX, new MatchesRegexFilterConstraint())
             .build();
 
     private FilterConstraints() {

@@ -23,52 +23,31 @@
  */
 package org.primefaces.model.filter;
 
-import org.primefaces.util.LangUtils;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Locale;
-import java.util.stream.Collectors;
+import java.util.regex.PatternSyntaxException;
 
 import jakarta.faces.context.FacesContext;
 
-public class InFilterConstraint extends EqualsFilterConstraint {
+/**
+ * Matches when the field value, as a string, fully matches the filter value interpreted as a regular
+ * expression (e.g. {@code ^INV-\d+$}). An invalid regex (e.g. while the user is still typing it) is treated
+ * as not matching rather than throwing. See GitHub #7427.
+ */
+public class MatchesRegexFilterConstraint implements FilterConstraint {
 
     private static final long serialVersionUID = 1L;
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (filter == null) {
+        if (value == null || filter == null) {
             return false;
         }
 
-        Collection<?> collection = null;
-        if (filter.getClass().isArray()) {
-            collection = Arrays.asList((Object[]) filter);
+        try {
+            return value.toString().matches(filter.toString());
         }
-        else if (filter instanceof Collection) {
-            collection = (Collection<?>) filter;
+        catch (PatternSyntaxException e) {
+            return false;
         }
-        else if (filter instanceof String) {
-            // #7427 "In list" / "Not in list" typed as free text next to the match-mode dropdown,
-            // e.g. "Acme, Globex, Initech" - split on comma, unlike a bean-bound facet (already a Collection).
-            collection = Arrays.stream(((String) filter).split(","))
-                    .map(String::trim)
-                    .filter(LangUtils::isNotBlank)
-                    .collect(Collectors.toList());
-        }
-        else {
-            collection = Collections.singletonList(filter);
-        }
-
-        for (Object filterValue : collection) {
-            // Return true on the first matching value
-            if (super.isMatching(ctxt, value, filterValue, locale)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

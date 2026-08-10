@@ -193,7 +193,9 @@ public class FilterMeta implements Serializable {
     }
 
     public boolean isActive() {
-        return filterValue != null;
+        // #7427 a value-less match mode (e.g. "is empty", "is null") is its own complete predicate -
+        // it applies even though the user never types (and the input never renders) a filter value.
+        return filterValue != null || !matchMode.requiresValue();
     }
 
     public MatchMode getMatchMode() {

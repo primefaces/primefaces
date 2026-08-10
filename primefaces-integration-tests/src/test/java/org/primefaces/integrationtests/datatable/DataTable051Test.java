@@ -28,7 +28,10 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.HeaderCell;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
@@ -41,6 +44,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -50,7 +54,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("DataTable-filter")
 class DataTable051Test extends AbstractDataTableTest {
 
-    protected final List<Employee> employees = new EmployeeService().getEmployees();
+    // mirrors DataTable051#init() exactly - the synthetic null/blank-lastName rows (see GitHub #7427: "is (not)
+    // empty" / "is (not) null" need one of each to be distinguishable) also have ids > 5, so every existing
+    // numeric "ID" filter assertion below must account for them too, not just the new text-mode ones.
+    protected final List<Employee> employees = buildEmployeesWithSyntheticRows();
+
+    private static List<Employee> buildEmployeesWithSyntheticRows() {
+        List<Employee> list = new ArrayList<>(new EmployeeService().getEmployees());
+        list.add(Employee.builder().id(900).firstName("Nolan").lastName(null).birthDate(LocalDate.of(1975, 6, 15)).build());
+        list.add(Employee.builder().id(901).firstName("Blanche").lastName("").birthDate(LocalDate.of(1985, 9, 20)).build());
+        return list;
+    }
 
     @Test
     @Order(1)
@@ -160,7 +174,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
         // Assert
         List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> e.getLastName().toLowerCase().contains("ar"))
+                .filter(e -> e.getLastName() != null && e.getLastName().toLowerCase().contains("ar"))
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
@@ -180,7 +194,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
         // Assert
         List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> e.getLastName().toLowerCase().startsWith("ma"))
+                .filter(e -> e.getLastName() != null && e.getLastName().toLowerCase().startsWith("ma"))
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
@@ -190,7 +204,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
         // Assert
         employeesFiltered = employees.stream()
-                .filter(e -> e.getLastName().equalsIgnoreCase("Clark"))
+                .filter(e -> e.getLastName() != null && e.getLastName().equalsIgnoreCase("Clark"))
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
@@ -220,6 +234,131 @@ class DataTable051Test extends AbstractDataTableTest {
         // Assert - the text preset mixes comparison operators with string-matching ones, so it keeps words
         assertTrue(lastNameOptionLabels.contains("Contains"), "Expected spelled-out labels, got: " + lastNameOptionLabels);
         assertTrue(lastNameOptionLabels.contains("Equals"), "Expected spelled-out labels, got: " + lastNameOptionLabels);
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("DataTable: GitHub #7427 \"is empty\"/\"is not empty\" hide the value input and match null/blank values")
+    void textFilterIsEmptyIsNotEmpty(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell lastNameHeader = dataTable.getHeader().getCell("last name").get();
+
+        // Act - switch to the value-less "is empty" mode
+        dataTable.filterMatchMode("last name", "empty");
+
+        // Assert - the value input is hidden and disabled since the mode alone is the entire predicate
+        WebElement valueInput = lastNameHeader.getColumnFilter();
+        assertTrue(valueInput.getAttribute("class").contains("ui-helper-hidden"),
+                "Value input should be hidden while a value-less match mode is selected");
+        assertFalse(valueInput.isEnabled(), "Value input should be disabled while a value-less match mode is selected");
+
+        // Assert - matches the null and blank lastName rows, and only those
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getLastName() == null || e.getLastName().trim().isEmpty())
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - the hidden/disabled state must also survive a full server-side re-render, not just the live JS toggle
+        page.buttonUpdate.click();
+
+        // Assert - re-fetch the header cell, the update="datatable" full refresh replaced the old DOM elements
+        lastNameHeader = dataTable.getHeader().getCell("last name").get();
+        valueInput = lastNameHeader.getColumnFilter();
+        assertTrue(valueInput.getAttribute("class").contains("ui-helper-hidden"));
+        assertFalse(valueInput.isEnabled());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "is not empty"
+        dataTable.filterMatchMode("last name", "notEmpty");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getLastName() != null && !e.getLastName().trim().isEmpty())
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("DataTable: GitHub #7427 \"is null\"/\"is not null\" distinguish null from a blank value")
+    void textFilterIsNullIsNotNull(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        dataTable.filterMatchMode("last name", "null");
+
+        // Assert - strictly null, unlike "is empty" which also matches the blank ("") row
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getLastName() == null)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("last name", "notNull");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getLastName() != null)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("DataTable: GitHub #7427 \"matches regex\" filters using the typed value as a regular expression")
+    void textFilterMatchesRegex(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.filterMatchMode("last name", "regex");
+
+        // Act
+        dataTable.filter("last name", "^M.*");
+
+        // Assert
+        Pattern pattern = Pattern.compile("^M.*");
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getLastName() != null && pattern.matcher(e.getLastName()).matches())
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("DataTable: GitHub #7427 \"in list\"/\"not in list\" match against a comma-separated value")
+    void textFilterInListNotInList(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.filterMatchMode("last name", "in");
+
+        // Act
+        dataTable.filter("last name", "Paul, Bush, Johnson");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getLastName() != null
+                        && (e.getLastName().equals("Paul") || e.getLastName().equals("Bush") || e.getLastName().equals("Johnson")))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "not in list" keeping the same typed value
+        dataTable.filterMatchMode("last name", "notIn");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getLastName() == null
+                        || !(e.getLastName().equals("Paul") || e.getLastName().equals("Bush") || e.getLastName().equals("Johnson")))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
