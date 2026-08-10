@@ -66,7 +66,7 @@ class JPALazyDataModelTest {
     void loadExecutesSingleQuery() {
         Fixture fixture = createMocksForLoad();
 
-        List<TestEntity> result = fixture.model.load(0, 3, Collections.emptyMap(), Collections.emptyMap());
+        List<TestEntity> result = fixture.loadAndWrap(0, 3);
 
         assertEquals(3, result.size());
         Mockito.verify(fixture.entityTypedQuery, Mockito.times(1)).setFirstResult(0);
@@ -94,8 +94,7 @@ class JPALazyDataModelTest {
         Fixture fixture = createMocksForRowSelectionWorkflow();
 
         // Arrange - initial render
-        fixture.model.count(Collections.emptyMap());
-        fixture.model.load(0, 3, Collections.emptyMap(), Collections.emptyMap());
+        fixture.loadAndWrap(0, 3);
 
         // Act - row selection decodes each selected row key via a DB lookup
         TestEntity entity1 = fixture.model.getRowData("1");
@@ -108,8 +107,7 @@ class JPALazyDataModelTest {
         assertEquals("3", entity3.getId());
 
         // Act - form submit re-renders the table
-        fixture.model.count(Collections.emptyMap());
-        fixture.model.load(0, 3, Collections.emptyMap(), Collections.emptyMap());
+        fixture.loadAndWrap(0, 3);
 
         // Assert - full call counts over the whole workflow
         Mockito.verify(fixture.countTypedQuery, Mockito.times(2)).getSingleResult();
@@ -278,6 +276,15 @@ class JPALazyDataModelTest {
             this.countTypedQuery = countTypedQuery;
             this.entityQuery = entityQuery;
             this.entityTypedQuery = entityTypedQuery;
+        }
+
+        List<TestEntity> loadAndWrap(int first, int pageSize) {
+            model.count(Collections.emptyMap());
+            // Mirror what DataTable does after load(): set wrappedData so that getRowData()
+            // can resolve row keys in-memory without an extra database query.
+            List<TestEntity> loaded = model.load(first, pageSize, Collections.emptyMap(), Collections.emptyMap());
+            model.setWrappedData(loaded);
+            return loaded;
         }
     }
 
