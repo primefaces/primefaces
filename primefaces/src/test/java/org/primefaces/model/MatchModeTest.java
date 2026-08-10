@@ -63,18 +63,20 @@ class MatchModeTest {
     }
 
     @Test
-    void numericAndDatePresets_areFullySymbolic() {
+    void datePreset_isFullySymbolic() {
         // DataTableRenderer renders "=", "!=", "<", ... instead of spelled-out labels only when every
-        // option in the dropdown has a symbol - both presets consist entirely of comparison operators.
-        assertTrue(MatchMode.NUMERIC_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
+        // option in the dropdown has a symbol - DATE_OPTIONS consists entirely of comparison operators.
         assertTrue(MatchMode.DATE_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
     }
 
     @Test
-    void textPreset_isNotFullySymbolic() {
+    void textAndNumericPresets_areNotFullySymbolic() {
         // TEXT_OPTIONS mixes comparison operators (equals/notEquals) with string-matching operators
-        // (contains, startsWith, ...) that have no symbol, so its dropdown must keep spelled-out labels.
+        // (contains, startsWith, ...) that have no symbol. NUMERIC_OPTIONS, since it was extended with
+        // "between"/"is null"/"in list" (see GitHub #7427), is no longer purely comparison operators either -
+        // both dropdowns must keep spelled-out labels so their options read consistently.
         assertFalse(MatchMode.TEXT_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
+        assertFalse(MatchMode.NUMERIC_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
     }
 
     @Test
@@ -83,6 +85,29 @@ class MatchModeTest {
         assertTrue(MatchMode.TEXT_OPTIONS.containsAll(List.of(
                 MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY, MatchMode.IS_NULL, MatchMode.NOT_NULL,
                 MatchMode.MATCHES_REGEX, MatchMode.IN, MatchMode.NOT_IN)));
+    }
+
+    @Test
+    void numericPreset_includesAllSixAdditionalModes() {
+        // See GitHub #7427 - "(not) between", "is (not) null" and "(not) in list"
+        assertTrue(MatchMode.NUMERIC_OPTIONS.containsAll(List.of(
+                MatchMode.BETWEEN, MatchMode.NOT_BETWEEN, MatchMode.IS_NULL, MatchMode.NOT_NULL,
+                MatchMode.IN, MatchMode.NOT_IN)));
+    }
+
+    @Test
+    void placeholderHint_definedForMultiValueModes() {
+        assertEquals("min,max", MatchMode.BETWEEN.placeholderHint());
+        assertEquals("min,max", MatchMode.NOT_BETWEEN.placeholderHint());
+        assertEquals("value1, value2, ...", MatchMode.IN.placeholderHint());
+        assertEquals("value1, value2, ...", MatchMode.NOT_IN.placeholderHint());
+    }
+
+    @Test
+    void placeholderHint_undefinedForSingleValueModes() {
+        assertNull(MatchMode.EQUALS.placeholderHint());
+        assertNull(MatchMode.CONTAINS.placeholderHint());
+        assertNull(MatchMode.IS_EMPTY.placeholderHint());
     }
 
     @Test
@@ -116,7 +141,9 @@ class MatchModeTest {
         assertEquals(MatchMode.NUMERIC_OPTIONS, MatchMode.parseOptions("numeric"));
         assertEquals(
                 List.of(MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN,
-                        MatchMode.LESS_THAN_EQUALS, MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS),
+                        MatchMode.LESS_THAN_EQUALS, MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS,
+                        MatchMode.BETWEEN, MatchMode.NOT_BETWEEN, MatchMode.IS_NULL, MatchMode.NOT_NULL,
+                        MatchMode.IN, MatchMode.NOT_IN),
                 MatchMode.parseOptions("numeric"));
     }
 

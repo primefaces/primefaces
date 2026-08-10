@@ -27,6 +27,11 @@
 
                 <p:column headerText="last name" field="lastName" filterMatchMode="contains" filterMatchModeOptions="text"/>
 
+                <!-- nullable field (Alfred Paul + the two synthetic rows have no salary) so "is (not) null" is
+                     distinguishable from "(not) between"/"(not) in list" - see GitHub #7427 -->
+                <p:column headerText="salary" field="salary" filterMatchMode="gt" filterMatchModeOptions="numeric"
+                          converter="jakarta.faces.Integer"/>
+
             </p:dataTable>
 
             <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>

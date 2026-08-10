@@ -213,8 +213,8 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(7)
-    @DisplayName("DataTable: GitHub #7427 numeric filterMatchModeOptions renders comparators as symbols, "
-            + "text filterMatchModeOptions keeps spelled-out labels")
+    @DisplayName("DataTable: GitHub #7427 numeric filterMatchModeOptions keeps spelled-out labels once it "
+            + "includes non-comparison modes (between/is null/in list), same as text filterMatchModeOptions")
     void matchModeLabels(Page page) {
         // Arrange
         HeaderCell idHeader = page.dataTable.getHeader().getCell("ID").get();
@@ -228,8 +228,12 @@ class DataTable051Test extends AbstractDataTableTest {
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
 
-        // Assert - the numeric preset is entirely comparison operators, so it renders as symbols
-        assertEquals(List.of("=", "!=", "<", "<=", ">", ">="), idOptionLabels);
+        // Assert - "numeric" now mixes pure comparison operators with between/is null/in list, so - like "text" -
+        // it keeps spelled-out labels throughout rather than rendering "=", "!=", "<", ... as symbols
+        assertTrue(idOptionLabels.contains("Equals"), "Expected spelled-out labels, got: " + idOptionLabels);
+        assertTrue(idOptionLabels.contains("Between"), "Expected spelled-out labels, got: " + idOptionLabels);
+        assertTrue(idOptionLabels.contains("Is Null"), "Expected spelled-out labels, got: " + idOptionLabels);
+        assertTrue(idOptionLabels.contains("In List"), "Expected spelled-out labels, got: " + idOptionLabels);
 
         // Assert - the text preset mixes comparison operators with string-matching ones, so it keeps words
         assertTrue(lastNameOptionLabels.contains("Contains"), "Expected spelled-out labels, got: " + lastNameOptionLabels);
@@ -355,6 +359,122 @@ class DataTable051Test extends AbstractDataTableTest {
         employeesFiltered = employees.stream()
                 .filter(e -> e.getLastName() == null
                         || !(e.getLastName().equals("Paul") || e.getLastName().equals("Bush") || e.getLastName().equals("Johnson")))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("DataTable: GitHub #7427 numeric \"between\"/\"not between\" match a \"min,max\" typed range")
+    void numericFilterBetweenNotBetween(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell salaryHeader = dataTable.getHeader().getCell("salary").get();
+        dataTable.filterMatchMode("salary", "between");
+
+        // Assert - the value input hints at the expected "min,max" syntax
+        assertEquals("min,max", salaryHeader.getColumnFilter().getAttribute("placeholder"));
+
+        // Act
+        dataTable.filter("salary", "2500,3000");
+
+        // Assert - inclusive on both ends; a null salary never matches "between"
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getSalary() != null && e.getSalary() >= 2500 && e.getSalary() <= 3000)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "not between" keeping the same typed range
+        dataTable.filterMatchMode("salary", "notBetween");
+
+        // Assert - the negation of "between", so a null salary DOES match (it was never "between" to begin with)
+        employeesFiltered = employees.stream()
+                .filter(e -> !(e.getSalary() != null && e.getSalary() >= 2500 && e.getSalary() <= 3000))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("DataTable: GitHub #7427 numeric \"between\" stays inactive while only one value has been typed")
+    void numericFilterBetweenIncompleteRange(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.filterMatchMode("salary", "between");
+
+        // Act - only the first half of the range typed so far (e.g. still typing)
+        dataTable.filter("salary", "2500,");
+
+        // Assert - not yet an active filter, so every row is still shown
+        assertEmployeeRows(dataTable, employees);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("DataTable: GitHub #7427 numeric \"is null\"/\"is not null\" hide the value input")
+    void numericFilterIsNullIsNotNull(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell salaryHeader = dataTable.getHeader().getCell("salary").get();
+
+        // Act
+        dataTable.filterMatchMode("salary", "null");
+
+        // Assert - value-less, same generic mechanism as the text preset's "is null"
+        WebElement valueInput = salaryHeader.getColumnFilter();
+        assertTrue(valueInput.getAttribute("class").contains("ui-helper-hidden"));
+        assertFalse(valueInput.isEnabled());
+
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getSalary() == null)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("salary", "notNull");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getSalary() != null)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("DataTable: GitHub #7427 numeric \"in list\"/\"not in list\" convert each comma-separated token")
+    void numericFilterInListNotInList(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell salaryHeader = dataTable.getHeader().getCell("salary").get();
+        dataTable.filterMatchMode("salary", "in");
+
+        // Assert - the value input hints at the expected comma-separated syntax
+        assertEquals("value1, value2, ...", salaryHeader.getColumnFilter().getAttribute("placeholder"));
+
+        // Act
+        dataTable.filter("salary", "2500, 3000, 2200");
+
+        // Assert - each token is converted to an Integer individually, not the whole string as one value
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getSalary() != null && (e.getSalary() == 2500 || e.getSalary() == 3000 || e.getSalary() == 2200))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "not in list" keeping the same typed value
+        dataTable.filterMatchMode("salary", "notIn");
+
+        // Assert - a null salary never equals any converted token, so it "is not in" the list either
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getSalary() == null || !(e.getSalary() == 2500 || e.getSalary() == 3000 || e.getSalary() == 2200))
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 

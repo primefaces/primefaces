@@ -695,17 +695,22 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             var filter = $(this);
 
             if(filter.is("input[type='search']")) {
+                // remembered so toggleFilterValueInput() can restore it once a match mode with its own
+                // placeholder hint (e.g. "min,max" for "between") is deselected again
+                filter.data('originalPlaceholder', filter.attr('placeholder'));
                 PrimeFaces.skinInput(filter);
                 $this.bindTextFilter(filter);
             }
             else {
                 PrimeFaces.skinSelect(filter);
                 $this.bindChangeFilter(filter);
-                if (filter.hasClass('ui-column-filter-mode')) {
-                    $this.toggleFilterValueInput(filter);
-                }
             }
+        });
 
+        // sync each value input's visibility/placeholder with its initially selected match mode - run in its
+        // own pass, after every input's original placeholder above has been captured, regardless of DOM order
+        filterColumns.find('.ui-column-filter-mode').each(function() {
+            $this.toggleFilterValueInput($(this));
         });
         
         // ARIA labels for filters
@@ -767,12 +772,29 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {JQuery} modeSelect the `.ui-column-filter-mode` `<select>` whose selection changed (or was just rendered)
      */
     toggleFilterValueInput(modeSelect) {
-        var requiresValue = modeSelect.find('option:selected').data('requiresValue') !== false;
+        var selectedOption = modeSelect.find('option:selected');
+        var requiresValue = selectedOption.data('requiresValue') !== false;
         var valueInput = modeSelect.siblings('.ui-column-filter');
 
         valueInput.toggleClass('ui-helper-hidden', !requiresValue).prop('disabled', !requiresValue);
         if (!requiresValue) {
             valueInput.val('');
+        }
+
+        // e.g. "min,max" for "between" - falls back to whatever placeholder the page originally declared
+        // (or none) once a match mode without its own hint (e.g. "equals") is selected again
+        var placeholderHint = selectedOption.data('placeholderHint');
+        if (placeholderHint) {
+            valueInput.attr('placeholder', placeholderHint);
+        }
+        else {
+            var originalPlaceholder = valueInput.data('originalPlaceholder');
+            if (originalPlaceholder) {
+                valueInput.attr('placeholder', originalPlaceholder);
+            }
+            else {
+                valueInput.removeAttr('placeholder');
+            }
         }
     }
 

@@ -29,6 +29,7 @@ import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.util.ComponentUtils;
@@ -37,6 +38,7 @@ import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -223,16 +225,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 String valueHolderClientId = column instanceof DynamicColumn
                         ? column.getContainerClientId(context) + separator + "filter"
                         : column.getClientId(context) + separator + "filter";
-                filterValue = params.get(valueHolderClientId);
+                String rawFilterValue = params.get(valueHolderClientId);
 
-                try {
-                    // if no custom filter provided and conversion necessary, use UIColumn#converter instead
-                    filterValue = ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), filterValue);
-                }
-                catch (ConverterException ex) {
-                    filterValue = null;
-                }
-
+                // #7427 resolve the (possibly just-switched) match mode BEFORE converting the raw value below -
+                // "in list"/"between" need each comma-separated token converted individually, not the whole
+                // string as a single value
                 if (filterMeta.isMatchModeSelectable()) {
                     String matchModeClientId = column instanceof DynamicColumn
                             ? column.getContainerClientId(context) + separator + "filterMatchMode"
@@ -247,6 +244,23 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                                 filterMeta.setMatchMode(mode);
                                 filterMeta.setConstraint(FilterConstraints.of(mode));
                             });
+                }
+
+                MatchMode matchMode = filterMeta.getMatchMode();
+                if (matchMode == MatchMode.IN || matchMode == MatchMode.NOT_IN) {
+                    filterValue = convertMultiValueFilter(context, column, rawFilterValue, false);
+                }
+                else if (matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN) {
+                    filterValue = convertMultiValueFilter(context, column, rawFilterValue, true);
+                }
+                else {
+                    try {
+                        // if no custom filter provided and conversion necessary, use UIColumn#converter instead
+                        filterValue = ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), rawFilterValue);
+                    }
+                    catch (ConverterException ex) {
+                        filterValue = null;
+                    }
                 }
             }
 
@@ -266,6 +280,52 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
             return true;
         });
+    }
+
+    /**
+     * Converts a comma-separated raw filter value (e.g. {@code "3, 5, 11"} for "in list"/"not in list", or
+     * {@code "3,11"} for "between"/"not between") into a {@link List}, converting each token individually
+     * through the column's converter - the whole string can't be converted as a single value the way a plain
+     * "equals"/"greater than" filter is. See GitHub #7427.
+     *
+     * @param requireExactlyTwo {@code true} for "between"/"not between" ({@link org.primefaces.model.filter.BetweenFilterConstraint}
+     *                          requires exactly 2 non-null tokens); {@code false} for "in list"/"not in list"
+     *                          (any number of tokens, an unconvertible one is simply skipped)
+     * @return the converted values as a {@link List}, or {@code null} if the raw value is blank, or (when
+     *         {@code requireExactlyTwo}) doesn't yet resolve to exactly 2 convertible tokens - e.g. while the
+     *         user is still typing the second value
+     */
+    default Object convertMultiValueFilter(FacesContext context, UIColumn column, String rawFilterValue, boolean requireExactlyTwo) {
+        if (LangUtils.isBlank(rawFilterValue)) {
+            return null;
+        }
+
+        List<String> tokens = Arrays.stream(rawFilterValue.split(","))
+                .map(String::trim)
+                .filter(LangUtils::isNotBlank)
+                .collect(Collectors.toList());
+
+        if (requireExactlyTwo && tokens.size() != 2) {
+            return null;
+        }
+
+        List<Object> values = new ArrayList<>();
+        for (String token : tokens) {
+            try {
+                values.add(ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), token));
+            }
+            catch (ConverterException ex) {
+                if (requireExactlyTwo) {
+                    return null;
+                }
+                // "in list"/"not in list" - skip a token that fails to convert, e.g. while still being typed
+            }
+        }
+
+        if (requireExactlyTwo) {
+            return values.size() == 2 ? values : null;
+        }
+        return values.isEmpty() ? null : values;
     }
 
     default Object getFilterValue(UIColumn column) {

@@ -25,8 +25,9 @@
                 (contains, starts with, ends with, equals - and their negations), the value-less "is (not) empty"
                 and "is (not) null" (the filter input hides itself for these), "matches regex", and "in list" /
                 "not in list" (comma-separated, e.g. <code>Acme, Globex, Initech</code>). The <em>Activity</em>
-                column uses <code>filterMatchModeOptions="numeric"</code>, shown as symbols (=, !=, &lt;, &lt;=,
-                &gt;, &gt;=).</p>
+                column uses <code>filterMatchModeOptions="numeric"</code>: the comparators (equals, not equals,
+                less/greater than (or equal to)), "(not) between" (typed as <code>min,max</code>), the value-less
+                "is (not) null", and "(not) in list".</p>
             <h:form>
                 <p:dataTable var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable"
                     emptyMessage="No customers found with given criteria"

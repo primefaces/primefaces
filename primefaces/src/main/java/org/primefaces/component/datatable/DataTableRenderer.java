@@ -837,7 +837,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
         List<MatchMode> matchModeOptions = MatchMode.parseOptions(column.getFilterMatchModeOptions());
         if (matchModeOptions.isEmpty()) {
-            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, true);
+            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, null);
         }
         else {
             MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
@@ -845,7 +845,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_FILTER_CONTAINER_CLASS, null);
             encodeFilterMatchModeSelect(context, writer, matchModeId, matchModeOptions, selected);
-            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected.requiresValue());
+            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected);
             writer.endElement("div");
         }
     }
@@ -874,6 +874,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             // written as a literal "true"/"false" string - a Boolean value is special-cased by ResponseWriter
             // impls as a plain HTML boolean attribute (name="name" if true, omitted entirely if false)
             writer.writeAttribute("data-requires-value", String.valueOf(matchMode.requiresValue()), null);
+            if (matchMode.placeholderHint() != null) {
+                // read by datatable.widget.js to hint the expected value syntax, e.g. "min,max" for "between"
+                writer.writeAttribute("data-placeholder-hint", matchMode.placeholderHint(), null);
+            }
             if (matchMode == selected) {
                 writer.writeAttribute("selected", "selected", null);
             }
@@ -902,7 +906,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     }
 
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
-        String filterId, String filterStyleClass, Object filterValue, boolean requiresValue) throws IOException {
+        String filterId, String filterStyleClass, Object filterValue, MatchMode selected) throws IOException {
+
+        boolean requiresValue = selected == null || selected.requiresValue();
+        String placeholderHint = selected == null ? null : selected.placeholderHint();
 
         filterStyleClass = filterStyleClass == null
                            ? DataTable.COLUMN_INPUT_FILTER_CLASS
@@ -936,7 +943,12 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
         }
 
-        if (LangUtils.isNotBlank(column.getFilterPlaceholder())) {
+        if (placeholderHint != null) {
+            // #7427 e.g. "min,max" for "between" - takes priority over the page author's filterPlaceholder
+            // while such a match mode is selected, since the expected value syntax changes
+            writer.writeAttribute("placeholder", placeholderHint, null);
+        }
+        else if (LangUtils.isNotBlank(column.getFilterPlaceholder())) {
             writer.writeAttribute("placeholder", column.getFilterPlaceholder(), null);
         }
 

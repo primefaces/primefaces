@@ -90,10 +90,12 @@ public enum MatchMode {
 
     /**
      * Preset of match modes offered for a numeric {@code filterMatchModeOptions="numeric"} column filter,
-     * letting the user pick a comparator (=, !=, &lt;, &gt;, &lt;=, &gt;=) at runtime. See GitHub #7427.
+     * letting the user pick a comparator (=, !=, &lt;, &gt;, &lt;=, &gt;=), plus "(not) between", "is (not) null"
+     * and "(not) in list". See GitHub #7427.
      */
     public static final List<MatchMode> NUMERIC_OPTIONS = Collections.unmodifiableList(Arrays.asList(
-            EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS));
+            EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
+            BETWEEN, NOT_BETWEEN, IS_NULL, NOT_NULL, IN, NOT_IN));
 
     /**
      * Preset of match modes offered for a {@code filterMatchModeOptions="text"} column filter: the classic string
@@ -157,6 +159,25 @@ public enum MatchMode {
      */
     public boolean requiresValue() {
         return requiresValue;
+    }
+
+    /**
+     * An example hint for the syntax the filter value {@code <input>} expects, shown as its placeholder while
+     * this match mode is selected (e.g. {@code "min,max"} for {@link #BETWEEN}). See GitHub #7427.
+     *
+     * @return the placeholder hint, or {@code null} if this match mode expects a single plain value
+     */
+    public String placeholderHint() {
+        switch (this) {
+            case BETWEEN:
+            case NOT_BETWEEN:
+                return "min,max";
+            case IN:
+            case NOT_IN:
+                return "value1, value2, ...";
+            default:
+                return null;
+        }
     }
 
     public static MatchMode of(String operator) {
