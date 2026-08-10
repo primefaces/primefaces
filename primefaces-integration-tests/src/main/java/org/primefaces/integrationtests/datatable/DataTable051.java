@@ -50,8 +50,19 @@ public class DataTable051 implements Serializable {
 
     @PostConstruct
     public void init() {
-        // copy (don't mutate the shared, application-scoped EmployeeService list used by other DataTable tests)
+        // copy (don't mutate the shared, application-scoped EmployeeService list used by other DataTable tests) -
+        // each element is still a fresh object from this specific getEmployees() call, so setting fields below
+        // (e.g. #active) is safe and doesn't leak into any other test that independently calls getEmployees()
         employees = new ArrayList<>(service.getEmployees());
+
+        // #7427 "true"/"false"/"is (not) null" boolean modes need a mix of true, false, and untouched (null)
+        // employees to be distinguishable: ids 1, 4, 11 -> true; ids 2, 5, 533 -> false; ids 3, 6 -> left null
+        employees.get(0).setActive(true);   // id 1, Mike Master
+        employees.get(1).setActive(false);  // id 2, Susan Pepper
+        employees.get(3).setActive(true);   // id 4, Chris Clark
+        employees.get(4).setActive(false);  // id 5, James Bush
+        employees.get(6).setActive(true);   // id 11, Margret Johnson
+        employees.get(7).setActive(false);  // id 533, Mary March
 
         // #7427 "is (not) empty" / "is (not) null" need a null and a blank lastName to be distinguishable
         employees.add(Employee.builder().id(900).firstName("Nolan").lastName(null)

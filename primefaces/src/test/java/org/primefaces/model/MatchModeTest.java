@@ -59,6 +59,9 @@ class MatchModeTest {
         assertNull(MatchMode.NOT_IN.symbol());
         assertNull(MatchMode.BETWEEN.symbol());
         assertNull(MatchMode.NOT_BETWEEN.symbol());
+        assertNull(MatchMode.IS_TRUE.symbol());
+        assertNull(MatchMode.IS_FALSE.symbol());
+        assertNull(MatchMode.ALL.symbol());
         assertNull(MatchMode.GLOBAL.symbol());
     }
 
@@ -116,17 +119,42 @@ class MatchModeTest {
         assertFalse(MatchMode.NOT_EMPTY.requiresValue());
         assertFalse(MatchMode.IS_NULL.requiresValue());
         assertFalse(MatchMode.NOT_NULL.requiresValue());
+        assertFalse(MatchMode.IS_TRUE.requiresValue());
+        assertFalse(MatchMode.IS_FALSE.requiresValue());
+        assertFalse(MatchMode.ALL.requiresValue());
     }
 
     @Test
     void requiresValue_trueForEverythingElse() {
+        List<MatchMode> valueLess = List.of(MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY, MatchMode.IS_NULL,
+                MatchMode.NOT_NULL, MatchMode.IS_TRUE, MatchMode.IS_FALSE, MatchMode.ALL);
         for (MatchMode mode : MatchMode.values()) {
-            if (mode == MatchMode.IS_EMPTY || mode == MatchMode.NOT_EMPTY
-                    || mode == MatchMode.IS_NULL || mode == MatchMode.NOT_NULL) {
+            if (valueLess.contains(mode)) {
                 continue;
             }
             assertTrue(mode.requiresValue(), mode + " should require a value");
         }
+    }
+
+    @Test
+    void booleanPreset_isEntirelyValueLess() {
+        // See GitHub #7427 - "All", "true", "false", "is null", "is not null" - the value input never shows
+        assertTrue(MatchMode.BOOLEAN_OPTIONS.stream().noneMatch(MatchMode::requiresValue));
+        assertEquals(List.of(MatchMode.ALL, MatchMode.IS_TRUE, MatchMode.IS_FALSE, MatchMode.IS_NULL, MatchMode.NOT_NULL),
+                MatchMode.BOOLEAN_OPTIONS);
+    }
+
+    @Test
+    void booleanPreset_defaultsToAll_soAFreshColumnIsNotSilentlyFiltered() {
+        // See GitHub #7427 - unlike "contains" (requires a value that starts empty), every BOOLEAN_OPTIONS mode
+        // is its own complete predicate; without "All" as the first/default option, a column with no explicit
+        // filterMatchMode would silently start filtered to whichever mode happened to be listed first.
+        assertEquals(MatchMode.ALL, MatchMode.BOOLEAN_OPTIONS.get(0));
+    }
+
+    @Test
+    void parseOptions_booleanKeyword_returnsBooleanPreset() {
+        assertEquals(MatchMode.BOOLEAN_OPTIONS, MatchMode.parseOptions("boolean"));
     }
 
     @Test

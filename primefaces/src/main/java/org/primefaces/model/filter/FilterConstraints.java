@@ -58,6 +58,9 @@ public final class FilterConstraints {
             .put(MatchMode.IS_NULL, new IsNullFilterConstraint())
             .put(MatchMode.NOT_NULL, new NegationFilterConstraintWrapper(new IsNullFilterConstraint()))
             .put(MatchMode.MATCHES_REGEX, new MatchesRegexFilterConstraint())
+            .put(MatchMode.IS_TRUE, new IsTrueFilterConstraint())
+            .put(MatchMode.IS_FALSE, new IsFalseFilterConstraint())
+            .put(MatchMode.ALL, new AllFilterConstraint())
             .build();
 
     private FilterConstraints() {

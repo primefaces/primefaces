@@ -32,6 +32,9 @@
                 <p:column headerText="salary" field="salary" filterMatchMode="gt" filterMatchModeOptions="numeric"
                           converter="jakarta.faces.Integer"/>
 
+                <!-- every mode in the "boolean" preset is value-less (true/false/is null/is not null) - see GitHub #7427 -->
+                <p:column headerText="active" field="active" filterMatchModeOptions="boolean"/>
+
             </p:dataTable>
 
             <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>

@@ -44,6 +44,7 @@ public class Employee implements Serializable {
     private String lastName;
     private LocalDate birthDate;
     private Integer salary;
+    private Boolean active;
     private Role role;
     private LocalDateTime lastLoginDateTime;
     private Date lastLoginDate;

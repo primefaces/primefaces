@@ -61,6 +61,15 @@ class DataTable051Test extends AbstractDataTableTest {
 
     private static List<Employee> buildEmployeesWithSyntheticRows() {
         List<Employee> list = new ArrayList<>(new EmployeeService().getEmployees());
+
+        // #7427 "true"/"false"/"is (not) null" boolean modes need a mix of true, false, and untouched (null)
+        list.get(0).setActive(true);   // id 1, Mike Master
+        list.get(1).setActive(false);  // id 2, Susan Pepper
+        list.get(3).setActive(true);   // id 4, Chris Clark
+        list.get(4).setActive(false);  // id 5, James Bush
+        list.get(6).setActive(true);   // id 11, Margret Johnson
+        list.get(7).setActive(false);  // id 533, Mary March
+
         list.add(Employee.builder().id(900).firstName("Nolan").lastName(null).birthDate(LocalDate.of(1975, 6, 15)).build());
         list.add(Employee.builder().id(901).firstName("Blanche").lastName("").birthDate(LocalDate.of(1985, 9, 20)).build());
         return list;
@@ -475,6 +484,68 @@ class DataTable051Test extends AbstractDataTableTest {
         // Assert - a null salary never equals any converted token, so it "is not in" the list either
         employeesFiltered = employees.stream()
                 .filter(e -> e.getSalary() == null || !(e.getSalary() == 2500 || e.getSalary() == 3000 || e.getSalary() == 2200))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("DataTable: GitHub #7427 boolean \"true\"/\"false\" hide the value input and match strictly")
+    void booleanFilterTrueFalse(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell activeHeader = dataTable.getHeader().getCell("active").get();
+
+        // Assert - "All" is the boolean preset's first (and thus default) option: a fresh, untouched "active"
+        // column must NOT silently filter the table before the user ever picks true/false/is null/is not null
+        WebElement valueInput = activeHeader.getColumnFilter();
+        assertTrue(valueInput.getAttribute("class").contains("ui-helper-hidden"));
+        assertFalse(valueInput.isEnabled());
+        assertEmployeeRows(dataTable, employees);
+
+        // Act
+        dataTable.filterMatchMode("active", "true");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> Boolean.TRUE.equals(e.getActive()))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "false"
+        dataTable.filterMatchMode("active", "false");
+
+        // Assert - strictly false, a null "active" (untouched employees) matches neither "true" nor "false"
+        employeesFiltered = employees.stream()
+                .filter(e -> Boolean.FALSE.equals(e.getActive()))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(17)
+    @DisplayName("DataTable: GitHub #7427 boolean \"is null\"/\"is not null\" match an untouched (unset) value")
+    void booleanFilterIsNullIsNotNull(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.filterMatchMode("active", "null");
+
+        // Assert - the untouched employees (never assigned true or false)
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getActive() == null)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("active", "notNull");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getActive() != null)
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 

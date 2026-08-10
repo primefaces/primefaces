@@ -86,6 +86,27 @@ public enum MatchMode {
      */
     MATCHES_REGEX("regex"),
 
+    /**
+     * Matches when the field value is {@code Boolean.TRUE} (or the string {@code "true"}). See GitHub #7427.
+     */
+    IS_TRUE("true", false),
+    /**
+     * Matches when the field value is strictly {@code Boolean.FALSE} (or the string {@code "false"}) - a
+     * {@code null} value matches neither {@link #IS_TRUE} nor {@link #IS_FALSE}; use {@link #IS_NULL} for that.
+     * See GitHub #7427.
+     */
+    IS_FALSE("false", false),
+
+    /**
+     * "No filter selected" placeholder - {@link FilterMeta#isActive()} always treats it as inactive, regardless
+     * of {@link #requiresValue()}. Needed as the default option for a dropdown built entirely from value-less
+     * modes (e.g. {@link #BOOLEAN_OPTIONS}): unlike "contains" or "equals", none of "true"/"false"/"is null"/
+     * "is not null" has a natural "nothing typed yet" resting state, so without this placeholder such a column
+     * would silently start filtered (to whichever mode happens to be first) the moment the page renders.
+     * See GitHub #7427.
+     */
+    ALL("all", false),
+
     GLOBAL("global");
 
     /**
@@ -110,6 +131,14 @@ public enum MatchMode {
      */
     public static final List<MatchMode> DATE_OPTIONS = Collections.unmodifiableList(Arrays.asList(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS));
+
+    /**
+     * Preset of match modes offered for a {@code filterMatchModeOptions="boolean"} column filter: "All" (no
+     * filter, the default), "true", "false", "is null" and "is not null" - every option is value-less, so the
+     * filter value {@code <input>} stays hidden no matter which is selected. See GitHub #7427.
+     */
+    public static final List<MatchMode> BOOLEAN_OPTIONS = Collections.unmodifiableList(Arrays.asList(
+            ALL, IS_TRUE, IS_FALSE, IS_NULL, NOT_NULL));
 
     private final String operator;
     private final String symbol;
@@ -196,9 +225,9 @@ public enum MatchMode {
     /**
      * Resolves the list of match modes an end user may pick from a column's filter match-mode dropdown.
      * <p>
-     * Accepts either one of the shorthand keywords {@code "numeric"}, {@code "text"} or {@code "date"}, which
-     * expand to a curated preset of {@link MatchMode}s, or an explicit comma separated list of match mode
-     * operators (e.g. {@code "equals,notEquals,lt,gt,lte,gte"}).
+     * Accepts either one of the shorthand keywords {@code "numeric"}, {@code "text"}, {@code "date"} or
+     * {@code "boolean"}, which expand to a curated preset of {@link MatchMode}s, or an explicit comma separated
+     * list of match mode operators (e.g. {@code "equals,notEquals,lt,gt,lte,gte"}).
      *
      * @param filterMatchModeOptions the value of the column's {@code filterMatchModeOptions} attribute
      * @return the resolved, ordered list of selectable match modes; empty if {@code filterMatchModeOptions} is blank
@@ -215,6 +244,8 @@ public enum MatchMode {
                 return TEXT_OPTIONS;
             case "date":
                 return DATE_OPTIONS;
+            case "boolean":
+                return BOOLEAN_OPTIONS;
             default:
                 return Arrays.stream(filterMatchModeOptions.split(","))
                         .map(String::trim)
