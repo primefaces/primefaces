@@ -31,7 +31,6 @@ import jakarta.faces.context.FacesContext;
  * Matches when the field value is strictly {@code Boolean.FALSE} (or the string {@code "false"},
  * case-insensitive) - a {@code null} value does not match either (use {@link IsNullFilterConstraint} for that).
  * Value-less: the user-typed filter value is ignored, the match mode alone is the entire predicate.
- * See GitHub #7427.
  */
 public class IsFalseFilterConstraint implements FilterConstraint {
 

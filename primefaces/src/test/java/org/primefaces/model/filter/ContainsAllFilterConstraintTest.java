@@ -31,60 +31,39 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class IsEmptyFilterConstraintTest {
+class ContainsAllFilterConstraintTest {
 
-    private IsEmptyFilterConstraint constraint;
+    private ContainsAllFilterConstraint constraint;
 
     @BeforeEach
     void setup() {
-        constraint = new IsEmptyFilterConstraint();
+        constraint = new ContainsAllFilterConstraint();
     }
 
     @Test
-    void testIsMatching_Null() {
-        assertTrue(constraint.isMatching(null, null, "ignored", null));
+    void testIsMatching_NullFilter() {
+        assertFalse(constraint.isMatching(null, List.of("Java", "Python", "Go"), null, null));
     }
 
     @Test
-    void testIsMatching_EmptyString() {
-        assertTrue(constraint.isMatching(null, "", "ignored", null));
+    void testIsMatching_Superset() {
+        assertTrue(constraint.isMatching(null, List.of("Java", "Python", "Go"), List.of("Java", "Go"), null));
     }
 
     @Test
-    void testIsMatching_BlankString() {
-        assertTrue(constraint.isMatching(null, "   ", "ignored", null));
+    void testIsMatching_MissingOne() {
+        assertFalse(constraint.isMatching(null, List.of("Java", "Python", "Go"), List.of("Java", "Ruby"), null));
     }
 
     @Test
-    void testIsMatching_NonBlankString() {
-        assertFalse(constraint.isMatching(null, "test", "ignored", null));
+    void testIsMatching_CommaSeparatedString_Splits() {
+        assertTrue(constraint.isMatching(null, List.of("Java", "Python", "Go"), "Java, Go", null));
+        assertFalse(constraint.isMatching(null, List.of("Java", "Python", "Go"), "Java, Ruby", null));
     }
 
     @Test
-    void testIsMatching_IgnoresFilterValue() {
-        // value-less: the typed filter value (if any) is irrelevant
-        assertTrue(constraint.isMatching(null, "", null, null));
-        assertFalse(constraint.isMatching(null, "test", null, null));
-    }
-
-    @Test
-    void testIsMatching_EmptyCollection() {
-        // "array" filterMatchModeOptions preset
-        assertTrue(constraint.isMatching(null, List.of(), "ignored", null));
-    }
-
-    @Test
-    void testIsMatching_NonEmptyCollection() {
-        assertFalse(constraint.isMatching(null, List.of("Java"), "ignored", null));
-    }
-
-    @Test
-    void testIsMatching_EmptyArray() {
-        assertTrue(constraint.isMatching(null, new String[0], "ignored", null));
-    }
-
-    @Test
-    void testIsMatching_NonEmptyArray() {
-        assertFalse(constraint.isMatching(null, new String[] {"Java"}, "ignored", null));
+    void testIsMatching_BlankFilter_doesNotVacuouslyMatch() {
+        // an empty token list must not vacuously satisfy "every token matches"
+        assertFalse(constraint.isMatching(null, List.of("Java", "Python"), "  ,  ", null));
     }
 }

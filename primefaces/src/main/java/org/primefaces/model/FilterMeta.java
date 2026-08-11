@@ -151,8 +151,8 @@ public class FilterMeta implements Serializable {
     public static <T> T resetToNullIfEmpty(T filterValue) {
         if (filterValue != null
                 && ((filterValue instanceof String && LangUtils.isBlank((String) filterValue))
-                || (filterValue instanceof Collection && ((Collection) filterValue).isEmpty())
-                || (filterValue instanceof Iterable && !((Iterable) filterValue).iterator().hasNext())
+                || (filterValue instanceof Collection && ((Collection<?>) filterValue).isEmpty())
+                || (filterValue instanceof Iterable && !((Iterable<?>) filterValue).iterator().hasNext())
                 || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0))) {
             filterValue = null;
         }
@@ -193,12 +193,12 @@ public class FilterMeta implements Serializable {
     }
 
     public boolean isActive() {
-        // #7427 MatchMode.ALL is an explicit "no filter selected" placeholder (the default for a dropdown built
-        // entirely from value-less modes, e.g. a "boolean" column) - always inactive, regardless of requiresValue().
+        // MatchMode.ALL is an explicit "no filter selected" placeholder (the default for a dropdown built
+        // entirely from value-less modes, e.g., a "boolean" column) - always inactive, regardless of requiresValue().
         if (matchMode == MatchMode.ALL) {
             return false;
         }
-        // a value-less match mode (e.g. "is empty", "is null") is its own complete predicate - it applies even
+        // a value-less match mode (e.g., "is empty", "is null") is its own complete predicate - it applies even
         // though the user never types (and the input never renders) a filter value.
         return filterValue != null || !matchMode.requiresValue();
     }

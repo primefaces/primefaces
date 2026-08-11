@@ -37,6 +37,7 @@ import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -54,23 +55,23 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * DataTable: GitHub #7427 filterMatchModeOptions lets the end user pick a filter comparator
- * (e.g. equals, not equals, less than, greater than) at runtime from a dropdown next to the filter input.
+ * DataTable: filterMatchModeOptions lets the end user pick a filter comparator
+ * (e.g., equals, not equals, less than, greater than) at runtime from a dropdown next to the filter input.
  */
 @Tag("DataTable-filter")
 class DataTable051Test extends AbstractDataTableTest {
 
     private static final DateTimeFormatter REVIEW_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    // mirrors DataTable051#init() exactly - the synthetic null/blank-lastName rows (see GitHub #7427: "is (not)
+    // mirrors DataTable051#init() exactly - the synthetic null/blank-lastName rows ("is (not)
     // empty" / "is (not) null" need one of each to be distinguishable) also have ids > 5, so every existing
-    // numeric "ID" filter assertion below must account for them too, not just the new text-mode ones.
+    // numeric "ID" filter assertion below must account for them, too.
     protected final List<Employee> employees = buildEmployeesWithSyntheticRows();
 
     private static List<Employee> buildEmployeesWithSyntheticRows() {
         List<Employee> list = new ArrayList<>(new EmployeeService().getEmployees());
 
-        // #7427 "true"/"false"/"is (not) null" boolean modes need a mix of true, false, and untouched (null)
+        // "true"/"false"/"is (not) null" boolean modes need a mix of true, false, and untouched (null)
         list.get(0).setActive(true);   // id 1, Mike Master
         list.get(1).setActive(false);  // id 2, Susan Pepper
         list.get(3).setActive(true);   // id 4, Chris Clark
@@ -78,7 +79,7 @@ class DataTable051Test extends AbstractDataTableTest {
         list.get(6).setActive(true);   // id 11, Margret Johnson
         list.get(7).setActive(false);  // id 533, Mary March
 
-        // #7427 relative-date match modes - computed against LocalDate.now() the same way as DataTable051#init()
+        // relative-date match modes - computed against LocalDate.now() the same way as DataTable051#init()
         LocalDate today = LocalDate.now();
         list.get(0).setReviewDate(today);                  // id 1, Mike Master - today
         list.get(1).setReviewDate(today.minusDays(1));      // id 2, Susan Pepper - yesterday
@@ -94,7 +95,7 @@ class DataTable051Test extends AbstractDataTableTest {
         list.add(Employee.builder().id(902).firstName("Yolanda").lastName("Young").reviewDate(today.minusYears(1)).build());
         list.add(Employee.builder().id(903).firstName("Zack").lastName("Zimmer").reviewDate(today.plusYears(1)).build());
 
-        // #7427 "last/next N minutes/hours" - mirrors DataTable051#init() exactly, same offset-from-"now"
+        // "last/next N minutes/hours" - mirrors DataTable051#init() exactly, same offset-from-"now"
         // rationale, including the truncation to whole seconds (see DataTable051#init() for why)
         LocalTime now = LocalTime.now().withNano(0);
         LocalDateTime nowDateTime = LocalDateTime.now().withNano(0);
@@ -106,12 +107,22 @@ class DataTable051Test extends AbstractDataTableTest {
         list.get(3).setLastLoginDateTime(nowDateTime.plusMinutes(10));
         list.get(4).setCheckInTime(now.plusHours(3));
         list.get(4).setLastLoginDateTime(nowDateTime.plusHours(3));
+
+        // "array" preset - mirrors DataTable051#init() exactly
+        list.get(0).setSkills(List.of("Java", "Leadership"));
+        list.get(1).setSkills(List.of("Communication", "Java"));
+        list.get(2).setSkills(List.of("Java", "Python", "Go"));
+        list.get(3).setSkills(List.of("Python", "Go"));
+        list.get(4).setSkills(List.of("Java"));
+        list.get(5).setSkills(List.of("Testing"));
+        list.get(6).setSkills(List.of());
+        // id 533, Mary March - skills left null (never assigned)
         return list;
     }
 
     @Test
     @Order(1)
-    @DisplayName("DataTable: GitHub #7427 numeric filterMatchModeOptions defaults to the column's filterMatchMode")
+    @DisplayName("DataTable: numeric filterMatchModeOptions defaults to the column's filterMatchMode")
     void numericFilterDefaultMatchMode(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -128,7 +139,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(2)
-    @DisplayName("DataTable: GitHub #7427 numeric filterMatchModeOptions lets the user switch the comparator")
+    @DisplayName("DataTable: numeric filterMatchModeOptions lets the user switch the comparator")
     void numericFilterSwitchMatchMode(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -160,7 +171,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(3)
-    @DisplayName("DataTable: GitHub #7427 numeric filterMatchModeOptions comparator survives an unrelated AJAX update")
+    @DisplayName("DataTable: numeric filterMatchModeOptions comparator survives an unrelated AJAX update")
     void numericFilterMatchModeSurvivesUpdate(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -179,11 +190,11 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(4)
-    @DisplayName("DataTable: GitHub #7427 filter value input stays usable next to a narrow column's match-mode dropdown")
+    @DisplayName("DataTable: filter value input stays usable next to a narrow column's match-mode dropdown")
     void numericFilterInputStaysUsableInNarrowColumn(Page page) {
         // Arrange - "ID" is a narrow (style="width:120px"), fixed-layout column: the match-mode <select> and the
         // value <input> share the same cramped space, which is exactly what made the value input collapse to
-        // zero width in the showcase's "Activity" column (see GitHub #7427).
+        // zero width in the showcase's "Activity" column.
         DataTable dataTable = page.dataTable;
         HeaderCell idHeader = dataTable.getHeader().getCell("ID").get();
 
@@ -207,7 +218,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(5)
-    @DisplayName("DataTable: GitHub #7427 text filterMatchModeOptions defaults to the column's filterMatchMode")
+    @DisplayName("DataTable: text filterMatchModeOptions defaults to the column's filterMatchMode")
     void textFilterDefaultMatchMode(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -226,7 +237,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(6)
-    @DisplayName("DataTable: GitHub #7427 text filterMatchModeOptions lets the user switch the comparator")
+    @DisplayName("DataTable: text filterMatchModeOptions lets the user switch the comparator")
     void textFilterSwitchMatchMode(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -256,7 +267,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(7)
-    @DisplayName("DataTable: GitHub #7427 numeric filterMatchModeOptions keeps spelled-out labels once it "
+    @DisplayName("DataTable: numeric filterMatchModeOptions keeps spelled-out labels once it "
             + "includes non-comparison modes (between/is null/in list), same as text filterMatchModeOptions")
     void matchModeLabels(Page page) {
         // Arrange
@@ -285,7 +296,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(8)
-    @DisplayName("DataTable: GitHub #7427 \"is empty\"/\"is not empty\" hide the value input and match null/blank values")
+    @DisplayName("DataTable: \"is empty\"/\"is not empty\" hide the value input and match null/blank values")
     void textFilterIsEmptyIsNotEmpty(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -296,7 +307,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
         // Assert - the value input is hidden and disabled since the mode alone is the entire predicate
         WebElement valueInput = lastNameHeader.getColumnFilter();
-        assertTrue(valueInput.getAttribute("class").contains("ui-helper-hidden"),
+        assertTrue(Objects.requireNonNull(valueInput.getAttribute("class")).contains("ui-helper-hidden"),
                 "Value input should be hidden while a value-less match mode is selected");
         assertFalse(valueInput.isEnabled(), "Value input should be disabled while a value-less match mode is selected");
 
@@ -312,7 +323,7 @@ class DataTable051Test extends AbstractDataTableTest {
         // Assert - re-fetch the header cell, the update="datatable" full refresh replaced the old DOM elements
         lastNameHeader = dataTable.getHeader().getCell("last name").get();
         valueInput = lastNameHeader.getColumnFilter();
-        assertTrue(valueInput.getAttribute("class").contains("ui-helper-hidden"));
+        assertTrue(Objects.requireNonNull(valueInput.getAttribute("class")).contains("ui-helper-hidden"));
         assertFalse(valueInput.isEnabled());
         assertEmployeeRows(dataTable, employeesFiltered);
 
@@ -330,7 +341,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(9)
-    @DisplayName("DataTable: GitHub #7427 \"is null\"/\"is not null\" distinguish null from a blank value")
+    @DisplayName("DataTable: \"is null\"/\"is not null\" distinguish null from a blank value")
     void textFilterIsNullIsNotNull(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -338,7 +349,7 @@ class DataTable051Test extends AbstractDataTableTest {
         // Act
         dataTable.filterMatchMode("last name", "null");
 
-        // Assert - strictly null, unlike "is empty" which also matches the blank ("") row
+        // Assert - strictly null, unlike "is empty" which also matches the blank row
         List<Employee> employeesFiltered = employees.stream()
                 .filter(e -> e.getLastName() == null)
                 .collect(Collectors.toList());
@@ -358,7 +369,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(10)
-    @DisplayName("DataTable: GitHub #7427 \"matches regex\" filters using the typed value as a regular expression")
+    @DisplayName("DataTable: \"matches regex\" filters using the typed value as a regular expression")
     void textFilterMatchesRegex(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -379,7 +390,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(11)
-    @DisplayName("DataTable: GitHub #7427 \"in list\"/\"not in list\" match against a comma-separated value")
+    @DisplayName("DataTable: \"in list\"/\"not in list\" match against a comma-separated value")
     void textFilterInListNotInList(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -410,7 +421,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(12)
-    @DisplayName("DataTable: GitHub #7427 numeric \"between\"/\"not between\" match a \"min,max\" typed range")
+    @DisplayName("DataTable: numeric \"between\"/\"not between\" match a \"min,max\" typed range")
     void numericFilterBetweenNotBetween(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -443,13 +454,13 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(13)
-    @DisplayName("DataTable: GitHub #7427 numeric \"between\" stays inactive while only one value has been typed")
+    @DisplayName("DataTable: numeric \"between\" stays inactive while only one value has been typed")
     void numericFilterBetweenIncompleteRange(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         dataTable.filterMatchMode("salary", "between");
 
-        // Act - only the first half of the range typed so far (e.g. still typing)
+        // Act - only the first half of the range typed so far (e.g., still typing)
         dataTable.filter("salary", "2500,");
 
         // Assert - not yet an active filter, so every row is still shown
@@ -460,7 +471,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(14)
-    @DisplayName("DataTable: GitHub #7427 numeric \"is null\"/\"is not null\" hide the value input")
+    @DisplayName("DataTable: numeric \"is null\"/\"is not null\" hide the value input")
     void numericFilterIsNullIsNotNull(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -471,7 +482,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
         // Assert - value-less, same generic mechanism as the text preset's "is null"
         WebElement valueInput = salaryHeader.getColumnFilter();
-        assertTrue(valueInput.getAttribute("class").contains("ui-helper-hidden"));
+        assertTrue(Objects.requireNonNull(valueInput.getAttribute("class")).contains("ui-helper-hidden"));
         assertFalse(valueInput.isEnabled());
 
         List<Employee> employeesFiltered = employees.stream()
@@ -493,7 +504,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(15)
-    @DisplayName("DataTable: GitHub #7427 numeric \"in list\"/\"not in list\" convert each comma-separated token")
+    @DisplayName("DataTable: numeric \"in list\"/\"not in list\" convert each comma-separated token")
     void numericFilterInListNotInList(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -526,7 +537,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(16)
-    @DisplayName("DataTable: GitHub #7427 boolean \"true\"/\"false\" hide the value input and match strictly")
+    @DisplayName("DataTable: boolean \"true\"/\"false\" hide the value input and match strictly")
     void booleanFilterTrueFalse(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -535,7 +546,7 @@ class DataTable051Test extends AbstractDataTableTest {
         // Assert - "All" is the boolean preset's first (and thus default) option: a fresh, untouched "active"
         // column must NOT silently filter the table before the user ever picks true/false/is null/is not null
         WebElement valueInput = activeHeader.getColumnFilter();
-        assertTrue(valueInput.getAttribute("class").contains("ui-helper-hidden"));
+        assertTrue(Objects.requireNonNull(valueInput.getAttribute("class")).contains("ui-helper-hidden"));
         assertFalse(valueInput.isEnabled());
         assertEmployeeRows(dataTable, employees);
 
@@ -562,7 +573,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(17)
-    @DisplayName("DataTable: GitHub #7427 boolean \"is null\"/\"is not null\" match an untouched (unset) value")
+    @DisplayName("DataTable: boolean \"is null\"/\"is not null\" match an untouched (unset) value")
     void booleanFilterIsNullIsNotNull(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -588,7 +599,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(18)
-    @DisplayName("DataTable: GitHub #7427 date \"is\"/\"is not\" (labeled differently than the shared numeric Equals/Not "
+    @DisplayName("DataTable: date \"is\"/\"is not\" (labeled differently than the shared numeric Equals/Not "
             + "Equals) match an exact date")
     void dateFilterIsIsNot(Page page) {
         // Arrange
@@ -618,7 +629,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(19)
-    @DisplayName("DataTable: GitHub #7427 date \"before\"/\"before or on\"/\"after\"/\"after or on\"")
+    @DisplayName("DataTable: date \"before\"/\"before or on\"/\"after\"/\"after or on\"")
     void dateFilterBeforeAfterVariants(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -667,7 +678,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(20)
-    @DisplayName("DataTable: GitHub #7427 date \"between\"/\"not between\" match a \"min,max\" typed range")
+    @DisplayName("DataTable: date \"between\"/\"not between\" match a \"min,max\" typed range")
     void dateFilterBetweenNotBetween(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -699,7 +710,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(21)
-    @DisplayName("DataTable: GitHub #7427 date \"is empty\"/\"is not empty\" behave like \"is (not) null\" for a "
+    @DisplayName("DataTable: date \"is empty\"/\"is not empty\" behave like \"is (not) null\" for a "
             + "non-string field")
     void dateFilterIsEmptyIsNotEmpty(Page page) {
         // Arrange
@@ -726,7 +737,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(22)
-    @DisplayName("DataTable: GitHub #7427 date \"today\"/\"yesterday\"/\"tomorrow\" are value-less and hide the input")
+    @DisplayName("DataTable: date \"today\"/\"yesterday\"/\"tomorrow\" are value-less and hide the input")
     void dateFilterTodayYesterdayTomorrow(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -738,7 +749,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
         // Assert - value-less, same generic mechanism as every other preset's value-less modes
         WebElement valueInput = reviewDateHeader.getColumnFilter();
-        assertTrue(valueInput.getAttribute("class").contains("ui-helper-hidden"));
+        assertTrue(Objects.requireNonNull(valueInput.getAttribute("class")).contains("ui-helper-hidden"));
         assertFalse(valueInput.isEnabled());
 
         List<Employee> employeesFiltered = employees.stream()
@@ -769,7 +780,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(23)
-    @DisplayName("DataTable: GitHub #7427 date \"this week\"/\"last week\"/\"next week\"")
+    @DisplayName("DataTable: date \"this week\"/\"last week\"/\"next week\"")
     void dateFilterThisLastNextWeek(Page page) {
         // Arrange - compute week boundaries the same way DateFilterUtils.startOfWeek() does, rather than
         // assuming a fixed relationship between "yesterday"/"tomorrow" and "this week" - which day of the week
@@ -815,7 +826,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(24)
-    @DisplayName("DataTable: GitHub #7427 date \"this month\"/\"last month\"/\"next month\"")
+    @DisplayName("DataTable: date \"this month\"/\"last month\"/\"next month\"")
     void dateFilterThisLastNextMonth(Page page) {
         // Arrange - month boundaries computed dynamically for the same reason as the week test above
         DataTable dataTable = page.dataTable;
@@ -859,10 +870,10 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(25)
-    @DisplayName("DataTable: GitHub #7427 date \"this year\"/\"last year\"/\"next year\"")
+    @DisplayName("DataTable: date \"this year\"/\"last year\"/\"next year\"")
     void dateFilterThisLastNextYear(Page page) {
         // Arrange - a full year offset is always safely within its bucket regardless of where "today" falls
-        // within its own year (unlike a quarter offset, which needs care - see GitHub #7427 implementation notes)
+        // within its own year (unlike a quarter offset, which needs care implementation notes)
         DataTable dataTable = page.dataTable;
         LocalDate today = LocalDate.now();
 
@@ -898,7 +909,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(26)
-    @DisplayName("DataTable: GitHub #7427 date \"last N days\"/\"next N days\" - the typed value is a plain number, "
+    @DisplayName("DataTable: date \"last N days\"/\"next N days\" - the typed value is a plain number, "
             + "not a date, so it bypasses the column's date converter")
     void dateFilterLastNDaysNextNDays(Page page) {
         // Arrange
@@ -908,7 +919,7 @@ class DataTable051Test extends AbstractDataTableTest {
         dataTable.filterMatchMode("review date", "lastNDays");
 
         // Assert - the value input hints at the expected "number of days" syntax
-        assertEquals("e.g. 30", reviewDateHeader.getColumnFilter().getAttribute("placeholder"));
+        assertEquals("e.g., 30", reviewDateHeader.getColumnFilter().getAttribute("placeholder"));
 
         // Act
         dataTable.filter("review date", "30");
@@ -933,7 +944,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(27)
-    @DisplayName("DataTable: GitHub #7427 date \"relative date\" matches within N days of today in either direction")
+    @DisplayName("DataTable: date \"relative date\" matches within N days of today in either direction")
     void dateFilterRelativeDate(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -954,7 +965,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(28)
-    @DisplayName("DataTable: GitHub #7427 date filterMatchModeOptions labels the shared comparators \"Is\"/\"Before\"/"
+    @DisplayName("DataTable: date filterMatchModeOptions labels the shared comparators \"Is\"/\"Before\"/"
             + "\"After\" instead of the numeric preset's \"Equals\"/\"Less Than\"/\"Greater Than\"")
     void dateFilterMatchModeLabels(Page page) {
         // Arrange
@@ -981,14 +992,14 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(29)
-    @DisplayName("DataTable: GitHub #7427 time filterMatchModeOptions (bare LocalTime) defaults to the column's "
+    @DisplayName("DataTable: time filterMatchModeOptions (bare LocalTime) defaults to the column's "
             + "filterMatchMode")
     void timeFilterDefaultMatchMode(Page page) {
         // Arrange - read Mike Master's (id 1, row 0) checkInTime straight from its rendered cell rather than
-        // recomputing it independently: the bean's #7427 fixture is captured relative to "now" when the page
+        // recomputing it independently: the bean's fixture is captured relative to "now" when the page
         // loads for THIS test, which is a different instant than when the test class's own `employees` field
         // was built - fine for reviewDate's day-granularity fixtures elsewhere in this class, but not for a
-        // second-granularity value, so an independently-computed value here would drift and never match.
+        // second-granularity value, so an independently computed value here would drift and never match.
         DataTable dataTable = page.dataTable;
         String checkInTimeText = dataTable.getRow(0).getCell(5).getText();
 
@@ -1004,7 +1015,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(30)
-    @DisplayName("DataTable: GitHub #7427 datetime filterMatchModeOptions (full LocalDateTime) defaults to the "
+    @DisplayName("DataTable: datetime filterMatchModeOptions (full LocalDateTime) defaults to the "
             + "column's filterMatchMode")
     void datetimeFilterDefaultMatchMode(Page page) {
         // Arrange - same rationale as timeFilterDefaultMatchMode above: read the rendered value back rather
@@ -1024,7 +1035,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(31)
-    @DisplayName("DataTable: GitHub #7427 time \"last N minutes\"/\"next N minutes\"/\"last N hours\"/\"next N hours\" "
+    @DisplayName("DataTable: time \"last N minutes\"/\"next N minutes\"/\"last N hours\"/\"next N hours\" "
             + "match a bare LocalTime value on a cyclic 24h clock")
     void timeFilterLastNextMinutesAndHours(Page page) {
         // Arrange
@@ -1033,7 +1044,7 @@ class DataTable051Test extends AbstractDataTableTest {
         dataTable.filterMatchMode("check-in time", "lastNMinutes");
 
         // Assert - the value input hints at the expected "number of minutes/hours" syntax, same as the date preset
-        assertEquals("e.g. 30", checkInHeader.getColumnFilter().getAttribute("placeholder"));
+        assertEquals("e.g., 30", checkInHeader.getColumnFilter().getAttribute("placeholder"));
 
         // Act - "last 30 minutes"
         dataTable.filter("check-in time", "30");
@@ -1090,7 +1101,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(32)
-    @DisplayName("DataTable: GitHub #7427 time \"last N minutes\" wraps past midnight on the cyclic 24h clock")
+    @DisplayName("DataTable: time \"last N minutes\" wraps past midnight on the cyclic 24h clock")
     void timeFilterLastNMinutesWrapsPastMidnight(Page page) {
         // Arrange - a window wide enough (23h59m) that it wraps past midnight for virtually any time of day the
         // suite happens to run at - only the ~1-minute window right before midnight would not wrap, which is
@@ -1114,14 +1125,14 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(33)
-    @DisplayName("DataTable: GitHub #7427 datetime \"last N minutes\"/\"next N minutes\"/\"last N hours\"/"
+    @DisplayName("DataTable: datetime \"last N minutes\"/\"next N minutes\"/\"last N hours\"/"
             + "\"next N hours\" match a full LocalDateTime value using ordinary (linear, non-cyclic) range logic")
     void datetimeFilterLastNextMinutesAndHours(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         HeaderCell lastLoginHeader = dataTable.getHeader().getCell("last login").get();
         dataTable.filterMatchMode("last login", "lastNMinutes");
-        assertEquals("e.g. 30", lastLoginHeader.getColumnFilter().getAttribute("placeholder"));
+        assertEquals("e.g., 30", lastLoginHeader.getColumnFilter().getAttribute("placeholder"));
 
         // Act - "last 30 minutes"
         dataTable.filter("last login", "30");
@@ -1181,7 +1192,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(34)
-    @DisplayName("DataTable: GitHub #7427 time filterMatchModeOptions drops every calendar-day/week/month/... "
+    @DisplayName("DataTable: time filterMatchModeOptions drops every calendar-day/week/month/... "
             + "predicate the date preset has but keeps the shared comparators and adds last/next N minutes/hours; "
             + "datetime keeps every date predicate as well")
     void timeAndDatetimePresetLabels(Page page) {
@@ -1213,6 +1224,270 @@ class DataTable051Test extends AbstractDataTableTest {
         assertTrue(datetimeLabels.contains("Last N Days"), "Expected calendar predicates, got: " + datetimeLabels);
         assertTrue(datetimeLabels.contains("Last N Minutes"), "Expected new minute/hour labels, got: " + datetimeLabels);
         assertTrue(datetimeLabels.contains("Next N Hours"), "Expected new minute/hour labels, got: " + datetimeLabels);
+    }
+
+    @Test
+    @Order(35)
+    @DisplayName("DataTable: enum \"is\"/\"is not\" (labeled differently than the shared "
+            + "Equals/Not Equals) match an exact Employee.Role value with no converter needed")
+    void enumFilterIsIsNot(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act - "equals" ("Is") is already the column's declared default match mode
+        dataTable.filter("role", "MANAGER");
+
+        // Assert - only Mike Master (id 1) is a MANAGER
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getRole() == Employee.Role.MANAGER)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "is not" keeping the same typed value
+        dataTable.filterMatchMode("role", "notEquals");
+
+        // Assert - a null role (the synthetic rows) is also "not equal" to any given role
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getRole() != Employee.Role.MANAGER)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(36)
+    @DisplayName("DataTable: enum \"is any of\"/\"is none of\" (In/NotIn) match against a "
+            + "comma-separated list of role names")
+    void enumFilterIsAnyOfIsNoneOf(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell roleHeader = dataTable.getHeader().getCell("role").get();
+        dataTable.filterMatchMode("role", "in");
+
+        // Assert - the value input hints at the expected comma-separated syntax, same as the other IN presets
+        assertEquals("value1, value2, ...", roleHeader.getColumnFilter().getAttribute("placeholder"));
+
+        // Act
+        dataTable.filter("role", "MANAGER, DEVELOPER");
+
+        // Assert - the 3 developers (Alfred Paul, Chris Clark, James Bush) plus the 1 manager (Mike Master)
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getRole() == Employee.Role.MANAGER || e.getRole() == Employee.Role.DEVELOPER)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "is none of" keeping the same typed value
+        dataTable.filterMatchMode("role", "notIn");
+
+        // Assert - a null role never equals any listed token, so it "is none of" the list either
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getRole() != Employee.Role.MANAGER && e.getRole() != Employee.Role.DEVELOPER)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(37)
+    @DisplayName("DataTable: enum \"is empty\"/\"is not empty\" distinguish a null role from an "
+            + "assigned one, same generic mechanism as every other preset's value-less modes")
+    void enumFilterIsEmptyIsNotEmpty(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell roleHeader = dataTable.getHeader().getCell("role").get();
+
+        // Act
+        dataTable.filterMatchMode("role", "empty");
+
+        // Assert - value-less, the value input is hidden and disabled
+        WebElement valueInput = roleHeader.getColumnFilter();
+        assertTrue(Objects.requireNonNull(valueInput.getAttribute("class")).contains("ui-helper-hidden"));
+        assertFalse(valueInput.isEnabled());
+
+        // Assert - only the 4 synthetic rows (900-903) have no role assigned
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getRole() == null)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("role", "notEmpty");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getRole() != null)
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(38)
+    @DisplayName("DataTable: enum filterMatchModeOptions labels the shared comparators \"Is\"/\"Is Not\" "
+            + "and In/NotIn as \"Is Any Of\"/\"Is None Of\" instead of the generic \"Equals\"/\"In List\"/\"Not In List\"")
+    void enumFilterMatchModeLabels(Page page) {
+        // Arrange
+        HeaderCell roleHeader = page.dataTable.getHeader().getCell("role").get();
+
+        // Act
+        List<String> labels = new Select(roleHeader.getColumnFilterMatchMode()).getOptions().stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        // Assert - enum-specific overrides for the modes shared with other presets
+        assertTrue(labels.contains("Is"), "Expected enum-flavored labels, got: " + labels);
+        assertTrue(labels.contains("Is Not"), "Expected enum-flavored labels, got: " + labels);
+        assertTrue(labels.contains("Is Any Of"), "Expected enum-flavored labels, got: " + labels);
+        assertTrue(labels.contains("Is None Of"), "Expected enum-flavored labels, got: " + labels);
+        assertFalse(labels.contains("Equals"), "Should not fall back to the generic label: " + labels);
+        assertFalse(labels.contains("In List"), "Should not fall back to the generic label: " + labels);
+        assertFalse(labels.contains("Not In List"), "Should not fall back to the generic label: " + labels);
+
+        // Assert - "is (not) empty" has no enum-specific override, keeps the generic label
+        assertTrue(labels.contains("Is Empty"), "Expected the generic label, got: " + labels);
+        assertTrue(labels.contains("Is Not Empty"), "Expected the generic label, got: " + labels);
+    }
+
+    @Test
+    @Order(39)
+    @DisplayName("DataTable: array \"contains\"/\"does not contain\" match against a single value "
+            + "in a List<String> field")
+    void arrayFilterContainsDoesNotContain(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act - "arrayContains" ("Contains") is already the column's declared default match mode
+        dataTable.filter("skills", "Java");
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getSkills() != null && e.getSkills().contains("Java"))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "does not contain" keeping the same typed value
+        dataTable.filterMatchMode("skills", "arrayNotContains");
+
+        // Assert - a null or empty skills list also "does not contain" any given value
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getSkills() == null || !e.getSkills().contains("Java"))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(40)
+    @DisplayName("DataTable: array \"contains any\"/\"contains all\" match against a comma-separated "
+            + "list of values with OR vs AND semantics")
+    void arrayFilterContainsAnyContainsAll(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell skillsHeader = dataTable.getHeader().getCell("skills").get();
+        dataTable.filterMatchMode("skills", "containsAny");
+
+        // Assert - the value input hints at the expected comma-separated syntax, same as the other multi-value presets
+        assertEquals("value1, value2, ...", skillsHeader.getColumnFilter().getAttribute("placeholder"));
+
+        // Act
+        dataTable.filter("skills", "Java, Go");
+
+        // Assert - "contains any" (OR): Java OR Go - Mike, Susan, Alfred, Chris, James
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getSkills() != null && (e.getSkills().contains("Java") || e.getSkills().contains("Go")))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act - switch to "contains all" keeping the same typed value
+        dataTable.filterMatchMode("skills", "containsAll");
+
+        // Assert - "contains all" (AND): Java AND Go - only Alfred Paul has both
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getSkills() != null && e.getSkills().contains("Java") && e.getSkills().contains("Go"))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(41)
+    @DisplayName("DataTable: array \"contains none\" is the negation of \"contains any\"")
+    void arrayFilterContainsNone(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        dataTable.filterMatchMode("skills", "containsNone");
+
+        // Act
+        dataTable.filter("skills", "Java, Go");
+
+        // Assert - neither Java nor Go - Trish, Margret, Mary, and the 4 synthetic (skill-less) rows
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getSkills() == null || (!e.getSkills().contains("Java") && !e.getSkills().contains("Go")))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(42)
+    @DisplayName("DataTable: array \"is empty\"/\"is not empty\" treat both a null and an empty "
+            + "List<String> as empty")
+    void arrayFilterIsEmptyIsNotEmpty(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell skillsHeader = dataTable.getHeader().getCell("skills").get();
+        dataTable.filterMatchMode("skills", "empty");
+
+        // Assert - value-less, the value input is hidden and disabled
+        WebElement valueInput = skillsHeader.getColumnFilter();
+        assertTrue(Objects.requireNonNull(valueInput.getAttribute("class")).contains("ui-helper-hidden"));
+        assertFalse(valueInput.isEnabled());
+
+        // Assert - Margret (empty list) and Mary (null list) plus the 4 synthetic (skill-less) rows
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getSkills() == null || e.getSkills().isEmpty())
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        // Act
+        dataTable.filterMatchMode("skills", "notEmpty");
+
+        // Assert
+        employeesFiltered = employees.stream()
+                .filter(e -> e.getSkills() != null && !e.getSkills().isEmpty())
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(43)
+    @DisplayName("DataTable: array filterMatchModeOptions labels: Contains/Does Not Contain/Contains "
+            + "Any/Contains All/Contains None, plus the generic Is Empty/Is Not Empty")
+    void arrayFilterMatchModeLabels(Page page) {
+        // Arrange
+        HeaderCell skillsHeader = page.dataTable.getHeader().getCell("skills").get();
+
+        // Act
+        List<String> labels = new Select(skillsHeader.getColumnFilterMatchMode()).getOptions().stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        // Assert
+        assertTrue(labels.contains("Contains"), "Expected array-preset labels, got: " + labels);
+        assertTrue(labels.contains("Does Not Contain"), "Expected array-preset labels, got: " + labels);
+        assertTrue(labels.contains("Contains Any"), "Expected array-preset labels, got: " + labels);
+        assertTrue(labels.contains("Contains All"), "Expected array-preset labels, got: " + labels);
+        assertTrue(labels.contains("Contains None"), "Expected array-preset labels, got: " + labels);
+        assertTrue(labels.contains("Is Empty"), "Expected the generic label, got: " + labels);
+        assertTrue(labels.contains("Is Not Empty"), "Expected the generic label, got: " + labels);
     }
 
     private void assertConfiguration(JSONObject cfg) {

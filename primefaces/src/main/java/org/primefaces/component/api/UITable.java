@@ -200,7 +200,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             String componentIdPrefix = ((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY;
             String filterValue = params.entrySet().stream()
                     .filter(e -> e.getKey() != null && e.getKey().startsWith(componentIdPrefix))
-                    .map(e -> e.getValue())
+                    .map(Map.Entry::getValue)
                     .findFirst().orElse(null);
             globalFilter.setFilterValue(filterValue);
         }
@@ -227,7 +227,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                         : column.getClientId(context) + separator + "filter";
                 String rawFilterValue = params.get(valueHolderClientId);
 
-                // #7427 resolve the (possibly just-switched) match mode BEFORE converting the raw value below -
+                // resolve the (possibly just-switched) match mode BEFORE converting the raw value below -
                 // "in list"/"between" need each comma-separated token converted individually, not the whole
                 // string as a single value
                 if (filterMeta.isMatchModeSelectable()) {
@@ -247,7 +247,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 }
 
                 MatchMode matchMode = filterMeta.getMatchMode();
-                if (matchMode == MatchMode.IN || matchMode == MatchMode.NOT_IN) {
+                if (matchMode == MatchMode.IN || matchMode == MatchMode.NOT_IN
+                        || matchMode == MatchMode.CONTAINS_ANY || matchMode == MatchMode.CONTAINS_ALL
+                        || matchMode == MatchMode.CONTAINS_NONE) {
                     filterValue = convertMultiValueFilter(context, column, rawFilterValue, false);
                 }
                 else if (matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN) {
@@ -257,8 +259,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                         || matchMode == MatchMode.RELATIVE_DATE
                         || matchMode == MatchMode.LAST_N_MINUTES || matchMode == MatchMode.NEXT_N_MINUTES
                         || matchMode == MatchMode.LAST_N_HOURS || matchMode == MatchMode.NEXT_N_HOURS) {
-                    // #7427 the typed value is a plain count (days/minutes/hours), not a date - the column's
-                    // converter (e.g. jakarta.faces.DateTime) would reject it, so parse it as an Integer directly
+                    // the typed value is a plain count (days/minutes/hours), not a date - the column's
+                    // converter (e.g., jakarta.faces.DateTime) would reject it, so parse it as an Integer directly
                     filterValue = parseIntegerFilter(rawFilterValue);
                 }
                 else {
@@ -291,16 +293,16 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     /**
-     * Converts a comma-separated raw filter value (e.g. {@code "3, 5, 11"} for "in list"/"not in list", or
-     * {@code "3,11"} for "between"/"not between") into a {@link List}, converting each token individually
-     * through the column's converter - the whole string can't be converted as a single value the way a plain
-     * "equals"/"greater than" filter is. See GitHub #7427.
+     * Converts a comma-separated raw filter value (e.g., {@code "3, 5, 11"} for "in list"/"not in list"/"contains
+     * any"/"contains all"/"contains none", or {@code "3,11"} for "between"/"not between") into a {@link List},
+     * converting each token individually through the column's converter - the whole string can't be converted
+     * as a single value the way a plain "equals"/"greater than" filter is.
      *
      * @param requireExactlyTwo {@code true} for "between"/"not between" ({@link org.primefaces.model.filter.BetweenFilterConstraint}
-     *                          requires exactly 2 non-null tokens); {@code false} for "in list"/"not in list"
-     *                          (any number of tokens, an unconvertible one is simply skipped)
+     *                          requires exactly 2 non-null tokens); {@code false} for every other multi-value
+     *                          mode (any number of tokens, an unconvertible one is simply skipped)
      * @return the converted values as a {@link List}, or {@code null} if the raw value is blank, or (when
-     *         {@code requireExactlyTwo}) doesn't yet resolve to exactly 2 convertible tokens - e.g. while the
+     *         {@code requireExactlyTwo}) doesn't yet resolve to exactly 2 convertible tokens - e.g., while the
      *         user is still typing the second value
      */
     default Object convertMultiValueFilter(FacesContext context, UIColumn column, String rawFilterValue, boolean requireExactlyTwo) {
@@ -326,7 +328,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 if (requireExactlyTwo) {
                     return null;
                 }
-                // "in list"/"not in list" - skip a token that fails to convert, e.g. while still being typed
+                // "in list"/"not in list" - skip a token that fails to convert, e.g., while still being typed
             }
         }
 
@@ -339,7 +341,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     /**
      * Parses a raw filter value as a plain {@link Integer}, for the date/time match modes ("last/next N
      * days/minutes/hours", "relative date") whose typed value is a count rather than a date. Returns {@code null}
-     * (inactive filter) for blank or unparsable input, e.g. while the user is still typing. See GitHub #7427.
+     * (inactive filter) for blank or unparsable input, e.g., while the user is still typing.
      */
     default Object parseIntegerFilter(String rawFilterValue) {
         if (LangUtils.isBlank(rawFilterValue)) {
@@ -664,7 +666,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     /**
-     * Recalculates filteredValue after adding, updating or removing object to/from a filtered UITable.
+     * Recalculates filteredValue after adding, updating, or removing an object to/from a filtered UITable.
      */
     void filterAndSort();
 

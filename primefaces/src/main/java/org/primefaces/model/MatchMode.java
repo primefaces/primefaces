@@ -65,51 +65,49 @@ public enum MatchMode {
     NOT_BETWEEN("notBetween"),
 
     /**
-     * Matches when the field value is {@code null} or an empty/blank string. See GitHub #7427.
-     */
+     * Matches when the field value is {@code null}, an empty/blank string, or an empty {@code Collection}/array.
+         */
     IS_EMPTY("empty", false),
     /**
-     * Matches when the field value is neither {@code null} nor an empty/blank string. See GitHub #7427.
+     * Matches when the field value is neither {@code null}, an empty/blank string, nor an empty
+     * {@code Collection}/array.
      */
     NOT_EMPTY("notEmpty", false),
     /**
      * Matches when the field value is strictly {@code null}, unlike {@link #IS_EMPTY} which also matches a
-     * non-null but blank string. See GitHub #7427.
+     * non-null but blank string.
      */
     IS_NULL("null", false),
     /**
-     * Matches when the field value is not {@code null} (a blank string still matches). See GitHub #7427.
+     * Matches when the field value is not {@code null} (a blank string still matches).
      */
     NOT_NULL("notNull", false),
     /**
      * Matches when the field value, as a string, matches the filter value interpreted as a regular expression.
-     * See GitHub #7427.
-     */
+         */
     MATCHES_REGEX("regex"),
 
     /**
-     * Matches when the field value is {@code Boolean.TRUE} (or the string {@code "true"}). See GitHub #7427.
+     * Matches when the field value is {@code Boolean.TRUE} (or the string {@code "true"}).
      */
     IS_TRUE("true", false),
     /**
      * Matches when the field value is strictly {@code Boolean.FALSE} (or the string {@code "false"}) - a
      * {@code null} value matches neither {@link #IS_TRUE} nor {@link #IS_FALSE}; use {@link #IS_NULL} for that.
-     * See GitHub #7427.
-     */
+         */
     IS_FALSE("false", false),
 
     /**
      * "No filter selected" placeholder - {@link FilterMeta#isActive()} always treats it as inactive, regardless
      * of {@link #requiresValue()}. Needed as the default option for a dropdown built entirely from value-less
-     * modes (e.g. {@link #BOOLEAN_OPTIONS}): unlike "contains" or "equals", none of "true"/"false"/"is null"/
+     * modes (e.g., {@link #BOOLEAN_OPTIONS}): unlike "contains" or "equals", none of "true"/"false"/"is null"/
      * "is not null" has a natural "nothing typed yet" resting state, so without this placeholder such a column
      * would silently start filtered (to whichever mode happens to be first) the moment the page renders.
-     * See GitHub #7427.
-     */
+         */
     ALL("all", false),
 
     // -- relative-date predicates for filterMatchModeOptions="date", each computed against LocalDate.now() at
-    // the moment the filter runs - value-less, like IS_EMPTY/IS_TRUE/etc. See GitHub #7427.
+    // the moment the filter runs - value-less, like IS_EMPTY/IS_TRUE/etc.
     IS_TODAY("today", false),
     IS_YESTERDAY("yesterday", false),
     IS_TOMORROW("tomorrow", false),
@@ -127,67 +125,94 @@ public enum MatchMode {
     IS_NEXT_YEAR("nextYear", false),
 
     /**
-     * Matches the last N days up to and including today; N is the typed filter value. See GitHub #7427.
+     * Matches the last N days up to and including today; N is the typed filter value.
      */
     LAST_N_DAYS("lastNDays"),
     /**
-     * Matches the next N days starting today; N is the typed filter value. See GitHub #7427.
+     * Matches the next N days starting today; N is the typed filter value.
      */
     NEXT_N_DAYS("nextNDays"),
     /**
-     * Matches within N days of today in either direction; N is the typed filter value. See GitHub #7427.
+     * Matches within N days of today in either direction; N is the typed filter value.
      */
     RELATIVE_DATE("relativeDate"),
 
     /**
      * Matches the last N minutes up to and including now; N is the typed filter value. Works on a bare
      * {@code LocalTime} field too (a cyclic 24h clock - the window can wrap past midnight), not just a full
-     * date+time value. See GitHub #7427.
+     * date+time value.
      */
     LAST_N_MINUTES("lastNMinutes"),
     /**
      * Matches the next N minutes starting now; N is the typed filter value. See {@link #LAST_N_MINUTES} for the
-     * bare-{@code LocalTime} wraparound note. See GitHub #7427.
+     * bare-{@code LocalTime} wraparound note.
      */
     NEXT_N_MINUTES("nextNMinutes"),
     /**
      * Matches the last N hours up to and including now; N is the typed filter value. See {@link #LAST_N_MINUTES}
-     * for the bare-{@code LocalTime} wraparound note. See GitHub #7427.
+     * for the bare-{@code LocalTime} wraparound note.
      */
     LAST_N_HOURS("lastNHours"),
     /**
      * Matches the next N hours starting now; N is the typed filter value. See {@link #LAST_N_MINUTES} for the
-     * bare-{@code LocalTime} wraparound note. See GitHub #7427.
+     * bare-{@code LocalTime} wraparound note.
      */
     NEXT_N_HOURS("nextNHours"),
+
+    /**
+     * Matches when a {@code Collection} or array field value contains the single typed filter value. Unlike
+     * {@link #CONTAINS} (a string substring match), this expects the field itself to be multivalue - e.g., a
+     * {@code List<String>} of tags.
+     */
+    ARRAY_CONTAINS("arrayContains"),
+    /**
+     * Matches when a {@code Collection}/array field value does not contain the typed filter value.
+     * See {@link #ARRAY_CONTAINS}.
+     */
+    ARRAY_NOT_CONTAINS("arrayNotContains"),
+    /**
+     * Matches when a {@code Collection}/array field value contains at least one of the comma-separated typed
+     * filter values (a non-empty intersection). See {@link #ARRAY_CONTAINS}.
+     */
+    CONTAINS_ANY("containsAny"),
+    /**
+     * Matches when a {@code Collection}/array field value contains every one of the comma-separated typed
+     * filter values (the field is a superset of the typed values). See {@link #ARRAY_CONTAINS}.
+     */
+    CONTAINS_ALL("containsAll"),
+    /**
+     * Matches when a {@code Collection}/array field value contains none of the comma-separated typed filter
+     * values (an empty intersection) - the negation of {@link #CONTAINS_ANY}.
+     */
+    CONTAINS_NONE("containsNone"),
 
     GLOBAL("global");
 
     /**
      * Preset of match modes offered for a numeric {@code filterMatchModeOptions="numeric"} column filter,
      * letting the user pick a comparator (=, !=, &lt;, &gt;, &lt;=, &gt;=), plus "(not) between", "is (not) null"
-     * and "(not) in list". See GitHub #7427.
+     * and "(not) in list".
      */
-    public static final List<MatchMode> NUMERIC_OPTIONS = Collections.unmodifiableList(Arrays.asList(
+    public static final List<MatchMode> NUMERIC_OPTIONS = List.of(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
-            BETWEEN, NOT_BETWEEN, IS_NULL, NOT_NULL, IN, NOT_IN));
+            BETWEEN, NOT_BETWEEN, IS_NULL, NOT_NULL, IN, NOT_IN);
 
     /**
      * Preset of match modes offered for a {@code filterMatchModeOptions="text"} column filter: the classic string
-     * operators plus "is (not) empty", "is (not) null", "matches regex" and "(not) in list". See GitHub #7427.
+     * operators plus "is (not) empty", "is (not) null", "matches regex" and "(not) in list".
      */
-    public static final List<MatchMode> TEXT_OPTIONS = Collections.unmodifiableList(Arrays.asList(
+    public static final List<MatchMode> TEXT_OPTIONS = List.of(
             CONTAINS, NOT_CONTAINS, STARTS_WITH, NOT_STARTS_WITH, ENDS_WITH, NOT_ENDS_WITH, EQUALS, NOT_EQUALS,
-            IS_EMPTY, NOT_EMPTY, IS_NULL, NOT_NULL, MATCHES_REGEX, IN, NOT_IN));
+            IS_EMPTY, NOT_EMPTY, IS_NULL, NOT_NULL, MATCHES_REGEX, IN, NOT_IN);
 
     /**
      * Preset of match modes offered for a {@code filterMatchModeOptions="date"} column filter: the comparators
      * (labeled "Is"/"Is Not"/"Before"/"Before or On"/"After"/"After or On" for this preset specifically - see
      * {@link org.primefaces.component.datatable.DataTableRenderer}), "(not) between", "is (not) empty", a set of
      * relative-date predicates (today/yesterday/tomorrow, this/last/next week/month/quarter/year), and
-     * "last/next N days"/"relative date" (typed as a number of days). See GitHub #7427.
+     * "last/next N days"/"relative date" (typed as a number of days).
      */
-    public static final List<MatchMode> DATE_OPTIONS = Collections.unmodifiableList(Arrays.asList(
+    public static final List<MatchMode> DATE_OPTIONS = List.of(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
             BETWEEN, NOT_BETWEEN, IS_EMPTY, NOT_EMPTY,
             IS_TODAY, IS_YESTERDAY, IS_TOMORROW,
@@ -195,33 +220,49 @@ public enum MatchMode {
             IS_THIS_MONTH, IS_LAST_MONTH, IS_NEXT_MONTH,
             IS_THIS_QUARTER, IS_LAST_QUARTER, IS_NEXT_QUARTER,
             IS_THIS_YEAR, IS_LAST_YEAR, IS_NEXT_YEAR,
-            LAST_N_DAYS, NEXT_N_DAYS, RELATIVE_DATE));
+            LAST_N_DAYS, NEXT_N_DAYS, RELATIVE_DATE);
 
     /**
      * Preset of match modes offered for a {@code filterMatchModeOptions="boolean"} column filter: "All" (no
      * filter, the default), "true", "false", "is null" and "is not null" - every option is value-less, so the
-     * filter value {@code <input>} stays hidden no matter which is selected. See GitHub #7427.
+     * filter value {@code <input>} stays hidden no matter which is selected.
      */
-    public static final List<MatchMode> BOOLEAN_OPTIONS = Collections.unmodifiableList(Arrays.asList(
-            ALL, IS_TRUE, IS_FALSE, IS_NULL, NOT_NULL));
+    public static final List<MatchMode> BOOLEAN_OPTIONS = List.of(ALL, IS_TRUE, IS_FALSE, IS_NULL, NOT_NULL);
+
+    /**
+     * Preset of match modes offered for a {@code filterMatchModeOptions="enum"} column filter (a Java
+     * {@code enum} value): "is"/"is not" (labeled "Is"/"Is Not" for this preset specifically - see
+     * {@link org.primefaces.component.datatable.DataTableRenderer}), "is any of"/"is none of" (labeled
+     * "Is Any Of"/"Is None Of", a multi-value match against {@link #IN}/{@link #NOT_IN}), and "is (not) empty".
+     * Every mode here already exists for other presets - this preset just curates a relevant subset with
+     * enum-appropriate labels.
+     */
+    public static final List<MatchMode> ENUM_OPTIONS = List.of(EQUALS, NOT_EQUALS, IN, NOT_IN, IS_EMPTY, NOT_EMPTY);
+
+    /**
+     * Preset of match modes offered for a {@code filterMatchModeOptions="array"} column filter (a multivalue
+     * field, e.g., a {@code List<String>} of tags): "contains"/"does not contain" (a single value),
+     * "contains any"/"contains all"/"contains none" (a comma-separated list of values), and "is (not) empty".
+         */
+    public static final List<MatchMode> ARRAY_OPTIONS = List.of(
+            ARRAY_CONTAINS, ARRAY_NOT_CONTAINS, CONTAINS_ANY, CONTAINS_ALL, CONTAINS_NONE, IS_EMPTY, NOT_EMPTY);
 
     /**
      * Preset of match modes offered for a {@code filterMatchModeOptions="time"} column filter (a bare,
-     * date-less time-of-day, e.g. {@code LocalTime}): the comparators, "(not) between", "is (not) empty", and
+     * date-less time-of-day, e.g., {@code LocalTime}): the comparators, "(not) between", "is (not) empty", and
      * "last/next N minutes/hours". No day/week/month/... predicates - a bare time-of-day has no date component
-     * for those to apply to. See GitHub #7427.
+     * for those to apply to.
      */
-    public static final List<MatchMode> TIME_OPTIONS = Collections.unmodifiableList(Arrays.asList(
+    public static final List<MatchMode> TIME_OPTIONS = List.of(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
             BETWEEN, NOT_BETWEEN, IS_EMPTY, NOT_EMPTY,
-            LAST_N_MINUTES, NEXT_N_MINUTES, LAST_N_HOURS, NEXT_N_HOURS));
+            LAST_N_MINUTES, NEXT_N_MINUTES, LAST_N_HOURS, NEXT_N_HOURS);
 
     /**
      * Preset of match modes offered for a {@code filterMatchModeOptions="datetime"} column filter (a full
-     * date+time value, e.g. {@code LocalDateTime}): every {@link #DATE_OPTIONS} mode (the date component still
+     * date+time value, e.g., {@code LocalDateTime}): every {@link #DATE_OPTIONS} mode (the date component still
      * has calendar-day/week/month/... meaning) plus "last/next N minutes/hours" for time-of-day precision.
-     * See GitHub #7427.
-     */
+         */
     public static final List<MatchMode> DATETIME_OPTIONS;
     static {
         List<MatchMode> modes = new ArrayList<>(DATE_OPTIONS);
@@ -259,7 +300,7 @@ public enum MatchMode {
     }
 
     /**
-     * The mathematical symbol for this match mode (e.g. {@code "<="} for {@link #LESS_THAN_EQUALS}), if it has one.
+     * The mathematical symbol for this match mode (e.g., {@code "<="} for {@link #LESS_THAN_EQUALS}), if it has one.
      * Comparison operators shared by the {@code numeric} and {@code date} {@code filterMatchModeOptions} presets
      * have a symbol; string-matching operators (contains, starts with, ...) do not, as they have no natural
      * mathematical notation.
@@ -271,11 +312,10 @@ public enum MatchMode {
     }
 
     /**
-     * Whether this match mode needs a filter value to be typed in, e.g. {@link #CONTAINS} does but
+     * Whether this match mode needs a filter value to be typed in, e.g., {@link #CONTAINS} does but
      * {@link #IS_EMPTY} does not - the mode alone is the entire predicate. A column's filter value
      * {@code <input>} is hidden while a match mode with {@code requiresValue() == false} is selected.
-     * See GitHub #7427.
-     *
+         *
      * @return {@code true} unless this match mode is a value-less predicate
      */
     public boolean requiresValue() {
@@ -284,7 +324,7 @@ public enum MatchMode {
 
     /**
      * An example hint for the syntax the filter value {@code <input>} expects, shown as its placeholder while
-     * this match mode is selected (e.g. {@code "min,max"} for {@link #BETWEEN}). See GitHub #7427.
+     * this match mode is selected (e.g., {@code "min,max"} for {@link #BETWEEN}).
      *
      * @return the placeholder hint, or {@code null} if this match mode expects a single plain value
      */
@@ -295,6 +335,9 @@ public enum MatchMode {
                 return "min,max";
             case IN:
             case NOT_IN:
+            case CONTAINS_ANY:
+            case CONTAINS_ALL:
+            case CONTAINS_NONE:
                 return "value1, value2, ...";
             case LAST_N_DAYS:
             case NEXT_N_DAYS:
@@ -303,7 +346,7 @@ public enum MatchMode {
             case NEXT_N_MINUTES:
             case LAST_N_HOURS:
             case NEXT_N_HOURS:
-                return "e.g. 30";
+                return "e.g., 30";
             default:
                 return null;
         }
@@ -326,9 +369,10 @@ public enum MatchMode {
      * Resolves the list of match modes an end user may pick from a column's filter match-mode dropdown.
      * <p>
      * Accepts either one of the shorthand keywords {@code "numeric"}, {@code "text"}, {@code "date"},
-     * {@code "boolean"}, {@code "time"} or {@code "datetime"}, which expand to a curated preset of
+     * {@code "boolean"}, {@code "time"}, {@code "datetime"}, {@code "enum"} or {@code "array"}, which expand to
+     * a curated preset of
      * {@link MatchMode}s, or an explicit comma separated list of match mode operators
-     * (e.g. {@code "equals,notEquals,lt,gt,lte,gte"}).
+     * (e.g., {@code "equals,notEquals,lt,gt,lte,gte"}).
      *
      * @param filterMatchModeOptions the value of the column's {@code filterMatchModeOptions} attribute
      * @return the resolved, ordered list of selectable match modes; empty if {@code filterMatchModeOptions} is blank
@@ -347,6 +391,10 @@ public enum MatchMode {
                 return DATE_OPTIONS;
             case "boolean":
                 return BOOLEAN_OPTIONS;
+            case "enum":
+                return ENUM_OPTIONS;
+            case "array":
+                return ARRAY_OPTIONS;
             case "time":
                 return TIME_OPTIONS;
             case "datetime":

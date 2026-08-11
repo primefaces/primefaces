@@ -30,9 +30,9 @@ import java.util.Locale;
 import jakarta.faces.context.FacesContext;
 
 /**
- * Value-less relative-date predicate (e.g. {@code MatchMode.IS_TODAY}, {@code IS_THIS_WEEK}) - matches when the
+ * Value-less relative-date predicate (e.g., {@code MatchMode.IS_TODAY}, {@code IS_THIS_WEEK}) - matches when the
  * field value falls within an {@code [start, end]} range computed from {@code LocalDate.now()} at the moment the
- * filter runs. The typed filter value is ignored, same as {@link IsEmptyFilterConstraint} etc. See GitHub #7427.
+ * filter runs. The typed filter value is ignored, same as {@link IsEmptyFilterConstraint} etc.
  */
 public class RelativeDateRangeFilterConstraint implements FilterConstraint {
 

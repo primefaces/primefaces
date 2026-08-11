@@ -102,7 +102,7 @@ class FilterMetaTest {
 
     @Test
     void isActive_trueWithoutValue_whenMatchModeIsValueLess() {
-        // See GitHub #7427 - "is empty"/"is null" are a complete predicate on their own
+        // "is empty"/"is null" are a complete predicate on their own
         FilterMeta filterMeta = FilterMeta.builder()
                 .field("name")
                 .filterBy(mock(ValueExpression.class))
@@ -114,8 +114,8 @@ class FilterMetaTest {
 
     @Test
     void isActive_falseForMatchModeAll_evenThoughItIsValueLess() {
-        // See GitHub #7427 - MatchMode.ALL is the "no filter selected" placeholder for a dropdown built
-        // entirely from value-less modes (e.g. "boolean") - it must stay inactive despite requiresValue()==false,
+        // MatchMode.ALL is the "no filter selected" placeholder for a dropdown built
+        // entirely from value-less modes (e.g., "boolean") - it must stay inactive despite requiresValue()==false,
         // unlike every other value-less mode (is empty/is null/true/false), which IS its own active predicate.
         FilterMeta filterMeta = FilterMeta.builder()
                 .field("active")

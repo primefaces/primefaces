@@ -31,7 +31,7 @@ import jakarta.faces.context.FacesContext;
  * Constraint for {@link org.primefaces.model.MatchMode#ALL} - never actually invoked, since
  * {@link org.primefaces.model.FilterMeta#isActive()} treats {@code MatchMode.ALL} as always inactive and
  * {@code FilterFeature} skips the constraint call entirely for an inactive filter. Registered only so
- * {@link FilterConstraints#of(org.primefaces.model.MatchMode)} always resolves to something. See GitHub #7427.
+ * {@link FilterConstraints#of(org.primefaces.model.MatchMode)} always resolves to something.
  */
 public class AllFilterConstraint implements FilterConstraint {
 

@@ -41,7 +41,7 @@ import java.util.Locale;
  * {@link LocalDateTime}, {@link Date}, {@link java.sql.Date}, {@link java.sql.Timestamp}, {@link Calendar},
  * {@link Instant}) into a single day-granular {@link LocalDate}, so the relative-date match modes
  * ("today", "this week", "last N days", ...) can compare them uniformly regardless of which type the
- * developer's model uses. See GitHub #7427.
+ * developer's model uses.
  */
 final class DateFilterUtils {
 
@@ -137,7 +137,7 @@ final class DateFilterUtils {
     }
 
     /**
-     * The first day (locale-aware, e.g. Monday for ISO / Sunday for US) of the calendar week containing {@code date}.
+     * The first day (locale-aware, e.g., Monday for ISO / Sunday for US) of the calendar week containing {@code date}.
      */
     static LocalDate startOfWeek(LocalDate date, Locale locale) {
         WeekFields weekFields = WeekFields.of(locale != null ? locale : Locale.getDefault());
@@ -177,7 +177,7 @@ final class DateFilterUtils {
      * Parses a filter value as a plain {@link Integer} - for the "last/next N days/minutes/hours" and
      * "relative date" match modes, whose value is a count rather than a date. {@code UITable} normally hands
      * this an already-converted {@link Integer} (it bypasses the column's date converter for these modes), but
-     * a raw {@link String} is tolerated too, e.g. when a constraint is exercised directly. See GitHub #7427.
+     * a raw {@link String} is tolerated too, e.g., when a constraint is exercised directly.
      *
      * @return the parsed value, or {@code null} if {@code filter} is {@code null}, blank, or not parsable
      */

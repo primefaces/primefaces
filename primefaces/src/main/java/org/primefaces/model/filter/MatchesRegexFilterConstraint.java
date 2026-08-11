@@ -30,8 +30,8 @@ import jakarta.faces.context.FacesContext;
 
 /**
  * Matches when the field value, as a string, fully matches the filter value interpreted as a regular
- * expression (e.g. {@code ^INV-\d+$}). An invalid regex (e.g. while the user is still typing it) is treated
- * as not matching rather than throwing. See GitHub #7427.
+ * expression (e.g., {@code ^INV-\d+$}). An invalid regex (e.g., while the user is still typing it) is treated
+ * as not matching rather than throwing.
  */
 public class MatchesRegexFilterConstraint implements FilterConstraint {
 

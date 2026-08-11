@@ -55,10 +55,10 @@ public class DataTable051 implements Serializable {
     public void init() {
         // copy (don't mutate the shared, application-scoped EmployeeService list used by other DataTable tests) -
         // each element is still a fresh object from this specific getEmployees() call, so setting fields below
-        // (e.g. #active) is safe and doesn't leak into any other test that independently calls getEmployees()
+        // (e.g., #active) is safe and doesn't leak into any other test that independently calls getEmployees()
         employees = new ArrayList<>(service.getEmployees());
 
-        // #7427 "true"/"false"/"is (not) null" boolean modes need a mix of true, false, and untouched (null)
+        // "true"/"false"/"is (not) null" boolean modes need a mix of true, false, and untouched (null)
         // employees to be distinguishable: ids 1, 4, 11 -> true; ids 2, 5, 533 -> false; ids 3, 6 -> left null
         employees.get(0).setActive(true);   // id 1, Mike Master
         employees.get(1).setActive(false);  // id 2, Susan Pepper
@@ -67,10 +67,10 @@ public class DataTable051 implements Serializable {
         employees.get(6).setActive(true);   // id 11, Margret Johnson
         employees.get(7).setActive(false);  // id 533, Mary March
 
-        // #7427 relative-date match modes ("today", "this week", "last N days", ...) are computed against
-        // LocalDate.now() at filter time, so the fixture dates are computed the same way here rather than
+        // relative-date match modes ("today", "this week", "last N days", ...) are computed against
+        // LocalDate.now() at filter time. The fixture dates are computed the same way here rather than
         // hardcoded - hardcoded literals would silently go stale (and desync from DataTable051Test's mirrored
-        // copy) the day after this branch was written. +/-1 week/month/year is always safely within the
+        // copy) the day after this branch was written. The +/-1 week/month/year is always safe within the
         // corresponding "last/next" bucket regardless of where "today" falls within its own week/month/year.
         LocalDate today = LocalDate.now();
         employees.get(0).setReviewDate(today);                  // id 1, Mike Master - today
@@ -81,14 +81,14 @@ public class DataTable051 implements Serializable {
         employees.get(6).setReviewDate(today.minusMonths(1));    // id 11, Margret Johnson - last month
         employees.get(7).setReviewDate(today.plusMonths(1));     // id 533, Mary March - next month
 
-        // #7427 "is (not) empty" / "is (not) null" need a null and a blank lastName to be distinguishable;
+        // "is (not) empty" / "is (not) null" need a null and a blank lastName to be distinguishable;
         // Nolan's reviewDate is also left null for the same reason on the date column
         employees.add(Employee.builder().id(900).firstName("Nolan").lastName(null)
                 .birthDate(LocalDate.of(1975, 6, 15)).build());
         employees.add(Employee.builder().id(901).firstName("Blanche").lastName("")
                 .birthDate(LocalDate.of(1985, 9, 20)).reviewDate(today.minusDays(100)).build());
 
-        // #7427 "last/next year" - a full year offset is always safely within the corresponding bucket,
+        // "last/next year" - a full year offset is always safely within the corresponding bucket,
         // unlike a quarter offset (which can land 2 quarters back/forward depending on where "today" falls
         // within its own quarter), so these get their own dedicated rows rather than reusing an existing one
         employees.add(Employee.builder().id(902).firstName("Yolanda").lastName("Young")
@@ -96,7 +96,7 @@ public class DataTable051 implements Serializable {
         employees.add(Employee.builder().id(903).firstName("Zack").lastName("Zimmer")
                 .reviewDate(today.plusYears(1)).build());
 
-        // #7427 "last/next N minutes/hours" need checkInTime (bare LocalTime) and lastLoginDateTime (full
+        // "last/next N minutes/hours" need checkInTime (bare LocalTime) and lastLoginDateTime (full
         // LocalDateTime) values at known offsets from "now", computed the same way as reviewDate above so
         // they never go stale. lastLoginDateTime here overrides EmployeeService's hardcoded 2021 fixture
         // dates on THIS instance's own copy only - the shared, application-scoped service list is untouched.
@@ -112,6 +112,17 @@ public class DataTable051 implements Serializable {
         employees.get(3).setLastLoginDateTime(nowDateTime.plusMinutes(10));
         employees.get(4).setCheckInTime(now.plusHours(3));               // id 5 - outside next 2h
         employees.get(4).setLastLoginDateTime(nowDateTime.plusHours(3));
+
+        // "array" preset needs overlapping skills (to distinguish contains/any/all/none), plus an empty
+        // list AND a null list side by side (both must count as "is empty", unlike each other structurally)
+        employees.get(0).setSkills(List.of("Java", "Leadership"));   // id 1, Mike Master
+        employees.get(1).setSkills(List.of("Communication", "Java")); // id 2, Susan Pepper
+        employees.get(2).setSkills(List.of("Java", "Python", "Go"));  // id 3, Alfred Paul
+        employees.get(3).setSkills(List.of("Python", "Go"));          // id 4, Chris Clark
+        employees.get(4).setSkills(List.of("Java"));                  // id 5, James Bush
+        employees.get(5).setSkills(List.of("Testing"));               // id 6, Trish Mayer
+        employees.get(6).setSkills(List.of());                        // id 11, Margret Johnson - empty list
+        // id 533, Mary March - skills left null (never assigned)
     }
 
     public DateTimeConverter getReviewDateConverter() {

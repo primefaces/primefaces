@@ -122,6 +122,11 @@ public final class FilterConstraints {
             .put(MatchMode.NEXT_N_MINUTES, new RelativeMinutesOrHoursFilterConstraint(ChronoUnit.MINUTES, true))
             .put(MatchMode.LAST_N_HOURS, new RelativeMinutesOrHoursFilterConstraint(ChronoUnit.HOURS, false))
             .put(MatchMode.NEXT_N_HOURS, new RelativeMinutesOrHoursFilterConstraint(ChronoUnit.HOURS, true))
+            .put(MatchMode.ARRAY_CONTAINS, new ArrayContainsFilterConstraint())
+            .put(MatchMode.ARRAY_NOT_CONTAINS, new NegationFilterConstraintWrapper(new ArrayContainsFilterConstraint()))
+            .put(MatchMode.CONTAINS_ANY, new ContainsAnyFilterConstraint())
+            .put(MatchMode.CONTAINS_ALL, new ContainsAllFilterConstraint())
+            .put(MatchMode.CONTAINS_NONE, new NegationFilterConstraintWrapper(new ContainsAnyFilterConstraint()))
             .build();
 
     private FilterConstraints() {

@@ -37,12 +37,11 @@ import jakarta.faces.context.FacesContext;
  * has to handle two different kinds of "now" depending on the field's actual runtime type:
  * <ul>
  *   <li>a bare {@link LocalTime} (no date component) is a <b>cyclic</b> 24h clock - a "last 30 minutes" window
- *   can wrap past midnight (e.g. now is 00:05, so the window is [23:35, 00:05]) - handled by
+ *   can wrap past midnight (e.g., now is 00:05, so the window is [23:35, 00:05]) - handled by
  *   {@link #isWithinCyclicRange};</li>
  *   <li>anything with a date component (via {@link DateFilterUtils#toLocalDateTime}) is <b>linear</b> - ordinary
  *   {@code isBefore}/{@code isAfter} range logic applies, same as {@link RelativeNDaysFilterConstraint}.</li>
  * </ul>
- * See GitHub #7427.
  */
 public class RelativeMinutesOrHoursFilterConstraint implements FilterConstraint {
 

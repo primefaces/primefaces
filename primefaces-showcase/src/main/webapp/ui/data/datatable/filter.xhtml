@@ -22,12 +22,14 @@
             <h5>Column Filtering</h5>
             <p>The <em>Name</em> column uses <code>filterMatchModeOptions="text"</code> so users can pick the
                 comparator from a dropdown next to the filter input at runtime: the classic string operators
-                (contains, starts with, ends with, equals - and their negations), the value-less "is (not) empty"
+                (contains, starts with, ends with, equals, and their negations), the value-less "is (not) empty"
                 and "is (not) null" (the filter input hides itself for these), "matches regex", and "in list" /
-                "not in list" (comma-separated, e.g. <code>Acme, Globex, Initech</code>). The <em>Activity</em>
+                "not in list" (comma-separated, e.g., <code>Acme, Globex, Initech</code>). The <em>Activity</em>
                 column uses <code>filterMatchModeOptions="numeric"</code>: the comparators (equals, not equals,
                 less/greater than (or equal to)), "(not) between" (typed as <code>min,max</code>), the value-less
-                "is (not) null", and "(not) in list".</p>
+                "is (not) null", and "(not) in list". See the "Filter Match Mode Presets" card below for every
+                other available preset - <code>"date"</code>, <code>"boolean"</code>, <code>"enum"</code>,
+                <code>"array"</code>, <code>"time"</code> and <code>"datetime"</code>.</p>
             <h:form>
                 <p:dataTable var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable"
                     emptyMessage="No customers found with given criteria"
@@ -263,6 +265,56 @@
                               converter="jakarta.faces.Integer">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Filter Match Mode Presets</h5>
+            <p>Every <code>filterMatchModeOptions</code> preset in one table - switch the dropdown next to any
+                filter input to see its available comparators. <em>Join Date</em> uses <code>"date"</code>
+                (equals/before/after, "(not) between", relative predicates like "today"/"this week"/"last N days").
+                <em>VIP</em> uses <code>"boolean"</code> (true/false/is (not) null). <em>Status</em> uses
+                <code>"enum"</code> (is/is not, is any of/is none of, is (not) empty). <em>Tags</em>, a
+                <code>List&lt;String&gt;</code>, uses <code>"array"</code> (contains/does not contain, contains
+                any/all/none, is (not) empty). <em>Check-in Time</em>, a bare <code>LocalTime</code>, uses
+                <code>"time"</code>. <em>Last Contact</em>, a full <code>LocalDateTime</code>, uses
+                <code>"datetime"</code> - both add "last/next N minutes/hours" to the comparators.</p>
+            <h:form>
+                <p:dataTable var="customer" value="#{dtFilterView.customersPresets}" widgetVar="customersPresetsTable"
+                    emptyMessage="No customers found with given criteria"
+                    filteredValue="#{dtFilterView.filteredCustomersPresets}">
+
+                    <f:facet name="header">
+                        <span>List of Customers</span>
+                    </f:facet>
+
+                    <p:column headerText="Name" field="name" sortBy="#{customer.name}" filterMatchMode="contains"
+                              filterMatchModeOptions="text"/>
+
+                    <p:column headerText="Activity" field="activity" sortBy="#{customer.activity}" filterMatchMode="gt"
+                              filterMatchModeOptions="numeric" converter="jakarta.faces.Integer">
+                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
+                    </p:column>
+
+                    <p:column headerText="Join Date" field="date" sortBy="#{customer.date}" filterMatchMode="equals"
+                              filterMatchModeOptions="date" converter="#{dtFilterView.dateConverter}"/>
+
+                    <p:column headerText="VIP" field="vip" sortBy="#{customer.vip}" filterMatchModeOptions="boolean"/>
+
+                    <p:column headerText="Status" field="status" sortBy="#{customer.status}" filterMatchMode="equals"
+                              filterMatchModeOptions="enum">
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
+                    </p:column>
+
+                    <p:column headerText="Tags" field="tags" filterMatchMode="arrayContains" filterMatchModeOptions="array"/>
+
+                    <p:column headerText="Check-in Time" field="checkInTime" sortBy="#{customer.checkInTime}"
+                              filterMatchMode="equals" filterMatchModeOptions="time" converter="#{dtFilterView.checkInTimeConverter}"/>
+
+                    <p:column headerText="Last Contact" field="lastContact" sortBy="#{customer.lastContact}"
+                              filterMatchMode="equals" filterMatchModeOptions="datetime" converter="#{dtFilterView.lastContactConverter}"/>
 
                 </p:dataTable>
             </h:form>

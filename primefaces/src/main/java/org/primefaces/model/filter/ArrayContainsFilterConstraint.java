@@ -23,31 +23,34 @@
  */
 package org.primefaces.model.filter;
 
-import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Locale;
 
 import jakarta.faces.context.FacesContext;
 
 /**
- * Matches when the field value is {@code null} or, once converted to a string, blank. Value-less: the
- * user-typed filter value is ignored, the match mode alone is the entire predicate.
+ * Matches when a {@code Collection}/array field value ({@link MatchMode#ARRAY_CONTAINS}) contains an element
+ * equal to the single typed filter value. Per-element comparison is delegated to {@link EqualsFilterConstraint}
+ * so enum/{@code Comparable} handling stays in one place.
  */
-public class IsEmptyFilterConstraint implements FilterConstraint {
+public class ArrayContainsFilterConstraint implements FilterConstraint {
 
     private static final long serialVersionUID = 1L;
 
+    private final EqualsFilterConstraint elementEquals = new EqualsFilterConstraint();
+
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (value == null) {
-            return true;
+        if (filter == null) {
+            return false;
         }
-        if (value instanceof Collection) {
-            return ((Collection<?>) value).isEmpty();
+
+        Collection<?> collection = CollectionFilterUtils.toCollection(value);
+        for (Object element : collection) {
+            if (elementEquals.isMatching(ctxt, element, filter, locale)) {
+                return true;
+            }
         }
-        if (value.getClass().isArray()) {
-            return Array.getLength(value) == 0;
-        }
-        return value.toString().trim().isEmpty();
+        return false;
     }
 }

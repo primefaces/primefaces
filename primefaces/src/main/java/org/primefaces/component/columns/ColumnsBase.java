@@ -92,8 +92,11 @@ public abstract class ColumnsBase extends PrimeUIData implements UIColumn, Style
     public abstract String getFilterMatchMode();
 
     @Property(description = "Enables the end user to pick the filter match mode (comparator) at runtime from a dropdown rendered next to the"
-            + " filter input. Accepts the shorthand keywords \"numeric\" (=, !=, <, >, <=, >=), \"text\" (contains, starts with, ends with, ...)"
-            + " or \"date\", or an explicit comma separated list of match modes, e.g. \"equals,notEquals,lt,gt,lte,gte\"."
+            + " filter input. Accepts the shorthand keywords \"numeric\" (=, !=, <, >, <=, >=, between, in list, is null), \"text\""
+            + " (contains, starts with, ends with, equals, is empty, is null, matches regex, in list), \"date\" (equals, before, after,"
+            + " between, today, this week, last N days, ...), \"time\"/\"datetime\" (like \"date\" plus last/next N minutes/hours),"
+            + " \"boolean\" (true, false, is null), \"enum\" (is, is any of, is empty) or \"array\" (contains, contains any/all/none,"
+            + " is empty) - or an explicit comma separated list of match modes, e.g., \"equals,notEquals,lt,gt,lte,gte\"."
             + " When not set, the filter match mode is fixed to filterMatchMode and no dropdown is rendered.")
     public abstract String getFilterMatchModeOptions();
 
@@ -172,7 +175,7 @@ public abstract class ColumnsBase extends PrimeUIData implements UIColumn, Style
     public abstract boolean isSelectRow();
 
     @Property(description = "Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified."
-            + " Only necessary when the column header is not human readable (e.g. empty header or icon-only header).")
+            + " Only necessary when the column header is not human readable (e.g., empty header or icon-only header).")
     public abstract String getAriaHeaderText();
 
     @Property(description = "Custom pluggable exportFunction.")

@@ -31,8 +31,11 @@ import org.primefaces.util.Constants;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -44,6 +47,8 @@ import jakarta.inject.Named;
 @Named
 @ApplicationScoped
 public class CustomerService {
+
+    private static final String[] TAG_POOL = {"vip", "new", "renewal", "at-risk", "champion", "enterprise"};
 
     private Random random = new SecureRandom();
     private Country[] countries;
@@ -110,9 +115,14 @@ public class CustomerService {
     public List<Customer> getCustomers(int number) {
         List<Customer> customers = new ArrayList<>();
         for (int i = 0; i < number; i++) {
-            customers.add(
-                    new Customer(i + 1000, getName(), getCompany(), getCountry(), getDate(),
-                            CustomerStatus.random(), getActivity(), getRepresentative()));
+            Customer customer = new Customer(i + 1000, getName(), getCompany(), getCountry(), getDate(),
+                    CustomerStatus.random(), getActivity(), getRepresentative());
+            // demo fields for the "boolean"/"array"/"time"/"datetime" filterMatchModeOptions presets
+            customer.setVip(getVip());
+            customer.setTags(getTags());
+            customer.setCheckInTime(getCheckInTime());
+            customer.setLastContact(getLastContact());
+            customers.add(customer);
         }
         return customers;
     }
@@ -155,5 +165,28 @@ public class CustomerService {
 
     private Representative getRepresentative() {
         return representatives[random.nextInt(representatives.length)];
+    }
+
+    private Boolean getVip() {
+        // roughly a 3-way split of true/false/null so the "boolean" preset's "true"/"false"/"is (not) null"
+        // modes each have example rows
+        int r = random.nextInt(3);
+        return r == 0 ? Boolean.TRUE : r == 1 ? Boolean.FALSE : null;
+    }
+
+    private List<String> getTags() {
+        // 0-3 tags (0 -> an empty list, so the "array" preset's "is (not) empty" has example rows too)
+        List<String> pool = new ArrayList<>(Arrays.asList(TAG_POOL));
+        Collections.shuffle(pool, random);
+        return new ArrayList<>(pool.subList(0, random.nextInt(4)));
+    }
+
+    private LocalTime getCheckInTime() {
+        return LocalTime.of(random.nextInt(24), random.nextInt(60));
+    }
+
+    private LocalDateTime getLastContact() {
+        long minutesAgo = ThreadLocalRandom.current().nextLong(0, 60L * 24 * 14);
+        return LocalDateTime.now().minusMinutes(minutesAgo);
     }
 }

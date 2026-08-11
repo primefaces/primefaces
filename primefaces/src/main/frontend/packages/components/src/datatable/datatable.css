@@ -99,7 +99,7 @@
 }
 
 .ui-datatable .ui-column-filter.ui-helper-hidden {
-    /* #7427 hidden while a value-less match mode (e.g. "is empty") is selected - the mode is the whole predicate */
+    /* hidden while a value-less match mode (e.g., "is empty") is selected - the mode is the whole predicate */
     display: none;
 }
 

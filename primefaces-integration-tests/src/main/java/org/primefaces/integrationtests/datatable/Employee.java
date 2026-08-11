@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,6 +52,7 @@ public class Employee implements Serializable {
     private LocalDateTime lastLoginDateTime;
     private Date lastLoginDate;
     private LocalTime checkInTime;
+    private List<String> skills;
 
     public enum Role { MANAGER, HR, DEVELOPER, QS, SALES, FINANCE };
 }

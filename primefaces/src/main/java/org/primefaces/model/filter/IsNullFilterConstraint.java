@@ -30,7 +30,7 @@ import jakarta.faces.context.FacesContext;
 /**
  * Matches when the field value is strictly {@code null} - unlike {@link IsEmptyFilterConstraint}, a non-null
  * blank string does not match. Value-less: the user-typed filter value is ignored, the match mode alone is
- * the entire predicate. See GitHub #7427.
+ * the entire predicate.
  */
 public class IsNullFilterConstraint implements FilterConstraint {
 

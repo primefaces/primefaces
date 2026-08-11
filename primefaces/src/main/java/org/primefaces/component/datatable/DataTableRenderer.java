@@ -844,27 +844,29 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             String matchModeId = column.getContainerClientId(context) + separator + "filterMatchMode";
             // the 6 comparison modes (equals/lt/gt/...) are shared with the "numeric" preset ("Equals"/"Less
             // Than"/...); the "date"/"time"/"datetime" presets specifically render them as "Is"/"Before"/"After"/...
-            // instead - see resolveMatchModeMessageKey(). A custom comma list happening to contain the same modes
-            // keeps the generic labels, since there's no way to tell it apart from an arbitrary list at this point.
+            // instead, and "enum" renders equals/notEquals/in/notIn as "Is"/"Is Not"/"Is Any Of"/"Is None Of" -
+            // see resolveMatchModeMessageKey(). A custom comma list happening to contain the same modes keeps the
+            // generic labels, since there's no way to tell it apart from an arbitrary list at this point.
             String rawMatchModeOptions = column.getFilterMatchModeOptions();
             String trimmedMatchModeOptions = rawMatchModeOptions == null ? null : rawMatchModeOptions.trim();
             boolean dateStyleLabels = "date".equals(trimmedMatchModeOptions) || "time".equals(trimmedMatchModeOptions)
                     || "datetime".equals(trimmedMatchModeOptions);
+            boolean enumStyleLabels = "enum".equals(trimmedMatchModeOptions);
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_FILTER_CONTAINER_CLASS, null);
-            encodeFilterMatchModeSelect(context, writer, matchModeId, matchModeOptions, selected, dateStyleLabels);
+            encodeFilterMatchModeSelect(context, writer, matchModeId, matchModeOptions, selected, dateStyleLabels, enumStyleLabels);
             encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected);
             writer.endElement("div");
         }
     }
 
-    protected void encodeFilterMatchModeSelect(FacesContext context, ResponseWriter writer,
-            String matchModeId, List<MatchMode> matchModeOptions, MatchMode selected, boolean dateStyleLabels) throws IOException {
+    protected void encodeFilterMatchModeSelect(FacesContext context, ResponseWriter writer, String matchModeId,
+            List<MatchMode> matchModeOptions, MatchMode selected, boolean dateStyleLabels, boolean enumStyleLabels) throws IOException {
 
         // Render "=", "!=", "<", "<=", ">", ">=" instead of spelled-out labels when every option in this dropdown
         // is a comparison operator (the "numeric"/"date" presets, or a custom list built purely from them) - this
         // keeps the dropdown compact and matches common spreadsheet-style filter UIs. A dropdown mixing comparison
-        // operators with string-matching ones (e.g. the "text" preset, which also offers "equals"/"notEquals")
+        // operators with string-matching ones (e.g., the "text" preset, which also offers "equals"/"notEquals")
         // keeps the spelled-out labels throughout so the options read consistently.
         boolean useSymbols = matchModeOptions.stream().allMatch(mode -> mode.symbol() != null);
 
@@ -874,16 +876,16 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLASS, null);
 
         for (MatchMode matchMode : matchModeOptions) {
-            String label = MessageFactory.getMessage(context, resolveMatchModeMessageKey(matchMode, dateStyleLabels));
+            String label = MessageFactory.getMessage(context, resolveMatchModeMessageKey(matchMode, dateStyleLabels, enumStyleLabels));
 
             writer.startElement("option", null);
             writer.writeAttribute("value", matchMode.operator(), null);
-            // read by datatable.widget.js to hide/disable the value input for a value-less match mode (e.g. "is empty")
+            // read by datatable.widget.js to hide/disable the value input for a value-less match mode (e.g., "is empty")
             // written as a literal "true"/"false" string - a Boolean value is special-cased by ResponseWriter
             // impls as a plain HTML boolean attribute (name="name" if true, omitted entirely if false)
             writer.writeAttribute("data-requires-value", String.valueOf(matchMode.requiresValue()), null);
             if (matchMode.placeholderHint() != null) {
-                // read by datatable.widget.js to hint the expected value syntax, e.g. "min,max" for "between"
+                // read by datatable.widget.js to hint the expected value syntax, e.g., "min,max" for "between"
                 writer.writeAttribute("data-placeholder-hint", matchMode.placeholderHint(), null);
             }
             if (matchMode == selected) {
@@ -906,9 +908,11 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
      * Resolves the message key for a match-mode dropdown option's label. The 6 comparison modes are shared with
      * the "numeric" preset ("Equals"/"Less Than"/...); the "date"/"time"/"datetime" presets render them as
      * "Is"/"Before"/"After"/... instead, via a separate {@code date.*} message key (the wording reads naturally
-     * for a time-of-day comparison too, so there's no need for separate "time."/"datetime." keys). See GitHub #7427.
+     * for a time-of-day comparison too, so there's no need for separate "time."/"datetime." keys). The "enum"
+     * preset similarly renders equals/notEquals/in/notIn as "Is"/"Is Not"/"Is Any Of"/"Is None Of" via a
+     * separate {@code enum.*} message key.
      */
-    protected String resolveMatchModeMessageKey(MatchMode matchMode, boolean dateStyleLabels) {
+    protected String resolveMatchModeMessageKey(MatchMode matchMode, boolean dateStyleLabels, boolean enumStyleLabels) {
         if (dateStyleLabels) {
             switch (matchMode) {
                 case EQUALS:
@@ -918,6 +922,18 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 case GREATER_THAN:
                 case GREATER_THAN_EQUALS:
                     return DataTable.FILTER_MATCH_MODE_LABEL_PREFIX + "date." + matchMode.name();
+                default:
+                    break;
+            }
+        }
+
+        if (enumStyleLabels) {
+            switch (matchMode) {
+                case EQUALS:
+                case NOT_EQUALS:
+                case IN:
+                case NOT_IN:
+                    return DataTable.FILTER_MATCH_MODE_LABEL_PREFIX + "enum." + matchMode.name();
                 default:
                     break;
             }
@@ -947,7 +963,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                            ? DataTable.COLUMN_INPUT_FILTER_CLASS
                            : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
         if (!requiresValue) {
-            // #7427 the selected match mode (e.g. "is empty") is itself the entire predicate - no value to type
+            // the selected match mode (e.g., "is empty") is itself the entire predicate - no value to type
             filterStyleClass += " ui-helper-hidden";
         }
 
@@ -976,7 +992,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         if (placeholderHint != null) {
-            // #7427 e.g. "min,max" for "between" - takes priority over the page author's filterPlaceholder
+            // e.g., "min,max" for "between" - takes priority over the page author's filterPlaceholder
             // while such a match mode is selected, since the expected value syntax changes
             writer.writeAttribute("placeholder", placeholderHint, null);
         }
@@ -1287,8 +1303,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     }
 
     protected void encodeSummaryRow(FacesContext context, List<SummaryRow> summaryRows, SortMeta sort) throws IOException {
-        for (int i = 0; i < summaryRows.size(); i++) {
-            SummaryRow summaryRow = summaryRows.get(i);
+        for (SummaryRow summaryRow : summaryRows) {
             MethodExpression me = summaryRow.getListener();
             if (me != null) {
                 me.invoke(context.getELContext(), new Object[]{sort.getSortBy()});
@@ -1384,7 +1399,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         // the map is empty unless resizable/toggleable/reorderable columns are used; the isEmpty() check
-        // skips the eagerly-evaluated column.getColumnKey(table, rowIndex) argument (context lookup + concat
+        // skips the eagerly evaluated column.getColumnKey(table, rowIndex) argument (context lookup + concat
         // + String.replace) on every cell in the common case
         Map<String, ColumnMeta> columnMetaMap = table.getColumnMeta();
         ColumnMeta columnMeta = columnMetaMap.isEmpty() ? null : columnMetaMap.get(column.getColumnKey(table, rowIndex));
@@ -1457,7 +1472,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     }
 
     /**
-     * Encodes dynamic column. Allows to override default behavior.
+     * Encodes dynamic column. Allows overriding default behavior.
      */
     protected void encodeDynamicCell(FacesContext context, DataTable table, UIColumn column) throws IOException {
         column.encodeAll(context);
@@ -1745,7 +1760,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         Object nextGroupByData;
 
         // An additional check is required to ensure summaryRow will be rendered in case
-        // number of rows of the current page is equals to the number of items in the current group (otherwise, it'll never be rendered)
+        // number of rows of the current page is equal to the number of items in the current group (otherwise, it'll never be rendered)
         // see #9077
         if (loadFirstRowOfNextPage && component.isLazy()) {
             Object nextRowData = component.getLazyDataModel().loadOne(nextRowIndex, component.getActiveSortMeta(), component.getActiveFilterMeta());

@@ -33,7 +33,7 @@ import jakarta.faces.context.FacesContext;
  * "Last N days" / "next N days" / "relative date (within N days)" - matches when the field value falls within an
  * {@code [start, end]} range computed from {@code LocalDate.now()} and the user-typed number of days N. Unlike
  * {@link RelativeDateRangeFilterConstraint}, this one DOES need a value; {@code UITable} parses the raw typed
- * string as a plain {@code Integer} rather than running it through the column's (date) converter. See GitHub #7427.
+ * string as a plain {@code Integer} rather than running it through the column's (date) converter.
  */
 public class RelativeNDaysFilterConstraint implements FilterConstraint {
 

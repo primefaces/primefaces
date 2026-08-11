@@ -696,7 +696,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
             if(filter.is("input[type='search']")) {
                 // remembered so toggleFilterValueInput() can restore it once a match mode with its own
-                // placeholder hint (e.g. "min,max" for "between") is deselected again
+                // placeholder hint (e.g., "min,max" for "between") is deselected again
                 filter.data('originalPlaceholder', filter.attr('placeholder'));
                 PrimeFaces.skinInput(filter);
                 $this.bindTextFilter(filter);
@@ -766,8 +766,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
     /**
      * Shows/enables or hides/disables (and clears) the value `<input>` next to a filter match-mode `<select>`,
-     * based on whether the newly selected match mode requires a value - e.g. "is empty" or "is null" is a
-     * complete predicate on its own and has no value to type. See GitHub #7427.
+     * based on whether the newly selected match mode requires a value - e.g., "is empty" or "is null" is a
+     * complete predicate on its own and has no value to type.
      * @private
      * @param {JQuery} modeSelect the `.ui-column-filter-mode` `<select>` whose selection changed (or was just rendered)
      */
@@ -781,8 +781,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             valueInput.val('');
         }
 
-        // e.g. "min,max" for "between" - falls back to whatever placeholder the page originally declared
-        // (or none) once a match mode without its own hint (e.g. "equals") is selected again
+        // e.g., "min,max" for "between" - falls back to whatever placeholder the page originally declared
+        // (or none) once a match mode without its own hint (e.g., "equals") is selected again
         var placeholderHint = selectedOption.data('placeholderHint');
         if (placeholderHint) {
             valueInput.attr('placeholder', placeholderHint);
@@ -4554,7 +4554,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         var standardFilterModes = this.thead.find('> tr > th.ui-filter-column .ui-column-filter-mode:not(:disabled):not([readonly])');
         standardFilterModes.each(function() {
             this.selectedIndex = 0;
-            // #7427 the first option may require a value (the common case) even if a value-less one (e.g.
+            // the first option may require a value (the common case) even if a value-less one (e.g.
             // "is empty") was selected before the reset - sync the value input's hidden/disabled state back
             $this.toggleFilterValueInput($(this));
         });

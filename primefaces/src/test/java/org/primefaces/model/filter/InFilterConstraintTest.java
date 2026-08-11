@@ -47,7 +47,7 @@ class InFilterConstraintTest {
 
     @Test
     void testIsMatching_Collection() {
-        // bean-bound facet (e.g. p:selectManyMenu) already supplies a real Collection
+        // bean-bound facet (e.g., p:selectManyMenu) already supplies a real Collection
         assertTrue(constraint.isMatching(null, "Acme", List.of("Acme", "Globex"), null));
         assertFalse(constraint.isMatching(null, "Initrode", List.of("Acme", "Globex"), null));
     }
@@ -60,7 +60,7 @@ class InFilterConstraintTest {
 
     @Test
     void testIsMatching_CommaSeparatedString_Splits() {
-        // #7427 "In list" typed as free text next to the match-mode dropdown
+        // "In list" typed as free text next to the match-mode dropdown
         assertTrue(constraint.isMatching(null, "Globex", "Acme, Globex, Initech", null));
         assertTrue(constraint.isMatching(null, "Acme", "Acme, Globex, Initech", null));
         assertFalse(constraint.isMatching(null, "Initrode", "Acme, Globex, Initech", null));
