@@ -26,6 +26,7 @@ package org.primefaces.model;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.util.LangUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -138,6 +139,28 @@ public enum MatchMode {
      */
     RELATIVE_DATE("relativeDate"),
 
+    /**
+     * Matches the last N minutes up to and including now; N is the typed filter value. Works on a bare
+     * {@code LocalTime} field too (a cyclic 24h clock - the window can wrap past midnight), not just a full
+     * date+time value. See GitHub #7427.
+     */
+    LAST_N_MINUTES("lastNMinutes"),
+    /**
+     * Matches the next N minutes starting now; N is the typed filter value. See {@link #LAST_N_MINUTES} for the
+     * bare-{@code LocalTime} wraparound note. See GitHub #7427.
+     */
+    NEXT_N_MINUTES("nextNMinutes"),
+    /**
+     * Matches the last N hours up to and including now; N is the typed filter value. See {@link #LAST_N_MINUTES}
+     * for the bare-{@code LocalTime} wraparound note. See GitHub #7427.
+     */
+    LAST_N_HOURS("lastNHours"),
+    /**
+     * Matches the next N hours starting now; N is the typed filter value. See {@link #LAST_N_MINUTES} for the
+     * bare-{@code LocalTime} wraparound note. See GitHub #7427.
+     */
+    NEXT_N_HOURS("nextNHours"),
+
     GLOBAL("global");
 
     /**
@@ -181,6 +204,33 @@ public enum MatchMode {
      */
     public static final List<MatchMode> BOOLEAN_OPTIONS = Collections.unmodifiableList(Arrays.asList(
             ALL, IS_TRUE, IS_FALSE, IS_NULL, NOT_NULL));
+
+    /**
+     * Preset of match modes offered for a {@code filterMatchModeOptions="time"} column filter (a bare,
+     * date-less time-of-day, e.g. {@code LocalTime}): the comparators, "(not) between", "is (not) empty", and
+     * "last/next N minutes/hours". No day/week/month/... predicates - a bare time-of-day has no date component
+     * for those to apply to. See GitHub #7427.
+     */
+    public static final List<MatchMode> TIME_OPTIONS = Collections.unmodifiableList(Arrays.asList(
+            EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
+            BETWEEN, NOT_BETWEEN, IS_EMPTY, NOT_EMPTY,
+            LAST_N_MINUTES, NEXT_N_MINUTES, LAST_N_HOURS, NEXT_N_HOURS));
+
+    /**
+     * Preset of match modes offered for a {@code filterMatchModeOptions="datetime"} column filter (a full
+     * date+time value, e.g. {@code LocalDateTime}): every {@link #DATE_OPTIONS} mode (the date component still
+     * has calendar-day/week/month/... meaning) plus "last/next N minutes/hours" for time-of-day precision.
+     * See GitHub #7427.
+     */
+    public static final List<MatchMode> DATETIME_OPTIONS;
+    static {
+        List<MatchMode> modes = new ArrayList<>(DATE_OPTIONS);
+        modes.add(LAST_N_MINUTES);
+        modes.add(NEXT_N_MINUTES);
+        modes.add(LAST_N_HOURS);
+        modes.add(NEXT_N_HOURS);
+        DATETIME_OPTIONS = Collections.unmodifiableList(modes);
+    }
 
     private final String operator;
     private final String symbol;
@@ -249,6 +299,10 @@ public enum MatchMode {
             case LAST_N_DAYS:
             case NEXT_N_DAYS:
             case RELATIVE_DATE:
+            case LAST_N_MINUTES:
+            case NEXT_N_MINUTES:
+            case LAST_N_HOURS:
+            case NEXT_N_HOURS:
                 return "e.g. 30";
             default:
                 return null;
@@ -271,9 +325,10 @@ public enum MatchMode {
     /**
      * Resolves the list of match modes an end user may pick from a column's filter match-mode dropdown.
      * <p>
-     * Accepts either one of the shorthand keywords {@code "numeric"}, {@code "text"}, {@code "date"} or
-     * {@code "boolean"}, which expand to a curated preset of {@link MatchMode}s, or an explicit comma separated
-     * list of match mode operators (e.g. {@code "equals,notEquals,lt,gt,lte,gte"}).
+     * Accepts either one of the shorthand keywords {@code "numeric"}, {@code "text"}, {@code "date"},
+     * {@code "boolean"}, {@code "time"} or {@code "datetime"}, which expand to a curated preset of
+     * {@link MatchMode}s, or an explicit comma separated list of match mode operators
+     * (e.g. {@code "equals,notEquals,lt,gt,lte,gte"}).
      *
      * @param filterMatchModeOptions the value of the column's {@code filterMatchModeOptions} attribute
      * @return the resolved, ordered list of selectable match modes; empty if {@code filterMatchModeOptions} is blank
@@ -292,6 +347,10 @@ public enum MatchMode {
                 return DATE_OPTIONS;
             case "boolean":
                 return BOOLEAN_OPTIONS;
+            case "time":
+                return TIME_OPTIONS;
+            case "datetime":
+                return DATETIME_OPTIONS;
             default:
                 return Arrays.stream(filterMatchModeOptions.split(","))
                         .map(String::trim)

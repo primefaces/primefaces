@@ -27,6 +27,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -42,6 +43,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class DateFilterUtilsTest {
 
     private static final LocalDate DATE = LocalDate.of(2026, Month.AUGUST, 11);
+    private static final LocalTime TIME = LocalTime.of(14, 30, 0);
+    private static final LocalDateTime DATE_TIME = LocalDateTime.of(DATE, TIME);
 
     @Test
     void toLocalDate_null_returnsNull() {
@@ -145,5 +148,93 @@ class DateFilterUtilsTest {
     void startAndEndOfYear() {
         assertEquals(LocalDate.of(2026, Month.JANUARY, 1), DateFilterUtils.startOfYear(DATE));
         assertEquals(LocalDate.of(2026, Month.DECEMBER, 31), DateFilterUtils.endOfYear(DATE));
+    }
+
+    @Test
+    void toLocalTime_null_returnsNull() {
+        assertNull(DateFilterUtils.toLocalTime(null));
+    }
+
+    @Test
+    void toLocalTime_bareLocalDate_returnsNull() {
+        // no time-of-day component to extract
+        assertNull(DateFilterUtils.toLocalTime(DATE));
+    }
+
+    @Test
+    void toLocalTime_localTime_returnsItself() {
+        assertEquals(TIME, DateFilterUtils.toLocalTime(TIME));
+    }
+
+    @Test
+    void toLocalTime_localDateTime_discardsDate() {
+        assertEquals(TIME, DateFilterUtils.toLocalTime(DATE_TIME));
+    }
+
+    @Test
+    void toLocalTime_javaUtilDate() {
+        Date date = Date.from(DATE_TIME.atZone(ZoneId.systemDefault()).toInstant());
+        assertEquals(TIME, DateFilterUtils.toLocalTime(date));
+    }
+
+    @Test
+    void toLocalTime_instant() {
+        Instant instant = DATE_TIME.atZone(ZoneId.systemDefault()).toInstant();
+        assertEquals(TIME, DateFilterUtils.toLocalTime(instant));
+    }
+
+    @Test
+    void toLocalTime_calendar() {
+        Calendar calendar = new GregorianCalendar(2026, Calendar.AUGUST, 11, 14, 30, 0);
+        assertEquals(TIME, DateFilterUtils.toLocalTime(calendar));
+    }
+
+    @Test
+    void toLocalDateTime_null_returnsNull() {
+        assertNull(DateFilterUtils.toLocalDateTime(null));
+    }
+
+    @Test
+    void toLocalDateTime_bareLocalTime_returnsNull() {
+        // no date to attach - see toLocalTime(Object) for the cyclic time-of-day case instead
+        assertNull(DateFilterUtils.toLocalDateTime(TIME));
+    }
+
+    @Test
+    void toLocalDateTime_localDateTime_returnsItself() {
+        assertEquals(DATE_TIME, DateFilterUtils.toLocalDateTime(DATE_TIME));
+    }
+
+    @Test
+    void toLocalDateTime_localDate_atStartOfDay() {
+        assertEquals(DATE.atStartOfDay(), DateFilterUtils.toLocalDateTime(DATE));
+    }
+
+    @Test
+    void toLocalDateTime_javaUtilDate() {
+        Date date = Date.from(DATE_TIME.atZone(ZoneId.systemDefault()).toInstant());
+        assertEquals(DATE_TIME, DateFilterUtils.toLocalDateTime(date));
+    }
+
+    @Test
+    void toLocalDateTime_instant() {
+        Instant instant = DATE_TIME.atZone(ZoneId.systemDefault()).toInstant();
+        assertEquals(DATE_TIME, DateFilterUtils.toLocalDateTime(instant));
+    }
+
+    @Test
+    void toInteger_number() {
+        assertEquals(30, DateFilterUtils.toInteger(30));
+    }
+
+    @Test
+    void toInteger_string() {
+        assertEquals(30, DateFilterUtils.toInteger(" 30 "));
+    }
+
+    @Test
+    void toInteger_unparsableOrNull_returnsNull() {
+        assertNull(DateFilterUtils.toInteger(null));
+        assertNull(DateFilterUtils.toInteger("not-a-number"));
     }
 }

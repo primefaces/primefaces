@@ -254,9 +254,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                     filterValue = convertMultiValueFilter(context, column, rawFilterValue, true);
                 }
                 else if (matchMode == MatchMode.LAST_N_DAYS || matchMode == MatchMode.NEXT_N_DAYS
-                        || matchMode == MatchMode.RELATIVE_DATE) {
-                    // #7427 the typed value is a plain number of days, not a date - the column's converter
-                    // (e.g. jakarta.faces.DateTime) would reject it, so parse it as an Integer directly
+                        || matchMode == MatchMode.RELATIVE_DATE
+                        || matchMode == MatchMode.LAST_N_MINUTES || matchMode == MatchMode.NEXT_N_MINUTES
+                        || matchMode == MatchMode.LAST_N_HOURS || matchMode == MatchMode.NEXT_N_HOURS) {
+                    // #7427 the typed value is a plain count (days/minutes/hours), not a date - the column's
+                    // converter (e.g. jakarta.faces.DateTime) would reject it, so parse it as an Integer directly
                     filterValue = parseIntegerFilter(rawFilterValue);
                 }
                 else {
@@ -335,8 +337,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     /**
-     * Parses a raw filter value as a plain {@link Integer}, for the date match modes ("last N days", "next N
-     * days", "relative date") whose typed value is a number of days rather than a date. Returns {@code null}
+     * Parses a raw filter value as a plain {@link Integer}, for the date/time match modes ("last/next N
+     * days/minutes/hours", "relative date") whose typed value is a count rather than a date. Returns {@code null}
      * (inactive filter) for blank or unparsable input, e.g. while the user is still typing. See GitHub #7427.
      */
     default Object parseIntegerFilter(String rawFilterValue) {

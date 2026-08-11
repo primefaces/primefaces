@@ -111,6 +111,10 @@ class MatchModeTest {
         assertEquals("e.g. 30", MatchMode.LAST_N_DAYS.placeholderHint());
         assertEquals("e.g. 30", MatchMode.NEXT_N_DAYS.placeholderHint());
         assertEquals("e.g. 30", MatchMode.RELATIVE_DATE.placeholderHint());
+        assertEquals("e.g. 30", MatchMode.LAST_N_MINUTES.placeholderHint());
+        assertEquals("e.g. 30", MatchMode.NEXT_N_MINUTES.placeholderHint());
+        assertEquals("e.g. 30", MatchMode.LAST_N_HOURS.placeholderHint());
+        assertEquals("e.g. 30", MatchMode.NEXT_N_HOURS.placeholderHint());
     }
 
     @Test
@@ -203,6 +207,40 @@ class MatchModeTest {
         // See GitHub #7427 - 10 reused (6 comparators + between/not between + is (not) empty) + 18 new
         // (15 value-less relative-date predicates + last/next N days + relative date)
         assertEquals(28, MatchMode.DATE_OPTIONS.size());
+    }
+
+    @Test
+    void parseOptions_timeKeyword_returnsTimePreset() {
+        assertEquals(MatchMode.TIME_OPTIONS, MatchMode.parseOptions("time"));
+        assertEquals(
+                List.of(MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN,
+                        MatchMode.LESS_THAN_EQUALS, MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS,
+                        MatchMode.BETWEEN, MatchMode.NOT_BETWEEN, MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY,
+                        MatchMode.LAST_N_MINUTES, MatchMode.NEXT_N_MINUTES, MatchMode.LAST_N_HOURS, MatchMode.NEXT_N_HOURS),
+                MatchMode.parseOptions("time"));
+    }
+
+    @Test
+    void timePreset_has14Modes_andNoCalendarPredicates() {
+        // See GitHub #7427 - 10 reused (6 comparators + between/not between + is (not) empty) + the 4 new
+        // minute/hour modes. No day/week/month/... predicates - a bare LocalTime has no date component.
+        assertEquals(14, MatchMode.TIME_OPTIONS.size());
+        assertFalse(MatchMode.TIME_OPTIONS.contains(MatchMode.IS_TODAY));
+        assertFalse(MatchMode.TIME_OPTIONS.contains(MatchMode.LAST_N_DAYS));
+    }
+
+    @Test
+    void parseOptions_datetimeKeyword_returnsDatetimePreset() {
+        assertEquals(MatchMode.DATETIME_OPTIONS, MatchMode.parseOptions("datetime"));
+    }
+
+    @Test
+    void datetimePreset_has32Modes_andIncludesEveryDateOptionPlusTheFourNewModes() {
+        // See GitHub #7427 - every DATE_OPTIONS mode (28) plus last/next N minutes/hours (4)
+        assertEquals(32, MatchMode.DATETIME_OPTIONS.size());
+        assertTrue(MatchMode.DATETIME_OPTIONS.containsAll(MatchMode.DATE_OPTIONS));
+        assertTrue(MatchMode.DATETIME_OPTIONS.containsAll(List.of(
+                MatchMode.LAST_N_MINUTES, MatchMode.NEXT_N_MINUTES, MatchMode.LAST_N_HOURS, MatchMode.NEXT_N_HOURS)));
     }
 
     @Test

@@ -29,6 +29,8 @@ import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.HeaderCell;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
@@ -91,6 +93,19 @@ class DataTable051Test extends AbstractDataTableTest {
                 .reviewDate(today.minusDays(100)).build());
         list.add(Employee.builder().id(902).firstName("Yolanda").lastName("Young").reviewDate(today.minusYears(1)).build());
         list.add(Employee.builder().id(903).firstName("Zack").lastName("Zimmer").reviewDate(today.plusYears(1)).build());
+
+        // #7427 "last/next N minutes/hours" - mirrors DataTable051#init() exactly, same offset-from-"now"
+        // rationale, including the truncation to whole seconds (see DataTable051#init() for why)
+        LocalTime now = LocalTime.now().withNano(0);
+        LocalDateTime nowDateTime = LocalDateTime.now().withNano(0);
+        list.get(0).setCheckInTime(now.minusMinutes(10));
+        list.get(0).setLastLoginDateTime(nowDateTime.minusMinutes(10));
+        list.get(1).setCheckInTime(now.minusHours(1));
+        list.get(1).setLastLoginDateTime(nowDateTime.minusHours(1));
+        list.get(3).setCheckInTime(now.plusMinutes(10));
+        list.get(3).setLastLoginDateTime(nowDateTime.plusMinutes(10));
+        list.get(4).setCheckInTime(now.plusHours(3));
+        list.get(4).setLastLoginDateTime(nowDateTime.plusHours(3));
         return list;
     }
 
@@ -964,6 +979,242 @@ class DataTable051Test extends AbstractDataTableTest {
         assertTrue(labels.contains("Last N Days"), "Expected relative-date labels, got: " + labels);
     }
 
+    @Test
+    @Order(29)
+    @DisplayName("DataTable: GitHub #7427 time filterMatchModeOptions (bare LocalTime) defaults to the column's "
+            + "filterMatchMode")
+    void timeFilterDefaultMatchMode(Page page) {
+        // Arrange - read Mike Master's (id 1, row 0) checkInTime straight from its rendered cell rather than
+        // recomputing it independently: the bean's #7427 fixture is captured relative to "now" when the page
+        // loads for THIS test, which is a different instant than when the test class's own `employees` field
+        // was built - fine for reviewDate's day-granularity fixtures elsewhere in this class, but not for a
+        // second-granularity value, so an independently-computed value here would drift and never match.
+        DataTable dataTable = page.dataTable;
+        String checkInTimeText = dataTable.getRow(0).getCell(5).getText();
+
+        // Act - column declares filterMatchMode="equals" as its initial/default comparator
+        dataTable.filter("check-in time", checkInTimeText);
+
+        // Assert - only Mike Master has this exact checkInTime
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId() == 1).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(30)
+    @DisplayName("DataTable: GitHub #7427 datetime filterMatchModeOptions (full LocalDateTime) defaults to the "
+            + "column's filterMatchMode")
+    void datetimeFilterDefaultMatchMode(Page page) {
+        // Arrange - same rationale as timeFilterDefaultMatchMode above: read the rendered value back rather
+        // than trust a second-granularity value computed independently of the bean's own "now"
+        DataTable dataTable = page.dataTable;
+        String lastLoginText = dataTable.getRow(0).getCell(6).getText();
+
+        // Act - column declares filterMatchMode="equals" as its initial/default comparator
+        dataTable.filter("last login", lastLoginText);
+
+        // Assert - only Mike Master has this exact lastLoginDateTime
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId() == 1).collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(31)
+    @DisplayName("DataTable: GitHub #7427 time \"last N minutes\"/\"next N minutes\"/\"last N hours\"/\"next N hours\" "
+            + "match a bare LocalTime value on a cyclic 24h clock")
+    void timeFilterLastNextMinutesAndHours(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell checkInHeader = dataTable.getHeader().getCell("check-in time").get();
+        dataTable.filterMatchMode("check-in time", "lastNMinutes");
+
+        // Assert - the value input hints at the expected "number of minutes/hours" syntax, same as the date preset
+        assertEquals("e.g. 30", checkInHeader.getColumnFilter().getAttribute("placeholder"));
+
+        // Act - "last 30 minutes"
+        dataTable.filter("check-in time", "30");
+
+        // Assert - mirrors RelativeMinutesOrHoursFilterConstraint#isWithinCyclicRange exactly, since a bare
+        // LocalTime is a cyclic 24h clock and the window can wrap past midnight depending on real "now"
+        {
+            LocalTime now = LocalTime.now();
+            List<Employee> employeesFiltered = employees.stream()
+                    .filter(e -> e.getCheckInTime() != null && isWithinCyclicRange(e.getCheckInTime(), now.minusMinutes(30), now))
+                    .collect(Collectors.toList());
+            assertEmployeeRows(dataTable, employeesFiltered);
+        }
+
+        // Act - "next 30 minutes"
+        dataTable.filterMatchMode("check-in time", "nextNMinutes");
+
+        // Assert
+        {
+            LocalTime now = LocalTime.now();
+            List<Employee> employeesFiltered = employees.stream()
+                    .filter(e -> e.getCheckInTime() != null && isWithinCyclicRange(e.getCheckInTime(), now, now.plusMinutes(30)))
+                    .collect(Collectors.toList());
+            assertEmployeeRows(dataTable, employeesFiltered);
+        }
+
+        // Act - "last 2 hours"
+        dataTable.filterMatchMode("check-in time", "lastNHours");
+        dataTable.filter("check-in time", "2");
+
+        // Assert
+        {
+            LocalTime now = LocalTime.now();
+            List<Employee> employeesFiltered = employees.stream()
+                    .filter(e -> e.getCheckInTime() != null && isWithinCyclicRange(e.getCheckInTime(), now.minusHours(2), now))
+                    .collect(Collectors.toList());
+            assertEmployeeRows(dataTable, employeesFiltered);
+        }
+
+        // Act - "next 2 hours" (keeps the same typed value "2")
+        dataTable.filterMatchMode("check-in time", "nextNHours");
+
+        // Assert
+        {
+            LocalTime now = LocalTime.now();
+            List<Employee> employeesFiltered = employees.stream()
+                    .filter(e -> e.getCheckInTime() != null && isWithinCyclicRange(e.getCheckInTime(), now, now.plusHours(2)))
+                    .collect(Collectors.toList());
+            assertEmployeeRows(dataTable, employeesFiltered);
+        }
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(32)
+    @DisplayName("DataTable: GitHub #7427 time \"last N minutes\" wraps past midnight on the cyclic 24h clock")
+    void timeFilterLastNMinutesWrapsPastMidnight(Page page) {
+        // Arrange - a window wide enough (23h59m) that it wraps past midnight for virtually any time of day the
+        // suite happens to run at - only the ~1-minute window right before midnight would not wrap, which is
+        // negligible for CI purposes. See RelativeMinutesOrHoursFilterConstraint#isWithinCyclicRange.
+        DataTable dataTable = page.dataTable;
+        dataTable.filterMatchMode("check-in time", "lastNMinutes");
+
+        // Act
+        dataTable.filter("check-in time", "1439");
+
+        // Assert
+        LocalTime now = LocalTime.now();
+        LocalTime start = now.minusMinutes(1439);
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getCheckInTime() != null && isWithinCyclicRange(e.getCheckInTime(), start, now))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(33)
+    @DisplayName("DataTable: GitHub #7427 datetime \"last N minutes\"/\"next N minutes\"/\"last N hours\"/"
+            + "\"next N hours\" match a full LocalDateTime value using ordinary (linear, non-cyclic) range logic")
+    void datetimeFilterLastNextMinutesAndHours(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell lastLoginHeader = dataTable.getHeader().getCell("last login").get();
+        dataTable.filterMatchMode("last login", "lastNMinutes");
+        assertEquals("e.g. 30", lastLoginHeader.getColumnFilter().getAttribute("placeholder"));
+
+        // Act - "last 30 minutes"
+        dataTable.filter("last login", "30");
+
+        // Assert - a full LocalDateTime is linear, not cyclic - ordinary isBefore/isAfter range logic applies
+        {
+            LocalDateTime now = LocalDateTime.now();
+            List<Employee> employeesFiltered = employees.stream()
+                    .filter(e -> e.getLastLoginDateTime() != null
+                            && !e.getLastLoginDateTime().isBefore(now.minusMinutes(30)) && !e.getLastLoginDateTime().isAfter(now))
+                    .collect(Collectors.toList());
+            assertEmployeeRows(dataTable, employeesFiltered);
+        }
+
+        // Act - "next 30 minutes"
+        dataTable.filterMatchMode("last login", "nextNMinutes");
+
+        // Assert
+        {
+            LocalDateTime now = LocalDateTime.now();
+            List<Employee> employeesFiltered = employees.stream()
+                    .filter(e -> e.getLastLoginDateTime() != null
+                            && !e.getLastLoginDateTime().isBefore(now) && !e.getLastLoginDateTime().isAfter(now.plusMinutes(30)))
+                    .collect(Collectors.toList());
+            assertEmployeeRows(dataTable, employeesFiltered);
+        }
+
+        // Act - "last 2 hours"
+        dataTable.filterMatchMode("last login", "lastNHours");
+        dataTable.filter("last login", "2");
+
+        // Assert
+        {
+            LocalDateTime now = LocalDateTime.now();
+            List<Employee> employeesFiltered = employees.stream()
+                    .filter(e -> e.getLastLoginDateTime() != null
+                            && !e.getLastLoginDateTime().isBefore(now.minusHours(2)) && !e.getLastLoginDateTime().isAfter(now))
+                    .collect(Collectors.toList());
+            assertEmployeeRows(dataTable, employeesFiltered);
+        }
+
+        // Act - "next 2 hours" (keeps the same typed value "2")
+        dataTable.filterMatchMode("last login", "nextNHours");
+
+        // Assert
+        {
+            LocalDateTime now = LocalDateTime.now();
+            List<Employee> employeesFiltered = employees.stream()
+                    .filter(e -> e.getLastLoginDateTime() != null
+                            && !e.getLastLoginDateTime().isBefore(now) && !e.getLastLoginDateTime().isAfter(now.plusHours(2)))
+                    .collect(Collectors.toList());
+            assertEmployeeRows(dataTable, employeesFiltered);
+        }
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(34)
+    @DisplayName("DataTable: GitHub #7427 time filterMatchModeOptions drops every calendar-day/week/month/... "
+            + "predicate the date preset has but keeps the shared comparators and adds last/next N minutes/hours; "
+            + "datetime keeps every date predicate as well")
+    void timeAndDatetimePresetLabels(Page page) {
+        // Arrange
+        HeaderCell checkInHeader = page.dataTable.getHeader().getCell("check-in time").get();
+        HeaderCell lastLoginHeader = page.dataTable.getHeader().getCell("last login").get();
+
+        // Act
+        List<String> timeLabels = new Select(checkInHeader.getColumnFilterMatchMode()).getOptions().stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+        List<String> datetimeLabels = new Select(lastLoginHeader.getColumnFilterMatchMode()).getOptions().stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        // Assert - "time" reuses the date-flavored "Is"/"Before"/"After" labels for the shared comparators and
+        // adds the 4 new minute/hour modes, but has no day/week/month/... predicates - a bare LocalTime has no
+        // date component for those to apply to
+        assertTrue(timeLabels.contains("Is"), "Expected date-flavored labels, got: " + timeLabels);
+        assertTrue(timeLabels.contains("Before"), "Expected date-flavored labels, got: " + timeLabels);
+        assertTrue(timeLabels.contains("Last N Minutes"), "Expected new minute/hour labels, got: " + timeLabels);
+        assertTrue(timeLabels.contains("Next N Hours"), "Expected new minute/hour labels, got: " + timeLabels);
+        assertFalse(timeLabels.contains("Today"), "time preset should have no calendar predicates: " + timeLabels);
+        assertFalse(timeLabels.contains("Last N Days"), "time preset should have no calendar predicates: " + timeLabels);
+
+        // Assert - "datetime" keeps every "date" predicate (a calendar day/week/month/... is still meaningful for
+        // a full date+time value) plus the 4 new minute/hour modes
+        assertTrue(datetimeLabels.contains("Today"), "Expected calendar predicates, got: " + datetimeLabels);
+        assertTrue(datetimeLabels.contains("Last N Days"), "Expected calendar predicates, got: " + datetimeLabels);
+        assertTrue(datetimeLabels.contains("Last N Minutes"), "Expected new minute/hour labels, got: " + datetimeLabels);
+        assertTrue(datetimeLabels.contains("Next N Hours"), "Expected new minute/hour labels, got: " + datetimeLabels);
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         assertEquals("wgtTable", cfg.getString("widgetVar"));
@@ -976,6 +1227,15 @@ class DataTable051Test extends AbstractDataTableTest {
     private static LocalDate startOfWeek(LocalDate date) {
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         return date.with(TemporalAdjusters.previousOrSame(weekFields.getFirstDayOfWeek()));
+    }
+
+    // mirrors RelativeMinutesOrHoursFilterConstraint#isWithinCyclicRange exactly - a bare LocalTime has no date
+    // component, so the inclusive [start, end] range wraps past midnight (OR instead of AND) when start > end
+    private static boolean isWithinCyclicRange(LocalTime value, LocalTime start, LocalTime end) {
+        if (!start.isAfter(end)) {
+            return !value.isBefore(start) && !value.isAfter(end);
+        }
+        return !value.isBefore(start) || !value.isAfter(end);
     }
 
     public static class Page extends AbstractPrimePage {

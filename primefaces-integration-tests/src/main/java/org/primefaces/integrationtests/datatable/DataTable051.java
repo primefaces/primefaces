@@ -25,6 +25,8 @@ package org.primefaces.integrationtests.datatable;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,12 +95,43 @@ public class DataTable051 implements Serializable {
                 .reviewDate(today.minusYears(1)).build());
         employees.add(Employee.builder().id(903).firstName("Zack").lastName("Zimmer")
                 .reviewDate(today.plusYears(1)).build());
+
+        // #7427 "last/next N minutes/hours" need checkInTime (bare LocalTime) and lastLoginDateTime (full
+        // LocalDateTime) values at known offsets from "now", computed the same way as reviewDate above so
+        // they never go stale. lastLoginDateTime here overrides EmployeeService's hardcoded 2021 fixture
+        // dates on THIS instance's own copy only - the shared, application-scoped service list is untouched.
+        // Truncated to whole seconds so an "equals" filter round-trips losslessly through the "HH:mm:ss" /
+        // "yyyy-MM-dd HH:mm:ss" converter pattern below, which has no sub-second precision to parse back.
+        LocalTime now = LocalTime.now().withNano(0);
+        LocalDateTime nowDateTime = LocalDateTime.now().withNano(0);
+        employees.get(0).setCheckInTime(now.minusMinutes(10));           // id 1 - within last 30min / last 2h
+        employees.get(0).setLastLoginDateTime(nowDateTime.minusMinutes(10));
+        employees.get(1).setCheckInTime(now.minusHours(1));              // id 2 - outside last 30min, within last 2h
+        employees.get(1).setLastLoginDateTime(nowDateTime.minusHours(1));
+        employees.get(3).setCheckInTime(now.plusMinutes(10));            // id 4 - within next 30min / next 2h
+        employees.get(3).setLastLoginDateTime(nowDateTime.plusMinutes(10));
+        employees.get(4).setCheckInTime(now.plusHours(3));               // id 5 - outside next 2h
+        employees.get(4).setLastLoginDateTime(nowDateTime.plusHours(3));
     }
 
     public DateTimeConverter getReviewDateConverter() {
         DateTimeConverter converter = new DateTimeConverter();
         converter.setPattern("yyyy-MM-dd");
         converter.setType("localDate");
+        return converter;
+    }
+
+    public DateTimeConverter getCheckInTimeConverter() {
+        DateTimeConverter converter = new DateTimeConverter();
+        converter.setPattern("HH:mm:ss");
+        converter.setType("localTime");
+        return converter;
+    }
+
+    public DateTimeConverter getLastLoginDateTimeConverter() {
+        DateTimeConverter converter = new DateTimeConverter();
+        converter.setPattern("yyyy-MM-dd HH:mm:ss");
+        converter.setType("localDateTime");
         return converter;
     }
 }

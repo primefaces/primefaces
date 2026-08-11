@@ -843,21 +843,23 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
             String matchModeId = column.getContainerClientId(context) + separator + "filterMatchMode";
             // the 6 comparison modes (equals/lt/gt/...) are shared with the "numeric" preset ("Equals"/"Less
-            // Than"/...); the "date" preset specifically renders them as "Is"/"Before"/"After"/... instead - see
-            // resolveMatchModeMessageKey(). A custom comma list happening to contain the same modes keeps the
-            // generic labels, since there's no way to tell it apart from an arbitrary list at this point.
+            // Than"/...); the "date"/"time"/"datetime" presets specifically render them as "Is"/"Before"/"After"/...
+            // instead - see resolveMatchModeMessageKey(). A custom comma list happening to contain the same modes
+            // keeps the generic labels, since there's no way to tell it apart from an arbitrary list at this point.
             String rawMatchModeOptions = column.getFilterMatchModeOptions();
-            boolean datePreset = rawMatchModeOptions != null && "date".equals(rawMatchModeOptions.trim());
+            String trimmedMatchModeOptions = rawMatchModeOptions == null ? null : rawMatchModeOptions.trim();
+            boolean dateStyleLabels = "date".equals(trimmedMatchModeOptions) || "time".equals(trimmedMatchModeOptions)
+                    || "datetime".equals(trimmedMatchModeOptions);
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_FILTER_CONTAINER_CLASS, null);
-            encodeFilterMatchModeSelect(context, writer, matchModeId, matchModeOptions, selected, datePreset);
+            encodeFilterMatchModeSelect(context, writer, matchModeId, matchModeOptions, selected, dateStyleLabels);
             encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected);
             writer.endElement("div");
         }
     }
 
     protected void encodeFilterMatchModeSelect(FacesContext context, ResponseWriter writer,
-            String matchModeId, List<MatchMode> matchModeOptions, MatchMode selected, boolean datePreset) throws IOException {
+            String matchModeId, List<MatchMode> matchModeOptions, MatchMode selected, boolean dateStyleLabels) throws IOException {
 
         // Render "=", "!=", "<", "<=", ">", ">=" instead of spelled-out labels when every option in this dropdown
         // is a comparison operator (the "numeric"/"date" presets, or a custom list built purely from them) - this
@@ -872,7 +874,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLASS, null);
 
         for (MatchMode matchMode : matchModeOptions) {
-            String label = MessageFactory.getMessage(context, resolveMatchModeMessageKey(matchMode, datePreset));
+            String label = MessageFactory.getMessage(context, resolveMatchModeMessageKey(matchMode, dateStyleLabels));
 
             writer.startElement("option", null);
             writer.writeAttribute("value", matchMode.operator(), null);
@@ -902,11 +904,12 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
     /**
      * Resolves the message key for a match-mode dropdown option's label. The 6 comparison modes are shared with
-     * the "numeric" preset ("Equals"/"Less Than"/...); the "date" preset renders them as "Is"/"Before"/"After"/...
-     * instead, via a separate {@code date.*} message key. See GitHub #7427.
+     * the "numeric" preset ("Equals"/"Less Than"/...); the "date"/"time"/"datetime" presets render them as
+     * "Is"/"Before"/"After"/... instead, via a separate {@code date.*} message key (the wording reads naturally
+     * for a time-of-day comparison too, so there's no need for separate "time."/"datetime." keys). See GitHub #7427.
      */
-    protected String resolveMatchModeMessageKey(MatchMode matchMode, boolean datePreset) {
-        if (datePreset) {
+    protected String resolveMatchModeMessageKey(MatchMode matchMode, boolean dateStyleLabels) {
+        if (dateStyleLabels) {
             switch (matchMode) {
                 case EQUALS:
                 case NOT_EQUALS:

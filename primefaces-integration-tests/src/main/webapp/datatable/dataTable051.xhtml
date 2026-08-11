@@ -40,6 +40,16 @@
                 <p:column headerText="review date" field="reviewDate" filterMatchMode="equals" filterMatchModeOptions="date"
                           converter="#{dataTable051.reviewDateConverter}"/>
 
+                <!-- bare time-of-day value (LocalTime, no date component) - "time" drops every day/week/month/...
+                     predicate the "date" preset has and adds last/next N minutes/hours instead - see GitHub #7427 -->
+                <p:column headerText="check-in time" field="checkInTime" filterMatchMode="equals" filterMatchModeOptions="time"
+                          converter="#{dataTable051.checkInTimeConverter}"/>
+
+                <!-- full date+time value (LocalDateTime) - "datetime" is every "date" mode plus last/next N
+                     minutes/hours for time-of-day precision - see GitHub #7427 -->
+                <p:column headerText="last login" field="lastLoginDateTime" filterMatchMode="equals" filterMatchModeOptions="datetime"
+                          converter="#{dataTable051.lastLoginDateTimeConverter}"/>
+
             </p:dataTable>
 
             <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>

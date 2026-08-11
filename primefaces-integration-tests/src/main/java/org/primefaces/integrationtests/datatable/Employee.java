@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.datatable;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -49,6 +50,7 @@ public class Employee implements Serializable {
     private Role role;
     private LocalDateTime lastLoginDateTime;
     private Date lastLoginDate;
+    private LocalTime checkInTime;
 
     public enum Role { MANAGER, HR, DEVELOPER, QS, SALES, FINANCE };
 }

@@ -27,6 +27,7 @@ import org.primefaces.model.MatchMode;
 import org.primefaces.util.MapBuilder;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.Optional;
 
@@ -117,6 +118,10 @@ public final class FilterConstraints {
             .put(MatchMode.NEXT_N_DAYS, new RelativeNDaysFilterConstraint((today, n) -> new LocalDate[] {today, today.plusDays(n)}))
             .put(MatchMode.RELATIVE_DATE,
                     new RelativeNDaysFilterConstraint((today, n) -> new LocalDate[] {today.minusDays(n), today.plusDays(n)}))
+            .put(MatchMode.LAST_N_MINUTES, new RelativeMinutesOrHoursFilterConstraint(ChronoUnit.MINUTES, false))
+            .put(MatchMode.NEXT_N_MINUTES, new RelativeMinutesOrHoursFilterConstraint(ChronoUnit.MINUTES, true))
+            .put(MatchMode.LAST_N_HOURS, new RelativeMinutesOrHoursFilterConstraint(ChronoUnit.HOURS, false))
+            .put(MatchMode.NEXT_N_HOURS, new RelativeMinutesOrHoursFilterConstraint(ChronoUnit.HOURS, true))
             .build();
 
     private FilterConstraints() {

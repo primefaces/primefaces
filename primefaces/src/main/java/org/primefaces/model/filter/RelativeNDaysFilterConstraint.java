@@ -56,27 +56,12 @@ public class RelativeNDaysFilterConstraint implements FilterConstraint {
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
         LocalDate valueDate = DateFilterUtils.toLocalDate(value);
-        Integer days = toInteger(filter);
+        Integer days = DateFilterUtils.toInteger(filter);
         if (valueDate == null || days == null) {
             return false;
         }
 
         LocalDate[] range = rangeFunction.apply(LocalDate.now(), days);
         return !valueDate.isBefore(range[0]) && !valueDate.isAfter(range[1]);
-    }
-
-    private static Integer toInteger(Object filter) {
-        if (filter instanceof Number) {
-            return ((Number) filter).intValue();
-        }
-        if (filter instanceof String) {
-            try {
-                return Integer.valueOf(((String) filter).trim());
-            }
-            catch (NumberFormatException e) {
-                return null;
-            }
-        }
-        return null;
     }
 }

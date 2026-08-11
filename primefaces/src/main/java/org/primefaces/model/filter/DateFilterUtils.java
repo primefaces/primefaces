@@ -28,6 +28,7 @@ import org.primefaces.util.CalendarUtils;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
@@ -76,6 +77,66 @@ final class DateFilterUtils {
     }
 
     /**
+     * Normalizes into a moment-in-time {@link LocalDateTime}, for "last/next N minutes/hours" on a field that
+     * has both a date and a time component. A bare {@link LocalTime} has no date to attach, so it deliberately
+     * returns {@code null} here - see {@link #toLocalTime(Object)} for the cyclic (time-of-day only) case instead.
+     *
+     * @return the value as a {@link LocalDateTime}, or {@code null} if {@code value} is {@code null}, a bare
+     *         {@link LocalTime}, or not a recognized date/time type
+     */
+    static LocalDateTime toLocalDateTime(Object value) {
+        if (value == null || value instanceof LocalTime) {
+            return null;
+        }
+        if (value instanceof LocalDateTime) {
+            return (LocalDateTime) value;
+        }
+        if (value instanceof LocalDate) {
+            return ((LocalDate) value).atStartOfDay();
+        }
+        if (value instanceof Instant) {
+            return LocalDateTime.ofInstant((Instant) value, ZoneId.systemDefault());
+        }
+        if (value instanceof Calendar) {
+            return CalendarUtils.convertDate2LocalDateTime(((Calendar) value).getTime());
+        }
+        if (value instanceof Date) {
+            return CalendarUtils.convertDate2LocalDateTime((Date) value);
+        }
+        return null;
+    }
+
+    /**
+     * Normalizes into a time-of-day {@link LocalTime} - a cyclic 24h clock with no date attached, unlike
+     * {@link #toLocalDateTime(Object)}. A {@link LocalDateTime}/{@link Date}/etc has its date component
+     * discarded, keeping only the time of day.
+     *
+     * @return the value's time of day as a {@link LocalTime}, or {@code null} if {@code value} is {@code null},
+     *         a bare {@link LocalDate} (no time component to extract), or not a recognized date/time type
+     */
+    static LocalTime toLocalTime(Object value) {
+        if (value == null || value instanceof LocalDate) {
+            return null;
+        }
+        if (value instanceof LocalTime) {
+            return (LocalTime) value;
+        }
+        if (value instanceof LocalDateTime) {
+            return ((LocalDateTime) value).toLocalTime();
+        }
+        if (value instanceof Instant) {
+            return ((Instant) value).atZone(ZoneId.systemDefault()).toLocalTime();
+        }
+        if (value instanceof Calendar) {
+            return CalendarUtils.convertDate2LocalTime(((Calendar) value).getTime());
+        }
+        if (value instanceof Date) {
+            return CalendarUtils.convertDate2LocalTime((Date) value);
+        }
+        return null;
+    }
+
+    /**
      * The first day (locale-aware, e.g. Monday for ISO / Sunday for US) of the calendar week containing {@code date}.
      */
     static LocalDate startOfWeek(LocalDate date, Locale locale) {
@@ -110,5 +171,28 @@ final class DateFilterUtils {
 
     static LocalDate endOfYear(LocalDate date) {
         return LocalDate.of(date.getYear(), 12, 31);
+    }
+
+    /**
+     * Parses a filter value as a plain {@link Integer} - for the "last/next N days/minutes/hours" and
+     * "relative date" match modes, whose value is a count rather than a date. {@code UITable} normally hands
+     * this an already-converted {@link Integer} (it bypasses the column's date converter for these modes), but
+     * a raw {@link String} is tolerated too, e.g. when a constraint is exercised directly. See GitHub #7427.
+     *
+     * @return the parsed value, or {@code null} if {@code filter} is {@code null}, blank, or not parsable
+     */
+    static Integer toInteger(Object filter) {
+        if (filter instanceof Number) {
+            return ((Number) filter).intValue();
+        }
+        if (filter instanceof String) {
+            try {
+                return Integer.valueOf(((String) filter).trim());
+            }
+            catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null;
     }
 }
