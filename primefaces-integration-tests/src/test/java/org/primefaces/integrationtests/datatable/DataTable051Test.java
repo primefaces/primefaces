@@ -197,7 +197,7 @@ class DataTable051Test extends AbstractDataTableTest {
         // value <input> share the same cramped space, which is exactly what made the value input collapse to
         // zero width in the showcase's "Activity" column.
         DataTable dataTable = page.dataTable;
-        HeaderCell idHeader = dataTable.getHeader().getCell("ID").get();
+        HeaderCell idHeader = dataTable.getHeader().getCell("ID").orElseThrow();
 
         // Act - switch to the option with the longest label so the <select> is at its widest
         dataTable.filterMatchMode("ID", "gte");
@@ -272,8 +272,8 @@ class DataTable051Test extends AbstractDataTableTest {
             + "filter match-mode overlay menu")
     void matchModeLabels(Page page) {
         // Arrange
-        HeaderCell idHeader = page.dataTable.getHeader().getCell("ID").get();
-        HeaderCell lastNameHeader = page.dataTable.getHeader().getCell("last name").get();
+        HeaderCell idHeader = page.dataTable.getHeader().getCell("ID").orElseThrow();
+        HeaderCell lastNameHeader = page.dataTable.getHeader().getCell("last name").orElseThrow();
 
         // Act
         List<String> idOptionLabels = idHeader.getFilterMatchModeLabels();
@@ -297,7 +297,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void textFilterIsEmptyIsNotEmpty(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell lastNameHeader = dataTable.getHeader().getCell("last name").get();
+        HeaderCell lastNameHeader = dataTable.getHeader().getCell("last name").orElseThrow();
 
         // Act - switch to the value-less "is empty" mode
         dataTable.filterMatchMode("last name", "empty");
@@ -318,7 +318,7 @@ class DataTable051Test extends AbstractDataTableTest {
         page.buttonUpdate.click();
 
         // Assert - re-fetch the header cell, the update="datatable" full refresh replaced the old DOM elements
-        lastNameHeader = dataTable.getHeader().getCell("last name").get();
+        lastNameHeader = dataTable.getHeader().getCell("last name").orElseThrow();
         valueInput = lastNameHeader.getColumnFilter();
         assertTrue(Objects.requireNonNull(valueInput.getAttribute("class")).contains("ui-helper-hidden"));
         assertFalse(valueInput.isEnabled());
@@ -422,7 +422,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void numericFilterBetweenNotBetween(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell salaryHeader = dataTable.getHeader().getCell("salary").get();
+        HeaderCell salaryHeader = dataTable.getHeader().getCell("salary").orElseThrow();
         dataTable.filterMatchMode("salary", "between");
 
         // Assert - the value input hints at the expected "min,max" syntax
@@ -472,7 +472,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void numericFilterIsNullIsNotNull(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell salaryHeader = dataTable.getHeader().getCell("salary").get();
+        HeaderCell salaryHeader = dataTable.getHeader().getCell("salary").orElseThrow();
 
         // Act
         dataTable.filterMatchMode("salary", "null");
@@ -505,7 +505,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void numericFilterInListNotInList(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell salaryHeader = dataTable.getHeader().getCell("salary").get();
+        HeaderCell salaryHeader = dataTable.getHeader().getCell("salary").orElseThrow();
         dataTable.filterMatchMode("salary", "in");
 
         // Assert - the value input hints at the expected comma-separated syntax
@@ -538,7 +538,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void booleanFilterTrueFalse(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell activeHeader = dataTable.getHeader().getCell("active").get();
+        HeaderCell activeHeader = dataTable.getHeader().getCell("active").orElseThrow();
 
         // Assert - "All" is the boolean preset's first (and thus default) option: a fresh, untouched "active"
         // column must NOT silently filter the table before the user ever picks true/false/is null/is not null
@@ -738,7 +738,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void dateFilterTodayYesterdayTomorrow(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell reviewDateHeader = dataTable.getHeader().getCell("review date").get();
+        HeaderCell reviewDateHeader = dataTable.getHeader().getCell("review date").orElseThrow();
         LocalDate today = LocalDate.now();
 
         // Act
@@ -911,7 +911,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void dateFilterLastNDaysNextNDays(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell reviewDateHeader = dataTable.getHeader().getCell("review date").get();
+        HeaderCell reviewDateHeader = dataTable.getHeader().getCell("review date").orElseThrow();
         LocalDate today = LocalDate.now();
         dataTable.filterMatchMode("review date", "lastNDays");
 
@@ -966,7 +966,7 @@ class DataTable051Test extends AbstractDataTableTest {
             + "\"After\" instead of the numeric preset's \"Equals\"/\"Less Than\"/\"Greater Than\"")
     void dateFilterMatchModeLabels(Page page) {
         // Arrange
-        HeaderCell reviewDateHeader = page.dataTable.getHeader().getCell("review date").get();
+        HeaderCell reviewDateHeader = page.dataTable.getHeader().getCell("review date").orElseThrow();
 
         // Act
         List<String> labels = reviewDateHeader.getFilterMatchModeLabels();
@@ -1035,7 +1035,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void timeFilterLastNextMinutesAndHours(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell checkInHeader = dataTable.getHeader().getCell("check-in time").get();
+        HeaderCell checkInHeader = dataTable.getHeader().getCell("check-in time").orElseThrow();
         dataTable.filterMatchMode("check-in time", "lastNMinutes");
 
         // Assert - the value input hints at the expected "number of minutes/hours" syntax, same as the date preset
@@ -1125,7 +1125,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void datetimeFilterLastNextMinutesAndHours(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell lastLoginHeader = dataTable.getHeader().getCell("last login").get();
+        HeaderCell lastLoginHeader = dataTable.getHeader().getCell("last login").orElseThrow();
         dataTable.filterMatchMode("last login", "lastNMinutes");
         assertEquals("e.g., 30", lastLoginHeader.getColumnFilter().getAttribute("placeholder"));
 
@@ -1192,8 +1192,8 @@ class DataTable051Test extends AbstractDataTableTest {
             + "datetime keeps every date predicate as well")
     void timeAndDatetimePresetLabels(Page page) {
         // Arrange
-        HeaderCell checkInHeader = page.dataTable.getHeader().getCell("check-in time").get();
-        HeaderCell lastLoginHeader = page.dataTable.getHeader().getCell("last login").get();
+        HeaderCell checkInHeader = page.dataTable.getHeader().getCell("check-in time").orElseThrow();
+        HeaderCell lastLoginHeader = page.dataTable.getHeader().getCell("last login").orElseThrow();
 
         // Act
         List<String> timeLabels = checkInHeader.getFilterMatchModeLabels();
@@ -1253,7 +1253,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void enumFilterIsAnyOfIsNoneOf(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell roleHeader = dataTable.getHeader().getCell("role").get();
+        HeaderCell roleHeader = dataTable.getHeader().getCell("role").orElseThrow();
         dataTable.filterMatchMode("role", "in");
 
         // Assert - the value input hints at the expected comma-separated syntax, same as the other IN presets
@@ -1287,7 +1287,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void enumFilterIsEmptyIsNotEmpty(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell roleHeader = dataTable.getHeader().getCell("role").get();
+        HeaderCell roleHeader = dataTable.getHeader().getCell("role").orElseThrow();
 
         // Act
         dataTable.filterMatchMode("role", "empty");
@@ -1321,7 +1321,7 @@ class DataTable051Test extends AbstractDataTableTest {
             + "and In/NotIn as \"Is Any Of\"/\"Is None Of\" instead of the generic \"Equals\"/\"In List\"/\"Not In List\"")
     void enumFilterMatchModeLabels(Page page) {
         // Arrange
-        HeaderCell roleHeader = page.dataTable.getHeader().getCell("role").get();
+        HeaderCell roleHeader = page.dataTable.getHeader().getCell("role").orElseThrow();
 
         // Act
         List<String> labels = roleHeader.getFilterMatchModeLabels();
@@ -1376,7 +1376,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void arrayFilterContainsAnyContainsAll(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell skillsHeader = dataTable.getHeader().getCell("skills").get();
+        HeaderCell skillsHeader = dataTable.getHeader().getCell("skills").orElseThrow();
         dataTable.filterMatchMode("skills", "containsAny");
 
         // Assert - the value input hints at the expected comma-separated syntax, same as the other multi-value presets
@@ -1430,7 +1430,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void arrayFilterIsEmptyIsNotEmpty(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell skillsHeader = dataTable.getHeader().getCell("skills").get();
+        HeaderCell skillsHeader = dataTable.getHeader().getCell("skills").orElseThrow();
         dataTable.filterMatchMode("skills", "empty");
 
         // Assert - value-less, the value input is hidden and disabled
@@ -1462,7 +1462,7 @@ class DataTable051Test extends AbstractDataTableTest {
             + "Any/Contains All/Contains None, plus the generic Is Empty/Is Not Empty")
     void arrayFilterMatchModeLabels(Page page) {
         // Arrange
-        HeaderCell skillsHeader = page.dataTable.getHeader().getCell("skills").get();
+        HeaderCell skillsHeader = page.dataTable.getHeader().getCell("skills").orElseThrow();
 
         // Act
         List<String> labels = skillsHeader.getFilterMatchModeLabels();
@@ -1484,39 +1484,39 @@ class DataTable051Test extends AbstractDataTableTest {
     void filterMatchModeIconActiveState(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell lastNameHeader = dataTable.getHeader().getCell("last name").get();
+        HeaderCell lastNameHeader = dataTable.getHeader().getCell("last name").orElseThrow();
 
         // Assert - the column's default mode ("contains") is selected on a fresh page load, icon starts outlined
         WebElement icon = lastNameHeader.getColumnFilterMatchModeIcon();
-        assertFalse(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+        assertFalse(Objects.requireNonNull(icon.getAttribute("class")).contains("ui-column-filter-mode-icon-active"));
 
         // Act - type a value without changing the mode
         dataTable.filter("last name", "ar");
 
         // Assert - typing alone does not fill the icon; only the selected mode drives it, not the typed value
         icon = lastNameHeader.getColumnFilterMatchModeIcon();
-        assertFalse(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+        assertFalse(Objects.requireNonNull(icon.getAttribute("class")).contains("ui-column-filter-mode-icon-active"));
 
         // Act - switch to a different (still value-requiring) mode
         dataTable.filterMatchMode("last name", "startsWith");
 
         // Assert - the icon fills in as soon as a non-default mode is picked
         icon = lastNameHeader.getColumnFilterMatchModeIcon();
-        assertTrue(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+        assertTrue(Objects.requireNonNull(icon.getAttribute("class")).contains("ui-column-filter-mode-icon-active"));
 
         // Act - back to the column's default mode, with the same value ("ar") still typed
         dataTable.filterMatchMode("last name", "contains");
 
         // Assert - outlined again - mode-driven, not value-driven, so the still-present value doesn't matter
         icon = lastNameHeader.getColumnFilterMatchModeIcon();
-        assertFalse(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+        assertFalse(Objects.requireNonNull(icon.getAttribute("class")).contains("ui-column-filter-mode-icon-active"));
 
         // Act - switch to a value-less mode ("is empty")
         dataTable.filterMatchMode("last name", "empty");
 
         // Assert - fills too, value-less modes are no exception
         icon = lastNameHeader.getColumnFilterMatchModeIcon();
-        assertTrue(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+        assertTrue(Objects.requireNonNull(icon.getAttribute("class")).contains("ui-column-filter-mode-icon-active"));
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -1531,11 +1531,11 @@ class DataTable051Test extends AbstractDataTableTest {
         // Arrange - the "ID" column is configured with filterMatchMode="gt", filterValueType="numeric",
         // whose first entry is "equals" - a mismatch that used to spuriously fill the icon on a fresh load
         DataTable dataTable = page.dataTable;
-        HeaderCell idHeader = dataTable.getHeader().getCell("ID").get();
+        HeaderCell idHeader = dataTable.getHeader().getCell("ID").orElseThrow();
 
         // Assert - outlined on a fresh load: "gt" IS the column's own default, even though it isn't first in the list
         WebElement icon = idHeader.getColumnFilterMatchModeIcon();
-        assertFalse(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+        assertFalse(Objects.requireNonNull(icon.getAttribute("class")).contains("ui-column-filter-mode-icon-active"));
         assertEquals("gt", idHeader.getColumnFilterMatchModeValue());
 
         // Act - switch to a different mode
@@ -1543,16 +1543,16 @@ class DataTable051Test extends AbstractDataTableTest {
 
         // Assert - now fills, since "lt" differs from the column's default ("gt")
         icon = idHeader.getColumnFilterMatchModeIcon();
-        assertTrue(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+        assertTrue(Objects.requireNonNull(icon.getAttribute("class")).contains("ui-column-filter-mode-icon-active"));
 
         // Act - reset all filters
         PrimeSelenium.executeScript(true, "PF('wgtTable').clearFilters()");
 
         // Assert - resets back to the column's own default ("gt"), not the list's first entry ("equals"), and outlined again
-        idHeader = dataTable.getHeader().getCell("ID").get();
+        idHeader = dataTable.getHeader().getCell("ID").orElseThrow();
         assertEquals("gt", idHeader.getColumnFilterMatchModeValue());
         icon = idHeader.getColumnFilterMatchModeIcon();
-        assertFalse(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+        assertFalse(Objects.requireNonNull(icon.getAttribute("class")).contains("ui-column-filter-mode-icon-active"));
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -1565,7 +1565,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void filterValueTypeAutoDerivedText(Page page) {
         // Arrange - the "first name" column declares neither filterMatchMode nor filterValueType
         DataTable dataTable = page.dataTable;
-        HeaderCell firstNameHeader = dataTable.getHeader().getCell("first name").get();
+        HeaderCell firstNameHeader = dataTable.getHeader().getCell("first name").orElseThrow();
 
         // Assert - a picker is still rendered, with the "text" preset's labels
         List<String> labels = firstNameHeader.getFilterMatchModeLabels();
@@ -1594,7 +1594,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void filterValueTypeSkipsCustomFacet(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        HeaderCell birthDateHeader = dataTable.getHeader().getCell("birth date").get();
+        HeaderCell birthDateHeader = dataTable.getHeader().getCell("birth date").orElseThrow();
 
         // Assert - no match-mode icon at all for this column
         assertNull(birthDateHeader.getColumnFilterMatchModeIcon());
@@ -1609,7 +1609,7 @@ class DataTable051Test extends AbstractDataTableTest {
     void numericFilterInputRejectsNonNumericCharacters(Page page) {
         // Arrange - the "ID" column auto-/explicitly resolves to the "numeric" preset
         DataTable dataTable = page.dataTable;
-        HeaderCell idHeader = dataTable.getHeader().getCell("ID").get();
+        HeaderCell idHeader = dataTable.getHeader().getCell("ID").orElseThrow();
         WebElement input = idHeader.getColumnFilter();
 
         // Act - type a mix of letters and digits
