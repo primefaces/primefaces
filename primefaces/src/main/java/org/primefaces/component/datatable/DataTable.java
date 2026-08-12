@@ -108,6 +108,10 @@ import jakarta.faces.model.ListDataModel;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
+// for the shadow date/date-range filter-value pickers a date-ish filterable column renders (see
+// DataTableRenderer#encodeDateFilterWidgets()) - must be a static dependency, not added dynamically during
+// encode, since by the time that code runs <h:head> has already finished rendering on a full page load
+@ResourceDependency(library = "primefaces", name = "datepicker/datepicker.js")
 public class DataTable extends DataTableBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
@@ -149,6 +153,16 @@ public class DataTable extends DataTableBaseImpl {
     public static final String COLUMN_FILTER_MODE_MENUITEM_LINK_CLASS = "ui-menuitem-link ui-corner-all";
     public static final String FILTER_ICON_CLASS = "pi pi-filter";
     public static final String FILTER_ICON_ACTIVE_CLASS = "pi pi-filter-fill";
+    /** Marker class on the shadow single-date {@code DatePicker} wrapper shown for a "date"/"time"/"datetime"
+     *  column while a single-value comparator (e.g. "equals") is selected; hidden otherwise. Deliberately
+     *  rendered WITHOUT {@code ui-helper-hidden} here - the underlying jQuery-UI-style DatePicker plugin doesn't
+     *  reliably attach to a {@code display:none} element, so datatable.widget.js's own initial sync pass (part
+     *  of the same setup that runs right after every DatePicker on the page has finished its own init) is what
+     *  hides whichever of the two shadow pickers isn't active for the column's current match mode. */
+    public static final String COLUMN_FILTER_DATE_CLASS = "ui-column-filter-date";
+    /** Same as {@link #COLUMN_FILTER_DATE_CLASS}, but for the shadow range-date {@code DatePicker} shown while
+     *  "between"/"not between" is selected. */
+    public static final String COLUMN_FILTER_DATE_RANGE_CLASS = "ui-column-filter-date-range";
     public static final String FILTER_MATCH_MODE_LABEL_PREFIX = "primefaces.datatable.filterMatchMode.";
     public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
     public static final String DRAGGABLE_COLUMN_CLASS = "ui-draggable-column";
@@ -307,7 +321,7 @@ public class DataTable extends DataTableBaseImpl {
             }
             else {
                 // trigger filter as previous requests were filtered
-                // in older PF versions, we stored the filtered data in the viewstate but this blows up memory
+                // in older PF versions, we stored the filtered data in the viewstate, but this blows up memory
                 // and caused bugs with editing and serialization like #7999
                 filterAndSort();
             }
@@ -318,8 +332,7 @@ public class DataTable extends DataTableBaseImpl {
     public void processValidators(FacesContext context) {
         super.processValidators(context);
 
-        //filters need to be decoded during PROCESS_VALIDATIONS phase,
-        //so that local values of each filters are properly converted and validated
+        //filters need to be decoded during PROCESS_VALIDATIONS phase, so that local value of each filter is properly converted and validated
         FilterFeature feature = DataTableFeatures.filterFeature();
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
@@ -497,7 +510,7 @@ public class DataTable extends DataTableBaseImpl {
         LazyDataModel<?> lazyModel = getLazyDataModel();
         if (lazyModel != null) {
             int first = getFirst();
-            int rows = 0;
+            int rows;
 
             if (isLiveScroll()) {
                 rows = getScrollRows();
@@ -847,7 +860,7 @@ public class DataTable extends DataTableBaseImpl {
         int first = getFirst();
         int rows = getRows();
         int rowCount = getRowCount();
-        int last = 0;
+        int last;
 
         if (rows == 0) {
             if (isLiveScroll()) {
@@ -1103,8 +1116,8 @@ public class DataTable extends DataTableBaseImpl {
     }
 
     /**
-     * Recalculates filteredValue after adding, updating or removing rows to/from a filtered DataTable.
-     * NOTE: this is only supported for non-lazy DataTables, eg bound to a java.util.List.
+     * Recalculates filteredValue after adding, updating, or removing rows to/from a filtered DataTable.
+     * NOTE: this is only supported for non-lazy DataTables, e.g., bound to a java.util.List.
      */
     @Override
     public void filterAndSort() {
@@ -1115,7 +1128,7 @@ public class DataTable extends DataTableBaseImpl {
         /*
          * setDataModel is defined by UIData. So different implementations for Mojarra and MyFaces.
          * But PrimeFaces comes with it´s own UIData which extends/modifies UIData provided by Jakarta Faces-impl.
-         * But PrimeFaces UIData does not know all impl-specifics, so ....
+         * But PrimeFaces UIData does not know all impl-specifics, so ...
          */
         setDataModel(null); // for MyFaces 2.3 - compatibility
 
@@ -1205,7 +1218,7 @@ public class DataTable extends DataTableBaseImpl {
     }
 
     protected boolean isCacheableColumns(List<UIColumn> columns) {
-        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
+        // let's cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110
         // do not cache if nested in iterator component and contains dynamic columns since number of columns may vary per iteration
         // see https://github.com/primefaces/primefaces/issues/2154

@@ -195,6 +195,17 @@ public class HeaderCell extends Cell {
             columnFilter = getWebElement().findElement(By.tagName("input"));
         }
 
+        if (!columnFilter.isDisplayed()) {
+            // the plain value input is intentionally hidden (but still enabled, so it keeps submitting) while a
+            // shadow date/date-range DatePicker is the active widget for a "date"/"time"/"datetime" column's
+            // current match mode - see DataTableRenderer#encodeDateFilterWidgets() and
+            // datatable.widget.js#toggleFilterValueInput(). clear()/sendKeys() would throw
+            // ElementNotInteractableException on it, so drive it by value directly instead of through the
+            // picker's own calendar UI.
+            setHiddenFilterValue(columnFilter, filterValue);
+            return;
+        }
+
         columnFilter.clear();
 
         Keys triggerKey = null;
@@ -233,7 +244,7 @@ public class HeaderCell extends Cell {
         else if (filterDelay > 0) {
             try {
                 // default-filter runs delayed - so wait...
-                Thread.sleep(filterDelay * 2);
+                Thread.sleep(filterDelay * 2L);
             }
             catch (InterruptedException ex) {
                 System.err.println("AJAX Guard delay was interrupted!");
@@ -242,6 +253,24 @@ public class HeaderCell extends Cell {
             }
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
         }
+    }
+
+    /**
+     * Sets the value of a CSS-hidden (but still enabled) filter input directly and triggers the filter, bypassing
+     * the normal keyup-driven path that {@code clear()}/{@code sendKeys()} would otherwise use - fine for a plain
+     * {@code display:none} input, but that path is also unavailable to it in the first place.
+     *
+     * @param columnFilter the (hidden) filter value input
+     * @param filterValue the value to filter for, or {@code null} to clear
+     */
+    private void setHiddenFilterValue(WebElement columnFilter, String filterValue) {
+        PrimeSelenium.guardAjax(
+                "var input = arguments[0];"
+                        + "input.value = arguments[1] || '';"
+                        + "var wrapper = input.closest('.ui-datatable, .ui-treetable');"
+                        + "var widget = wrapper ? PrimeFaces.getWidgetById(wrapper.id) : null;"
+                        + "if (widget && typeof widget.filter === 'function') { widget.filter(); }",
+                columnFilter, filterValue);
     }
 
     @Override

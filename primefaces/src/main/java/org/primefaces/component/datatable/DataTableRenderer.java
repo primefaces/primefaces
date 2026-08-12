@@ -31,6 +31,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.feature.DataTableFeature;
 import org.primefaces.component.datatable.feature.DataTableFeatures;
+import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
@@ -67,7 +68,10 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.DateTimeConverter;
 import jakarta.faces.render.FacesRenderer;
+import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = DataTable.DEFAULT_RENDERER, componentFamily = DataTable.COMPONENT_FAMILY)
 public class DataTableRenderer extends DataRenderer<DataTable> {
@@ -131,10 +135,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         if (!component.loadLazyDataIfEnabled()) {
-            // full-update (partialUpdate="false") requests defer filtering to this deferred path rather than
+            // full-update (partialUpdate="false") requests to defer filtering to this deferred path rather than
             // FilterFeature#encode() (see that method's comment) - unlike that path, gating solely on
             // "isFilteringCurrentlyActive" isn't enough: it turns false the moment the last active filter is
-            // cleared, which would skip the recompute entirely and leave the previously-filtered (now stale)
+            // cleared, which would skip the recomputing entirely and leave the previously filtered (now stale)
             // data/filteredValue behind instead of resetting it back to the full, unfiltered list
             if (component.isFilteringCurrentlyActive() || component.isFullUpdateRequest(context)) {
                 DataTableFeatures.filterFeature().filter(context, component);
@@ -844,7 +848,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 ? MatchMode.of(column.getFilterMatchMode())
                 : matchModeOptions.get(0);
         // filled once the user has picked a mode other than the column's own default, outline while still on
-        // the untouched default - e.g. the boolean preset's "All" placeholder is always the configured default,
+        // the untouched default - e.g., the boolean preset's "All" placeholder is always the configured default,
         // so choosing it never fills the icon, while any of "True"/"False"/"Is Null"/"Is Not Null" does
         boolean active = selected != columnDefault;
 
@@ -900,11 +904,17 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             }
             // read by datatable.widget.js to hide/disable the value input for a value-less match mode (e.g., "is empty")
             // written as a literal "true"/"false" string - a Boolean value is special-cased by ResponseWriter
-            // impls as a plain HTML boolean attribute (name="name" if true, omitted entirely if false)
+            // impls as a plain HTML boolean attribute (name="name" if true, omitted otherwise)
             writer.writeAttribute("data-requires-value", String.valueOf(matchMode.requiresValue()), null);
             if (matchMode.placeholderHint() != null) {
                 // read by datatable.widget.js to hint the expected value syntax, e.g., "min,max" for "between"
                 writer.writeAttribute("data-placeholder-hint", matchMode.placeholderHint(), null);
+            }
+            String valueWidget = resolveFilterValueWidget(matchMode, filterValueType);
+            if (valueWidget != null) {
+                // read by datatable.widget.js's toggleFilterValueInput() to decide which of the plain input, the
+                // shadow single-date picker, or the shadow range-date picker to show for the newly selected mode
+                writer.writeAttribute("data-value-widget", valueWidget, null);
             }
             writer.writeText(label, null);
             writer.endElement("a");
@@ -950,6 +960,127 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         // the match-mode picker itself (icon + overlay menu) is rendered in the header, next to the sort icons -
         // see encodeFilterMatchModeMenu() - so this filter row is always just the value input, full width
         encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected, filterValueType);
+        encodeDateFilterWidgets(context, column, filterId, filterValueType);
+    }
+
+    /**
+     * For a "date"/"time"/"datetime" column, renders two hidden-by-default shadow {@code DatePicker} widgets
+     * alongside the plain value input - a single-date one and a range one - so a real calendar picker is
+     * available for single-value comparators ("Is"/"Before"/"After"/...) and for "Between"/"Not Between"
+     * respectively. Both always exist from first paint (see {@link #encodeDatePickerFilterWidget}'s Javadoc for
+     * why); {@code datatable.widget.js}'s {@code toggleFilterValueInput()} shows/hides exactly one of the plain
+     * input or these two pickers based on the currently selected match mode's {@code data-value-widget}.
+     * <p>
+     * Only renders if the column's own {@code converter} resolves to a {@link DateTimeConverter} with a
+     * non-blank pattern - the exact same requirement {@link FilterMeta#resolveFilterValueType} already applies
+     * before ever offering the "date"/"time"/"datetime" preset in the first place, so this never fires without
+     * one. No such converter (or not a date-ish column at all) leaves today's plain-input-only behavior
+     * untouched - a safe, non-regressing fallback, not a new failure mode.
+     */
+    protected void encodeDateFilterWidgets(FacesContext context, UIColumn column, String filterId, String filterValueType) throws IOException {
+        String trimmed = filterValueType == null ? null : filterValueType.trim();
+        boolean dateLike = "date".equals(trimmed) || "time".equals(trimmed) || "datetime".equals(trimmed);
+        if (!dateLike) {
+            return;
+        }
+
+        Converter<?> converter = ComponentUtils.toConverter(context, column.getConverter());
+        if (!(converter instanceof DateTimeConverter)) {
+            return;
+        }
+        String pattern = ((DateTimeConverter) converter).getPattern();
+        if (LangUtils.isBlank(pattern)) {
+            return;
+        }
+
+        boolean timeOnly = "time".equals(trimmed);
+        encodeDatePickerFilterWidget(context, filterId, pattern, false, timeOnly);
+        encodeDatePickerFilterWidget(context, filterId, pattern, true, timeOnly);
+    }
+
+    /**
+     * Renders one shadow {@code DatePicker}, wrapped in a {@code <span>} carrying
+     * {@link DataTable#COLUMN_FILTER_DATE_CLASS}/{@link DataTable#COLUMN_FILTER_DATE_RANGE_CLASS} (hidden by
+     * default - the client toggles this per the currently selected match mode). The {@code DatePicker} is
+     * created programmatically and rendered by directly invoking its own renderer - the same "borrow a real
+     * component's renderer for a transient, never-added-to-the-tree instance" technique {@code Badge#create}/
+     * {@code Badge#getRenderer} already use elsewhere in this codebase - rather than hand-emitting markup and a
+     * {@code PrimeFaces.cw(...)} script text, so this stays correct automatically as {@code DatePickerRenderer}
+     * evolves. Both the single and range variant are rendered unconditionally (not just the one matching the
+     * column's current match mode): a live {@code DatePicker} widget cannot switch {@code selectionMode} after
+     * init, and for the common {@code partialUpdate=true} table configuration, switching match mode never
+     * re-renders the header row at all (only the tbody) - so the client alone decides which of these to show,
+     * with no help from a subsequent server render, and both variants must already exist for that to work.
+     * <p>
+     * Never added to the component tree, so {@code getClientId()} returns {@code getId()} verbatim (no
+     * {@code NamingContainer} prefixing) - {@code filterId} itself isn't a legal component id (it contains the
+     * naming-container separator character), so it's sanitized first.
+     */
+    protected void encodeDatePickerFilterWidget(FacesContext context, String filterId, String pattern, boolean range, boolean timeOnly)
+            throws IOException {
+
+        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+        String id = filterId.replace(separator, "-") + (range ? "-range" : "-single");
+
+        DatePicker datePicker = (DatePicker) context.getApplication().createComponent(DatePicker.COMPONENT_TYPE);
+        datePicker.setId(id);
+        datePicker.setPattern(pattern);
+        datePicker.setSelectionMode(range ? "range" : "single");
+        if (timeOnly) {
+            datePicker.setTimeOnly(true);
+        }
+
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("span", null);
+        writer.writeAttribute("class", range ? DataTable.COLUMN_FILTER_DATE_RANGE_CLASS : DataTable.COLUMN_FILTER_DATE_CLASS, null);
+        if (range) {
+            // read by datatable.widget.js to normalize this picker's own "date1 <separator> date2" rendering
+            // into the codebase's one universal multi-value wire format ("date1,date2") before copying it into
+            // the real filter input - see bindDatePickerFilterSync()
+            writer.writeAttribute("data-range-separator", datePicker.getRangeSeparator(), null);
+        }
+
+        Renderer renderer = context.getRenderKit().getRenderer(datePicker.getFamily(), datePicker.getRendererType());
+        renderer.encodeEnd(context, datePicker);
+
+        writer.endElement("span");
+    }
+
+    /**
+     * Resolves which value-input widget the client should show for a given match mode: {@code null} for a
+     * value-less mode (e.g. "is empty" - the input stays hidden, unchanged from today), {@code "numeric"} for a
+     * plain (optionally digit-restricted) text input - including the day/minute/hour COUNT modes (e.g.
+     * "last N days") even on a "date"/"time"/"datetime" column, since those take a number, not a date -
+     * {@code "date"} for a single-value comparator on a date-ish column, or {@code "dateRange"} for
+     * "between"/"not between" on a date-ish column. Any other combination (numeric/text/enum/array/boolean) keeps
+     * today's plain input, signalled here as {@code null} (the same as value-less) since the client only needs to
+     * distinguish "show the plain input" from "show one of the shadow date pickers".
+     */
+    protected String resolveFilterValueWidget(MatchMode matchMode, String filterValueType) {
+        if (!matchMode.requiresValue()) {
+            return null;
+        }
+
+        switch (matchMode) {
+            case LAST_N_DAYS:
+            case NEXT_N_DAYS:
+            case RELATIVE_DATE:
+            case LAST_N_MINUTES:
+            case NEXT_N_MINUTES:
+            case LAST_N_HOURS:
+            case NEXT_N_HOURS:
+                return "numeric";
+            default:
+                break;
+        }
+
+        String trimmed = filterValueType == null ? null : filterValueType.trim();
+        boolean dateLike = "date".equals(trimmed) || "time".equals(trimmed) || "datetime".equals(trimmed);
+        if (dateLike) {
+            return matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN ? "dateRange" : "date";
+        }
+
+        return null;
     }
 
     /**

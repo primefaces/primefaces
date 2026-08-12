@@ -68,7 +68,7 @@
  * @prop {JQuery} [contextMenuCell] DOM element of the table cell for which the context menu was opened.
  * @prop {PrimeFaces.widget.ContextMenu} contextMenuWidget Widget with the context menu for the DataTable.
  * @prop {JQuery} currentCell Current cell to be edited.
- * @prop {PrimeFaces.widget.DataTable.RowMeta | null} cursorRowMeta 0-based index of row where the the cursor is located.
+ * @prop {PrimeFaces.widget.DataTable.RowMeta | null} cursorRowMeta 0-based index of row where the cursor is located.
  * @prop {string} [descMessage] Localized message for sorting a column in descending order.
  * @prop {JQuery} dragIndicatorBottom DOM element of the icon that indicates a column is draggable.
  * @prop {JQuery} dragIndicatorTop DOM element of the icon that indicates a column is draggable.
@@ -119,7 +119,7 @@
  * @prop {JQuery} scrollStateHolder INPUT element storing the current scroll position.
  * @prop {JQuery} scrollTbody The DOM element for the scrollable TBODY.
  * @prop {number} scrollTimeout The set-timeout timer ID of the timer used for scrolling.
- * @prop {string} scrollbarWidth CSS attribute for the scrollbar width, eg. `20px`.
+ * @prop {string} scrollbarWidth CSS attribute for the scrollbar width, e.g., 20px.
  * @prop {string[]} selection List of row keys for the currently selected rows.
  * @prop {string} selectionHolder ID of the INPUT element storing the currently selected rows.
  * @prop {boolean} shouldLiveScroll Whether live scrolling is currently enabled.
@@ -707,6 +707,12 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             $this.bindFilterMatchModeMenu($(this));
         });
 
+        // shadow date/date-range pickers (see DataTableRenderer#encodeDateFilterWidgets()) - a no-op for
+        // columns that don't have one
+        filterColumns.each(function() {
+            $this.bindDatePickerFilterSync($(this));
+        });
+
         // sync each value input's visibility/placeholder with its initially selected match mode - run in its
         // own pass, after every input's original placeholder above has been captured, regardless of DOM order.
         // Uses getFilterMatchModeMenu() (an id lookup), not th.find(...), since bindFilterMatchModeMenu() above
@@ -824,7 +830,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 hiddenInput.val(newMatchMode);
                 menu.find('.ui-menuitem-link').attr('aria-checked', 'false').parent().removeClass('ui-state-active');
                 link.attr('aria-checked', 'true').parent().addClass('ui-state-active');
-                $this.toggleFilterValueInput(th, link);
+                $this.toggleFilterValueInput(th, link, true);
                 $this.updateFilterMatchModeIconState(icon, menu, link);
                 closeMenu();
                 $this.filter();
@@ -931,15 +937,49 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @private
      * @param {JQuery} th the column header `<th>` whose value input should be synced
      * @param {JQuery} selectedLink the currently selected `.ui-menuitem-link` (carries `data-requires-value`/`data-placeholder-hint`)
+     * @param {boolean} [isModeSwitch] true when the caller is reacting to the user actively picking a
+     *   (possibly different) match mode right now - as opposed to the initial/re-init sync pass in
+     *   {@link setupFiltering}, which runs for whatever mode the server already rendered as selected. Only in
+     *   the former case is it safe to blank a picker-driven value input: doing so unconditionally would also
+     *   wipe out a value the server legitimately just rendered - e.g. right after `filter()` triggers a full
+     *   widget re-render for a `partialUpdate="false"` table, which re-runs this same sync pass on fresh markup
+     *   that already has the correct value baked in.
      */
-    toggleFilterValueInput(th, selectedLink) {
+    toggleFilterValueInput(th, selectedLink, isModeSwitch) {
         var requiresValue = !selectedLink.length || selectedLink.data('requiresValue') !== false;
-        var valueInput = th.find('.ui-column-filter');
+        // "date"/"dateRange" mean a shadow DatePicker (see DataTableRenderer#encodeDateFilterWidgets()) should
+        // be shown instead of the plain input for this mode - anything else (including unset) keeps today's
+        // plain-input behavior
+        var valueWidget = selectedLink.data('valueWidget');
+        var showDate = requiresValue && valueWidget === 'date';
+        var showDateRange = requiresValue && valueWidget === 'dateRange';
+        var showPlain = requiresValue && !showDate && !showDateRange;
 
-        valueInput.toggleClass('ui-helper-hidden', !requiresValue).prop('disabled', !requiresValue);
-        if (!requiresValue) {
+        var valueInput = th.find('.ui-column-filter');
+        // which of the three widgets is active right now, so the *next* call can tell whether the user's
+        // switch actually changed the value's shape (e.g. "lt" -> "between" goes from a single date to a
+        // "date1,date2" pair) or merely picked a different mode that still uses the same one (e.g. "lt" ->
+        // "lte" both stay on the single-date picker) - only the former should discard the existing value
+        var previousWidget = valueInput.data('activeValueWidget');
+        var currentWidget = !requiresValue ? null : (showDate ? 'date' : (showDateRange ? 'dateRange' : 'plain'));
+        valueInput.data('activeValueWidget', currentWidget);
+
+        // `disabled` tracks requiresValue only - this input stays the one thing that actually gets submitted
+        // even while a shadow picker is the VISIBLE widget (see bindDatePickerFilterSync(), which writes the
+        // picker's value into this same input); `ui-helper-hidden` additionally hides it whenever a picker is
+        // shown in its place
+        valueInput.toggleClass('ui-helper-hidden', !showPlain).prop('disabled', !requiresValue);
+        if (!requiresValue || (isModeSwitch && currentWidget !== previousWidget && (showDate || showDateRange))) {
+            // switching to a value-less mode, or - only when the user just actively made this switch AND it
+            // actually changed the active widget - to a picker-driven one: either way, whatever was previously
+            // typed (in a different value shape) must not be silently resubmitted
             valueInput.val('');
         }
+
+        th.find('.ui-column-filter-date').toggleClass('ui-helper-hidden', !showDate)
+            .find(':input').prop('disabled', !showDate);
+        th.find('.ui-column-filter-date-range').toggleClass('ui-helper-hidden', !showDateRange)
+            .find(':input').prop('disabled', !showDateRange);
 
         // e.g., "min,max" for "between" - falls back to whatever placeholder the page originally declared
         // (or none) once a match mode without its own hint (e.g., "equals") is selected again
@@ -956,6 +996,50 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 valueInput.removeAttr('placeholder');
             }
         }
+    }
+
+    /**
+     * Wires up a column's shadow date/date-range `DatePicker` widgets (see
+     * DataTableRenderer#encodeDateFilterWidgets()), if it has any - a no-op otherwise. On every pick, copies the
+     * picker's own value into the real, always-submitted `.ui-column-filter` input and filters immediately -
+     * mirrors what the match-mode menu's own item-click handler already does, since a date pick is a deliberate
+     * commit, not a keystroke, so this bypasses the keyup-debounce path the plain input uses. The range picker's
+     * own "date1 &lt;rangeSeparator&gt; date2" text is normalized into this codebase's one multi-value wire
+     * format ("date1,date2") first.
+     * @private
+     * @param {JQuery} th the column header `<th>` whose shadow date pickers should be wired up
+     */
+    bindDatePickerFilterSync(th) {
+        var $this = this;
+        var valueInput = th.find('.ui-column-filter');
+
+        var bindOne = function(container, normalizeRange) {
+            if (!container.length) {
+                return;
+            }
+            var pickerInput = container.find('input');
+            var rangeSeparator = container.attr('data-range-separator');
+            pickerInput.off('change.dataTableDatePickerFilter').on('change.dataTableDatePickerFilter', function() {
+                // read from the captured `pickerInput`, not `this`: the underlying DatePicker plugin's own
+                // init "adopts" any pre-existing change handler on the input (to preserve a plain onchange="..."
+                // attribute) by capturing it, unbinding everything via a namespace-less .off('change'), then
+                // re-invoking the captured handler later with `this` rebound to the WIDGET INSTANCE, not the
+                // DOM element - `this.value` would then read the widget's internal Date object instead of the
+                // input's displayed string
+                var value = pickerInput.val();
+                if (normalizeRange && rangeSeparator) {
+                    value = value.split(' ' + rangeSeparator + ' ').join(',');
+                }
+                if (valueInput.val() === value) {
+                    return;
+                }
+                valueInput.val(value);
+                $this.filter();
+            });
+        };
+
+        bindOne(th.find('.ui-column-filter-date'), false);
+        bindOne(th.find('.ui-column-filter-date-range'), true);
     }
 
     /**
@@ -3062,7 +3146,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     /**
      * Converts a row specifier to the row element. The row specifier is either a row index or the row element itself.
      *
-     * __In case this DataTable has got expandable rows, please not that a new table row is created for each expanded row.__
+     * __In case this DataTable has got expandable rows, please note that a new table row is created for each expanded row.__
      * This may result in the given index not pointing to the intended row.
      * @param {PrimeFaces.widget.DataTable.RowSpecifier} r The row to convert.
      * @return {JQuery} The row, or an empty JQuery instance of no row was found.
@@ -4002,9 +4086,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Finds the meta data for a given cell.
-     * @param {JQuery} cell A cell for which to get the meta data.
-     * @return {string} The meta data of the given cell or NULL if not found
+     * Finds the metadata for a given cell.
+     * @param {JQuery} cell A cell for which to get the metadata.
+     * @return {string} The metadata of the given cell or NULL if not found
      */
     getCellMeta(cell) {
         var rowMeta = this.getRowMeta(cell.closest('tr')),
@@ -4323,7 +4407,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * When the users clicks on an editable cell, runs the AJAX request to show the inline editor for the given cell.
+     * When the user clicks on an editable cell, runs the AJAX request to show the inline editor for the given cell.
      * @private
      * @param {JQuery} cell The cell to switch to edit mode.
      */
@@ -4727,7 +4811,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             defaultLink.attr('aria-checked', 'true').parent().addClass('ui-state-active');
             // the default may require a value (the common case) even if a value-less one (e.g.
             // "is empty") was selected before the reset - sync the value input's hidden/disabled state back
-            $this.toggleFilterValueInput(th, defaultLink);
+            $this.toggleFilterValueInput(th, defaultLink, true);
             $this.updateFilterMatchModeIconState(icon, menu, defaultLink);
         });
 
@@ -5790,7 +5874,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         // see #8027
         // remember the original column index
-        // columns are removed because of grouping and mapping to the header isnt possible anymore in #updateColumnsView
+        // columns are removed because of grouping and mapping to the header is not possible anymore in #updateColumnsView
         if(this.headers && !this.hasColGroup()) {
             for(var i = 0; i < this.headers.length; i++) {
                 var header = this.headers.eq(i),
@@ -5971,7 +6055,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Computes and saves the resizable state of this DataTable, ie. which columns have got which width. May be used
+     * Computes and saves the resizable state of this DataTable, i.e., which columns have got which width. May be used
      * later to restore the current column width after an AJAX update.
      * @private
      * @param {JQuery} columnHeader Element of a column header of this DataTable.

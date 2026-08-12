@@ -47,6 +47,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -1271,7 +1272,7 @@ class DataTable051Test extends AbstractDataTableTest {
         // Act - switch to "is none of" keeping the same typed value
         dataTable.filterMatchMode("role", "notIn");
 
-        // Assert - a null role never equals any listed token, so it "is none of" the list either
+        // Assert - a null role never equals any listed token, so it "is none of" the given list either
         employeesFiltered = employees.stream()
                 .filter(e -> e.getRole() != Employee.Role.MANAGER && e.getRole() != Employee.Role.DEVELOPER)
                 .collect(Collectors.toList());
@@ -1628,6 +1629,147 @@ class DataTable051Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(49)
+    @DisplayName("DataTable: GitHub #7427 a date column's shadow calendar-picker widget shows/hides correctly "
+            + "across representative match modes")
+    void dateFilterCalendarPickerWidgetVisibility(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell reviewDateHeader = dataTable.getHeader().getCell("review date").orElseThrow();
+        WebElement th = reviewDateHeader.getWebElement();
+        WebElement plainInput = reviewDateHeader.getColumnFilter();
+        WebElement datePicker = th.findElement(By.className("ui-column-filter-date"));
+        WebElement rangePicker = th.findElement(By.className("ui-column-filter-date-range"));
+        waitUntilDisplayed(datePicker);
+
+        // Assert - "equals" is the column's default already, so no need to re-select it: single-date picker only
+        assertFalse(plainInput.isDisplayed());
+        assertTrue(datePicker.isDisplayed());
+        assertFalse(rangePicker.isDisplayed());
+
+        // Act/Assert - "between": range picker only
+        reviewDateHeader.setFilterMatchMode("between");
+        assertFalse(plainInput.isDisplayed());
+        assertFalse(datePicker.isDisplayed());
+        assertTrue(rangePicker.isDisplayed());
+
+        // Act/Assert - "lastNDays": a day count, not a date - plain (numeric) input, neither picker
+        reviewDateHeader.setFilterMatchMode("lastNDays");
+        assertTrue(plainInput.isDisplayed());
+        assertFalse(datePicker.isDisplayed());
+        assertFalse(rangePicker.isDisplayed());
+
+        // Act/Assert - "empty" ("Is Empty"): value-less - nothing is shown
+        reviewDateHeader.setFilterMatchMode("empty");
+        assertFalse(plainInput.isDisplayed());
+        assertFalse(datePicker.isDisplayed());
+        assertFalse(rangePicker.isDisplayed());
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(50)
+    @DisplayName("DataTable: GitHub #7427 picking a date via the shadow single-date calendar picker writes into "
+            + "the (still submitted) filter value and filters correctly")
+    void dateFilterCalendarPickerSingleValueInteraction(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell reviewDateHeader = dataTable.getHeader().getCell("review date").orElseThrow();
+        // "equals" is the column's default already - no need to re-select it
+        LocalDate today = LocalDate.now();
+        String todayStr = today.format(REVIEW_DATE_FORMAT);
+        WebElement pickerInput = reviewDateHeader.getWebElement()
+                .findElement(By.cssSelector(".ui-column-filter-date input"));
+        waitUntilDisplayed(pickerInput);
+
+        // Act - open the calendar overlay and click on today's cell, exactly as a real user would
+        pickerInput.click();
+        WebElement panel = PrimeSelenium.getWebDriver().findElement(By.id(pickerInput.getDomAttribute("aria-controls")));
+        WebElement todayLink = panel.findElement(By.cssSelector(".ui-datepicker-today a"));
+        PrimeSelenium.guardAjax(todayLink).click();
+
+        // Assert - the real (hidden but still submitted) filter input picked up the picker's value, and the
+        // table filtered accordingly - the header itself is untouched by a filter round trip (only the tbody
+        // re-renders for this table's default partialUpdate="true"), so the original reference is still live.
+        // getAttribute("value"), not getDomAttribute() - the latter reads the static HTML attribute, which a
+        // client-side .val() assignment never updates; only the live DOM property does.
+        WebElement realFilterInput = reviewDateHeader.getColumnFilter();
+        assertEquals(todayStr, realFilterInput.getAttribute("value"));
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> today.equals(e.getReviewDate()))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(51)
+    @DisplayName("DataTable: GitHub #7427 picking a range via the shadow range-date calendar picker normalizes "
+            + "its own \"date1 - date2\" display into the \"date1,date2\" filter value and filters correctly")
+    void dateFilterCalendarPickerRangeInteraction(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell reviewDateHeader = dataTable.getHeader().getCell("review date").orElseThrow();
+        waitUntilDisplayed(reviewDateHeader.getWebElement().findElement(By.className("ui-column-filter-date")));
+        reviewDateHeader.setFilterMatchMode("between");
+        LocalDate today = LocalDate.now();
+        String todayStr = today.format(REVIEW_DATE_FORMAT);
+        WebElement rangePickerInput = reviewDateHeader.getWebElement()
+                .findElement(By.cssSelector(".ui-column-filter-date-range input"));
+
+        // Act - open the calendar overlay and click on today's cell twice: the range picker's first click sets
+        // only the range start (and deliberately doesn't fire a filter yet - a range with just one end set is
+        // not submitted, see DatePicker's own fireDateSelectEvent()), so a second click on a date that's not
+        // before the start closes the range - clicking the same "today" cell again keeps this test independent
+        // of the calendar's current month layout, forming the (valid) single-day range [today, today]. The
+        // panel re-renders after each pick (even the first, incomplete one), so the "today" cell must be
+        // re-found in between.
+        rangePickerInput.click();
+        WebElement panel = PrimeSelenium.getWebDriver().findElement(By.id(rangePickerInput.getDomAttribute("aria-controls")));
+        panel.findElement(By.cssSelector(".ui-datepicker-today a")).click();
+        panel = PrimeSelenium.getWebDriver().findElement(By.id(rangePickerInput.getDomAttribute("aria-controls")));
+        PrimeSelenium.guardAjax(panel.findElement(By.cssSelector(".ui-datepicker-today a"))).click();
+
+        // Assert - normalized to the comma-joined wire format on the real filter input - the header itself is
+        // untouched by a filter round trip (only the tbody re-renders for this table's default
+        // partialUpdate="true"), so the original reference is still live. getAttribute("value"), not
+        // getDomAttribute() - the latter reads the static HTML attribute, which a client-side .val()
+        // assignment never updates; only the live DOM property does.
+        WebElement realFilterInput = reviewDateHeader.getColumnFilter();
+        assertEquals(todayStr + "," + todayStr, realFilterInput.getAttribute("value"));
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> today.equals(e.getReviewDate()))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(52)
+    @DisplayName("DataTable: GitHub #7427 time/datetime columns also render a shadow calendar picker for a "
+            + "single-value match mode, timeOnly for \"time\"")
+    void timeAndDatetimeFilterCalendarPickerWidgetVisibility(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell checkInTimeHeader = dataTable.getHeader().getCell("check-in time").orElseThrow();
+        HeaderCell lastLoginHeader = dataTable.getHeader().getCell("last login").orElseThrow();
+        waitUntilDisplayed(checkInTimeHeader.getWebElement().findElement(By.className("ui-column-filter-date")));
+
+        // Assert - both columns declare filterMatchMode="equals" as their default already (a single-value
+        // mode), so there's no need to re-select it
+        assertFalse(checkInTimeHeader.getColumnFilter().isDisplayed());
+        assertTrue(checkInTimeHeader.getWebElement().findElement(By.className("ui-column-filter-date")).isDisplayed());
+
+        assertFalse(lastLoginHeader.getColumnFilter().isDisplayed());
+        assertTrue(lastLoginHeader.getWebElement().findElement(By.className("ui-column-filter-date")).isDisplayed());
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         assertEquals("wgtTable", cfg.getString("widgetVar"));
@@ -1635,6 +1777,13 @@ class DataTable051Test extends AbstractDataTableTest {
 
     private void assertEmployeeRows(DataTable dataTable, List<Employee> employees) {
         assertRows(dataTable, employees, Employee::getId);
+    }
+
+    // the shadow DatePicker widgets (see DataTableRenderer#encodeDateFilterWidgets()) initialize as part of the
+    // page's own client-side widget setup, which - unlike an AJAX round trip - has no guard to wait on; give it
+    // a moment on a freshly-loaded page rather than asserting immediately.
+    private void waitUntilDisplayed(WebElement element) {
+        PrimeSelenium.waitGui().until(d -> element.isDisplayed());
     }
 
     private static LocalDate startOfWeek(LocalDate date) {

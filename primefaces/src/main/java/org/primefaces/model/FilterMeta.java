@@ -158,7 +158,7 @@ public class FilterMeta implements Serializable {
      * silently discarded, since {@link UITable#updateFilterByValuesWithFilterRequest} unconditionally rebuilds
      * the constraint from the submitted match mode whenever a column's match mode becomes selectable at all
      * ({@code isMatchModeSelectable()} - i.e. non-empty {@code matchModeOptions}). Both cases return {@code null}.
-     * Otherwise the type is auto-derived from the column's actual Java type - see
+     * Otherwise, the type is auto-derived from the column's actual Java type - see
      * {@link #resolveColumnJavaType(FacesContext, UITable, UIColumn)}. The {@code "numeric"}/{@code "date"}/
      * {@code "time"}/{@code "datetime"} presets' comparators (equals/less/greater/between) compare via
      * {@link org.primefaces.model.filter.ComparableFilterConstraint}, which requires the raw, still-a-{@code String}
@@ -214,14 +214,15 @@ public class FilterMeta implements Serializable {
                 return null;
             }
 
+            // deliberately not gated on tableValueVE.getType(elContext): for a plain JSF tag-attribute binding
+            // like value="#{bean.customers}", that call unreliably returns null in practice (observed even when
+            // the expression resolves to a real, non-empty list) - going straight for the EL AST's (base,
+            // property) pair and reflecting on the getter's own generic signature, exactly as
+            // LangUtils#getTypeFromCollectionProperty already does for BaseCalendarRenderer#resolveDateType(),
+            // sidesteps that unreliability entirely.
             ELContext elContext = context.getELContext();
-            Class<?> tableValueType = tableValueVE.getType(elContext);
-            if (tableValueType == null || !Collection.class.isAssignableFrom(tableValueType)) {
-                return null;
-            }
-
             ValueReference valueReference = ValueExpressionAnalyzer.getReference(elContext, tableValueVE);
-            if (valueReference == null) {
+            if (valueReference == null || valueReference.getBase() == null || valueReference.getProperty() == null) {
                 return null;
             }
 

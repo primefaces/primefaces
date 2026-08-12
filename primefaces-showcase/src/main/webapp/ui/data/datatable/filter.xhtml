@@ -24,7 +24,7 @@
                 comparator from a dropdown next to the filter input at runtime: the classic string operators
                 (contains, starts with, ends with, equals, and their negations), the value-less "is (not) empty"
                 and "is (not) null" (the filter input hides itself for these), "matches regex", and "in list" /
-                "not in list" (comma-separated, e.g., <code>Acme, Globex, Initech</code>). The <em>Activity</em>
+                "not in list" (comma-separated). The <em>Activity</em>
                 column uses <code>filterValueType="numeric"</code>: the comparators (equals, not equals,
                 less/greater than (or equal to)), "(not) between" (typed as <code>min,max</code>), the value-less
                 "is (not) null", and "(not) in list". See the "Filter Match Mode Presets" card below for every
@@ -77,11 +77,7 @@
                         <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.representative.name}" />
                     </p:column>
 
-                    <p:column field="date" headerText="Join Date" filterMatchMode="between">
-                        <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" />
-                        </f:facet>
-                    </p:column>
+                    <p:column field="date" headerText="Join Date" filterMatchMode="equals" converter="#{dtFilterView.dateConverter}"/>
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">
@@ -136,11 +132,7 @@
                         <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.representative.name}" />
                     </p:column>
 
-                    <p:column field="date" headerText="Join Date" filterMatchMode="between">
-                        <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()"  />
-                        </f:facet>
-                    </p:column>
+                    <p:column field="date" headerText="Join Date" filterMatchMode="equals" converter="#{dtFilterView.dateConverter}"/>
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">
@@ -244,11 +236,7 @@
                         <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.representative.name}" />
                     </p:column>
 
-                    <p:column field="date" headerText="Join Date" filterMatchMode="between">
-                        <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" />
-                        </f:facet>
-                    </p:column>
+                    <p:column field="date" headerText="Join Date" filterMatchMode="equals" converter="#{dtFilterView.dateConverter}"/>
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">

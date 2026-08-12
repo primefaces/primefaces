@@ -60,7 +60,7 @@ public interface UIColumn {
     Pattern STATIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+(?:\\.|\\[')([\\w.]+)(?:'\\])?}$");
 
     /**
-     * Used to extract UIColumn#field if not defined. Supports strictly two kind of expressions:
+     * Used to extract UIColumn#field if not defined. Supports strictly two kinds of expressions:
      *
      * #{car.name}: name (for static columns)
      * #{car[column.property]}: name (for dynamic columns)

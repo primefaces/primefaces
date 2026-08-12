@@ -50,7 +50,7 @@ public class CustomerService {
 
     private static final String[] TAG_POOL = {"vip", "new", "renewal", "at-risk", "champion", "enterprise"};
 
-    private Random random = new SecureRandom();
+    private final Random random = new SecureRandom();
     private Country[] countries;
     private Representative[] representatives;
     private String[] firstNames;
