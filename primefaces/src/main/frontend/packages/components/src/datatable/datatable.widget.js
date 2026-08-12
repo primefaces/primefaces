@@ -754,7 +754,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         $(document.body).children(PrimeFaces.escapeClientId(menuId)).remove();
         menu.appendTo(document.body);
 
+        var closeTimeout = null;
+
         var closeMenu = function() {
+            clearTimeout(closeTimeout);
             menu.addClass('ui-helper-hidden');
             icon.attr('aria-expanded', 'false');
         };
@@ -769,6 +772,19 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             icon.attr('aria-expanded', 'true');
             menu.find('.ui-menuitem-link[aria-checked="true"]').trigger('focus');
         };
+
+        // close once the mouse leaves both the icon and the menu - a short delay (rather than closing
+        // immediately on the icon's mouseleave) tolerates the moment the cursor crosses the gap between them
+        var scheduleClose = function() {
+            clearTimeout(closeTimeout);
+            closeTimeout = setTimeout(closeMenu, 300);
+        };
+        var cancelScheduledClose = function() {
+            clearTimeout(closeTimeout);
+        };
+        icon.add(menu).off('.dataTableFilterModeHover')
+            .on('mouseleave.dataTableFilterModeHover', scheduleClose)
+            .on('mouseenter.dataTableFilterModeHover', cancelScheduledClose);
 
         icon.off('.dataTableFilterMode').on('click.dataTableFilterMode', function(e) {
             e.preventDefault();
@@ -878,6 +894,34 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 e.stopPropagation();
             });
         }
+
+        this.bindNumericFilterRestriction(filter);
+    }
+
+    /**
+     * For a numeric column's filter input (see `data-filter-value-type` written by
+     * `DataTableRenderer#encodeFilterInput()`), rejects non-numeric-looking input as the user types or pastes.
+     * Validates the whole resulting value on the `input` event (rather than blocking individual keystrokes),
+     * so paste/drag/IME composition are covered automatically without extra wiring - the same technique
+     * `keyfilter.widget.js`'s `inputRegEx` mode uses. A single static character class covers every numeric
+     * match mode: a plain number, `"min,max"` (between), and `"v1, v2, ..."` (in list) all fit `[\d\-.,\s]`.
+     * @private
+     * @param {JQuery} filter INPUT element of the text filter.
+     */
+    bindNumericFilterRestriction(filter) {
+        if (filter.data('filterValueType') !== 'numeric') {
+            return;
+        }
+
+        var lastValidValue = filter.val();
+        filter.on('input.dataTableNumericFilter', function() {
+            if (/^[\d\-.,\s]*$/.test(this.value)) {
+                lastValidValue = this.value;
+            }
+            else {
+                this.value = lastValidValue;
+            }
+        });
     }
 
     /**

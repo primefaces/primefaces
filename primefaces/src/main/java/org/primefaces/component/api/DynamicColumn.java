@@ -170,8 +170,8 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public String getFilterMatchModeOptions() {
-        return columns.getFilterMatchModeOptions();
+    public String getFilterValueType() {
+        return columns.getFilterValueType();
     }
 
     @Override

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 /**
  * Normalizes multivalued field/filter shapes into a uniform {@link Collection}, shared by
- * {@link InFilterConstraint} and the {@code filterMatchModeOptions="array"} preset's constraints.
+ * {@link InFilterConstraint} and the {@code filterValueType="array"} preset's constraints.
  */
 final class CollectionFilterUtils {
 

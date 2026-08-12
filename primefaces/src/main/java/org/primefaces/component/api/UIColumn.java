@@ -179,7 +179,7 @@ public interface UIColumn {
 
     String getFilterMatchMode();
 
-    String getFilterMatchModeOptions();
+    String getFilterValueType();
 
     int getFilterMaxLength();
 

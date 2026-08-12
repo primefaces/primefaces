@@ -812,9 +812,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         // the filter match-mode picker (icon + overlay menu) sits next to the sort icons in the header,
         // rather than as a dropdown competing with the filter value input for space in a narrow column
         if (component.isColumnFilterable(context, column)) {
-            List<MatchMode> matchModeOptions = MatchMode.parseOptions(column.getFilterMatchModeOptions());
+            String filterValueType = FilterMeta.resolveFilterValueType(context, component, column);
+            List<MatchMode> matchModeOptions = MatchMode.parseOptions(filterValueType);
             if (!matchModeOptions.isEmpty()) {
-                encodeFilterMatchModeMenu(context, component, column, matchModeOptions);
+                encodeFilterMatchModeMenu(context, component, column, matchModeOptions, filterValueType);
             }
         }
     }
@@ -828,7 +829,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
      * clipping.
      */
     protected void encodeFilterMatchModeMenu(FacesContext context, DataTable component, UIColumn column,
-            List<MatchMode> matchModeOptions) throws IOException {
+            List<MatchMode> matchModeOptions, String filterValueType) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
@@ -869,11 +870,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
         // "date"/"time"/"datetime" render the 6 shared comparators as "Is"/"Before"/"After"/...; "enum" renders
         // equals/notEquals/in/notIn as "Is"/"Is Not"/"Is Any Of"/"Is None Of" - see resolveMatchModeMessageKey()
-        String rawMatchModeOptions = column.getFilterMatchModeOptions();
-        String trimmedMatchModeOptions = rawMatchModeOptions == null ? null : rawMatchModeOptions.trim();
-        boolean dateStyleLabels = "date".equals(trimmedMatchModeOptions) || "time".equals(trimmedMatchModeOptions)
-                || "datetime".equals(trimmedMatchModeOptions);
-        boolean enumStyleLabels = "enum".equals(trimmedMatchModeOptions);
+        String trimmedFilterValueType = filterValueType == null ? null : filterValueType.trim();
+        boolean dateStyleLabels = "date".equals(trimmedFilterValueType) || "time".equals(trimmedFilterValueType)
+                || "datetime".equals(trimmedFilterValueType);
+        boolean enumStyleLabels = "enum".equals(trimmedFilterValueType);
 
         writer.startElement("ul", null);
         writer.writeAttribute("id", menuId, null);
@@ -944,11 +944,12 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         Object filterValue = findFilterValueForColumn(context, component, column, filterId);
         String filterStyleClass = column.getFilterStyleClass();
 
-        List<MatchMode> matchModeOptions = MatchMode.parseOptions(column.getFilterMatchModeOptions());
+        String filterValueType = FilterMeta.resolveFilterValueType(context, component, column);
+        List<MatchMode> matchModeOptions = MatchMode.parseOptions(filterValueType);
         MatchMode selected = matchModeOptions.isEmpty() ? null : findFilterMatchModeForColumn(component, column, matchModeOptions);
         // the match-mode picker itself (icon + overlay menu) is rendered in the header, next to the sort icons -
         // see encodeFilterMatchModeMenu() - so this filter row is always just the value input, full width
-        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected);
+        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected, filterValueType);
     }
 
     /**
@@ -1001,7 +1002,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     }
 
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
-        String filterId, String filterStyleClass, Object filterValue, MatchMode selected) throws IOException {
+        String filterId, String filterStyleClass, Object filterValue, MatchMode selected, String filterValueType) throws IOException {
 
         boolean requiresValue = selected == null || selected.requiresValue();
         String placeholderHint = selected == null ? null : selected.placeholderHint();
@@ -1014,6 +1015,8 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             filterStyleClass += " ui-helper-hidden";
         }
 
+        boolean numeric = "numeric".equals(filterValueType == null ? null : filterValueType.trim());
+
         writer.startElement("input", null);
         writer.writeAttribute("id", filterId, null);
         writer.writeAttribute("name", filterId, null);
@@ -1021,6 +1024,14 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("class", filterStyleClass, null);
         writer.writeAttribute("value", filterValue, null);
         writer.writeAttribute("autocomplete", "off", null);
+
+        if (numeric) {
+            // read by datatable.widget.js to reject non-numeric-looking input as the user types/pastes - a
+            // static character class covers every numeric match mode, from a plain number up to "min,max"
+            // (between) and "v1, v2, ..." (in list)
+            writer.writeAttribute("data-filter-value-type", "numeric", null);
+            writer.writeAttribute("inputmode", "decimal", null);
+        }
 
         if (!requiresValue) {
             writer.writeAttribute("disabled", "disabled", null);

@@ -22,41 +22,57 @@
                 <!-- narrow, fixed-width column (p:dataTable defaults to table-layout: fixed) mirrors the
                      showcase "Activity" column that exposed: the filter match-mode <select>
                      and value <input> must both stay usable side by side even when space is tight. -->
-                <p:column headerText="ID" field="id" filterMatchMode="gt" filterMatchModeOptions="numeric"
+                <p:column headerText="ID" field="id" filterMatchMode="gt" filterValueType="numeric"
                           converter="jakarta.faces.Integer" style="width:120px"/>
 
-                <p:column headerText="last name" field="lastName" filterMatchMode="contains" filterMatchModeOptions="text"/>
+                <p:column headerText="last name" field="lastName" filterMatchMode="contains" filterValueType="text"/>
 
                 <!-- nullable field (Alfred Paul + the two synthetic rows have no salary) so "is (not) null" is
                      distinguishable from "(not) between"/"(not) in list" -->
-                <p:column headerText="salary" field="salary" filterMatchMode="gt" filterMatchModeOptions="numeric"
+                <p:column headerText="salary" field="salary" filterMatchMode="gt" filterValueType="numeric"
                           converter="jakarta.faces.Integer"/>
 
                 <!-- every mode in the "boolean" preset is value-less (true/false/is null/is not null) -->
-                <p:column headerText="active" field="active" filterMatchModeOptions="boolean"/>
+                <p:column headerText="active" field="active" filterValueType="boolean"/>
 
                 <!-- explicit fixed-pattern converter (not the locale-dependent default) so filter values typed
                      as free text parse unambiguously -->
-                <p:column headerText="review date" field="reviewDate" filterMatchMode="equals" filterMatchModeOptions="date"
+                <p:column headerText="review date" field="reviewDate" filterMatchMode="equals" filterValueType="date"
                           converter="#{dataTable051.reviewDateConverter}"/>
 
                 <!-- bare time-of-day value (LocalTime, no date component) - "time" drops every day/week/month/...
                      predicate the "date" preset has and adds last/next N minutes/hours instead -->
-                <p:column headerText="check-in time" field="checkInTime" filterMatchMode="equals" filterMatchModeOptions="time"
+                <p:column headerText="check-in time" field="checkInTime" filterMatchMode="equals" filterValueType="time"
                           converter="#{dataTable051.checkInTimeConverter}"/>
 
                 <!-- full date+time value (LocalDateTime) - "datetime" is every "date" mode plus last/next N
                      minutes/hours for time-of-day precision -->
-                <p:column headerText="last login" field="lastLoginDateTime" filterMatchMode="equals" filterMatchModeOptions="datetime"
+                <p:column headerText="last login" field="lastLoginDateTime" filterMatchMode="equals" filterValueType="datetime"
                           converter="#{dataTable051.lastLoginDateTimeConverter}"/>
 
                 <!-- plain Java enum (Employee.Role) - no converter needed: EqualsFilterConstraint already
                      special-cases enum-versus-typed-string comparison via toString() -->
-                <p:column headerText="role" field="role" filterMatchMode="equals" filterMatchModeOptions="enum"/>
+                <p:column headerText="role" field="role" filterMatchMode="equals" filterValueType="enum"/>
 
                 <!-- multivalued field (List<String>) - "array": contains/does not contain (single value),
                      contains any/all/none (comma-separated list), is (not) empty -->
-                <p:column headerText="skills" field="skills" filterMatchMode="arrayContains" filterMatchModeOptions="array"/>
+                <p:column headerText="skills" field="skills" filterMatchMode="arrayContains" filterValueType="array"/>
+
+                <!-- no filterMatchMode/filterValueType at all - the "text" preset must be auto-derived from
+                     the field's own Java type (String) -->
+                <p:column headerText="first name" field="firstName"/>
+
+                <!-- a custom filter facet with no filterMatchMode/filterValueType either - even though
+                     birthDate (LocalDate) would otherwise auto-derive to "date", the facet's presence must
+                     suppress the picker entirely, since the page author already built a bespoke filter UI -->
+                <p:column headerText="birth date" field="birthDate">
+                    <f:facet name="filter">
+                        <h:selectOneMenu onchange="PF('wgtTable').filter()">
+                            <f:selectItem itemLabel="All" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Custom" itemValue="custom"/>
+                        </h:selectOneMenu>
+                    </f:facet>
+                </p:column>
 
             </p:dataTable>
 

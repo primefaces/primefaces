@@ -69,7 +69,7 @@ class IsEmptyFilterConstraintTest {
 
     @Test
     void testIsMatching_EmptyCollection() {
-        // "array" filterMatchModeOptions preset
+        // "array" filterValueType preset
         assertTrue(constraint.isMatching(null, List.of(), "ignored", null));
     }
 

@@ -71,7 +71,7 @@ public class HeaderCell extends Cell {
 
     /**
      * Gets the filter match-mode picker trigger icon for this column, if the column defines
-     * {@code filterMatchModeOptions}. Clicking it opens an overlay menu listing the available match modes.
+     * {@code filterValueType}. Clicking it opens an overlay menu listing the available match modes.
      *
      * @return the WebElement representing the trigger icon button, or {@code null} if not present
      */
@@ -92,7 +92,7 @@ public class HeaderCell extends Cell {
      * Gets the currently selected match-mode operator for this column, e.g. "gt" or "equals".
      *
      * @return the current value of the hidden input carrying the selected match mode, or {@code null} if the
-     *         column does not define {@code filterMatchModeOptions}
+     *         column does not define {@code filterValueType}
      */
     public String getColumnFilterMatchModeValue() {
         if (getWebElement() == null) {

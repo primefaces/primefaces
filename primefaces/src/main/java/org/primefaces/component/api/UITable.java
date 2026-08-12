@@ -80,7 +80,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         // build columns filterBy
         forEachColumn(c -> {
-            FilterMeta meta = FilterMeta.of(context, getVar(), c, isFilterNormalize());
+            FilterMeta meta = FilterMeta.of(context, this, c, isFilterNormalize());
             if (meta != null) {
                 filterBy.put(meta.getColumnKey(), meta);
             }
@@ -182,7 +182,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         }
 
         // lazy init - happens in cases where the column is initially not rendered
-        FilterMeta f = FilterMeta.of(context, getVar(), column, isFilterNormalize());
+        FilterMeta f = FilterMeta.of(context, this, column, isFilterNormalize());
         if (f != null) {
             filterBy.put(f.getColumnKey(), f);
         }

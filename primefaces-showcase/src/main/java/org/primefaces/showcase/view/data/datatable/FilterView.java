@@ -57,7 +57,7 @@ public class FilterView implements Serializable {
 
     private List<Customer> customers3;
 
-    // demo data for the "Filter Match Mode Presets" card - one column per filterMatchModeOptions preset
+    // demo data for the "Filter Match Mode Presets" card - one column per filterValueType preset
     private List<Customer> customersPresets;
 
     private List<Customer> filteredCustomers1;

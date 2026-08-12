@@ -43,7 +43,7 @@ public class Customer implements Serializable {
     private int activity;
     private Representative representative;
 
-    // demo fields for the "boolean"/"array"/"time"/"datetime" filterMatchModeOptions presets
+    // demo fields for the "boolean"/"array"/"time"/"datetime" filterValueType presets
     private Boolean vip;
     private List<String> tags;
     private LocalTime checkInTime;

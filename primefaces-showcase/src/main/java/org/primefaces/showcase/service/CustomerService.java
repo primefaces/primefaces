@@ -117,7 +117,7 @@ public class CustomerService {
         for (int i = 0; i < number; i++) {
             Customer customer = new Customer(i + 1000, getName(), getCompany(), getCountry(), getDate(),
                     CustomerStatus.random(), getActivity(), getRepresentative());
-            // demo fields for the "boolean"/"array"/"time"/"datetime" filterMatchModeOptions presets
+            // demo fields for the "boolean"/"array"/"time"/"datetime" filterValueType presets
             customer.setVip(getVip());
             customer.setTags(getTags());
             customer.setCheckInTime(getCheckInTime());

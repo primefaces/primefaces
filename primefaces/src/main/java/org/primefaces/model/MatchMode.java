@@ -106,7 +106,7 @@ public enum MatchMode {
          */
     ALL("all", false),
 
-    // -- relative-date predicates for filterMatchModeOptions="date", each computed against LocalDate.now() at
+    // -- relative-date predicates for filterValueType="date", each computed against LocalDate.now() at
     // the moment the filter runs - value-less, like IS_EMPTY/IS_TRUE/etc.
     IS_TODAY("today", false),
     IS_YESTERDAY("yesterday", false),
@@ -189,7 +189,7 @@ public enum MatchMode {
     GLOBAL("global");
 
     /**
-     * Preset of match modes offered for a numeric {@code filterMatchModeOptions="numeric"} column filter,
+     * Preset of match modes offered for a numeric {@code filterValueType="numeric"} column filter,
      * letting the user pick a comparator (=, !=, &lt;, &gt;, &lt;=, &gt;=), plus "(not) between", "is (not) null"
      * and "(not) in list".
      */
@@ -198,7 +198,7 @@ public enum MatchMode {
             BETWEEN, NOT_BETWEEN, IS_NULL, NOT_NULL, IN, NOT_IN);
 
     /**
-     * Preset of match modes offered for a {@code filterMatchModeOptions="text"} column filter: the classic string
+     * Preset of match modes offered for a {@code filterValueType="text"} column filter: the classic string
      * operators plus "is (not) empty", "is (not) null", "matches regex" and "(not) in list".
      */
     public static final List<MatchMode> TEXT_OPTIONS = List.of(
@@ -206,7 +206,7 @@ public enum MatchMode {
             IS_EMPTY, NOT_EMPTY, IS_NULL, NOT_NULL, MATCHES_REGEX, IN, NOT_IN);
 
     /**
-     * Preset of match modes offered for a {@code filterMatchModeOptions="date"} column filter: the comparators
+     * Preset of match modes offered for a {@code filterValueType="date"} column filter: the comparators
      * (labeled "Is"/"Is Not"/"Before"/"Before or On"/"After"/"After or On" for this preset specifically - see
      * {@link org.primefaces.component.datatable.DataTableRenderer}), "(not) between", "is (not) empty", a set of
      * relative-date predicates (today/yesterday/tomorrow, this/last/next week/month/quarter/year), and
@@ -223,14 +223,14 @@ public enum MatchMode {
             LAST_N_DAYS, NEXT_N_DAYS, RELATIVE_DATE);
 
     /**
-     * Preset of match modes offered for a {@code filterMatchModeOptions="boolean"} column filter: "All" (no
+     * Preset of match modes offered for a {@code filterValueType="boolean"} column filter: "All" (no
      * filter, the default), "true", "false", "is null" and "is not null" - every option is value-less, so the
      * filter value {@code <input>} stays hidden no matter which is selected.
      */
     public static final List<MatchMode> BOOLEAN_OPTIONS = List.of(ALL, IS_TRUE, IS_FALSE, IS_NULL, NOT_NULL);
 
     /**
-     * Preset of match modes offered for a {@code filterMatchModeOptions="enum"} column filter (a Java
+     * Preset of match modes offered for a {@code filterValueType="enum"} column filter (a Java
      * {@code enum} value): "is"/"is not" (labeled "Is"/"Is Not" for this preset specifically - see
      * {@link org.primefaces.component.datatable.DataTableRenderer}), "is any of"/"is none of" (labeled
      * "Is Any Of"/"Is None Of", a multi-value match against {@link #IN}/{@link #NOT_IN}), and "is (not) empty".
@@ -240,7 +240,7 @@ public enum MatchMode {
     public static final List<MatchMode> ENUM_OPTIONS = List.of(EQUALS, NOT_EQUALS, IN, NOT_IN, IS_EMPTY, NOT_EMPTY);
 
     /**
-     * Preset of match modes offered for a {@code filterMatchModeOptions="array"} column filter (a multivalue
+     * Preset of match modes offered for a {@code filterValueType="array"} column filter (a multivalue
      * field, e.g., a {@code List<String>} of tags): "contains"/"does not contain" (a single value),
      * "contains any"/"contains all"/"contains none" (a comma-separated list of values), and "is (not) empty".
          */
@@ -248,7 +248,7 @@ public enum MatchMode {
             ARRAY_CONTAINS, ARRAY_NOT_CONTAINS, CONTAINS_ANY, CONTAINS_ALL, CONTAINS_NONE, IS_EMPTY, NOT_EMPTY);
 
     /**
-     * Preset of match modes offered for a {@code filterMatchModeOptions="time"} column filter (a bare,
+     * Preset of match modes offered for a {@code filterValueType="time"} column filter (a bare,
      * date-less time-of-day, e.g., {@code LocalTime}): the comparators, "(not) between", "is (not) empty", and
      * "last/next N minutes/hours". No day/week/month/... predicates - a bare time-of-day has no date component
      * for those to apply to.
@@ -259,7 +259,7 @@ public enum MatchMode {
             LAST_N_MINUTES, NEXT_N_MINUTES, LAST_N_HOURS, NEXT_N_HOURS);
 
     /**
-     * Preset of match modes offered for a {@code filterMatchModeOptions="datetime"} column filter (a full
+     * Preset of match modes offered for a {@code filterValueType="datetime"} column filter (a full
      * date+time value, e.g., {@code LocalDateTime}): every {@link #DATE_OPTIONS} mode (the date component still
      * has calendar-day/week/month/... meaning) plus "last/next N minutes/hours" for time-of-day precision.
          */
@@ -301,7 +301,7 @@ public enum MatchMode {
 
     /**
      * The mathematical symbol for this match mode (e.g., {@code "<="} for {@link #LESS_THAN_EQUALS}), if it has one.
-     * Comparison operators shared by the {@code numeric} and {@code date} {@code filterMatchModeOptions} presets
+     * Comparison operators shared by the {@code numeric} and {@code date} {@code filterValueType} presets
      * have a symbol; string-matching operators (contains, starts with, ...) do not, as they have no natural
      * mathematical notation.
      *
@@ -370,19 +370,21 @@ public enum MatchMode {
      * <p>
      * Accepts either one of the shorthand keywords {@code "numeric"}, {@code "text"}, {@code "date"},
      * {@code "boolean"}, {@code "time"}, {@code "datetime"}, {@code "enum"} or {@code "array"}, which expand to
-     * a curated preset of
-     * {@link MatchMode}s, or an explicit comma separated list of match mode operators
-     * (e.g., {@code "equals,notEquals,lt,gt,lte,gte"}).
+     * a curated preset of {@link MatchMode}s; an explicit comma separated list of match mode operators
+     * (e.g., {@code "equals,notEquals,lt,gt,lte,gte"}); or {@code "none"}, which opts a column out of the
+     * dropdown even though its {@code filterValueType} would otherwise be auto-derived from its Java type.
      *
-     * @param filterMatchModeOptions the value of the column's {@code filterMatchModeOptions} attribute
-     * @return the resolved, ordered list of selectable match modes; empty if {@code filterMatchModeOptions} is blank
+     * @param filterValueType the value of the column's {@code filterValueType} attribute
+     * @return the resolved, ordered list of selectable match modes; empty if {@code filterValueType} is blank or {@code "none"}
      */
-    public static List<MatchMode> parseOptions(String filterMatchModeOptions) {
-        if (LangUtils.isBlank(filterMatchModeOptions)) {
+    public static List<MatchMode> parseOptions(String filterValueType) {
+        if (LangUtils.isBlank(filterValueType)) {
             return Collections.emptyList();
         }
 
-        switch (filterMatchModeOptions.trim()) {
+        switch (filterValueType.trim()) {
+            case "none":
+                return Collections.emptyList();
             case "numeric":
                 return NUMERIC_OPTIONS;
             case "text":
@@ -400,7 +402,7 @@ public enum MatchMode {
             case "datetime":
                 return DATETIME_OPTIONS;
             default:
-                return Arrays.stream(filterMatchModeOptions.split(","))
+                return Arrays.stream(filterValueType.split(","))
                         .map(String::trim)
                         .filter(LangUtils::isNotBlank)
                         .map(MatchMode::of)

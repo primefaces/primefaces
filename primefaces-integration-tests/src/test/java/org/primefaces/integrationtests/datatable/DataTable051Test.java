@@ -52,10 +52,11 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * DataTable: filterMatchModeOptions lets the end user pick a filter comparator
+ * DataTable: filterValueType lets the end user pick a filter comparator
  * (e.g., equals, not equals, less than, greater than) at runtime from a dropdown next to the filter input.
  */
 @Tag("DataTable-filter")
@@ -122,7 +123,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
-    @DisplayName("DataTable: numeric filterMatchModeOptions defaults to the column's filterMatchMode")
+    @DisplayName("DataTable: numeric filterValueType defaults to the column's filterMatchMode")
     void numericFilterDefaultMatchMode(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -139,7 +140,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(2)
-    @DisplayName("DataTable: numeric filterMatchModeOptions lets the user switch the comparator")
+    @DisplayName("DataTable: numeric filterValueType lets the user switch the comparator")
     void numericFilterSwitchMatchMode(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -171,7 +172,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(3)
-    @DisplayName("DataTable: numeric filterMatchModeOptions comparator survives an unrelated AJAX update")
+    @DisplayName("DataTable: numeric filterValueType comparator survives an unrelated AJAX update")
     void numericFilterMatchModeSurvivesUpdate(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -218,7 +219,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(5)
-    @DisplayName("DataTable: text filterMatchModeOptions defaults to the column's filterMatchMode")
+    @DisplayName("DataTable: text filterValueType defaults to the column's filterMatchMode")
     void textFilterDefaultMatchMode(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -237,7 +238,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(6)
-    @DisplayName("DataTable: text filterMatchModeOptions lets the user switch the comparator")
+    @DisplayName("DataTable: text filterValueType lets the user switch the comparator")
     void textFilterSwitchMatchMode(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -267,7 +268,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(7)
-    @DisplayName("DataTable: numeric and text filterMatchModeOptions both use spelled-out labels in the "
+    @DisplayName("DataTable: numeric and text filterValueType both use spelled-out labels in the "
             + "filter match-mode overlay menu")
     void matchModeLabels(Page page) {
         // Arrange
@@ -961,7 +962,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(28)
-    @DisplayName("DataTable: date filterMatchModeOptions labels the shared comparators \"Is\"/\"Before\"/"
+    @DisplayName("DataTable: date filterValueType labels the shared comparators \"Is\"/\"Before\"/"
             + "\"After\" instead of the numeric preset's \"Equals\"/\"Less Than\"/\"Greater Than\"")
     void dateFilterMatchModeLabels(Page page) {
         // Arrange
@@ -986,7 +987,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(29)
-    @DisplayName("DataTable: time filterMatchModeOptions (bare LocalTime) defaults to the column's "
+    @DisplayName("DataTable: time filterValueType (bare LocalTime) defaults to the column's "
             + "filterMatchMode")
     void timeFilterDefaultMatchMode(Page page) {
         // Arrange - read Mike Master's (id 1, row 0) checkInTime straight from its rendered cell rather than
@@ -1009,7 +1010,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(30)
-    @DisplayName("DataTable: datetime filterMatchModeOptions (full LocalDateTime) defaults to the "
+    @DisplayName("DataTable: datetime filterValueType (full LocalDateTime) defaults to the "
             + "column's filterMatchMode")
     void datetimeFilterDefaultMatchMode(Page page) {
         // Arrange - same rationale as timeFilterDefaultMatchMode above: read the rendered value back rather
@@ -1186,7 +1187,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(34)
-    @DisplayName("DataTable: time filterMatchModeOptions drops every calendar-day/week/month/... "
+    @DisplayName("DataTable: time filterValueType drops every calendar-day/week/month/... "
             + "predicate the date preset has but keeps the shared comparators and adds last/next N minutes/hours; "
             + "datetime keeps every date predicate as well")
     void timeAndDatetimePresetLabels(Page page) {
@@ -1316,7 +1317,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(38)
-    @DisplayName("DataTable: enum filterMatchModeOptions labels the shared comparators \"Is\"/\"Is Not\" "
+    @DisplayName("DataTable: enum filterValueType labels the shared comparators \"Is\"/\"Is Not\" "
             + "and In/NotIn as \"Is Any Of\"/\"Is None Of\" instead of the generic \"Equals\"/\"In List\"/\"Not In List\"")
     void enumFilterMatchModeLabels(Page page) {
         // Arrange
@@ -1457,7 +1458,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(43)
-    @DisplayName("DataTable: array filterMatchModeOptions labels: Contains/Does Not Contain/Contains "
+    @DisplayName("DataTable: array filterValueType labels: Contains/Does Not Contain/Contains "
             + "Any/Contains All/Contains None, plus the generic Is Empty/Is Not Empty")
     void arrayFilterMatchModeLabels(Page page) {
         // Arrange
@@ -1527,7 +1528,7 @@ class DataTable051Test extends AbstractDataTableTest {
             + "comparing against raw list order rather than the actual configured default previously fooled the "
             + "icon into starting out filled")
     void filterMatchModeIconActiveStateWithNonFirstDefault(Page page) {
-        // Arrange - the "ID" column is configured with filterMatchMode="gt", filterMatchModeOptions="numeric",
+        // Arrange - the "ID" column is configured with filterMatchMode="gt", filterValueType="numeric",
         // whose first entry is "equals" - a mismatch that used to spuriously fill the icon on a fresh load
         DataTable dataTable = page.dataTable;
         HeaderCell idHeader = dataTable.getHeader().getCell("ID").get();
@@ -1552,6 +1553,77 @@ class DataTable051Test extends AbstractDataTableTest {
         assertEquals("gt", idHeader.getColumnFilterMatchModeValue());
         icon = idHeader.getColumnFilterMatchModeIcon();
         assertFalse(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(46)
+    @DisplayName("DataTable: GitHub #7427 a column with no filterMatchMode/filterValueType at all still gets a "
+            + "filter match-mode picker by default, auto-derived from its Java type - here a plain String field "
+            + "auto-derives the \"text\" preset")
+    void filterValueTypeAutoDerivedText(Page page) {
+        // Arrange - the "first name" column declares neither filterMatchMode nor filterValueType
+        DataTable dataTable = page.dataTable;
+        HeaderCell firstNameHeader = dataTable.getHeader().getCell("first name").get();
+
+        // Assert - a picker is still rendered, with the "text" preset's labels
+        List<String> labels = firstNameHeader.getFilterMatchModeLabels();
+        assertTrue(labels.contains("Contains"), "Expected the auto-derived \"text\" preset, got: " + labels);
+        assertTrue(labels.contains("Starts With"), "Expected the auto-derived \"text\" preset, got: " + labels);
+        assertTrue(labels.contains("Matches Regex"), "Expected the auto-derived \"text\" preset, got: " + labels);
+
+        // Act/Assert - filtering still works through the auto-derived picker; the column's implicit default
+        // match mode ("startsWith" - see ColumnBase#getFilterMatchMode()) is already selected, so switch to a
+        // genuinely different mode rather than re-selecting the same one (a no-op that fires no AJAX request)
+        dataTable.filterMatchMode("first name", "contains");
+        dataTable.filter("first name", "a");
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getFirstName() != null && e.getFirstName().toLowerCase().contains("a"))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(47)
+    @DisplayName("DataTable: GitHub #7427 a column with its own custom <f:facet name=\"filter\"> gets no "
+            + "auto-derived picker, even though its Java type (LocalDate) would otherwise auto-derive to \"date\" "
+            + "- a bespoke filter UI shouldn't get a second, competing picker layered on top")
+    void filterValueTypeSkipsCustomFacet(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell birthDateHeader = dataTable.getHeader().getCell("birth date").get();
+
+        // Assert - no match-mode icon at all for this column
+        assertNull(birthDateHeader.getColumnFilterMatchModeIcon());
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(48)
+    @DisplayName("DataTable: GitHub #7427 a numeric column's filter value input rejects non-numeric characters "
+            + "as the user types")
+    void numericFilterInputRejectsNonNumericCharacters(Page page) {
+        // Arrange - the "ID" column auto-/explicitly resolves to the "numeric" preset
+        DataTable dataTable = page.dataTable;
+        HeaderCell idHeader = dataTable.getHeader().getCell("ID").get();
+        WebElement input = idHeader.getColumnFilter();
+
+        // Act - type a mix of letters and digits
+        input.sendKeys("a1b2c3");
+
+        // Assert - only the digits stuck
+        assertEquals("123", input.getAttribute("value"));
+
+        // Act - a comma-separated pair (valid for "between"/"in list") is still accepted
+        input.clear();
+        input.sendKeys("1, 2");
+
+        // Assert
+        assertEquals("1, 2", input.getAttribute("value"));
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
