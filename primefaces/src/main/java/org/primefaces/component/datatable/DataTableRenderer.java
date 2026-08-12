@@ -131,7 +131,12 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         if (!component.loadLazyDataIfEnabled()) {
-            if (component.isFilteringCurrentlyActive()) {
+            // full-update (partialUpdate="false") requests defer filtering to this deferred path rather than
+            // FilterFeature#encode() (see that method's comment) - unlike that path, gating solely on
+            // "isFilteringCurrentlyActive" isn't enough: it turns false the moment the last active filter is
+            // cleared, which would skip the recompute entirely and leave the previously-filtered (now stale)
+            // data/filteredValue behind instead of resetting it back to the full, unfiltered list
+            if (component.isFilteringCurrentlyActive() || component.isFullUpdateRequest(context)) {
                 DataTableFeatures.filterFeature().filter(context, component);
             }
 
