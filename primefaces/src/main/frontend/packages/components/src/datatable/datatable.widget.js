@@ -841,15 +841,18 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
     /**
      * Updates a filter-mode trigger icon's filled/outline state to reflect whether a match mode other than the
-     * column's first (default) one is currently selected - filled once the user has picked something, outline
-     * while still on the untouched default.
+     * column's own configured default is currently selected - filled once the user has picked something else,
+     * outline while still on the untouched default.
      * @private
      * @param {JQuery} icon the `.ui-column-filter-mode-icon` trigger button
      * @param {JQuery} menu the icon's overlay menu, as returned by {@link getFilterMatchModeMenu}
      * @param {JQuery} selectedLink the currently selected `.ui-menuitem-link`
      */
     updateFilterMatchModeIconState(icon, menu, selectedLink) {
-        var active = selectedLink.length > 0 && !selectedLink.is(menu.find('.ui-menuitem-link').first());
+        // `[data-default="true"]` (see DataTableRenderer#encodeFilterMatchModeMenu) marks the column's own
+        // configured default - NOT necessarily the first item in the list (e.g. a numeric column's list always
+        // starts with "Equals", but its configured default via filterMatchMode may be "gt")
+        var active = selectedLink.length > 0 && !selectedLink.is(menu.find('.ui-menuitem-link[data-default="true"]'));
 
         icon.toggleClass('ui-column-filter-mode-icon-active', active);
         icon.find('.pi').toggleClass('pi-filter-fill', active).toggleClass('pi-filter', !active);
@@ -4662,7 +4665,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         var standardFilters = this.thead.find('> tr > th.ui-filter-column .ui-column-filter:not(:disabled):not([readonly])');
         resetInputFields(standardFilters);
 
-        // reset each filter match-mode picker back to its first (default) option
+        // reset each filter match-mode picker back to the column's own configured default option
         var $this = this;
         var standardFilterModeIcons = this.thead.find('> tr > th.ui-filter-column .ui-column-filter-mode-icon:not(:disabled)');
         standardFilterModeIcons.each(function() {
@@ -4670,16 +4673,18 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             var th = icon.closest('th');
             var hiddenInput = th.find('.ui-column-filter-mode');
             var menu = $this.getFilterMatchModeMenu(icon);
-            var firstLink = menu.find('.ui-menuitem-link').first();
+            // `[data-default="true"]` marks the column's own configured default - not necessarily the first
+            // item in the list (see the identical note in updateFilterMatchModeIconState())
+            var defaultLink = menu.find('.ui-menuitem-link[data-default="true"]');
 
             // .attr(), not .data() - see the identical note in bindFilterMatchModeMenu()
-            hiddenInput.val(firstLink.attr('data-match-mode'));
+            hiddenInput.val(defaultLink.attr('data-match-mode'));
             menu.find('.ui-menuitem-link').attr('aria-checked', 'false').parent().removeClass('ui-state-active');
-            firstLink.attr('aria-checked', 'true').parent().addClass('ui-state-active');
-            // the first option may require a value (the common case) even if a value-less one (e.g.
+            defaultLink.attr('aria-checked', 'true').parent().addClass('ui-state-active');
+            // the default may require a value (the common case) even if a value-less one (e.g.
             // "is empty") was selected before the reset - sync the value input's hidden/disabled state back
-            $this.toggleFilterValueInput(th, firstLink);
-            $this.updateFilterMatchModeIconState(icon, menu, firstLink);
+            $this.toggleFilterValueInput(th, defaultLink);
+            $this.updateFilterMatchModeIconState(icon, menu, defaultLink);
         });
 
         var customFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter');

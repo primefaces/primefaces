@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.HeaderCell;
@@ -1515,6 +1516,42 @@ class DataTable051Test extends AbstractDataTableTest {
         // Assert - fills too, value-less modes are no exception
         icon = lastNameHeader.getColumnFilterMatchModeIcon();
         assertTrue(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(45)
+    @DisplayName("DataTable: The filter match-mode icon is outlined on a fresh load when the column's "
+            + "configured default (e.g. \"gt\") differs from the matchModeOptions list's first entry (\"equals\") - "
+            + "comparing against raw list order rather than the actual configured default previously fooled the "
+            + "icon into starting out filled")
+    void filterMatchModeIconActiveStateWithNonFirstDefault(Page page) {
+        // Arrange - the "ID" column is configured with filterMatchMode="gt", filterMatchModeOptions="numeric",
+        // whose first entry is "equals" - a mismatch that used to spuriously fill the icon on a fresh load
+        DataTable dataTable = page.dataTable;
+        HeaderCell idHeader = dataTable.getHeader().getCell("ID").get();
+
+        // Assert - outlined on a fresh load: "gt" IS the column's own default, even though it isn't first in the list
+        WebElement icon = idHeader.getColumnFilterMatchModeIcon();
+        assertFalse(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+        assertEquals("gt", idHeader.getColumnFilterMatchModeValue());
+
+        // Act - switch to a different mode
+        dataTable.filterMatchMode("ID", "lt");
+
+        // Assert - now fills, since "lt" differs from the column's default ("gt")
+        icon = idHeader.getColumnFilterMatchModeIcon();
+        assertTrue(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+
+        // Act - reset all filters
+        PrimeSelenium.executeScript(true, "PF('wgtTable').clearFilters()");
+
+        // Assert - resets back to the column's own default ("gt"), not the list's first entry ("equals"), and outlined again
+        idHeader = dataTable.getHeader().getCell("ID").get();
+        assertEquals("gt", idHeader.getColumnFilterMatchModeValue());
+        icon = idHeader.getColumnFilterMatchModeIcon();
+        assertFalse(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }

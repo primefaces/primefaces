@@ -823,7 +823,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
      * Renders the filter match-mode picker for a column: a hidden {@code <input>} carrying the currently selected
      * operator (same id/name pattern the old {@code <select>} used, so {@link org.primefaces.component.api.UITable}'s
      * request-parameter resolution needs no changes), a trigger {@code <button>} icon (filled once a mode other
-     * than the column's first/default one is selected, outline otherwise), and an overlay {@code <ul>} menu
+     * than the column's own configured default is selected, outline otherwise), and an overlay {@code <ul>} menu
      * listing every mode - relocated to {@code document.body} client-side to escape scrollable/frozen header
      * clipping.
      */
@@ -835,10 +835,17 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         String matchModeId = column.getContainerClientId(context) + separator + "filterMatchMode";
         String menuId = matchModeId + "_menu";
         MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
-        // filled once the user has picked a mode other than the column's first (default) one, outline while
-        // still on the untouched default - e.g. the boolean preset's "All" placeholder is always the first
-        // option, so choosing it never fills the icon, while any of "True"/"False"/"Is Null"/"Is Not Null" does
-        boolean active = selected != matchModeOptions.get(0);
+        // the column's own configured default - same resolution FilterMeta#of() uses - not just
+        // matchModeOptions.get(0): a numeric column's list always starts with "Equals", but its actual
+        // configured default (via filterMatchMode, e.g. "gt") is often a different, later entry in that list,
+        // and comparing against the raw list order would spuriously mark it "active" on a fresh, untouched load
+        MatchMode columnDefault = matchModeOptions.contains(MatchMode.of(column.getFilterMatchMode()))
+                ? MatchMode.of(column.getFilterMatchMode())
+                : matchModeOptions.get(0);
+        // filled once the user has picked a mode other than the column's own default, outline while still on
+        // the untouched default - e.g. the boolean preset's "All" placeholder is always the configured default,
+        // so choosing it never fills the icon, while any of "True"/"False"/"Is Null"/"Is Not Null" does
+        boolean active = selected != columnDefault;
 
         writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
@@ -886,6 +893,11 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.writeAttribute("aria-checked", String.valueOf(isSelected), null);
             writer.writeAttribute("tabindex", "-1", null);
             writer.writeAttribute("data-match-mode", matchMode.operator(), null);
+            if (matchMode == columnDefault) {
+                // read by datatable.widget.js so clearFilters() and the icon's active-state check can find the
+                // column's own configured default without re-deriving it client-side - see the comment above
+                writer.writeAttribute("data-default", "true", null);
+            }
             // read by datatable.widget.js to hide/disable the value input for a value-less match mode (e.g., "is empty")
             // written as a literal "true"/"false" string - a Boolean value is special-cased by ResponseWriter
             // impls as a plain HTML boolean attribute (name="name" if true, omitted entirely if false)
