@@ -15,11 +15,11 @@
 }
 
 .ui-datatable .ui-datatable-header {
-    border-bottom: 0px none;
+    border-bottom: 0 none;
 }
 
 .ui-datatable .ui-datatable-footer {
-    border-top: 0px none;
+    border-top: 0 none;
 }
 
 .ui-datatable thead th, .ui-datatable tfoot td {
@@ -55,7 +55,7 @@
 
 .ui-datatable .ui-sortable-column-icon {
     display: inline-block;
-    margin: -3px 0px -3px 2px;
+    margin: -3px 0 -3px 2px;
 }
 
 .ui-datatable .ui-column-filter {
@@ -91,7 +91,7 @@
    header rather than as a dropdown competing with the value input for space in a narrow column. */
 .ui-datatable .ui-column-filter-mode-icon {
     display: inline-block;
-    margin: -3px 0px -3px 2px;
+    margin: -3px 0 -3px 2px;
     padding: 0;
     border: 0;
     background: transparent;
@@ -150,7 +150,7 @@
 
 .ui-datatable .ui-selection-column .ui-chkbox-all {
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
     width: 16px;
     height: 16px;
 }
@@ -171,7 +171,7 @@
 .ui-datatable-scrollable-header,
 .ui-datatable-scrollable-footer {
     overflow: hidden;
-    border: 0px none;
+    border: 0 none;
 }
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header,
@@ -184,7 +184,7 @@
 }
 
 .ui-datatable .ui-datatable-scrollable-body  {
-    min-height: 0%;
+    min-height: 0;
 }
 
 .ui-datatable .ui-datatable-data tr.ui-state-hover {
@@ -194,25 +194,25 @@
 }
 
 .ui-datatable-scrollable-theadclone {
-    height:0px;
+    height: 0;
 }
 
 .ui-datatable-scrollable-theadclone tr {
-    height:0px;
+    height: 0;
 }
 
 .ui-datatable-scrollable-theadclone th.ui-state-default {
-    height:0px !important; /* #12908 */
-    border-bottom-width: 0px;
-    border-top-width: 0px;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    height: 0 !important; /* #12908 */
+    border-bottom-width: 0;
+    border-top-width: 0;
+    padding-top: 0;
+    padding-bottom: 0;
     outline: 0 none;
 }
 
 .ui-datatable-scrollable-theadclone th span.ui-column-title {
   display: block;
-  height: 0px;
+  height: 0;
 }
 
 .ui-datatable .ui-paginator {
@@ -224,8 +224,8 @@
 }
 
 .ui-datatable .ui-datatable-virtualscroll-table {
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     position: absolute;
 }
 
@@ -285,12 +285,12 @@
 /*resizer */
 .ui-datatable .ui-column-resizer {
     position: absolute;
-    top: 0px;
-    right: 0px;
+    top: 0;
+    right: 0;
     margin: 0;
-    width:8px;
-    height:100%;
-    padding:0px;
+    width: 8px;
+    height: 100%;
+    padding: 0;
     cursor:col-resize;
     background-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
     border: 1px solid transparent;
@@ -305,7 +305,7 @@
 }
 
 .ui-datatable-resizable {
-    padding-bottom:1px;     /*fix for webkit overlow*/
+    padding-bottom: 1px;     /*fix for webkit overlow*/
     overflow:auto;
 }
 
@@ -420,19 +420,19 @@
         box-sizing: border-box;
         clear: left;
         float: left;
-        border: 0px none;
+        border: 0 none;
         display: block;
         text-align: left !important;
         width: 100% !important;
     }
 
     .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
-        border: 0px none;
+        border: 0 none;
     }
 
     .ui-datatable-reflow .ui-datatable-data tr.ui-widget-content {
-        border-left: 0px none;
-        border-right: 0px none;
+        border-left: 0 none;
+        border-right: 0 none;
     }
 
     .ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title {
