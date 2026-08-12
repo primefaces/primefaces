@@ -803,6 +803,98 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 }
             }
         }
+
+        // the filter match-mode picker (icon + overlay menu) sits next to the sort icons in the header,
+        // rather than as a dropdown competing with the filter value input for space in a narrow column
+        if (component.isColumnFilterable(context, column)) {
+            List<MatchMode> matchModeOptions = MatchMode.parseOptions(column.getFilterMatchModeOptions());
+            if (!matchModeOptions.isEmpty()) {
+                encodeFilterMatchModeMenu(context, component, column, matchModeOptions);
+            }
+        }
+    }
+
+    /**
+     * Renders the filter match-mode picker for a column: a hidden {@code <input>} carrying the currently selected
+     * operator (same id/name pattern the old {@code <select>} used, so {@link org.primefaces.component.api.UITable}'s
+     * request-parameter resolution needs no changes), a trigger {@code <button>} icon (filled once a mode other
+     * than the column's first/default one is selected, outline otherwise), and an overlay {@code <ul>} menu
+     * listing every mode - relocated to {@code document.body} client-side to escape scrollable/frozen header
+     * clipping.
+     */
+    protected void encodeFilterMatchModeMenu(FacesContext context, DataTable component, UIColumn column,
+            List<MatchMode> matchModeOptions) throws IOException {
+
+        ResponseWriter writer = context.getResponseWriter();
+        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+        String matchModeId = column.getContainerClientId(context) + separator + "filterMatchMode";
+        String menuId = matchModeId + "_menu";
+        MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
+        // filled once the user has picked a mode other than the column's first (default) one, outline while
+        // still on the untouched default - e.g. the boolean preset's "All" placeholder is always the first
+        // option, so choosing it never fills the icon, while any of "True"/"False"/"Is Null"/"Is Not Null" does
+        boolean active = selected != matchModeOptions.get(0);
+
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", matchModeId, null);
+        writer.writeAttribute("name", matchModeId, null);
+        writer.writeAttribute("value", selected.operator(), null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLASS, null);
+        writer.endElement("input");
+
+        writer.startElement("button", null);
+        writer.writeAttribute("type", "button", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_ICON_CLASS
+                + (active ? " " + DataTable.COLUMN_FILTER_MODE_ICON_ACTIVE_CLASS : ""), null);
+        writer.writeAttribute("aria-haspopup", "menu", null);
+        writer.writeAttribute("aria-expanded", "false", null);
+        writer.writeAttribute("aria-controls", menuId, null);
+        writer.startElement("span", null);
+        writer.writeAttribute("class", active ? DataTable.FILTER_ICON_ACTIVE_CLASS : DataTable.FILTER_ICON_CLASS, null);
+        writer.endElement("span");
+        writer.endElement("button");
+
+        // "date"/"time"/"datetime" render the 6 shared comparators as "Is"/"Before"/"After"/...; "enum" renders
+        // equals/notEquals/in/notIn as "Is"/"Is Not"/"Is Any Of"/"Is None Of" - see resolveMatchModeMessageKey()
+        String rawMatchModeOptions = column.getFilterMatchModeOptions();
+        String trimmedMatchModeOptions = rawMatchModeOptions == null ? null : rawMatchModeOptions.trim();
+        boolean dateStyleLabels = "date".equals(trimmedMatchModeOptions) || "time".equals(trimmedMatchModeOptions)
+                || "datetime".equals(trimmedMatchModeOptions);
+        boolean enumStyleLabels = "enum".equals(trimmedMatchModeOptions);
+
+        writer.startElement("ul", null);
+        writer.writeAttribute("id", menuId, null);
+        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENU_CLASS, null);
+
+        for (MatchMode matchMode : matchModeOptions) {
+            boolean isSelected = matchMode == selected;
+            String label = MessageFactory.getMessage(context, resolveMatchModeMessageKey(matchMode, dateStyleLabels, enumStyleLabels));
+
+            writer.startElement("li", null);
+            writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_CLASS + (isSelected ? " ui-state-active" : ""), null);
+            writer.startElement("a", null);
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_LINK_CLASS, null);
+            writer.writeAttribute("role", "menuitemradio", null);
+            writer.writeAttribute("aria-checked", String.valueOf(isSelected), null);
+            writer.writeAttribute("tabindex", "-1", null);
+            writer.writeAttribute("data-match-mode", matchMode.operator(), null);
+            // read by datatable.widget.js to hide/disable the value input for a value-less match mode (e.g., "is empty")
+            // written as a literal "true"/"false" string - a Boolean value is special-cased by ResponseWriter
+            // impls as a plain HTML boolean attribute (name="name" if true, omitted entirely if false)
+            writer.writeAttribute("data-requires-value", String.valueOf(matchMode.requiresValue()), null);
+            if (matchMode.placeholderHint() != null) {
+                // read by datatable.widget.js to hint the expected value syntax, e.g., "min,max" for "between"
+                writer.writeAttribute("data-placeholder-hint", matchMode.placeholderHint(), null);
+            }
+            writer.writeText(label, null);
+            writer.endElement("a");
+            writer.endElement("li");
+        }
+
+        writer.endElement("ul");
     }
 
     protected void encodeFilter(FacesContext context, DataTable component, UIColumn column) throws IOException {
@@ -836,72 +928,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         String filterStyleClass = column.getFilterStyleClass();
 
         List<MatchMode> matchModeOptions = MatchMode.parseOptions(column.getFilterMatchModeOptions());
-        if (matchModeOptions.isEmpty()) {
-            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, null);
-        }
-        else {
-            MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
-            String matchModeId = column.getContainerClientId(context) + separator + "filterMatchMode";
-            // the 6 comparison modes (equals/lt/gt/...) are shared with the "numeric" preset ("Equals"/"Less
-            // Than"/...); the "date"/"time"/"datetime" presets specifically render them as "Is"/"Before"/"After"/...
-            // instead, and "enum" renders equals/notEquals/in/notIn as "Is"/"Is Not"/"Is Any Of"/"Is None Of" -
-            // see resolveMatchModeMessageKey(). A custom comma list happening to contain the same modes keeps the
-            // generic labels, since there's no way to tell it apart from an arbitrary list at this point.
-            String rawMatchModeOptions = column.getFilterMatchModeOptions();
-            String trimmedMatchModeOptions = rawMatchModeOptions == null ? null : rawMatchModeOptions.trim();
-            boolean dateStyleLabels = "date".equals(trimmedMatchModeOptions) || "time".equals(trimmedMatchModeOptions)
-                    || "datetime".equals(trimmedMatchModeOptions);
-            boolean enumStyleLabels = "enum".equals(trimmedMatchModeOptions);
-            writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.COLUMN_FILTER_CONTAINER_CLASS, null);
-            encodeFilterMatchModeSelect(context, writer, matchModeId, matchModeOptions, selected, dateStyleLabels, enumStyleLabels);
-            encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected);
-            writer.endElement("div");
-        }
-    }
-
-    protected void encodeFilterMatchModeSelect(FacesContext context, ResponseWriter writer, String matchModeId,
-            List<MatchMode> matchModeOptions, MatchMode selected, boolean dateStyleLabels, boolean enumStyleLabels) throws IOException {
-
-        // Render "=", "!=", "<", "<=", ">", ">=" instead of spelled-out labels when every option in this dropdown
-        // is a comparison operator (the "numeric"/"date" presets, or a custom list built purely from them) - this
-        // keeps the dropdown compact and matches common spreadsheet-style filter UIs. A dropdown mixing comparison
-        // operators with string-matching ones (e.g., the "text" preset, which also offers "equals"/"notEquals")
-        // keeps the spelled-out labels throughout so the options read consistently.
-        boolean useSymbols = matchModeOptions.stream().allMatch(mode -> mode.symbol() != null);
-
-        writer.startElement("select", null);
-        writer.writeAttribute("id", matchModeId, null);
-        writer.writeAttribute("name", matchModeId, null);
-        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLASS, null);
-
-        for (MatchMode matchMode : matchModeOptions) {
-            String label = MessageFactory.getMessage(context, resolveMatchModeMessageKey(matchMode, dateStyleLabels, enumStyleLabels));
-
-            writer.startElement("option", null);
-            writer.writeAttribute("value", matchMode.operator(), null);
-            // read by datatable.widget.js to hide/disable the value input for a value-less match mode (e.g., "is empty")
-            // written as a literal "true"/"false" string - a Boolean value is special-cased by ResponseWriter
-            // impls as a plain HTML boolean attribute (name="name" if true, omitted entirely if false)
-            writer.writeAttribute("data-requires-value", String.valueOf(matchMode.requiresValue()), null);
-            if (matchMode.placeholderHint() != null) {
-                // read by datatable.widget.js to hint the expected value syntax, e.g., "min,max" for "between"
-                writer.writeAttribute("data-placeholder-hint", matchMode.placeholderHint(), null);
-            }
-            if (matchMode == selected) {
-                writer.writeAttribute("selected", "selected", null);
-            }
-            if (useSymbols) {
-                writer.writeAttribute("title", label, null);
-                writer.writeText(matchMode.symbol(), null);
-            }
-            else {
-                writer.writeText(label, null);
-            }
-            writer.endElement("option");
-        }
-
-        writer.endElement("select");
+        MatchMode selected = matchModeOptions.isEmpty() ? null : findFilterMatchModeForColumn(component, column, matchModeOptions);
+        // the match-mode picker itself (icon + overlay menu) is rendered in the header, next to the sort icons -
+        // see encodeFilterMatchModeMenu() - so this filter row is always just the value input, full width
+        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected);
     }
 
     /**

@@ -27,14 +27,15 @@ import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.ComponentUtils;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 
 public class HeaderCell extends Cell {
 
@@ -69,14 +70,15 @@ public class HeaderCell extends Cell {
     }
 
     /**
-     * Gets the filter match-mode dropdown for this column, if the column defines {@code filterMatchModeOptions}.
+     * Gets the filter match-mode picker trigger icon for this column, if the column defines
+     * {@code filterMatchModeOptions}. Clicking it opens an overlay menu listing the available match modes.
      *
-     * @return the WebElement representing the filter match-mode {@code <select>}, or {@code null} if not present
+     * @return the WebElement representing the trigger icon button, or {@code null} if not present
      */
-    public WebElement getColumnFilterMatchMode() {
+    public WebElement getColumnFilterMatchModeIcon() {
         if (getWebElement() != null) {
             try {
-                return getWebElement().findElement(By.className("ui-column-filter-mode"));
+                return getWebElement().findElement(By.className("ui-column-filter-mode-icon"));
             }
             catch (NoSuchElementException ex) {
                 return null;
@@ -87,17 +89,79 @@ public class HeaderCell extends Cell {
     }
 
     /**
-     * Selects a match mode (comparator) from the column's filter match-mode dropdown and triggers the filter.
+     * Gets the currently selected match-mode operator for this column, e.g. "gt" or "equals".
+     *
+     * @return the current value of the hidden input carrying the selected match mode, or {@code null} if the
+     *         column does not define {@code filterMatchModeOptions}
+     */
+    public String getColumnFilterMatchModeValue() {
+        if (getWebElement() == null) {
+            return null;
+        }
+        try {
+            return getWebElement().findElement(By.className("ui-column-filter-mode")).getAttribute("value");
+        }
+        catch (NoSuchElementException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * Opens the filter match-mode overlay menu, collects every option's visible label, then closes it again.
+     * {@link WebElement#getText()} returns an empty string for a CSS-hidden element, so the menu must briefly be
+     * opened to read its (otherwise correct, always-present) option text.
+     *
+     * @return the labels of every match mode offered for this column, in declaration order
+     */
+    public List<String> getFilterMatchModeLabels() {
+        WebElement icon = getColumnFilterMatchModeIcon();
+        if (icon == null) {
+            throw new NoSuchElementException("Column '" + this + "' does not define a filter match-mode picker");
+        }
+
+        // opening the menu is a local-only interaction (no AJAX request) - must not be guarded
+        icon.click();
+        WebElement menu = getFilterMatchModeMenu(icon);
+        List<String> labels = menu.findElements(By.className("ui-menuitem-link")).stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+        icon.click();
+
+        return labels;
+    }
+
+    /**
+     * Opens the filter match-mode overlay menu, clicks the option matching the given operator, and triggers the
+     * filter.
      *
      * @param matchModeOperator the operator value of the match mode option to select, e.g. "gt" or "equals"
      */
     public void setFilterMatchMode(String matchModeOperator) {
-        WebElement matchModeSelect = getColumnFilterMatchMode();
-        if (matchModeSelect == null) {
-            throw new NoSuchElementException("Column '" + this + "' does not define a filter match-mode dropdown");
+        WebElement icon = getColumnFilterMatchModeIcon();
+        if (icon == null) {
+            throw new NoSuchElementException("Column '" + this + "' does not define a filter match-mode picker");
         }
 
-        PrimeSelenium.guardAjax(new Select(matchModeSelect)).selectByValue(matchModeOperator);
+        // opening the menu is a local-only interaction (no AJAX request) - must not be guarded, or guardAjax()
+        // would wait for a request that never arrives
+        icon.click();
+        WebElement menu = getFilterMatchModeMenu(icon);
+        WebElement menuItem = menu.findElement(By.cssSelector("a[data-match-mode='" + matchModeOperator + "']"));
+
+        // selecting the mode is what actually triggers the AJAX filter request
+        PrimeSelenium.guardAjax(menuItem).click();
+    }
+
+    /**
+     * Resolves a filter match-mode trigger icon's overlay menu via its {@code aria-controls} id - the menu is
+     * relocated to {@code document.body} client-side (so scrollable/frozen headers don't clip it), so it is no
+     * longer a descendant of this header cell and must be looked up from the driver root.
+     *
+     * @param icon the trigger icon, as returned by {@link #getColumnFilterMatchModeIcon()}
+     * @return the WebElement representing the overlay menu ({@code <ul>})
+     */
+    private WebElement getFilterMatchModeMenu(WebElement icon) {
+        return PrimeSelenium.getWebDriver().findElement(By.id(icon.getAttribute("aria-controls")));
     }
 
     /**

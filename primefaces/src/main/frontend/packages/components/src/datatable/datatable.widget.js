@@ -691,29 +691,37 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
         this.cfg.filterDelay = this.cfg.filterDelay||300;
 
-        filterColumns.find('.ui-column-filter, .ui-column-filter-mode').each(function() {
+        filterColumns.find('.ui-column-filter').each(function() {
             var filter = $(this);
 
-            if(filter.is("input[type='search']")) {
-                // remembered so toggleFilterValueInput() can restore it once a match mode with its own
-                // placeholder hint (e.g., "min,max" for "between") is deselected again
-                filter.data('originalPlaceholder', filter.attr('placeholder'));
-                PrimeFaces.skinInput(filter);
-                $this.bindTextFilter(filter);
-            }
-            else {
-                PrimeFaces.skinSelect(filter);
-                $this.bindChangeFilter(filter);
-            }
+            // remembered so toggleFilterValueInput() can restore it once a match mode with its own
+            // placeholder hint (e.g., "min,max" for "between") is deselected again
+            filter.data('originalPlaceholder', filter.attr('placeholder'));
+            PrimeFaces.skinInput(filter);
+            $this.bindTextFilter(filter);
+        });
+
+        // filter match-mode picker (icon + overlay menu) - replaces the old inline <select> that
+        // competed with the value input for space in narrow columns
+        filterColumns.find('.ui-column-filter-mode-icon').each(function() {
+            $this.bindFilterMatchModeMenu($(this));
         });
 
         // sync each value input's visibility/placeholder with its initially selected match mode - run in its
-        // own pass, after every input's original placeholder above has been captured, regardless of DOM order
-        filterColumns.find('.ui-column-filter-mode').each(function() {
-            $this.toggleFilterValueInput($(this));
+        // own pass, after every input's original placeholder above has been captured, regardless of DOM order.
+        // Uses getFilterMatchModeMenu() (an id lookup), not th.find(...), since bindFilterMatchModeMenu() above
+        // already relocated every menu out of its <th> and into document.body by this point.
+        filterColumns.find('.ui-column-filter-mode-icon').each(function() {
+            var icon = $(this);
+            var th = icon.closest('th');
+            var menu = $this.getFilterMatchModeMenu(icon);
+            var selectedLink = menu.find('.ui-menuitem-link[aria-checked="true"]');
+            $this.toggleFilterValueInput(th, selectedLink);
+            $this.updateFilterMatchModeIconState(icon, menu, selectedLink);
         });
-        
-        // ARIA labels for filters
+
+        // ARIA labels for filters - jQuery's `:input` filter matches <input>/<select>/<textarea>/<button>,
+        // so this already covers both the value input and the new filter-mode icon button
         filterColumns.each(function() {
             var filterColumn = $(this);
             var filter = filterColumn.find(':input');
@@ -723,6 +731,128 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 filter.attr('aria-label', $this.getLabel('filter') + " " + title.text());
             }
         });
+    }
+
+    /**
+     * Sets up the filter match-mode picker for a column: a trigger icon that opens an overlay menu listing the
+     * available match modes, replacing the old inline `<select>` that had to compete with the filter value
+     * `<input>` for space. The menu is relocated to `document.body` since scrollable/frozen-column headers
+     * unconditionally clip their header area (`overflow: hidden`), which would otherwise cut the menu off.
+     * @private
+     * @param {JQuery} icon the `.ui-column-filter-mode-icon` trigger button, still inside its `<th>` at this point
+     */
+    bindFilterMatchModeMenu(icon) {
+        var $this = this;
+        var th = icon.closest('th');
+        var hiddenInput = th.find('.ui-column-filter-mode');
+        // captured here (DOM-relative, unambiguous) before relocation - kept as a closure reference below,
+        // rather than re-resolved later by id, which could otherwise momentarily collide with a stale
+        // still-appended-to-body menu left over from a widget instance an AJAX update just replaced
+        var menu = th.find('.ui-column-filter-mode-menu');
+
+        var menuId = menu.attr('id');
+        $(document.body).children(PrimeFaces.escapeClientId(menuId)).remove();
+        menu.appendTo(document.body);
+
+        var closeMenu = function() {
+            menu.addClass('ui-helper-hidden');
+            icon.attr('aria-expanded', 'false');
+        };
+
+        var openMenu = function() {
+            menu.removeClass('ui-helper-hidden').css('z-index', PrimeFaces.nextZindex()).position({
+                my: 'right top',
+                at: 'right bottom',
+                of: icon,
+                collision: 'flipfit'
+            });
+            icon.attr('aria-expanded', 'true');
+            menu.find('.ui-menuitem-link[aria-checked="true"]').trigger('focus');
+        };
+
+        icon.off('.dataTableFilterMode').on('click.dataTableFilterMode', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (menu.hasClass('ui-helper-hidden')) {
+                openMenu();
+            }
+            else {
+                closeMenu();
+            }
+        }).on('keydown.dataTableFilterMode', function(e) {
+            switch (e.code) {
+                case 'Enter':
+                case 'NumpadEnter':
+                case 'Space':
+                case 'ArrowDown':
+                    e.preventDefault();
+                    openMenu();
+                    break;
+                case 'Escape':
+                    closeMenu();
+                    break;
+            }
+        });
+
+        menu.find('.ui-menuitem-link').off('.dataTableFilterMode').on('click.dataTableFilterMode', function(e) {
+            e.preventDefault();
+            var link = $(this);
+            // .attr(), not .data() - jQuery's .data() auto-casts attribute values that look like "true"/"false"/
+            // "null" into native JS types, and several MatchMode operators literally are those strings (e.g.
+            // IS_NULL's operator is "null") - jQuery's .val(null) then clears the input instead of writing "null"
+            var newMatchMode = link.attr('data-match-mode');
+
+            // a native <select> doesn't fire "change" when re-selecting the already-active option - mirror
+            // that here rather than re-triggering an unnecessary filter() round trip
+            if (hiddenInput.val() !== newMatchMode) {
+                hiddenInput.val(newMatchMode);
+                menu.find('.ui-menuitem-link').attr('aria-checked', 'false').parent().removeClass('ui-state-active');
+                link.attr('aria-checked', 'true').parent().addClass('ui-state-active');
+                $this.toggleFilterValueInput(th, link);
+                $this.updateFilterMatchModeIconState(icon, menu, link);
+                closeMenu();
+                $this.filter();
+            }
+            else {
+                closeMenu();
+            }
+        });
+
+        PrimeFaces.utils.registerHideOverlayHandler($this, 'mousedown.dataTableFilterMode' + icon.attr('id'), menu,
+            function() { return icon; },
+            function(e, eventTarget) {
+                if (!(menu.is(eventTarget) || menu.has(eventTarget).length > 0)) {
+                    closeMenu();
+                }
+            });
+    }
+
+    /**
+     * Resolves the (possibly `document.body`-relocated) overlay menu for a filter match-mode trigger icon via
+     * its `aria-controls` id - needed by callers outside {@link bindFilterMatchModeMenu}'s own closure (e.g.
+     * {@link clearFilters}), for which DOM-relative lookup no longer works once the menu has been relocated.
+     * @private
+     * @param {JQuery} icon the `.ui-column-filter-mode-icon` trigger button
+     * @return {JQuery} the associated `.ui-column-filter-mode-menu`
+     */
+    getFilterMatchModeMenu(icon) {
+        return $(PrimeFaces.escapeClientId(icon.attr('aria-controls')));
+    }
+
+    /**
+     * Updates a filter-mode trigger icon's filled/outline state to reflect whether a match mode other than the
+     * column's first (default) one is currently selected - filled once the user has picked something, outline
+     * while still on the untouched default.
+     * @private
+     * @param {JQuery} icon the `.ui-column-filter-mode-icon` trigger button
+     * @param {JQuery} menu the icon's overlay menu, as returned by {@link getFilterMatchModeMenu}
+     * @param {JQuery} selectedLink the currently selected `.ui-menuitem-link`
+     */
+    updateFilterMatchModeIconState(icon, menu, selectedLink) {
+        var active = selectedLink.length > 0 && !selectedLink.is(menu.find('.ui-menuitem-link').first());
+
+        icon.toggleClass('ui-column-filter-mode-icon-active', active);
+        icon.find('.pi').toggleClass('pi-filter-fill', active).toggleClass('pi-filter', !active);
     }
 
     /**
@@ -748,33 +878,16 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Sets up the change event listeners on the column filter elements.
+     * Shows/enables or hides/disables (and clears) the value `<input>` for a column, based on whether the
+     * currently selected match mode requires a value - e.g., "is empty" or "is null" is a complete predicate on
+     * its own and has no value to type.
      * @private
-     * @param {JQuery} filter DOM element of a column filter
+     * @param {JQuery} th the column header `<th>` whose value input should be synced
+     * @param {JQuery} selectedLink the currently selected `.ui-menuitem-link` (carries `data-requires-value`/`data-placeholder-hint`)
      */
-    bindChangeFilter(filter) {
-        var $this = this;
-
-        filter.off('change')
-        .on('change', function() {
-            if (filter.hasClass('ui-column-filter-mode')) {
-                $this.toggleFilterValueInput(filter);
-            }
-            $this.filter();
-        });
-    }
-
-    /**
-     * Shows/enables or hides/disables (and clears) the value `<input>` next to a filter match-mode `<select>`,
-     * based on whether the newly selected match mode requires a value - e.g., "is empty" or "is null" is a
-     * complete predicate on its own and has no value to type.
-     * @private
-     * @param {JQuery} modeSelect the `.ui-column-filter-mode` `<select>` whose selection changed (or was just rendered)
-     */
-    toggleFilterValueInput(modeSelect) {
-        var selectedOption = modeSelect.find('option:selected');
-        var requiresValue = selectedOption.data('requiresValue') !== false;
-        var valueInput = modeSelect.siblings('.ui-column-filter');
+    toggleFilterValueInput(th, selectedLink) {
+        var requiresValue = !selectedLink.length || selectedLink.data('requiresValue') !== false;
+        var valueInput = th.find('.ui-column-filter');
 
         valueInput.toggleClass('ui-helper-hidden', !requiresValue).prop('disabled', !requiresValue);
         if (!requiresValue) {
@@ -783,7 +896,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         // e.g., "min,max" for "between" - falls back to whatever placeholder the page originally declared
         // (or none) once a match mode without its own hint (e.g., "equals") is selected again
-        var placeholderHint = selectedOption.data('placeholderHint');
+        var placeholderHint = selectedLink.data('placeholderHint');
         if (placeholderHint) {
             valueInput.attr('placeholder', placeholderHint);
         }
@@ -4549,14 +4662,24 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         var standardFilters = this.thead.find('> tr > th.ui-filter-column .ui-column-filter:not(:disabled):not([readonly])');
         resetInputFields(standardFilters);
 
-        // reset filter match-mode dropdowns back to their first (default) option
+        // reset each filter match-mode picker back to its first (default) option
         var $this = this;
-        var standardFilterModes = this.thead.find('> tr > th.ui-filter-column .ui-column-filter-mode:not(:disabled):not([readonly])');
-        standardFilterModes.each(function() {
-            this.selectedIndex = 0;
+        var standardFilterModeIcons = this.thead.find('> tr > th.ui-filter-column .ui-column-filter-mode-icon:not(:disabled)');
+        standardFilterModeIcons.each(function() {
+            var icon = $(this);
+            var th = icon.closest('th');
+            var hiddenInput = th.find('.ui-column-filter-mode');
+            var menu = $this.getFilterMatchModeMenu(icon);
+            var firstLink = menu.find('.ui-menuitem-link').first();
+
+            // .attr(), not .data() - see the identical note in bindFilterMatchModeMenu()
+            hiddenInput.val(firstLink.attr('data-match-mode'));
+            menu.find('.ui-menuitem-link').attr('aria-checked', 'false').parent().removeClass('ui-state-active');
+            firstLink.attr('aria-checked', 'true').parent().addClass('ui-state-active');
             // the first option may require a value (the common case) even if a value-less one (e.g.
             // "is empty") was selected before the reset - sync the value input's hidden/disabled state back
-            $this.toggleFilterValueInput($(this));
+            $this.toggleFilterValueInput(th, firstLink);
+            $this.updateFilterMatchModeIconState(icon, menu, firstLink);
         });
 
         var customFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter');
@@ -5441,7 +5564,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         }, { delay: null });
 
         //filter support
-        this.clone.find('.ui-column-filter, .ui-column-filter-mode').prop('disabled', true);
+        this.clone.find('.ui-column-filter, .ui-column-filter-mode, .ui-column-filter-mode-icon').prop('disabled', true);
 
         // set original state upon loading
         updateStickyHeaderPosition();
@@ -5496,6 +5619,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     reclone() {
         PrimeFaces.utils.cleanseDomElement(this.clone);
         this.clone = this.thead.clone(false);
+        // pre-existing gap: unlike setupStickyHeader()'s initial clone, this rebuild never re-disabled
+        // the placeholder clone's filter/mode elements, leaving them live/interactive again after any resize
+        this.clone.find('.ui-column-filter, .ui-column-filter-mode, .ui-column-filter-mode-icon').prop('disabled', true);
         this.jq.find('.ui-datatable-tablewrapper > table').prepend(this.clone);
     }
 
@@ -5932,13 +6058,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {(() => void) | null} callback will be executed after animation is finished. (see jquery fadeToggle method)
      */
     toggleFilter(speed, callback) {
-        // .ui-column-filter-container wraps a value input together with its filter match-mode <select>; toggle it
-        // as a whole and skip the nested .ui-column-filter input to avoid fading it twice.
-        var standaloneFilters = this.jq.find(".ui-column-filter").filter(function() {
-            return $(this).closest('.ui-column-filter-container').length === 0;
-        });
-        standaloneFilters
-            .add(this.jq.find(".ui-column-filter-container, .ui-column-customfilter"))
+        // the filter-mode icon is folded into the same toggle group as the value input (rather than
+        // staying always visible) - a live icon next to a hidden value input would otherwise read as a
+        // "phantom active filter with no visible input" once the row itself is toggled off
+        this.jq.find(".ui-column-filter, .ui-column-filter-mode-icon, .ui-column-customfilter")
             .fadeToggle(speed || 0, callback);
     }
 

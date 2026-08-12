@@ -140,8 +140,15 @@ public class DataTable extends DataTableBaseImpl {
     public static final String COLUMN_FILTER_CLASS = "ui-column-filter ui-widget ui-state-default";
     public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
-    public static final String COLUMN_FILTER_CONTAINER_CLASS = "ui-column-filter-container";
-    public static final String COLUMN_FILTER_MODE_CLASS = "ui-column-filter-mode ui-inputfield ui-widget ui-state-default";
+    /** Marker class on the hidden {@code <input>} carrying the currently selected match mode's operator. */
+    public static final String COLUMN_FILTER_MODE_CLASS = "ui-column-filter-mode";
+    public static final String COLUMN_FILTER_MODE_ICON_CLASS = "ui-column-filter-mode-icon";
+    public static final String COLUMN_FILTER_MODE_ICON_ACTIVE_CLASS = "ui-column-filter-mode-icon-active";
+    public static final String COLUMN_FILTER_MODE_MENU_CLASS = "ui-column-filter-mode-menu ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-hidden";
+    public static final String COLUMN_FILTER_MODE_MENUITEM_CLASS = "ui-menuitem";
+    public static final String COLUMN_FILTER_MODE_MENUITEM_LINK_CLASS = "ui-menuitem-link ui-corner-all";
+    public static final String FILTER_ICON_CLASS = "pi pi-filter";
+    public static final String FILTER_ICON_ACTIVE_CLASS = "pi pi-filter-fill";
     public static final String FILTER_MATCH_MODE_LABEL_PREFIX = "primefaces.datatable.filterMatchMode.";
     public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
     public static final String DRAGGABLE_COLUMN_CLASS = "ui-draggable-column";

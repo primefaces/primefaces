@@ -76,28 +76,6 @@
     margin: .5rem auto auto auto;
 }
 
-.ui-datatable .ui-column-filter-container {
-    display: flex;
-    align-items: center;
-    gap: .25rem;
-    margin: .5rem auto auto auto;
-}
-
-.ui-datatable .ui-column-filter-container .ui-column-filter {
-    margin: 0;
-    width: auto;
-    flex: 1 1 auto;
-    min-width: 2.5rem;
-}
-
-.ui-datatable .ui-column-filter-mode {
-    /* flex-shrink is allowed (unlike the value input, a <select> is sized by its widest <option>, which can
-       alone exceed a narrow column's width) so it also yields space rather than starving the value input. */
-    flex: 0 1 auto;
-    width: auto;
-    min-width: 2.5rem;
-}
-
 .ui-datatable .ui-column-filter.ui-helper-hidden {
     /* hidden while a value-less match mode (e.g., "is empty") is selected - the mode is the whole predicate */
     display: none;
@@ -105,8 +83,61 @@
 
 .ui-datatable.ui-filter-toggleable thead .ui-column-customfilter,
 .ui-datatable.ui-filter-toggleable thead .ui-column-filter,
-.ui-datatable.ui-filter-toggleable thead .ui-column-filter-container {
+.ui-datatable.ui-filter-toggleable thead .ui-column-filter-mode-icon {
     display:none;
+}
+
+/* filter match-mode picker (icon + overlay menu). Sits next to the sort icons in the
+   header rather than as a dropdown competing with the value input for space in a narrow column. */
+.ui-datatable .ui-column-filter-mode-icon {
+    display: inline-block;
+    margin: -3px 0px -3px 2px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    vertical-align: middle;
+    font-size: 1rem;
+    color: inherit;
+}
+
+.ui-datatable .ui-column-filter-mode-icon.ui-column-filter-mode-icon-active {
+    color: var(--primary-color, #007ad9);
+}
+
+/* relocated to document.body at runtime (see datatable.widget.js#bindFilterMatchModeMenu) so scrollable/frozen
+   headers' `overflow: hidden` doesn't clip it - position/z-index are set at show-time by the widget. Not scoped
+   under `.ui-datatable` (unlike the icon button above, which stays put) since it no longer lives there; an
+   explicit background/border/shadow is set rather than relying on the cascade to reach a relocated element. */
+.ui-column-filter-mode-menu {
+    position: absolute;
+    min-width: 10rem;
+    max-height: 20rem;
+    overflow-y: auto;
+    padding: .25rem 0;
+    margin: 0;
+    list-style: none;
+    background: var(--surface-overlay, #ffffff);
+    color: var(--text-color, #333333);
+    border: 1px solid var(--surface-border, #dee2e6);
+    border-radius: inherit;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .12);
+}
+
+.ui-column-filter-mode-menu .ui-menuitem-link {
+    display: block;
+    padding: .5rem .75rem;
+    white-space: nowrap;
+    color: inherit;
+}
+
+.ui-column-filter-mode-menu .ui-menuitem:hover .ui-menuitem-link {
+    background: var(--surface-hover, rgba(0, 0, 0, .04));
+}
+
+.ui-column-filter-mode-menu .ui-menuitem.ui-state-active .ui-menuitem-link {
+    background: var(--surface-hover, rgba(0, 0, 0, .04));
+    font-weight: 700;
 }
 
 .ui-datatable .ui-row-toggler {

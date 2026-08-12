@@ -48,7 +48,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -267,23 +266,19 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(7)
-    @DisplayName("DataTable: numeric filterMatchModeOptions keeps spelled-out labels once it "
-            + "includes non-comparison modes (between/is null/in list), same as text filterMatchModeOptions")
+    @DisplayName("DataTable: numeric and text filterMatchModeOptions both use spelled-out labels in the "
+            + "filter match-mode overlay menu")
     void matchModeLabels(Page page) {
         // Arrange
         HeaderCell idHeader = page.dataTable.getHeader().getCell("ID").get();
         HeaderCell lastNameHeader = page.dataTable.getHeader().getCell("last name").get();
 
         // Act
-        List<String> idOptionLabels = new Select(idHeader.getColumnFilterMatchMode()).getOptions().stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
-        List<String> lastNameOptionLabels = new Select(lastNameHeader.getColumnFilterMatchMode()).getOptions().stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
+        List<String> idOptionLabels = idHeader.getFilterMatchModeLabels();
+        List<String> lastNameOptionLabels = lastNameHeader.getFilterMatchModeLabels();
 
-        // Assert - "numeric" now mixes pure comparison operators with between/is null/in list, so - like "text" -
-        // it keeps spelled-out labels throughout rather than rendering "=", "!=", "<", ... as symbols
+        // Assert - the overlay menu always shows spelled-out labels (e.g. "Equals" rather than "=") now that
+        // it's no longer a cramped inline <select> competing with the value input for space
         assertTrue(idOptionLabels.contains("Equals"), "Expected spelled-out labels, got: " + idOptionLabels);
         assertTrue(idOptionLabels.contains("Between"), "Expected spelled-out labels, got: " + idOptionLabels);
         assertTrue(idOptionLabels.contains("Is Null"), "Expected spelled-out labels, got: " + idOptionLabels);
@@ -972,9 +967,7 @@ class DataTable051Test extends AbstractDataTableTest {
         HeaderCell reviewDateHeader = page.dataTable.getHeader().getCell("review date").get();
 
         // Act
-        List<String> labels = new Select(reviewDateHeader.getColumnFilterMatchMode()).getOptions().stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
+        List<String> labels = reviewDateHeader.getFilterMatchModeLabels();
 
         // Assert - date-specific overrides for the modes shared with the numeric preset
         assertTrue(labels.contains("Is"), "Expected date-flavored labels, got: " + labels);
@@ -1201,12 +1194,8 @@ class DataTable051Test extends AbstractDataTableTest {
         HeaderCell lastLoginHeader = page.dataTable.getHeader().getCell("last login").get();
 
         // Act
-        List<String> timeLabels = new Select(checkInHeader.getColumnFilterMatchMode()).getOptions().stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
-        List<String> datetimeLabels = new Select(lastLoginHeader.getColumnFilterMatchMode()).getOptions().stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
+        List<String> timeLabels = checkInHeader.getFilterMatchModeLabels();
+        List<String> datetimeLabels = lastLoginHeader.getFilterMatchModeLabels();
 
         // Assert - "time" reuses the date-flavored "Is"/"Before"/"After" labels for the shared comparators and
         // adds the 4 new minute/hour modes, but has no day/week/month/... predicates - a bare LocalTime has no
@@ -1333,9 +1322,7 @@ class DataTable051Test extends AbstractDataTableTest {
         HeaderCell roleHeader = page.dataTable.getHeader().getCell("role").get();
 
         // Act
-        List<String> labels = new Select(roleHeader.getColumnFilterMatchMode()).getOptions().stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
+        List<String> labels = roleHeader.getFilterMatchModeLabels();
 
         // Assert - enum-specific overrides for the modes shared with other presets
         assertTrue(labels.contains("Is"), "Expected enum-flavored labels, got: " + labels);
@@ -1476,9 +1463,7 @@ class DataTable051Test extends AbstractDataTableTest {
         HeaderCell skillsHeader = page.dataTable.getHeader().getCell("skills").get();
 
         // Act
-        List<String> labels = new Select(skillsHeader.getColumnFilterMatchMode()).getOptions().stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
+        List<String> labels = skillsHeader.getFilterMatchModeLabels();
 
         // Assert
         assertTrue(labels.contains("Contains"), "Expected array-preset labels, got: " + labels);
@@ -1488,6 +1473,50 @@ class DataTable051Test extends AbstractDataTableTest {
         assertTrue(labels.contains("Contains None"), "Expected array-preset labels, got: " + labels);
         assertTrue(labels.contains("Is Empty"), "Expected the generic label, got: " + labels);
         assertTrue(labels.contains("Is Not Empty"), "Expected the generic label, got: " + labels);
+    }
+
+    @Test
+    @Order(44)
+    @DisplayName("DataTable: the filter match-mode icon is outlined while the column's default match mode is "
+            + "selected and fills in as soon as any other mode is picked - independent of whether a value is typed")
+    void filterMatchModeIconActiveState(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell lastNameHeader = dataTable.getHeader().getCell("last name").get();
+
+        // Assert - the column's default mode ("contains") is selected on a fresh page load, icon starts outlined
+        WebElement icon = lastNameHeader.getColumnFilterMatchModeIcon();
+        assertFalse(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+
+        // Act - type a value without changing the mode
+        dataTable.filter("last name", "ar");
+
+        // Assert - typing alone does not fill the icon; only the selected mode drives it, not the typed value
+        icon = lastNameHeader.getColumnFilterMatchModeIcon();
+        assertFalse(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+
+        // Act - switch to a different (still value-requiring) mode
+        dataTable.filterMatchMode("last name", "startsWith");
+
+        // Assert - the icon fills in as soon as a non-default mode is picked
+        icon = lastNameHeader.getColumnFilterMatchModeIcon();
+        assertTrue(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+
+        // Act - back to the column's default mode, with the same value ("ar") still typed
+        dataTable.filterMatchMode("last name", "contains");
+
+        // Assert - outlined again - mode-driven, not value-driven, so the still-present value doesn't matter
+        icon = lastNameHeader.getColumnFilterMatchModeIcon();
+        assertFalse(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+
+        // Act - switch to a value-less mode ("is empty")
+        dataTable.filterMatchMode("last name", "empty");
+
+        // Assert - fills too, value-less modes are no exception
+        icon = lastNameHeader.getColumnFilterMatchModeIcon();
+        assertTrue(icon.getAttribute("class").contains("ui-column-filter-mode-icon-active"));
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
