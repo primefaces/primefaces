@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -48,42 +49,30 @@ class MatchModeTest {
     @Test
     void symbol_definedForComparisonOperators() {
         assertEquals("=", MatchMode.EQUALS.symbol());
-        assertEquals("!=", MatchMode.NOT_EQUALS.symbol());
+        assertEquals("≠", MatchMode.NOT_EQUALS.symbol());
         assertEquals("<", MatchMode.LESS_THAN.symbol());
-        assertEquals("<=", MatchMode.LESS_THAN_EQUALS.symbol());
+        assertEquals("≤", MatchMode.LESS_THAN_EQUALS.symbol());
         assertEquals(">", MatchMode.GREATER_THAN.symbol());
-        assertEquals(">=", MatchMode.GREATER_THAN_EQUALS.symbol());
+        assertEquals("≥", MatchMode.GREATER_THAN_EQUALS.symbol());
     }
 
     @Test
-    void symbol_undefinedForStringMatchingOperators() {
-        assertNull(MatchMode.CONTAINS.symbol());
-        assertNull(MatchMode.NOT_CONTAINS.symbol());
-        assertNull(MatchMode.STARTS_WITH.symbol());
-        assertNull(MatchMode.NOT_STARTS_WITH.symbol());
-        assertNull(MatchMode.ENDS_WITH.symbol());
-        assertNull(MatchMode.NOT_ENDS_WITH.symbol());
-        assertNull(MatchMode.EXACT.symbol());
-        assertNull(MatchMode.NOT_EXACT.symbol());
-        assertNull(MatchMode.IN.symbol());
-        assertNull(MatchMode.NOT_IN.symbol());
-        assertNull(MatchMode.BETWEEN.symbol());
-        assertNull(MatchMode.NOT_BETWEEN.symbol());
-        assertNull(MatchMode.IS_TRUE.symbol());
-        assertNull(MatchMode.IS_FALSE.symbol());
-        assertNull(MatchMode.ALL.symbol());
-        assertNull(MatchMode.GLOBAL.symbol());
+    void symbol_definedForEveryMatchMode() {
+        // every MatchMode - not just the comparison operators - carries its own single-character symbol,
+        // exposed as title/tooltip text alongside icon() in the filter match-mode menu and header badge
+        for (MatchMode mode : MatchMode.values()) {
+            assertNotNull(mode.symbol(), mode + " should have a symbol");
+            assertEquals(1, mode.symbol().codePointCount(0, mode.symbol().length()),
+                    mode + "'s symbol should be a single character: " + mode.symbol());
+        }
     }
 
     @Test
-    void textNumericAndDatePresets_areNotFullySymbolic() {
-        // TEXT_OPTIONS mixes comparison operators (equals/notEquals) with string-matching operators
-        // (contains, startsWith, ...) that have no symbol. NUMERIC_OPTIONS and DATE_OPTIONS, since both were
-        // extended with "between"/"is null"/"in list"/relative-date predicates, are no longer
-        // purely comparison operators either - all three dropdowns keep spelled-out labels for consistency.
-        assertFalse(MatchMode.TEXT_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
-        assertFalse(MatchMode.NUMERIC_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
-        assertFalse(MatchMode.DATE_OPTIONS.stream().allMatch(mode -> mode.symbol() != null));
+    void symbol_isUniquePerMatchMode() {
+        // every dropdown preset mixes modes freely, so distinctness is guaranteed the simple way: no two
+        // MatchMode values share a symbol anywhere, not just within one preset
+        long distinctSymbols = java.util.Arrays.stream(MatchMode.values()).map(MatchMode::symbol).distinct().count();
+        assertEquals(MatchMode.values().length, distinctSymbols);
     }
 
     @Test

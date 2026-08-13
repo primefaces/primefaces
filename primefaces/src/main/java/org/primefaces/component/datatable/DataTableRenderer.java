@@ -872,6 +872,19 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.endElement("span");
         writer.endElement("button");
 
+        // the active mode's own icon, shown beside the trigger button above so a reader can tell which kind of
+        // filter is applied to this column without opening the menu - kept in sync with the selected mode by
+        // datatable.widget.js#updateFilterMatchModeIconState(), the same place that toggles the trigger
+        // button's filled/outline state
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_ACTIVE_ICON_CLASS + " pi " + selected.icon()
+                + (active ? "" : " ui-helper-hidden"), null);
+        // the mode's single-character symbol, as a native tooltip - the icon glyph alone doesn't hint at which
+        // mode it stands for, so this gives a mouse-hover (and, in most browsers, a screen reader) a compact
+        // cue; kept in sync with the selected mode by updateFilterMatchModeIconState() alongside the icon class
+        writer.writeAttribute("title", selected.symbol(), null);
+        writer.endElement("span");
+
         // "date"/"time"/"datetime" render the 6 shared comparators as "Is"/"Before"/"After"/...; "enum" renders
         // equals/notEquals/in/notIn as "Is"/"Is Not"/"Is Any Of"/"Is None Of" - see resolveMatchModeMessageKey()
         String trimmedFilterValueType = filterValueType == null ? null : filterValueType.trim();
@@ -897,6 +910,11 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.writeAttribute("aria-checked", String.valueOf(isSelected), null);
             writer.writeAttribute("tabindex", "-1", null);
             writer.writeAttribute("data-match-mode", matchMode.operator(), null);
+            // read by datatable.widget.js#updateFilterMatchModeIconState() to swap the active-icon badge (see
+            // above) to this mode's own icon once it's selected, without needing a MatchMode->icon lookup client-side
+            writer.writeAttribute("data-icon", matchMode.icon(), null);
+            // same as data-icon above, but for the badge's title tooltip
+            writer.writeAttribute("data-symbol", matchMode.symbol(), null);
             if (matchMode == columnDefault) {
                 // read by datatable.widget.js so clearFilters() and the icon's active-state check can find the
                 // column's own configured default without re-deriving it client-side - see the comment above
@@ -916,7 +934,16 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 // shadow single-date picker, or the shadow range-date picker to show for the newly selected mode
                 writer.writeAttribute("data-value-widget", valueWidget, null);
             }
+            writer.startElement("span", null);
+            writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS + " pi " + matchMode.icon(), null);
+            // the mode's single-character symbol, as a native tooltip - see the identical note on the
+            // active-icon badge above
+            writer.writeAttribute("title", matchMode.symbol(), null);
+            writer.endElement("span");
+            writer.startElement("span", null);
+            writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_LABEL_CLASS, null);
             writer.writeText(label, null);
+            writer.endElement("span");
             writer.endElement("a");
             writer.endElement("li");
         }

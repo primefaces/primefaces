@@ -37,180 +37,169 @@ import java.util.stream.Collectors;
  */
 public enum MatchMode {
 
-    STARTS_WITH("startsWith"),
-    NOT_STARTS_WITH("notStartsWith"),
+    STARTS_WITH("startsWith", "pi-align-left", "≺"),
+    NOT_STARTS_WITH("notStartsWith", "pi-align-center", "⊀"),
 
-    ENDS_WITH("endsWith"),
-    NOT_ENDS_WITH("notEndsWith"),
+    ENDS_WITH("endsWith", "pi-align-right", "≻"),
+    NOT_ENDS_WITH("notEndsWith", "pi-align-justify", "⊁"),
 
-    CONTAINS("contains"),
-    NOT_CONTAINS("notContains"),
+    CONTAINS("contains", "pi-search", "∋"),
+    NOT_CONTAINS("notContains", "pi-search-minus", "∌"),
 
-    EXACT("exact"),
-    NOT_EXACT("notExact"),
+    EXACT("exact", "pi-lock", "≡"),
+    NOT_EXACT("notExact", "pi-unlock", "≢"),
 
-    LESS_THAN("lt", "<"),
-    LESS_THAN_EQUALS("lte", "<="),
+    LESS_THAN("lt", "pi-angle-left", "<"),
+    LESS_THAN_EQUALS("lte", "pi-angle-double-left", "≤"),
 
-    GREATER_THAN("gt", ">"),
-    GREATER_THAN_EQUALS("gte", ">="),
+    GREATER_THAN("gt", "pi-angle-right", ">"),
+    GREATER_THAN_EQUALS("gte", "pi-angle-double-right", "≥"),
 
-    EQUALS("equals", "="),
-    NOT_EQUALS("notEquals", "!="),
+    EQUALS("equals", "pi-equals", "="),
+    NOT_EQUALS("notEquals", "pi-ban", "≠"),
 
-    IN("in"),
-    NOT_IN("notIn"),
+    IN("in", "pi-list", "∈"),
+    NOT_IN("notIn", "pi-times", "∉"),
 
-    BETWEEN("between"),
-    NOT_BETWEEN("notBetween"),
+    BETWEEN("between", "pi-arrows-h", "↔"),
+    NOT_BETWEEN("notBetween", "pi-sliders-h", "↮"),
 
     /**
      * Matches when the field value is {@code null}, an empty/blank string, or an empty {@code Collection}/array.
-         */
-    IS_EMPTY("empty", false),
+     */
+    IS_EMPTY("empty", "pi-circle", "∅", false),
     /**
      * Matches when the field value is neither {@code null}, an empty/blank string, nor an empty
      * {@code Collection}/array.
      */
-    NOT_EMPTY("notEmpty", false),
+    NOT_EMPTY("notEmpty", "pi-circle-fill", "∃", false),
     /**
      * Matches when the field value is strictly {@code null}, unlike {@link #IS_EMPTY} which also matches a
      * non-null but blank string.
      */
-    IS_NULL("null", false),
+    IS_NULL("null", "pi-question-circle", "○", false),
     /**
      * Matches when the field value is not {@code null} (a blank string still matches).
      */
-    NOT_NULL("notNull", false),
+    NOT_NULL("notNull", "pi-check-circle", "●", false),
     /**
      * Matches when the field value, as a string, matches the filter value interpreted as a regular expression.
-         */
-    MATCHES_REGEX("regex"),
-
+     */
+    MATCHES_REGEX("regex", "pi-asterisk", "*"),
     /**
      * Matches when the field value is {@code Boolean.TRUE} (or the string {@code "true"}).
      */
-    IS_TRUE("true", false),
+    IS_TRUE("true", "pi-check", "✓", false),
     /**
      * Matches when the field value is strictly {@code Boolean.FALSE} (or the string {@code "false"}) - a
      * {@code null} value matches neither {@link #IS_TRUE} nor {@link #IS_FALSE}; use {@link #IS_NULL} for that.
-         */
-    IS_FALSE("false", false),
-
+     */
+    IS_FALSE("false", "pi-times-circle", "✗", false),
     /**
      * "No filter selected" placeholder - {@link FilterMeta#isActive()} always treats it as inactive, regardless
      * of {@link #requiresValue()}. Needed as the default option for a dropdown built entirely from value-less
      * modes (e.g., {@link #BOOLEAN_OPTIONS}): unlike "contains" or "equals", none of "true"/"false"/"is null"/
      * "is not null" has a natural "nothing typed yet" resting state, so without this placeholder such a column
      * would silently start filtered (to whichever mode happens to be first) the moment the page renders.
-         */
-    ALL("all", false),
-
-    // -- relative-date predicates for filterValueType="date", each computed against LocalDate.now() at
-    // the moment the filter runs - value-less, like IS_EMPTY/IS_TRUE/etc.
-    IS_TODAY("today", false),
-    IS_YESTERDAY("yesterday", false),
-    IS_TOMORROW("tomorrow", false),
-    IS_THIS_WEEK("thisWeek", false),
-    IS_LAST_WEEK("lastWeek", false),
-    IS_NEXT_WEEK("nextWeek", false),
-    IS_THIS_MONTH("thisMonth", false),
-    IS_LAST_MONTH("lastMonth", false),
-    IS_NEXT_MONTH("nextMonth", false),
-    IS_THIS_QUARTER("thisQuarter", false),
-    IS_LAST_QUARTER("lastQuarter", false),
-    IS_NEXT_QUARTER("nextQuarter", false),
-    IS_THIS_YEAR("thisYear", false),
-    IS_LAST_YEAR("lastYear", false),
-    IS_NEXT_YEAR("nextYear", false),
-
+     */
+    ALL("all", "pi-sliders-v", "∀", false),
+    /**
+     * Relative-date predicates for filterValueType="date", each computed against LocalDate.now() at the moment
+     * the filter runs - value-less, like IS_EMPTY/IS_TRUE/etc.
+     */
+    IS_TODAY("today", "pi-sun", "◆", false),
+    IS_YESTERDAY("yesterday", "pi-moon", "◁", false),
+    IS_TOMORROW("tomorrow", "pi-arrow-right", "▷", false),
+    IS_THIS_WEEK("thisWeek", "pi-calendar", "▣", false),
+    IS_LAST_WEEK("lastWeek", "pi-calendar-minus", "◀", false),
+    IS_NEXT_WEEK("nextWeek", "pi-calendar-plus", "▶", false),
+    IS_THIS_MONTH("thisMonth", "pi-table", "▦", false),
+    IS_LAST_MONTH("lastMonth", "pi-arrow-circle-left", "⇐", false),
+    IS_NEXT_MONTH("nextMonth", "pi-arrow-circle-right", "⇒", false),
+    IS_THIS_QUARTER("thisQuarter", "pi-th-large", "▤", false),
+    IS_LAST_QUARTER("lastQuarter", "pi-chevron-circle-left", "↞", false),
+    IS_NEXT_QUARTER("nextQuarter", "pi-chevron-circle-right", "↠", false),
+    IS_THIS_YEAR("thisYear", "pi-book", "▥", false),
+    IS_LAST_YEAR("lastYear", "pi-caret-left", "↢", false),
+    IS_NEXT_YEAR("nextYear", "pi-caret-right", "↣", false),
     /**
      * Matches the last N days up to and including today; N is the typed filter value.
      */
-    LAST_N_DAYS("lastNDays"),
+    LAST_N_DAYS("lastNDays", "pi-history", "⏮"),
     /**
      * Matches the next N days starting today; N is the typed filter value.
      */
-    NEXT_N_DAYS("nextNDays"),
+    NEXT_N_DAYS("nextNDays", "pi-stopwatch", "⏭"),
     /**
      * Matches within N days of today in either direction; N is the typed filter value.
      */
-    RELATIVE_DATE("relativeDate"),
-
+    RELATIVE_DATE("relativeDate", "pi-compass", "⟲"),
     /**
      * Matches the last N minutes up to and including now; N is the typed filter value. Works on a bare
      * {@code LocalTime} field too (a cyclic 24h clock - the window can wrap past midnight), not just a full
      * date+time value.
      */
-    LAST_N_MINUTES("lastNMinutes"),
+    LAST_N_MINUTES("lastNMinutes", "pi-clock", "⏪"),
     /**
      * Matches the next N minutes starting now; N is the typed filter value. See {@link #LAST_N_MINUTES} for the
      * bare-{@code LocalTime} wraparound note.
      */
-    NEXT_N_MINUTES("nextNMinutes"),
+    NEXT_N_MINUTES("nextNMinutes", "pi-bolt", "⏩"),
     /**
      * Matches the last N hours up to and including now; N is the typed filter value. See {@link #LAST_N_MINUTES}
      * for the bare-{@code LocalTime} wraparound note.
      */
-    LAST_N_HOURS("lastNHours"),
+    LAST_N_HOURS("lastNHours", "pi-calendar-clock", "↺"),
     /**
      * Matches the next N hours starting now; N is the typed filter value. See {@link #LAST_N_MINUTES} for the
      * bare-{@code LocalTime} wraparound note.
      */
-    NEXT_N_HOURS("nextNHours"),
-
+    NEXT_N_HOURS("nextNHours", "pi-refresh", "↻"),
     /**
      * Matches when a {@code Collection} or array field value contains the single typed filter value. Unlike
      * {@link #CONTAINS} (a string substring match), this expects the field itself to be multivalue - e.g., a
      * {@code List<String>} of tags.
      */
-    ARRAY_CONTAINS("arrayContains"),
+    ARRAY_CONTAINS("arrayContains", "pi-tags", "⊇"),
     /**
      * Matches when a {@code Collection}/array field value does not contain the typed filter value.
      * See {@link #ARRAY_CONTAINS}.
      */
-    ARRAY_NOT_CONTAINS("arrayNotContains"),
+    ARRAY_NOT_CONTAINS("arrayNotContains", "pi-tag", "⊉"),
     /**
      * Matches when a {@code Collection}/array field value contains at least one of the comma-separated typed
      * filter values (a non-empty intersection). See {@link #ARRAY_CONTAINS}.
      */
-    CONTAINS_ANY("containsAny"),
+    CONTAINS_ANY("containsAny", "pi-share-alt", "∪"),
     /**
      * Matches when a {@code Collection}/array field value contains every one of the comma-separated typed
      * filter values (the field is a superset of the typed values). See {@link #ARRAY_CONTAINS}.
      */
-    CONTAINS_ALL("containsAll"),
+    CONTAINS_ALL("containsAll", "pi-check-square", "∩"),
     /**
      * Matches when a {@code Collection}/array field value contains none of the comma-separated typed filter
      * values (an empty intersection) - the negation of {@link #CONTAINS_ANY}.
      */
-    CONTAINS_NONE("containsNone"),
+    CONTAINS_NONE("containsNone", "pi-minus-circle", "⊘"),
 
-    GLOBAL("global");
+    GLOBAL("global", "pi-globe", "⊛");
 
     /**
-     * Preset of match modes offered for a numeric {@code filterValueType="numeric"} column filter,
-     * letting the user pick a comparator (=, !=, &lt;, &gt;, &lt;=, &gt;=), plus "(not) between", "is (not) null"
-     * and "(not) in list".
+     * Preset of match modes offered for a numeric {@code filterValueType="numeric"} column filter.
      */
     public static final List<MatchMode> NUMERIC_OPTIONS = List.of(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
             BETWEEN, NOT_BETWEEN, IS_NULL, NOT_NULL, IN, NOT_IN);
 
     /**
-     * Preset of match modes offered for a {@code filterValueType="text"} column filter: the classic string
-     * operators plus "is (not) empty", "is (not) null", "matches regex" and "(not) in list".
+     * Preset of match modes offered for a {@code filterValueType="text"} column filter.
      */
     public static final List<MatchMode> TEXT_OPTIONS = List.of(
             CONTAINS, NOT_CONTAINS, STARTS_WITH, NOT_STARTS_WITH, ENDS_WITH, NOT_ENDS_WITH, EQUALS, NOT_EQUALS,
             IS_EMPTY, NOT_EMPTY, IS_NULL, NOT_NULL, MATCHES_REGEX, IN, NOT_IN);
 
     /**
-     * Preset of match modes offered for a {@code filterValueType="date"} column filter: the comparators
-     * (labeled "Is"/"Is Not"/"Before"/"Before or On"/"After"/"After or On" for this preset specifically - see
-     * {@link org.primefaces.component.datatable.DataTableRenderer}), "(not) between", "is (not) empty", a set of
-     * relative-date predicates (today/yesterday/tomorrow, this/last/next week/month/quarter/year), and
-     * "last/next N days"/"relative date" (typed as a number of days).
+     * Preset of match modes offered for a {@code filterValueType="date"} column filter.
      */
     public static final List<MatchMode> DATE_OPTIONS = List.of(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
@@ -223,35 +212,25 @@ public enum MatchMode {
             LAST_N_DAYS, NEXT_N_DAYS, RELATIVE_DATE);
 
     /**
-     * Preset of match modes offered for a {@code filterValueType="boolean"} column filter: "All" (no
-     * filter, the default), "true", "false", "is null" and "is not null" - every option is value-less, so the
-     * filter value {@code <input>} stays hidden no matter which is selected.
+     * Preset of match modes offered for a {@code filterValueType="boolean"} column filter.
      */
     public static final List<MatchMode> BOOLEAN_OPTIONS = List.of(ALL, IS_TRUE, IS_FALSE, IS_NULL, NOT_NULL);
 
     /**
      * Preset of match modes offered for a {@code filterValueType="enum"} column filter (a Java
-     * {@code enum} value): "is"/"is not" (labeled "Is"/"Is Not" for this preset specifically - see
-     * {@link org.primefaces.component.datatable.DataTableRenderer}), "is any of"/"is none of" (labeled
-     * "Is Any Of"/"Is None Of", a multi-value match against {@link #IN}/{@link #NOT_IN}), and "is (not) empty".
-     * Every mode here already exists for other presets - this preset just curates a relevant subset with
-     * enum-appropriate labels.
+     * {@code enum} value).
      */
     public static final List<MatchMode> ENUM_OPTIONS = List.of(EQUALS, NOT_EQUALS, IN, NOT_IN, IS_EMPTY, NOT_EMPTY);
 
     /**
      * Preset of match modes offered for a {@code filterValueType="array"} column filter (a multivalue
-     * field, e.g., a {@code List<String>} of tags): "contains"/"does not contain" (a single value),
-     * "contains any"/"contains all"/"contains none" (a comma-separated list of values), and "is (not) empty".
+     * field, e.g., a {@code List<String>} of tags).
          */
     public static final List<MatchMode> ARRAY_OPTIONS = List.of(
             ARRAY_CONTAINS, ARRAY_NOT_CONTAINS, CONTAINS_ANY, CONTAINS_ALL, CONTAINS_NONE, IS_EMPTY, NOT_EMPTY);
 
     /**
-     * Preset of match modes offered for a {@code filterValueType="time"} column filter (a bare,
-     * date-less time-of-day, e.g., {@code LocalTime}): the comparators, "(not) between", "is (not) empty", and
-     * "last/next N minutes/hours". No day/week/month/... predicates - a bare time-of-day has no date component
-     * for those to apply to.
+     * Preset of match modes offered for a {@code filterValueType="time"} column filter.
      */
     public static final List<MatchMode> TIME_OPTIONS = List.of(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
@@ -259,9 +238,7 @@ public enum MatchMode {
             LAST_N_MINUTES, NEXT_N_MINUTES, LAST_N_HOURS, NEXT_N_HOURS);
 
     /**
-     * Preset of match modes offered for a {@code filterValueType="datetime"} column filter (a full
-     * date+time value, e.g., {@code LocalDateTime}): every {@link #DATE_OPTIONS} mode (the date component still
-     * has calendar-day/week/month/... meaning) plus "last/next N minutes/hours" for time-of-day precision.
+     * Preset of match modes offered for a {@code filterValueType="datetime"} column filter.
          */
     public static final List<MatchMode> DATETIME_OPTIONS;
     static {
@@ -274,23 +251,17 @@ public enum MatchMode {
     }
 
     private final String operator;
+    private final String icon;
     private final String symbol;
     private final boolean requiresValue;
 
-    MatchMode(String operator) {
-        this(operator, null, true);
+    MatchMode(String operator, String icon, String symbol) {
+        this(operator, icon, symbol, true);
     }
 
-    MatchMode(String operator, String symbol) {
-        this(operator, symbol, true);
-    }
-
-    MatchMode(String operator, boolean requiresValue) {
-        this(operator, null, requiresValue);
-    }
-
-    MatchMode(String operator, String symbol, boolean requiresValue) {
+    MatchMode(String operator, String icon, String symbol, boolean requiresValue) {
         this.operator = operator;
+        this.icon = icon;
         this.symbol = symbol;
         this.requiresValue = requiresValue;
     }
@@ -300,12 +271,25 @@ public enum MatchMode {
     }
 
     /**
-     * The mathematical symbol for this match mode (e.g., {@code "<="} for {@link #LESS_THAN_EQUALS}), if it has one.
-     * Comparison operators shared by the {@code numeric} and {@code date} {@code filterValueType} presets
-     * have a symbol; string-matching operators (contains, starts with, ...) do not, as they have no natural
-     * mathematical notation.
+     * The PrimeIcons class (e.g., {@code "pi-equals"} for {@link #EQUALS}) representing this match mode - shown
+     * as the first column of its row in the filter match-mode overlay menu, and beside the filter trigger icon
+     * in the column header once this mode is the active (non-default) selection, so the reader can tell which
+     * kind of filter is applied to a column without opening the menu.
      *
-     * @return the symbol, or {@code null} if this match mode has none
+     * @return the PrimeIcons class, without the leading {@code "pi "} base class
+     */
+    public String icon() {
+        return icon;
+    }
+
+    /**
+     * A single, distinct Unicode character standing in for this match mode (e.g., {@code "≠"} for
+     * {@link #NOT_EQUALS}, {@code "∅"} for {@link #IS_EMPTY}) - every match mode has one. It is not rendered as
+     * its own visual element; it is exposed as {@code title} text alongside {@link #icon()} in the filter
+     * match-mode overlay menu and the column header's active-mode badge, giving a screen reader or a mouse-hover
+     * tooltip a compact, mode-specific hint that a bare icon glyph doesn't otherwise carry.
+     *
+     * @return the single-character symbol
      */
     public String symbol() {
         return symbol;

@@ -81,6 +81,22 @@
     display: none;
 }
 
+.ui-datatable .ui-column-filter-date,
+.ui-datatable .ui-column-filter-date-range {
+    /* without an explicit display, these fall back to a plain <span>'s "inline" default, which some browsers'
+       WebDriver isDisplayed() checks fail to report as visible despite being rendered - match .ui-column-filter's
+       own block layout instead, which doesn't have that problem */
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: .5rem auto auto auto;
+}
+
+.ui-datatable .ui-column-filter-date.ui-helper-hidden,
+.ui-datatable .ui-column-filter-date-range.ui-helper-hidden {
+    display: none;
+}
+
 .ui-datatable.ui-filter-toggleable thead .ui-column-customfilter,
 .ui-datatable.ui-filter-toggleable thead .ui-column-filter,
 .ui-datatable.ui-filter-toggleable thead .ui-column-filter-mode-icon {
@@ -105,6 +121,17 @@
     color: var(--primary-color, #007ad9);
 }
 
+/* badge beside the trigger icon carrying the active match mode's own icon (see MatchMode#icon()) - lets a
+   reader tell which kind of filter is applied to a column without opening the menu. Kept in sync with the
+   selected mode by datatable.widget.js#updateFilterMatchModeIconState(). */
+.ui-datatable .ui-column-filter-mode-active-icon {
+    display: inline-block;
+    margin-left: 2px;
+    vertical-align: middle;
+    font-size: .75rem;
+    color: var(--primary-color, #007ad9);
+}
+
 /* relocated to document.body at runtime (see datatable.widget.js#bindFilterMatchModeMenu) so scrollable/frozen
    headers' `overflow: hidden` doesn't clip it - position/z-index are set at show-time by the widget. Not scoped
    under `.ui-datatable` (unlike the icon button above, which stays put) since it no longer lives there; an
@@ -125,10 +152,30 @@
 }
 
 .ui-column-filter-mode-menu .ui-menuitem-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
     padding: .5rem .75rem;
     white-space: nowrap;
     color: inherit;
+}
+
+/* first "column" of a menu row: the mode's own icon (see MatchMode#icon()) */
+.ui-column-filter-mode-menu .ui-column-filter-mode-menuitem-icon {
+    flex: 0 0 auto;
+    width: 1rem;
+    text-align: center;
+    font-size: .875rem;
+    color: var(--text-color-secondary, #6c757d);
+}
+
+.ui-column-filter-mode-menu .ui-menuitem.ui-state-active .ui-column-filter-mode-menuitem-icon {
+    color: inherit;
+}
+
+/* second "column" of a menu row: the mode's label text */
+.ui-column-filter-mode-menu .ui-column-filter-mode-menuitem-label {
+    flex: 1 1 auto;
 }
 
 .ui-column-filter-mode-menu .ui-menuitem:hover .ui-menuitem-link {

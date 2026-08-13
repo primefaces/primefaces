@@ -862,13 +862,15 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Updates a filter-mode trigger icon's filled/outline state to reflect whether a match mode other than the
-     * column's own configured default is currently selected - filled once the user has picked something else,
-     * outline while still on the untouched default.
+     * Updates a filter-mode trigger icon's filled/outline state, and the active-mode icon badge beside it, to
+     * reflect whether a match mode other than the column's own configured default is currently selected -
+     * filled (and the badge shown, carrying that mode's own icon) once the user has picked something else,
+     * outline (and the badge hidden) while still on the untouched default.
      * @private
      * @param {JQuery} icon the `.ui-column-filter-mode-icon` trigger button
      * @param {JQuery} menu the icon's overlay menu, as returned by {@link getFilterMatchModeMenu}
-     * @param {JQuery} selectedLink the currently selected `.ui-menuitem-link`
+     * @param {JQuery} selectedLink the currently selected `.ui-menuitem-link` (carries `data-icon` - see
+     *   DataTableRenderer#encodeFilterMatchModeMenu())
      */
     updateFilterMatchModeIconState(icon, menu, selectedLink) {
         // `[data-default="true"]` (see DataTableRenderer#encodeFilterMatchModeMenu) marks the column's own
@@ -878,6 +880,23 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         icon.toggleClass('ui-column-filter-mode-icon-active', active);
         icon.find('.pi').toggleClass('pi-filter-fill', active).toggleClass('pi-filter', !active);
+
+        // the badge is the trigger button's own next sibling - see encodeFilterMatchModeMenu()'s render order
+        var activeIcon = icon.next('.ui-column-filter-mode-active-icon');
+        activeIcon.toggleClass('ui-helper-hidden', !active);
+        if (active) {
+            // .attr(), not .data() - see the identical note in bindFilterMatchModeMenu() for data-match-mode
+            var newIcon = selectedLink.attr('data-icon');
+            if (newIcon) {
+                activeIcon.removeClass(function(i, existing) {
+                    return (existing.match(/(?:^|\s)pi-\S+/g) || []).join(' ');
+                }).addClass(newIcon);
+            }
+            var newSymbol = selectedLink.attr('data-symbol');
+            if (newSymbol) {
+                activeIcon.attr('title', newSymbol);
+            }
+        }
     }
 
     /**

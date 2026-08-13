@@ -151,6 +151,16 @@ public class DataTable extends DataTableBaseImpl {
     public static final String COLUMN_FILTER_MODE_MENU_CLASS = "ui-column-filter-mode-menu ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-hidden";
     public static final String COLUMN_FILTER_MODE_MENUITEM_CLASS = "ui-menuitem";
     public static final String COLUMN_FILTER_MODE_MENUITEM_LINK_CLASS = "ui-menuitem-link ui-corner-all";
+    /** First "column" of a filter match-mode menu row: the mode's own {@link org.primefaces.model.MatchMode#icon()}. */
+    public static final String COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS = "ui-column-filter-mode-menuitem-icon";
+    /** Second "column" of a filter match-mode menu row: the mode's label text. */
+    public static final String COLUMN_FILTER_MODE_MENUITEM_LABEL_CLASS = "ui-column-filter-mode-menuitem-label";
+    /** Badge shown beside the filter trigger icon once a non-default match mode is active, carrying that mode's
+     *  own {@link org.primefaces.model.MatchMode#icon()} - lets the reader tell which kind of filter is applied
+     *  to a column without opening the match-mode menu. Callers add {@code ui-helper-hidden} themselves while
+     *  inactive - not baked in here, since this class needs to apply unconditionally (unlike the others, which
+     *  are hidden by default). */
+    public static final String COLUMN_FILTER_MODE_ACTIVE_ICON_CLASS = "ui-column-filter-mode-active-icon";
     public static final String FILTER_ICON_CLASS = "pi pi-filter";
     public static final String FILTER_ICON_ACTIVE_CLASS = "pi pi-filter-fill";
     /** Marker class on the shadow single-date {@code DatePicker} wrapper shown for a "date"/"time"/"datetime"
