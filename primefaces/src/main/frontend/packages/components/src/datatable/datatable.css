@@ -23,6 +23,23 @@
 .ui-datatable .ui-datatable-clear-filters-button {
     margin-right: .5rem;
     vertical-align: middle;
+    flex: 0 0 auto;
+}
+
+/* only applied (see DataTableRenderer#encodeMarkup) when both the button above and a header facet are
+   present - puts them on one row instead of the button's own block-level line sitting above whatever the
+   facet renders. The facet's own top-level element (whatever the developer declared) is always this flex
+   row's last/only other child, so it's the one stretched to fill the remaining width - if it lays its own
+   content out with e.g. `justify-content: space-between`, that still ends up pinned to this row's far edges. */
+.ui-datatable .ui-datatable-header-with-clear-filters {
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.ui-datatable .ui-datatable-header-with-clear-filters > :last-child {
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .ui-datatable .ui-datatable-footer {

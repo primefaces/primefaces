@@ -179,6 +179,10 @@ public class DataTable extends DataTableBaseImpl {
     public static final String FILTER_ICON_ACTIVE_CLASS = "pi pi-filter-fill";
     /** Built-in "Clear Filters" button rendered in the header area when {@code clearFiltersButton="true"}. */
     public static final String CLEAR_FILTERS_BUTTON_CLASS = "ui-datatable-clear-filters-button ui-button ui-widget ui-state-default ui-button-text-icon-left";
+    /** Appended alongside {@link #HEADER_CLASS} when the button above AND a header facet are both present -
+     *  lays the two out in one flex row instead of the button's own block-level line sitting above whatever
+     *  the facet renders. */
+    public static final String HEADER_WITH_CLEAR_FILTERS_CLASS = "ui-datatable-header-with-clear-filters";
     /** Marker class on the shadow single-date {@code DatePicker} wrapper shown for a "date"/"time"/"datetime"
      *  column while a single-value comparator (e.g. "equals") is selected; hidden otherwise. Deliberately
      *  rendered WITHOUT {@code ui-helper-hidden} here - the underlying jQuery-UI-style DatePicker plugin doesn't

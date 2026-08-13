@@ -333,7 +333,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         boolean hasHeaderFacet = FacetUtils.shouldRenderFacet(headerFacet, table.isRenderEmptyFacets());
         if (showClearFiltersButton || hasHeaderFacet) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", DataTable.HEADER_CLASS, null);
+            // sharing one flex row with the facet content only makes sense when there's actually a facet to
+            // share it with - a lone button (no facet) stays exactly as it was
+            writer.writeAttribute("class", DataTable.HEADER_CLASS
+                    + (showClearFiltersButton && hasHeaderFacet ? " " + DataTable.HEADER_WITH_CLEAR_FILTERS_CLASS : ""), null);
             if (showClearFiltersButton) {
                 encodeClearFiltersButton(context, table);
             }

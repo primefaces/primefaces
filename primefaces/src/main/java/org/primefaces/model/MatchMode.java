@@ -67,12 +67,12 @@ public enum MatchMode {
     /**
      * Matches when the field value is {@code null}, an empty/blank string, or an empty {@code Collection}/array.
      */
-    IS_EMPTY("empty", "pi-circle", "∅", false),
+    IS_EMPTY("empty", "pi-circle", "⊝", false),
     /**
      * Matches when the field value is neither {@code null}, an empty/blank string, nor an empty
      * {@code Collection}/array.
      */
-    NOT_EMPTY("notEmpty", "pi-circle-fill", "∃", false),
+    NOT_EMPTY("notEmpty", "pi-circle-fill", "⊜", false),
     /**
      * Matches when the field value is strictly {@code null}, unlike {@link #IS_EMPTY} which also matches a
      * non-null but blank string.
@@ -159,22 +159,22 @@ public enum MatchMode {
      * {@link #CONTAINS} (a string substring match), this expects the field itself to be multivalue - e.g., a
      * {@code List<String>} of tags.
      */
-    ARRAY_CONTAINS("arrayContains", "pi-tags", "⊇"),
+    ARRAY_CONTAINS("arrayContains", "pi-tags", "⊚"),
     /**
      * Matches when a {@code Collection}/array field value does not contain the typed filter value.
      * See {@link #ARRAY_CONTAINS}.
      */
-    ARRAY_NOT_CONTAINS("arrayNotContains", "pi-tag", "⊉"),
+    ARRAY_NOT_CONTAINS("arrayNotContains", "pi-tag", "⊖"),
     /**
      * Matches when a {@code Collection}/array field value contains at least one of the comma-separated typed
      * filter values (a non-empty intersection). See {@link #ARRAY_CONTAINS}.
      */
-    CONTAINS_ANY("containsAny", "pi-share-alt", "∪"),
+    CONTAINS_ANY("containsAny", "pi-share-alt", "⊕"),
     /**
      * Matches when a {@code Collection}/array field value contains every one of the comma-separated typed
      * filter values (the field is a superset of the typed values). See {@link #ARRAY_CONTAINS}.
      */
-    CONTAINS_ALL("containsAll", "pi-check-square", "∩"),
+    CONTAINS_ALL("containsAll", "pi-check-square", "⊙"),
     /**
      * Matches when a {@code Collection}/array field value contains none of the comma-separated typed filter
      * values (an empty intersection) - the negation of {@link #CONTAINS_ANY}.
@@ -283,7 +283,7 @@ public enum MatchMode {
 
     /**
      * A single, distinct Unicode character standing in for this match mode (e.g., {@code "≠"} for
-     * {@link #NOT_EQUALS}, {@code "∅"} for {@link #IS_EMPTY}) - every match mode has one. Rendered as the
+     * {@link #NOT_EQUALS}, {@code "⊝"} for {@link #IS_EMPTY}) - every match mode has one. Rendered as the
      * visible glyph in the first column of the filter match-mode overlay menu, and beside the filter trigger
      * icon in the column header once this mode is the active (non-default) selection, so the reader can tell
      * which kind of filter is applied to a column without opening the menu.
