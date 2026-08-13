@@ -268,14 +268,20 @@
                 <code>List&lt;String&gt;</code>, uses <code>"array"</code> (contains/does not contain, contains
                 any/all/none, is (not) empty). <em>Check-in Time</em>, a bare <code>LocalTime</code>, uses
                 <code>"time"</code>. <em>Last Contact</em>, a full <code>LocalDateTime</code>, uses
-                <code>"datetime"</code> - both add "last/next N minutes/hours" to the comparators.</p>
+                <code>"datetime"</code> - both add "last/next N minutes/hours" to the comparators.
+                <code>clearFiltersButton="true"</code> renders the "Clear Filters" button shown in the header
+                below, which resets every column's filter and match mode, plus the global filter, in one click.</p>
             <h:form>
                 <p:dataTable var="customer" value="#{dtFilterView.customersPresets}" widgetVar="customersPresetsTable"
-                    emptyMessage="No customers found with given criteria"
+                    emptyMessage="No customers found with given criteria" clearFiltersButton="true"
                     filteredValue="#{dtFilterView.filteredCustomersPresets}">
 
                     <f:facet name="header">
-                        <span>List of Customers</span>
+                        <div class="flex align-items-center justify-content-between">
+                            <span>List of Customers</span>
+                            <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('customersPresetsTable').filter())"
+                                         style="width:10rem" placeholder="Enter keyword" />
+                        </div>
                     </f:facet>
 
                     <p:column headerText="Name" field="name" sortBy="#{customer.name}" filterMatchMode="contains"

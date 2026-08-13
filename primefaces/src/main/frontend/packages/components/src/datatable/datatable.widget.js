@@ -42,7 +42,7 @@
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.DataTable.OnRowClickCallback.event The click event that occurred.
  * @param {JQuery} PrimeFaces.widget.DataTable.OnRowClickCallback.row The TR row that was clicked.
  *
- * @interface {PrimeFaces.widget.DataTable.RowMeta} RowMeta Describes the meta information of row, such as its index and
+ * @interface {PrimeFaces.widget.DataTable.RowMeta} RowMeta Describes the meta-information of row, such as its index and
  * its row key.
  * @prop {string | undefined} RowMeta.key The unique key of the row. `undefined` when no key was defined for the rows.
  * @prop {number} RowMeta.index The 0-based index of the row in the DataTable.
@@ -361,7 +361,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Sets the given HTML string as the content of the body of this DataTable. Afterwards, sets up all required event
+     * Sets the given HTML string as the content of the body of this DataTable. Afterward, sets up all required event
      * listeners etc.
      * @protected
      * @param {string} data HTML string to set on the body.
@@ -816,7 +816,20 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             }
         });
 
-        menu.find('.ui-menuitem-link').off('.dataTableFilterMode').on('click.dataTableFilterMode', function(e) {
+        // the active-mode badge is a plain <span> - shouldSort() otherwise treats a click on ANY bare
+        // <span>/<th> within a sortable column header as "sort this column", since the real filter <input>
+        // and this very trigger <button> are excluded only by virtue of not being a <span>. Forward the
+        // click to the trigger button (opens the same menu) and stop it from ever reaching the <th>.
+        icon.next('.ui-column-filter-mode-active-icon').off('.dataTableFilterMode')
+            .on('click.dataTableFilterMode', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                icon.trigger('click');
+            });
+
+        // [data-match-mode] excludes the "Clear" action row below - it's not a selectable mode, and has no
+        // such attribute
+        menu.find('.ui-menuitem-link[data-match-mode]').off('.dataTableFilterMode').on('click.dataTableFilterMode', function(e) {
             e.preventDefault();
             var link = $(this);
             // .attr(), not .data() - jQuery's .data() auto-casts attribute values that look like "true"/"false"/
@@ -828,7 +841,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             // that here rather than re-triggering an unnecessary filter() round trip
             if (hiddenInput.val() !== newMatchMode) {
                 hiddenInput.val(newMatchMode);
-                menu.find('.ui-menuitem-link').attr('aria-checked', 'false').parent().removeClass('ui-state-active');
+                menu.find('.ui-menuitem-link[data-match-mode]').attr('aria-checked', 'false').parent().removeClass('ui-state-active');
                 link.attr('aria-checked', 'true').parent().addClass('ui-state-active');
                 $this.toggleFilterValueInput(th, link, true);
                 $this.updateFilterMatchModeIconState(icon, menu, link);
@@ -838,6 +851,15 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             else {
                 closeMenu();
             }
+        });
+
+        // "clear this column's filter" action - see DataTableRenderer#encodeFilterMatchModeMenu() and
+        // resetColumnFilter() above
+        menu.find('.ui-column-filter-mode-clear-link').off('.dataTableFilterMode').on('click.dataTableFilterMode', function(e) {
+            e.preventDefault();
+            closeMenu();
+            $this.resetColumnFilter(icon);
+            $this.filter();
         });
 
         PrimeFaces.utils.registerHideOverlayHandler($this, 'mousedown.dataTableFilterMode' + icon.attr('id'), menu,
@@ -886,16 +908,13 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         activeIcon.toggleClass('ui-helper-hidden', !active);
         if (active) {
             // .attr(), not .data() - see the identical note in bindFilterMatchModeMenu() for data-match-mode
-            var newIcon = selectedLink.attr('data-icon');
-            if (newIcon) {
-                activeIcon.removeClass(function(i, existing) {
-                    return (existing.match(/(?:^|\s)pi-\S+/g) || []).join(' ');
-                }).addClass(newIcon);
-            }
             var newSymbol = selectedLink.attr('data-symbol');
             if (newSymbol) {
-                activeIcon.attr('title', newSymbol);
+                activeIcon.text(newSymbol);
             }
+            // title carries the mode's full label (already visible text in the menu) - the symbol alone isn't
+            // self-explanatory
+            activeIcon.attr('title', selectedLink.find('.ui-column-filter-mode-menuitem-label').text());
         }
     }
 
@@ -4792,6 +4811,39 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     /**
      * Clears all table filters and shows all rows that may have been hidden by filters.
      */
+    /**
+     * Resets a single column's filter match-mode picker back to the column's own configured default: clears
+     * the value input (and the shadow single/range date pickers - see
+     * DataTableRenderer#encodeDateFilterWidgets() - via their own `change` handler in bindDatePickerFilterSync(),
+     * so their internal state, not just their displayed text, stays in sync), then re-selects the default mode.
+     * Does not itself trigger a filter() round trip - callers decide when (clearFilters() resets every column
+     * first; the per-column "Clear" menu item resets just this one, right before filtering).
+     * @private
+     * @param {JQuery} icon the `.ui-column-filter-mode-icon` trigger button for the column to reset
+     */
+    resetColumnFilter(icon) {
+        var $this = this;
+        var th = icon.closest('th');
+        var hiddenInput = th.find('.ui-column-filter-mode');
+        var menu = $this.getFilterMatchModeMenu(icon);
+        // `[data-default="true"]` marks the column's own configured default - not necessarily the first
+        // item in the list (see the identical note in updateFilterMatchModeIconState())
+        var defaultLink = menu.find('.ui-menuitem-link[data-default="true"]');
+
+        th.find('.ui-column-filter:not(:disabled):not([readonly])').val('');
+        th.find('.ui-column-filter-date input, .ui-column-filter-date-range input').val('').trigger('change');
+
+        // .attr(), not .data() - see the identical note in bindFilterMatchModeMenu()
+        hiddenInput.val(defaultLink.attr('data-match-mode'));
+        // [data-match-mode] excludes the "Clear" action row's own link, which isn't a selectable mode
+        menu.find('.ui-menuitem-link[data-match-mode]').attr('aria-checked', 'false').parent().removeClass('ui-state-active');
+        defaultLink.attr('aria-checked', 'true').parent().addClass('ui-state-active');
+        // the default may require a value (the common case) even if a value-less one (e.g.
+        // "is empty") was selected before the reset - sync the value input's hidden/disabled state back
+        $this.toggleFilterValueInput(th, defaultLink, true);
+        $this.updateFilterMatchModeIconState(icon, menu, defaultLink);
+    }
+
     clearFilters() {
         var resetInputFields = function(inputFields) {
             inputFields.val('');
@@ -4809,29 +4861,11 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             }
         };
 
-        var standardFilters = this.thead.find('> tr > th.ui-filter-column .ui-column-filter:not(:disabled):not([readonly])');
-        resetInputFields(standardFilters);
-
-        // reset each filter match-mode picker back to the column's own configured default option
+        // reset each filter match-mode picker (value + mode) back to the column's own configured default
         var $this = this;
         var standardFilterModeIcons = this.thead.find('> tr > th.ui-filter-column .ui-column-filter-mode-icon:not(:disabled)');
         standardFilterModeIcons.each(function() {
-            var icon = $(this);
-            var th = icon.closest('th');
-            var hiddenInput = th.find('.ui-column-filter-mode');
-            var menu = $this.getFilterMatchModeMenu(icon);
-            // `[data-default="true"]` marks the column's own configured default - not necessarily the first
-            // item in the list (see the identical note in updateFilterMatchModeIconState())
-            var defaultLink = menu.find('.ui-menuitem-link[data-default="true"]');
-
-            // .attr(), not .data() - see the identical note in bindFilterMatchModeMenu()
-            hiddenInput.val(defaultLink.attr('data-match-mode'));
-            menu.find('.ui-menuitem-link').attr('aria-checked', 'false').parent().removeClass('ui-state-active');
-            defaultLink.attr('aria-checked', 'true').parent().addClass('ui-state-active');
-            // the default may require a value (the common case) even if a value-less one (e.g.
-            // "is empty") was selected before the reset - sync the value input's hidden/disabled state back
-            $this.toggleFilterValueInput(th, defaultLink, true);
-            $this.updateFilterMatchModeIconState(icon, menu, defaultLink);
+            $this.resetColumnFilter($(this));
         });
 
         var customFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter');

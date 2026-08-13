@@ -148,25 +148,41 @@ public class DataTable extends DataTableBaseImpl {
     public static final String COLUMN_FILTER_MODE_CLASS = "ui-column-filter-mode";
     public static final String COLUMN_FILTER_MODE_ICON_CLASS = "ui-column-filter-mode-icon";
     public static final String COLUMN_FILTER_MODE_ICON_ACTIVE_CLASS = "ui-column-filter-mode-icon-active";
-    public static final String COLUMN_FILTER_MODE_MENU_CLASS = "ui-column-filter-mode-menu ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-hidden";
+    /** Deliberately NOT "ui-menu ui-widget ui-widget-content" - this overlay is fully self-styled (see
+     *  datatable.css), and those generic classes carry their own same-specificity `position`/`width`/`display`
+     *  rules (menu.css's `.ui-menu` and `.ui-menu .ui-menuitem-link`) that silently won ties against this
+     *  class's own rules by sheer bundle order, breaking the overlay's positioning, width, and icon/label gap. */
+    public static final String COLUMN_FILTER_MODE_MENU_CLASS = "ui-column-filter-mode-menu ui-corner-all ui-helper-hidden";
     public static final String COLUMN_FILTER_MODE_MENUITEM_CLASS = "ui-menuitem";
     public static final String COLUMN_FILTER_MODE_MENUITEM_LINK_CLASS = "ui-menuitem-link ui-corner-all";
-    /** First "column" of a filter match-mode menu row: the mode's own {@link org.primefaces.model.MatchMode#icon()}. */
+    /** The first column of a filter match-mode menu row: the mode's own {@link org.primefaces.model.MatchMode#symbol()}. */
     public static final String COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS = "ui-column-filter-mode-menuitem-icon";
-    /** Second "column" of a filter match-mode menu row: the mode's label text. */
+    /** The second column of a filter match-mode menu row: the mode's label text. */
     public static final String COLUMN_FILTER_MODE_MENUITEM_LABEL_CLASS = "ui-column-filter-mode-menuitem-label";
+    /** The "clear this column's filter" action row, appended after every selectable {@link org.primefaces.model.MatchMode}
+     *  in the menu - a plain action, not a selectable mode, so it's excluded from the {@code [data-match-mode]}
+     *  selectors that drive mode selection (see {@code bindFilterMatchModeMenu()} in datatable.widget.js). */
+    public static final String COLUMN_FILTER_MODE_CLEAR_MENUITEM_CLASS = "ui-menuitem ui-column-filter-mode-menuitem-clear";
+    public static final String COLUMN_FILTER_MODE_CLEAR_LINK_CLASS = "ui-menuitem-link ui-corner-all ui-column-filter-mode-clear-link";
+    public static final String CLEAR_FILTER_ICON_CLASS = "pi pi-filter-slash";
+    /** The "clear this column's filter" action's own single-character symbol - not a {@link org.primefaces.model.MatchMode},
+     *  so it isn't defined there; kept alongside {@link #CLEAR_FILTER_ICON_CLASS} for the same reason every
+     *  MatchMode carries both. */
+    public static final String CLEAR_FILTER_SYMBOL = "⊗";
     /** Badge shown beside the filter trigger icon once a non-default match mode is active, carrying that mode's
-     *  own {@link org.primefaces.model.MatchMode#icon()} - lets the reader tell which kind of filter is applied
+     *  own {@link org.primefaces.model.MatchMode#symbol()} - lets the reader tell which kind of filter is applied
      *  to a column without opening the match-mode menu. Callers add {@code ui-helper-hidden} themselves while
      *  inactive - not baked in here, since this class needs to apply unconditionally (unlike the others, which
      *  are hidden by default). */
     public static final String COLUMN_FILTER_MODE_ACTIVE_ICON_CLASS = "ui-column-filter-mode-active-icon";
     public static final String FILTER_ICON_CLASS = "pi pi-filter";
     public static final String FILTER_ICON_ACTIVE_CLASS = "pi pi-filter-fill";
+    /** Built-in "Clear Filters" button rendered in the header area when {@code clearFiltersButton="true"}. */
+    public static final String CLEAR_FILTERS_BUTTON_CLASS = "ui-datatable-clear-filters-button ui-button ui-widget ui-state-default ui-button-text-icon-left";
     /** Marker class on the shadow single-date {@code DatePicker} wrapper shown for a "date"/"time"/"datetime"
      *  column while a single-value comparator (e.g. "equals") is selected; hidden otherwise. Deliberately
      *  rendered WITHOUT {@code ui-helper-hidden} here - the underlying jQuery-UI-style DatePicker plugin doesn't
-     *  reliably attach to a {@code display:none} element, so datatable.widget.js's own initial sync pass (part
+     *  reliably attach to a {@code display:none} element, so the initial sync pass in datatable.widget.js (part
      *  of the same setup that runs right after every DatePicker on the page has finished its own init) is what
      *  hides whichever of the two shadow pickers isn't active for the column's current match mode. */
     public static final String COLUMN_FILTER_DATE_CLASS = "ui-column-filter-date";
@@ -1137,7 +1153,7 @@ public class DataTable extends DataTableBaseImpl {
 
         /*
          * setDataModel is defined by UIData. So different implementations for Mojarra and MyFaces.
-         * But PrimeFaces comes with it´s own UIData which extends/modifies UIData provided by Jakarta Faces-impl.
+         * But PrimeFaces comes with an own UIData which extends/modifies UIData provided by Jakarta Faces-impl.
          * But PrimeFaces UIData does not know all impl-specifics, so ...
          */
         setDataModel(null); // for MyFaces 2.3 - compatibility

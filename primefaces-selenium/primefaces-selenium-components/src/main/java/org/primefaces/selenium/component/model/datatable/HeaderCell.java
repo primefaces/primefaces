@@ -122,7 +122,10 @@ public class HeaderCell extends Cell {
         // opening the menu is a local-only interaction (no AJAX request) - must not be guarded
         icon.click();
         WebElement menu = getFilterMatchModeMenu(icon);
-        List<String> labels = menu.findElements(By.className("ui-menuitem-link")).stream()
+        // scoped to the label span, not the whole link's text - a link's own text would also pick up its
+        // symbol glyph (see MatchMode#symbol()); [data-match-mode] excludes the trailing "Clear" action row,
+        // which isn't a selectable mode and has no such attribute
+        List<String> labels = menu.findElements(By.cssSelector(".ui-menuitem-link[data-match-mode] .ui-column-filter-mode-menuitem-label")).stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
         icon.click();

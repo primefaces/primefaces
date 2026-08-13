@@ -326,7 +326,22 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             encodeSortableHeaderOnReflow(context, table);
         }
 
-        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
+        // the button needs the header area to render even for a table with no header facet of its own -
+        // encodeFacet() alone wouldn't render anything in that case, so it's inlined here rather than reused
+        boolean showClearFiltersButton = table.isClearFiltersButton();
+        UIComponent headerFacet = table.getHeader();
+        boolean hasHeaderFacet = FacetUtils.shouldRenderFacet(headerFacet, table.isRenderEmptyFacets());
+        if (showClearFiltersButton || hasHeaderFacet) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.HEADER_CLASS, null);
+            if (showClearFiltersButton) {
+                encodeClearFiltersButton(context, table);
+            }
+            if (hasHeaderFacet) {
+                headerFacet.encodeAll(context);
+            }
+            writer.endElement("div");
+        }
 
         if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, table, "top");
@@ -852,6 +867,14 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         // so choosing it never fills the icon, while any of "True"/"False"/"Is Null"/"Is Not Null" does
         boolean active = selected != columnDefault;
 
+        // "date"/"time"/"datetime" render the 6 shared comparators as "Is"/"Before"/"After"/...; "enum" renders
+        // equals/notEquals/in/notIn as "Is"/"Is Not"/"Is Any Of"/"Is None Of" - see resolveMatchModeMessageKey()
+        String trimmedFilterValueType = filterValueType == null ? null : filterValueType.trim();
+        boolean dateStyleLabels = "date".equals(trimmedFilterValueType) || "time".equals(trimmedFilterValueType)
+                || "datetime".equals(trimmedFilterValueType);
+        boolean enumStyleLabels = "enum".equals(trimmedFilterValueType);
+        String selectedLabel = MessageFactory.getMessage(context, resolveMatchModeMessageKey(selected, dateStyleLabels, enumStyleLabels));
+
         writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("id", matchModeId, null);
@@ -872,25 +895,17 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.endElement("span");
         writer.endElement("button");
 
-        // the active mode's own icon, shown beside the trigger button above so a reader can tell which kind of
-        // filter is applied to this column without opening the menu - kept in sync with the selected mode by
-        // datatable.widget.js#updateFilterMatchModeIconState(), the same place that toggles the trigger
-        // button's filled/outline state
+        // the active mode's own symbol, shown as text beside the trigger button above (only while active) so a
+        // reader can tell which kind of filter is applied to this column without opening the menu - kept in
+        // sync with the selected mode by datatable.widget.js#updateFilterMatchModeIconState(), the same place
+        // that toggles the trigger button's filled/outline state. title carries the mode's full label, since
+        // the symbol alone isn't self-explanatory.
         writer.startElement("span", null);
-        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_ACTIVE_ICON_CLASS + " pi " + selected.icon()
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_ACTIVE_ICON_CLASS
                 + (active ? "" : " ui-helper-hidden"), null);
-        // the mode's single-character symbol, as a native tooltip - the icon glyph alone doesn't hint at which
-        // mode it stands for, so this gives a mouse-hover (and, in most browsers, a screen reader) a compact
-        // cue; kept in sync with the selected mode by updateFilterMatchModeIconState() alongside the icon class
-        writer.writeAttribute("title", selected.symbol(), null);
+        writer.writeAttribute("title", selectedLabel, null);
+        writer.writeText(selected.symbol(), null);
         writer.endElement("span");
-
-        // "date"/"time"/"datetime" render the 6 shared comparators as "Is"/"Before"/"After"/...; "enum" renders
-        // equals/notEquals/in/notIn as "Is"/"Is Not"/"Is Any Of"/"Is None Of" - see resolveMatchModeMessageKey()
-        String trimmedFilterValueType = filterValueType == null ? null : filterValueType.trim();
-        boolean dateStyleLabels = "date".equals(trimmedFilterValueType) || "time".equals(trimmedFilterValueType)
-                || "datetime".equals(trimmedFilterValueType);
-        boolean enumStyleLabels = "enum".equals(trimmedFilterValueType);
 
         writer.startElement("ul", null);
         writer.writeAttribute("id", menuId, null);
@@ -910,10 +925,8 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.writeAttribute("aria-checked", String.valueOf(isSelected), null);
             writer.writeAttribute("tabindex", "-1", null);
             writer.writeAttribute("data-match-mode", matchMode.operator(), null);
-            // read by datatable.widget.js#updateFilterMatchModeIconState() to swap the active-icon badge (see
-            // above) to this mode's own icon once it's selected, without needing a MatchMode->icon lookup client-side
-            writer.writeAttribute("data-icon", matchMode.icon(), null);
-            // same as data-icon above, but for the badge's title tooltip
+            // read by datatable.widget.js#updateFilterMatchModeIconState() to swap the active-icon badge (see above)
+            // to this mode's own symbol once it's selected, without needing a MatchMode->symbol lookup client-side
             writer.writeAttribute("data-symbol", matchMode.symbol(), null);
             if (matchMode == columnDefault) {
                 // read by datatable.widget.js so clearFilters() and the icon's active-state check can find the
@@ -930,15 +943,13 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             }
             String valueWidget = resolveFilterValueWidget(matchMode, filterValueType);
             if (valueWidget != null) {
-                // read by datatable.widget.js's toggleFilterValueInput() to decide which of the plain input, the
+                // read by toggleFilterValueInput() of datatable.widget.js to decide which of the plain input, the
                 // shadow single-date picker, or the shadow range-date picker to show for the newly selected mode
                 writer.writeAttribute("data-value-widget", valueWidget, null);
             }
             writer.startElement("span", null);
-            writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS + " pi " + matchMode.icon(), null);
-            // the mode's single-character symbol, as a native tooltip - see the identical note on the
-            // active-icon badge above
-            writer.writeAttribute("title", matchMode.symbol(), null);
+            writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS, null);
+            writer.writeText(matchMode.symbol(), null);
             writer.endElement("span");
             writer.startElement("span", null);
             writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_LABEL_CLASS, null);
@@ -947,6 +958,27 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.endElement("a");
             writer.endElement("li");
         }
+
+        // "clear this column's filter" action, appended after every selectable mode - resets the value
+        // input(s) and match mode back to the column's own default, then re-filters (see
+        // datatable.widget.js#resetColumnFilter(), wired from the click handler on this item's own link class)
+        writer.startElement("li", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLEAR_MENUITEM_CLASS, null);
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLEAR_LINK_CLASS, null);
+        writer.writeAttribute("role", "menuitem", null);
+        writer.writeAttribute("tabindex", "-1", null);
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS + " " + DataTable.CLEAR_FILTER_ICON_CLASS, null);
+        writer.writeAttribute("title", DataTable.CLEAR_FILTER_SYMBOL, null);
+        writer.endElement("span");
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_LABEL_CLASS, null);
+        writer.writeText(MessageFactory.getMessage(context, "primefaces.datatable.filterMatchMode.CLEAR"), null);
+        writer.endElement("span");
+        writer.endElement("a");
+        writer.endElement("li");
 
         writer.endElement("ul");
     }
@@ -1805,6 +1837,32 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         facet.encodeAll(context);
 
         writer.endElement("div");
+    }
+
+    /**
+     * Renders the built-in "Clear Filters" button (see {@code clearFiltersButton}) as the first child of the
+     * header area, ahead of any developer-declared header facet content.
+     */
+    protected void encodeClearFiltersButton(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String label = MessageFactory.getMessage(context, "primefaces.datatable.CLEAR_FILTERS");
+
+        writer.startElement("button", null);
+        writer.writeAttribute("type", "button", null);
+        writer.writeAttribute("class", DataTable.CLEAR_FILTERS_BUTTON_CLASS, null);
+        // a plain onclick, not an ajax-guarded call - clearFilters() drives its own filter() round trip
+        writer.writeAttribute("onclick", "PF('" + table.resolveWidgetVar(context) + "').clearFilters();return false;", null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + DataTable.CLEAR_FILTER_ICON_CLASS, null);
+        writer.endElement("span");
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        writer.writeText(label, null);
+        writer.endElement("span");
+
+        writer.endElement("button");
     }
 
     protected void encodeStateHolder(FacesContext context, DataTable component, String id, String value) throws IOException {

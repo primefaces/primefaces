@@ -59,7 +59,7 @@ class MatchModeTest {
     @Test
     void symbol_definedForEveryMatchMode() {
         // every MatchMode - not just the comparison operators - carries its own single-character symbol,
-        // exposed as title/tooltip text alongside icon() in the filter match-mode menu and header badge
+        // rendered as the visible glyph in the filter match-mode menu and the column header's active-mode badge
         for (MatchMode mode : MatchMode.values()) {
             assertNotNull(mode.symbol(), mode + " should have a symbol");
             assertEquals(1, mode.symbol().codePointCount(0, mode.symbol().length()),
@@ -78,7 +78,7 @@ class MatchModeTest {
     @Test
     void textPreset_includesAllSevenAdditionalModes() {
         // "is (not) empty", "is (not) null", "matches regex" and "(not) in list"
-        assertTrue(MatchMode.TEXT_OPTIONS.containsAll(List.of(
+        assertTrue(MatchMode.TEXT_MATCH_MODES.containsAll(List.of(
                 MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY, MatchMode.IS_NULL, MatchMode.NOT_NULL,
                 MatchMode.MATCHES_REGEX, MatchMode.IN, MatchMode.NOT_IN)));
     }
@@ -86,7 +86,7 @@ class MatchModeTest {
     @Test
     void numericPreset_includesAllSixAdditionalModes() {
         // "(not) between", "is (not) null" and "(not) in list"
-        assertTrue(MatchMode.NUMERIC_OPTIONS.containsAll(List.of(
+        assertTrue(MatchMode.NUMERIC_MATCH_MODES.containsAll(List.of(
                 MatchMode.BETWEEN, MatchMode.NOT_BETWEEN, MatchMode.IS_NULL, MatchMode.NOT_NULL,
                 MatchMode.IN, MatchMode.NOT_IN)));
     }
@@ -144,54 +144,54 @@ class MatchModeTest {
     @Test
     void booleanPreset_isEntirelyValueLess() {
         // "All", "true", "false", "is null", "is not null" - the value input never shows
-        assertTrue(MatchMode.BOOLEAN_OPTIONS.stream().noneMatch(MatchMode::requiresValue));
+        assertTrue(MatchMode.BOOLEAN_MATCH_MODES.stream().noneMatch(MatchMode::requiresValue));
         assertEquals(List.of(MatchMode.ALL, MatchMode.IS_TRUE, MatchMode.IS_FALSE, MatchMode.IS_NULL, MatchMode.NOT_NULL),
-                MatchMode.BOOLEAN_OPTIONS);
+                MatchMode.BOOLEAN_MATCH_MODES);
     }
 
     @Test
     void booleanPreset_defaultsToAll_soAFreshColumnIsNotSilentlyFiltered() {
-        // unlike "contains" (requires a value that starts empty), every BOOLEAN_OPTIONS mode
+        // unlike "contains" (requires a value that starts empty), every BOOLEAN_MATCH_MODES mode
         // is its own complete predicate; without "All" as the first/default option, a column with no explicit
         // filterMatchMode would silently start filtered to whichever mode happened to be listed first.
-        assertEquals(MatchMode.ALL, MatchMode.BOOLEAN_OPTIONS.get(0));
+        assertEquals(MatchMode.ALL, MatchMode.BOOLEAN_MATCH_MODES.get(0));
     }
 
     @Test
     void parseOptions_booleanKeyword_returnsBooleanPreset() {
-        assertEquals(MatchMode.BOOLEAN_OPTIONS, MatchMode.parseOptions("boolean"));
+        assertEquals(MatchMode.BOOLEAN_MATCH_MODES, MatchMode.parseOptions("boolean"));
     }
 
     @Test
     void enumPreset_has6Modes_everyOneAlreadyExistsForOtherPresets() {
         // "is"/"is not", "is any of"/"is none of" (In/NotIn) and "is (not) empty" - no new
         // MatchMode constants needed, this preset just curates a subset with enum-appropriate labels
-        assertEquals(6, MatchMode.ENUM_OPTIONS.size());
+        assertEquals(6, MatchMode.ENUM_MATCH_MODES.size());
         assertEquals(
                 List.of(MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.IN, MatchMode.NOT_IN,
                         MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY),
-                MatchMode.ENUM_OPTIONS);
+                MatchMode.ENUM_MATCH_MODES);
     }
 
     @Test
     void parseOptions_enumKeyword_returnsEnumPreset() {
-        assertEquals(MatchMode.ENUM_OPTIONS, MatchMode.parseOptions("enum"));
+        assertEquals(MatchMode.ENUM_MATCH_MODES, MatchMode.parseOptions("enum"));
     }
 
     @Test
     void arrayPreset_has7Modes() {
         // "contains"/"does not contain" (single value), "contains any"/"contains all"/
         // "contains none" (multi-value), and "is (not) empty" (reused, now collection/array-aware)
-        assertEquals(7, MatchMode.ARRAY_OPTIONS.size());
+        assertEquals(7, MatchMode.ARRAY_MATCH_MODES.size());
         assertEquals(
                 List.of(MatchMode.ARRAY_CONTAINS, MatchMode.ARRAY_NOT_CONTAINS, MatchMode.CONTAINS_ANY,
                         MatchMode.CONTAINS_ALL, MatchMode.CONTAINS_NONE, MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY),
-                MatchMode.ARRAY_OPTIONS);
+                MatchMode.ARRAY_MATCH_MODES);
     }
 
     @Test
     void parseOptions_arrayKeyword_returnsArrayPreset() {
-        assertEquals(MatchMode.ARRAY_OPTIONS, MatchMode.parseOptions("array"));
+        assertEquals(MatchMode.ARRAY_MATCH_MODES, MatchMode.parseOptions("array"));
     }
 
     @Test
@@ -203,7 +203,7 @@ class MatchModeTest {
 
     @Test
     void parseOptions_numericKeyword_returnsComparatorPreset() {
-        assertEquals(MatchMode.NUMERIC_OPTIONS, MatchMode.parseOptions("numeric"));
+        assertEquals(MatchMode.NUMERIC_MATCH_MODES, MatchMode.parseOptions("numeric"));
         assertEquals(
                 List.of(MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN,
                         MatchMode.LESS_THAN_EQUALS, MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS,
@@ -214,12 +214,12 @@ class MatchModeTest {
 
     @Test
     void parseOptions_textKeyword_returnsTextPreset() {
-        assertEquals(MatchMode.TEXT_OPTIONS, MatchMode.parseOptions("text"));
+        assertEquals(MatchMode.TEXT_MATCH_MODES, MatchMode.parseOptions("text"));
     }
 
     @Test
     void parseOptions_dateKeyword_returnsDatePreset() {
-        assertEquals(MatchMode.DATE_OPTIONS, MatchMode.parseOptions("date"));
+        assertEquals(MatchMode.DATE_MATCH_MODES, MatchMode.parseOptions("date"));
         assertEquals(
                 List.of(MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN,
                         MatchMode.LESS_THAN_EQUALS, MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS,
@@ -237,12 +237,12 @@ class MatchModeTest {
     void datePreset_has28Modes() {
         // 10 reused (6 comparators + between/not between + is (not) empty) + 18 new
         // (15 value-less relative-date predicates + last/next N days + relative date)
-        assertEquals(28, MatchMode.DATE_OPTIONS.size());
+        assertEquals(28, MatchMode.DATE_MATCH_MODES.size());
     }
 
     @Test
     void parseOptions_timeKeyword_returnsTimePreset() {
-        assertEquals(MatchMode.TIME_OPTIONS, MatchMode.parseOptions("time"));
+        assertEquals(MatchMode.TIME_MATCH_MODES, MatchMode.parseOptions("time"));
         assertEquals(
                 List.of(MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN,
                         MatchMode.LESS_THAN_EQUALS, MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS,
@@ -255,22 +255,22 @@ class MatchModeTest {
     void timePreset_has14Modes_andNoCalendarPredicates() {
         // 10 reused (6 comparators + between/not between + is (not) empty) + the 4 new
         // minute/hour modes. No day/week/month/... predicates - a bare LocalTime has no date component.
-        assertEquals(14, MatchMode.TIME_OPTIONS.size());
-        assertFalse(MatchMode.TIME_OPTIONS.contains(MatchMode.IS_TODAY));
-        assertFalse(MatchMode.TIME_OPTIONS.contains(MatchMode.LAST_N_DAYS));
+        assertEquals(14, MatchMode.TIME_MATCH_MODES.size());
+        assertFalse(MatchMode.TIME_MATCH_MODES.contains(MatchMode.IS_TODAY));
+        assertFalse(MatchMode.TIME_MATCH_MODES.contains(MatchMode.LAST_N_DAYS));
     }
 
     @Test
     void parseOptions_datetimeKeyword_returnsDatetimePreset() {
-        assertEquals(MatchMode.DATETIME_OPTIONS, MatchMode.parseOptions("datetime"));
+        assertEquals(MatchMode.DATETIME_MATCH_MODES, MatchMode.parseOptions("datetime"));
     }
 
     @Test
     void datetimePreset_has32Modes_andIncludesEveryDateOptionPlusTheFourNewModes() {
-        // every DATE_OPTIONS mode (28) plus last/next N minutes/hours (4)
-        assertEquals(32, MatchMode.DATETIME_OPTIONS.size());
-        assertTrue(MatchMode.DATETIME_OPTIONS.containsAll(MatchMode.DATE_OPTIONS));
-        assertTrue(MatchMode.DATETIME_OPTIONS.containsAll(List.of(
+        // every DATE_MATCH_MODES mode (28) plus last/next N minutes/hours (4)
+        assertEquals(32, MatchMode.DATETIME_MATCH_MODES.size());
+        assertTrue(MatchMode.DATETIME_MATCH_MODES.containsAll(MatchMode.DATE_MATCH_MODES));
+        assertTrue(MatchMode.DATETIME_MATCH_MODES.containsAll(List.of(
                 MatchMode.LAST_N_MINUTES, MatchMode.NEXT_N_MINUTES, MatchMode.LAST_N_HOURS, MatchMode.NEXT_N_HOURS)));
     }
 

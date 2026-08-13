@@ -252,6 +252,11 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     @Property(defaultValue = "false", description = "When enables, cell borders are displayed.")
     public abstract boolean isShowGridlines();
 
+    @Property(defaultValue = "false", description = "Shows a built-in \"Clear Filters\" button in the header area "
+            + "that resets every column's filter value and match mode, plus the global filter, back to their "
+            + "defaults and re-applies filtering.")
+    public abstract boolean isClearFiltersButton();
+
     @Property(defaultValue = "regular", description = "Size of the table content, valid values are \"small\", \"regular\" and \"large\".")
     public abstract String getSize();
 

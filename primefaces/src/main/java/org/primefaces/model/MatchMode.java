@@ -97,7 +97,7 @@ public enum MatchMode {
     /**
      * "No filter selected" placeholder - {@link FilterMeta#isActive()} always treats it as inactive, regardless
      * of {@link #requiresValue()}. Needed as the default option for a dropdown built entirely from value-less
-     * modes (e.g., {@link #BOOLEAN_OPTIONS}): unlike "contains" or "equals", none of "true"/"false"/"is null"/
+     * modes (e.g., {@link #BOOLEAN_MATCH_MODES}): unlike "contains" or "equals", none of "true"/"false"/"is null"/
      * "is not null" has a natural "nothing typed yet" resting state, so without this placeholder such a column
      * would silently start filtered (to whichever mode happens to be first) the moment the page renders.
      */
@@ -186,21 +186,21 @@ public enum MatchMode {
     /**
      * Preset of match modes offered for a numeric {@code filterValueType="numeric"} column filter.
      */
-    public static final List<MatchMode> NUMERIC_OPTIONS = List.of(
+    public static final List<MatchMode> NUMERIC_MATCH_MODES = List.of(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
             BETWEEN, NOT_BETWEEN, IS_NULL, NOT_NULL, IN, NOT_IN);
 
     /**
      * Preset of match modes offered for a {@code filterValueType="text"} column filter.
      */
-    public static final List<MatchMode> TEXT_OPTIONS = List.of(
+    public static final List<MatchMode> TEXT_MATCH_MODES = List.of(
             CONTAINS, NOT_CONTAINS, STARTS_WITH, NOT_STARTS_WITH, ENDS_WITH, NOT_ENDS_WITH, EQUALS, NOT_EQUALS,
             IS_EMPTY, NOT_EMPTY, IS_NULL, NOT_NULL, MATCHES_REGEX, IN, NOT_IN);
 
     /**
      * Preset of match modes offered for a {@code filterValueType="date"} column filter.
      */
-    public static final List<MatchMode> DATE_OPTIONS = List.of(
+    public static final List<MatchMode> DATE_MATCH_MODES = List.of(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
             BETWEEN, NOT_BETWEEN, IS_EMPTY, NOT_EMPTY,
             IS_TODAY, IS_YESTERDAY, IS_TOMORROW,
@@ -213,25 +213,25 @@ public enum MatchMode {
     /**
      * Preset of match modes offered for a {@code filterValueType="boolean"} column filter.
      */
-    public static final List<MatchMode> BOOLEAN_OPTIONS = List.of(ALL, IS_TRUE, IS_FALSE, IS_NULL, NOT_NULL);
+    public static final List<MatchMode> BOOLEAN_MATCH_MODES = List.of(ALL, IS_TRUE, IS_FALSE, IS_NULL, NOT_NULL);
 
     /**
      * Preset of match modes offered for a {@code filterValueType="enum"} column filter (a Java
      * {@code enum} value).
      */
-    public static final List<MatchMode> ENUM_OPTIONS = List.of(EQUALS, NOT_EQUALS, IN, NOT_IN, IS_EMPTY, NOT_EMPTY);
+    public static final List<MatchMode> ENUM_MATCH_MODES = List.of(EQUALS, NOT_EQUALS, IN, NOT_IN, IS_EMPTY, NOT_EMPTY);
 
     /**
      * Preset of match modes offered for a {@code filterValueType="array"} column filter (a multivalue
      * field, e.g., a {@code List<String>} of tags).
          */
-    public static final List<MatchMode> ARRAY_OPTIONS = List.of(
+    public static final List<MatchMode> ARRAY_MATCH_MODES = List.of(
             ARRAY_CONTAINS, ARRAY_NOT_CONTAINS, CONTAINS_ANY, CONTAINS_ALL, CONTAINS_NONE, IS_EMPTY, NOT_EMPTY);
 
     /**
      * Preset of match modes offered for a {@code filterValueType="time"} column filter.
      */
-    public static final List<MatchMode> TIME_OPTIONS = List.of(
+    public static final List<MatchMode> TIME_MATCH_MODES = List.of(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
             BETWEEN, NOT_BETWEEN, IS_EMPTY, NOT_EMPTY,
             LAST_N_MINUTES, NEXT_N_MINUTES, LAST_N_HOURS, NEXT_N_HOURS);
@@ -239,14 +239,14 @@ public enum MatchMode {
     /**
      * Preset of match modes offered for a {@code filterValueType="datetime"} column filter.
          */
-    public static final List<MatchMode> DATETIME_OPTIONS;
+    public static final List<MatchMode> DATETIME_MATCH_MODES;
     static {
-        List<MatchMode> modes = new ArrayList<>(DATE_OPTIONS);
+        List<MatchMode> modes = new ArrayList<>(DATE_MATCH_MODES);
         modes.add(LAST_N_MINUTES);
         modes.add(NEXT_N_MINUTES);
         modes.add(LAST_N_HOURS);
         modes.add(NEXT_N_HOURS);
-        DATETIME_OPTIONS = Collections.unmodifiableList(modes);
+        DATETIME_MATCH_MODES = Collections.unmodifiableList(modes);
     }
 
     private final String operator;
@@ -270,10 +270,10 @@ public enum MatchMode {
     }
 
     /**
-     * The PrimeIcons class (e.g., {@code "pi-equals"} for {@link #EQUALS}) representing this match mode - shown
-     * as the first column of its row in the filter match-mode overlay menu, and beside the filter trigger icon
-     * in the column header once this mode is the active (non-default) selection, so the reader can tell which
-     * kind of filter is applied to a column without opening the menu.
+     * The PrimeIcons class (e.g., {@code "pi-equals"} for {@link #EQUALS}) representing this match mode. Not
+     * currently rendered anywhere itself - {@link #symbol()} is the visible glyph in the filter match-mode
+     * overlay menu and the column header's active-mode badge - but kept as a distinct, always-populated
+     * per-mode identifier for callers that want an icon-font glyph instead of a Unicode character.
      *
      * @return the PrimeIcons class, without the leading {@code "pi "} base class
      */
@@ -283,10 +283,10 @@ public enum MatchMode {
 
     /**
      * A single, distinct Unicode character standing in for this match mode (e.g., {@code "≠"} for
-     * {@link #NOT_EQUALS}, {@code "∅"} for {@link #IS_EMPTY}) - every match mode has one. It is not rendered as
-     * its own visual element; it is exposed as {@code title} text alongside {@link #icon()} in the filter
-     * match-mode overlay menu and the column header's active-mode badge, giving a screen reader or a mouse-hover
-     * tooltip a compact, mode-specific hint that a bare icon glyph doesn't otherwise carry.
+     * {@link #NOT_EQUALS}, {@code "∅"} for {@link #IS_EMPTY}) - every match mode has one. Rendered as the
+     * visible glyph in the first column of the filter match-mode overlay menu, and beside the filter trigger
+     * icon in the column header once this mode is the active (non-default) selection, so the reader can tell
+     * which kind of filter is applied to a column without opening the menu.
      *
      * @return the single-character symbol
      */
@@ -369,21 +369,21 @@ public enum MatchMode {
             case "none":
                 return Collections.emptyList();
             case "numeric":
-                return NUMERIC_OPTIONS;
+                return NUMERIC_MATCH_MODES;
             case "text":
-                return TEXT_OPTIONS;
+                return TEXT_MATCH_MODES;
             case "date":
-                return DATE_OPTIONS;
+                return DATE_MATCH_MODES;
             case "boolean":
-                return BOOLEAN_OPTIONS;
+                return BOOLEAN_MATCH_MODES;
             case "enum":
-                return ENUM_OPTIONS;
+                return ENUM_MATCH_MODES;
             case "array":
-                return ARRAY_OPTIONS;
+                return ARRAY_MATCH_MODES;
             case "time":
-                return TIME_OPTIONS;
+                return TIME_MATCH_MODES;
             case "datetime":
-                return DATETIME_OPTIONS;
+                return DATETIME_MATCH_MODES;
             default:
                 return Arrays.stream(filterValueType.split(","))
                         .map(String::trim)

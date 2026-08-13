@@ -52,17 +52,17 @@ class FilterMetaTest {
                 .field("age")
                 .filterBy(mock(ValueExpression.class))
                 .matchMode(MatchMode.EQUALS)
-                .matchModeOptions(MatchMode.NUMERIC_OPTIONS)
+                .matchModeOptions(MatchMode.NUMERIC_MATCH_MODES)
                 .build();
 
         assertTrue(filterMeta.isMatchModeSelectable());
-        assertEquals(MatchMode.NUMERIC_OPTIONS, filterMeta.getMatchModeOptions());
+        assertEquals(MatchMode.NUMERIC_MATCH_MODES, filterMeta.getMatchModeOptions());
     }
 
     @Test
     void setMatchModeOptions_null_resetsToEmptyList() {
         FilterMeta filterMeta = new FilterMeta();
-        filterMeta.setMatchModeOptions(MatchMode.NUMERIC_OPTIONS);
+        filterMeta.setMatchModeOptions(MatchMode.NUMERIC_MATCH_MODES);
         assertTrue(filterMeta.isMatchModeSelectable());
 
         filterMeta.setMatchModeOptions(null);

@@ -33,7 +33,7 @@ import jakarta.faces.context.FacesContext;
 
 /**
  * "Last/next N minutes/hours" - matches when the field value falls within a range computed from "now" and the
- * user-typed count N. Used by both {@code MatchMode.TIME_OPTIONS} and {@code MatchMode.DATETIME_OPTIONS}, so it
+ * user-typed count N. Used by both {@code MatchMode.TIME_MATCH_MODES} and {@code MatchMode.DATETIME_MATCH_MODES}, so it
  * has to handle two different kinds of "now" depending on the field's actual runtime type:
  * <ul>
  *   <li>a bare {@link LocalTime} (no date component) is a <b>cyclic</b> 24h clock - a "last 30 minutes" window

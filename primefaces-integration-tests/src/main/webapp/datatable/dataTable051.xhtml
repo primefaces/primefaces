@@ -17,7 +17,7 @@
             </style>
 
             <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable051.employees}" var="employee"
-                         filteredValue="#{dataTable051.filteredEmployees}" filterEvent="enter">
+                         filteredValue="#{dataTable051.filteredEmployees}" filterEvent="enter" clearFiltersButton="true">
 
                 <!-- narrow, fixed-width column (p:dataTable defaults to table-layout: fixed) mirrors the
                      showcase "Activity" column that exposed: the filter match-mode <select>

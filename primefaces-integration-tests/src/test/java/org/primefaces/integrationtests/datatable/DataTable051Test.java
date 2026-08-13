@@ -281,7 +281,7 @@ class DataTable051Test extends AbstractDataTableTest {
         List<String> lastNameOptionLabels = lastNameHeader.getFilterMatchModeLabels();
 
         // Assert - the overlay menu always shows spelled-out labels (e.g. "Equals" rather than "=") now that
-        // it's no longer a cramped inline <select> competing with the value input for space
+        // no longer a cramped inline select competing with the value input for space
         assertTrue(idOptionLabels.contains("Equals"), "Expected spelled-out labels, got: " + idOptionLabels);
         assertTrue(idOptionLabels.contains("Between"), "Expected spelled-out labels, got: " + idOptionLabels);
         assertTrue(idOptionLabels.contains("Is Null"), "Expected spelled-out labels, got: " + idOptionLabels);
@@ -1272,7 +1272,7 @@ class DataTable051Test extends AbstractDataTableTest {
         // Act - switch to "is none of" keeping the same typed value
         dataTable.filterMatchMode("role", "notIn");
 
-        // Assert - a null role never equals any listed token, so it "is none of" the given list either
+        // Assert - a null role never equals any listed token, so it "is none of" the given lists either
         employeesFiltered = employees.stream()
                 .filter(e -> e.getRole() != Employee.Role.MANAGER && e.getRole() != Employee.Role.DEVELOPER)
                 .collect(Collectors.toList());
@@ -1560,7 +1560,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(46)
-    @DisplayName("DataTable: GitHub #7427 a column with no filterMatchMode/filterValueType at all still gets a "
+    @DisplayName("DataTable: a column with no filterMatchMode/filterValueType at all still gets a "
             + "filter match-mode picker by default, auto-derived from its Java type - here a plain String field "
             + "auto-derives the \"text\" preset")
     void filterValueTypeAutoDerivedText(Page page) {
@@ -1589,7 +1589,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(47)
-    @DisplayName("DataTable: GitHub #7427 a column with its own custom <f:facet name=\"filter\"> gets no "
+    @DisplayName("DataTable: a column with its own custom <f:facet name=\"filter\"> gets no "
             + "auto-derived picker, even though its Java type (LocalDate) would otherwise auto-derive to \"date\" "
             + "- a bespoke filter UI shouldn't get a second, competing picker layered on top")
     void filterValueTypeSkipsCustomFacet(Page page) {
@@ -1605,7 +1605,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(48)
-    @DisplayName("DataTable: GitHub #7427 a numeric column's filter value input rejects non-numeric characters "
+    @DisplayName("DataTable: a numeric column's filter value input rejects non-numeric characters "
             + "as the user types")
     void numericFilterInputRejectsNonNumericCharacters(Page page) {
         // Arrange - the "ID" column auto-/explicitly resolves to the "numeric" preset
@@ -1631,7 +1631,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(49)
-    @DisplayName("DataTable: GitHub #7427 a date column's shadow calendar-picker widget shows/hides correctly "
+    @DisplayName("DataTable: a date column's shadow calendar-picker widget shows/hides correctly "
             + "across representative match modes")
     void dateFilterCalendarPickerWidgetVisibility(Page page) {
         // Arrange
@@ -1671,7 +1671,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(50)
-    @DisplayName("DataTable: GitHub #7427 picking a date via the shadow single-date calendar picker writes into "
+    @DisplayName("DataTable: picking a date via the shadow single-date calendar picker writes into "
             + "the (still submitted) filter value and filters correctly")
     void dateFilterCalendarPickerSingleValueInteraction(Page page) {
         // Arrange
@@ -1686,7 +1686,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
         // Act - open the calendar overlay and click on today's cell, exactly as a real user would
         pickerInput.click();
-        WebElement panel = PrimeSelenium.getWebDriver().findElement(By.id(pickerInput.getDomAttribute("aria-controls")));
+        WebElement panel = PrimeSelenium.getWebDriver().findElement(By.id(Objects.requireNonNull(pickerInput.getDomAttribute("aria-controls"))));
         WebElement todayLink = panel.findElement(By.cssSelector(".ui-datepicker-today a"));
         PrimeSelenium.guardAjax(todayLink).click();
 
@@ -1707,7 +1707,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(51)
-    @DisplayName("DataTable: GitHub #7427 picking a range via the shadow range-date calendar picker normalizes "
+    @DisplayName("DataTable: picking a range via the shadow range-date calendar picker normalizes "
             + "its own \"date1 - date2\" display into the \"date1,date2\" filter value and filters correctly")
     void dateFilterCalendarPickerRangeInteraction(Page page) {
         // Arrange
@@ -1750,7 +1750,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     @Test
     @Order(52)
-    @DisplayName("DataTable: GitHub #7427 time/datetime columns also render a shadow calendar picker for a "
+    @DisplayName("DataTable: time/datetime columns also render a shadow calendar picker for a "
             + "single-value match mode, timeOnly for \"time\"")
     void timeAndDatetimeFilterCalendarPickerWidgetVisibility(Page page) {
         // Arrange
@@ -1781,7 +1781,7 @@ class DataTable051Test extends AbstractDataTableTest {
 
     // the shadow DatePicker widgets (see DataTableRenderer#encodeDateFilterWidgets()) initialize as part of the
     // page's own client-side widget setup, which - unlike an AJAX round trip - has no guard to wait on; give it
-    // a moment on a freshly-loaded page rather than asserting immediately.
+    // a moment on a loaded page rather than asserting immediately.
     private void waitUntilDisplayed(WebElement element) {
         PrimeSelenium.waitGui().until(d -> element.isDisplayed());
     }

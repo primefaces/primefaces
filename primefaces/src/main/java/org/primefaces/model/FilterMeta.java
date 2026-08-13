@@ -191,7 +191,7 @@ public class FilterMeta implements Serializable {
             return derived;
         }
 
-        return MatchMode.TEXT_OPTIONS.contains(MatchMode.of(column.getFilterMatchMode())) ? "text" : null;
+        return MatchMode.TEXT_MATCH_MODES.contains(MatchMode.of(column.getFilterMatchMode())) ? "text" : null;
     }
 
     /**

@@ -18,6 +18,13 @@
     border-bottom: 0 none;
 }
 
+/* built-in "Clear Filters" button (see DataTable#clearFiltersButton), rendered ahead of any header facet
+   content the developer declares - a small trailing margin keeps it from sitting flush against it */
+.ui-datatable .ui-datatable-clear-filters-button {
+    margin-right: .5rem;
+    vertical-align: middle;
+}
+
 .ui-datatable .ui-datatable-footer {
     border-top: 0 none;
 }
@@ -92,6 +99,15 @@
     margin: .5rem auto auto auto;
 }
 
+.ui-datatable .ui-column-filter-date input,
+.ui-datatable .ui-column-filter-date-range input {
+    /* the shadow DatePicker's own rendered <input> has no width of its own outside a ".ui-fluid" form (see
+       forms.css) - it defaults to the browser's native text-input width (~270px), overflowing straight past
+       this wrapper (and the column itself) on anything narrower. Force it down to the wrapper's own 100%. */
+    box-sizing: border-box;
+    width: 100%;
+}
+
 .ui-datatable .ui-column-filter-date.ui-helper-hidden,
 .ui-datatable .ui-column-filter-date-range.ui-helper-hidden {
     display: none;
@@ -121,26 +137,35 @@
     color: var(--primary-color, #007ad9);
 }
 
-/* badge beside the trigger icon carrying the active match mode's own icon (see MatchMode#icon()) - lets a
-   reader tell which kind of filter is applied to a column without opening the menu. Kept in sync with the
+/* badge beside the trigger icon carrying the active match mode's own symbol (see MatchMode#symbol()) - lets a
+   reader tell which kind of filter is applied to a column without opening the menu, and (see
+   datatable.widget.js#bindFilterMatchModeMenu) opens that same menu when clicked. Kept in sync with the
    selected mode by datatable.widget.js#updateFilterMatchModeIconState(). */
 .ui-datatable .ui-column-filter-mode-active-icon {
     display: inline-block;
     margin-left: 2px;
     vertical-align: middle;
-    font-size: .75rem;
+    font-size: .875rem;
+    font-weight: 700;
     color: var(--primary-color, #007ad9);
+    cursor: pointer;
+}
+
+.ui-datatable .ui-column-filter-mode-active-icon.ui-helper-hidden {
+    /* needed despite the global .ui-helper-hidden rule (jquery-ui core.css): this class's own "always visible"
+       display:inline-block rule above has higher specificity (2 classes vs 1) and would otherwise win */
+    display: none;
 }
 
 /* relocated to document.body at runtime (see datatable.widget.js#bindFilterMatchModeMenu) so scrollable/frozen
    headers' `overflow: hidden` doesn't clip it - position/z-index are set at show-time by the widget. Not scoped
    under `.ui-datatable` (unlike the icon button above, which stays put) since it no longer lives there; an
-   explicit background/border/shadow is set rather than relying on the cascade to reach a relocated element. */
+   explicit background/border/shadow is set rather than relying on the cascade to reach a relocated element.
+   Deliberately no max-height/overflow-y: the longest presets (date/datetime) run to 28-32 items, and the menu
+   should always open in full - the page scrolls around it instead, same as any other tall absolute overlay. */
 .ui-column-filter-mode-menu {
     position: absolute;
     min-width: 10rem;
-    max-height: 20rem;
-    overflow-y: auto;
     padding: .25rem 0;
     margin: 0;
     list-style: none;
@@ -154,18 +179,20 @@
 .ui-column-filter-mode-menu .ui-menuitem-link {
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: .875rem;
     padding: .5rem .75rem;
     white-space: nowrap;
     color: inherit;
 }
 
-/* first "column" of a menu row: the mode's own icon (see MatchMode#icon()) */
+/* first "column" of a menu row: the mode's own symbol (see MatchMode#symbol()), or - for the "Clear" action
+   row appended after every mode - the pi-filter-slash icon (see DataTable#CLEAR_FILTER_ICON_CLASS) */
 .ui-column-filter-mode-menu .ui-column-filter-mode-menuitem-icon {
     flex: 0 0 auto;
     width: 1rem;
     text-align: center;
     font-size: .875rem;
+    font-weight: 700;
     color: var(--text-color-secondary, #6c757d);
 }
 
@@ -185,6 +212,13 @@
 .ui-column-filter-mode-menu .ui-menuitem.ui-state-active .ui-menuitem-link {
     background: var(--surface-hover, rgba(0, 0, 0, .04));
     font-weight: 700;
+}
+
+/* the "clear this column's filter" action row - visually separated from the selectable modes above it, since
+   it's an action rather than one more mode to pick */
+.ui-column-filter-mode-menu .ui-column-filter-mode-menuitem-clear {
+    border-top: 1px solid var(--surface-border, #dee2e6);
+    margin-top: .25rem;
 }
 
 .ui-datatable .ui-row-toggler {
