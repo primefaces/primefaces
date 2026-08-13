@@ -169,17 +169,17 @@ public enum MatchMode {
      * Matches when a {@code Collection}/array field value contains at least one of the comma-separated typed
      * filter values (a non-empty intersection). See {@link #ARRAY_CONTAINS}.
      */
-    CONTAINS_ANY("containsAny", "pi-share-alt", "⊕"),
+    CONTAINS_ANY("containsAny", "pi-share-alt", "⊃"),
     /**
      * Matches when a {@code Collection}/array field value contains every one of the comma-separated typed
      * filter values (the field is a superset of the typed values). See {@link #ARRAY_CONTAINS}.
      */
-    CONTAINS_ALL("containsAll", "pi-check-square", "⊙"),
+    CONTAINS_ALL("containsAll", "pi-check-square", "⊇"),
     /**
      * Matches when a {@code Collection}/array field value contains none of the comma-separated typed filter
      * values (an empty intersection) - the negation of {@link #CONTAINS_ANY}.
      */
-    CONTAINS_NONE("containsNone", "pi-minus-circle", "⊘"),
+    CONTAINS_NONE("containsNone", "pi-minus-circle", "⊅"),
 
     GLOBAL("global", "pi-globe", "⊛");
 
