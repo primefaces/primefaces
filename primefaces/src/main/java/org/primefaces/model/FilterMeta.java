@@ -46,6 +46,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -117,7 +118,7 @@ public class FilterMeta implements Serializable {
             filterByGenerated = true;
         }
 
-        List<MatchMode> matchModeOptions = MatchMode.parseOptions(resolveFilterValueType(context, table, column));
+        List<MatchMode> matchModeOptions = resolveMatchModeOptions(context, table, column);
         MatchMode matchMode = matchModeOptions.isEmpty() || matchModeOptions.contains(MatchMode.of(column.getFilterMatchMode()))
                 ? MatchMode.of(column.getFilterMatchMode())
                 : matchModeOptions.get(0);
@@ -192,6 +193,45 @@ public class FilterMeta implements Serializable {
         }
 
         return MatchMode.TEXT_MATCH_MODES.contains(MatchMode.of(column.getFilterMatchMode())) ? "text" : null;
+    }
+
+    /**
+     * Resolves the match modes actually offered for a column: the curated preset for its {@link #resolveFilterValueType}
+     * (e.g. {@link MatchMode#TEXT_MATCH_MODES}), plus - if the column also declares an explicit {@code filterMatchMode}
+     * that isn't already one of that preset's own entries (e.g. {@code "exact"}, which no preset offers, having
+     * predated the preset system) - that operator too, so it isn't silently discarded in favor of the preset's
+     * own first entry. Prepended, since it's the column's own configured default, not just one more option.
+     * <p>
+     * {@link Column#getFilterMatchMode()} always returns at least {@link UIColumn#DEFAULT_FILTER_MATCH_MODE} -
+     * {@code "startsWith"} - even when the page author never set {@code filterMatchMode} at all, so that exact
+     * value can't be told apart from a genuinely configured {@code filterMatchMode="startsWith"}; either way,
+     * treating it as "nothing explicitly configured" is safe here, since a column that already offers
+     * {@code STARTS_WITH} as one of its own preset entries picks it up via the normal containment check below
+     * regardless, with no need for this method to inject it.
+     *
+     * @return the resolved, ordered list of selectable match modes for this column; empty if {@link #resolveFilterValueType}
+     * returns blank/{@code "none"} (the column gets no dropdown at all)
+     */
+    public static List<MatchMode> resolveMatchModeOptions(FacesContext context, UITable<?> table, UIColumn column) {
+        List<MatchMode> options = MatchMode.parseOptions(resolveFilterValueType(context, table, column));
+        if (options.isEmpty()) {
+            return options;
+        }
+
+        String configuredOperator = column.getFilterMatchMode();
+        if (LangUtils.isBlank(configuredOperator) || UIColumn.DEFAULT_FILTER_MATCH_MODE.operator().equals(configuredOperator)) {
+            return options;
+        }
+
+        MatchMode configured = MatchMode.of(configuredOperator);
+        if (options.contains(configured)) {
+            return options;
+        }
+
+        List<MatchMode> extended = new ArrayList<>(options.size() + 1);
+        extended.add(configured);
+        extended.addAll(options);
+        return extended;
     }
 
     /**

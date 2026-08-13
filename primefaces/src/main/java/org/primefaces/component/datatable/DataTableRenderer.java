@@ -835,7 +835,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         // rather than as a dropdown competing with the filter value input for space in a narrow column
         if (component.isColumnFilterable(context, column)) {
             String filterValueType = FilterMeta.resolveFilterValueType(context, component, column);
-            List<MatchMode> matchModeOptions = MatchMode.parseOptions(filterValueType);
+            List<MatchMode> matchModeOptions = FilterMeta.resolveMatchModeOptions(context, component, column);
             if (!matchModeOptions.isEmpty()) {
                 encodeFilterMatchModeMenu(context, component, column, matchModeOptions, filterValueType);
             }
@@ -915,6 +915,27 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("role", "menu", null);
         writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENU_CLASS, null);
 
+        // "clear this column's filter" action, always the first item - resets the value input(s) and match
+        // mode back to the column's own default, then re-filters (see datatable.widget.js#resetColumnFilter(),
+        // wired from the click handler on this item's own link class)
+        writer.startElement("li", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLEAR_MENUITEM_CLASS, null);
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLEAR_LINK_CLASS, null);
+        writer.writeAttribute("role", "menuitem", null);
+        writer.writeAttribute("tabindex", "-1", null);
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS + " " + DataTable.CLEAR_FILTER_ICON_CLASS, null);
+        writer.writeAttribute("title", DataTable.CLEAR_FILTER_SYMBOL, null);
+        writer.endElement("span");
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_LABEL_CLASS, null);
+        writer.writeText(MessageFactory.getMessage(context, "primefaces.datatable.filterMatchMode.CLEAR"), null);
+        writer.endElement("span");
+        writer.endElement("a");
+        writer.endElement("li");
+
         for (MatchMode matchMode : matchModeOptions) {
             boolean isSelected = matchMode == selected;
             String label = MessageFactory.getMessage(context, resolveMatchModeMessageKey(matchMode, dateStyleLabels, enumStyleLabels));
@@ -962,27 +983,6 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.endElement("li");
         }
 
-        // "clear this column's filter" action, appended after every selectable mode - resets the value
-        // input(s) and match mode back to the column's own default, then re-filters (see
-        // datatable.widget.js#resetColumnFilter(), wired from the click handler on this item's own link class)
-        writer.startElement("li", null);
-        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLEAR_MENUITEM_CLASS, null);
-        writer.startElement("a", null);
-        writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLEAR_LINK_CLASS, null);
-        writer.writeAttribute("role", "menuitem", null);
-        writer.writeAttribute("tabindex", "-1", null);
-        writer.startElement("span", null);
-        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS + " " + DataTable.CLEAR_FILTER_ICON_CLASS, null);
-        writer.writeAttribute("title", DataTable.CLEAR_FILTER_SYMBOL, null);
-        writer.endElement("span");
-        writer.startElement("span", null);
-        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_LABEL_CLASS, null);
-        writer.writeText(MessageFactory.getMessage(context, "primefaces.datatable.filterMatchMode.CLEAR"), null);
-        writer.endElement("span");
-        writer.endElement("a");
-        writer.endElement("li");
-
         writer.endElement("ul");
     }
 
@@ -1017,7 +1017,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         String filterStyleClass = column.getFilterStyleClass();
 
         String filterValueType = FilterMeta.resolveFilterValueType(context, component, column);
-        List<MatchMode> matchModeOptions = MatchMode.parseOptions(filterValueType);
+        List<MatchMode> matchModeOptions = FilterMeta.resolveMatchModeOptions(context, component, column);
         MatchMode selected = matchModeOptions.isEmpty() ? null : findFilterMatchModeForColumn(component, column, matchModeOptions);
         // the match-mode picker itself (icon + overlay menu) is rendered in the header, next to the sort icons -
         // see encodeFilterMatchModeMenu() - so this filter row is always just the value input, full width

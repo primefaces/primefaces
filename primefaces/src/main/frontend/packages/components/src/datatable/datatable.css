@@ -78,7 +78,7 @@
 }
 
 .ui-datatable .ui-sortable-column-icon {
-    display: inline-block;
+    display: inline-flex;
     margin: -3px 0 -3px 2px;
 }
 
@@ -139,7 +139,7 @@
 /* filter match-mode picker (icon + overlay menu). Sits next to the sort icons in the
    header rather than as a dropdown competing with the value input for space in a narrow column. */
 .ui-datatable .ui-column-filter-mode-icon {
-    display: inline-block;
+    display: inline-flex;
     margin: -3px 0 -3px 2px;
     padding: 0;
     border: 0;
@@ -159,7 +159,7 @@
    datatable.widget.js#bindFilterMatchModeMenu) opens that same menu when clicked. Kept in sync with the
    selected mode by datatable.widget.js#updateFilterMatchModeIconState(). */
 .ui-datatable .ui-column-filter-mode-active-icon {
-    display: inline-block;
+    display: inline-flex;
     margin-left: 2px;
     vertical-align: middle;
     font-size: .875rem;
@@ -170,7 +170,7 @@
 
 .ui-datatable .ui-column-filter-mode-active-icon.ui-helper-hidden {
     /* needed despite the global .ui-helper-hidden rule (jquery-ui core.css): this class's own "always visible"
-       display:inline-block rule above has higher specificity (2 classes vs 1) and would otherwise win */
+       display:inline-flex rule above has higher specificity (2 classes vs 1) and would otherwise win */
     display: none;
 }
 
@@ -231,11 +231,11 @@
     font-weight: 700;
 }
 
-/* the "clear this column's filter" action row - visually separated from the selectable modes above it, since
-   it's an action rather than one more mode to pick */
+/* the "clear this column's filter" action row - always the first item, visually separated from the
+   selectable modes below it, since it's an action rather than one more mode to pick */
 .ui-column-filter-mode-menu .ui-column-filter-mode-menuitem-clear {
-    border-top: 1px solid var(--surface-border, #dee2e6);
-    margin-top: .25rem;
+    border-bottom: 1px solid var(--surface-border, #dee2e6);
+    margin-bottom: .25rem;
 }
 
 .ui-datatable .ui-row-toggler {

@@ -36,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -1766,6 +1767,39 @@ class DataTable051Test extends AbstractDataTableTest {
 
         assertFalse(lastLoginHeader.getColumnFilter().isDisplayed());
         assertTrue(lastLoginHeader.getWebElement().findElement(By.className("ui-column-filter-date")).isDisplayed());
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(53)
+    @DisplayName("DataTable: an explicit filterMatchMode that isn't a member of the column's own "
+            + "(auto-derived, here) filterValueType preset - e.g. \"exact\", which predates the preset system "
+            + "and isn't offered by any of them - is still honored as the column's configured default, not "
+            + "silently replaced by the preset's own first entry")
+    void filterMatchModeOutsidePresetIsStillHonored(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        HeaderCell header = dataTable.getHeader().getCell("exact match").orElseThrow();
+
+        // Assert - the column's own configured default is used as-is on a fresh page load, without the user
+        // ever having to open the match-mode menu
+        assertEquals("exact", header.getColumnFilterMatchModeValue());
+        List<String> labels = header.getFilterMatchModeLabels();
+        assertTrue(labels.contains("Exact"), "Expected \"Exact\" to be offered alongside the auto-derived "
+                + "\"text\" preset, got: " + labels);
+
+        // Act/Assert - filtering actually applies EXACT semantics (not silently downgraded to the "text"
+        // preset's own first entry, "contains"): a partial match ("Mik") must return nothing...
+        dataTable.filter("exact match", "Mik");
+        assertEmployeeRows(dataTable, Collections.emptyList());
+
+        // ...while the exact value ("Mike") returns exactly the one matching row
+        dataTable.filter("exact match", "Mike");
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> "Mike".equals(e.getFirstName()))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }

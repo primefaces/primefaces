@@ -70,6 +70,11 @@
                      the field's own Java type (String) -->
                 <p:column headerText="first name" field="firstName"/>
 
+                <!-- filterMatchMode="exact" - EXACT predates the filterValueType preset system and isn't a
+                     member of them (including the auto-derived "text" preset here) - the column's own configured
+                     default must still be honored, not silently replaced by the preset's own first entry  -->
+                <p:column headerText="exact match" field="firstName" filterMatchMode="exact"/>
+
                 <!-- a custom filter facet with no filterMatchMode/filterValueType either - even though
                      birthDate (LocalDate) would otherwise auto-derive to "date", the facet's presence must
                      suppress the picker entirely, since the page author already built a bespoke filter UI -->

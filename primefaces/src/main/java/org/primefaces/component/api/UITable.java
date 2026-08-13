@@ -671,7 +671,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     void filterAndSort();
 
     /**
-     * Resets all column related state after adding/removing/moving columns.
+     * Resets all column-related state after adding/removing/moving columns.
      */
     default void resetColumns() {
         setColumns(null);

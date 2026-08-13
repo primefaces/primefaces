@@ -159,9 +159,10 @@ public class DataTable extends DataTableBaseImpl {
     public static final String COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS = "ui-column-filter-mode-menuitem-icon";
     /** The second column of a filter match-mode menu row: the mode's label text. */
     public static final String COLUMN_FILTER_MODE_MENUITEM_LABEL_CLASS = "ui-column-filter-mode-menuitem-label";
-    /** The "clear this column's filter" action row, appended after every selectable {@link org.primefaces.model.MatchMode}
-     *  in the menu - a plain action, not a selectable mode, so it's excluded from the {@code [data-match-mode]}
-     *  selectors that drive mode selection (see {@code bindFilterMatchModeMenu()} in datatable.widget.js). */
+    /** The "clear this column's filter" action row, always the first item in the menu, ahead of every
+     *  selectable {@link org.primefaces.model.MatchMode} - a plain action, not a selectable mode, so it's
+     *  excluded from the {@code [data-match-mode]} selectors that drive mode selection (see
+     *  {@code bindFilterMatchModeMenu()} in datatable.widget.js). */
     public static final String COLUMN_FILTER_MODE_CLEAR_MENUITEM_CLASS = "ui-menuitem ui-column-filter-mode-menuitem-clear";
     public static final String COLUMN_FILTER_MODE_CLEAR_LINK_CLASS = "ui-menuitem-link ui-corner-all ui-column-filter-mode-clear-link";
     public static final String CLEAR_FILTER_ICON_CLASS = "pi pi-filter-slash";
@@ -362,7 +363,8 @@ public class DataTable extends DataTableBaseImpl {
     public void processValidators(FacesContext context) {
         super.processValidators(context);
 
-        //filters need to be decoded during PROCESS_VALIDATIONS phase, so that local value of each filter is properly converted and validated
+        //filters need to be decoded during PROCESS_VALIDATIONS phase,
+        //so that local value of each filter is properly converted and validated
         FilterFeature feature = DataTableFeatures.filterFeature();
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
