@@ -87,12 +87,11 @@ public enum MatchMode {
      */
     MATCHES_REGEX("regex", "pi-asterisk", "*"),
     /**
-     * Matches when the field value is {@code Boolean.TRUE} (or the string {@code "true"}).
+     * Matches when the field value is strictly {@code Boolean.TRUE} (or the string {@code "true"}).
      */
     IS_TRUE("true", "pi-check", "✓", false),
     /**
-     * Matches when the field value is strictly {@code Boolean.FALSE} (or the string {@code "false"}) - a
-     * {@code null} value matches neither {@link #IS_TRUE} nor {@link #IS_FALSE}; use {@link #IS_NULL} for that.
+     * Matches when the field value is strictly {@code Boolean.FALSE} (or the string {@code "false"}).
      */
     IS_FALSE("false", "pi-times-circle", "✗", false),
     /**
@@ -354,7 +353,7 @@ public enum MatchMode {
      * <p>
      * Accepts either one of the shorthand keywords {@code "numeric"}, {@code "text"}, {@code "date"},
      * {@code "boolean"}, {@code "time"}, {@code "datetime"}, {@code "enum"} or {@code "array"}, which expand to
-     * a curated preset of {@link MatchMode}s; an explicit comma separated list of match mode operators
+     * a curated preset of {@link MatchMode}s; an explicit comma-separated list of match mode operators
      * (e.g., {@code "equals,notEquals,lt,gt,lte,gte"}); or {@code "none"}, which opts a column out of the
      * dropdown even though its {@code filterValueType} would otherwise be auto-derived from its Java type.
      *
