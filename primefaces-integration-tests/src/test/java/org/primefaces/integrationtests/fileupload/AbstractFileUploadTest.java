@@ -59,7 +59,7 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
     protected void assertUploadedFiles(DataTable uploadedFiles, File... files) {
         assertNotNull(uploadedFiles);
         assertNotNull(uploadedFiles.getRows());
-        String expectedFiles = Arrays.stream(files).map(f -> f.getName())
+        String expectedFiles = Arrays.stream(files).map(File::getName)
                 .collect(Collectors.joining(","));
         String actualFiles = uploadedFiles.getRows().stream().map(r -> r.getCell(0).getText())
                 .collect(Collectors.joining(","));
@@ -91,13 +91,15 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
     }
 
     protected void wait4File(DataTable uploadedFiles, String filename) {
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
+        PrimeSelenium.waitDocumentLoad(); // non-ajax
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty()); // ajax
         PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
                 uploadedFiles.findElement(By.tagName("tbody")), filename));
     }
 
     protected void wait4File(DataTable uploadedFiles, int row, String filename) {
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
+        PrimeSelenium.waitDocumentLoad(); // non-ajax
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty()); // ajax
         PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
                 uploadedFiles.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).get(row - 1), filename));
     }
