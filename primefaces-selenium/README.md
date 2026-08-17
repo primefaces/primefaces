@@ -16,13 +16,13 @@ You can also manage it by yourself via `webdriver.adapter`.
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-selenium-core</artifactId>
-    <version>14.0.0</version>
+    <version>15.0.0</version>
     <scope>test</scope>
 </dependency>
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-selenium-components</artifactId>
-    <version>14.0.0</version>
+    <version>15.0.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -169,6 +169,8 @@ public class IndexPage extends AbstractPrimePage {
     }
 }
 ```
+
+PrimeFaces Selenium proxies all PF components in the page-class annotated with `@FindBy(id = "form:test")`. So there should be no need create them manually via `PrimeSelenium.createFragment(InputText.class, By.id("form:test"))` after page-reload or partial updates via AJAX.  
 
 Example test:
 
