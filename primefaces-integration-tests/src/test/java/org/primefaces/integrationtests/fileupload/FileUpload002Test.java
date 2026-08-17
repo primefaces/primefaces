@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.fileupload;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
@@ -36,7 +35,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,11 +59,11 @@ class FileUpload002Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         assertTrue(fileUpload.getFilename().startsWith(file.getName()), fileUpload.getFilename());
         page.button.click();
-        wait4File(getUploadedFiles(), 1, file.getName());
+        wait4File(page.uploadedFiles, 1, file.getName());
 
         // Assert
         assertNoJavascriptErrors();
-        assertUploadedFiles(getUploadedFiles(), file);
+        assertUploadedFiles(page.uploadedFiles, file);
         assertConfiguration(fileUpload);
     }
 
@@ -85,11 +83,11 @@ class FileUpload002Test extends AbstractFileUploadTest {
         assertTrue(fileUpload.getFilename().startsWith(file1.getName()), fileUpload.getFilename());
         assertTrue(fileUpload.getFilename().matches(".*\\+\\s*1$"));
         page.button.click();
-        wait4File(getUploadedFiles(), file1.getName());
+        wait4File(page.uploadedFiles, file1.getName());
 
         // Assert
         assertNoJavascriptErrors();
-        assertUploadedFiles(getUploadedFiles(), file1, file2);
+        assertUploadedFiles(page.uploadedFiles, file1, file2);
         assertConfiguration(fileUpload);
     }
 
@@ -109,11 +107,11 @@ class FileUpload002Test extends AbstractFileUploadTest {
         assertTrue(fileUpload.getFilename().startsWith(file1.getName()), fileUpload.getFilename());
         assertTrue(fileUpload.getFilename().matches(".*\\+\\s*1$"));
         page.button.click();
-        wait4File(getUploadedFiles(), 1, file1.getName());
+        wait4File(page.uploadedFiles, 1, file1.getName());
 
         // Assert
         assertNoJavascriptErrors();
-        assertUploadedFiles(getUploadedFiles(), file1, file2);
+        assertUploadedFiles(page.uploadedFiles, file1, file2);
 
         // Act
         File file3 = locateClientSideFile("file2.csv");
@@ -124,11 +122,11 @@ class FileUpload002Test extends AbstractFileUploadTest {
         assertTrue(fileUpload.getFilename().startsWith(file3.getName()), fileUpload.getFilename());
         assertTrue(fileUpload.getFilename().matches(".*\\+\\s*1$"));
         page.button.click();
-        wait4File(getUploadedFiles(), 3, file3.getName());
+        wait4File(page.uploadedFiles, 3, file3.getName());
 
         // Assert
         assertNoJavascriptErrors();
-        assertUploadedFiles(getUploadedFiles(), file1, file2, file3, file4);
+        assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
         assertConfiguration(fileUpload);
     }
 
@@ -146,7 +144,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1, file2, file3);
 
         page.button.click();
-        wait4EmptyMesssage(getUploadedFiles());
+        wait4EmptyMesssage(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -154,7 +152,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
         assertEquals("Maximum number of files exceeded.",
                 page.messages.getMessage(0).getSummary());
         // Primefaces sends "empty" request if mode=simple skinSimple=true
-        assertUploadedFiles(getUploadedFiles());
+        assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }
 
@@ -170,7 +168,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         assertTrue(fileUpload.getFilename().contains(file.getName()));
         page.button.click();
-        wait4EmptyMesssage(getUploadedFiles());
+        wait4EmptyMesssage(page.uploadedFiles);
 
         // Assert
         assertFalse(page.messages.getAllMessages().isEmpty());
@@ -178,12 +176,8 @@ class FileUpload002Test extends AbstractFileUploadTest {
                 page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         // Primefaces sends "empty" request if mode=simple skinSimple=true
-        assertUploadedFiles(getUploadedFiles());
+        assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
-    }
-
-    private static DataTable getUploadedFiles() {
-        return PrimeSelenium.createFragment(DataTable.class, By.id("form:uploadedfiles"));
     }
 
     @Test
@@ -198,7 +192,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         assertTrue(fileUpload.getFilename().contains(file.getName()));
         page.button.click();
-        wait4EmptyMesssage(getUploadedFiles());
+        wait4EmptyMesssage(page.uploadedFiles);
 
         // Assert
         assertFalse(page.messages.getAllMessages().isEmpty());
@@ -206,7 +200,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
                 page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         // Primefaces sends "empty" request if mode=simple skinSimple=true
-        assertUploadedFiles(getUploadedFiles());
+        assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }
 
