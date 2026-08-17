@@ -157,7 +157,6 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, LangUtils.isEmpty(option.getDescription()) ? option.getLabel() : option.getDescription(), null);
 
         if (selected) {
             writer.writeAttribute("checked", "checked", null);
