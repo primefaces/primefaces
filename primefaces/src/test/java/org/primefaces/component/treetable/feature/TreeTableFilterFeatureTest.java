@@ -26,14 +26,29 @@ package org.primefaces.component.treetable.feature;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.FilterMeta;
 import org.primefaces.model.TreeNode;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.context.FacesContext;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class TreeTableFilterFeatureTest {
 
@@ -112,5 +127,58 @@ class TreeTableFilterFeatureTest {
         assertEquals(matchingNode.getRowKey(), filteredMatch.getRowKey());
         assertEquals(0, filteredMatch.getChildCount());
         assertTrue(filteredMatch.getChildren().isEmpty());
+    }
+
+    @Test
+    void filterWithEmptyFilterByRestoresModelValue() {
+        FacesContext context = mock(FacesContext.class);
+        ELContext elContext = mock(ELContext.class);
+        when(context.getELContext()).thenReturn(elContext);
+
+        FilterFeature filterFeature = new FilterFeature();
+
+        TreeTable treeTable = mock(TreeTable.class);
+        when(treeTable.getFilterByAsMap()).thenReturn(Collections.emptyMap());
+
+        TreeNode<?> modelValue = new DefaultTreeNode();
+        ValueExpression valueExpression = mock(ValueExpression.class);
+        when(treeTable.getValueExpression("value")).thenReturn(valueExpression);
+        when(valueExpression.getValue(elContext)).thenReturn(modelValue);
+
+        DefaultTreeNode root = new DefaultTreeNode();
+        filterFeature.filter(context, treeTable, root);
+
+        verify(treeTable).updateFilteredValue(context, null);
+        verify(treeTable).setValue(modelValue);
+        verify(treeTable).setRowKey(modelValue, null);
+    }
+
+    @Test
+    void filterWithInactiveFilterEntriesRestoresModelValue() {
+        FacesContext context = mock(FacesContext.class);
+        ELContext elContext = mock(ELContext.class);
+        when(context.getELContext()).thenReturn(elContext);
+
+        FilterFeature filterFeature = new FilterFeature();
+
+        FilterMeta inactiveFilter = mock(FilterMeta.class);
+        when(inactiveFilter.isActive()).thenReturn(false);
+        Map<String, FilterMeta> filterBy = new HashMap<>();
+        filterBy.put("type", inactiveFilter);
+
+        TreeTable treeTable = mock(TreeTable.class);
+        when(treeTable.getFilterByAsMap()).thenReturn(filterBy);
+
+        TreeNode<?> modelValue = new DefaultTreeNode();
+        ValueExpression valueExpression = mock(ValueExpression.class);
+        when(treeTable.getValueExpression("value")).thenReturn(valueExpression);
+        when(valueExpression.getValue(elContext)).thenReturn(modelValue);
+
+        DefaultTreeNode root = new DefaultTreeNode();
+        filterFeature.filter(context, treeTable, root);
+
+        verify(treeTable).updateFilteredValue(context, null);
+        verify(treeTable).setValue(modelValue);
+        verify(treeTable).setRowKey(modelValue, null);
     }
 }

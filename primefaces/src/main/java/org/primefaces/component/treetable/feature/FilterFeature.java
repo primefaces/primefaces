@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
 import jakarta.faces.FacesException;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.PhaseId;
@@ -96,7 +97,17 @@ public class FilterFeature implements TreeTableFeature {
 
     public void filter(FacesContext context, TreeTable tt, TreeNode root) {
         Map<String, FilterMeta> filterBy = tt.getFilterByAsMap();
-        if (filterBy.isEmpty()) {
+        boolean noActiveFilters = filterBy.isEmpty() || filterBy.values().stream().noneMatch(FilterMeta::isActive);
+        if (noActiveFilters) {
+            tt.updateFilteredValue(context, null);
+            ValueExpression ve = tt.getValueExpression("value");
+            if (ve != null) {
+                TreeNode<?> originalValue = (TreeNode<?>) ve.getValue(context.getELContext());
+                tt.setValue(originalValue);
+                if (originalValue != null) {
+                    tt.setRowKey(originalValue, null);
+                }
+            }
             return;
         }
 
