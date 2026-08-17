@@ -97,6 +97,9 @@ public class FilterFeature implements TreeTableFeature {
 
     public void filter(FacesContext context, TreeTable tt, TreeNode root) {
         Map<String, FilterMeta> filterBy = tt.getFilterByAsMap();
+        // After clearFilters(), stale filterBy entries remain with null values.
+        // isEmpty() alone can't detect this, so we also check for active filters;
+        // without this, we'd filter against a null root and shadow the model value.
         boolean noActiveFilters = filterBy.isEmpty() || filterBy.values().stream().noneMatch(FilterMeta::isActive);
         if (noActiveFilters) {
             tt.updateFilteredValue(context, null);
