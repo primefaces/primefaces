@@ -25,6 +25,7 @@ package org.primefaces.showcase.view.chartjs;
 
 import org.primefaces.event.ItemSelectEvent;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -75,7 +76,6 @@ import software.xdev.chartjs.model.options.Options;
 import software.xdev.chartjs.model.options.Plugins;
 import software.xdev.chartjs.model.options.RadarOptions;
 import software.xdev.chartjs.model.options.Title;
-import software.xdev.chartjs.model.options.elements.Fill;
 import software.xdev.chartjs.model.options.scale.Scales;
 import software.xdev.chartjs.model.options.scale.cartesian.CartesianScaleOptions;
 import software.xdev.chartjs.model.options.scale.cartesian.CartesianTickOptions;
@@ -91,7 +91,7 @@ import software.xdev.chartjs.model.options.tooltip.TooltipOptions;
 @RequestScoped
 public class ChartView implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String json;
     private String barModel;
@@ -164,7 +164,7 @@ public class ChartView implements Serializable {
                         .setLabel("My First Dataset")
                         .setBorderColor(new RGBAColor(75, 192, 192))
                         .setLineTension(0.1f)
-                        .setFill(new Fill<Boolean>(false)))
+                        .setFill(Boolean.FALSE))
                 .setLabels("January", "February", "March", "April", "May", "June", "July"))
                 .setOptions(new LineOptions()
                         .setResponsive(true)
@@ -190,7 +190,7 @@ public class ChartView implements Serializable {
                         .setLabel("Red Dataset")
                         .setBorderColor(new RGBAColor(249, 24, 24))
                         .setShowLine(Boolean.FALSE)
-                        .setFill(new Fill<Boolean>(true)))
+                        .setFill(Boolean.TRUE))
                 )
                 .setOptions(new LineOptions()
                         .setResponsive(true)
@@ -212,13 +212,13 @@ public class ChartView implements Serializable {
                         .setLabel("Left Dataset")
                         .setLineTension(0.5f)
                         .setYAxisID("left-y-axis")
-                        .setFill(new Fill<Boolean>(true)))
+                        .setFill(Boolean.TRUE))
                 .addDataset(new LineDataset()
                         .setData(0.1, 0.5, 1.0, 2.0, 1.5, 0)
                         .setLabel("Right Dataset")
                         .setLineTension(0.5f)
                         .setYAxisID("right-y-axis")
-                        .setFill(new Fill<Boolean>(true)))
+                        .setFill(Boolean.TRUE))
                 .setLabels("Jan", "Feb", "Mar", "Apr", "May", "Jun"))
                 .setOptions(new LineOptions()
                         .setResponsive(true)
@@ -412,7 +412,7 @@ public class ChartView implements Serializable {
                 .setBorderColor(new RGBAColor(75, 192, 192, 1.0))
                 .setBackgroundColor(new RGBAColor(75, 192, 192, 0.5))
                 .setLineTension(0.1f)
-                .setFill(new Fill<Boolean>(false));
+                .setFill(Boolean.FALSE);
 
         mixedData.addDataset(barDataset);
         mixedData.addDataset(lineDataset);

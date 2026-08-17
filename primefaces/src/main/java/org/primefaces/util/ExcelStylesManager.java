@@ -139,23 +139,23 @@ public class ExcelStylesManager {
     }
 
     private void updateCellObjectValue(Cell cell, Object value, Styles styles) {
-        if (value instanceof BigDecimal) {
-            setBigDecimalValue(cell, numberFormat.format(value), (BigDecimal) value, styles);
+        if (value instanceof BigDecimal decimal) {
+            setBigDecimalValue(cell, numberFormat.format(value), decimal, styles);
         }
-        else if (value instanceof Number) {
-            setNumberValue(cell, (Number) value, styles);
+        else if (value instanceof Number number) {
+            setNumberValue(cell, number, styles);
         }
-        else if (value instanceof LocalDate) {
-            setLocalDateValue(cell, (LocalDate) value, styles);
+        else if (value instanceof LocalDate date1) {
+            setLocalDateValue(cell, date1, styles);
         }
-        else if (value instanceof LocalDateTime) {
-            setLocalDateTimeValue(cell, (LocalDateTime) value, styles);
+        else if (value instanceof LocalDateTime time1) {
+            setLocalDateTimeValue(cell, time1, styles);
         }
-        else if (value instanceof LocalTime) {
-            setLocalTimeValue(cell, (LocalTime) value, styles);
+        else if (value instanceof LocalTime time) {
+            setLocalTimeValue(cell, time, styles);
         }
-        else if (value instanceof Date) {
-            setDateValue(cell, (Date) value, styles);
+        else if (value instanceof Date date) {
+            setDateValue(cell, date, styles);
         }
         else {
             cell.setCellStyle(styles.getDefaultStyle());

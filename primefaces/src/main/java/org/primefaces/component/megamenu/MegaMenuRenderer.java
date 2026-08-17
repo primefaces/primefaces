@@ -105,18 +105,18 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
 
         for (MenuElement element : elements) {
             if (element.isRendered()) {
-                if (element instanceof MenuItem) {
+                if (element instanceof MenuItem item) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-                    encodeMenuItem(context, component, (MenuItem) element, "-1");
+                    encodeMenuItem(context, component, item, "-1");
                     writer.endElement("li");
                 }
-                else if (element instanceof Submenu) {
-                    encodeRootSubmenu(context, component, (Submenu) element);
+                else if (element instanceof Submenu submenu) {
+                    encodeRootSubmenu(context, component, submenu);
                 }
-                else if (element instanceof Separator) {
-                    encodeSeparator(context, (Separator) element);
+                else if (element instanceof Separator separator) {
+                    encodeSeparator(context, separator);
                 }
             }
         }
@@ -178,8 +178,8 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
             writer.startElement("tr", null);
 
             for (MenuElement submenuElement : submenuElements) {
-                if (submenuElement.isRendered() && submenuElement instanceof MenuColumn) {
-                    encodeColumn(context, component, (MenuColumn) submenuElement);
+                if (submenuElement.isRendered() && submenuElement instanceof MenuColumn column) {
+                    encodeColumn(context, component, column);
                 }
             }
 
@@ -209,20 +209,19 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
             // Use List<?> as columns may contain various types.
             List<?> columnElements = column.getElements();
             for (Object element : columnElements) {
-                if (element instanceof MenuElement) {
-                    MenuElement menuElement = (MenuElement) element;
+                if (element instanceof MenuElement menuElement) {
                     if (menuElement.isRendered()) {
-                        if (element instanceof Submenu) {
-                            encodeDescendantSubmenu(context, component, (Submenu) element);
+                        if (element instanceof Submenu submenu) {
+                            encodeDescendantSubmenu(context, component, submenu);
                         }
-                        else if (element instanceof Separator) {
-                            encodeSubmenuSeparator(context, (Separator) element);
+                        else if (element instanceof Separator separator) {
+                            encodeSubmenuSeparator(context, separator);
                         }
                     }
                 }
                 // UIComponent support allows for arbitrary component placement in columns.
-                else if (element instanceof UIComponent) {
-                    ((UIComponent) element).encodeAll(context);
+                else if (element instanceof UIComponent iComponent) {
+                    iComponent.encodeAll(context);
                 }
             }
         }
@@ -264,15 +263,15 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
             List<MenuElement> submenuElements = submenu.getElements();
             for (MenuElement submenuElement : submenuElements) {
                 if (submenuElement.isRendered()) {
-                    if (submenuElement instanceof MenuItem) {
+                    if (submenuElement instanceof MenuItem item) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-                        encodeMenuItem(context, menu, (MenuItem) submenuElement, "-1");
+                        encodeMenuItem(context, menu, item, "-1");
                         writer.endElement("li");
                     }
-                    else if (submenuElement instanceof Separator) {
-                        encodeSeparator(context, (Separator) submenuElement);
+                    else if (submenuElement instanceof Separator separator) {
+                        encodeSeparator(context, separator);
                     }
                 }
             }

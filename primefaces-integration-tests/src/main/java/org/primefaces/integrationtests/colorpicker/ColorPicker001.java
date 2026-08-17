@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.colorpicker;
 import org.primefaces.component.colorpicker.ColorPicker;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -40,7 +41,7 @@ import lombok.Data;
 @Data
 public class ColorPicker001 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String color;
     private String ajax;

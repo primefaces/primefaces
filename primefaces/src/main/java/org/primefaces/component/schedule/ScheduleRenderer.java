@@ -84,7 +84,7 @@ public class ScheduleRenderer extends CoreRenderer<Schedule> {
         ScheduleModel model = component.getValue();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if (model instanceof LazyScheduleModel) {
+        if (model instanceof LazyScheduleModel scheduleModel) {
             String startDateParam = params.get(clientId + "_start");
             String endDateParam = params.get(clientId + "_end");
 
@@ -92,7 +92,7 @@ public class ScheduleRenderer extends CoreRenderer<Schedule> {
             LocalDateTime startDate =  CalendarUtils.toLocalDateTime(zoneId, startDateParam);
             LocalDateTime endDate =  CalendarUtils.toLocalDateTime(zoneId, endDateParam);
 
-            LazyScheduleModel lazyModel = ((LazyScheduleModel) model);
+            LazyScheduleModel lazyModel = scheduleModel;
             lazyModel.clear(); //Clear old events
             lazyModel.loadEvents(startDate, endDate); //Lazy load events
         }
@@ -154,8 +154,8 @@ public class ScheduleRenderer extends CoreRenderer<Schedule> {
                     for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {
                         String key = dynaProperty.getKey();
                         Object value = dynaProperty.getValue();
-                        if (value instanceof LocalDateTime) {
-                            value = ((LocalDateTime) value).format(dateTimeFormatter);
+                        if (value instanceof LocalDateTime time) {
+                            value = time.format(dateTimeFormatter);
                         }
                         jsonObject.put(key, value);
                     }

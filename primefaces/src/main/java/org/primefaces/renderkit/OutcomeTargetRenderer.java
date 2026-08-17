@@ -52,8 +52,8 @@ public class OutcomeTargetRenderer<T extends UIComponent> extends CoreRenderer<T
             outcome = context.getViewRoot().getViewId();
         }
 
-        if (outcomeTarget instanceof UIComponent) {
-            String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
+        if (outcomeTarget instanceof UIComponent component) {
+            String toFlowDocumentId = (String) component.getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
 
             if (toFlowDocumentId != null) {
                 return navigationHandler.getNavigationCase(context, null, outcome, toFlowDocumentId);

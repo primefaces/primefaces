@@ -23,11 +23,12 @@
  */
 package org.primefaces.model.filter;
 
+import java.io.Serial;
 import java.util.function.BiPredicate;
 
 public class EndsWithFilterConstraint extends StringFilterConstraint {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     protected BiPredicate<String, String> getPredicate() {

@@ -184,8 +184,7 @@ public class OrderListRenderer extends CoreRenderer<OrderList> {
                 writer.startElement("tr", null);
 
                 for (UIComponent kid : component.getChildren()) {
-                    if (kid instanceof Column && kid.isRendered()) {
-                        Column column = (Column) kid;
+                    if (kid instanceof Column column && kid.isRendered()) {
 
                         writer.startElement("td", null);
                         if (column.getStyle() != null) {

@@ -23,6 +23,7 @@
  */
 package org.primefaces.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class DefaultOrganigramNode implements OrganigramNode, Serializable {
 
     public static final String DEFAULT_TYPE = "default";
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String type;
     private Object data;

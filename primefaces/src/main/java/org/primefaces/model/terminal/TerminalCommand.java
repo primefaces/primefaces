@@ -23,13 +23,14 @@
  */
 package org.primefaces.model.terminal;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TerminalCommand implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String text;
     private List<TerminalCommand> arguments;

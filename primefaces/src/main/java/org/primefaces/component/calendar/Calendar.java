@@ -138,17 +138,17 @@ public class Calendar extends CalendarBaseImpl {
         if (isValid() && !isEmpty(value) && (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof Date)) {
             LocalDate date = null;
 
-            if (value instanceof LocalDate) {
-                date = (LocalDate) value;
+            if (value instanceof LocalDate localDate) {
+                date = localDate;
             }
-            else if (value instanceof LocalDateTime) {
-                date = ((LocalDateTime) value).toLocalDate();
+            else if (value instanceof LocalDateTime time) {
+                date = time.toLocalDate();
             }
             else if (value instanceof LocalTime) {
                 //no check necessary
             }
-            else if (value instanceof Date) {
-                date = CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone()));
+            else if (value instanceof Date date1) {
+                date = CalendarUtils.convertDate2LocalDate(date1, CalendarUtils.calculateZoneId(getTimeZone()));
             }
 
             if (date != null) {

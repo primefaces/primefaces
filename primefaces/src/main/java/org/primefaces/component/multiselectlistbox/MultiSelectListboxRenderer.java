@@ -124,8 +124,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer<MultiSelectLis
                 writer.writeText(selectItem.getLabel(), null);
                 writer.endElement("span");
 
-                if (selectItem instanceof SelectItemGroup) {
-                    SelectItemGroup group = (SelectItemGroup) selectItem;
+                if (selectItem instanceof SelectItemGroup group) {
                     SelectItem[] groupItems = group.getSelectItems();
 
                     if (groupItems != null && groupItems.length > 0) {

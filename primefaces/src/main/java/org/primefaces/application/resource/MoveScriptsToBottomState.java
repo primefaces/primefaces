@@ -23,6 +23,7 @@
  */
 package org.primefaces.application.resource;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ import java.util.Map;
 
 public class MoveScriptsToBottomState implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private final Map<String, List<Map<String, String>>> includes;
     private final Map<String, List<String>> inlines;

@@ -34,7 +34,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -88,7 +87,7 @@ public class DynamicCropper implements Serializable {
             setNewImageName(imageName);
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 
-            Path path = Paths.get(externalContext.getRealPath(""), "resources", "demo", "images", "crop", imageName);
+            Path path = Path.of(externalContext.getRealPath(""), "resources", "demo", "images", "crop", imageName);
 
             FileImageOutputStream imageOutput;
             try {

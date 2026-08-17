@@ -94,8 +94,8 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
                     Object optionValue = entry.getValue();
 
                     sb.append(optionName).append(":");
-                    if (optionValue instanceof String) {
-                        sb.append("'").append(EscapeUtils.forJavaScript((String) optionValue)).append("'");
+                    if (optionValue instanceof String string) {
+                        sb.append("'").append(EscapeUtils.forJavaScript(string)).append("'");
                     }
                     else {
                         sb.append(optionValue);

@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.rest;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.List;
  */
 public class AutoCompleteSuggestionResponse implements Serializable {
 
-    private static final long serialVersionUID = 1940299384032248495L;
+    @Serial private static final long serialVersionUID = 1940299384032248495L;
 
     private List<AutoCompleteSuggestion> suggestions = new ArrayList<>();
     private Boolean moreAvailable = false;

@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.menubar;
 
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -38,7 +39,7 @@ import lombok.Data;
 @Data
 public class MenuBar001 implements Serializable {
 
-    private static final long serialVersionUID = 5366641524856531279L;
+    @Serial private static final long serialVersionUID = 5366641524856531279L;
 
     @PostConstruct
     public void init() {

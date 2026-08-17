@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.filter;
 
+import java.io.Serial;
 import java.util.Locale;
 
 import jakarta.el.MethodExpression;
@@ -30,7 +31,7 @@ import jakarta.faces.context.FacesContext;
 
 public class FunctionFilterConstraint implements FilterConstraint {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private MethodExpression methodExpression;
 

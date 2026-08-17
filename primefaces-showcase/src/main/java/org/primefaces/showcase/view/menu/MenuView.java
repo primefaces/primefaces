@@ -29,6 +29,7 @@ import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
@@ -43,7 +44,7 @@ import jakarta.inject.Named;
 @ViewScoped
 public class MenuView implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private MenuModel model;
 

@@ -208,8 +208,7 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
     }
 
     protected String resolveColumnAriaHeaderText(FacesContext context, UIColumn column) {
-        if (column instanceof UIComponent) {
-            UIComponent component = (UIComponent) column;
+        if (column instanceof UIComponent component) {
             component.pushComponentToEL(context, component);
         }
 
@@ -224,16 +223,14 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
             return ariaHeaderText;
         }
         finally {
-            if (column instanceof UIComponent) {
-                UIComponent component = (UIComponent) column;
+            if (column instanceof UIComponent component) {
                 component.popComponentFromEL(context);
             }
         }
     }
 
     protected String resolveColumnHeaderText(FacesContext context, UIColumn column) {
-        if (column instanceof UIComponent) {
-            UIComponent component = (UIComponent) column;
+        if (column instanceof UIComponent component) {
             component.pushComponentToEL(context, component);
         }
 
@@ -248,8 +245,7 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
             return headerText;
         }
         finally {
-            if (column instanceof UIComponent) {
-                UIComponent component = (UIComponent) column;
+            if (column instanceof UIComponent component) {
                 component.popComponentFromEL(context);
             }
         }

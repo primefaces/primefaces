@@ -52,7 +52,7 @@ public class KeyFilterRenderer extends CoreRenderer<KeyFilter> {
             target = SearchExpressionUtils.contextlessResolveComponent(context, component, component.getFor());
         }
 
-        String targetClientId = target instanceof InputHolder ? ((InputHolder) target).getInputClientId() : target.getClientId();
+        String targetClientId = target instanceof InputHolder ih ? ih.getInputClientId() : target.getClientId();
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init(KeyFilter.class.getSimpleName(), component);

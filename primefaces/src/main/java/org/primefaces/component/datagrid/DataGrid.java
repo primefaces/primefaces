@@ -70,8 +70,7 @@ public class DataGrid extends DataGridBaseImpl {
 
         DataModel<?> model = getDataModel();
 
-        if (model instanceof LazyDataModel) {
-            LazyDataModel<?> lazyModel = (LazyDataModel<?>) model;
+        if (model instanceof LazyDataModel<?> lazyModel) {
 
             lazyModel.setRowCount(lazyModel.count(Collections.emptyMap()));
             calculateFirst();

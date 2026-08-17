@@ -24,6 +24,7 @@
 package org.primefaces.showcase.view.misc;
 
 import java.io.Serializable;
+import java.util.concurrent.ThreadLocalRandom;
 
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -52,7 +53,7 @@ public class ProgressBarView implements Serializable {
             progress = 0;
         }
         else {
-            progress = progress + (int) (Math.random() * 35);
+            progress = progress + (int) (ThreadLocalRandom.current().nextDouble() * 35);
 
             if (progress > 100) {
                 progress = 100;

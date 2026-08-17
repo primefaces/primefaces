@@ -23,6 +23,7 @@
  */
 package org.primefaces.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ import java.util.Objects;
 
 public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String id;
     private T data;

@@ -283,8 +283,8 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
         }
         else {
             Object imageObject = component.getImage();
-            if (imageObject instanceof String) {
-                imagePath = (String) imageObject;
+            if (imageObject instanceof String string) {
+                imagePath = string;
                 originalFileName = imagePath;
 
                 boolean isExternal = imagePath.startsWith("http://") || imagePath.startsWith("https://");
@@ -322,8 +322,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
                     inputStream = Files.newInputStream(file.toPath());
                 }
             }
-            else if (imageObject instanceof StreamedContent) {
-                StreamedContent streamedContentTmp = (StreamedContent) imageObject;
+            else if (imageObject instanceof StreamedContent streamedContentTmp) {
                 inputStream = streamedContentTmp.getStream().get();
                 contentType = streamedContentTmp.getContentType();
                 originalFileName = streamedContentTmp.getName();

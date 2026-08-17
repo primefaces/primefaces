@@ -108,8 +108,8 @@ public class InputTextarea extends InputTextareaBaseImpl {
         FacesContext facesContext = getFacesContext();
         MethodExpression me = getCompleteMethod();
 
-        if (me != null && event instanceof org.primefaces.event.AutoCompleteEvent) {
-            suggestions = (List) me.invoke(facesContext.getELContext(), new Object[]{((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
+        if (me != null && event instanceof org.primefaces.event.AutoCompleteEvent completeEvent) {
+            suggestions = (List) me.invoke(facesContext.getELContext(), new Object[]{completeEvent.getQuery()});
 
             if (suggestions == null) {
                 suggestions = new ArrayList<>();

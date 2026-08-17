@@ -88,7 +88,7 @@ public class UINotificationRenderer<T extends UIComponent & UINotification> exte
     }
 
     protected String getTooltipTargetId(UIComponent target, FacesContext context) {
-        return (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
+        return (target instanceof InputHolder ih) ? ih.getInputClientId() : target.getClientId(context);
     }
 
     public List<FacesMessage> collectFacesMessages(UINotifications uiMessages, FacesContext context) {

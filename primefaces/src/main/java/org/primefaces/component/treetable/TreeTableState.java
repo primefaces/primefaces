@@ -25,11 +25,12 @@ package org.primefaces.component.treetable;
 
 import org.primefaces.component.api.UITableState;
 
+import java.io.Serial;
 import java.util.List;
 
 public class TreeTableState extends UITableState {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private int first;
 

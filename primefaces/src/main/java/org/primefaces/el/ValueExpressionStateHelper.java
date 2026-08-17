@@ -139,14 +139,14 @@ public class ValueExpressionStateHelper implements StateHelper {
     @Override
     public Object remove(Serializable key, Object valueOrKey) {
         Object internalStructure = get(key);
-        if (internalStructure instanceof List) {
-            ((List<?>) internalStructure).remove(valueOrKey);
+        if (internalStructure instanceof List<?> list) {
+            list.remove(valueOrKey);
 
             return null;
         }
 
-        if (internalStructure instanceof Map) {
-            return ((Map<?, ?>) internalStructure).remove(valueOrKey);
+        if (internalStructure instanceof Map<?, ?> map) {
+            return map.remove(valueOrKey);
         }
 
         return null;

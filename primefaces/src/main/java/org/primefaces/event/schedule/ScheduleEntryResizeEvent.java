@@ -26,6 +26,7 @@ package org.primefaces.event.schedule;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.ScheduleEvent;
 
+import java.io.Serial;
 import java.time.Duration;
 
 import jakarta.faces.component.UIComponent;
@@ -33,7 +34,7 @@ import jakarta.faces.component.behavior.Behavior;
 
 public class ScheduleEntryResizeEvent extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private ScheduleEvent scheduleEvent;
 

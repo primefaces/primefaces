@@ -29,7 +29,7 @@ import org.primefaces.selenium.spi.DeploymentAdapter;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.Store.CloseableResource {
+public class BootstrapExtension implements BeforeAllCallback, AutoCloseable {
 
     private static final Object SYNCHRONIZER = new Object();
 

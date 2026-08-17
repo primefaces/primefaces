@@ -75,8 +75,7 @@ public interface ColumnAware {
                 continue;
             }
 
-            if (child instanceof Columns) {
-                Columns columns = (Columns) child;
+            if (child instanceof Columns columns) {
                 if (unwrapDynamicColumns) {
                     for (int j = 0; j < columns.getRowCount(); j++) {
                         DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
@@ -97,8 +96,7 @@ public interface ColumnAware {
                     }
                 }
             }
-            else if (child instanceof Column) {
-                Column column = (Column) child;
+            else if (child instanceof Column column) {
                 if (!callback.test(column)) {
                     return false;
                 }
@@ -116,8 +114,7 @@ public interface ColumnAware {
                     }
                 }
             }
-            else if (child instanceof ColumnAware) {
-                ColumnAware columnAware = (ColumnAware) child;
+            else if (child instanceof ColumnAware columnAware) {
                 for (int j = 0; j < ((UIComponent) columnAware).getChildCount(); j++) {
                     UIComponent columnAwareChild = ((UIComponent) columnAware).getChildren().get(j);
                     if (skipUnrendered && !columnAwareChild.isRendered()) {
@@ -138,8 +135,7 @@ public interface ColumnAware {
                     }
 
                     // for now just support basic p:column in ui:repeat
-                    if (target instanceof Column) {
-                        Column column = (Column) target;
+                    if (target instanceof Column column) {
                         if (!callback.test(column)) {
                             return VisitResult.COMPLETE;
                         }
@@ -174,8 +170,7 @@ public interface ColumnAware {
                         return VisitResult.ACCEPT;
                     }
 
-                    if (target instanceof Row) {
-                        Row row = (Row) target;
+                    if (target instanceof Row row) {
                         if (!callback.test(row)) {
                             return VisitResult.COMPLETE;
                         }
@@ -184,8 +179,7 @@ public interface ColumnAware {
                     return VisitResult.REJECT;
                 });
             }
-            else if (child instanceof Row) {
-                Row row = (Row) child;
+            else if (child instanceof Row row) {
                 if (skipUnrendered && !row.isRendered()) {
                     continue;
                 }
@@ -264,14 +258,12 @@ public interface ColumnAware {
             UIComponent row = group.getChildren().get(i);
             for (int j = 0; j < row.getChildCount(); j++) {
                 UIComponent rowChild = row.getChildren().get(j);
-                if (rowChild instanceof Column) {
-                    Column column = (Column) rowChild;
+                if (rowChild instanceof Column column) {
                     if (Objects.equals(column.getColumnKey(), columnKey)) {
                         return column;
                     }
                 }
-                else if (rowChild instanceof Columns) {
-                    Columns columns = (Columns) rowChild;
+                else if (rowChild instanceof Columns columns) {
                     List<DynamicColumn> dynamicColumns = columns.getDynamicColumns();
                     for (UIColumn column : dynamicColumns) {
                         if (Objects.equals(column.getColumnKey(), columnKey)) {
@@ -288,8 +280,7 @@ public interface ColumnAware {
     default ColumnGroup getColumnGroup(String type) {
         for (int i = 0; i < ((UIComponent) this).getChildCount(); i++) {
             UIComponent child = ((UIComponent) this).getChildren().get(i);
-            if (child instanceof ColumnGroup) {
-                ColumnGroup colGroup = (ColumnGroup) child;
+            if (child instanceof ColumnGroup colGroup) {
                 if (Objects.equals(type, colGroup.getType())) {
                     return colGroup;
                 }
@@ -309,11 +300,10 @@ public interface ColumnAware {
 
         for (int i = 0; i < ((UIComponent) this).getChildCount(); i++) {
             UIComponent child = ((UIComponent) this).getChildren().get(i);
-            if (child instanceof Column) {
-                columns.add((Column) child);
+            if (child instanceof Column column) {
+                columns.add(column);
             }
-            else if (child instanceof Columns) {
-                Columns uiColumns = (Columns) child;
+            else if (child instanceof Columns uiColumns) {
                 uiColumns.setRowIndex(-1);
                 for (int j = 0; j < uiColumns.getRowCount(); j++) {
                     DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns, context);
@@ -326,8 +316,8 @@ public interface ColumnAware {
 
         // sort by displayOrder
         columns.sort((c1, c2) -> {
-            if (c1 instanceof DynamicColumn) {
-                ((DynamicColumn) c1).applyStatelessModel();
+            if (c1 instanceof DynamicColumn column1) {
+                column1.applyStatelessModel();
             }
 
             Integer dp1 = c1.getDisplayPriority();
@@ -336,8 +326,8 @@ public interface ColumnAware {
                 dp1 = cm1.getDisplayPriority();
             }
 
-            if (c2 instanceof DynamicColumn) {
-                ((DynamicColumn) c2).applyStatelessModel();
+            if (c2 instanceof DynamicColumn column2) {
+                column2.applyStatelessModel();
             }
 
             Integer dp2 = c2.getDisplayPriority();

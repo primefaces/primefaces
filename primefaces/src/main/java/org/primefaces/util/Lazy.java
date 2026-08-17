@@ -23,6 +23,7 @@
  */
 package org.primefaces.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.function.Supplier;
 
@@ -33,7 +34,7 @@ import java.util.function.Supplier;
  */
 public class Lazy<T> implements Serializable, Supplier<T> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private static final NotInitialized NOT_INITIALIZED = new NotInitialized();
 
@@ -80,6 +81,6 @@ public class Lazy<T> implements Serializable, Supplier<T> {
     }
 
     static final class NotInitialized implements Serializable {
-        private static final long serialVersionUID = 1L;
+        @Serial private static final long serialVersionUID = 1L;
     }
 }

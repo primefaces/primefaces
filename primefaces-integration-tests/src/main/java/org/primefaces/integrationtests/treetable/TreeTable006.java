@@ -28,6 +28,7 @@ import org.primefaces.event.RowEditEvent;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.model.TreeNode;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -43,7 +44,7 @@ import lombok.Data;
 @Data
 public class TreeTable006 implements Serializable {
 
-    private static final long serialVersionUID = -1770454688771221867L;
+    @Serial private static final long serialVersionUID = -1770454688771221867L;
 
     private TreeNode<Document> root;
 

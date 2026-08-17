@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -97,12 +98,12 @@ public class NestedGroupingTimelineView implements Serializable {
             LocalDateTime referenceDate = LocalDateTime.of(2015, Month.DECEMBER, 14, 8, 0);
             // iterate over events in the same group
             for (int i = 0; i < 6; i++) {
-                LocalDateTime startDate = referenceDate.plusHours(3 * (Math.random() < 0.2 ? 1 : 0));
+                LocalDateTime startDate = referenceDate.plusHours(3 * (ThreadLocalRandom.current().nextDouble() < 0.2 ? 1 : 0));
 
-                LocalDateTime endDate = startDate.plusHours(2 + (int) Math.floor(Math.random() * 3));
+                LocalDateTime endDate = startDate.plusHours(2 + (int) Math.floor(ThreadLocalRandom.current().nextDouble() * 3));
 
                 String imagePath = null;
-                if (Math.random() < 0.25) {
+                if (ThreadLocalRandom.current().nextDouble() < 0.25) {
                     imagePath = "images/timeline/box.png";
                 }
 
