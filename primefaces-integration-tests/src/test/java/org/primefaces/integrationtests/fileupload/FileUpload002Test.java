@@ -69,7 +69,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
 
     @Test
     @Order(2)
-    void basicMultipleUploadMultipleFiles(Page page) throws Exception {
+    void basicMultipleUploadMultipleFiles(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         assertEquals("", fileUpload.getValue());
@@ -93,7 +93,7 @@ class FileUpload002Test extends AbstractFileUploadTest {
 
     @Test
     @Order(2)
-    void basicMultipleUploadMultipleFilesTwice(Page page) throws Exception {
+    void basicMultipleUploadMultipleFilesTwice(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         assertEquals("", fileUpload.getValue());
