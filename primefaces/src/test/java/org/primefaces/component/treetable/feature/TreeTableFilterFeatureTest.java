@@ -138,7 +138,7 @@ class TreeTableFilterFeatureTest {
 
         TreeNode<?> modelValue = new DefaultTreeNode();
         ValueExpression valueExpression = mock(ValueExpression.class);
-        when(treeTable.getValueExpression("value")).thenReturn(valueExpression);
+        when(treeTable.getValueExpression(TreeTable.PropertyKeys.value)).thenReturn(valueExpression);
         when(valueExpression.getValue(elContext)).thenReturn(modelValue);
 
         DefaultTreeNode root = new DefaultTreeNode();
@@ -167,7 +167,7 @@ class TreeTableFilterFeatureTest {
 
         TreeNode<?> modelValue = new DefaultTreeNode();
         ValueExpression valueExpression = mock(ValueExpression.class);
-        when(treeTable.getValueExpression("value")).thenReturn(valueExpression);
+        when(treeTable.getValueExpression(TreeTable.PropertyKeys.value)).thenReturn(valueExpression);
         when(valueExpression.getValue(elContext)).thenReturn(modelValue);
 
         DefaultTreeNode root = new DefaultTreeNode();

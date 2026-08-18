@@ -110,7 +110,7 @@ public class FilterFeature implements TreeTableFeature {
         boolean noActiveFilters = filterBy.isEmpty() || filterBy.values().stream().noneMatch(FilterMeta::isActive);
         if (noActiveFilters) {
             tt.updateFilteredValue(context, null);
-            ValueExpression ve = tt.getValueExpression(TreeTable.PropertyKeys.value.name());
+            ValueExpression ve = tt.getValueExpression(TreeTable.PropertyKeys.value);
             if (ve != null) {
                 TreeNode<?> originalValue = (TreeNode<?>) ve.getValue(context.getELContext());
                 tt.setValue(originalValue);
