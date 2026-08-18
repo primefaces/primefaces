@@ -159,7 +159,7 @@ class DataTable009Test extends AbstractDataTableTest {
 
         // Assert
         assertEquals("C#", dataTable.getRow(0).getCell(1).getText());
-        SelectOneMenu firstAppeared = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:0:firstAppeared"));
+        SelectOneMenu firstAppeared = page.firstRowFirstAppeared;
         assertEquals("2000", firstAppeared.getSelectedLabel());
 
         // Act
@@ -207,6 +207,9 @@ class DataTable009Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:datatable:firstAppearedFilter")
         SelectOneMenu firstAppearedFilter;
+
+        @FindBy(id = "form:datatable:0:firstAppeared")
+        SelectOneMenu firstRowFirstAppeared;
 
         @Override
         public String getLocation() {
