@@ -23,23 +23,19 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
-
-import java.util.stream.Stream;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.openqa.selenium.By;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -48,14 +44,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("DataTable-paginator")
 class DataTable005PagingTest extends AbstractDataTableTest {
 
-    @ParameterizedTest
-    @MethodSource("provideXhtmls")
+    @Test
     @Order(1)
     @DisplayName("DataTable: selection - multiple on Page1")
-    void selectionMultiplePage1(String xhtml) {
+    void selectionMultiplePage1(Page page) {
         // Arrange
-        goTo(xhtml);
-        DataTable dataTable = getDataTable();
+        DataTable dataTable = page.dataTable;
         assertNotNull(dataTable);
 
         // Act
@@ -63,31 +57,27 @@ class DataTable005PagingTest extends AbstractDataTableTest {
         Actions actions = new Actions(getWebDriver());
         actions.keyDown(Keys.META).click(dataTable.getCell(1, 0).getWebElement()).keyUp(Keys.META).perform();
         actions.keyDown(Keys.SHIFT).click(dataTable.getCell(2, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
-        getButton().click();
+        page.button.click();
 
         // Assert
-        dataTable = getDataTable();
         assertConfiguration(dataTable.getWidgetConfiguration());
-        assertMessage("Selected ProgrammingLanguage(s)", "1,2,3");
+        assertMessage(page, "Selected ProgrammingLanguage(s)", "1,2,3");
 
         // Act
-        getButtonUpdate().click();
-        getButton().click();
+        page.buttonUpdate.click();
+        page.button.click();
 
         // Assert - selection must not be lost after update
-        dataTable = getDataTable();
         assertConfiguration(dataTable.getWidgetConfiguration());
-        assertMessage("Selected ProgrammingLanguage(s)", "1,2,3");
+        assertMessage(page, "Selected ProgrammingLanguage(s)", "1,2,3");
     }
 
-    @ParameterizedTest
-    @MethodSource("provideXhtmls")
+    @Test
     @Order(1)
     @DisplayName("DataTable: selection - multiple on Page2")
-    void selectionMultiplePage2(String xhtml) {
+    void selectionMultiplePage2(Page page) {
         // Arrange
-        goTo(xhtml);
-        DataTable dataTable = getDataTable();
+        DataTable dataTable = page.dataTable;
         assertNotNull(dataTable);
 
         // Act
@@ -95,26 +85,24 @@ class DataTable005PagingTest extends AbstractDataTableTest {
         Actions actions = new Actions(getWebDriver());
         actions.keyDown(Keys.META).click(dataTable.getCell(0, 0).getWebElement()).keyUp(Keys.META).perform();
         actions.keyDown(Keys.SHIFT).click(dataTable.getCell(1, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
-        getButton().click();
+        page.button.click();
 
         // Assert
-        dataTable = getDataTable();
         assertConfiguration(dataTable.getWidgetConfiguration());
-        assertMessage("Selected ProgrammingLanguage(s)", "4,5");
+        assertMessage(page, "Selected ProgrammingLanguage(s)", "4,5");
 
         // Act
-        getButtonUpdate().click();
-        getButton().click();
+        page.buttonUpdate.click();
+        page.button.click();
 
         // Assert - selection must not be lost after update
-        dataTable = getDataTable();
         assertConfiguration(dataTable.getWidgetConfiguration());
-        assertMessage("Selected ProgrammingLanguage(s)", "4,5");
+        assertMessage(page, "Selected ProgrammingLanguage(s)", "4,5");
     }
 
-    private void assertMessage(String summary, String detail) {
-        assertTrue(getMessages().getMessage(0).getSummary().contains(summary));
-        assertTrue(getMessages().getMessage(0).getDetail().contains(detail));
+    private void assertMessage(Page page, String summary, String detail) {
+        assertTrue(page.messages.getMessage(0).getSummary().contains(summary));
+        assertTrue(page.messages.getMessage(0).getDetail().contains(detail));
     }
 
     private void assertConfiguration(JSONObject cfg) {
@@ -122,28 +110,23 @@ class DataTable005PagingTest extends AbstractDataTableTest {
         assertTrue(cfg.has("selectionMode"));
     }
 
-    private static Stream<Arguments> provideXhtmls() {
-        return Stream.of(
-                Arguments.of("datatable/dataTable005Paging.xhtml"));
-    }
+    public static class Page extends AbstractPrimePage {
 
-    private Messages getMessages() {
-        return PrimeSelenium.createFragment(Messages.class, By.id("form:msgs"));
-    }
+        @FindBy(id = "form:msgs")
+        Messages messages;
 
-    private DataTable getDataTable() {
-        return PrimeSelenium.createFragment(DataTable.class, By.id("form:datatable"));
-    }
+        @FindBy(id = "form:datatable")
+        DataTable dataTable;
 
-    private CommandButton getButton() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:button"));
-    }
+        @FindBy(id = "form:button")
+        CommandButton button;
 
-    private CommandButton getButtonUpdate() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonUpdate"));
-    }
+        @FindBy(id = "form:buttonUpdate")
+        CommandButton buttonUpdate;
 
-    private CommandButton getButtonProcess() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonProcess"));
+        @Override
+        public String getLocation() {
+            return "datatable/dataTable005Paging.xhtml";
+        }
     }
 }

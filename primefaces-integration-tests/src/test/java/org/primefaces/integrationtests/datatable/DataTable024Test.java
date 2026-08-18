@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
@@ -33,7 +32,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,7 +49,7 @@ class DataTable024Test extends AbstractDataTableTest {
         assertNotNull(dataTable);
 
         // Act
-        CommandButton button = PrimeSelenium.createFragment(CommandButton.class, By.id("form:datatable:0:select"));
+        CommandButton button = page.firstRowSelect;
         button.click();
 
         // Assert
@@ -73,6 +71,9 @@ class DataTable024Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:datatable")
         DataTable dataTable;
+
+        @FindBy(id = "form:datatable:0:select")
+        CommandButton firstRowSelect;
 
         @Override
         public String getLocation() {
