@@ -97,9 +97,16 @@ public class FilterFeature implements TreeTableFeature {
 
     public void filter(FacesContext context, TreeTable tt, TreeNode root) {
         Map<String, FilterMeta> filterBy = tt.getFilterByAsMap();
-        // After clearFilters(), stale filterBy entries remain with null values.
-        // isEmpty() alone can't detect this, so we also check for active filters;
-        // without this, we'd filter against a null root and shadow the model value.
+        // After clearFilters(), stale filterBy entries remain with null values,
+        // so isEmpty() alone can't detect this case. Without the check below,
+        // filter() would run against the null root set by decode() and leave
+        // the table empty. Also restore the model value via the value expression
+        // so subsequent renders don't see the nulled local value.
+        //
+        // decode() calls setValue(null) to reset filter state before re-applying
+        // any filter values from the request. When there are no active filters,
+        // the original early return never restored the value, leaving that null
+        // in place to shadow the value expression on the next render.
         boolean noActiveFilters = filterBy.isEmpty() || filterBy.values().stream().noneMatch(FilterMeta::isActive);
         if (noActiveFilters) {
             tt.updateFilteredValue(context, null);
