@@ -56,10 +56,10 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         return COMPONENT_FAMILY;
     }
 
-    @Property(description = "Id of the active tab.")
+    @Property(description = "Active tab index(es)/key(s). Use 'none'/'-1' to collapse all, or 'all' to expand all.")
     public abstract String getActive();
 
-    @Property(defaultValue = "0", description = "Index of the active tab.")
+    @Property(defaultValue = "0", description = "(Deprecated, use active instead!) Active tab index(es). Supports '-1' or 'all'.")
     public abstract String getActiveIndex();
 
     @Property(description = "Client side callback to execute when a tab is changed.")
