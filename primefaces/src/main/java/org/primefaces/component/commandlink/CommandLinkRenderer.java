@@ -101,7 +101,10 @@ public class CommandLinkRenderer extends CoreRenderer<CommandLink> {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, component.getAriaLabel(), null);
+
+        if (!isValueBlank(component.getAriaLabel())) {
+            writer.writeAttribute(HTML.ARIA_LABEL, component.getAriaLabel(), null);
+        }
 
         if (!isValueBlank(form)) {
             writer.writeAttribute("data-pf-form", form, null);
