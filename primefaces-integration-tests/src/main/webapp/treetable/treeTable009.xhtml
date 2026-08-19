@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:treeTable value="#{treeTable009.root}" var="document" id="treeTable" widgetVar="treeTable" filterEvent="enter">
+                <p:column headerText="Name" filterBy="#{document.name}" filterMatchMode="contains">
+                    <h:outputText value="#{document.name}"/>
+                </p:column>
+                <p:column headerText="Size" sortBy="#{document.size}">
+                    <h:outputText value="#{document.size}"/>
+                </p:column>
+                <p:column headerText="Type" filterBy="#{document.type}" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('treeTable').filter()" styleClass="custom-filter">
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Folder" itemValue="Folder"/>
+                            <f:selectItem itemLabel="Application" itemValue="Application"/>
+                            <f:selectItem itemLabel="Zip" itemValue="Zip"/>
+                            <f:selectItem itemLabel="Text" itemValue="Text"/>
+                            <f:selectItem itemLabel="Document" itemValue="Document"/>
+                            <f:selectItem itemLabel="Resume" itemValue="Resume"/>
+                            <f:selectItem itemLabel="Excel" itemValue="Excel"/>
+                            <f:selectItem itemLabel="PDF" itemValue="PDF"/>
+                            <f:selectItem itemLabel="Link" itemValue="Link"/>
+                            <f:selectItem itemLabel="Picture" itemValue="Picture"/>
+                            <f:selectItem itemLabel="Video" itemValue="Video"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+
+                    <h:outputText value="#{document.type}"/>
+                </p:column>
+            </p:treeTable>
+
+            <p:commandButton id="buttonClearFilters" type="button" value="Clear Filters" onclick="PF('treeTable').clearFilters()"/>
+            <p:commandButton id="buttonSwitchRoot" value="Switch Root" update="@form" action="#{treeTable009.switchRoot}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
