@@ -77,7 +77,7 @@ filterMatchMode are startsWith, contains, endsWith and custom. Custom mode requi
 function to do the filtering.
 
 ```xhtml
-<p:selectCheckboxMenu value="#{bean.selectedOptions}" label="Movies" filterMatchMode="custom" filterFunction="customFilter" filter="on">
+<p:selectCheckboxMenu value="#{bean.selectedOptions}" label="Movies" filterMatchMode="custom" filterFunction="customFilter" filter="true">
     <f:selectItems value="#{bean.options}" />
 </p:selectCheckboxMenu>
 ```
