@@ -321,29 +321,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     }
 
     @Override
-    public T getRowData(String rowKey) {
-        if (rowKeyConverter != null) {
-            return super.getRowData(rowKey);
-        }
-
-        Object convertedRowKey = ComponentUtils.convertToType(rowKey, rowKeyType, LOGGER);
-
-        EntityManager em = entityManager.get();
-
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityClass);
-        Root<T> root = cq.from(entityClass);
-        cq.select(root).where(criteriaBuilder.equal(root.get(rowKeyField), convertedRowKey));
-
-        TypedQuery<T> query = em.createQuery(cq);
-        T result = query.getSingleResult();
-        if (resultEnricher != null) {
-            resultEnricher.accept(List.of(result));
-        }
-        return result;
-    }
-
-    @Override
     public String getRowKey(T obj) {
         Object rowKey = rowKeyProvider.apply(obj);
         return rowKey == null ? null : String.valueOf(rowKey);
