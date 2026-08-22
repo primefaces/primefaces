@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:outputLabel id="lblValue" style="display: block;"
+                value="value: #{tieredMenu001.value eq null ? 'null' : tieredMenu001.value}"/>
+
+            <p:commandButton id="trigger" value="Show" type="button" icon="pi pi-external-link"/>
+
+            <p:tieredMenu id="menu" widgetVar="menu" overlay="true" trigger="trigger" my="left top" at="left bottom">
+                <p:menuitem id="item1" value="Set via item" action="#{tieredMenu001.setValue('FromMenuItem')}"
+                    process="@this" update="menuInput lblValue"/>
+
+                <f:facet name="end">
+                    <h:form id="inputForm">
+                        <p:inputText id="menuInput" value="#{tieredMenu001.value}" style="width: 8em;">
+                            <p:ajax event="change" process="@form" update="@this lblValue"/>
+                        </p:inputText>
+                    </h:form>
+                </f:facet>
+            </p:tieredMenu>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>
