@@ -329,6 +329,7 @@
                             <uri>http://primefaces.org/ui</uri>
                             <shortName>primefaces</shortName>
                             <displayName>PrimeFaces</displayName>
+                            <description>PrimeFaces UI components.</description>
                         </configuration>
                     </execution>
                 </executions>
