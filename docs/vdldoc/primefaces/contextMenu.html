@@ -107,127 +107,133 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr id="autoDisplay" class="rowColor">
+                        <tr id="appendTo" class="rowColor">
+                            <td class="colFirst"><a href="#appendTo"><code>appendTo</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Search expression for the element to which the menu overlay is appended.Default is @(body).</td>
+                        </tr>
+                        <tr id="autoDisplay" class="altColor">
                             <td class="colFirst"><a href="#autoDisplay"><code>autoDisplay</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Defines whether the first level of submenus will be displayed on mouseover or click event.Default is true.</td>
                         </tr>
-                        <tr id="beforeShow" class="altColor">
+                        <tr id="beforeShow" class="rowColor">
                             <td class="colFirst"><a href="#beforeShow"><code>beforeShow</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Client side callback to execute before showing.</td>
                         </tr>
-                        <tr id="binding" class="rowColor">
+                        <tr id="binding" class="altColor">
                             <td class="colFirst"><a href="#binding"><code>binding</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.faces.component.UIComponent</code>)
                     </td><td class="colLast">An EL expression referring to a server side UIComponent instance in a backing bean.Default is generated.</td>
                         </tr>
-                        <tr id="dir" class="altColor">
+                        <tr id="dir" class="rowColor">
                             <td class="colFirst"><a href="#dir"><code>dir</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Defines text direction, valid values are ltr and rtl.Default is ltr.</td>
                         </tr>
-                        <tr id="disabled" class="rowColor">
+                        <tr id="disabled" class="altColor">
                             <td class="colFirst"><a href="#disabled"><code>disabled</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">If true, prevents menu from being shownDefault is false.</td>
                         </tr>
-                        <tr id="event" class="altColor">
+                        <tr id="event" class="rowColor">
                             <td class="colFirst"><a href="#event"><code>event</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Event to bind contextMenu display, default is contextmenu aka right click.</td>
                         </tr>
-                        <tr id="for" class="rowColor">
+                        <tr id="for" class="altColor">
                             <td class="colFirst"><a href="#for"><code>for</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Id of the component to attach to</td>
                         </tr>
-                        <tr id="hideDelay" class="altColor">
+                        <tr id="hideDelay" class="rowColor">
                             <td class="colFirst"><a href="#hideDelay"><code>hideDelay</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Delay in milliseconds before hiding the submenu, if 0 not hidden until document.click().Default is 0.</td>
                         </tr>
-                        <tr id="id" class="rowColor">
+                        <tr id="id" class="altColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Unique identifier of the component in a namingContainer.Default is generated.</td>
                         </tr>
-                        <tr id="model" class="altColor">
+                        <tr id="model" class="rowColor">
                             <td class="colFirst"><a href="#model"><code>model</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>org.primefaces.model.menu.MenuModel</code>)
                     </td><td class="colLast">Menu model instance to create menu programmatically.</td>
                         </tr>
-                        <tr id="nodeType" class="rowColor">
+                        <tr id="nodeType" class="altColor">
                             <td class="colFirst"><a href="#nodeType"><code>nodeType</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Specific type of tree nodes to attach to.</td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to specify the rendering of the component, when set to false component will not be rendered.Default is true.</td>
                         </tr>
-                        <tr id="selectionMode" class="rowColor">
+                        <tr id="selectionMode" class="altColor">
                             <td class="colFirst"><a href="#selectionMode"><code>selectionMode</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Defines the selection behavior, e.g., "single" or "multiple".Default is multiple.</td>
                         </tr>
-                        <tr id="showDelay" class="altColor">
+                        <tr id="showDelay" class="rowColor">
                             <td class="colFirst"><a href="#showDelay"><code>showDelay</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.Default is 0.</td>
                         </tr>
-                        <tr id="style" class="rowColor">
+                        <tr id="style" class="altColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Inline style of the component.</td>
                         </tr>
-                        <tr id="styleClass" class="altColor">
+                        <tr id="styleClass" class="rowColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Style class of the component.</td>
                         </tr>
-                        <tr id="tabindex" class="rowColor">
+                        <tr id="tabindex" class="altColor">
                             <td class="colFirst"><a href="#tabindex"><code>tabindex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Position of the element in the tabbing order.Default is 0.</td>
                         </tr>
-                        <tr id="targetFilter" class="altColor">
+                        <tr id="targetFilter" class="rowColor">
                             <td class="colFirst"><a href="#targetFilter"><code>targetFilter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Selector to filter the elements to attach the menu.</td>
                         </tr>
-                        <tr id="toggleEvent" class="rowColor">
+                        <tr id="toggleEvent" class="altColor">
                             <td class="colFirst"><a href="#toggleEvent"><code>toggleEvent</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Event to toggle the submenus, valid values are "hover" and "click".</td>
                         </tr>
-                        <tr id="touchable" class="altColor">
+                        <tr id="touchable" class="rowColor">
                             <td class="colFirst"><a href="#touchable"><code>touchable</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Enable touch if supported by device. NULL uses global default or primefaces.TOUCHABLE. Default: globally enabled.</td>
                         </tr>
-                        <tr id="widgetVar" class="rowColor">
+                        <tr id="widgetVar" class="altColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
