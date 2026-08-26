@@ -415,7 +415,6 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
                         if (childIndex > 0) {
                             sb.append(",");
                         }
-                        Tab tab = (Tab) child;
                         sb.append(tab.getKey() != null ? tab.getKey() : Integer.toString(childIndex));
                         childIndex++;
                     }
