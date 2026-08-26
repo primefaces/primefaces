@@ -143,11 +143,13 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         // Set the first focusable menu item
         this.resetFocusState();
 
-        // Bind mouse and click events to focus items
-        this.menuitemLinks.on("mouseenter.menu click.menu", function(e) {
+        // Bind mouse events to highlight items without changing browser focus
+        this.menuitemLinks.on("mouseenter.menu", function() {
+            $(this).addClass('ui-state-hover');
+        }).on("mouseleave.menu", function() {
+            $(this).removeClass('ui-state-hover');
+        }).on("click.menu", function(e) {
             $this.focus($(this), e);
-        }).on("mouseleave.menu", function(e) {
-            $this.unfocus($(this), e);
         });
 
         // Bind keyboard navigation events
@@ -197,7 +199,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         // Set the first focusable menu item
         this.resetFocus(true);
 
-        // plain menu does not have hover and active states
+        // Clear transient hover and active states for non-overlay menus
         if (!this.cfg.overlay) {
             this.menuitemLinks.removeClass('ui-state-hover ui-state-active');
         }
