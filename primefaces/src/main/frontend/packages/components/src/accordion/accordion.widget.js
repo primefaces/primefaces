@@ -70,8 +70,11 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
                 }
             }
         }
-        else if (stateHolderVal != null) {
+        else if (stateHolderVal != null && stateHolderVal.length > 0) {
             this.cfg.active = this.stateHolder.val();
+        }
+        else {
+            this.cfg.active = 'none';
         }
 
         this.headers.each(function() {
@@ -197,7 +200,7 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
      */
     markLoadedPanels() {
         const markPanelAsLoaded = (index) => {
-            if (index >= 0) {
+            if (index !== null && index !== '' && index >= 0) {
                 this.markAsLoaded(this.panels.eq(index));
             }
         };

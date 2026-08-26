@@ -106,6 +106,12 @@ public class TaglibMojo extends AbstractMojo {
     private String displayName;
 
     /**
+     * Taglib description
+     */
+    @Parameter
+    private String description;
+
+    /**
      * Perform taglib XML generation
      */
     @Override
@@ -348,6 +354,9 @@ public class TaglibMojo extends AbstractMojo {
         faceletTaglib.addElement("namespace").addText(uri);
         faceletTaglib.addElement("short-name").addText(shortName);
         faceletTaglib.addElement("display-name").addText(displayName);
+        if (description != null && !description.isEmpty()) {
+            faceletTaglib.addElement("description").addText(description);
+        }
 
         for (FunctionInfo functionInfo : functionInfos) {
             Element function = faceletTaglib.addElement("function");

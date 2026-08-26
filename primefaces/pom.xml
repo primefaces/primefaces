@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20260719</version>
+            <version>20260814</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -329,6 +329,7 @@
                             <uri>http://primefaces.org/ui</uri>
                             <shortName>primefaces</shortName>
                             <displayName>PrimeFaces</displayName>
+                            <description>PrimeFaces UI components.</description>
                         </configuration>
                     </execution>
                 </executions>
@@ -336,7 +337,7 @@
                     <dependency>
                         <groupId>org.json</groupId>
                         <artifactId>json</artifactId>
-                        <version>20260719</version>
+                        <version>20260814</version>
                     </dependency>
                 </dependencies>
             </plugin>

@@ -23,27 +23,25 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectCheckboxMenu;
 import org.primefaces.selenium.component.model.datatable.Row;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,15 +49,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("DataTable-filter")
 class DataTable039Test extends AbstractDataTableTest {
 
-    @ParameterizedTest
-    @MethodSource("provideXhtmls")
+    @Test
     @Order(1)
     @DisplayName("DataTable: Lazy: filter - selectCheckboxMenu - filterBean instead of intended API-usage - " +
             "https://github.com/primefaces/primefaces/issues/9349")
-    void lazyFilterSelectCheckboxMenu(String xhtml) {
+    void lazyFilterSelectCheckboxMenu(Page page) {
         // Arrange
-        goTo(xhtml);
-        DataTable dataTable = getDataTable();
+        DataTable dataTable = page.dataTable;
         assertNotNull(dataTable);
         List<ProgrammingLanguage> langsFiltered = model.getLangs().stream()
                 .filter(l -> l.getType() == ProgrammingLanguage.ProgrammingLanguageType.COMPILED)
@@ -69,7 +65,7 @@ class DataTable039Test extends AbstractDataTableTest {
         // Act
         dataTable.selectPage(1);
         dataTable.sort("First Appeared");
-        SelectCheckboxMenu filterType = getFilterType();
+        SelectCheckboxMenu filterType = page.filterType;
         filterType.togglePanel();
         List<WebElement> filterTypeCheckboxes = filterType.getPanel().findElements(By.cssSelector(".ui-chkbox-box"));
         PrimeSelenium.guardAjax(filterTypeCheckboxes.get(1)).click();
@@ -83,7 +79,7 @@ class DataTable039Test extends AbstractDataTableTest {
         }
 
         // Act
-        getButtonUpdate().click();
+        page.buttonUpdate.click();
 
         // Assert - filter must not be lost after update
         rows = dataTable.getRows();
@@ -100,23 +96,20 @@ class DataTable039Test extends AbstractDataTableTest {
         assertTrue(cfg.has("paginator"));
     }
 
-    private static Stream<Arguments> provideXhtmls() {
-        return Stream.of(Arguments.of("datatable/dataTable039.xhtml"));
-    }
+    public static class Page extends AbstractPrimePage {
 
-    private DataTable getDataTable() {
-        return PrimeSelenium.createFragment(DataTable.class, By.id("form:datatable"));
-    }
+        @FindBy(id = "form:datatable")
+        DataTable dataTable;
 
-    private Messages getMessages() {
-        return PrimeSelenium.createFragment(Messages.class, By.id("form:msgs"));
-    }
+        @FindBy(id = "form:buttonUpdate")
+        CommandButton buttonUpdate;
 
-    private CommandButton getButtonUpdate() {
-        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonUpdate"));
-    }
+        @FindBy(id = "form:datatable:filterType")
+        SelectCheckboxMenu filterType;
 
-    private SelectCheckboxMenu getFilterType() {
-        return PrimeSelenium.createFragment(SelectCheckboxMenu.class, By.id("form:datatable:filterType"));
+        @Override
+        public String getLocation() {
+            return "datatable/dataTable039.xhtml";
+        }
     }
 }

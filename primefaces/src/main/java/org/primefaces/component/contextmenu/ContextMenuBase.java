@@ -71,4 +71,6 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget, To
     @Property(description = "Selector to filter the elements to attach the menu.")
     public abstract String getTargetFilter();
 
+    @Property(defaultValue = "@(body)", description = "Search expression for the element to which the menu overlay is appended.")
+    public abstract String getAppendTo();
 }

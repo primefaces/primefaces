@@ -51,8 +51,8 @@ class DataTable048Test extends AbstractDataTableTest {
     public void testInEqualsFilterBigDecimal(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        SelectCheckboxMenu filter1 = getFilter1();
-        SelectOneMenu filter2 = getFilter2();
+        SelectCheckboxMenu filter1 = page.filterPopularity1;
+        SelectOneMenu filter2 = page.filterPopularity2;
         assertNotNull(dataTable);
         assertNotNull(filter1);
         assertNotNull(filter2);
@@ -103,18 +103,16 @@ class DataTable048Test extends AbstractDataTableTest {
         @FindBy(id = "form:datatable")
         DataTable dataTable;
 
+        @FindBy(id = "form:datatable:filterPopularity1")
+        SelectCheckboxMenu filterPopularity1;
+
+        @FindBy(id = "form:datatable:filterPopularity2")
+        SelectOneMenu filterPopularity2;
+
         @Override
         public String getLocation() {
             return "datatable/dataTable048.xhtml";
         }
 
-    }
-
-    private SelectCheckboxMenu getFilter1() {
-        return PrimeSelenium.createFragment(SelectCheckboxMenu.class, By.id("form:datatable:filterPopularity1"));
-    }
-
-    private SelectOneMenu getFilter2() {
-        return PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:filterPopularity2"));
     }
 }

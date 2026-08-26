@@ -243,10 +243,6 @@ class DataTable028Test extends AbstractDataTableTest {
         return PrimeSelenium.createFragment(CommandButton.class, By.id("form:cmdSave"));
     }
 
-    private WebElement getEltDebugInital() {
-        return PrimeSelenium.createFragment(WebElement.class, By.id("debugInitial"));
-    }
-
     private WebElement getEltDebugActual() {
         return PrimeSelenium.createFragment(WebElement.class, By.id("debugActual"));
     }

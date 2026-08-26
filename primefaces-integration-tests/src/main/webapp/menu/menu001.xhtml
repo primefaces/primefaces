@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <h:inputText id="input" />
+
+            <p:menu id="menu" widgetVar="menu">
+                <p:menuitem id="first" value="First" url="#first" />
+                <p:menuitem id="second" value="Second" url="#second" />
+                <p:menuitem id="disabled" value="Disabled" url="#disabled" disabled="true" />
+            </p:menu>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

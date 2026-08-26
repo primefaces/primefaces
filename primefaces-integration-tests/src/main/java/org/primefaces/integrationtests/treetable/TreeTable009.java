@@ -21,47 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.datatable;
+package org.primefaces.integrationtests.treetable;
 
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.InputText;
+import org.primefaces.model.TreeNode;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
+import java.io.Serializable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
-@Tag("DataTable-lazy")
-class DataTable034Test extends AbstractDataTableTest {
+import lombok.Data;
 
-    @Test
-    @DisplayName("DataTable: RequestScoped LazyDataModel with input change")
-    void test(Page page) throws InterruptedException {
+@Named
+@ViewScoped
+@Data
+public class TreeTable009 implements Serializable {
 
-        InputText it = page.firstRowName;
+    private static final long serialVersionUID = -3049074201208091930L;
 
-        assertEquals("Language 1", it.getValue());
+    private TreeNode<Document> root;
+    private boolean otherRoot;
 
-        it.clear();
-        it.setValue("Language 666");
+    @Inject
+    private DocumentService service;
 
-        assertEquals("Language 666", it.getValue());
+    @PostConstruct
+    public void init() {
+        root = service.createDocuments();
     }
 
-    public static class Page extends AbstractPrimePage {
-
-        @FindBy(id = "form:datatable")
-        DataTable dataTable;
-
-        @FindBy(id = "form:datatable:0:name")
-        InputText firstRowName;
-
-        @Override
-        public String getLocation() {
-            return "datatable/dataTable034.xhtml";
-        }
+    public void switchRoot() {
+        root = otherRoot ? service.createDocuments() : service.createOtherDocuments();
+        otherRoot = !otherRoot;
     }
+
 }

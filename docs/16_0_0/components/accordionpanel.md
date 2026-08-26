@@ -172,3 +172,11 @@ the list of structural style classes;
 | .ui-accordion | Main container |
 | .ui-accordion-header | Tab header |
 | .ui-accordion-content | Tab content |
+
+## Common Mistakes
+
+### Collapsing all tabs
+
+Use `active="none"` or `active="-1"` to render the panel with all tabs collapsed. The legacy
+`activeIndex="-1"` value is also supported. Using this allows the renderer to skip
+evaluating tab keys, avoiding unnecessary evaluation when no tab is active.

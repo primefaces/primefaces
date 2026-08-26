@@ -62,7 +62,8 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
                 .callback("beforeShow", "function(event)", menu.getBeforeShow())
                 .attr("targetFilter", menu.getTargetFilter(), null)
                 .attr("touchable", ComponentUtils.isTouchable(context, menu),  true)
-                .attr("disabled", menu.isDisabled(), false);
+                .attr("disabled", menu.isDisabled(), false)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()));
 
         wb.finish();
     }
