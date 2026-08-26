@@ -241,9 +241,10 @@ public class HeadRenderer extends Renderer {
                     writer.write(',');
                 }
 
-                String errorPageUrl = EscapeUtils.forJavaScript(context.getExternalContext().getRequestContextPath()) + entry.getValue();
+                String errorPageUrl = externalContext.getRequestContextPath() + entry.getValue();
                 errorPageUrl = context.getApplication().evaluateExpressionGet(context, errorPageUrl, String.class);
-                errorPageUrl = context.getExternalContext().encodeActionURL(errorPageUrl);
+                errorPageUrl = externalContext.encodeActionURL(errorPageUrl);
+                errorPageUrl = EscapeUtils.forJavaScript(errorPageUrl);
 
                 writer.write("'" + (entry.getKey() == null ? "" : entry.getKey()) + "':'" + errorPageUrl + "'");
 
