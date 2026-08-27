@@ -6,6 +6,7 @@
         version="6.0">
 
     <session-config>
+        <session-timeout>15</session-timeout>
         <cookie-config>
             <http-only>true</http-only>
         </cookie-config>
@@ -88,14 +89,18 @@
         <param-name>primefaces.FLEX</param-name>
         <param-value>false</param-value>
     </context-param>
+    <context-param>
+        <param-name>primefaces.MULTI_VIEW_STATE_STORE</param-name>
+        <param-value>client-window</param-value>
+    </context-param>
 
     <context-param>
         <param-name>com.sun.faces.numberOfViewsInSession</param-name>
-        <param-value>5</param-value>
+        <param-value>3</param-value>
     </context-param>
     <context-param>
         <param-name>org.apache.myfaces.NUMBER_OF_VIEWS_IN_SESSION</param-name>
-        <param-value>5</param-value>
+        <param-value>3</param-value>
     </context-param>
     <context-param>
         <param-name>org.apache.myfaces.NUMBER_OF_SEQUENTIAL_VIEWS_IN_SESSION</param-name>
@@ -108,15 +113,6 @@
     <context-param>
         <param-name>org.apache.myfaces.EARLY_FLUSH_ENABLED</param-name>
         <param-value>true</param-value>
-    </context-param>
-    <context-param>
-        <param-name>org.apache.myfaces.SUPPORT_JSP_AND_FACES_EL</param-name>
-        <param-value>false</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>primefaces.MULTI_VIEW_STATE_STORE</param-name>
-        <param-value>client-window</param-value>
     </context-param>
 
 <!--    <listener>-->
