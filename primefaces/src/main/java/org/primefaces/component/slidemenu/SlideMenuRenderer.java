@@ -26,6 +26,7 @@ package org.primefaces.component.slidemenu;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -47,6 +48,7 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
 
         if (menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);
+            wb.attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()));
         }
 
         wb.finish();
