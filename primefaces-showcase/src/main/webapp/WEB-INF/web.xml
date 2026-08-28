@@ -6,7 +6,6 @@
         version="6.0">
 
     <session-config>
-        <session-timeout>15</session-timeout>
         <cookie-config>
             <http-only>true</http-only>
         </cookie-config>
@@ -96,11 +95,11 @@
 
     <context-param>
         <param-name>com.sun.faces.numberOfViewsInSession</param-name>
-        <param-value>3</param-value>
+        <param-value>5</param-value>
     </context-param>
     <context-param>
         <param-name>org.apache.myfaces.NUMBER_OF_VIEWS_IN_SESSION</param-name>
-        <param-value>3</param-value>
+        <param-value>5</param-value>
     </context-param>
     <context-param>
         <param-name>org.apache.myfaces.NUMBER_OF_SEQUENTIAL_VIEWS_IN_SESSION</param-name>
