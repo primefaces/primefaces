@@ -85,8 +85,8 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
             this.navcrollerLeft = this.navscroller.children('.ui-tabs-navscroller-btn-left');
             this.navcrollerRight = this.navscroller.children('.ui-tabs-navscroller-btn-right');
             this.navContainer = this.navscroller.children('.ui-tabs-nav');
-            this.firstTab = this.navContainer.children('li.ui-tabs-header:first-child');
-            this.lastTab = this.navContainer.children('li.ui-tabs-header:last-child');
+            this.firstTab = this.navContainer.children('li.ui-tabs-header').first();
+            this.lastTab = this.navContainer.children('li.ui-tabs-header').last();
             this.scrollStateHolder = $(this.jqId + '_scrollState');
         }
         else {
