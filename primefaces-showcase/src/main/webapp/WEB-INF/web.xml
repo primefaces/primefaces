@@ -86,16 +86,16 @@
 
     <context-param>
         <param-name>com.sun.faces.numberOfViewsInSession</param-name>
-        <param-value>5</param-value>
+        <param-value>15</param-value>
     </context-param>
 
     <context-param>
         <param-name>org.apache.myfaces.NUMBER_OF_VIEWS_IN_SESSION</param-name>
-        <param-value>5</param-value>
+        <param-value>15</param-value>
     </context-param>
     <context-param>
         <param-name>org.apache.myfaces.NUMBER_OF_SEQUENTIAL_VIEWS_IN_SESSION</param-name>
-        <param-value>2</param-value>
+        <param-value>3</param-value>
     </context-param>
     <context-param>
         <param-name>org.apache.myfaces.CHECK_ID_PRODUCTION_MODE</param-name>
