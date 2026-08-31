@@ -487,7 +487,7 @@ export class PanelMenu<Cfg extends PanelMenuCfg = PanelMenuCfg> extends PrimeFac
         this.expandedNodes = expandedNodeIds.split(',');
 
         for (const expandedNode of this.expandedNodes) {
-            const element = $(PrimeFaces.escapeClientId(expandedNode).replace(/\|/g, "\\|"));
+            const element = $(PrimeFaces.escapeClientId(expandedNode));
             if (element.is('div.ui-panelmenu-content')) {
                 this.expandRootSubmenu(element.prev(), true);
             }
