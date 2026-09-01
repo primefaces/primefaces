@@ -82,6 +82,23 @@
     margin: -3px 0 -3px 2px;
 }
 
+/* Stacked header layout, switched on per header row by datatable.widget.js#alignColumnHeaderRow() as soon as
+   one of that row's cells can no longer fit its title and its icons on a single line. Header cells lay their
+   content out inline, so without this each column breaks wherever its own title happens to run out of room: a
+   long title pushes that column's icons - and with them its filter input - a line lower than its neighbours',
+   leaving the header ragged even though every cell holds the same three pieces. Stacked, the title takes a row
+   of its own (wrapping within it as needed), the sort/filter-match-mode icons the next and the filter input the
+   last; the widget then equalizes the title heights so those icon and filter rows line up across all columns.
+   `vertical-align` has to come along: the browser default centres a cell's content in the row, which would
+   re-stagger exactly the cells that hold fewer than the full three rows. */
+.ui-datatable thead th.ui-column-header-stacked {
+    vertical-align: top;
+}
+
+.ui-datatable thead th.ui-column-header-stacked > .ui-column-title {
+    display: block;
+}
+
 .ui-datatable .ui-column-filter {
     display: block;
     box-sizing: border-box;

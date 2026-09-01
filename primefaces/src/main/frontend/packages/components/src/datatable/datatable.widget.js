@@ -105,6 +105,8 @@
  * @prop {number} relativeHeight The height of the table viewport, relative to the total height, used for scrolling.
  * @prop {string[]} resizableState A list with the current widths for each resizable column.
  * @prop {JQuery} resizableStateHolder INPUT element storing the current widths for each resizable column.
+ * @prop {number} headerAlignTimeout The set-timeout timer ID of the debounce timer used to re-level the
+ * header rows after a window resize.
  * @prop {number} resizeTimeout The set-timeout timer ID of the timer used for resizing.
  * @prop {JQuery} resizerHelper The DOM element for the resize helper.
  * @prop {number} [rowHeight] Constant height in pixels for each row, when virtual scrolling is enabled.
@@ -334,6 +336,31 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         if (this.cfg.cellNavigation) {
             this.setupNavigableCells();
         }
+
+        this.alignColumnHeaders();
+        this.bindColumnHeaderAlignment();
+    }
+
+    /**
+     * Re-levels the header rows (see {@link alignColumnHeaders}) whenever the window is resized: which column
+     * titles still fit on one line depends on the column widths, so a resize can both introduce and resolve the
+     * ragged header the stacked layout exists to fix. Debounced - a drag fires `resize` continuously, and each
+     * pass re-measures the whole header.
+     * @private
+     */
+    bindColumnHeaderAlignment() {
+        var $this = this;
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_headeralign', this.jq, function() {
+            clearTimeout($this.headerAlignTimeout);
+            $this.headerAlignTimeout = PrimeFaces.queueTask(function() {
+                $this.alignColumnHeaders();
+            }, 100);
+        });
+
+        this.addDestroyListener(function() {
+            clearTimeout(this.headerAlignTimeout);
+        });
     }
 
     /**
@@ -740,6 +767,140 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
+     * Keeps a header row's cells breaking at the same places instead of each at its own. Header cells lay
+     * their content out inline, so a long column title pushes that column's sort/filter-match-mode icons onto
+     * a second line, and with them its filter input - while the column next to it, whose title happens to fit,
+     * keeps all three on two lines. Nothing is misrendered, but the header reads as ragged: the filter inputs
+     * sit at three different heights across one row.
+     *
+     * So: measure the row as rendered, and the moment any one of its cells cannot fit its title and its icons
+     * on a single line, switch every cell of that row to the stacked layout (`.ui-column-header-stacked`, see
+     * datatable.css) - title, then icons, then filter input, each on its own row - and level those rows out
+     * across the columns. A row whose cells all fit is left untouched.
+     *
+     * Called once the table is rendered and again (debounced) whenever the window resizes, since which titles
+     * fit is a function of the column widths.
+     * @private
+     */
+    alignColumnHeaders() {
+        // getThead() returns both <thead>s when columns are frozen, in which case one header row is a <tr> in
+        // each of them - they render side by side and have to be levelled out as the single row they look like
+        var rows = [];
+        this.thead.each(function() {
+            $(this).children('tr').each(function(index) {
+                (rows[index] = rows[index] || []).push(this);
+            });
+        });
+
+        for (var i = 0; i < rows.length; i++) {
+            this.alignColumnHeaderRow($(rows[i]).children('th'));
+        }
+    }
+
+    /**
+     * Levels out a single header row - see {@link alignColumnHeaders} for what this is for and when it runs.
+     * @private
+     * @param {JQuery} headers the `<th>` cells making up one header row
+     */
+    alignColumnHeaderRow(headers) {
+        // no child combinators: these are handed to children(), which already restricts to direct children
+        var iconSelector = '.ui-sortable-column-icon, .ui-sortable-column-badge,'
+                + ' .ui-column-filter-mode-icon, .ui-column-filter-mode-active-icon',
+            filterSelector = '.ui-column-filter, .ui-column-customfilter,'
+                + ' .ui-column-filter-date, .ui-column-filter-date-range';
+
+        // undo any previous pass first: stacking moves the icons off the title's line, so a stacked row no
+        // longer looks wrapped, and measuring one would just unstack it - and wrap it - again on every call.
+        // Every decision below is made from the plain inline layout, which makes this idempotent.
+        headers.removeClass('ui-column-header-stacked').css('padding-top', '');
+        headers.children('.ui-column-title').css('min-height', '');
+        headers.children(filterSelector).css('margin-top', '');
+
+        var cells = [],
+            wrapped = false;
+
+        headers.each(function() {
+            var th = $(this),
+                title = th.children('.ui-column-title').first(),
+                // a column that declares its own ariaHeaderText renders the visible title hidden-accessible:
+                // still 1x1 px on screen, so :visible alone would call it shown and measure that 1px as a line
+                titleShown = title.length > 0 && !title.hasClass('ui-helper-hidden-accessible') && title.is(':visible'),
+                icons = th.children(iconSelector).filter(':visible'),
+                filter = th.children(filterSelector).filter(':visible').first();
+
+            cells.push({ th: th, title: title, titleShown: titleShown, filter: filter });
+
+            if (!titleShown) {
+                return;
+            }
+
+            // one client rect per line box the inline title occupies, so more than one means it wrapped on its own
+            var lines = title[0].getClientRects();
+            if (lines.length > 1) {
+                wrapped = true;
+            }
+            else if (lines.length === 1) {
+                var titleLineBottom = lines[0].bottom;
+                icons.each(function() {
+                    if (this.getBoundingClientRect().top >= titleLineBottom) {
+                        wrapped = true;
+                    }
+                });
+            }
+        });
+
+        if (!wrapped) {
+            return;
+        }
+
+        headers.addClass('ui-column-header-stacked');
+
+        // give every title the height of the tallest one, so that each cell's icon row starts at the same
+        // height no matter how many lines that cell's own title needed
+        var titleHeight = 0;
+        for (var i = 0; i < cells.length; i++) {
+            if (cells[i].titleShown) {
+                titleHeight = Math.max(titleHeight, cells[i].title.outerHeight());
+            }
+        }
+
+        for (var j = 0; j < cells.length; j++) {
+            var cell = cells[j];
+            if (cell.titleShown) {
+                cell.title.css('min-height', titleHeight + 'px');
+            }
+            else if (titleHeight > 0) {
+                // nothing on screen to grow - pad the cell instead, so whatever it does show still starts on
+                // the same row as its neighbours' icons rather than up where their titles are
+                cell.th.css('padding-top', ((parseFloat(cell.th.css('padding-top')) || 0) + titleHeight) + 'px');
+            }
+        }
+
+        // the icon row is optional per column (a column may be filterable but not sortable, or neither), so
+        // levelling the titles alone still leaves those columns' filters a row high - drop each one to the
+        // lowest filter in the row
+        var offsets = [],
+            filterTop = null;
+        for (var k = 0; k < cells.length; k++) {
+            if (!cells[k].filter.length) {
+                continue;
+            }
+            var top = cells[k].filter[0].getBoundingClientRect().top - cells[k].th[0].getBoundingClientRect().top;
+            offsets.push({ filter: cells[k].filter, top: top });
+            filterTop = filterTop === null ? top : Math.max(filterTop, top);
+        }
+
+        for (var l = 0; l < offsets.length; l++) {
+            var delta = filterTop - offsets[l].top;
+            // sub-pixel differences are rounding, not a row of their own
+            if (delta >= 1) {
+                var filter = offsets[l].filter;
+                filter.css('margin-top', ((parseFloat(filter.css('margin-top')) || 0) + delta) + 'px');
+            }
+        }
+    }
+
+    /**
      * Sets up the filter match-mode picker for a column: a trigger icon that opens an overlay menu listing the
      * available match modes, replacing the old inline `<select>` that had to compete with the filter value
      * `<input>` for space. The menu is relocated to `document.body` since scrollable/frozen-column headers
@@ -1033,6 +1194,13 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             else {
                 valueInput.removeAttr('placeholder');
             }
+        }
+
+        if (isModeSwitch) {
+            // the visible value widget just changed shape - a plain input swapped for a date picker, or
+            // nothing at all left to show for a value-less mode - which can put this row's filters back at
+            // different heights
+            this.alignColumnHeaders();
         }
     }
 
