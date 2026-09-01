@@ -128,7 +128,12 @@ public class HeaderCell extends Cell {
         List<String> labels = menu.findElements(By.cssSelector(".ui-menuitem-link[data-match-mode] .ui-column-filter-mode-menuitem-label")).stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
-        icon.click();
+        // closed via a scripted click, not icon.click(): the menu deliberately has no max-height (see
+        // datatable.css#ui-column-filter-mode-menu), so the date/datetime presets' 28-32 items make it taller
+        // than the viewport, and jQuery UI's collision:'flipfit' then shifts it back up over its own trigger.
+        // A real click would be intercepted by whichever menu item now sits on top of the icon. Dispatching the
+        // click on the element itself skips the hit test while still running the widget's own toggle handler.
+        PrimeSelenium.executeScript("arguments[0].click();", icon);
 
         return labels;
     }
