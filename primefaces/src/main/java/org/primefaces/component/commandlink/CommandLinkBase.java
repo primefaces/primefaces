@@ -74,7 +74,7 @@ public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSou
     @Property(description = "When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.")
     public abstract boolean isValidateClient();
 
-    @Property(defaultValue = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
+    @Property(description = "The aria-label attribute is used to define a string that labels the current element for accessibility.")
     public abstract String getAriaLabel();
 
     @Property(defaultValue = "true", description = "If true, the button will be disabled during Ajax requests triggered by the button.")

@@ -1,55 +1,71 @@
-name: Issue Inactive Checker
+name: Close Inactive Needs Reproducer Issues
 
 on:
   schedule:
-    - cron: "0 13 * * 1" # Every Monday at 1PM UTC (9AM EST)
+    - cron: "0 13 * * 1" # Every Monday at 1PM UTC
   workflow_dispatch:
-  
+
 permissions:
   contents: read
-  
+
 jobs:
-  issue-close-require:
+  close-needs-reproducer:
+    runs-on: ubuntu-latest
+
     permissions:
       issues: write
-      pull-requests: write
-    runs-on: ubuntu-latest
+
     steps:
-      - name: Cannot Replicate
-        uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
+      - name: Close inactive issues
+        uses: actions/github-script@v9
         with:
-          days-before-stale: 20
-          days-before-close: 0
-          only-labels: "Resolution: Cannot Replicate"
-          stale-issue-label: "Resolution: Cannot Replicate"
-          close-issue-message: >
-            This issue has been automatically closed due to inactivity for 20 days.
-            If this is still relevant, please open a new issue with a reproducer.
-          days-before-pr-stale: -1
-          days-before-pr-close: -1
+          script: |
+            const DAYS = 20;
+            const cutoff = new Date(Date.now() - DAYS * 24 * 60 * 60 * 1000);
 
-      - name: Needs Reproducer
-        uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
-        with:
-          days-before-stale: 20
-          days-before-close: 0
-          only-labels: "Status: Needs Reproducer"
-          stale-issue-label: "Status: Needs Reproducer"
-          close-issue-message: >
-            This issue has been automatically closed due to inactivity for 20 days.
-            If this is still relevant, please open a new issue with a reproducer.
-          days-before-pr-stale: -1
-          days-before-pr-close: -1
+            const issues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: "open",
+                labels: "Status: Needs Reproducer",
+                per_page: 100,
+              }
+            );
 
-      - name: Duplicate
-        uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
-        with:
-          days-before-stale: 20
-          days-before-close: 0
-          only-labels: "Resolution: Duplicate"
-          stale-issue-label: "Resolution: Duplicate"
-          close-issue-message: >
-            This issue has been automatically closed due to inactivity for 20 days.
-            If this is still relevant, please open a new issue with a reproducer.
-          days-before-pr-stale: -1
-          days-before-pr-close: -1
+            console.log(`Found ${issues.length} issue(s).`);
+
+            for (const issue of issues) {
+              // Skip pull requests
+              if (issue.pull_request) {
+                continue;
+              }
+
+              const updated = new Date(issue.updated_at);
+
+              if (updated <= cutoff) {
+                console.log(
+                  `Closing #${issue.number} (last updated ${issue.updated_at})`
+                );
+
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `This issue has been automatically closed because it has had no activity for ${DAYS} days while awaiting a reproducer. If you can still reproduce the problem, please open a new issue and include a reproducer.`
+                });
+
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: "closed",
+                  state_reason: "not_planned"
+                });
+              } else {
+                console.log(
+                  `Keeping #${issue.number} open (last updated ${issue.updated_at})`
+                );
+              }
+            }

@@ -27,6 +27,7 @@ import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
@@ -60,6 +61,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
 
         if (menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);
+            wb.attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()));
         }
 
         wb.finish();

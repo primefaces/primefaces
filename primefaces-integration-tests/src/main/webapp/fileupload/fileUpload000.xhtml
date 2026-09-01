@@ -21,7 +21,7 @@
                 <p:validateFile fileLimit="1" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/" />
             </p:fileUpload>
 
-            <p:commandButton id="button" value="Submit" ajax="false" update="msgs" action="#{fileUploadHandler.uploadFile}"/>
+            <p:commandButton id="button" value="Submit" ajax="false" action="#{fileUploadHandler.uploadFile}"/>
 
             <p:dataTable id="uploadedfiles" var="file" value="#{fileUploadView.uploadedFiles}">
                 <p:column headerText="Name">

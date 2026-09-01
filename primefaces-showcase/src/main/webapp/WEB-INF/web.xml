@@ -88,6 +88,10 @@
         <param-name>primefaces.FLEX</param-name>
         <param-value>false</param-value>
     </context-param>
+    <context-param>
+        <param-name>primefaces.MULTI_VIEW_STATE_STORE</param-name>
+        <param-value>client-window</param-value>
+    </context-param>
 
     <context-param>
         <param-name>com.sun.faces.numberOfViewsInSession</param-name>
@@ -108,15 +112,6 @@
     <context-param>
         <param-name>org.apache.myfaces.EARLY_FLUSH_ENABLED</param-name>
         <param-value>true</param-value>
-    </context-param>
-    <context-param>
-        <param-name>org.apache.myfaces.SUPPORT_JSP_AND_FACES_EL</param-name>
-        <param-value>false</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>primefaces.MULTI_VIEW_STATE_STORE</param-name>
-        <param-value>client-window</param-value>
     </context-param>
 
 <!--    <listener>-->

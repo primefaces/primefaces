@@ -66,4 +66,8 @@ public abstract class TieredMenuBase extends AbstractMenu implements Widget, Ove
         description = "Defines positioning, when enabled menu is displayed with absolute position relative to the trigger.")
     public abstract boolean isOverlay();
 
+    @Property(defaultValue = "@(body)",
+        description = "Search expression for the element to which the menu overlay is appended. Only used when overlay is set to true.")
+    public abstract String getAppendTo();
+
 }

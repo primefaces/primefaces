@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+
+    <!--
+        Bots do not send the JSESSIONID cookie back, so with server side state saving every single request of
+        theirs allocates a fresh session. This valve makes all requests of one recognized crawler share a single
+        session instead, which keeps the content fully available to them - LLM crawlers included - while removing
+        the session churn. Nothing is blocked here.
+
+        Beware when editing crawlerUserAgents: the valve matches with Matcher.matches(), so every alternative has
+        to match the WHOLE User-Agent header. A bare "GPTBot" would never match, it has to be ".*GPTBot.*".
+
+        The valve keys its sessions by client IP + user agent (+ host and context, both on by default), so a
+        crawler spread over many IPs still gets one session per IP.
+
+        sessionInactiveInterval="60" is the default and only repeated here to make the shared session's lifetime
+        obvious next to the 15 minutes regular sessions get.
+    -->
+    <Valve className="org.apache.catalina.valves.CrawlerSessionManagerValve"
+           crawlerUserAgents=".*[bB]ot.*|.*[sS]pider.*|.*[cC]rawler.*|.*Yahoo! Slurp.*|.*Feedfetcher-Google.*|.*facebookexternalhit.*|.*Chrome-Lighthouse.*|.*python-requests.*|.*Go-http-client.*|.*[sS]crapy.*|.*okhttp.*|.*curl/.*|.*[wW]get.*|.*Java/.*|.*libwww-perl.*"
+           sessionInactiveInterval="60"/>
+
+</Context>
