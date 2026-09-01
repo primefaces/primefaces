@@ -25,7 +25,6 @@ package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.ToggleSwitch;
@@ -61,8 +60,7 @@ class DataTable032Test extends AbstractDataTableTest {
         assertTrue(page.messages.isEmpty());
 
         // make it selectable now
-        ToggleSwitch toggleSwitch = PrimeSelenium.createFragment(ToggleSwitch.class, By.id("form:datatable:0:toggle"));
-        toggleSwitch.click();
+        page.firstRowToggle.click();
 
         // selectable yet, try to trigger it
         firstCell = page.dataTable.getCell(0, 0).getWebElement();
@@ -84,8 +82,8 @@ class DataTable032Test extends AbstractDataTableTest {
         @FindBy(id = "form:datatable")
         DataTable dataTable;
 
-        @FindBy(id = "form:buttonSubmit")
-        CommandButton buttonSubmit;
+        @FindBy(id = "form:datatable:0:toggle")
+        ToggleSwitch firstRowToggle;
 
         @Override
         public String getLocation() {

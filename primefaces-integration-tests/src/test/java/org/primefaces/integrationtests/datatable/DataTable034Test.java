@@ -24,14 +24,12 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,7 +41,7 @@ class DataTable034Test extends AbstractDataTableTest {
     @DisplayName("DataTable: RequestScoped LazyDataModel with input change")
     void test(Page page) throws InterruptedException {
 
-        InputText it = PrimeSelenium.createFragment(InputText.class, By.id("form:datatable:0:name"));
+        InputText it = page.firstRowName;
 
         assertEquals("Language 1", it.getValue());
 
@@ -57,6 +55,9 @@ class DataTable034Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:datatable")
         DataTable dataTable;
+
+        @FindBy(id = "form:datatable:0:name")
+        InputText firstRowName;
 
         @Override
         public String getLocation() {

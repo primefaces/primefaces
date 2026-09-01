@@ -64,6 +64,9 @@ class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
+        // non-AJAX full page submit: guardHttp may return before navigation commits, so wait for the
+        // reloaded page to render p:dataTable before reading it (otherwise #form:uploadedfiles is NoSuchElement)
+        PrimeSelenium.waitDocumentLoad().until(ExpectedConditions.presenceOfElementLocated(By.id("form:uploadedfiles")));
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file);
         assertConfiguration(fileUpload);
@@ -83,6 +86,9 @@ class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
+        // non-AJAX full page submit: guardHttp may return before navigation commits, so wait for the
+        // reloaded page to render p:dataTable before reading it (otherwise #form:uploadedfiles is NoSuchElement)
+        PrimeSelenium.waitDocumentLoad().until(ExpectedConditions.presenceOfElementLocated(By.id("form:uploadedfiles")));
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1);
 
@@ -93,6 +99,9 @@ class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
+        // non-AJAX full page submit: guardHttp may return before navigation commits, so wait for the
+        // reloaded page to render p:dataTable before reading it (otherwise #form:uploadedfiles is NoSuchElement)
+        PrimeSelenium.waitDocumentLoad().until(ExpectedConditions.presenceOfElementLocated(By.id("form:uploadedfiles")));
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1, file2);
         assertConfiguration(fileUpload);
@@ -124,7 +133,7 @@ class FileUpload000Test extends AbstractFileUploadTest {
 
     @Test
     @Order(4)
-    void basicSingleUploadAllowTypes(Page page) throws InterruptedException {
+    void basicSingleUploadAllowTypes(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         assertEquals("", fileUpload.getValue());

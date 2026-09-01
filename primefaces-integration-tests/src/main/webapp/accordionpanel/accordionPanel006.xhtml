@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:accordionPanel id="accordionpanel1" active="-1">
+                <p:tab title="Panel1">
+                    Dummy-Content 1
+                </p:tab>
+                <p:tab title="Panel2">
+                    Dummy-Content 2
+                </p:tab>
+                <p:tab title="Panel3">
+                    Dummy-Content 3
+                </p:tab>
+            </p:accordionPanel>
+
+            <p:accordionPanel id="accordionpanel2" active="none">
+                <p:tab title="Panel1">
+                    Dummy-Content 1
+                </p:tab>
+                <p:tab title="Panel2">
+                    Dummy-Content 2
+                </p:tab>
+                <p:tab title="Panel3">
+                    Dummy-Content 3
+                </p:tab>
+            </p:accordionPanel>
+
+            <p:accordionPanel id="accordionpanel3" activeIndex="-1">
+                <p:tab title="Panel1">
+                    Dummy-Content 1
+                </p:tab>
+                <p:tab title="Panel2">
+                    Dummy-Content 2
+                </p:tab>
+                <p:tab title="Panel3">
+                    Dummy-Content 3
+                </p:tab>
+            </p:accordionPanel>
+
+            <p:accordionPanel id="accordionpanel4" value="#{accordionPanel006.items}" var="item" active="all" multiple="true">
+                <p:tab title="#{item}">
+                    Dummy-Content #{item}
+                </p:tab>
+            </p:accordionPanel>
+
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

@@ -8,12 +8,6 @@ import { TieredMenu, type TieredMenuCfg } from "./menu.tieredmenu.widget.js";
  */
 export interface ContextMenuCfg extends TieredMenuCfg, PrimeType.widget.ContextMenuLikeWidgetCfg {
     /**
-     * Search expression for the element to which this context menu is appended. This is usually
-     * invoke before the context menu is shown. When it returns `false`, this context menu is not shown.
-     */
-    appendTo: string;
-
-    /**
      * Client side callback invoked before the
      * context menu is shown.
      */
@@ -72,6 +66,8 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
     override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
         cfg.autoDisplay = true;
         super.init(cfg);
+
+        // init after super#init, to skip the parent overlay handling
         this.cfg.overlay = true;
         this.cfg.selectionMode = this.cfg.selectionMode||'multiple';
 
@@ -84,8 +80,6 @@ export class ContextMenu<Cfg extends ContextMenuCfg = ContextMenuCfg> extends Ti
         this.jqTargetId = documentTarget ? document : PrimeFaces.escapeClientId(this.cfg.target ?? "");
         this.jqTarget = typeof this.jqTargetId === "string" ? $(this.jqTargetId) : $<any>(this.jqTargetId);
 
-        //append to body
-        this.cfg.appendTo = '@(body)';
         PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.getId());
 
         //attach contextmenu

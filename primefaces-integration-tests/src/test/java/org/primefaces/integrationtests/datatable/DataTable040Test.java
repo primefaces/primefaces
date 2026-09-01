@@ -24,13 +24,12 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.html.SelectOneMenu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
+import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -40,7 +39,7 @@ class DataTable040Test extends AbstractDataTableTest {
     @Test
     @DisplayName("p:dataTable: Asign null value")
     void p(Page page) throws InterruptedException {
-        SelectOneMenu menu = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:4:price"));
+        SelectOneMenu menu = page.price;
 
         menu.select("Sold");
 
@@ -50,7 +49,7 @@ class DataTable040Test extends AbstractDataTableTest {
     @Test
     @DisplayName("h:dataTable: Asign null value")
     void h(Page page) throws InterruptedException {
-        SelectOneMenu menu = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:hDatatable:4:price"));
+        SelectOneMenu menu = page.hPrice;
 
         menu.select("Sold");
 
@@ -58,6 +57,12 @@ class DataTable040Test extends AbstractDataTableTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
+        @FindBy(id = "form:datatable:4:price")
+        SelectOneMenu price;
+
+        @FindBy(id = "form:hDatatable:4:price")
+        SelectOneMenu hPrice;
 
         @Override
         public String getLocation() {
