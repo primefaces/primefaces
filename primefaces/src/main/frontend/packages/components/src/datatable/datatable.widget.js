@@ -6412,11 +6412,19 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {(() => void) | null} callback will be executed after animation is finished. (see jquery fadeToggle method)
      */
     toggleFilter(speed, callback) {
+        var $this = this;
         // the filter-mode icon is folded into the same toggle group as the value input (rather than
         // staying always visible) - a live icon next to a hidden value input would otherwise read as a
         // "phantom active filter with no visible input" once the row itself is toggled off
-        this.jq.find(".ui-column-filter, .ui-column-filter-mode-icon, .ui-column-customfilter")
+        var toggled = this.jq.find(".ui-column-filter, .ui-column-filter-mode-icon, .ui-column-customfilter")
             .fadeToggle(speed || 0, callback);
+
+        // taking the filter row and the mode icons out of the header (or putting them back) changes what
+        // still fits on a header cell's first line - re-level once every animation has settled, which is
+        // also why this hangs off the shared promise rather than the per-element callback above
+        toggled.promise().done(function() {
+            $this.alignColumnHeaders();
+        });
     }
 
 }
