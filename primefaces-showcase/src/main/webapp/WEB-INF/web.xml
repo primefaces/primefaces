@@ -121,6 +121,31 @@
         <listener-class>${facesListener}</listener-class>
     </listener>
 
+    <!--
+        Declared here instead of with @WebFilter, because the servlet spec leaves the order of annotated filters
+        undefined and these two have to run in this order: the statistics must also see the requests which the
+        BotFilter then rejects, otherwise the totals no longer show what the limiting saves.
+    -->
+    <filter>
+        <filter-name>Request Stats Filter</filter-name>
+        <filter-class>org.primefaces.showcase.util.RequestStatsFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>Request Stats Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>Bot Filter</filter-name>
+        <filter-class>org.primefaces.showcase.util.BotFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>Bot Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <filter>
         <filter-name>Character Encoding Filter</filter-name>
         <filter-class>org.primefaces.webapp.filter.CharacterEncodingFilter</filter-class>

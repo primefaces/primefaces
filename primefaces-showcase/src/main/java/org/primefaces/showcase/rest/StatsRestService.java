@@ -23,6 +23,7 @@
  */
 package org.primefaces.showcase.rest;
 
+import org.primefaces.showcase.util.BotFilter;
 import org.primefaces.showcase.util.RequestStatsFilter;
 import org.primefaces.showcase.util.SessionStatsListener;
 
@@ -138,6 +139,8 @@ public class StatsRestService {
         private final long ajax;
         private final long resources;
         private final long botPostbacks;
+        private final long denied;
+        private final long throttled;
         private final long lastMinute;
         private final long uptimeSeconds;
 
@@ -151,6 +154,8 @@ public class StatsRestService {
             ajax = RequestStatsFilter.getAjax();
             resources = RequestStatsFilter.getResources();
             botPostbacks = RequestStatsFilter.getBotPostbacks();
+            denied = BotFilter.getDenied();
+            throttled = BotFilter.getThrottled();
             lastMinute = RequestStatsFilter.getLastMinute();
             uptimeSeconds = SessionStatsListener.getUptimeSeconds();
         }
@@ -193,6 +198,20 @@ public class StatsRestService {
          */
         public long getBotPostbacks() {
             return botPostbacks;
+        }
+
+        /**
+         * @return crawler postbacks answered with 403.
+         */
+        public long getDenied() {
+            return denied;
+        }
+
+        /**
+         * @return crawler requests answered with 429, because the crawler was over its budget.
+         */
+        public long getThrottled() {
+            return throttled;
         }
 
         public long getUptimeSeconds() {

@@ -26,7 +26,6 @@ package org.primefaces.showcase.util;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -38,33 +37,18 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Counts the requests hitting the showcase and breaks them down by user agent, so that it becomes visible how much
  * of the traffic is LLM crawlers and other bots. {@link SessionStatsListener} only shows the session side of that.
  *
- * Nothing is blocked or slowed down here, the filter only counts.
+ * Nothing is blocked or slowed down here, the filter only counts - {@link BotFilter} does the limiting. This one is
+ * mapped first in web.xml, so the numbers below still include everything the BotFilter then rejects.
  *
  * The counters are static as the container - not CDI - instantiates this filter.
  */
-@WebFilter(urlPatterns = "/*", asyncSupported = true)
 public class RequestStatsFilter implements Filter {
-
-    /**
-     * User agent fragments of well known crawlers, checked lowercase. The showcase is mostly interested in the
-     * AI/LLM ones, the classic search engines and generic HTTP clients are listed to keep them out of "other bot".
-     */
-    private static final String[] KNOWN_BOTS = {
-        "gptbot", "oai-searchbot", "chatgpt-user", "claudebot", "claude-user", "claude-searchbot", "anthropic-ai",
-        "perplexitybot", "perplexity-user", "google-extended", "meta-externalagent", "bytespider", "ccbot",
-        "cohere-ai", "diffbot", "imagesiftbot", "omgili", "timpibot", "youbot", "applebot", "amazonbot",
-        "googlebot", "bingbot", "yandexbot", "duckduckbot", "baiduspider", "facebookexternalhit",
-        "ahrefsbot", "semrushbot", "mj12bot", "dotbot", "petalbot", "dataforseobot", "screaming frog",
-        "python-requests", "scrapy", "go-http-client", "okhttp", "curl/", "wget", "java/", "libwww-perl",
-        "headlesschrome", "chrome-lighthouse"
-    };
 
     /**
      * Caps how many distinct user agents / paths are tracked, so that randomized values cannot grow the maps forever.
@@ -127,7 +111,7 @@ public class RequestStatsFilter implements Filter {
         String userAgent = request.getHeader("User-Agent");
         track(BY_AGENT, userAgent);
 
-        String bot = detectBot(userAgent);
+        String bot = Bots.detect(userAgent);
         if (bot != null) {
             BOTS.incrementAndGet();
             track(BY_BOT, bot);
@@ -136,29 +120,6 @@ public class RequestStatsFilter implements Filter {
                 BOT_POSTBACKS.incrementAndGet();
             }
         }
-    }
-
-    /**
-     * @param userAgent the User-Agent header, may be <code>null</code>.
-     * @return the name of the recognized crawler, or <code>null</code> if the agent does not look like one.
-     */
-    private static String detectBot(String userAgent) {
-        if (userAgent == null || userAgent.isEmpty()) {
-            return "<none>";
-        }
-
-        String lower = userAgent.toLowerCase(Locale.ROOT);
-        for (String bot : KNOWN_BOTS) {
-            if (lower.contains(bot)) {
-                return bot;
-            }
-        }
-
-        if (lower.contains("bot") || lower.contains("spider") || lower.contains("crawler")) {
-            return "<other bot>";
-        }
-
-        return null;
     }
 
     private static void countInWindow() {
@@ -174,7 +135,7 @@ public class RequestStatsFilter implements Filter {
     }
 
     private static void track(Map<String, AtomicLong> counters, String value) {
-        String key = value == null || value.isEmpty() ? "<none>" : value;
+        String key = value == null || value.isEmpty() ? Bots.NONE : value;
         if (key.length() > MAX_LENGTH) {
             key = key.substring(0, MAX_LENGTH);
         }
@@ -210,7 +171,8 @@ public class RequestStatsFilter implements Filter {
     }
 
     /**
-     * @return POSTs of recognized crawlers, so the Faces postbacks which running the demos costs.
+     * @return POSTs of recognized crawlers, so the Faces postbacks which running the demos would cost. Counted
+     *         before {@link BotFilter} rejects them, so this stays the measure of what the limiting saves.
      */
     public static long getBotPostbacks() {
         return BOT_POSTBACKS.get();
