@@ -567,6 +567,49 @@
                 </p:dataTable>
             </h:form>
         </div>
+
+        <div class="card">
+            <h5>Turning the Match Mode Picker Off Table-Wide</h5>
+            <p>The match mode picker is on by default: every filterable column whose Java type can be resolved
+                gets one, without any configuration. That suits an application that wants to give the end user as
+                much control as possible - but not one that wants a clean, reduced UI with only as many features
+                as needed.</p>
+            <p>Rather than repeating <code>filterValueType="none"</code> on every column, set it once on the
+                <code>p:dataTable</code> itself. It acts as the default for all of its columns, so the table below
+                filters exactly the way it did before the picker existed: a plain input per column, each fixed to
+                its own <code>filterMatchMode</code>.</p>
+            <p>A column's own <code>filterValueType</code> is still the more specific statement and always wins,
+                so single columns can opt back in - here <em>Activity</em>, which keeps its
+                <code>"numeric"</code> picker while every other column stays plain.</p>
+            <h:form>
+                <p:dataTable var="customer" value="#{dtFilterView.customersTableLevel}"
+                             widgetVar="customersTableLevelTable" filterValueType="none"
+                             emptyMessage="No customers found with given criteria"
+                             filteredValue="#{dtFilterView.filteredCustomersTableLevel}">
+
+                    <f:facet name="header">
+                        <span>List of Customers</span>
+                    </f:facet>
+
+                    <p:column headerText="Name" field="name" filterMatchMode="contains"/>
+
+                    <p:column headerText="Country" field="country.name" filterMatchMode="startsWith">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.country.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Representative" field="representative.name" filterMatchMode="contains"/>
+
+                    <!-- opts back in: the column's own filterValueType overrides the table-level "none" -->
+                    <p:column headerText="Activity" field="activity" filterMatchMode="gt"
+                              filterValueType="numeric" converter="jakarta.faces.Integer">
+                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem"/>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>
     </ui:define>
 
 </ui:composition>

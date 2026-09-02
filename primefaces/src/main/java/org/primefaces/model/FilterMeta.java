@@ -150,23 +150,29 @@ public class FilterMeta implements Serializable {
     }
 
     /**
-     * Resolves the filter value type to use for a column's match-mode dropdown: the page author's explicit
-     * {@code filterValueType} (including {@code "none"}, which opts the column out - see {@link MatchMode#parseOptions})
-     * always wins. A column that already has its own custom {@code <f:facet name="filter">} or a custom
+     * Resolves the filter value type to use for a column's match-mode dropdown, in this order of precedence:
+     * the column's own explicit {@code filterValueType} (including {@code "none"}, which opts the column out -
+     * see {@link MatchMode#parseOptions}) always wins; then the table-level {@code filterValueType}
+     * ({@link UITable#getFilterValueType()}), the single place to switch the whole feature off (or force one
+     * type) for every column of a table at once - a column may still opt back in with its own attribute; and
+     * only then the auto-derived type. A column that already has its own custom {@code <f:facet name="filter">} or a custom
      * {@code filterFunction} has already opted out of the standard match-mode-driven filtering machinery -
      * auto-adding a dropdown on top of either would silently break it: a facet would get a second, competing
      * picker, and - more subtly - a {@code filterFunction} would have its {@link org.primefaces.model.filter.FunctionFilterConstraint}
      * silently discarded, since {@link UITable#updateFilterByValuesWithFilterRequest} unconditionally rebuilds
      * the constraint from the submitted match mode whenever a column's match mode becomes selectable at all
-     * ({@code isMatchModeSelectable()} - i.e. non-empty {@code matchModeOptions}). Both cases return {@code null}.
-     * Otherwise, the type is auto-derived from the column's actual Java type - see
+     * ({@code isMatchModeSelectable()} - i.e. non-empty {@code matchModeOptions}). Both cases return {@code null},
+     * ahead of the table-level default, which must not be able to break such a column either.
+     * Failing all of the above, the type is auto-derived from the column's actual Java type - see
      * {@link #resolveColumnJavaType(FacesContext, UITable, UIColumn)}. The {@code "numeric"}/{@code "date"}/
      * {@code "time"}/{@code "datetime"} presets' comparators (equals/less/greater/between) compare via
      * {@link org.primefaces.model.filter.ComparableFilterConstraint}, which requires the raw, still-a-{@code String}
      * filter value to already have been converted to the column's actual type before comparing - without a
      * configured {@code converter} to do that conversion, filtering throws instead of silently misbehaving (see
      * {@code ComparableFilterConstraint#assertAssignable}), so those 4 presets are only offered when the column
-     * already has one. In every case where the auto-derived type doesn't apply, fall back to {@code "text"} only
+     * already has one - a check that deliberately applies to the auto-derived type only, since an explicitly
+     * configured type (column- or table-level) is the page author's own deliberate choice, just as it was before
+     * the table-level attribute existed. In every case where the auto-derived type doesn't apply, fall back to {@code "text"} only
      * if doing so wouldn't silently change the column's own already-working, explicitly configured
      * {@code filterMatchMode} (e.g. {@code "gte"} isn't offered by the {@code "text"} preset) - otherwise return
      * {@code null} rather than risk silently downgrading (or, per the above, breaking) it.
@@ -182,6 +188,11 @@ public class FilterMeta implements Serializable {
 
         if (column.getFacet("filter") != null || column.getFilterFunction() != null) {
             return null;
+        }
+
+        String tableDefault = table.getFilterValueType();
+        if (LangUtils.isNotBlank(tableDefault)) {
+            return tableDefault;
         }
 
         Class<?> type = resolveColumnJavaType(context, table, column);

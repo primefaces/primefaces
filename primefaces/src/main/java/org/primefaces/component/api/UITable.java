@@ -401,6 +401,17 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             description = "Defines if filtering would be done using normalized values (accents will be removed from characters).")
     boolean isFilterNormalize();
 
+    /**
+     * The table-wide default for {@link UIColumn#getFilterValueType()}, applied to every filterable column that
+     * doesn't declare one itself - see {@link FilterMeta#resolveFilterValueType(FacesContext, UITable, UIColumn)}
+     * for the full precedence. Tables that don't render the match-mode picker simply never override this.
+     *
+     * @return the table-level filter value type, or {@code null} when none is configured
+     */
+    default String getFilterValueType() {
+        return null;
+    }
+
     default Map<String, SortMeta> initSortBy(FacesContext context) {
         Map<String, SortMeta> sortBy = new LinkedHashMap<>();
         AtomicBoolean sorted = new AtomicBoolean();

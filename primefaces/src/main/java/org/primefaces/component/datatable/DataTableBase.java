@@ -252,6 +252,14 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     @Property(defaultValue = "false", description = "When enables, cell borders are displayed.")
     public abstract boolean isShowGridlines();
 
+    @Property(description = "Table-wide default for the column's \"filterValueType\", applied to every filterable column"
+            + " that doesn't set one itself. Accepts exactly the same values (\"numeric\", \"text\", \"date\", \"time\","
+            + " \"datetime\", \"boolean\", \"enum\", \"array\", \"none\", or an explicit comma separated list of match"
+            + " modes). Set to \"none\" to turn the end user's match-mode dropdown off for the whole table in one place,"
+            + " while individual columns may still opt back in via their own \"filterValueType\". When not set, each"
+            + " column's type is auto-derived from its Java type as before.")
+    public abstract String getFilterValueType();
+
     @Property(defaultValue = "false", description = "Shows a built-in \"Clear Filters\" button in the header area "
             + "that resets every column's filter value and match mode, plus the global filter, back to their "
             + "defaults and re-applies filtering.")

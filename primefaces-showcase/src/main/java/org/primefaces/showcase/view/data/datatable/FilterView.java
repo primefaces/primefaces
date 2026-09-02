@@ -60,6 +60,9 @@ public class FilterView implements Serializable {
     // demo data for the "Filter Match Mode Presets" card - one column per filterValueType preset
     private List<Customer> customersPresets;
 
+    // demo data for the "Turning the Match Mode Picker Off Table-Wide" card - table-level filterValueType
+    private List<Customer> customersTableLevel;
+
     private List<Customer> filteredCustomers1;
 
     private List<Customer> filteredCustomers2;
@@ -67,6 +70,8 @@ public class FilterView implements Serializable {
     private List<Customer> filteredCustomers3;
 
     private List<Customer> filteredCustomersPresets;
+
+    private List<Customer> filteredCustomersTableLevel;
 
     private List<FilterMeta> filterBy;
 
@@ -79,6 +84,7 @@ public class FilterView implements Serializable {
         customers2 = service.getCustomers(50);
         customers3 = service.getCustomers(10);
         customersPresets = service.getCustomers(10);
+        customersTableLevel = service.getCustomers(10);
 
         filterBy = new ArrayList<>();
 
@@ -155,6 +161,18 @@ public class FilterView implements Serializable {
 
     public void setFilteredCustomersPresets(List<Customer> filteredCustomersPresets) {
         this.filteredCustomersPresets = filteredCustomersPresets;
+    }
+
+    public List<Customer> getCustomersTableLevel() {
+        return customersTableLevel;
+    }
+
+    public List<Customer> getFilteredCustomersTableLevel() {
+        return filteredCustomersTableLevel;
+    }
+
+    public void setFilteredCustomersTableLevel(List<Customer> filteredCustomersTableLevel) {
+        this.filteredCustomersTableLevel = filteredCustomersTableLevel;
     }
 
     public DateTimeConverter getDateConverter() {
