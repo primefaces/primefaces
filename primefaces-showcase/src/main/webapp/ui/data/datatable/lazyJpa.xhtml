@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Lazy JPA</span>
+    </ui:define>
+
+    <ui:define name="description">
+        JPALazyDataModel is a ready-made LazyDataModel for JPA: it turns the paging, sorting and filtering
+        information the DataTable passes to <code>load</code> into a Criteria API query, so none of it happens in
+        memory. Every filter match mode a user picks from a column's dropdown becomes a predicate in the
+        WHERE clause - this table is the Filter example's preset table, filtered in the database instead.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+    <ui:param name="tagName" value="dataTable"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Filtering in the Database</h5>
+            <p>The model is built with a builder, out of the entity class and a supplier for the
+                <code>EntityManager</code>. <code>caseSensitive(false)</code> makes the text match modes compare
+                case-insensitively, as an in-memory filter does; the default is a case-sensitive
+                <code>LIKE</code>.</p>
+            <p>Two match modes need a word of warning. <em>Matches regex</em> has no portable JPA equivalent, so
+                the model of this example overrides <code>createRegexPredicate</code> with the regex function of
+                its own database (see <code>LazyJpaView.H2LazyDataModel</code>) - without such an override,
+                picking it throws. And the <em>array</em> modes become <code>MEMBER OF</code> predicates, so they
+                need the field to be a mapped collection, as the <code>Tags</code> column below is.</p>
+            <p>The global filter, on the other hand, is not supported by JPALazyDataModel at all - a global
+                search box would have to be implemented with a <code>filterEnricher</code> of your own - which is
+                why this table has none, unlike the Filter example it mirrors.</p>
+            <h:form id="form">
+                <p:dataTable var="customer" value="#{dtLazyJpaView.lazyModel}" widgetVar="customersTable"
+                             lazy="true" paginator="true" rows="10" rowsPerPageTemplate="5,10,15"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             emptyMessage="No customers found with given criteria" clearFiltersButton="true"
+                             id="customerTable">
+
+                    <f:facet name="header">
+                        <div class="flex align-items-center justify-content-between">
+                            <span>List of Customers</span>
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="Name" field="name" filterMatchMode="contains" filterValueType="text"/>
+
+                    <p:column headerText="Activity" field="activity" filterMatchMode="gt"
+                              filterValueType="numeric" converter="jakarta.faces.Integer">
+                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem"/>
+                    </p:column>
+
+                    <p:column headerText="Join Date" field="joinDate" filterMatchMode="equals"
+                              filterValueType="date" converter="#{dtLazyJpaView.joinDateConverter}"/>
+
+                    <p:column headerText="VIP" field="vip" filterValueType="boolean"/>
+
+                    <p:column headerText="Status" field="status" filterMatchMode="equals" filterValueType="enum">
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
+                    </p:column>
+
+                    <p:column headerText="Tags" field="tags" filterMatchMode="arrayContains" filterValueType="array"
+                              sortable="false"/>
+
+                    <p:column headerText="Check-in Time" field="checkInTime" filterMatchMode="equals"
+                              filterValueType="time" converter="#{dtLazyJpaView.checkInTimeConverter}"/>
+
+                    <p:column headerText="Last Contact" field="lastContact" filterMatchMode="equals"
+                              filterValueType="datetime" converter="#{dtLazyJpaView.lastContactConverter}"/>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/org/primefaces/showcase/domain/CustomerEntity.java"/>
+        <p:tab title="/org/primefaces/showcase/service/CustomerEntityService.java"/>
+    </ui:define>
+</ui:composition>

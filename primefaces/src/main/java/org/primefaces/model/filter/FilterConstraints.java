@@ -28,6 +28,7 @@ import org.primefaces.util.MapBuilder;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -141,5 +142,22 @@ public final class FilterConstraints {
     public static FilterConstraint of(String matchMode) {
         MatchMode mode = MatchMode.of(matchMode);
         return of(mode);
+    }
+
+    public static boolean isRelativeDateMode(MatchMode mode) {
+        FilterConstraint constraint = ALL_CONSTRAINTS.get(mode);
+        return constraint instanceof RelativeDateRangeFilterConstraint
+                || constraint instanceof RelativeNDaysFilterConstraint;
+    }
+
+    public static LocalDate[] dateRange(MatchMode mode, LocalDate today, Locale locale, Integer amount) {
+        FilterConstraint constraint = ALL_CONSTRAINTS.get(mode);
+        if (constraint instanceof RelativeDateRangeFilterConstraint) {
+            return ((RelativeDateRangeFilterConstraint) constraint).resolveRange(today, locale);
+        }
+        if (constraint instanceof RelativeNDaysFilterConstraint && amount != null) {
+            return ((RelativeNDaysFilterConstraint) constraint).resolveRange(today, amount);
+        }
+        return null;
     }
 }

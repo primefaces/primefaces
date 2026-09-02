@@ -59,7 +59,20 @@ public class RelativeDateRangeFilterConstraint implements FilterConstraint {
             return false;
         }
 
-        LocalDate[] range = rangeFunction.apply(LocalDate.now(), locale);
+        LocalDate[] range = resolveRange(LocalDate.now(), locale);
         return !valueDate.isBefore(range[0]) && !valueDate.isAfter(range[1]);
+    }
+
+    /**
+     * The inclusive {@code [start, end]} day range this match mode covers. Exposed so a server-side
+     * implementation - e.g., {@link org.primefaces.model.JPALazyDataModel} building a JPA/Criteria
+     * {@code WHERE} clause - can filter on exactly the same range instead of re-deriving it.
+     *
+     * @param today the date the range is anchored to, usually {@link LocalDate#now()}
+     * @param locale the locale deciding the first day of the week, for the "week" match modes
+     * @return the inclusive {@code [start, end]} range, as a two-element array
+     */
+    public LocalDate[] resolveRange(LocalDate today, Locale locale) {
+        return rangeFunction.apply(today, locale);
     }
 }

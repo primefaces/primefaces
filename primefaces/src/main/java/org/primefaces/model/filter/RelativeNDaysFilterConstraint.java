@@ -61,7 +61,20 @@ public class RelativeNDaysFilterConstraint implements FilterConstraint {
             return false;
         }
 
-        LocalDate[] range = rangeFunction.apply(LocalDate.now(), days);
+        LocalDate[] range = resolveRange(LocalDate.now(), days);
         return !valueDate.isBefore(range[0]) && !valueDate.isAfter(range[1]);
+    }
+
+    /**
+     * The inclusive {@code [start, end]} day range this match mode covers for N days. Exposed so a server-side
+     * implementation - e.g., {@link org.primefaces.model.JPALazyDataModel} building a JPA/Criteria
+     * {@code WHERE} clause - can filter on exactly the same range instead of re-deriving it.
+     *
+     * @param today the date the range is anchored to, usually {@link LocalDate#now()}
+     * @param days the user-typed number of days N
+     * @return the inclusive {@code [start, end]} range, as a two-element array
+     */
+    public LocalDate[] resolveRange(LocalDate today, int days) {
+        return rangeFunction.apply(today, days);
     }
 }

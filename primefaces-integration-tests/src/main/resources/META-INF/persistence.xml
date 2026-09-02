@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Persistence unit of dataTable053.xhtml, the JPALazyDataModel test page: an in-memory H2 database, created
+    from scratch every time the application starts.
+-->
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <persistence-unit name="integration-tests" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>org.primefaces.integrationtests.jpa.JpaEmployee</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:integrationtests;DB_CLOSE_DELAY=-1"/>
+            <property name="jakarta.persistence.jdbc.user" value="sa"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <!-- jakartaee-api puts the Jakarta JSON Binding API on the classpath without an implementation,
+                 which fails the boot if Hibernate picks that mapper; Jackson is available (via RESTEasy) -->
+            <property name="hibernate.type.json_format_mapper" value="jackson"/>
+        </properties>
+    </persistence-unit>
+</persistence>
