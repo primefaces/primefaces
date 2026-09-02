@@ -286,7 +286,7 @@ public class TreeRenderer extends CoreRenderer {
 
         // the row key ends up in the client id of every descendant and puts the node in the request map under var,
         // so the tree must not be left standing on a node once it has been encoded
-        component.setRowKey(root, null);
+        tree.setRowKey(root, null);
     }
 
     protected void encodeFilteredNodes(FacesContext context, Tree tree, TreeNode<?> node, String filteredValue, Locale filterLocale)
