@@ -123,66 +123,91 @@ public class StatsRestService {
         }
     }
 
+    /**
+     * All values are snapshotted in the constructor, otherwise the counters keep moving while the response is
+     * serialized and the totals do not add up to the top lists anymore.
+     */
     public static class RequestStats {
 
         private final Map<String, Long> topBots;
         private final Map<String, Long> topAgents;
         private final Map<String, Long> topPaths;
+        private final long total;
+        private final long bots;
+        private final long cookieless;
+        private final long ajax;
+        private final long resources;
+        private final long botPostbacks;
+        private final long lastMinute;
+        private final long uptimeSeconds;
 
         public RequestStats(int limit) {
             topBots = RequestStatsFilter.getTopBots(limit);
             topAgents = RequestStatsFilter.getTopAgents(limit);
             topPaths = RequestStatsFilter.getTopPaths(limit);
+            total = RequestStatsFilter.getTotal();
+            bots = RequestStatsFilter.getBots();
+            cookieless = RequestStatsFilter.getCookieless();
+            ajax = RequestStatsFilter.getAjax();
+            resources = RequestStatsFilter.getResources();
+            botPostbacks = RequestStatsFilter.getBotPostbacks();
+            lastMinute = RequestStatsFilter.getLastMinute();
+            uptimeSeconds = SessionStatsListener.getUptimeSeconds();
         }
 
         public long getTotal() {
-            return RequestStatsFilter.getTotal();
+            return total;
         }
 
         /**
          * @return requests of recognized crawlers, see {@link RequestStatsFilter}.
          */
         public long getBots() {
-            return RequestStatsFilter.getBots();
+            return bots;
         }
 
         /**
          * @return share of the recognized crawlers on the total requests, in percent.
          */
         public long getBotPercentage() {
-            long total = RequestStatsFilter.getTotal();
-            return total == 0 ? 0 : RequestStatsFilter.getBots() * 100 / total;
+            return total == 0 ? 0 : bots * 100 / total;
         }
 
         /**
          * @return requests which arrived without a JSESSIONID cookie, so requests which allocate a new session.
          */
         public long getCookieless() {
-            return RequestStatsFilter.getCookieless();
+            return cookieless;
         }
 
         public long getAjax() {
-            return RequestStatsFilter.getAjax();
+            return ajax;
         }
 
         public long getResources() {
-            return RequestStatsFilter.getResources();
+            return resources;
+        }
+
+        /**
+         * @return POSTs of recognized crawlers, so the Faces postbacks which running the demos costs.
+         */
+        public long getBotPostbacks() {
+            return botPostbacks;
         }
 
         public long getUptimeSeconds() {
-            return SessionStatsListener.getUptimeSeconds();
+            return uptimeSeconds;
         }
 
         public long getPerMinute() {
-            long uptimeSeconds = SessionStatsListener.getUptimeSeconds();
-            return uptimeSeconds < 60 ? RequestStatsFilter.getTotal() : RequestStatsFilter.getTotal() * 60 / uptimeSeconds;
+            return uptimeSeconds < 60 ? total : total * 60 / uptimeSeconds;
         }
 
         /**
          * @return requests of the last minute, which unlike {@link #getPerMinute()} also shows a burst which just started.
          */
         public long getLastMinute() {
-            return RequestStatsFilter.getLastMinute();
+            return lastMinute;
         }
 
         public Map<String, Long> getTopBots() {

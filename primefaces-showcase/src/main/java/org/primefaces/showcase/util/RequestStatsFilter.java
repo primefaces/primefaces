@@ -83,6 +83,7 @@ public class RequestStatsFilter implements Filter {
     private static final AtomicLong COOKIELESS = new AtomicLong();
     private static final AtomicLong AJAX = new AtomicLong();
     private static final AtomicLong RESOURCES = new AtomicLong();
+    private static final AtomicLong BOT_POSTBACKS = new AtomicLong();
 
     private static final Map<String, AtomicLong> BY_AGENT = new ConcurrentHashMap<>();
     private static final Map<String, AtomicLong> BY_BOT = new ConcurrentHashMap<>();
@@ -130,6 +131,10 @@ public class RequestStatsFilter implements Filter {
         if (bot != null) {
             BOTS.incrementAndGet();
             track(BY_BOT, bot);
+
+            if ("POST".equals(request.getMethod())) {
+                BOT_POSTBACKS.incrementAndGet();
+            }
         }
     }
 
@@ -202,6 +207,13 @@ public class RequestStatsFilter implements Filter {
 
     public static long getResources() {
         return RESOURCES.get();
+    }
+
+    /**
+     * @return POSTs of recognized crawlers, so the Faces postbacks which running the demos costs.
+     */
+    public static long getBotPostbacks() {
+        return BOT_POSTBACKS.get();
     }
 
     /**
