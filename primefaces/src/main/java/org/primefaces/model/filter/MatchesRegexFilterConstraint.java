@@ -44,7 +44,22 @@ public class MatchesRegexFilterConstraint implements FilterConstraint {
         }
 
         try {
-            return value.toString().matches(filter.toString());
+            String patternText = filter.toString();
+            java.util.regex.Pattern pattern;
+            if (ctxt != null) {
+                String key = MatchesRegexFilterConstraint.class.getName() + ".pattern." + patternText;
+                Object cached = ctxt.getExternalContext().getRequestMap().get(key);
+                pattern = cached instanceof java.util.regex.Pattern
+                        ? (java.util.regex.Pattern) cached
+                        : java.util.regex.Pattern.compile(patternText);
+                if (!(cached instanceof java.util.regex.Pattern)) {
+                    ctxt.getExternalContext().getRequestMap().put(key, pattern);
+                }
+            }
+            else {
+                pattern = java.util.regex.Pattern.compile(patternText);
+            }
+            return pattern.matcher(value.toString()).matches();
         }
         catch (PatternSyntaxException e) {
             return false;
