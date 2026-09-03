@@ -75,7 +75,12 @@ final class CollectionFilterUtils {
             return Collections.emptyList();
         }
         if (filter.getClass().isArray()) {
-            return Arrays.asList((Object[]) filter);
+            int length = Array.getLength(filter);
+            List<Object> list = new ArrayList<>(length);
+            for (int i = 0; i < length; i++) {
+                list.add(Array.get(filter, i));
+            }
+            return list;
         }
         if (filter instanceof Collection) {
             return (Collection<?>) filter;
