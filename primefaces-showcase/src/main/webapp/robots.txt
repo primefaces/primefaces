@@ -1,2 +1,7 @@
 User-agent: *
-Disallow: /
+Allow: /
+
+# One request every 6 seconds, so 10 per minute. The showcase is only ~330
+# pages, a full crawl still takes well under an hour at that rate.
+# Not part of RFC 9309: honored by Bing, ignored by Google.
+Crawl-delay: 6
