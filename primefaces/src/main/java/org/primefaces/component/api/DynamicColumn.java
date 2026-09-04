@@ -170,6 +170,11 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
+    public String getFilterValueType() {
+        return columns.getFilterValueType();
+    }
+
+    @Override
     public int getFilterMaxLength() {
         return columns.getFilterMaxLength();
     }

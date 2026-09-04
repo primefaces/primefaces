@@ -108,6 +108,10 @@ import jakarta.faces.model.ListDataModel;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
+// for the shadow date/date-range filter-value pickers a date-ish filterable column renders (see
+// DataTableRenderer#encodeDateFilterWidgets()) - must be a static dependency, not added dynamically during
+// encode, since by the time that code runs <h:head> has already finished rendering on a full page load
+@ResourceDependency(library = "primefaces", name = "datepicker/datepicker.js")
 public class DataTable extends DataTableBaseImpl {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
@@ -140,6 +144,57 @@ public class DataTable extends DataTableBaseImpl {
     public static final String COLUMN_FILTER_CLASS = "ui-column-filter ui-widget ui-state-default";
     public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
+    /** Marker class on the hidden {@code <input>} carrying the currently selected match mode's operator. */
+    public static final String COLUMN_FILTER_MODE_CLASS = "ui-column-filter-mode";
+    public static final String COLUMN_FILTER_MODE_ICON_CLASS = "ui-column-filter-mode-icon";
+    public static final String COLUMN_FILTER_MODE_ICON_ACTIVE_CLASS = "ui-column-filter-mode-icon-active";
+    /** Deliberately NOT "ui-menu ui-widget ui-widget-content" - this overlay is fully self-styled (see
+     *  datatable.css), and those generic classes carry their own same-specificity `position`/`width`/`display`
+     *  rules (menu.css's `.ui-menu` and `.ui-menu .ui-menuitem-link`) that silently won ties against this
+     *  class's own rules by sheer bundle order, breaking the overlay's positioning, width, and icon/label gap. */
+    public static final String COLUMN_FILTER_MODE_MENU_CLASS = "ui-column-filter-mode-menu ui-corner-all ui-helper-hidden";
+    public static final String COLUMN_FILTER_MODE_MENUITEM_CLASS = "ui-menuitem";
+    public static final String COLUMN_FILTER_MODE_MENUITEM_LINK_CLASS = "ui-menuitem-link ui-corner-all";
+    /** The first column of a filter match-mode menu row: the mode's own {@link org.primefaces.model.MatchMode#symbol()}. */
+    public static final String COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS = "ui-column-filter-mode-menuitem-icon";
+    /** The second column of a filter match-mode menu row: the mode's label text. */
+    public static final String COLUMN_FILTER_MODE_MENUITEM_LABEL_CLASS = "ui-column-filter-mode-menuitem-label";
+    /** The "clear this column's filter" action row, always the first item in the menu, ahead of every
+     *  selectable {@link org.primefaces.model.MatchMode} - a plain action, not a selectable mode, so it's
+     *  excluded from the {@code [data-match-mode]} selectors that drive mode selection (see
+     *  {@code bindFilterMatchModeMenu()} in datatable.widget.js). */
+    public static final String COLUMN_FILTER_MODE_CLEAR_MENUITEM_CLASS = "ui-menuitem ui-column-filter-mode-menuitem-clear";
+    public static final String COLUMN_FILTER_MODE_CLEAR_LINK_CLASS = "ui-menuitem-link ui-corner-all ui-column-filter-mode-clear-link";
+    public static final String CLEAR_FILTER_ICON_CLASS = "pi pi-filter-slash";
+    /** The "clear this column's filter" action's own single-character symbol - not a {@link org.primefaces.model.MatchMode},
+     *  so it isn't defined there; kept alongside {@link #CLEAR_FILTER_ICON_CLASS} for the same reason every
+     *  MatchMode carries both. */
+    public static final String CLEAR_FILTER_SYMBOL = "⊗";
+    /** Badge shown beside the filter trigger icon once a non-default match mode is active, carrying that mode's
+     *  own {@link org.primefaces.model.MatchMode#symbol()} - lets the reader tell which kind of filter is applied
+     *  to a column without opening the match-mode menu. Callers add {@code ui-helper-hidden} themselves while
+     *  inactive - not baked in here, since this class needs to apply unconditionally (unlike the others, which
+     *  are hidden by default). */
+    public static final String COLUMN_FILTER_MODE_ACTIVE_ICON_CLASS = "ui-column-filter-mode-active-icon";
+    public static final String FILTER_ICON_CLASS = "pi pi-filter";
+    public static final String FILTER_ICON_ACTIVE_CLASS = "pi pi-filter-fill";
+    /** Built-in "Clear Filters" button rendered in the header area when {@code clearFiltersButton="true"}. */
+    public static final String CLEAR_FILTERS_BUTTON_CLASS = "ui-datatable-clear-filters-button ui-button ui-widget ui-state-default ui-button-text-icon-left";
+    /** Appended alongside {@link #HEADER_CLASS} when the button above AND a header facet are both present -
+     *  lays the two out in one flex row instead of the button's own block-level line sitting above whatever
+     *  the facet renders. */
+    public static final String HEADER_WITH_CLEAR_FILTERS_CLASS = "ui-datatable-header-with-clear-filters";
+    /** Marker class on the shadow single-date {@code DatePicker} wrapper shown for a "date"/"time"/"datetime"
+     *  column while a single-value comparator (e.g. "equals") is selected; hidden otherwise. Deliberately
+     *  rendered WITHOUT {@code ui-helper-hidden} here - the underlying jQuery-UI-style DatePicker plugin doesn't
+     *  reliably attach to a {@code display:none} element, so the initial sync pass in datatable.widget.js (part
+     *  of the same setup that runs right after every DatePicker on the page has finished its own init) is what
+     *  hides whichever of the two shadow pickers isn't active for the column's current match mode. */
+    public static final String COLUMN_FILTER_DATE_CLASS = "ui-column-filter-date";
+    /** Same as {@link #COLUMN_FILTER_DATE_CLASS}, but for the shadow range-date {@code DatePicker} shown while
+     *  "between"/"not between" is selected. */
+    public static final String COLUMN_FILTER_DATE_RANGE_CLASS = "ui-column-filter-date-range";
+    public static final String FILTER_MATCH_MODE_LABEL_PREFIX = "primefaces.datatable.filterMatchMode.";
     public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
     public static final String DRAGGABLE_COLUMN_CLASS = "ui-draggable-column";
     public static final String EXPANDED_ROW_CLASS = "ui-expanded-row";
@@ -297,7 +352,7 @@ public class DataTable extends DataTableBaseImpl {
             }
             else {
                 // trigger filter as previous requests were filtered
-                // in older PF versions, we stored the filtered data in the viewstate but this blows up memory
+                // in older PF versions, we stored the filtered data in the viewstate, but this blows up memory
                 // and caused bugs with editing and serialization like #7999
                 filterAndSort();
             }
@@ -309,7 +364,7 @@ public class DataTable extends DataTableBaseImpl {
         super.processValidators(context);
 
         //filters need to be decoded during PROCESS_VALIDATIONS phase,
-        //so that local values of each filters are properly converted and validated
+        //so that local value of each filter is properly converted and validated
         FilterFeature feature = DataTableFeatures.filterFeature();
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
@@ -487,7 +542,7 @@ public class DataTable extends DataTableBaseImpl {
         LazyDataModel<?> lazyModel = getLazyDataModel();
         if (lazyModel != null) {
             int first = getFirst();
-            int rows = 0;
+            int rows;
 
             if (isLiveScroll()) {
                 rows = getScrollRows();
@@ -837,7 +892,7 @@ public class DataTable extends DataTableBaseImpl {
         int first = getFirst();
         int rows = getRows();
         int rowCount = getRowCount();
-        int last = 0;
+        int last;
 
         if (rows == 0) {
             if (isLiveScroll()) {
@@ -1093,8 +1148,8 @@ public class DataTable extends DataTableBaseImpl {
     }
 
     /**
-     * Recalculates filteredValue after adding, updating or removing rows to/from a filtered DataTable.
-     * NOTE: this is only supported for non-lazy DataTables, eg bound to a java.util.List.
+     * Recalculates filteredValue after adding, updating, or removing rows to/from a filtered DataTable.
+     * NOTE: this is only supported for non-lazy DataTables, e.g., bound to a java.util.List.
      */
     @Override
     public void filterAndSort() {
@@ -1104,8 +1159,8 @@ public class DataTable extends DataTableBaseImpl {
 
         /*
          * setDataModel is defined by UIData. So different implementations for Mojarra and MyFaces.
-         * But PrimeFaces comes with it´s own UIData which extends/modifies UIData provided by Jakarta Faces-impl.
-         * But PrimeFaces UIData does not know all impl-specifics, so ....
+         * But PrimeFaces comes with an own UIData which extends/modifies UIData provided by Jakarta Faces-impl.
+         * But PrimeFaces UIData does not know all impl-specifics, so ...
          */
         setDataModel(null); // for MyFaces 2.3 - compatibility
 
@@ -1195,7 +1250,7 @@ public class DataTable extends DataTableBaseImpl {
     }
 
     protected boolean isCacheableColumns(List<UIColumn> columns) {
-        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
+        // let's cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110
         // do not cache if nested in iterator component and contains dynamic columns since number of columns may vary per iteration
         // see https://github.com/primefaces/primefaces/issues/2154

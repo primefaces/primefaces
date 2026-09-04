@@ -19,138 +19,182 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <h5>Column Filtering</h5>
+            <h5>Filtering with Default Match Modes</h5>
+            <p>Only <code>field</code> is set on each column - no <code>filterMatchMode</code> is specified, so
+                every column filters using PrimeFaces' built-in default match mode for its data type (e.g.
+                <code>contains</code> for text columns such as <em>Name</em> and <em>Country</em>).</p>
             <h:form>
-                <p:dataTable var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable"
-                    emptyMessage="No customers found with given criteria"
-                    filteredValue="#{dtFilterView.filteredCustomers1}"
-                    globalFilterOnly="#{dtFilterView.globalFilterOnly}" partialUpdate="false">
-
+                <p:dataTable var="customer" value="#{dtFilterView.customers1}">
                     <f:facet name="header">
-                        <div class="flex align-items-center justify-content-between">
-                            <span>List of Customers</span>
-                            <div>
-                            <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('customersTable').filter())" style="width:10rem"
-                                         placeholder="Enter keyword" />
-                            <p:commandButton value="Global Filter Only" update="@form" styleClass="ml-2"
-                                             action="#{dtFilterView.toggleGlobalFilter()}"/>
-                            </div>
-                        </div>
+                        <span>List of Customers</span>
                     </f:facet>
                     <f:facet name="footer">
                         <div class="flex align-items-center justify-content-center">
-                           <span>Total Customers: #{dtFilterView.filteredCustomers1 == null ? dtFilterView.customers1.size() : dtFilterView.filteredCustomers1.size()}</span>
+                            <span>Total Customers: #{dtFilterView.filteredCustomers1 == null ? dtFilterView.customers1.size() : dtFilterView.filteredCustomers1.size()}</span>
                         </div>
                     </f:facet>
-
-                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains" filterPlaceholder="Filter By Name">
-                        <h:outputText value="#{customer.name}" />
+                    <p:column headerText="Name" field="name"/>
+                    <p:column headerText="Country" field="country.name">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.country.name}"/>
                     </p:column>
-
-                    <p:column headerText="Country" sortBy="#{customer.country.name}" filterBy="#{customer.country.name}">
-                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px" />
-                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.country.name}" />
-                    </p:column>
-
-                    <p:column field="representative" headerText="Representative" filterMatchMode="exact"
-                        sortBy="#{customer.representative.name}">
-                        <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()"  autoWidth="false">
-                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
-                                <f:selectItems value="#{dtFilterView.representatives}" />
-                            </p:selectOneMenu>
-                        </f:facet>
-
-                        <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo" width="32"
-                            style="vertical-align: middle" />
-                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.representative.name}" />
-                    </p:column>
-
-                    <p:column field="date" headerText="Join Date" filterMatchMode="between">
-                        <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" />
-                        </f:facet>
-                    </p:column>
-
-                    <p:column field="status" headerText="Status" filterMatchMode="exact">
-                        <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()"  autoWidth="false">
-                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
-                                <f:selectItems value="#{dtFilterView.customerStatus}" />
-                            </p:selectOneMenu>
-                        </f:facet>
-
-                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
-                    </p:column>
-
-                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt"
-                              converter="jakarta.faces.Integer">
-                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
-                    </p:column>
-
+                    <p:column headerText="Representative" field="representative.name"/>
+                    <p:column headerText="Join Date" field="date"/>
+                    <p:column headerText="Status" field="status"/>
+                    <p:column headerText="Activity" field="activity" converter="jakarta.faces.Integer"/>
                 </p:dataTable>
             </h:form>
         </div>
         <div class="card">
-            <h5>Default Filter</h5>
+            <h5>Filtering with Custom Match Modes</h5>
+            <p>Each column overrides the default match mode via <code>filterMatchMode</code> (<code>exact</code>,
+                <code>startsWith</code>, <code>between</code>, ...). The <em>Representative</em>, <em>Join
+                Date</em> and <em>Status</em> columns also replace the default filter input with a custom
+                <code>&lt;f:facet name="filter"&gt;</code> (a <code>p:selectOneMenu</code> or
+                <code>p:datePicker</code>) that calls <code>filter()</code> on change.</p>
+
             <h:form>
                 <p:dataTable var="customer" value="#{dtFilterView.customers2}" widgetVar="customersTable2"
-                    emptyMessage="No customers found with given criteria"
-                    filteredValue="#{dtFilterView.filteredCustomers2}" filterBy="#{dtFilterView.filterBy}">
+                             emptyMessage="No customers found with given criteria"
+                             filteredValue="#{dtFilterView.filteredCustomers2}" filterBy="#{dtFilterView.filterBy}">
 
                     <f:facet name="header">
                         <span>List of Customers</span>
                     </f:facet>
 
-                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}">
-                        <h:outputText value="#{customer.name}" />
-                    </p:column>
+                    <p:column headerText="Name" field="name" filterMatchMode="exact" />
 
-                    <p:column headerText="Country" sortBy="#{customer.country.name}" filterBy="#{customer.country.name}">
-                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px" />
-                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.country.name}" />
+                    <p:column headerText="Country" field="country.name" filterMatchMode="startsWith">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.country.name}"/>
                     </p:column>
 
                     <p:column field="representative" headerText="Representative" filterMatchMode="exact"
                               sortBy="#{customer.representative.name}">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable2').filter()" styleClass="custom-filter" autoWidth="false">
-                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
-                                <f:selectItems value="#{dtFilterView.representatives}" />
+                            <p:selectOneMenu onchange="PF('customersTable2').filter()" styleClass="custom-filter"
+                                             autoWidth="false">
+                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dtFilterView.representatives}"/>
                             </p:selectOneMenu>
                         </f:facet>
 
                         <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo" width="32"
-                                        style="vertical-align: middle" />
-                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.representative.name}" />
+                                        style="vertical-align: middle"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.representative.name}"/>
                     </p:column>
 
                     <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()"  />
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()"/>
                         </f:facet>
                     </p:column>
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable2').filter()"  autoWidth="false">
-                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
-                                <f:selectItems value="#{dtFilterView.customerStatus}" />
+                            <p:selectOneMenu onchange="PF('customersTable2').filter()" autoWidth="false">
+                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dtFilterView.customerStatus}"/>
                             </p:selectOneMenu>
                         </f:facet>
 
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
                     </p:column>
 
-                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}"
+                    <p:column field="activity" headerText="Activity"
                               converter="jakarta.faces.Integer">
-                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
+                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem"/>
                     </p:column>
                 </p:dataTable>
             </h:form>
         </div>
         <div class="card">
+            <h5>Global Column Filtering</h5>
+            <p>A global filter <code>p:inputText</code> in the header searches across every filterable column at
+                once. The <em>Global Filter Only</em> button toggles <code>globalFilterOnly</code>, which hides the
+                per-column filter inputs so only the global search box remains active.</p>
+            <h:form>
+                <p:dataTable var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable"
+                             emptyMessage="No customers found with given criteria"
+                             filteredValue="#{dtFilterView.filteredCustomers1}"
+                             globalFilterOnly="#{dtFilterView.globalFilterOnly}" partialUpdate="false">
+
+                    <f:facet name="header">
+                        <div class="flex align-items-center justify-content-between">
+                            <span>List of Customers</span>
+                            <div>
+                                <p:inputText id="globalFilter"
+                                             onkeyup="PrimeFaces.debounce(() => PF('customersTable').filter())"
+                                             style="width:10rem"
+                                             placeholder="Enter keyword"/>
+                                <p:commandButton value="Global Filter Only" update="@form" styleClass="ml-2"
+                                                 action="#{dtFilterView.toggleGlobalFilter()}"/>
+                            </div>
+                        </div>
+                    </f:facet>
+                    <f:facet name="footer">
+                        <div class="flex align-items-center justify-content-center">
+                            <span>Total Customers: #{dtFilterView.filteredCustomers1 == null ? dtFilterView.customers1.size() : dtFilterView.filteredCustomers1.size()}</span>
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="Name" field="name" filterMatchMode="exact"
+                              filterPlaceholder="Filter By Name"/>
+
+                    <p:column headerText="Country" field="country.name">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.country.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Representative" field="representative" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" autoWidth="false">
+                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dtFilterView.representatives}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+
+                        <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo" width="32"
+                                        style="vertical-align: middle"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.representative.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Join Date" field="date" filterMatchMode="between">
+                        <f:facet name="filter">
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()"/>
+                        </f:facet>
+                    </p:column>
+
+                    <p:column field="status" headerText="Status" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" autoWidth="false">
+                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dtFilterView.customerStatus}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
+                    </p:column>
+
+                    <p:column field="activity" headerText="Activity" converter="jakarta.faces.Integer"
+                              filterMatchMode="gt">
+                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem"/>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+        <div class="card">
             <h5>Global Filter Function</h5>
+            <p><code>globalFilterFunction</code> points to a backing bean method that decides whether a row
+                matches the global search text. Per-column filtering is turned off (<code>filterable="false"</code>)
+                so this custom function is the only way to filter, while <code>sortBy</code> is still defined on
+                each column so sorting keeps working.</p>
             <h:form>
                 <p:dataTable var="customer" value="#{dtFilterView.customers3}" widgetVar="customersTable3"
                              emptyMessage="No customers found with given criteria"
@@ -159,22 +203,26 @@
 
                     <f:facet name="header">
                         <div class="flex justify-content-end">
-                            <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('customersTable3').filter())" style="width:300px"
-                                         placeholder="Search all fields using global function" />
+                            <p:inputText id="globalFilter"
+                                         onkeyup="PrimeFaces.debounce(() => PF('customersTable3').filter())"
+                                         style="width:300px"
+                                         placeholder="Search all fields using global function"/>
                         </div>
                     </f:facet>
 
                     <p:column field="name" filterable="false"/>
 
-                    <p:column headerText="Country" sortBy="#{customer.country.name}" >
-                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px" />
-                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.country.name}" />
+                    <p:column headerText="Country" sortBy="#{customer.country.name}">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.country.name}"/>
                     </p:column>
 
                     <p:column field="representative" headerText="Representative" filterable="false">
                         <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo" width="32"
-                                        style="vertical-align: middle" />
-                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.representative.name}" />
+                                        style="vertical-align: middle"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.representative.name}"/>
                     </p:column>
 
                     <p:column field="date" filterable="false"/>
@@ -184,7 +232,7 @@
                     </p:column>
 
                     <p:column headerText="Activity" sortBy="#{customer.activity}">
-                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
+                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem"/>
                     </p:column>
                 </p:dataTable>
             </h:form>
@@ -192,11 +240,14 @@
 
         <div class="card">
             <h5>Filter toggling</h5>
-            <p>1. Hide filter components initially by adding <code>ui-filter-toggleable</code> as <em>styleClass</em> to the datatable. <br/>
+            <p>1. Hide filter components initially by adding <code>ui-filter-toggleable</code> as <em>styleClass</em> to
+                the datatable. <br/>
                 2. To show/hide the filter components call <code>PF('customersTable4').toggleFilter()</code>.</p>
             <h:form id="customersForm4">
-                <p:dataTable id="customers" var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable4"
-                             emptyMessage="No customers found with given criteria" stickyHeader="true" stickyTopAt=".layout-topbar"
+                <p:dataTable id="customers" var="customer" value="#{dtFilterView.customers1}"
+                             widgetVar="customersTable4"
+                             emptyMessage="No customers found with given criteria" stickyHeader="true"
+                             stickyTopAt=".layout-topbar"
                              filteredValue="#{dtFilterView.filteredCustomers1}" styleClass="ui-filter-toggleable">
 
                     <f:facet name="header">
@@ -204,46 +255,52 @@
                             <span>List of Customers</span>
                             <div align="right">
                                 <span>Switch toggle with manual toggleFilter()</span>
-                                <p:toggleSwitch id="manualToggle" styleClass="vertical-align-middle ml-3" onchange="PF('customersTable4').toggleFilter()" onIcon="pi pi-filter" offIcon="pi pi-filter-slash"/>
+                                <p:toggleSwitch id="manualToggle" styleClass="vertical-align-middle ml-3"
+                                                onchange="PF('customersTable4').toggleFilter()" onIcon="pi pi-filter"
+                                                offIcon="pi pi-filter-slash"/>
                             </div>
                         </div>
 
                     </f:facet>
 
-                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains" filterPlaceholder="Filter By Name">
-                        <h:outputText value="#{customer.name}" />
+                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}"
+                              filterMatchMode="contains" filterPlaceholder="Filter By Name">
+                        <h:outputText value="#{customer.name}"/>
                     </p:column>
 
-                    <p:column headerText="Country" sortBy="#{customer.country.name}" filterBy="#{customer.country.name}">
-                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px" />
-                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.country.name}" />
+                    <p:column headerText="Country" sortBy="#{customer.country.name}"
+                              filterBy="#{customer.country.name}">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.country.name}"/>
                     </p:column>
 
                     <p:column field="representative" headerText="Representative" filterMatchMode="exact"
                               sortBy="#{customer.representative.name}">
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('customersTable').filter()" autoWidth="false">
-                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
-                                <f:selectItems value="#{dtFilterView.representatives}" />
+                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dtFilterView.representatives}"/>
                             </p:selectOneMenu>
                         </f:facet>
 
                         <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo" width="32"
-                                        style="vertical-align: middle" />
-                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.representative.name}" />
+                                        style="vertical-align: middle"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.representative.name}"/>
                     </p:column>
 
                     <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" />
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()"/>
                         </f:facet>
                     </p:column>
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()" >
-                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
-                                <f:selectItems value="#{dtFilterView.customerStatus}" />
+                            <p:selectOneMenu onchange="PF('customersTable').filter()">
+                                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{dtFilterView.customerStatus}"/>
                             </p:selectOneMenu>
                         </f:facet>
 
@@ -252,7 +309,302 @@
 
                     <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt"
                               converter="jakarta.faces.Integer">
-                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
+                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem"/>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Advanced Column Filtering with Dynamically Selectable Filter Match Modes</h5>
+            <div class="doc-tablewrapper">
+                <table class="doc-table">
+                    <thead>
+                    <tr>
+                        <th><code>filterValueType</code></th>
+                        <th>Available match modes</th>
+                        <th>Column</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><code>"text"</code></td>
+                        <td>
+                                <span style="display:flex; flex-wrap:wrap; gap:.4rem">
+                                    <code>∋ Contains</code>
+                                    <code>∌ Does Not Contain</code>
+                                    <code>≺ Starts With</code>
+                                    <code>⊀ Does Not Start With</code>
+                                    <code>≻ Ends With</code>
+                                    <code>⊁ Does Not End With</code>
+                                    <code>= Equals</code>
+                                    <code>≠ Not Equals</code>
+                                    <code>⊝ Is Empty</code>
+                                    <code>⊜ Is Not Empty</code>
+                                    <code>○ Is Null</code>
+                                    <code>● Is Not Null</code>
+                                    <code>* Matches Regex</code>
+                                    <code>∈ In List</code>
+                                    <code>∉ Not In List</code>
+                                </span>
+                        </td>
+                        <td><em>Name</em></td>
+                    </tr>
+                    <tr>
+                        <td><code>"numeric"</code></td>
+                        <td>
+                                <span style="display:flex; flex-wrap:wrap; gap:.4rem">
+                                    <code>= Equals</code>
+                                    <code>≠ Not Equals</code>
+                                    <code>&lt; Less Than</code>
+                                    <code>≤ Less Than or Equal To</code>
+                                    <code>&gt; Greater Than</code>
+                                    <code>≥ Greater Than or Equal To</code>
+                                    <code>↔ Between</code>
+                                    <code>↮ Not Between</code>
+                                    <code>○ Is Null</code>
+                                    <code>● Is Not Null</code>
+                                    <code>∈ In List</code>
+                                    <code>∉ Not In List</code>
+                                </span>
+                        </td>
+                        <td><em>Activity</em></td>
+                    </tr>
+                    <tr>
+                        <td><code>"date"</code></td>
+                        <td>
+                                <span style="display:flex; flex-wrap:wrap; gap:.4rem">
+                                    <code>= Is</code>
+                                    <code>≠ Is Not</code>
+                                    <code>&lt; Before</code>
+                                    <code>≤ Before or On</code>
+                                    <code>&gt; After</code>
+                                    <code>≥ After or On</code>
+                                    <code>↔ Between</code>
+                                    <code>↮ Not Between</code>
+                                    <code>⊝ Is Empty</code>
+                                    <code>⊜ Is Not Empty</code>
+                                    <code>◆ Today</code>
+                                    <code>◁ Yesterday</code>
+                                    <code>▷ Tomorrow</code>
+                                    <code>▣ This Week</code>
+                                    <code>◀ Last Week</code>
+                                    <code>▶ Next Week</code>
+                                    <code>▦ This Month</code>
+                                    <code>⇐ Last Month</code>
+                                    <code>⇒ Next Month</code>
+                                    <code>▤ This Quarter</code>
+                                    <code>↞ Last Quarter</code>
+                                    <code>↠ Next Quarter</code>
+                                    <code>▥ This Year</code>
+                                    <code>↢ Last Year</code>
+                                    <code>↣ Next Year</code>
+                                    <code>⏮ Last N Days</code>
+                                    <code>⏭ Next N Days</code>
+                                    <code>⟲ Relative Date</code>
+                                </span>
+                        </td>
+                        <td><em>Join Date</em></td>
+                    </tr>
+                    <tr>
+                        <td><code>"boolean"</code></td>
+                        <td>
+                                <span style="display:flex; flex-wrap:wrap; gap:.4rem">
+                                    <code>∀ All</code>
+                                    <code>✓ True</code>
+                                    <code>✗ False</code>
+                                    <code>○ Is Null</code>
+                                    <code>● Is Not Null</code>
+                                </span>
+                        </td>
+                        <td><em>VIP</em></td>
+                    </tr>
+                    <tr>
+                        <td><code>"enum"</code></td>
+                        <td>
+                                <span style="display:flex; flex-wrap:wrap; gap:.4rem">
+                                    <code>= Is</code>
+                                    <code>≠ Is Not</code>
+                                    <code>∈ Is Any Of</code>
+                                    <code>∉ Is None Of</code>
+                                    <code>⊝ Is Empty</code>
+                                    <code>⊜ Is Not Empty</code>
+                                </span>
+                        </td>
+                        <td><em>Status</em></td>
+                    </tr>
+                    <tr>
+                        <td><code>"array"</code></td>
+                        <td>
+                                <span style="display:flex; flex-wrap:wrap; gap:.4rem">
+                                    <code>⊚ Contains</code>
+                                    <code>⊖ Does Not Contain</code>
+                                    <code>⊃ Contains Any</code>
+                                    <code>⊇ Contains All</code>
+                                    <code>⊅ Contains None</code>
+                                    <code>⊝ Is Empty</code>
+                                    <code>⊜ Is Not Empty</code>
+                                </span>
+                        </td>
+                        <td><em>Tags</em> (a <code>List&lt;String&gt;</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>"time"</code></td>
+                        <td>
+                                <span style="display:flex; flex-wrap:wrap; gap:.4rem">
+                                    <code>= Is</code>
+                                    <code>≠ Is Not</code>
+                                    <code>&lt; Before</code>
+                                    <code>≤ Before or On</code>
+                                    <code>&gt; After</code>
+                                    <code>≥ After or On</code>
+                                    <code>↔ Between</code>
+                                    <code>↮ Not Between</code>
+                                    <code>⊝ Is Empty</code>
+                                    <code>⊜ Is Not Empty</code>
+                                    <code>⏪ Last N Minutes</code>
+                                    <code>⏩ Next N Minutes</code>
+                                    <code>↺ Last N Hours</code>
+                                    <code>↻ Next N Hours</code>
+                                </span>
+                        </td>
+                        <td><em>Check-in Time</em> (a bare <code>LocalTime</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>"datetime"</code></td>
+                        <td>
+                                <span style="display:flex; flex-wrap:wrap; gap:.4rem">
+                                    <code>= Is</code>
+                                    <code>≠ Is Not</code>
+                                    <code>&lt; Before</code>
+                                    <code>≤ Before or On</code>
+                                    <code>&gt; After</code>
+                                    <code>≥ After or On</code>
+                                    <code>↔ Between</code>
+                                    <code>↮ Not Between</code>
+                                    <code>⊝ Is Empty</code>
+                                    <code>⊜ Is Not Empty</code>
+                                    <code>◆ Today</code>
+                                    <code>◁ Yesterday</code>
+                                    <code>▷ Tomorrow</code>
+                                    <code>▣ This Week</code>
+                                    <code>◀ Last Week</code>
+                                    <code>▶ Next Week</code>
+                                    <code>▦ This Month</code>
+                                    <code>⇐ Last Month</code>
+                                    <code>⇒ Next Month</code>
+                                    <code>▤ This Quarter</code>
+                                    <code>↞ Last Quarter</code>
+                                    <code>↠ Next Quarter</code>
+                                    <code>▥ This Year</code>
+                                    <code>↢ Last Year</code>
+                                    <code>↣ Next Year</code>
+                                    <code>⏮ Last N Days</code>
+                                    <code>⏭ Next N Days</code>
+                                    <code>⏪ Last N Minutes</code>
+                                    <code>⏩ Next N Minutes</code>
+                                    <code>↺ Last N Hours</code>
+                                    <code>↻ Next N Hours</code>
+                                    <code>⟲ Relative Date</code>
+                                </span>
+                        </td>
+                        <td><em>Last Contact</em> (a full <code>LocalDateTime</code>)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>The <code>clearFiltersButton="true"</code> attribute renders the "Clear Filters" button in the
+                header, next to the global search box. Clicking it resets every column's value and match mode,
+                plus the global filter, back to their defaults and re-applies filtering in one click.</p>
+            <p>Each column below sets its <code>filterMatchMode</code> and <code>filterValueType</code> to a
+                sensible default for its data type (text, numeric, date, boolean, enum, array, time and datetime),
+                so no match mode needs to be picked by the user. The <em>Tags</em> column is additionally marked
+                <code>sortable="false"</code>, since its value is a <code>List&lt;String&gt;</code> and lists have
+                no natural ordering to sort by.</p>
+            <h:form>
+                <p:dataTable var="customer" value="#{dtFilterView.customersPresets}" widgetVar="customersPresetsTable"
+                             emptyMessage="No customers found with given criteria" clearFiltersButton="true"
+                             filteredValue="#{dtFilterView.filteredCustomersPresets}">
+
+                    <f:facet name="header">
+                        <div class="flex align-items-center justify-content-between">
+                            <span>List of Customers</span>
+                            <p:inputText id="globalFilter"
+                                         onkeyup="PrimeFaces.debounce(() => PF('customersPresetsTable').filter())"
+                                         style="width:10rem"/>
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="Name" field="name" sortBy="#{customer.name}" filterMatchMode="contains"
+                              filterValueType="text"/>
+
+                    <p:column headerText="Activity" field="activity" sortBy="#{customer.activity}" filterMatchMode="gt"
+                              filterValueType="numeric" converter="jakarta.faces.Integer">
+                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem"/>
+                    </p:column>
+
+                    <p:column headerText="Join Date" field="date" sortBy="#{customer.date}" filterMatchMode="equals"
+                              filterValueType="date" converter="#{dtFilterView.dateConverter}"/>
+
+                    <p:column headerText="VIP" field="vip" sortBy="#{customer.vip}" filterValueType="boolean"/>
+
+                    <p:column headerText="Status" field="status" sortBy="#{customer.status}" filterMatchMode="equals"
+                              filterValueType="enum">
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
+                    </p:column>
+
+                    <p:column headerText="Tags" field="tags" filterMatchMode="arrayContains" filterValueType="array" sortable="false"/>
+
+                    <p:column headerText="Check-in Time" field="checkInTime" sortBy="#{customer.checkInTime}"
+                              filterMatchMode="equals" filterValueType="time"
+                              converter="#{dtFilterView.checkInTimeConverter}"/>
+
+                    <p:column headerText="Last Contact" field="lastContact" sortBy="#{customer.lastContact}"
+                              filterMatchMode="equals" filterValueType="datetime"
+                              converter="#{dtFilterView.lastContactConverter}"/>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Turning the Match Mode Picker Off Table-Wide</h5>
+            <p>The match mode picker is on by default: every filterable column whose Java type can be resolved
+                gets one, without any configuration. That suits an application that wants to give the end user as
+                much control as possible - but not one that wants a clean, reduced UI with only as many features
+                as needed.</p>
+            <p>Rather than repeating <code>filterValueType="none"</code> on every column, set it once on the
+                <code>p:dataTable</code> itself. It acts as the default for all of its columns, so the table below
+                filters exactly the way it did before the picker existed: a plain input per column, each fixed to
+                its own <code>filterMatchMode</code>.</p>
+            <p>A column's own <code>filterValueType</code> is still the more specific statement and always wins,
+                so single columns can opt back in - here <em>Activity</em>, which keeps its
+                <code>"numeric"</code> picker while every other column stays plain.</p>
+            <h:form>
+                <p:dataTable var="customer" value="#{dtFilterView.customersTableLevel}"
+                             widgetVar="customersTableLevelTable" filterValueType="none"
+                             emptyMessage="No customers found with given criteria"
+                             filteredValue="#{dtFilterView.filteredCustomersTableLevel}">
+
+                    <f:facet name="header">
+                        <span>List of Customers</span>
+                    </f:facet>
+
+                    <p:column headerText="Name" field="name" filterMatchMode="contains"/>
+
+                    <p:column headerText="Country" field="country.name" filterMatchMode="startsWith">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.country.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Representative" field="representative.name" filterMatchMode="contains"/>
+
+                    <!-- opts back in: the column's own filterValueType overrides the table-level "none" -->
+                    <p:column headerText="Activity" field="activity" filterMatchMode="gt"
+                              filterValueType="numeric" converter="jakarta.faces.Integer">
+                        <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem"/>
                     </p:column>
 
                 </p:dataTable>

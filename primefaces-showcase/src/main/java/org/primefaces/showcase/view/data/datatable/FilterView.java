@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Locale;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.convert.DateTimeConverter;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -56,11 +57,21 @@ public class FilterView implements Serializable {
 
     private List<Customer> customers3;
 
+    // demo data for the "Filter Match Mode Presets" card - one column per filterValueType preset
+    private List<Customer> customersPresets;
+
+    // demo data for the "Turning the Match Mode Picker Off Table-Wide" card - table-level filterValueType
+    private List<Customer> customersTableLevel;
+
     private List<Customer> filteredCustomers1;
 
     private List<Customer> filteredCustomers2;
 
     private List<Customer> filteredCustomers3;
+
+    private List<Customer> filteredCustomersPresets;
+
+    private List<Customer> filteredCustomersTableLevel;
 
     private List<FilterMeta> filterBy;
 
@@ -72,6 +83,8 @@ public class FilterView implements Serializable {
         customers1 = service.getCustomers(10);
         customers2 = service.getCustomers(50);
         customers3 = service.getCustomers(10);
+        customersPresets = service.getCustomers(10);
+        customersTableLevel = service.getCustomers(10);
 
         filterBy = new ArrayList<>();
 
@@ -136,6 +149,51 @@ public class FilterView implements Serializable {
 
     public List<Customer> getCustomers3() {
         return customers3;
+    }
+
+    public List<Customer> getCustomersPresets() {
+        return customersPresets;
+    }
+
+    public List<Customer> getFilteredCustomersPresets() {
+        return filteredCustomersPresets;
+    }
+
+    public void setFilteredCustomersPresets(List<Customer> filteredCustomersPresets) {
+        this.filteredCustomersPresets = filteredCustomersPresets;
+    }
+
+    public List<Customer> getCustomersTableLevel() {
+        return customersTableLevel;
+    }
+
+    public List<Customer> getFilteredCustomersTableLevel() {
+        return filteredCustomersTableLevel;
+    }
+
+    public void setFilteredCustomersTableLevel(List<Customer> filteredCustomersTableLevel) {
+        this.filteredCustomersTableLevel = filteredCustomersTableLevel;
+    }
+
+    public DateTimeConverter getDateConverter() {
+        DateTimeConverter converter = new DateTimeConverter();
+        converter.setPattern("yyyy-MM-dd");
+        converter.setType("localDate");
+        return converter;
+    }
+
+    public DateTimeConverter getCheckInTimeConverter() {
+        DateTimeConverter converter = new DateTimeConverter();
+        converter.setPattern("HH:mm");
+        converter.setType("localTime");
+        return converter;
+    }
+
+    public DateTimeConverter getLastContactConverter() {
+        DateTimeConverter converter = new DateTimeConverter();
+        converter.setPattern("yyyy-MM-dd HH:mm");
+        converter.setType("localDateTime");
+        return converter;
     }
 
     public List<Customer> getFilteredCustomers1() {

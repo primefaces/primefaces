@@ -15,11 +15,35 @@
 }
 
 .ui-datatable .ui-datatable-header {
-    border-bottom: 0px none;
+    border-bottom: 0 none;
+}
+
+/* built-in "Clear Filters" button (see DataTable#clearFiltersButton), rendered ahead of any header facet
+   content the developer declares - a small trailing margin keeps it from sitting flush against it */
+.ui-datatable .ui-datatable-clear-filters-button {
+    margin-right: .5rem;
+    vertical-align: middle;
+    flex: 0 0 auto;
+}
+
+/* only applied (see DataTableRenderer#encodeMarkup) when both the button above and a header facet are
+   present - puts them on one row instead of the button's own block-level line sitting above whatever the
+   facet renders. The facet's own top-level element (whatever the developer declared) is always this flex
+   row's last/only other child, so it's the one stretched to fill the remaining width - if it lays its own
+   content out with e.g. `justify-content: space-between`, that still ends up pinned to this row's far edges. */
+.ui-datatable .ui-datatable-header-with-clear-filters {
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.ui-datatable .ui-datatable-header-with-clear-filters > :last-child {
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .ui-datatable .ui-datatable-footer {
-    border-top: 0px none;
+    border-top: 0 none;
 }
 
 .ui-datatable thead th, .ui-datatable tfoot td {
@@ -54,8 +78,25 @@
 }
 
 .ui-datatable .ui-sortable-column-icon {
-    display: inline-block;
-    margin: -3px 0px -3px 2px;
+    display: inline-flex;
+    margin: -3px 0 -3px 2px;
+}
+
+/* Stacked header layout, switched on per header row by datatable.widget.js#alignColumnHeaderRow() as soon as
+   one of that row's cells can no longer fit its title and its icons on a single line. Header cells lay their
+   content out inline, so without this each column breaks wherever its own title happens to run out of room: a
+   long title pushes that column's icons - and with them its filter input - a line lower than its neighbours',
+   leaving the header ragged even though every cell holds the same three pieces. Stacked, the title takes a row
+   of its own (wrapping within it as needed), the sort/filter-match-mode icons the next and the filter input the
+   last; the widget then equalizes the title heights so those icon and filter rows line up across all columns.
+   `vertical-align` has to come along: the browser default centres a cell's content in the row, which would
+   re-stagger exactly the cells that hold fewer than the full three rows. */
+.ui-datatable thead th.ui-column-header-stacked {
+    vertical-align: top;
+}
+
+.ui-datatable thead th.ui-column-header-stacked > .ui-column-title {
+    display: block;
 }
 
 .ui-datatable .ui-column-filter {
@@ -76,9 +117,142 @@
     margin: .5rem auto auto auto;
 }
 
+.ui-datatable .ui-column-filter.ui-helper-hidden {
+    /* hidden while a value-less match mode (e.g., "is empty") is selected - the mode is the whole predicate */
+    display: none;
+}
+
+.ui-datatable .ui-column-filter-date,
+.ui-datatable .ui-column-filter-date-range {
+    /* without an explicit display, these fall back to a plain <span>'s "inline" default, which some browsers'
+       WebDriver isDisplayed() checks fail to report as visible despite being rendered - match .ui-column-filter's
+       own block layout instead, which doesn't have that problem */
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: .5rem auto auto auto;
+}
+
+.ui-datatable .ui-column-filter-date input,
+.ui-datatable .ui-column-filter-date-range input {
+    /* the shadow DatePicker's own rendered <input> has no width of its own outside a ".ui-fluid" form (see
+       forms.css) - it defaults to the browser's native text-input width (~270px), overflowing straight past
+       this wrapper (and the column itself) on anything narrower. Force it down to the wrapper's own 100%. */
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.ui-datatable .ui-column-filter-date.ui-helper-hidden,
+.ui-datatable .ui-column-filter-date-range.ui-helper-hidden {
+    display: none;
+}
+
 .ui-datatable.ui-filter-toggleable thead .ui-column-customfilter,
-.ui-datatable.ui-filter-toggleable thead .ui-column-filter {
+.ui-datatable.ui-filter-toggleable thead .ui-column-filter,
+.ui-datatable.ui-filter-toggleable thead .ui-column-filter-mode-icon {
     display:none;
+}
+
+/* filter match-mode picker (icon + overlay menu). Sits next to the sort icons in the
+   header rather than as a dropdown competing with the value input for space in a narrow column. */
+.ui-datatable .ui-column-filter-mode-icon {
+    display: inline-flex;
+    margin: -3px 0 -3px 2px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    vertical-align: middle;
+    font-size: 1rem;
+    color: inherit;
+}
+
+.ui-datatable .ui-column-filter-mode-icon.ui-column-filter-mode-icon-active {
+    color: var(--primary-color, #007ad9);
+}
+
+/* badge beside the trigger icon carrying the active match mode's own symbol (see MatchMode#symbol()) - lets a
+   reader tell which kind of filter is applied to a column without opening the menu, and (see
+   datatable.widget.js#bindFilterMatchModeMenu) opens that same menu when clicked. Kept in sync with the
+   selected mode by datatable.widget.js#updateFilterMatchModeIconState(). */
+.ui-datatable .ui-column-filter-mode-active-icon {
+    display: inline-flex;
+    margin-left: 2px;
+    vertical-align: middle;
+    font-size: .875rem;
+    font-weight: 700;
+    color: var(--primary-color, #007ad9);
+    cursor: pointer;
+}
+
+.ui-datatable .ui-column-filter-mode-active-icon.ui-helper-hidden {
+    /* needed despite the global .ui-helper-hidden rule (jquery-ui core.css): this class's own "always visible"
+       display:inline-flex rule above has higher specificity (2 classes vs 1) and would otherwise win */
+    display: none;
+}
+
+/* relocated to document.body at runtime (see datatable.widget.js#bindFilterMatchModeMenu) so scrollable/frozen
+   headers' `overflow: hidden` doesn't clip it - position/z-index are set at show-time by the widget. Not scoped
+   under `.ui-datatable` (unlike the icon button above, which stays put) since it no longer lives there; an
+   explicit background/border/shadow is set rather than relying on the cascade to reach a relocated element.
+   Deliberately no max-height/overflow-y: the longest presets (date/datetime) run to 28-32 items, and the menu
+   should always open in full - the page scrolls around it instead, same as any other tall absolute overlay. */
+.ui-column-filter-mode-menu {
+    position: absolute;
+    min-width: 10rem;
+    padding: .25rem 0;
+    margin: 0;
+    list-style: none;
+    background: var(--surface-overlay, #ffffff);
+    color: var(--text-color, #333333);
+    border: 1px solid var(--surface-border, #dee2e6);
+    border-radius: inherit;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .12);
+}
+
+.ui-column-filter-mode-menu .ui-menuitem-link {
+    display: flex;
+    align-items: center;
+    gap: .875rem;
+    padding: .5rem .75rem;
+    white-space: nowrap;
+    color: inherit;
+}
+
+/* first "column" of a menu row: the mode's own symbol (see MatchMode#symbol()), or - for the "Clear" action
+   row appended after every mode - the pi-filter-slash icon (see DataTable#CLEAR_FILTER_ICON_CLASS) */
+.ui-column-filter-mode-menu .ui-column-filter-mode-menuitem-icon {
+    flex: 0 0 auto;
+    width: 1rem;
+    text-align: center;
+    font-size: .875rem;
+    font-weight: 700;
+    color: var(--text-color-secondary, #6c757d);
+}
+
+.ui-column-filter-mode-menu .ui-menuitem.ui-state-active .ui-column-filter-mode-menuitem-icon {
+    color: inherit;
+}
+
+/* second "column" of a menu row: the mode's label text */
+.ui-column-filter-mode-menu .ui-column-filter-mode-menuitem-label {
+    flex: 1 1 auto;
+}
+
+.ui-column-filter-mode-menu .ui-menuitem:hover .ui-menuitem-link {
+    background: var(--surface-hover, rgba(0, 0, 0, .04));
+}
+
+.ui-column-filter-mode-menu .ui-menuitem.ui-state-active .ui-menuitem-link {
+    background: var(--surface-hover, rgba(0, 0, 0, .04));
+    font-weight: 700;
+}
+
+/* the "clear this column's filter" action row - always the first item, visually separated from the
+   selectable modes below it, since it's an action rather than one more mode to pick */
+.ui-column-filter-mode-menu .ui-column-filter-mode-menuitem-clear {
+    border-bottom: 1px solid var(--surface-border, #dee2e6);
+    margin-bottom: .25rem;
 }
 
 .ui-datatable .ui-row-toggler {
@@ -91,7 +265,7 @@
 
 .ui-datatable .ui-selection-column .ui-chkbox-all {
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
     width: 16px;
     height: 16px;
 }
@@ -112,7 +286,7 @@
 .ui-datatable-scrollable-header,
 .ui-datatable-scrollable-footer {
     overflow: hidden;
-    border: 0px none;
+    border: 0 none;
 }
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header,
@@ -125,7 +299,7 @@
 }
 
 .ui-datatable .ui-datatable-scrollable-body  {
-    min-height: 0%;
+    min-height: 0;
 }
 
 .ui-datatable .ui-datatable-data tr.ui-state-hover {
@@ -135,25 +309,25 @@
 }
 
 .ui-datatable-scrollable-theadclone {
-    height:0px;
+    height: 0;
 }
 
 .ui-datatable-scrollable-theadclone tr {
-    height:0px;
+    height: 0;
 }
 
 .ui-datatable-scrollable-theadclone th.ui-state-default {
-    height:0px !important; /* #12908 */
-    border-bottom-width: 0px;
-    border-top-width: 0px;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    height: 0 !important; /* #12908 */
+    border-bottom-width: 0;
+    border-top-width: 0;
+    padding-top: 0;
+    padding-bottom: 0;
     outline: 0 none;
 }
 
 .ui-datatable-scrollable-theadclone th span.ui-column-title {
   display: block;
-  height: 0px;
+  height: 0;
 }
 
 .ui-datatable .ui-paginator {
@@ -165,8 +339,8 @@
 }
 
 .ui-datatable .ui-datatable-virtualscroll-table {
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     position: absolute;
 }
 
@@ -226,12 +400,12 @@
 /*resizer */
 .ui-datatable .ui-column-resizer {
     position: absolute;
-    top: 0px;
-    right: 0px;
+    top: 0;
+    right: 0;
     margin: 0;
-    width:8px;
-    height:100%;
-    padding:0px;
+    width: 8px;
+    height: 100%;
+    padding: 0;
     cursor:col-resize;
     background-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
     border: 1px solid transparent;
@@ -246,7 +420,7 @@
 }
 
 .ui-datatable-resizable {
-    padding-bottom:1px;     /*fix for webkit overlow*/
+    padding-bottom: 1px;     /*fix for webkit overlow*/
     overflow:auto;
 }
 
@@ -361,19 +535,19 @@
         box-sizing: border-box;
         clear: left;
         float: left;
-        border: 0px none;
+        border: 0 none;
         display: block;
         text-align: left !important;
         width: 100% !important;
     }
 
     .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
-        border: 0px none;
+        border: 0 none;
     }
 
     .ui-datatable-reflow .ui-datatable-data tr.ui-widget-content {
-        border-left: 0px none;
-        border-right: 0px none;
+        border-left: 0 none;
+        border-right: 0 none;
     }
 
     .ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title {

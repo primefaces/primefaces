@@ -23,9 +23,6 @@
  */
 package org.primefaces.model.filter;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Locale;
 
 import jakarta.faces.context.FacesContext;
@@ -40,18 +37,9 @@ public class InFilterConstraint extends EqualsFilterConstraint {
             return false;
         }
 
-        Collection<?> collection = null;
-        if (filter.getClass().isArray()) {
-            collection = Arrays.asList((Object[]) filter);
-        }
-        else if (filter instanceof Collection) {
-            collection = (Collection<?>) filter;
-        }
-        else {
-            collection = Collections.singletonList(filter);
-        }
-
-        for (Object filterValue : collection) {
+        // typed as free text next to the match-mode dropdown, e.g., "Acme, Globex, Initech" - split on
+        // comma, unlike a bean-bound facet (already a Collection)
+        for (Object filterValue : CollectionFilterUtils.toFilterTokens(filter)) {
             // Return true on the first matching value
             if (super.isMatching(ctxt, value, filterValue, locale)) {
                 return true;

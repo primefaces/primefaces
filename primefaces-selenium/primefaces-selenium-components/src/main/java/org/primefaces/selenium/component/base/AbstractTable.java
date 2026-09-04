@@ -136,6 +136,23 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
     }
 
     /**
+     * Selects a filter match mode (comparator) for the column found by its header text, and triggers the filter.
+     * Requires the column to define {@code filterValueType}.
+     *
+     * @param headerText the header text to look for
+     * @param matchModeOperator the operator value of the match mode option to select, e.g. "gt" or "equals"
+     */
+    public void filterMatchMode(String headerText, String matchModeOperator) {
+        Optional<HeaderCell> cell = getHeader().getCell(headerText);
+        if (cell.isPresent()) {
+            cell.get().setFilterMatchMode(matchModeOperator);
+        }
+        else {
+            System.err.println("Header Cell '" + headerText + "' not found.");
+        }
+    }
+
+    /**
      * Removes the current filter at this column index.
      *
      * @param cellIndex the index of the column

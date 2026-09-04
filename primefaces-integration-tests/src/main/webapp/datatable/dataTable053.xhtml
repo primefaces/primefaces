@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <style>
+                td, th { white-space: nowrap; font-size: .75rem; }
+            </style>
+
+            <!-- the same filterValueType presets as dataTable051.xhtml, but lazy: every match mode has to be
+                 translated into the criteria query of JPALazyDataModel instead of being applied in memory -->
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable053.lazyModel}" var="employee"
+                         lazy="true" paginator="true" rows="20"
+                         filterEvent="enter" clearFiltersButton="true"
+                         paginatorTemplate="{CurrentPageReport}" currentPageReportTemplate="{totalRecords} employees">
+
+                <p:column headerText="id" field="id" filterMatchMode="gt" filterValueType="numeric" style="width:120px"/>
+
+                <p:column headerText="name" field="name" filterMatchMode="contains" filterValueType="text"/>
+
+                <p:column headerText="salary" field="salary" filterMatchMode="gt" filterValueType="numeric"
+                          converter="jakarta.faces.Integer"/>
+
+                <!-- every mode in the "boolean" preset is value-less (true/false/is null/is not null) -->
+                <p:column headerText="active" field="active" filterValueType="boolean"/>
+
+                <!-- explicit fixed-pattern converter (not the locale-dependent default) so filter values typed
+                     as free text parse unambiguously -->
+                <p:column headerText="review date" field="reviewDate" filterMatchMode="equals" filterValueType="date"
+                          converter="#{dataTable053.reviewDateConverter}"/>
+
+                <p:column headerText="last login" field="lastLogin" filterMatchMode="equals" filterValueType="datetime"
+                          converter="#{dataTable053.lastLoginConverter}"/>
+
+                <!-- bare time-of-day value (LocalTime, no date component) -->
+                <p:column headerText="start time" field="startTime" filterMatchMode="equals" filterValueType="time"
+                          converter="#{dataTable053.startTimeConverter}"/>
+
+                <p:column headerText="department" field="department" filterMatchMode="equals" filterValueType="enum"/>
+
+                <!-- multivalued field (@ElementCollection) - the "array" modes become MEMBER OF predicates -->
+                <p:column headerText="tags" field="tags" filterMatchMode="arrayContains" filterValueType="array"/>
+
+            </p:dataTable>
+
+            <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

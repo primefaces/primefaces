@@ -31,6 +31,10 @@
 
         <!-- dependency versions -->
         <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
+        <!-- dataTable053.xhtml demoes JPALazyDataModel against an in-memory database.
+             Hibernate ORM 6.6 is the last line with a Java 11 baseline, as required by the Java 11 CI job. -->
+        <hibernate.version>6.6.55.Final</hibernate.version>
+        <h2.version>2.3.232</h2.version>
         <jetty.version>12.1.12</jetty.version>
         <lombok.version>1.18.46</lombok.version>
     </properties>
@@ -167,6 +171,21 @@
         </dependency>
 
         <!-- BV - Hibernate Validator -->
+        <!-- JPA provider and in-memory database of the JPALazyDataModel test page (dataTable053.xhtml).
+             Compile scope, as it also brings the jakarta.persistence API the page's entity is written
+             against: jakarta.jakartaee-api pulls that API in too, but further down the tree, so the version
+             Hibernate itself implements is the one that ends up on the classpath. -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>

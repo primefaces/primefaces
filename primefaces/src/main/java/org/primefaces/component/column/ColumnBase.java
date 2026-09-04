@@ -65,6 +65,16 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
             implicitDefaultValue = "startsWith")
     public abstract String getFilterMatchMode();
 
+    @Property(description = "The filter value's type, enabling the end user to pick the filter match mode (comparator) at runtime from"
+            + " a dropdown rendered next to the filter input. Accepts the shorthand keywords \"numeric\" (=, !=, <, >, <=, >=, between,"
+            + " in list, is null), \"text\" (contains, starts with, ends with, equals, is empty, is null, matches regex, in list),"
+            + " \"date\" (equals, before, after, between, today, this week, last N days, ...), \"time\"/\"datetime\" (like \"date\""
+            + " plus last/next N minutes/hours), \"boolean\" (true, false, is null), \"enum\" (is, is any of, is empty) or \"array\""
+            + " (contains, contains any/all/none, is empty) - or an explicit comma separated list of match modes, e.g.,"
+            + " \"equals,notEquals,lt,gt,lte,gte\". When not set, the type is auto-derived from the column's Java type; set to \"none\""
+            + " to opt a column out of the dropdown entirely and keep a plain filter input fixed to filterMatchMode.")
+    public abstract String getFilterValueType();
+
     @Property(description = "Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.",
             defaultValue = "bottom")
     public abstract String getFilterPosition();
@@ -148,7 +158,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     public abstract boolean isSelectRow();
 
     @Property(description = "Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified."
-            + " Only necessary when the column header is not human readable (e.g. empty header or icon-only header).")
+            + " Only necessary when the column header is not human readable (e.g., empty header or icon-only header).")
     public abstract String getAriaHeaderText();
 
     @Property(description = "Custom pluggable exportFunction.")

@@ -18,6 +18,7 @@
 
     <properties>
         <jetty.version>12.1.12</jetty.version>
+        <h2.version>2.3.232</h2.version>
         <faces.project.stage>Production</faces.project.stage>
         <sonar.skip>true</sonar.skip>
     </properties>
@@ -54,6 +55,15 @@
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.faces</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- the in-memory database behind the DataTable "Lazy JPA" example; the JPA provider comes either
+             from the application server or, for a plain servlet container, from the "non-ee" profile -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -361,6 +371,7 @@
             <properties>
                 <resteasy.version>6.2.11.Final</resteasy.version>
                 <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
+                <hibernate.version>6.6.55.Final</hibernate.version>
                 <weld.version>5.1.5.Final</weld.version>
                 <jakarta.version>10.0.0</jakarta.version>
             </properties>
@@ -374,6 +385,7 @@
             <properties>
                 <resteasy.version>7.0.3.Final</resteasy.version>
                 <hibernate-validator.version>9.0.1.Final</hibernate-validator.version>
+                <hibernate.version>7.1.0.Final</hibernate.version>
                 <jakarta.version>11.0.0</jakarta.version>
                 <weld.version>6.0.4.Final</weld.version>
             </properties>
@@ -472,6 +484,16 @@
                     <groupId>org.hibernate.validator</groupId>
                     <artifactId>hibernate-validator</artifactId>
                     <version>${hibernate-validator.version}</version>
+                </dependency>
+
+                <!-- Compile scope, not runtime: it also brings the jakarta.persistence API the "Lazy JPA"
+                     example is written against. jakarta.jakartaee-api pulls that API in too, but further down
+                     the tree, so a runtime scope here would win the mediation and leave the compile classpath
+                     without it. -->
+                <dependency>
+                    <groupId>org.hibernate.orm</groupId>
+                    <artifactId>hibernate-core</artifactId>
+                    <version>${hibernate.version}</version>
                 </dependency>
 
                 <dependency>

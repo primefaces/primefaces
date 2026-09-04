@@ -42,7 +42,7 @@
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.DataTable.OnRowClickCallback.event The click event that occurred.
  * @param {JQuery} PrimeFaces.widget.DataTable.OnRowClickCallback.row The TR row that was clicked.
  *
- * @interface {PrimeFaces.widget.DataTable.RowMeta} RowMeta Describes the meta information of row, such as its index and
+ * @interface {PrimeFaces.widget.DataTable.RowMeta} RowMeta Describes the meta-information of row, such as its index and
  * its row key.
  * @prop {string | undefined} RowMeta.key The unique key of the row. `undefined` when no key was defined for the rows.
  * @prop {number} RowMeta.index The 0-based index of the row in the DataTable.
@@ -68,7 +68,7 @@
  * @prop {JQuery} [contextMenuCell] DOM element of the table cell for which the context menu was opened.
  * @prop {PrimeFaces.widget.ContextMenu} contextMenuWidget Widget with the context menu for the DataTable.
  * @prop {JQuery} currentCell Current cell to be edited.
- * @prop {PrimeFaces.widget.DataTable.RowMeta | null} cursorRowMeta 0-based index of row where the the cursor is located.
+ * @prop {PrimeFaces.widget.DataTable.RowMeta | null} cursorRowMeta 0-based index of row where the cursor is located.
  * @prop {string} [descMessage] Localized message for sorting a column in descending order.
  * @prop {JQuery} dragIndicatorBottom DOM element of the icon that indicates a column is draggable.
  * @prop {JQuery} dragIndicatorTop DOM element of the icon that indicates a column is draggable.
@@ -105,6 +105,8 @@
  * @prop {number} relativeHeight The height of the table viewport, relative to the total height, used for scrolling.
  * @prop {string[]} resizableState A list with the current widths for each resizable column.
  * @prop {JQuery} resizableStateHolder INPUT element storing the current widths for each resizable column.
+ * @prop {number} headerAlignTimeout The set-timeout timer ID of the debounce timer used to re-level the
+ * header rows after a window resize.
  * @prop {number} resizeTimeout The set-timeout timer ID of the timer used for resizing.
  * @prop {JQuery} resizerHelper The DOM element for the resize helper.
  * @prop {number} [rowHeight] Constant height in pixels for each row, when virtual scrolling is enabled.
@@ -119,7 +121,7 @@
  * @prop {JQuery} scrollStateHolder INPUT element storing the current scroll position.
  * @prop {JQuery} scrollTbody The DOM element for the scrollable TBODY.
  * @prop {number} scrollTimeout The set-timeout timer ID of the timer used for scrolling.
- * @prop {string} scrollbarWidth CSS attribute for the scrollbar width, eg. `20px`.
+ * @prop {string} scrollbarWidth CSS attribute for the scrollbar width, e.g., 20px.
  * @prop {string[]} selection List of row keys for the currently selected rows.
  * @prop {string} selectionHolder ID of the INPUT element storing the currently selected rows.
  * @prop {boolean} shouldLiveScroll Whether live scrolling is currently enabled.
@@ -334,6 +336,31 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         if (this.cfg.cellNavigation) {
             this.setupNavigableCells();
         }
+
+        this.alignColumnHeaders();
+        this.bindColumnHeaderAlignment();
+    }
+
+    /**
+     * Re-levels the header rows (see {@link alignColumnHeaders}) whenever the window is resized: which column
+     * titles still fit on one line depends on the column widths, so a resize can both introduce and resolve the
+     * ragged header the stacked layout exists to fix. Debounced - a drag fires `resize` continuously, and each
+     * pass re-measures the whole header.
+     * @private
+     */
+    bindColumnHeaderAlignment() {
+        var $this = this;
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_headeralign', this.jq, function() {
+            clearTimeout($this.headerAlignTimeout);
+            $this.headerAlignTimeout = PrimeFaces.queueTask(function() {
+                $this.alignColumnHeaders();
+            }, 100);
+        });
+
+        this.addDestroyListener(function() {
+            clearTimeout(this.headerAlignTimeout);
+        });
     }
 
     /**
@@ -361,7 +388,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Sets the given HTML string as the content of the body of this DataTable. Afterwards, sets up all required event
+     * Sets the given HTML string as the content of the body of this DataTable. Afterward, sets up all required event
      * listeners etc.
      * @protected
      * @param {string} data HTML string to set on the body.
@@ -691,21 +718,43 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
         this.cfg.filterDelay = this.cfg.filterDelay||300;
 
-        filterColumns.children('.ui-column-filter').each(function() {
+        filterColumns.find('.ui-column-filter').each(function() {
             var filter = $(this);
 
-            if(filter.is("input[type='search']")) {
-                PrimeFaces.skinInput(filter);
-                $this.bindTextFilter(filter);
-            }
-            else {
-                PrimeFaces.skinSelect(filter);
-                $this.bindChangeFilter(filter);
-            }
-            
+            // remembered so toggleFilterValueInput() can restore it once a match mode with its own
+            // placeholder hint (e.g., "min,max" for "between") is deselected again
+            filter.data('originalPlaceholder', filter.attr('placeholder'));
+            PrimeFaces.skinInput(filter);
+            $this.bindTextFilter(filter);
         });
-        
-        // ARIA labels for filters
+
+        // filter match-mode picker (icon + overlay menu) - replaces the old inline <select> that
+        // competed with the value input for space in narrow columns
+        filterColumns.find('.ui-column-filter-mode-icon').each(function() {
+            $this.bindFilterMatchModeMenu($(this));
+        });
+
+        // shadow date/date-range pickers (see DataTableRenderer#encodeDateFilterWidgets()) - a no-op for
+        // columns that don't have one
+        filterColumns.each(function() {
+            $this.bindDatePickerFilterSync($(this));
+        });
+
+        // sync each value input's visibility/placeholder with its initially selected match mode - run in its
+        // own pass, after every input's original placeholder above has been captured, regardless of DOM order.
+        // Uses getFilterMatchModeMenu() (an id lookup), not th.find(...), since bindFilterMatchModeMenu() above
+        // already relocated every menu out of its <th> and into document.body by this point.
+        filterColumns.find('.ui-column-filter-mode-icon').each(function() {
+            var icon = $(this);
+            var th = icon.closest('th');
+            var menu = $this.getFilterMatchModeMenu(icon);
+            var selectedLink = menu.find('.ui-menuitem-link[aria-checked="true"]');
+            $this.toggleFilterValueInput(th, selectedLink);
+            $this.updateFilterMatchModeIconState(icon, menu, selectedLink);
+        });
+
+        // ARIA labels for filters - jQuery's `:input` filter matches <input>/<select>/<textarea>/<button>,
+        // so this already covers both the value input and the new filter-mode icon button
         filterColumns.each(function() {
             var filterColumn = $(this);
             var filter = filterColumn.find(':input');
@@ -715,6 +764,319 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 filter.attr('aria-label', $this.getLabel('filter') + " " + title.text());
             }
         });
+    }
+
+    /**
+     * Keeps a header row's cells breaking at the same places instead of each at its own. Header cells lay
+     * their content out inline, so a long column title pushes that column's sort/filter-match-mode icons onto
+     * a second line, and with them its filter input - while the column next to it, whose title happens to fit,
+     * keeps all three on two lines. Nothing is misrendered, but the header reads as ragged: the filter inputs
+     * sit at three different heights across one row.
+     *
+     * So: measure the row as rendered, and the moment any one of its cells cannot fit its title and its icons
+     * on a single line, switch every cell of that row to the stacked layout (`.ui-column-header-stacked`, see
+     * datatable.css) - title, then icons, then filter input, each on its own row - and level those rows out
+     * across the columns. A row whose cells all fit is left untouched.
+     *
+     * Called once the table is rendered and again (debounced) whenever the window resizes, since which titles
+     * fit is a function of the column widths.
+     * @private
+     */
+    alignColumnHeaders() {
+        // getThead() returns both <thead>s when columns are frozen, in which case one header row is a <tr> in
+        // each of them - they render side by side and have to be levelled out as the single row they look like
+        var rows = [];
+        this.thead.each(function() {
+            $(this).children('tr').each(function(index) {
+                (rows[index] = rows[index] || []).push(this);
+            });
+        });
+
+        for (var i = 0; i < rows.length; i++) {
+            this.alignColumnHeaderRow($(rows[i]).children('th'));
+        }
+    }
+
+    /**
+     * Levels out a single header row - see {@link alignColumnHeaders} for what this is for and when it runs.
+     * @private
+     * @param {JQuery} headers the `<th>` cells making up one header row
+     */
+    alignColumnHeaderRow(headers) {
+        // no child combinators: these are handed to children(), which already restricts to direct children
+        var iconSelector = '.ui-sortable-column-icon, .ui-sortable-column-badge,'
+                + ' .ui-column-filter-mode-icon, .ui-column-filter-mode-active-icon',
+            filterSelector = '.ui-column-filter, .ui-column-customfilter,'
+                + ' .ui-column-filter-date, .ui-column-filter-date-range';
+
+        // undo any previous pass first: stacking moves the icons off the title's line, so a stacked row no
+        // longer looks wrapped, and measuring one would just unstack it - and wrap it - again on every call.
+        // Every decision below is made from the plain inline layout, which makes this idempotent.
+        headers.removeClass('ui-column-header-stacked').css('padding-top', '');
+        headers.children('.ui-column-title').css('min-height', '');
+        headers.children(filterSelector).css('margin-top', '');
+
+        var cells = [],
+            wrapped = false;
+
+        headers.each(function() {
+            var th = $(this),
+                title = th.children('.ui-column-title').first(),
+                // a column that declares its own ariaHeaderText renders the visible title hidden-accessible:
+                // still 1x1 px on screen, so :visible alone would call it shown and measure that 1px as a line
+                titleShown = title.length > 0 && !title.hasClass('ui-helper-hidden-accessible') && title.is(':visible'),
+                icons = th.children(iconSelector).filter(':visible'),
+                filter = th.children(filterSelector).filter(':visible').first();
+
+            cells.push({ th: th, title: title, titleShown: titleShown, filter: filter });
+
+            if (!titleShown) {
+                return;
+            }
+
+            // one client rect per line box the inline title occupies, so more than one means it wrapped on its own
+            var lines = title[0].getClientRects();
+            if (lines.length > 1) {
+                wrapped = true;
+            }
+            else if (lines.length === 1) {
+                var titleLineBottom = lines[0].bottom;
+                icons.each(function() {
+                    if (this.getBoundingClientRect().top >= titleLineBottom) {
+                        wrapped = true;
+                    }
+                });
+            }
+        });
+
+        if (!wrapped) {
+            return;
+        }
+
+        headers.addClass('ui-column-header-stacked');
+
+        // give every title the height of the tallest one, so that each cell's icon row starts at the same
+        // height no matter how many lines that cell's own title needed
+        var titleHeight = 0;
+        for (var i = 0; i < cells.length; i++) {
+            if (cells[i].titleShown) {
+                titleHeight = Math.max(titleHeight, cells[i].title.outerHeight());
+            }
+        }
+
+        for (var j = 0; j < cells.length; j++) {
+            var cell = cells[j];
+            if (cell.titleShown) {
+                cell.title.css('min-height', titleHeight + 'px');
+            }
+            else if (titleHeight > 0) {
+                // nothing on screen to grow - pad the cell instead, so whatever it does show still starts on
+                // the same row as its neighbours' icons rather than up where their titles are
+                cell.th.css('padding-top', ((parseFloat(cell.th.css('padding-top')) || 0) + titleHeight) + 'px');
+            }
+        }
+
+        // the icon row is optional per column (a column may be filterable but not sortable, or neither), so
+        // levelling the titles alone still leaves those columns' filters a row high - drop each one to the
+        // lowest filter in the row
+        var offsets = [],
+            filterTop = null;
+        for (var k = 0; k < cells.length; k++) {
+            if (!cells[k].filter.length) {
+                continue;
+            }
+            var top = cells[k].filter[0].getBoundingClientRect().top - cells[k].th[0].getBoundingClientRect().top;
+            offsets.push({ filter: cells[k].filter, top: top });
+            filterTop = filterTop === null ? top : Math.max(filterTop, top);
+        }
+
+        for (var l = 0; l < offsets.length; l++) {
+            var delta = filterTop - offsets[l].top;
+            // sub-pixel differences are rounding, not a row of their own
+            if (delta >= 1) {
+                var filter = offsets[l].filter;
+                filter.css('margin-top', ((parseFloat(filter.css('margin-top')) || 0) + delta) + 'px');
+            }
+        }
+    }
+
+    /**
+     * Sets up the filter match-mode picker for a column: a trigger icon that opens an overlay menu listing the
+     * available match modes, replacing the old inline `<select>` that had to compete with the filter value
+     * `<input>` for space. The menu is relocated to `document.body` since scrollable/frozen-column headers
+     * unconditionally clip their header area (`overflow: hidden`), which would otherwise cut the menu off.
+     * @private
+     * @param {JQuery} icon the `.ui-column-filter-mode-icon` trigger button, still inside its `<th>` at this point
+     */
+    bindFilterMatchModeMenu(icon) {
+        var $this = this;
+        var th = icon.closest('th');
+        var hiddenInput = th.find('.ui-column-filter-mode');
+        // captured here (DOM-relative, unambiguous) before relocation - kept as a closure reference below,
+        // rather than re-resolved later by id, which could otherwise momentarily collide with a stale
+        // still-appended-to-body menu left over from a widget instance an AJAX update just replaced
+        var menu = th.find('.ui-column-filter-mode-menu');
+
+        var menuId = menu.attr('id');
+        $(document.body).children(PrimeFaces.escapeClientId(menuId)).remove();
+        menu.appendTo(document.body);
+
+        var closeTimeout = null;
+
+        var closeMenu = function() {
+            clearTimeout(closeTimeout);
+            menu.addClass('ui-helper-hidden');
+            icon.attr('aria-expanded', 'false');
+        };
+
+        var openMenu = function() {
+            menu.removeClass('ui-helper-hidden').css('z-index', PrimeFaces.nextZindex()).position({
+                my: 'right top',
+                at: 'right bottom',
+                of: icon,
+                collision: 'flipfit'
+            });
+            icon.attr('aria-expanded', 'true');
+            menu.find('.ui-menuitem-link[aria-checked="true"]').trigger('focus');
+        };
+
+        // close once the mouse leaves both the icon and the menu - a short delay (rather than closing
+        // immediately on the icon's mouseleave) tolerates the moment the cursor crosses the gap between them
+        var scheduleClose = function() {
+            clearTimeout(closeTimeout);
+            closeTimeout = setTimeout(closeMenu, 300);
+        };
+        var cancelScheduledClose = function() {
+            clearTimeout(closeTimeout);
+        };
+        icon.add(menu).off('.dataTableFilterModeHover')
+            .on('mouseleave.dataTableFilterModeHover', scheduleClose)
+            .on('mouseenter.dataTableFilterModeHover', cancelScheduledClose);
+
+        icon.off('.dataTableFilterMode').on('click.dataTableFilterMode', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (menu.hasClass('ui-helper-hidden')) {
+                openMenu();
+            }
+            else {
+                closeMenu();
+            }
+        }).on('keydown.dataTableFilterMode', function(e) {
+            switch (e.code) {
+                case 'Enter':
+                case 'NumpadEnter':
+                case 'Space':
+                case 'ArrowDown':
+                    e.preventDefault();
+                    openMenu();
+                    break;
+                case 'Escape':
+                    closeMenu();
+                    break;
+            }
+        });
+
+        // the active-mode badge is a plain <span> - shouldSort() otherwise treats a click on ANY bare
+        // <span>/<th> within a sortable column header as "sort this column", since the real filter <input>
+        // and this very trigger <button> are excluded only by virtue of not being a <span>. Forward the
+        // click to the trigger button (opens the same menu) and stop it from ever reaching the <th>.
+        icon.next('.ui-column-filter-mode-active-icon').off('.dataTableFilterMode')
+            .on('click.dataTableFilterMode', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                icon.trigger('click');
+            });
+
+        // [data-match-mode] excludes the "Clear" action row below - it's not a selectable mode, and has no
+        // such attribute
+        menu.find('.ui-menuitem-link[data-match-mode]').off('.dataTableFilterMode').on('click.dataTableFilterMode', function(e) {
+            e.preventDefault();
+            var link = $(this);
+            // .attr(), not .data() - jQuery's .data() auto-casts attribute values that look like "true"/"false"/
+            // "null" into native JS types, and several MatchMode operators literally are those strings (e.g.
+            // IS_NULL's operator is "null") - jQuery's .val(null) then clears the input instead of writing "null"
+            var newMatchMode = link.attr('data-match-mode');
+
+            // a native <select> doesn't fire "change" when re-selecting the already-active option - mirror
+            // that here rather than re-triggering an unnecessary filter() round trip
+            if (hiddenInput.val() !== newMatchMode) {
+                hiddenInput.val(newMatchMode);
+                menu.find('.ui-menuitem-link[data-match-mode]').attr('aria-checked', 'false').parent().removeClass('ui-state-active');
+                link.attr('aria-checked', 'true').parent().addClass('ui-state-active');
+                $this.toggleFilterValueInput(th, link, true);
+                $this.updateFilterMatchModeIconState(icon, menu, link);
+                closeMenu();
+                $this.filter();
+            }
+            else {
+                closeMenu();
+            }
+        });
+
+        // "clear this column's filter" action - see DataTableRenderer#encodeFilterMatchModeMenu() and
+        // resetColumnFilter() above
+        menu.find('.ui-column-filter-mode-clear-link').off('.dataTableFilterMode').on('click.dataTableFilterMode', function(e) {
+            e.preventDefault();
+            closeMenu();
+            $this.resetColumnFilter(icon);
+            $this.filter();
+        });
+
+        PrimeFaces.utils.registerHideOverlayHandler($this, 'mousedown.dataTableFilterMode' + icon.attr('id'), menu,
+            function() { return icon; },
+            function(e, eventTarget) {
+                if (!(menu.is(eventTarget) || menu.has(eventTarget).length > 0)) {
+                    closeMenu();
+                }
+            });
+    }
+
+    /**
+     * Resolves the (possibly `document.body`-relocated) overlay menu for a filter match-mode trigger icon via
+     * its `aria-controls` id - needed by callers outside {@link bindFilterMatchModeMenu}'s own closure (e.g.
+     * {@link clearFilters}), for which DOM-relative lookup no longer works once the menu has been relocated.
+     * @private
+     * @param {JQuery} icon the `.ui-column-filter-mode-icon` trigger button
+     * @return {JQuery} the associated `.ui-column-filter-mode-menu`
+     */
+    getFilterMatchModeMenu(icon) {
+        return $(PrimeFaces.escapeClientId(icon.attr('aria-controls')));
+    }
+
+    /**
+     * Updates a filter-mode trigger icon's filled/outline state, and the active-mode icon badge beside it, to
+     * reflect whether a match mode other than the column's own configured default is currently selected -
+     * filled (and the badge shown, carrying that mode's own icon) once the user has picked something else,
+     * outline (and the badge hidden) while still on the untouched default.
+     * @private
+     * @param {JQuery} icon the `.ui-column-filter-mode-icon` trigger button
+     * @param {JQuery} menu the icon's overlay menu, as returned by {@link getFilterMatchModeMenu}
+     * @param {JQuery} selectedLink the currently selected `.ui-menuitem-link` (carries `data-icon` - see
+     *   DataTableRenderer#encodeFilterMatchModeMenu())
+     */
+    updateFilterMatchModeIconState(icon, menu, selectedLink) {
+        // `[data-default="true"]` (see DataTableRenderer#encodeFilterMatchModeMenu) marks the column's own
+        // configured default - NOT necessarily the first item in the list (e.g. a numeric column's list always
+        // starts with "Equals", but its configured default via filterMatchMode may be "gt")
+        var active = selectedLink.length > 0 && !selectedLink.is(menu.find('.ui-menuitem-link[data-default="true"]'));
+
+        icon.toggleClass('ui-column-filter-mode-icon-active', active);
+        icon.find('.pi').toggleClass('pi-filter-fill', active).toggleClass('pi-filter', !active);
+
+        // the badge is the trigger button's own next sibling - see encodeFilterMatchModeMenu()'s render order
+        var activeIcon = icon.next('.ui-column-filter-mode-active-icon');
+        activeIcon.toggleClass('ui-helper-hidden', !active);
+        if (active) {
+            // .attr(), not .data() - see the identical note in bindFilterMatchModeMenu() for data-match-mode
+            var newSymbol = selectedLink.attr('data-symbol');
+            if (newSymbol) {
+                activeIcon.text(newSymbol);
+            }
+            // title carries the mode's full label (already visible text in the menu) - the symbol alone isn't
+            // self-explanatory
+            activeIcon.attr('title', selectedLink.find('.ui-column-filter-mode-menuitem-label').text());
+        }
     }
 
     /**
@@ -737,20 +1099,153 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 e.stopPropagation();
             });
         }
+
+        this.bindNumericFilterRestriction(filter);
     }
 
     /**
-     * Sets up the change event listeners on the column filter elements.
+     * For a numeric column's filter input (see `data-filter-value-type` written by
+     * `DataTableRenderer#encodeFilterInput()`), rejects non-numeric-looking input as the user types or pastes.
+     * Validates the whole resulting value on the `input` event (rather than blocking individual keystrokes),
+     * so paste/drag/IME composition are covered automatically without extra wiring - the same technique
+     * `keyfilter.widget.js`'s `inputRegEx` mode uses. A single static character class covers every numeric
+     * match mode: a plain number, `"min,max"` (between), and `"v1, v2, ..."` (in list) all fit `[\d\-.,\s]`.
      * @private
-     * @param {JQuery} filter DOM element of a column filter
+     * @param {JQuery} filter INPUT element of the text filter.
      */
-    bindChangeFilter(filter) {
-        var $this = this;
+    bindNumericFilterRestriction(filter) {
+        if (filter.data('filterValueType') !== 'numeric') {
+            return;
+        }
 
-        filter.off('change')
-        .on('change', function() {
-            $this.filter();
+        var lastValidValue = filter.val();
+        filter.on('input.dataTableNumericFilter', function() {
+            if (/^[\d\-.,\s]*$/.test(this.value)) {
+                lastValidValue = this.value;
+            }
+            else {
+                this.value = lastValidValue;
+            }
         });
+    }
+
+    /**
+     * Shows/enables or hides/disables (and clears) the value `<input>` for a column, based on whether the
+     * currently selected match mode requires a value - e.g., "is empty" or "is null" is a complete predicate on
+     * its own and has no value to type.
+     * @private
+     * @param {JQuery} th the column header `<th>` whose value input should be synced
+     * @param {JQuery} selectedLink the currently selected `.ui-menuitem-link` (carries `data-requires-value`/`data-placeholder-hint`)
+     * @param {boolean} [isModeSwitch] true when the caller is reacting to the user actively picking a
+     *   (possibly different) match mode right now - as opposed to the initial/re-init sync pass in
+     *   {@link setupFiltering}, which runs for whatever mode the server already rendered as selected. Only in
+     *   the former case is it safe to blank a picker-driven value input: doing so unconditionally would also
+     *   wipe out a value the server legitimately just rendered - e.g. right after `filter()` triggers a full
+     *   widget re-render for a `partialUpdate="false"` table, which re-runs this same sync pass on fresh markup
+     *   that already has the correct value baked in.
+     */
+    toggleFilterValueInput(th, selectedLink, isModeSwitch) {
+        var requiresValue = !selectedLink.length || selectedLink.data('requiresValue') !== false;
+        // "date"/"dateRange" mean a shadow DatePicker (see DataTableRenderer#encodeDateFilterWidgets()) should
+        // be shown instead of the plain input for this mode - anything else (including unset) keeps today's
+        // plain-input behavior
+        var valueWidget = selectedLink.data('valueWidget');
+        var showDate = requiresValue && valueWidget === 'date';
+        var showDateRange = requiresValue && valueWidget === 'dateRange';
+        var showPlain = requiresValue && !showDate && !showDateRange;
+
+        var valueInput = th.find('.ui-column-filter');
+        // which of the three widgets is active right now, so the *next* call can tell whether the user's
+        // switch actually changed the value's shape (e.g. "lt" -> "between" goes from a single date to a
+        // "date1,date2" pair) or merely picked a different mode that still uses the same one (e.g. "lt" ->
+        // "lte" both stay on the single-date picker) - only the former should discard the existing value
+        var previousWidget = valueInput.data('activeValueWidget');
+        var currentWidget = !requiresValue ? null : (showDate ? 'date' : (showDateRange ? 'dateRange' : 'plain'));
+        valueInput.data('activeValueWidget', currentWidget);
+
+        // `disabled` tracks requiresValue only - this input stays the one thing that actually gets submitted
+        // even while a shadow picker is the VISIBLE widget (see bindDatePickerFilterSync(), which writes the
+        // picker's value into this same input); `ui-helper-hidden` additionally hides it whenever a picker is
+        // shown in its place
+        valueInput.toggleClass('ui-helper-hidden', !showPlain).prop('disabled', !requiresValue);
+        if (!requiresValue || (isModeSwitch && currentWidget !== previousWidget && (showDate || showDateRange))) {
+            // switching to a value-less mode, or - only when the user just actively made this switch AND it
+            // actually changed the active widget - to a picker-driven one: either way, whatever was previously
+            // typed (in a different value shape) must not be silently resubmitted
+            valueInput.val('');
+        }
+
+        th.find('.ui-column-filter-date').toggleClass('ui-helper-hidden', !showDate)
+            .find(':input').prop('disabled', !showDate);
+        th.find('.ui-column-filter-date-range').toggleClass('ui-helper-hidden', !showDateRange)
+            .find(':input').prop('disabled', !showDateRange);
+
+        // e.g., "min,max" for "between" - falls back to whatever placeholder the page originally declared
+        // (or none) once a match mode without its own hint (e.g., "equals") is selected again
+        var placeholderHint = selectedLink.data('placeholderHint');
+        if (placeholderHint) {
+            valueInput.attr('placeholder', placeholderHint);
+        }
+        else {
+            var originalPlaceholder = valueInput.data('originalPlaceholder');
+            if (originalPlaceholder) {
+                valueInput.attr('placeholder', originalPlaceholder);
+            }
+            else {
+                valueInput.removeAttr('placeholder');
+            }
+        }
+
+        if (isModeSwitch) {
+            // the visible value widget just changed shape - a plain input swapped for a date picker, or
+            // nothing at all left to show for a value-less mode - which can put this row's filters back at
+            // different heights
+            this.alignColumnHeaders();
+        }
+    }
+
+    /**
+     * Wires up a column's shadow date/date-range `DatePicker` widgets (see
+     * DataTableRenderer#encodeDateFilterWidgets()), if it has any - a no-op otherwise. On every pick, copies the
+     * picker's own value into the real, always-submitted `.ui-column-filter` input and filters immediately -
+     * mirrors what the match-mode menu's own item-click handler already does, since a date pick is a deliberate
+     * commit, not a keystroke, so this bypasses the keyup-debounce path the plain input uses. The range picker's
+     * own "date1 &lt;rangeSeparator&gt; date2" text is normalized into this codebase's one multi-value wire
+     * format ("date1,date2") first.
+     * @private
+     * @param {JQuery} th the column header `<th>` whose shadow date pickers should be wired up
+     */
+    bindDatePickerFilterSync(th) {
+        var $this = this;
+        var valueInput = th.find('.ui-column-filter');
+
+        var bindOne = function(container, normalizeRange) {
+            if (!container.length) {
+                return;
+            }
+            var pickerInput = container.find('input');
+            var rangeSeparator = container.attr('data-range-separator');
+            pickerInput.off('change.dataTableDatePickerFilter').on('change.dataTableDatePickerFilter', function() {
+                // read from the captured `pickerInput`, not `this`: the underlying DatePicker plugin's own
+                // init "adopts" any pre-existing change handler on the input (to preserve a plain onchange="..."
+                // attribute) by capturing it, unbinding everything via a namespace-less .off('change'), then
+                // re-invoking the captured handler later with `this` rebound to the WIDGET INSTANCE, not the
+                // DOM element - `this.value` would then read the widget's internal Date object instead of the
+                // input's displayed string
+                var value = pickerInput.val();
+                if (normalizeRange && rangeSeparator) {
+                    value = value.split(' ' + rangeSeparator + ' ').join(',');
+                }
+                if (valueInput.val() === value) {
+                    return;
+                }
+                valueInput.val(value);
+                $this.filter();
+            });
+        };
+
+        bindOne(th.find('.ui-column-filter-date'), false);
+        bindOne(th.find('.ui-column-filter-date-range'), true);
     }
 
     /**
@@ -2857,7 +3352,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     /**
      * Converts a row specifier to the row element. The row specifier is either a row index or the row element itself.
      *
-     * __In case this DataTable has got expandable rows, please not that a new table row is created for each expanded row.__
+     * __In case this DataTable has got expandable rows, please note that a new table row is created for each expanded row.__
      * This may result in the given index not pointing to the intended row.
      * @param {PrimeFaces.widget.DataTable.RowSpecifier} r The row to convert.
      * @return {JQuery} The row, or an empty JQuery instance of no row was found.
@@ -3797,9 +4292,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Finds the meta data for a given cell.
-     * @param {JQuery} cell A cell for which to get the meta data.
-     * @return {string} The meta data of the given cell or NULL if not found
+     * Finds the metadata for a given cell.
+     * @param {JQuery} cell A cell for which to get the metadata.
+     * @return {string} The metadata of the given cell or NULL if not found
      */
     getCellMeta(cell) {
         var rowMeta = this.getRowMeta(cell.closest('tr')),
@@ -4118,7 +4613,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * When the users clicks on an editable cell, runs the AJAX request to show the inline editor for the given cell.
+     * When the user clicks on an editable cell, runs the AJAX request to show the inline editor for the given cell.
      * @private
      * @param {JQuery} cell The cell to switch to edit mode.
      */
@@ -4484,6 +4979,39 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     /**
      * Clears all table filters and shows all rows that may have been hidden by filters.
      */
+    /**
+     * Resets a single column's filter match-mode picker back to the column's own configured default: clears
+     * the value input (and the shadow single/range date pickers - see
+     * DataTableRenderer#encodeDateFilterWidgets() - via their own `change` handler in bindDatePickerFilterSync(),
+     * so their internal state, not just their displayed text, stays in sync), then re-selects the default mode.
+     * Does not itself trigger a filter() round trip - callers decide when (clearFilters() resets every column
+     * first; the per-column "Clear" menu item resets just this one, right before filtering).
+     * @private
+     * @param {JQuery} icon the `.ui-column-filter-mode-icon` trigger button for the column to reset
+     */
+    resetColumnFilter(icon) {
+        var $this = this;
+        var th = icon.closest('th');
+        var hiddenInput = th.find('.ui-column-filter-mode');
+        var menu = $this.getFilterMatchModeMenu(icon);
+        // `[data-default="true"]` marks the column's own configured default - not necessarily the first
+        // item in the list (see the identical note in updateFilterMatchModeIconState())
+        var defaultLink = menu.find('.ui-menuitem-link[data-default="true"]');
+
+        th.find('.ui-column-filter:not(:disabled):not([readonly])').val('');
+        th.find('.ui-column-filter-date input, .ui-column-filter-date-range input').val('').trigger('change');
+
+        // .attr(), not .data() - see the identical note in bindFilterMatchModeMenu()
+        hiddenInput.val(defaultLink.attr('data-match-mode'));
+        // [data-match-mode] excludes the "Clear" action row's own link, which isn't a selectable mode
+        menu.find('.ui-menuitem-link[data-match-mode]').attr('aria-checked', 'false').parent().removeClass('ui-state-active');
+        defaultLink.attr('aria-checked', 'true').parent().addClass('ui-state-active');
+        // the default may require a value (the common case) even if a value-less one (e.g.
+        // "is empty") was selected before the reset - sync the value input's hidden/disabled state back
+        $this.toggleFilterValueInput(th, defaultLink, true);
+        $this.updateFilterMatchModeIconState(icon, menu, defaultLink);
+    }
+
     clearFilters() {
         var resetInputFields = function(inputFields) {
             inputFields.val('');
@@ -4501,8 +5029,12 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             }
         };
 
-        var standardFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter:not(:disabled):not([readonly])');
-        resetInputFields(standardFilters);
+        // reset each filter match-mode picker (value + mode) back to the column's own configured default
+        var $this = this;
+        var standardFilterModeIcons = this.thead.find('> tr > th.ui-filter-column .ui-column-filter-mode-icon:not(:disabled)');
+        standardFilterModeIcons.each(function() {
+            $this.resetColumnFilter($(this));
+        });
 
         var customFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter');
         customFilters.each(function() {
@@ -5386,7 +5918,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         }, { delay: null });
 
         //filter support
-        this.clone.find('.ui-column-filter').prop('disabled', true);
+        this.clone.find('.ui-column-filter, .ui-column-filter-mode, .ui-column-filter-mode-icon').prop('disabled', true);
 
         // set original state upon loading
         updateStickyHeaderPosition();
@@ -5441,6 +5973,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     reclone() {
         PrimeFaces.utils.cleanseDomElement(this.clone);
         this.clone = this.thead.clone(false);
+        // pre-existing gap: unlike setupStickyHeader()'s initial clone, this rebuild never re-disabled
+        // the placeholder clone's filter/mode elements, leaving them live/interactive again after any resize
+        this.clone.find('.ui-column-filter, .ui-column-filter-mode, .ui-column-filter-mode-icon').prop('disabled', true);
         this.jq.find('.ui-datatable-tablewrapper > table').prepend(this.clone);
     }
 
@@ -5560,7 +6095,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         // see #8027
         // remember the original column index
-        // columns are removed because of grouping and mapping to the header isnt possible anymore in #updateColumnsView
+        // columns are removed because of grouping and mapping to the header is not possible anymore in #updateColumnsView
         if(this.headers && !this.hasColGroup()) {
             for(var i = 0; i < this.headers.length; i++) {
                 var header = this.headers.eq(i),
@@ -5741,7 +6276,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Computes and saves the resizable state of this DataTable, ie. which columns have got which width. May be used
+     * Computes and saves the resizable state of this DataTable, i.e., which columns have got which width. May be used
      * later to restore the current column width after an AJAX update.
      * @private
      * @param {JQuery} columnHeader Element of a column header of this DataTable.
@@ -5877,7 +6412,19 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * @param {(() => void) | null} callback will be executed after animation is finished. (see jquery fadeToggle method)
      */
     toggleFilter(speed, callback) {
-        this.jq.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
+        var $this = this;
+        // the filter-mode icon is folded into the same toggle group as the value input (rather than
+        // staying always visible) - a live icon next to a hidden value input would otherwise read as a
+        // "phantom active filter with no visible input" once the row itself is toggled off
+        var toggled = this.jq.find(".ui-column-filter, .ui-column-filter-mode-icon, .ui-column-customfilter")
+            .fadeToggle(speed || 0, callback);
+
+        // taking the filter row and the mode icons out of the header (or putting them back) changes what
+        // still fits on a header cell's first line - re-level once every animation has settled, which is
+        // also why this hangs off the shared promise rather than the per-element callback above
+        toggled.promise().done(function() {
+            $this.alignColumnHeaders();
+        });
     }
 
 }

@@ -25,6 +25,9 @@ package org.primefaces.showcase.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Customer implements Serializable {
@@ -39,6 +42,12 @@ public class Customer implements Serializable {
     private CustomerStatus status;
     private int activity;
     private Representative representative;
+
+    // demo fields for the "boolean"/"array"/"time"/"datetime" filterValueType presets
+    private Boolean vip;
+    private List<String> tags;
+    private LocalTime checkInTime;
+    private LocalDateTime lastContact;
 
     public Customer() {
     }
@@ -119,6 +128,38 @@ public class Customer implements Serializable {
         this.representative = representative;
     }
 
+    public Boolean getVip() {
+        return vip;
+    }
+
+    public void setVip(Boolean vip) {
+        this.vip = vip;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public LocalTime getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(LocalTime checkInTime) {
+        this.checkInTime = checkInTime;
+    }
+
+    public LocalDateTime getLastContact() {
+        return lastContact;
+    }
+
+    public void setLastContact(LocalDateTime lastContact) {
+        this.lastContact = lastContact;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -135,11 +176,16 @@ public class Customer implements Serializable {
                     && Objects.equals(country, customer.country)
                     && Objects.equals(date, customer.date)
                     && status == customer.status
-                    && Objects.equals(representative, customer.representative);
+                    && Objects.equals(representative, customer.representative)
+                    && Objects.equals(vip, customer.vip)
+                    && Objects.equals(tags, customer.tags)
+                    && Objects.equals(checkInTime, customer.checkInTime)
+                    && Objects.equals(lastContact, customer.lastContact);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, company, country, date, status, activity, representative);
+        return Objects.hash(id, name, company, country, date, status, activity, representative,
+                vip, tags, checkInTime, lastContact);
     }
 }

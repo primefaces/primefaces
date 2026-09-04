@@ -29,13 +29,16 @@ import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortMeta;
+import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -77,7 +80,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         // build columns filterBy
         forEachColumn(c -> {
-            FilterMeta meta = FilterMeta.of(context, getVar(), c, isFilterNormalize());
+            FilterMeta meta = FilterMeta.of(context, this, c, isFilterNormalize());
             if (meta != null) {
                 filterBy.put(meta.getColumnKey(), meta);
             }
@@ -179,7 +182,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         }
 
         // lazy init - happens in cases where the column is initially not rendered
-        FilterMeta f = FilterMeta.of(context, getVar(), column, isFilterNormalize());
+        FilterMeta f = FilterMeta.of(context, this, column, isFilterNormalize());
         if (f != null) {
             filterBy.put(f.getColumnKey(), f);
         }
@@ -197,7 +200,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             String componentIdPrefix = ((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY;
             String filterValue = params.entrySet().stream()
                     .filter(e -> e.getKey() != null && e.getKey().startsWith(componentIdPrefix))
-                    .map(e -> e.getValue())
+                    .map(Map.Entry::getValue)
                     .findFirst().orElse(null);
             globalFilter.setFilterValue(filterValue);
         }
@@ -222,14 +225,52 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 String valueHolderClientId = column instanceof DynamicColumn
                         ? column.getContainerClientId(context) + separator + "filter"
                         : column.getClientId(context) + separator + "filter";
-                filterValue = params.get(valueHolderClientId);
+                String rawFilterValue = params.get(valueHolderClientId);
 
-                try {
-                    // if no custom filter provided and conversion necessary, use UIColumn#converter instead
-                    filterValue = ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), filterValue);
+                // resolve the (possibly just-switched) match mode BEFORE converting the raw value below -
+                // "in list"/"between" need each comma-separated token converted individually, not the whole
+                // string as a single value
+                if (filterMeta.isMatchModeSelectable()) {
+                    String matchModeClientId = column instanceof DynamicColumn
+                            ? column.getContainerClientId(context) + separator + "filterMatchMode"
+                            : column.getClientId(context) + separator + "filterMatchMode";
+                    String submittedMatchMode = params.get(matchModeClientId);
+
+                    // only ever accept a match mode the page author explicitly allowed for this column
+                    filterMeta.getMatchModeOptions().stream()
+                            .filter(mode -> mode.operator().equals(submittedMatchMode))
+                            .findFirst()
+                            .ifPresent(mode -> {
+                                filterMeta.setMatchMode(mode);
+                                filterMeta.setConstraint(FilterConstraints.of(mode));
+                            });
                 }
-                catch (ConverterException ex) {
-                    filterValue = null;
+
+                MatchMode matchMode = filterMeta.getMatchMode();
+                if (matchMode == MatchMode.IN || matchMode == MatchMode.NOT_IN
+                        || matchMode == MatchMode.CONTAINS_ANY || matchMode == MatchMode.CONTAINS_ALL
+                        || matchMode == MatchMode.CONTAINS_NONE) {
+                    filterValue = convertMultiValueFilter(context, column, rawFilterValue, false);
+                }
+                else if (matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN) {
+                    filterValue = convertMultiValueFilter(context, column, rawFilterValue, true);
+                }
+                else if (matchMode == MatchMode.LAST_N_DAYS || matchMode == MatchMode.NEXT_N_DAYS
+                        || matchMode == MatchMode.RELATIVE_DATE
+                        || matchMode == MatchMode.LAST_N_MINUTES || matchMode == MatchMode.NEXT_N_MINUTES
+                        || matchMode == MatchMode.LAST_N_HOURS || matchMode == MatchMode.NEXT_N_HOURS) {
+                    // the typed value is a plain count (days/minutes/hours), not a date - the column's
+                    // converter (e.g., jakarta.faces.DateTime) would reject it, so parse it as an Integer directly
+                    filterValue = parseIntegerFilter(rawFilterValue);
+                }
+                else {
+                    try {
+                        // if no custom filter provided and conversion necessary, use UIColumn#converter instead
+                        filterValue = ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), rawFilterValue);
+                    }
+                    catch (ConverterException ex) {
+                        filterValue = null;
+                    }
                 }
             }
 
@@ -249,6 +290,70 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
             return true;
         });
+    }
+
+    /**
+     * Converts a comma-separated raw filter value (e.g., {@code "3, 5, 11"} for "in list"/"not in list"/"contains
+     * any"/"contains all"/"contains none", or {@code "3,11"} for "between"/"not between") into a {@link List},
+     * converting each token individually through the column's converter - the whole string can't be converted
+     * as a single value the way a plain "equals"/"greater than" filter is.
+     *
+     * @param requireExactlyTwo {@code true} for "between"/"not between" ({@link org.primefaces.model.filter.BetweenFilterConstraint}
+     *                          requires exactly 2 non-null tokens); {@code false} for every other multi-value
+     *                          mode (any number of tokens, an unconvertible one is simply skipped)
+     * @return the converted values as a {@link List}, or {@code null} if the raw value is blank, or (when
+     *         {@code requireExactlyTwo}) doesn't yet resolve to exactly 2 convertible tokens - e.g., while the
+     *         user is still typing the second value
+     */
+    default Object convertMultiValueFilter(FacesContext context, UIColumn column, String rawFilterValue, boolean requireExactlyTwo) {
+        if (LangUtils.isBlank(rawFilterValue)) {
+            return null;
+        }
+
+        List<String> tokens = Arrays.stream(rawFilterValue.split(","))
+                .map(String::trim)
+                .filter(LangUtils::isNotBlank)
+                .collect(Collectors.toList());
+
+        if (requireExactlyTwo && tokens.size() != 2) {
+            return null;
+        }
+
+        List<Object> values = new ArrayList<>();
+        for (String token : tokens) {
+            try {
+                values.add(ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), token));
+            }
+            catch (ConverterException ex) {
+                if (requireExactlyTwo) {
+                    return null;
+                }
+                // "in list"/"not in list" - skip a token that fails to convert, e.g., while still being typed
+            }
+        }
+
+        if (requireExactlyTwo) {
+            return values.size() == 2 ? values : null;
+        }
+        return values.isEmpty() ? null : values;
+    }
+
+    /**
+     * Parses a raw filter value as a plain {@link Integer}, for the date/time match modes ("last/next N
+     * days/minutes/hours", "relative date") whose typed value is a count rather than a date. Returns {@code null}
+     * (inactive filter) for blank or unparsable input, e.g., while the user is still typing.
+     */
+    default Object parseIntegerFilter(String rawFilterValue) {
+        if (LangUtils.isBlank(rawFilterValue)) {
+            return null;
+        }
+
+        try {
+            return Integer.valueOf(rawFilterValue.trim());
+        }
+        catch (NumberFormatException ex) {
+            return null;
+        }
     }
 
     default Object getFilterValue(UIColumn column) {
@@ -295,6 +400,17 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     @Property(defaultValue = "false",
             description = "Defines if filtering would be done using normalized values (accents will be removed from characters).")
     boolean isFilterNormalize();
+
+    /**
+     * The table-wide default for {@link UIColumn#getFilterValueType()}, applied to every filterable column that
+     * doesn't declare one itself - see {@link FilterMeta#resolveFilterValueType(FacesContext, UITable, UIColumn)}
+     * for the full precedence. Tables that don't render the match-mode picker simply never override this.
+     *
+     * @return the table-level filter value type, or {@code null} when none is configured
+     */
+    default String getFilterValueType() {
+        return null;
+    }
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
         Map<String, SortMeta> sortBy = new LinkedHashMap<>();
@@ -561,12 +677,12 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     /**
-     * Recalculates filteredValue after adding, updating or removing object to/from a filtered UITable.
+     * Recalculates filteredValue after adding, updating, or removing an object to/from a filtered UITable.
      */
     void filterAndSort();
 
     /**
-     * Resets all column related state after adding/removing/moving columns.
+     * Resets all column-related state after adding/removing/moving columns.
      */
     default void resetColumns() {
         setColumns(null);

@@ -31,12 +31,15 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.feature.DataTableFeature;
 import org.primefaces.component.datatable.feature.DataTableFeatures;
+import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.event.data.PostRenderEvent;
 import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
@@ -65,7 +68,10 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.DateTimeConverter;
 import jakarta.faces.render.FacesRenderer;
+import jakarta.faces.render.Renderer;
 
 @FacesRenderer(rendererType = DataTable.DEFAULT_RENDERER, componentFamily = DataTable.COMPONENT_FAMILY)
 public class DataTableRenderer extends DataRenderer<DataTable> {
@@ -129,7 +135,12 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         if (!component.loadLazyDataIfEnabled()) {
-            if (component.isFilteringCurrentlyActive()) {
+            // full-update (partialUpdate="false") requests to defer filtering to this deferred path rather than
+            // FilterFeature#encode() (see that method's comment) - unlike that path, gating solely on
+            // "isFilteringCurrentlyActive" isn't enough: it turns false the moment the last active filter is
+            // cleared, which would skip the recomputing entirely and leave the previously filtered (now stale)
+            // data/filteredValue behind instead of resetting it back to the full, unfiltered list
+            if (component.isFilteringCurrentlyActive() || component.isFullUpdateRequest(context)) {
                 DataTableFeatures.filterFeature().filter(context, component);
             }
 
@@ -315,7 +326,25 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             encodeSortableHeaderOnReflow(context, table);
         }
 
-        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
+        // the button needs the header area to render even for a table with no header facet of its own -
+        // encodeFacet() alone wouldn't render anything in that case, so it's inlined here rather than reused
+        boolean showClearFiltersButton = table.isClearFiltersButton();
+        UIComponent headerFacet = table.getHeader();
+        boolean hasHeaderFacet = FacetUtils.shouldRenderFacet(headerFacet, table.isRenderEmptyFacets());
+        if (showClearFiltersButton || hasHeaderFacet) {
+            writer.startElement("div", null);
+            // sharing one flex row with the facet content only makes sense when there's actually a facet to
+            // share it with - a lone button (no facet) stays exactly as it was
+            writer.writeAttribute("class", DataTable.HEADER_CLASS
+                    + (showClearFiltersButton && hasHeaderFacet ? " " + DataTable.HEADER_WITH_CLEAR_FILTERS_CLASS : ""), null);
+            if (showClearFiltersButton) {
+                encodeClearFiltersButton(context, table);
+            }
+            if (hasHeaderFacet) {
+                headerFacet.encodeAll(context);
+            }
+            writer.endElement("div");
+        }
 
         if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, table, "top");
@@ -801,6 +830,160 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 }
             }
         }
+
+        // the filter match-mode picker (icon + overlay menu) sits next to the sort icons in the header,
+        // rather than as a dropdown competing with the filter value input for space in a narrow column
+        if (component.isColumnFilterable(context, column)) {
+            String filterValueType = FilterMeta.resolveFilterValueType(context, component, column);
+            List<MatchMode> matchModeOptions = FilterMeta.resolveMatchModeOptions(context, component, column);
+            if (!matchModeOptions.isEmpty()) {
+                encodeFilterMatchModeMenu(context, component, column, matchModeOptions, filterValueType);
+            }
+        }
+    }
+
+    /**
+     * Renders the filter match-mode picker for a column: a hidden {@code <input>} carrying the currently selected
+     * operator (same id/name pattern the old {@code <select>} used, so {@link org.primefaces.component.api.UITable}'s
+     * request-parameter resolution needs no changes), a trigger {@code <button>} icon (filled once a mode other
+     * than the column's own configured default is selected, outline otherwise), and an overlay {@code <ul>} menu
+     * listing every mode - relocated to {@code document.body} client-side to escape scrollable/frozen header
+     * clipping.
+     */
+    protected void encodeFilterMatchModeMenu(FacesContext context, DataTable component, UIColumn column,
+            List<MatchMode> matchModeOptions, String filterValueType) throws IOException {
+
+        ResponseWriter writer = context.getResponseWriter();
+        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+        String matchModeId = column.getContainerClientId(context) + separator + "filterMatchMode";
+        String menuId = matchModeId + "_menu";
+        MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
+        // the column's own configured default - same resolution FilterMeta#of() uses - not just
+        // matchModeOptions.get(0): a numeric column's list always starts with "Equals", but its actual
+        // configured default (via filterMatchMode, e.g. "gt") is often a different, later entry in that list,
+        // and comparing against the raw list order would spuriously mark it "active" on a fresh, untouched load
+        MatchMode columnDefault = matchModeOptions.contains(MatchMode.of(column.getFilterMatchMode()))
+                ? MatchMode.of(column.getFilterMatchMode())
+                : matchModeOptions.get(0);
+        // filled once the user has picked a mode other than the column's own default, outline while still on
+        // the untouched default - e.g., the boolean preset's "All" placeholder is always the configured default,
+        // so choosing it never fills the icon, while any of "True"/"False"/"Is Null"/"Is Not Null" does
+        boolean active = selected != columnDefault;
+
+        // "date"/"time"/"datetime" render the 6 shared comparators as "Is"/"Before"/"After"/...; "enum" renders
+        // equals/notEquals/in/notIn as "Is"/"Is Not"/"Is Any Of"/"Is None Of" - see resolveMatchModeMessageKey()
+        String trimmedFilterValueType = filterValueType == null ? null : filterValueType.trim();
+        boolean dateStyleLabels = "date".equals(trimmedFilterValueType) || "time".equals(trimmedFilterValueType)
+                || "datetime".equals(trimmedFilterValueType);
+        boolean enumStyleLabels = "enum".equals(trimmedFilterValueType);
+        String selectedLabel = MessageFactory.getMessage(context, resolveMatchModeMessageKey(selected, dateStyleLabels, enumStyleLabels));
+
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", matchModeId, null);
+        writer.writeAttribute("name", matchModeId, null);
+        writer.writeAttribute("value", selected.operator(), null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLASS, null);
+        writer.endElement("input");
+
+        writer.startElement("button", null);
+        writer.writeAttribute("type", "button", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_ICON_CLASS
+                + (active ? " " + DataTable.COLUMN_FILTER_MODE_ICON_ACTIVE_CLASS : ""), null);
+        writer.writeAttribute("aria-haspopup", "menu", null);
+        writer.writeAttribute("aria-expanded", "false", null);
+        writer.writeAttribute("aria-controls", menuId, null);
+        writer.startElement("span", null);
+        writer.writeAttribute("class", active ? DataTable.FILTER_ICON_ACTIVE_CLASS : DataTable.FILTER_ICON_CLASS, null);
+        writer.endElement("span");
+        writer.endElement("button");
+
+        // the active mode's own symbol, shown as text beside the trigger button above (only while active) so a
+        // reader can tell which kind of filter is applied to this column without opening the menu - kept in
+        // sync with the selected mode by datatable.widget.js#updateFilterMatchModeIconState(), the same place
+        // that toggles the trigger button's filled/outline state. title carries the mode's full label, since
+        // the symbol alone isn't self-explanatory.
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_ACTIVE_ICON_CLASS
+                + (active ? "" : " ui-helper-hidden"), null);
+        writer.writeAttribute("title", selectedLabel, null);
+        writer.writeText(selected.symbol(), null);
+        writer.endElement("span");
+
+        writer.startElement("ul", null);
+        writer.writeAttribute("id", menuId, null);
+        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENU_CLASS, null);
+
+        // "clear this column's filter" action, always the first item - resets the value input(s) and match
+        // mode back to the column's own default, then re-filters (see datatable.widget.js#resetColumnFilter(),
+        // wired from the click handler on this item's own link class)
+        writer.startElement("li", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLEAR_MENUITEM_CLASS, null);
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_CLEAR_LINK_CLASS, null);
+        writer.writeAttribute("role", "menuitem", null);
+        writer.writeAttribute("tabindex", "-1", null);
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS + " " + DataTable.CLEAR_FILTER_ICON_CLASS, null);
+        writer.writeAttribute("title", DataTable.CLEAR_FILTER_SYMBOL, null);
+        writer.endElement("span");
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_LABEL_CLASS, null);
+        writer.writeText(MessageFactory.getMessage(context, "primefaces.datatable.filterMatchMode.CLEAR"), null);
+        writer.endElement("span");
+        writer.endElement("a");
+        writer.endElement("li");
+
+        for (MatchMode matchMode : matchModeOptions) {
+            boolean isSelected = matchMode == selected;
+            String label = MessageFactory.getMessage(context, resolveMatchModeMessageKey(matchMode, dateStyleLabels, enumStyleLabels));
+
+            writer.startElement("li", null);
+            writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_CLASS + (isSelected ? " ui-state-active" : ""), null);
+            writer.startElement("a", null);
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_LINK_CLASS, null);
+            writer.writeAttribute("role", "menuitemradio", null);
+            writer.writeAttribute("aria-checked", String.valueOf(isSelected), null);
+            writer.writeAttribute("tabindex", "-1", null);
+            writer.writeAttribute("data-match-mode", matchMode.operator(), null);
+            // read by datatable.widget.js#updateFilterMatchModeIconState() to swap the active-icon badge (see above)
+            // to this mode's own symbol once it's selected, without needing a MatchMode->symbol lookup client-side
+            writer.writeAttribute("data-symbol", matchMode.symbol(), null);
+            if (matchMode == columnDefault) {
+                // read by datatable.widget.js so clearFilters() and the icon's active-state check can find the
+                // column's own configured default without re-deriving it client-side - see the comment above
+                writer.writeAttribute("data-default", "true", null);
+            }
+            // read by datatable.widget.js to hide/disable the value input for a value-less match mode (e.g., "is empty")
+            // written as a literal "true"/"false" string - a Boolean value is special-cased by ResponseWriter
+            // impls as a plain HTML boolean attribute (name="name" if true, omitted otherwise)
+            writer.writeAttribute("data-requires-value", String.valueOf(matchMode.requiresValue()), null);
+            if (matchMode.placeholderHint() != null) {
+                // read by datatable.widget.js to hint the expected value syntax, e.g., "min,max" for "between"
+                writer.writeAttribute("data-placeholder-hint", matchMode.placeholderHint(), null);
+            }
+            String valueWidget = resolveFilterValueWidget(matchMode, filterValueType);
+            if (valueWidget != null) {
+                // read by toggleFilterValueInput() of datatable.widget.js to decide which of the plain input, the
+                // shadow single-date picker, or the shadow range-date picker to show for the newly selected mode
+                writer.writeAttribute("data-value-widget", valueWidget, null);
+            }
+            writer.startElement("span", null);
+            writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_ICON_CLASS, null);
+            writer.writeText(matchMode.symbol(), null);
+            writer.endElement("span");
+            writer.startElement("span", null);
+            writer.writeAttribute("class", DataTable.COLUMN_FILTER_MODE_MENUITEM_LABEL_CLASS, null);
+            writer.writeText(label, null);
+            writer.endElement("span");
+            writer.endElement("a");
+            writer.endElement("li");
+        }
+
+        writer.endElement("ul");
     }
 
     protected void encodeFilter(FacesContext context, DataTable component, UIColumn column) throws IOException {
@@ -832,15 +1015,200 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         String filterId = column.getContainerClientId(context) + separator + "filter";
         Object filterValue = findFilterValueForColumn(context, component, column, filterId);
         String filterStyleClass = column.getFilterStyleClass();
-        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
+
+        String filterValueType = FilterMeta.resolveFilterValueType(context, component, column);
+        List<MatchMode> matchModeOptions = FilterMeta.resolveMatchModeOptions(context, component, column);
+        MatchMode selected = matchModeOptions.isEmpty() ? null : findFilterMatchModeForColumn(component, column, matchModeOptions);
+        // the match-mode picker itself (icon + overlay menu) is rendered in the header, next to the sort icons -
+        // see encodeFilterMatchModeMenu() - so this filter row is always just the value input, full width
+        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected, filterValueType);
+        encodeDateFilterWidgets(context, column, filterId, filterValueType);
+    }
+
+    /**
+     * For a "date"/"time"/"datetime" column, renders two hidden-by-default shadow {@code DatePicker} widgets
+     * alongside the plain value input - a single-date one and a range one - so a real calendar picker is
+     * available for single-value comparators ("Is"/"Before"/"After"/...) and for "Between"/"Not Between"
+     * respectively. Both always exist from first paint (see {@link #encodeDatePickerFilterWidget}'s Javadoc for
+     * why); {@code datatable.widget.js}'s {@code toggleFilterValueInput()} shows/hides exactly one of the plain
+     * input or these two pickers based on the currently selected match mode's {@code data-value-widget}.
+     * <p>
+     * Only renders if the column's own {@code converter} resolves to a {@link DateTimeConverter} with a
+     * non-blank pattern - the exact same requirement {@link FilterMeta#resolveFilterValueType} already applies
+     * before ever offering the "date"/"time"/"datetime" preset in the first place, so this never fires without
+     * one. No such converter (or not a date-ish column at all) leaves today's plain-input-only behavior
+     * untouched - a safe, non-regressing fallback, not a new failure mode.
+     */
+    protected void encodeDateFilterWidgets(FacesContext context, UIColumn column, String filterId, String filterValueType) throws IOException {
+        String trimmed = filterValueType == null ? null : filterValueType.trim();
+        boolean dateLike = "date".equals(trimmed) || "time".equals(trimmed) || "datetime".equals(trimmed);
+        if (!dateLike) {
+            return;
+        }
+
+        Converter<?> converter = ComponentUtils.toConverter(context, column.getConverter());
+        if (!(converter instanceof DateTimeConverter)) {
+            return;
+        }
+        String pattern = ((DateTimeConverter) converter).getPattern();
+        if (LangUtils.isBlank(pattern)) {
+            return;
+        }
+
+        boolean timeOnly = "time".equals(trimmed);
+        encodeDatePickerFilterWidget(context, filterId, pattern, false, timeOnly);
+        encodeDatePickerFilterWidget(context, filterId, pattern, true, timeOnly);
+    }
+
+    /**
+     * Renders one shadow {@code DatePicker}, wrapped in a {@code <span>} carrying
+     * {@link DataTable#COLUMN_FILTER_DATE_CLASS}/{@link DataTable#COLUMN_FILTER_DATE_RANGE_CLASS} (hidden by
+     * default - the client toggles this per the currently selected match mode). The {@code DatePicker} is
+     * created programmatically and rendered by directly invoking its own renderer - the same "borrow a real
+     * component's renderer for a transient, never-added-to-the-tree instance" technique {@code Badge#create}/
+     * {@code Badge#getRenderer} already use elsewhere in this codebase - rather than hand-emitting markup and a
+     * {@code PrimeFaces.cw(...)} script text, so this stays correct automatically as {@code DatePickerRenderer}
+     * evolves. Both the single and range variant are rendered unconditionally (not just the one matching the
+     * column's current match mode): a live {@code DatePicker} widget cannot switch {@code selectionMode} after
+     * init, and for the common {@code partialUpdate=true} table configuration, switching match mode never
+     * re-renders the header row at all (only the tbody) - so the client alone decides which of these to show,
+     * with no help from a subsequent server render, and both variants must already exist for that to work.
+     * <p>
+     * Never added to the component tree, so {@code getClientId()} returns {@code getId()} verbatim (no
+     * {@code NamingContainer} prefixing) - {@code filterId} itself isn't a legal component id (it contains the
+     * naming-container separator character), so it's sanitized first.
+     */
+    protected void encodeDatePickerFilterWidget(FacesContext context, String filterId, String pattern, boolean range, boolean timeOnly)
+            throws IOException {
+
+        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+        String id = filterId.replace(separator, "-") + (range ? "-range" : "-single");
+
+        DatePicker datePicker = (DatePicker) context.getApplication().createComponent(DatePicker.COMPONENT_TYPE);
+        datePicker.setId(id);
+        datePicker.setPattern(pattern);
+        datePicker.setSelectionMode(range ? "range" : "single");
+        if (timeOnly) {
+            datePicker.setTimeOnly(true);
+        }
+
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("span", null);
+        writer.writeAttribute("class", range ? DataTable.COLUMN_FILTER_DATE_RANGE_CLASS : DataTable.COLUMN_FILTER_DATE_CLASS, null);
+        if (range) {
+            // read by datatable.widget.js to normalize this picker's own "date1 <separator> date2" rendering
+            // into the codebase's one universal multi-value wire format ("date1,date2") before copying it into
+            // the real filter input - see bindDatePickerFilterSync()
+            writer.writeAttribute("data-range-separator", datePicker.getRangeSeparator(), null);
+        }
+
+        Renderer renderer = context.getRenderKit().getRenderer(datePicker.getFamily(), datePicker.getRendererType());
+        renderer.encodeEnd(context, datePicker);
+
+        writer.endElement("span");
+    }
+
+    /**
+     * Resolves which value-input widget the client should show for a given match mode: {@code null} for a
+     * value-less mode (e.g. "is empty" - the input stays hidden, unchanged from today), {@code "numeric"} for a
+     * plain (optionally digit-restricted) text input - including the day/minute/hour COUNT modes (e.g.
+     * "last N days") even on a "date"/"time"/"datetime" column, since those take a number, not a date -
+     * {@code "date"} for a single-value comparator on a date-ish column, or {@code "dateRange"} for
+     * "between"/"not between" on a date-ish column. Any other combination (numeric/text/enum/array/boolean) keeps
+     * today's plain input, signalled here as {@code null} (the same as value-less) since the client only needs to
+     * distinguish "show the plain input" from "show one of the shadow date pickers".
+     */
+    protected String resolveFilterValueWidget(MatchMode matchMode, String filterValueType) {
+        if (!matchMode.requiresValue()) {
+            return null;
+        }
+
+        switch (matchMode) {
+            case LAST_N_DAYS:
+            case NEXT_N_DAYS:
+            case RELATIVE_DATE:
+            case LAST_N_MINUTES:
+            case NEXT_N_MINUTES:
+            case LAST_N_HOURS:
+            case NEXT_N_HOURS:
+                return "numeric";
+            default:
+                break;
+        }
+
+        String trimmed = filterValueType == null ? null : filterValueType.trim();
+        boolean dateLike = "date".equals(trimmed) || "time".equals(trimmed) || "datetime".equals(trimmed);
+        if (dateLike) {
+            return matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN ? "dateRange" : "date";
+        }
+
+        return null;
+    }
+
+    /**
+     * Resolves the message key for a match-mode dropdown option's label. The 6 comparison modes are shared with
+     * the "numeric" preset ("Equals"/"Less Than"/...); the "date"/"time"/"datetime" presets render them as
+     * "Is"/"Before"/"After"/... instead, via a separate {@code date.*} message key (the wording reads naturally
+     * for a time-of-day comparison too, so there's no need for separate "time."/"datetime." keys). The "enum"
+     * preset similarly renders equals/notEquals/in/notIn as "Is"/"Is Not"/"Is Any Of"/"Is None Of" via a
+     * separate {@code enum.*} message key.
+     */
+    protected String resolveMatchModeMessageKey(MatchMode matchMode, boolean dateStyleLabels, boolean enumStyleLabels) {
+        if (dateStyleLabels) {
+            switch (matchMode) {
+                case EQUALS:
+                case NOT_EQUALS:
+                case LESS_THAN:
+                case LESS_THAN_EQUALS:
+                case GREATER_THAN:
+                case GREATER_THAN_EQUALS:
+                    return DataTable.FILTER_MATCH_MODE_LABEL_PREFIX + "date." + matchMode.name();
+                default:
+                    break;
+            }
+        }
+
+        if (enumStyleLabels) {
+            switch (matchMode) {
+                case EQUALS:
+                case NOT_EQUALS:
+                case IN:
+                case NOT_IN:
+                    return DataTable.FILTER_MATCH_MODE_LABEL_PREFIX + "enum." + matchMode.name();
+                default:
+                    break;
+            }
+        }
+
+        return DataTable.FILTER_MATCH_MODE_LABEL_PREFIX + matchMode.name();
+    }
+
+    protected MatchMode findFilterMatchModeForColumn(DataTable component, UIColumn column, List<MatchMode> matchModeOptions) {
+        if (!component.isReset()) {
+            FilterMeta filterMeta = component.getFilterByAsMap().get(column.getColumnKey());
+            if (filterMeta != null && matchModeOptions.contains(filterMeta.getMatchMode())) {
+                return filterMeta.getMatchMode();
+            }
+        }
+
+        return matchModeOptions.get(0);
     }
 
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
-        String filterId, String filterStyleClass, Object filterValue) throws IOException {
+        String filterId, String filterStyleClass, Object filterValue, MatchMode selected, String filterValueType) throws IOException {
+
+        boolean requiresValue = selected == null || selected.requiresValue();
+        String placeholderHint = selected == null ? null : selected.placeholderHint();
 
         filterStyleClass = filterStyleClass == null
                            ? DataTable.COLUMN_INPUT_FILTER_CLASS
                            : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
+        if (!requiresValue) {
+            // the selected match mode (e.g., "is empty") is itself the entire predicate - no value to type
+            filterStyleClass += " ui-helper-hidden";
+        }
+
+        boolean numeric = "numeric".equals(filterValueType == null ? null : filterValueType.trim());
 
         writer.startElement("input", null);
         writer.writeAttribute("id", filterId, null);
@@ -849,6 +1217,18 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("class", filterStyleClass, null);
         writer.writeAttribute("value", filterValue, null);
         writer.writeAttribute("autocomplete", "off", null);
+
+        if (numeric) {
+            // read by datatable.widget.js to reject non-numeric-looking input as the user types/pastes - a
+            // static character class covers every numeric match mode, from a plain number up to "min,max"
+            // (between) and "v1, v2, ..." (in list)
+            writer.writeAttribute("data-filter-value-type", "numeric", null);
+            writer.writeAttribute("inputmode", "decimal", null);
+        }
+
+        if (!requiresValue) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         if (disableTabbing) {
             writer.writeAttribute("tabindex", "-1", null);
@@ -862,7 +1242,12 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
         }
 
-        if (LangUtils.isNotBlank(column.getFilterPlaceholder())) {
+        if (placeholderHint != null) {
+            // e.g., "min,max" for "between" - takes priority over the page author's filterPlaceholder
+            // while such a match mode is selected, since the expected value syntax changes
+            writer.writeAttribute("placeholder", placeholderHint, null);
+        }
+        else if (LangUtils.isNotBlank(column.getFilterPlaceholder())) {
             writer.writeAttribute("placeholder", column.getFilterPlaceholder(), null);
         }
 
@@ -1169,8 +1554,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     }
 
     protected void encodeSummaryRow(FacesContext context, List<SummaryRow> summaryRows, SortMeta sort) throws IOException {
-        for (int i = 0; i < summaryRows.size(); i++) {
-            SummaryRow summaryRow = summaryRows.get(i);
+        for (SummaryRow summaryRow : summaryRows) {
             MethodExpression me = summaryRow.getListener();
             if (me != null) {
                 me.invoke(context.getELContext(), new Object[]{sort.getSortBy()});
@@ -1266,7 +1650,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         // the map is empty unless resizable/toggleable/reorderable columns are used; the isEmpty() check
-        // skips the eagerly-evaluated column.getColumnKey(table, rowIndex) argument (context lookup + concat
+        // skips the eagerly evaluated column.getColumnKey(table, rowIndex) argument (context lookup + concat
         // + String.replace) on every cell in the common case
         Map<String, ColumnMeta> columnMetaMap = table.getColumnMeta();
         ColumnMeta columnMeta = columnMetaMap.isEmpty() ? null : columnMetaMap.get(column.getColumnKey(table, rowIndex));
@@ -1339,7 +1723,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     }
 
     /**
-     * Encodes dynamic column. Allows to override default behavior.
+     * Encodes dynamic column. Allows overriding default behavior.
      */
     protected void encodeDynamicCell(FacesContext context, DataTable table, UIColumn column) throws IOException {
         column.encodeAll(context);
@@ -1456,6 +1840,32 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         facet.encodeAll(context);
 
         writer.endElement("div");
+    }
+
+    /**
+     * Renders the built-in "Clear Filters" button (see {@code clearFiltersButton}) as the first child of the
+     * header area, ahead of any developer-declared header facet content.
+     */
+    protected void encodeClearFiltersButton(FacesContext context, DataTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String label = MessageFactory.getMessage(context, "primefaces.datatable.CLEAR_FILTERS");
+
+        writer.startElement("button", null);
+        writer.writeAttribute("type", "button", null);
+        writer.writeAttribute("class", DataTable.CLEAR_FILTERS_BUTTON_CLASS, null);
+        // a plain onclick, not an ajax-guarded call - clearFilters() drives its own filter() round trip
+        writer.writeAttribute("onclick", "PF('" + table.resolveWidgetVar(context) + "').clearFilters();return false;", null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + DataTable.CLEAR_FILTER_ICON_CLASS, null);
+        writer.endElement("span");
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        writer.writeText(label, null);
+        writer.endElement("span");
+
+        writer.endElement("button");
     }
 
     protected void encodeStateHolder(FacesContext context, DataTable component, String id, String value) throws IOException {
@@ -1627,7 +2037,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         Object nextGroupByData;
 
         // An additional check is required to ensure summaryRow will be rendered in case
-        // number of rows of the current page is equals to the number of items in the current group (otherwise, it'll never be rendered)
+        // number of rows of the current page is equal to the number of items in the current group (otherwise, it'll never be rendered)
         // see #9077
         if (loadFirstRowOfNextPage && component.isLazy()) {
             Object nextRowData = component.getLazyDataModel().loadOne(nextRowIndex, component.getActiveSortMeta(), component.getActiveFilterMeta());
