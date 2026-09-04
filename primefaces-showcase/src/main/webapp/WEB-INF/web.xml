@@ -88,6 +88,10 @@
         <param-name>primefaces.FLEX</param-name>
         <param-value>false</param-value>
     </context-param>
+    <context-param>
+        <param-name>primefaces.MULTI_VIEW_STATE_STORE</param-name>
+        <param-value>client-window</param-value>
+    </context-param>
 
     <context-param>
         <param-name>com.sun.faces.numberOfViewsInSession</param-name>
@@ -109,15 +113,6 @@
         <param-name>org.apache.myfaces.EARLY_FLUSH_ENABLED</param-name>
         <param-value>true</param-value>
     </context-param>
-    <context-param>
-        <param-name>org.apache.myfaces.SUPPORT_JSP_AND_FACES_EL</param-name>
-        <param-value>false</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>primefaces.MULTI_VIEW_STATE_STORE</param-name>
-        <param-value>client-window</param-value>
-    </context-param>
 
 <!--    <listener>-->
 <!--        <listener-class>${cdiListener}</listener-class>-->
@@ -125,6 +120,31 @@
     <listener>
         <listener-class>${facesListener}</listener-class>
     </listener>
+
+    <!--
+        Declared here instead of with @WebFilter, because the servlet spec leaves the order of annotated filters
+        undefined and these two have to run in this order: the statistics must also see the requests which the
+        BotFilter then rejects, otherwise the totals no longer show what the limiting saves.
+    -->
+    <filter>
+        <filter-name>Request Stats Filter</filter-name>
+        <filter-class>org.primefaces.showcase.util.RequestStatsFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>Request Stats Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>Bot Filter</filter-name>
+        <filter-class>org.primefaces.showcase.util.BotFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>Bot Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <filter>
         <filter-name>Character Encoding Filter</filter-name>

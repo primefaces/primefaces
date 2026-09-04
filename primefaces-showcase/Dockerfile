@@ -1,4 +1,4 @@
-FROM tomee:10.1.2-jre21-alpine-webprofile
+FROM tomee:10.2.0-jre21-alpine-webprofile
 
 # Install unzip if not already available
 RUN apk add --no-cache unzip curl

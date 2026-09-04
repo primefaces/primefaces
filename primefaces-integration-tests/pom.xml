@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
-        <version>16.0.0-SNAPSHOT</version>
+        <version>16.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -498,7 +498,7 @@
                 <dependency>
                     <groupId>org.glassfish</groupId>
                     <artifactId>jakarta.faces</artifactId>
-                    <version>4.1.14</version>
+                    <version>4.1.15</version>
                 </dependency>
                 <dependency>
                     <groupId>jakarta.enterprise</groupId>
