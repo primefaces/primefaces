@@ -337,13 +337,9 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         cq.select(root).where(criteriaBuilder.equal(root.get(rowKeyField), convertedRowKey));
 
         TypedQuery<T> query = em.createQuery(cq);
-        List<T> results = query.getResultList();
-        if (results.isEmpty()) {
-            return null;
-        }
-        T result = results.get(0);
+        T result = query.getSingleResult();
         if (resultEnricher != null) {
-            resultEnricher.accept(results);
+            resultEnricher.accept(List.of(result));
         }
         return result;
     }
