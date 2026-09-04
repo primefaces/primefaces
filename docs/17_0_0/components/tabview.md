@@ -1,0 +1,130 @@
+# TabView
+
+TabView is a container component to group content in tabs.
+
+## Getting started with the TabView
+TabView requires one more child tab components to display. Titles can also be defined by using
+“title” facet.
+
+```xhtml
+<p:tabView>
+    <p:tab title="Tab One">
+        <h:outputText value="Lorem" />
+    </p:tab>
+    <p:tab title="Tab Two">
+        <h:outputText value="Ipsum" />
+    </p:tab>
+    <p:tab title="Tab Three">
+        <h:outputText value="Dolor" />
+    </p:tab>
+</p:tabView>
+```
+
+> :warning: **Updating a single _tab_ via AJAX is not possible. Please update the whole _tabView_ or a container inside the _tab_!**
+
+## Dynamic Tabs
+There’re two toggleModes in TabView, _non-dynamic_ (default) and _dynamic_.
+By default, all tab contents are rendered to the client. On the other hand in dynamic mode, only the active tab contents
+are rendered and when an inactive/unloaded tab header is selected, content is loaded with AJAX.
+Dynamic mode is handy in reducing page size, since inactive tabs are lazy loaded, pages will load faster. To
+enable dynamic loading, simply set _dynamic_ option to true.
+
+```xhtml
+<p:tabView dynamic="true">
+    //tabs
+</p:tabView>
+```
+
+> :warning: **If you attach `p:ajax event="tabChange"`, please make sure you dont _update_ the TabView or a parent. Otherwise the TabView is broken after re-rendering.**
+
+## Content Caching
+Dynamically loaded Tabs cache their contents by default, by doing so, reactivating a Tab doesn’t result in an AJAX request since contents are cached.
+If you want to reload content of a Tab, each time a Tab is selected, turn off caching by _cache_ to false.
+
+## Effects
+Content transition effects are controlled with _effect_ and _effectDuration_ attributes. EffectDuration
+specifies the speed of the effect, _slow_ , _normal_ (default) and _fast_ are the valid options.
+
+```xhtml
+<p:tabView effect="fade" effectDuration="fast">
+    //tabs
+</p:tabView>
+```
+
+## Dynamic Number of Tabs
+When the tabs to display are not static, use the built-in iteration feature similar to ui:repeat.
+
+```xhtml
+<p:tabView value="#{bean.list}" var="listItem">
+    <p:tab title="#{listItem.propertyA}">
+        <h:outputText value= "#{listItem.propertyB}"/>
+        ...More content
+    </p:tab>
+</p:tabView>
+```
+
+## Orientations
+Four different orientations are available; _top(default)_ , _left_ , _right_ and _bottom_.
+
+```xhtml
+<p:tabView orientation="left">
+    //tabs
+</p:tabView>
+```
+
+## Scrollable Tabs
+Tab headers wrap to the next line in case there is not enough space at header area by default. Using
+scrollable feature, it is possible to keep headers aligned horizontally and use navigation buttons to
+access hidden headers.
+
+```xhtml
+<p:tabView scrollable="true">
+    //tabs
+</p:tabView>
+```
+
+## Actions
+Actions can be added through the `actions` facet. This can be either use globally (on the TabView) or on a specific tab.
+
+## Client Side Callbacks
+TabView has three callbacks for client side. _onTabChange_ is executed when an inactive Tab is
+clicked, _onTabShow_ is executed when an inactive Tab becomes active to be shown and _onTabClose_
+when a closable Tab is closed. All these callbacks receive index parameter as the index of Tab.
+
+```xhtml
+<p:tabView onTabChange="handleTabChange(index)">
+    //tabs
+</p:tabView>
+```
+```js
+function handleTabChange(i) {
+    //i = Index of the new tab
+}
+```
+
+## Client Side API
+Widget: _PrimeFaces.widget.TabView_
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+select(index) | index: Index of tab to display | void | Activates tab with given index
+selectTab(index) | index: Index of tab to display | void | (Deprecated, use select instead) Activates tab with given index
+selectTabById(id, silent) | id: The client ID or expression | boolean | Selects the tab with the given client ID or expression. Returns true if the tab was found and selected, false otherwise.
+disable(index) | index: Index of tab to disable | void | Disables tab with given index
+enable(index) | index: Index of tab to enable | void | Enables tab with given index
+remove(index) | index: Index of tab to remove | void | Removes tab with given index
+reload(index) | index: Index of tab to reload | void | Reloads a dynamic tab with given index even if it was already cached.
+getLength() | - | Number | Returns the number of tabs
+getActiveIndex() | - | Number | Returns index of current tab
+
+## Skinning
+As skinning style classes are global, see the main theming section for more information. Following
+is the list of structural style classes.
+
+| Class | Applies |
+| --- | --- |
+.ui-tabs | Main tabview container element
+.ui-tabs-{orientation} | Orientation specific (top, bottom, righ, left) container.
+.ui-tabs-nav | Main container of tab headers
+.ui-tabs-panel | Each tab container
+.ui-tabs-scrollable | Container element of a scrollable tabview.
