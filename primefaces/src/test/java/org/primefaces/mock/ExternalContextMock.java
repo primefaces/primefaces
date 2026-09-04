@@ -39,6 +39,9 @@ import jakarta.faces.context.ExternalContext;
 public class ExternalContextMock extends ExternalContext {
 
     private Map<String, Object> applicationMap = new HashMap<String, Object>();
+    private Map<String, Object> requestMap = new HashMap<String, Object>();
+    private Map<String, String> requestParameterMap = new HashMap<String, String>();
+    private Map<String, String> requestHeaderMap = new HashMap<String, String>();
 
     @Override
     public void dispatch(String path) throws IOException {
@@ -107,7 +110,7 @@ public class ExternalContextMock extends ExternalContext {
 
     @Override
     public Map<String, String> getRequestHeaderMap() {
-        return null;
+        return requestHeaderMap;
     }
 
     @Override
@@ -127,12 +130,12 @@ public class ExternalContextMock extends ExternalContext {
 
     @Override
     public Map<String, Object> getRequestMap() {
-        return null;
+        return requestMap;
     }
 
     @Override
     public Map<String, String> getRequestParameterMap() {
-        return null;
+        return requestParameterMap;
     }
 
     @Override

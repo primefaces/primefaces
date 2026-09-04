@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core" xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:tree id="tree" value="#{tree008.root}" var="document" widgetVar="tree">
+                <p:treeNode>
+                    <h:outputText value="#{document}" />
+                </p:treeNode>
+            </p:tree>
+
+            <!-- the tree must not leak its var, so this renders empty and not the data of the last node -->
+            <h:outputText id="after" value="after=[#{document}]" />
+
+            <p:commandButton id="buttonUpdate" value="Update" update="@form" />
+
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
