@@ -398,8 +398,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer<DatePicker> {
     }
 
     private String getMinMaxDate(FacesContext context, DatePicker component, Object value, boolean max) {
-        if (value instanceof LocalDate && component.isShowTime()) {
-            LocalDate date = (LocalDate) value;
+        if (value instanceof LocalDate date && component.isShowTime()) {
             value = date.atTime(max ? LocalTime.MAX : LocalTime.MIN);
         }
         return CalendarUtils.getValueAsString(context, component, value);

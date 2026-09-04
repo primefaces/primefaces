@@ -23,9 +23,11 @@
  */
 package org.primefaces.component.export;
 
+import java.io.Serial;
+
 public class PDFOptions implements ExporterOptions {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String facetFontStyle;
 

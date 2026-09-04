@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.datatable;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,7 +51,7 @@ import lombok.Data;
 @Data
 public class DataTable038 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
 
     private boolean _isPopulated;
 

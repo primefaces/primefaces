@@ -124,10 +124,9 @@ public class ComponentUtils {
      * @return              End text
      */
     public static String getValueToRender(FacesContext context, UIComponent component, Object value) {
-        if (component instanceof ValueHolder) {
+        if (component instanceof ValueHolder valueHolder) {
 
-            if (component instanceof EditableValueHolder) {
-                EditableValueHolder input = (EditableValueHolder) component;
+            if (component instanceof EditableValueHolder input) {
                 Object submittedValue = input.getSubmittedValue();
                 PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
 
@@ -142,8 +141,6 @@ public class ComponentUtils {
                     return submittedValue.toString();
                 }
             }
-
-            ValueHolder valueHolder = (ValueHolder) component;
             if (value == UNDEFINED_VALUE) {
                 if (component instanceof HtmlOutputFormat) {
                     value = encodeComponent(component, context);
@@ -259,11 +256,11 @@ public class ComponentUtils {
         if (converter == null) {
             return null;
         }
-        if (converter instanceof Converter) {
-            return (Converter<?>) converter;
+        if (converter instanceof Converter<?> converter1) {
+            return converter1;
         }
-        if (converter instanceof String) {
-            return context.getApplication().createConverter((String) converter);
+        if (converter instanceof String string) {
+            return context.getApplication().createConverter(string);
         }
         throw new FacesException("Unsupported type: " + converter.getClass());
     }
@@ -273,9 +270,9 @@ public class ComponentUtils {
             return;
         }
 
-        if (component instanceof AjaxSource && component.getValueExpression("oncomplete") != null) {
+        if (component instanceof AjaxSource source && component.getValueExpression("oncomplete") != null) {
             PhaseId phaseId = isImmediate(component) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION;
-            component.queueEvent(new DynamicOncompleteEvent(component, (AjaxSource) component, phaseId));
+            component.queueEvent(new DynamicOncompleteEvent(component, source, phaseId));
         }
 
         Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
@@ -375,8 +372,7 @@ public class ComponentUtils {
 
         for (int i = 0; i < component.getChildCount(); i++) {
             UIComponent child = component.getChildren().get(i);
-            if (child.isRendered() && (child instanceof UIParameter)) {
-                UIParameter uiParam = (UIParameter) child;
+            if (child.isRendered() && (child instanceof UIParameter uiParam)) {
 
                 if (!uiParam.isDisable()) {
                     if (params == null) {
@@ -568,7 +564,7 @@ public class ComponentUtils {
         UIComponent parent = component;
         while (null != (parent = parent.getParent())) {
             if (parent instanceof jakarta.faces.component.UIData || isUIRepeat(parent)
-                    || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
+                    || (parent instanceof UITabPanel panel && panel.isRepeating())) {
                 return true;
             }
         }
@@ -602,8 +598,7 @@ public class ComponentUtils {
         char separator = UINamingContainer.getSeparatorChar(context);
         String encodedComponent = fsw.toString();
 
-        if (clonedWriter instanceof CspResponseWriter) {
-            CspResponseWriter cspWriter = (CspResponseWriter) clonedWriter;
+        if (clonedWriter instanceof CspResponseWriter cspWriter) {
             // find all id's to replace
             Matcher matcher = ID_PATTERN.matcher(encodedComponent);
             while (matcher.find()) {
@@ -820,17 +815,17 @@ public class ComponentUtils {
     }
 
     public static boolean isImmediate(UIComponent component) {
-        if (component instanceof ActionSource) {
-            return ((ActionSource) component).isImmediate();
+        if (component instanceof ActionSource source) {
+            return source.isImmediate();
         }
-        else if (component instanceof EditableValueHolder) {
-            return ((EditableValueHolder) component).isImmediate();
+        else if (component instanceof EditableValueHolder holder) {
+            return holder.isImmediate();
         }
-        else if (component instanceof MenuItem) {
-            return ((MenuItem) component).isImmediate();
+        else if (component instanceof MenuItem item) {
+            return item.isImmediate();
         }
-        else if (component instanceof PollBase) {
-            return ((PollBase) component).isImmediate();
+        else if (component instanceof PollBase base) {
+            return base.isImmediate();
         }
         else {
             return false;

@@ -23,11 +23,12 @@
  */
 package org.primefaces.model.filter;
 
+import java.io.Serial;
 import java.util.function.BiPredicate;
 
 public class GreaterThanEqualsFilterConstraint extends ComparableFilterConstraint {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     protected BiPredicate<Comparable, Comparable> getPredicate() {

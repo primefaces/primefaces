@@ -23,13 +23,14 @@
  */
 package org.primefaces.showcase.domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class Customer implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private int id;
     private String name;

@@ -23,12 +23,13 @@
  */
 package org.primefaces.util;
 
+import java.io.Serial;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LimitedSizeHashMap<K, V> extends LinkedHashMap<K, V> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private final int maxSize;
 

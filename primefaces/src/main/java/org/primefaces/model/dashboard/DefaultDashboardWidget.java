@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.dashboard;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,7 +35,7 @@ import java.util.List;
  */
 public class DefaultDashboardWidget implements DashboardWidget, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private List<String> widgets;
     private String style;

@@ -23,12 +23,13 @@
  */
 package org.primefaces.model.timeline;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Comparator;
 
 class TimelineEventComparator implements Comparator<TimelineEvent<?>>, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     public int compare(TimelineEvent<?> a, TimelineEvent<?> b) {

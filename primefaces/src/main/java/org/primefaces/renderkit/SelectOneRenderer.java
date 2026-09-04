@@ -118,8 +118,7 @@ public abstract class SelectOneRenderer<T extends UISelectOne & PrimeSelect> ext
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem item = selectItems.get(i);
-            if (item instanceof SelectItemGroup) {
-                SelectItemGroup selectItemGroup = (SelectItemGroup) item;
+            if (item instanceof SelectItemGroup selectItemGroup) {
                 if (selectItemGroup.getSelectItems() != null) {
                     SelectItem foundValue = findSelectItem(fc, component, converter,
                             Arrays.asList(selectItemGroup.getSelectItems()), valueOrLabel, byValue);

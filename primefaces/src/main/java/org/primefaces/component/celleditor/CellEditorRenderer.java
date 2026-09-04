@@ -53,8 +53,7 @@ public class CellEditorRenderer extends CoreRenderer<CellEditor> {
             String cellEditMode = null;
             boolean isLazyRowEdit = false;
 
-            if (parentTable instanceof DataTable) {
-                DataTable dt = (DataTable) parentTable;
+            if (parentTable instanceof DataTable dt) {
                 editMode = dt.getEditMode();
                 cellEditMode = dt.getCellEditMode();
 
@@ -62,8 +61,7 @@ public class CellEditorRenderer extends CoreRenderer<CellEditor> {
                 isLazyRowEdit = "row".equals(editMode) && "lazy".equals(rowEditMode)
                         && !dt.isRowEditInitRequest(context) && !context.isValidationFailed();
             }
-            else if (parentTable instanceof TreeTable) {
-                TreeTable tt = (TreeTable) parentTable;
+            else if (parentTable instanceof TreeTable tt) {
                 editMode = tt.getEditMode();
                 cellEditMode = tt.getCellEditMode();
             }

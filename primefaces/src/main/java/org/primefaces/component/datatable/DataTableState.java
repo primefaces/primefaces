@@ -25,11 +25,12 @@ package org.primefaces.component.datatable;
 
 import org.primefaces.component.api.UITableState;
 
+import java.io.Serial;
 import java.util.Set;
 
 public class DataTableState extends UITableState {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private int first;
 

@@ -32,6 +32,7 @@ import org.primefaces.showcase.util.ShowcaseUtil;
 import org.primefaces.util.LocaleUtils;
 
 import java.beans.IntrospectionException;
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -47,7 +48,7 @@ import org.apache.commons.collections4.ComparatorUtils;
  */
 public class LazyCustomerDataModel extends LazyDataModel<Customer> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private List<Customer> datasource;
 

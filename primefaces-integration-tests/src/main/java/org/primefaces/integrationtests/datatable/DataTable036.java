@@ -29,6 +29,7 @@ import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ import lombok.Data;
 @Data
 public class DataTable036 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
 
     private List<ProgrammingLanguage> progLanguages;
     private ProgrammingLanguageLazyDataModel progLanguagesLazyModel;
@@ -78,7 +79,7 @@ public class DataTable036 implements Serializable {
 
     public static class LazyProgrammingLanguageLazyDataModel extends ProgrammingLanguageLazyDataModel {
 
-        private static final long serialVersionUID = -3415081263308946252L;
+        @Serial private static final long serialVersionUID = -3415081263308946252L;
 
         public LazyProgrammingLanguageLazyDataModel() {
 

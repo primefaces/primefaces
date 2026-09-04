@@ -23,11 +23,12 @@
  */
 package org.primefaces.model.map;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class Overlay<T> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String id;
 

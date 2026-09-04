@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.updateform;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -38,7 +39,7 @@ import lombok.Data;
 @Data
 public class UpdateForm001 implements Serializable {
 
-    private static final long serialVersionUID = -7518159955779385834L;
+    @Serial private static final long serialVersionUID = -7518159955779385834L;
     private Date date;
     private BigDecimal number0;
     private BigDecimal number1;

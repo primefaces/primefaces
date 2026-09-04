@@ -23,12 +23,14 @@
  */
 package org.primefaces.model.menu;
 
+import java.io.Serial;
+
 /**
  * Default implementation of a MenuModel optimized for static menus that do not change once built.
  */
 public class DefaultMenuModel extends BaseMenuModel {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private boolean generated;
 

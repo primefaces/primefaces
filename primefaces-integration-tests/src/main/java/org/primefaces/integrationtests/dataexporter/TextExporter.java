@@ -33,6 +33,7 @@ import org.primefaces.util.EscapeUtils;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
@@ -42,7 +43,7 @@ import jakarta.faces.context.FacesContext;
 
 public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     public TextExporter() {
         super(null, Collections.emptySet(), false);

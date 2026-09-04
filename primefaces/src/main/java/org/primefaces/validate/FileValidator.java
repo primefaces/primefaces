@@ -68,24 +68,22 @@ public class FileValidator extends FileValidatorBaseImpl implements ClientValida
         String componentAccept;
         UploadedFile singleFile = null;
         UploadedFiles multipleFiles = null;
-        if (component instanceof FileUpload) {
-            FileUpload fileUpload = (FileUpload) component;
+        if (component instanceof FileUpload fileUpload) {
             componentAccept = fileUpload.getAccept();
-            if (value instanceof UploadedFile) {
-                singleFile = (UploadedFile) value;
+            if (value instanceof UploadedFile file) {
+                singleFile = file;
             }
-            else if (value instanceof UploadedFiles) {
-                multipleFiles = (UploadedFiles) value;
+            else if (value instanceof UploadedFiles files) {
+                multipleFiles = files;
             }
         }
-        else if (component instanceof HtmlInputFile) {
-            HtmlInputFile inputFile = (HtmlInputFile) component;
+        else if (component instanceof HtmlInputFile inputFile) {
             componentAccept = (String) inputFile.getAttributes().get("accept");
-            if (value instanceof Part) {
-                singleFile = new NativeUploadedFile((Part) value, getSizeLimit(), null);
+            if (value instanceof Part part1) {
+                singleFile = new NativeUploadedFile(part1, getSizeLimit(), null);
             }
-            else if (value instanceof List) {
-                List<UploadedFile> files = (List<UploadedFile>) ((List) value).stream()
+            else if (value instanceof List list) {
+                List<UploadedFile> files = (List<UploadedFile>) list.stream()
                         .map(part -> new NativeUploadedFile((Part) part, getSizeLimit(), null))
                         .collect(Collectors.toList());
                 multipleFiles = new UploadedFiles(files);

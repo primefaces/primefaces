@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.calendar;
 
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -39,7 +40,7 @@ import lombok.Data;
 @Data
 public class Calendar002 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private LocalDate localDate;
 

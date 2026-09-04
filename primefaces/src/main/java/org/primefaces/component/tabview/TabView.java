@@ -192,7 +192,7 @@ public class TabView extends TabViewBaseImpl {
             int j = 0;
             for (int i = 0; i < getChildCount(); i++) {
                 UIComponent child = getChildren().get(i);
-                if (child.isRendered() && child instanceof Tab) {
+                if (child.isRendered() && child instanceof Tab tab) {
                     boolean tabActive = j == activeIndex;
 
                     // e.g. if the first tab is not rendered and the activeIndex=0
@@ -204,7 +204,7 @@ public class TabView extends TabViewBaseImpl {
                         activeTabRendered = true;
                     }
 
-                    callback.accept((Tab) child, j, tabActive);
+                    callback.accept(tab, j, tabActive);
                     j++;
                 }
             }

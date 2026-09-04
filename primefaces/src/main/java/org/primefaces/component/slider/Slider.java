@@ -144,8 +144,8 @@ public class Slider extends SliderBaseImpl {
         // first try the submitted value
         Object submittedValue = input.getSubmittedValue();
         if (submittedValue != null) {
-            if (submittedValue instanceof String) {
-                return (String) submittedValue;
+            if (submittedValue instanceof String string) {
+                return string;
             }
 
             // actually it should be string
@@ -162,8 +162,8 @@ public class Slider extends SliderBaseImpl {
             Object value = input.getValue();
 
             if (value != null) {
-                if (value instanceof String) {
-                    return (String) value;
+                if (value instanceof String string1) {
+                    return string1;
                 }
 
                 Converter converter = ComponentUtils.getConverter(context, input);

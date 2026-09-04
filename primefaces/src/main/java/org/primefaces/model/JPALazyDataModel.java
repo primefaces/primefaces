@@ -32,6 +32,7 @@ import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.PropertyDescriptorResolver;
 
 import java.beans.PropertyDescriptor;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,7 +71,7 @@ import jakarta.persistence.metamodel.Type;
  */
 public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = Logger.getLogger(JPALazyDataModel.class.getName());
 

@@ -27,6 +27,7 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ import lombok.Getter;
 @Data
 public class DataTable034 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
 
     protected MyLazyDataModel lazyDataModel;
 

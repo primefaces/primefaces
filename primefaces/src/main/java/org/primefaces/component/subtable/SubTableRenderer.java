@@ -76,8 +76,7 @@ public class SubTableRenderer extends CoreRenderer<SubTable> {
         ColumnGroup group = component.getColumnGroup("header");
         if (group != null && group.isRendered()) {
             for (UIComponent child : group.getChildren()) {
-                if (child.isRendered() && child instanceof Row) {
-                    Row headerRow = (Row) child;
+                if (child.isRendered() && child instanceof Row headerRow) {
                     String styleClass = "ui-widget-header";
                     if (LangUtils.isNotBlank(headerRow.getStyleClass())) {
                         styleClass = styleClass + " " + headerRow.getStyleClass();
@@ -90,8 +89,7 @@ public class SubTableRenderer extends CoreRenderer<SubTable> {
                     }
 
                     for (UIComponent headerRowChild : headerRow.getChildren()) {
-                        if (headerRowChild.isRendered() && headerRowChild instanceof Column) {
-                            Column footerColumn = (Column) headerRowChild;
+                        if (headerRowChild.isRendered() && headerRowChild instanceof Column footerColumn) {
                             encodeFacetColumn(context, component, footerColumn, "header", DataTable.COLUMN_HEADER_CLASS, footerColumn.getHeaderText());
                         }
                     }
@@ -170,8 +168,7 @@ public class SubTableRenderer extends CoreRenderer<SubTable> {
         }
 
         for (UIComponent child : group.getChildren()) {
-            if (child.isRendered() && child instanceof Row) {
-                Row footerRow = (Row) child;
+            if (child.isRendered() && child instanceof Row footerRow) {
                 String styleClass = "ui-widget-header";
                 if (LangUtils.isNotBlank(footerRow.getStyleClass())) {
                     styleClass = styleClass + " " + footerRow.getStyleClass();
@@ -184,8 +181,7 @@ public class SubTableRenderer extends CoreRenderer<SubTable> {
                 }
 
                 for (UIComponent footerRowChild : footerRow.getChildren()) {
-                    if (footerRowChild.isRendered() && footerRowChild instanceof Column) {
-                        Column footerColumn = (Column) footerRowChild;
+                    if (footerRowChild.isRendered() && footerRowChild instanceof Column footerColumn) {
                         encodeFacetColumn(context, component, footerColumn, "footer", DataTable.COLUMN_FOOTER_CLASS, footerColumn.getFooterText());
                     }
                 }

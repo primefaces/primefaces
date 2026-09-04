@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.outputlabel;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.faces.view.ViewScoped;
@@ -38,7 +39,7 @@ import lombok.Data;
 @Data
 public class OutputLabel001 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @NotNull
     private String notnull;

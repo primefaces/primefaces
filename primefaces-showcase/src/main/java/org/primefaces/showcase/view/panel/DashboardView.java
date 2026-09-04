@@ -31,6 +31,7 @@ import org.primefaces.model.dashboard.DashboardWidget;
 import org.primefaces.model.dashboard.DefaultDashboardModel;
 import org.primefaces.model.dashboard.DefaultDashboardWidget;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -44,7 +45,7 @@ import jakarta.inject.Named;
 @ViewScoped
 public class DashboardView implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private static final String RESPONSIVE_CLASS = "col-12 lg:col-6 xl:col-6";
 
     private DashboardModel responsiveModel;

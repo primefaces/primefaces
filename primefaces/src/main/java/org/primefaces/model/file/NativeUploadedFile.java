@@ -26,13 +26,14 @@ package org.primefaces.model.file;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.servlet.http.Part;
 
 public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     public NativeUploadedFile() {
         // NOOP

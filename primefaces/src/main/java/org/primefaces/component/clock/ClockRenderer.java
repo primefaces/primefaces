@@ -106,11 +106,11 @@ public class ClockRenderer extends CoreRenderer<Clock> {
         TemporalAccessor time = ZonedDateTime.now();
         Object value = component.getValue();
         if (value != null) {
-            if (value instanceof Date) {
-                time = CalendarUtils.convertDate2LocalDateTime((Date) value);
+            if (value instanceof Date date) {
+                time = CalendarUtils.convertDate2LocalDateTime(date);
             }
-            else if (value instanceof TemporalAccessor) {
-                time = (TemporalAccessor) value;
+            else if (value instanceof TemporalAccessor accessor) {
+                time = accessor;
             }
         }
 

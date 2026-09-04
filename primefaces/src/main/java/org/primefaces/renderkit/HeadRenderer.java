@@ -257,8 +257,7 @@ public class HeadRenderer extends Renderer<UIComponent> {
                 boolean initialRedirect = false;
 
                 Object cookie = PrimeClientWindowUtils.getInitialRedirectCookie(context, clientWindow.getId());
-                if (cookie instanceof Cookie) {
-                    Cookie servletCookie = (Cookie) cookie;
+                if (cookie instanceof Cookie servletCookie) {
                     initialRedirect = true;
 
                     // expire/remove cookie

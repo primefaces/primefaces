@@ -57,8 +57,7 @@ public class HeaderRowRenderer extends CoreRenderer<HeaderRow> {
             boolean firstColumn = true;
             for (int i = 0; i < component.getChildCount(); i++) {
                 UIComponent child = component.getChildren().get(i);
-                if (child.isRendered() && child instanceof Column) {
-                    Column column = (Column) child;
+                if (child.isRendered() && child instanceof Column column) {
                     encodeHeaderRowWithColumn(context, column, expandable, expanded, firstColumn);
                     firstColumn = false;
                 }

@@ -26,6 +26,7 @@ package org.primefaces.model.file;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,7 +35,7 @@ import jakarta.faces.FacesException;
 
 public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String contentType;
 

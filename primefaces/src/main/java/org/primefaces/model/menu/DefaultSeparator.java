@@ -23,11 +23,12 @@
  */
 package org.primefaces.model.menu;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class DefaultSeparator implements Separator, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String id;
     private String title;

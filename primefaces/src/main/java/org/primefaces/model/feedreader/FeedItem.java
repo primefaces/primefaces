@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.feedreader;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ import java.util.Objects;
  */
 public class FeedItem implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String title;
     private String description;

@@ -23,6 +23,9 @@
  */
 package org.primefaces.event;
 
+import java.io.Serial;
+
+
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 import jakarta.faces.event.AjaxBehaviorEvent;
@@ -31,7 +34,7 @@ import jakarta.faces.event.FacesListener;
 
 public abstract class AbstractAjaxBehaviorEvent extends AjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     public AbstractAjaxBehaviorEvent(UIComponent component, Behavior behavior) {
         super(component, behavior);
@@ -44,8 +47,8 @@ public abstract class AbstractAjaxBehaviorEvent extends AjaxBehaviorEvent {
 
     @Override
     public void processListener(FacesListener facesListener) {
-        if (facesListener instanceof AjaxBehaviorListener) {
-            ((AjaxBehaviorListener) facesListener).processAjaxBehavior(this);
+        if (facesListener instanceof AjaxBehaviorListener listener) {
+            listener.processAjaxBehavior(this);
         }
     }
 }

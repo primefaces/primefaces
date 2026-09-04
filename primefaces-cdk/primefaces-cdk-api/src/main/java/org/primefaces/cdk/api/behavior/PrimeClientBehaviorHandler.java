@@ -120,8 +120,7 @@ public abstract class PrimeClientBehaviorHandler<E extends PrimeClientBehavior>
             if (targetList != null) {
                 for (int i = 0; i < targetList.size(); i++) {
                     AttachedObjectTarget target = targetList.get(i);
-                    if (target instanceof BehaviorHolderAttachedObjectTarget) {
-                        BehaviorHolderAttachedObjectTarget behaviorTarget = (BehaviorHolderAttachedObjectTarget) target;
+                    if (target instanceof BehaviorHolderAttachedObjectTarget behaviorTarget) {
                         if ((null != eventName && eventName.equals(behaviorTarget.getName()))
                                 || (null == eventName && behaviorTarget.isDefaultEvent())) {
                             supportedEvent = true;

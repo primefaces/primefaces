@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.datepicker;
 
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -41,7 +42,7 @@ import lombok.Data;
 @Data
 public class DatePicker015 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private LocalDateTime german;
     private LocalDateTime spanish;
     private LocalDateTime english;
@@ -55,7 +56,8 @@ public class DatePicker015 implements Serializable {
 
     public void submit() {
         TestUtils.addMessage("German", german.format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").withLocale(Locale.GERMAN)));
-        TestUtils.addMessage("Spanish", spanish.format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").withLocale(new Locale("es"))));
+        TestUtils.addMessage("Spanish", spanish.format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").withLocale(
+                new Locale.Builder().setLanguage("es").build())));
         TestUtils.addMessage("English", english.format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").withLocale(Locale.ENGLISH)));
     }
 }

@@ -74,8 +74,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                             return;
                         }
 
-                        if (value instanceof StreamedContent) {
-                            StreamedContent streamedContent = (StreamedContent) value;
+                        if (value instanceof StreamedContent streamedContent) {
                             if (streamedContent.getWriter() != null) {
                                 setResponseHeaders(streamedContent, externalContext);
                                 stream(externalContext, streamedContent.getWriter(), cache);

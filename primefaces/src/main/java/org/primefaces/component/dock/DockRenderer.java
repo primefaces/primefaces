@@ -86,11 +86,11 @@ public class DockRenderer extends BaseMenuRenderer<Dock> {
             }
 
             for (MenuElement element : menuElements) {
-                if (element.isRendered() && element instanceof MenuItem) {
+                if (element.isRendered() && element instanceof MenuItem item) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", "ui-dock-item", "styleClass");
                     writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-                    encodeMenuItem(context, dock, (MenuItem) element, "-1");
+                    encodeMenuItem(context, dock, item, "-1");
                     writer.endElement("li");
                 }
             }

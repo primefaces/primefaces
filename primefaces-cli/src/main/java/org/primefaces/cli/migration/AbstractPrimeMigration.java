@@ -27,7 +27,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -63,7 +62,7 @@ public abstract class AbstractPrimeMigration implements Runnable {
         initReplaceRegEx();
 
         try {
-            Path target = Paths.get(directory);
+            Path target = Path.of(directory);
 
             if (target.toFile().isFile()) {
                 System.out.println("Start migrating " + directory + "; " +
@@ -74,7 +73,7 @@ public abstract class AbstractPrimeMigration implements Runnable {
                 System.out.println("Start migrating " + directory + " and subdirectories; " +
                         "fileextension: " + fileextensionsSet.stream().collect(Collectors.joining(",")) + "; " +
                         "replaceExisting: " + replaceExisting);
-                migrateDirectory(Paths.get(directory), fileextensionsSet, replaceExisting);
+                migrateDirectory(Path.of(directory), fileextensionsSet, replaceExisting);
             }
             System.out.println("Finished migration!");
         }
@@ -132,7 +131,7 @@ public abstract class AbstractPrimeMigration implements Runnable {
     protected void migrateFile(Path f, boolean replaceExisting) throws IOException {
         List<String> contentV2 = Files.readAllLines(f);
         List<String> contentV3 = contentV2.stream().map(l -> migrateSource(l)).collect(Collectors.toList());
-        Path tmpFile = Paths.get(f.toString() + ".migrated");
+        Path tmpFile = Path.of(f.toString() + ".migrated");
         try (BufferedWriter writer = Files.newBufferedWriter(tmpFile, StandardOpenOption.CREATE)) {
             int line = 0;
             for (String l : contentV3) {

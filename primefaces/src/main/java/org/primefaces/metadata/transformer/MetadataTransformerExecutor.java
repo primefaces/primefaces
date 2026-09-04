@@ -44,8 +44,7 @@ public class MetadataTransformerExecutor implements SystemEventListener {
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         try {
-            if (event instanceof PreRenderComponentEvent) {
-                PreRenderComponentEvent preRenderComponentEvent = (PreRenderComponentEvent) event;
+            if (event instanceof PreRenderComponentEvent preRenderComponentEvent) {
 
                 execute(PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()),
                         preRenderComponentEvent.getComponent());

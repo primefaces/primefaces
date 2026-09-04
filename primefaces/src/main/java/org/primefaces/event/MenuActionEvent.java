@@ -25,12 +25,14 @@ package org.primefaces.event;
 
 import org.primefaces.model.menu.MenuItem;
 
+import java.io.Serial;
+
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.event.ActionEvent;
 
 public class MenuActionEvent extends ActionEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private transient MenuItem menuItem;
 

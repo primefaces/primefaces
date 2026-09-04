@@ -23,13 +23,14 @@
  */
 package org.primefaces.event;
 
+import java.io.Serial;
 import java.util.List;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 
 public class SplitterResizeEvent extends AbstractAjaxBehaviorEvent {
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private List<Double> panelSizes;
 
     public SplitterResizeEvent(UIComponent component, Behavior behavior, List<Double> panelSizes) {

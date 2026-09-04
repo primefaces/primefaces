@@ -139,8 +139,8 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
             postExport(context);
         }
         finally {
-            if (document instanceof AutoCloseable) {
-                IOUtils.closeQuietly((AutoCloseable) document, e -> LOGGER.log(Level.SEVERE, e.getMessage(), e));
+            if (document instanceof AutoCloseable closeable) {
+                IOUtils.closeQuietly(closeable, e -> LOGGER.log(Level.SEVERE, e.getMessage(), e));
             }
         }
     }
@@ -297,8 +297,8 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         List<UIColumn> columns = getExportableColumns(table);
         for (int i = 0; i < columns.size(); i++) {
             UIColumn col = columns.get(i);
-            if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyStatelessModel();
+            if (col instanceof DynamicColumn column) {
+                column.applyStatelessModel();
             }
 
             final int finalI = i;
@@ -435,8 +435,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
 
     public String getComponentValue(FacesContext context, UIComponent component) {
 
-        if (component instanceof HtmlCommandLink) {  //support for PrimeFaces and standard HtmlCommandLink
-            HtmlCommandLink link = (HtmlCommandLink) component;
+        if (component instanceof HtmlCommandLink link) {
             Object value = link.getValue();
 
             if (value != null) {
@@ -453,15 +452,13 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
                 return Constants.EMPTY_STRING;
             }
         }
-        else if (component instanceof ValueHolder) {
-            if (component instanceof EditableValueHolder) {
-                Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
+        else if (component instanceof ValueHolder valueHolder) {
+            if (component instanceof EditableValueHolder holder) {
+                Object submittedValue = holder.getSubmittedValue();
                 if (submittedValue != null) {
                     return submittedValue.toString();
                 }
             }
-
-            ValueHolder valueHolder = (ValueHolder) component;
             Object value = valueHolder.getValue();
             if (value == null) {
                 return Constants.EMPTY_STRING;
@@ -500,8 +497,8 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
                 return value.toString();
             }
         }
-        else if (component instanceof CellEditor) {
-            return getComponentValue(context, ((CellEditor) component).getOutputFacet());
+        else if (component instanceof CellEditor editor) {
+            return getComponentValue(context, editor.getOutputFacet());
         }
         else if (component instanceof HtmlGraphicImage) {
             return (String) component.getAttributes().get("alt");

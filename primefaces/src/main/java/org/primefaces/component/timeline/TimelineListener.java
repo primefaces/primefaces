@@ -41,8 +41,8 @@ public class TimelineListener implements SystemEventListener {
 
         boolean alreadyRegistred = false;
         for (PhaseListener listener : context.getViewRoot().getPhaseListeners()) {
-            if (listener instanceof DefaultTimelineUpdater
-                    && ((DefaultTimelineUpdater) listener).getWidgetVar().equals(widgetVar)) {
+            if (listener instanceof DefaultTimelineUpdater updater
+                    && updater.getWidgetVar().equals(widgetVar)) {
                 alreadyRegistred = true;
                 break;
             }

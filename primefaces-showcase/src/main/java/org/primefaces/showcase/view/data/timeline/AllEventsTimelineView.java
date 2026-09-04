@@ -36,6 +36,7 @@ import org.primefaces.showcase.domain.Event;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ThreadLocalRandom;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -69,10 +70,10 @@ public class AllEventsTimelineView implements Serializable {
             LocalDateTime end = LocalDateTime.now().minusHours(12).withMinute(0).withSecond(0).withNano(0);
 
             for (int i = 0; i < 5; i++) {
-                LocalDateTime start = end.plusHours(Math.round(Math.random() * 5));
-                end = start.plusHours(4 + Math.round(Math.random() * 5));
+                LocalDateTime start = end.plusHours(Math.round(ThreadLocalRandom.current().nextDouble() * 5));
+                end = start.plusHours(4 + Math.round(ThreadLocalRandom.current().nextDouble() * 5));
 
-                long r = Math.round(Math.random() * 2);
+                long r = Math.round(ThreadLocalRandom.current().nextDouble() * 2);
                 String availability = (r == 0 ? "Unavailable" : (r == 1 ? "Available" : "Maybe"));
 
                 // create an event with content, start / end dates, editable flag, group name and custom style class

@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +43,7 @@ import lombok.Data;
 @Data
 public class DataTable005Array implements Serializable {
 
-    private static final long serialVersionUID = 2211134215865964295L;
+    @Serial private static final long serialVersionUID = 2211134215865964295L;
 
     private List<ProgrammingLanguage> progLanguages;
     private ProgrammingLanguage[] selectedProgLanguages;

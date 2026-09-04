@@ -411,11 +411,10 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
             if (accordionPanel.getVar() == null) {
                 int childIndex = 0;
                 for (UIComponent child : accordionPanel.getChildren()) {
-                    if (child.isRendered() && child instanceof Tab) {
+                    if (child.isRendered() && child instanceof Tab tab) {
                         if (childIndex > 0) {
                             sb.append(",");
                         }
-                        Tab tab = (Tab) child;
                         sb.append(tab.getKey() != null ? tab.getKey() : Integer.toString(childIndex));
                         childIndex++;
                     }

@@ -23,11 +23,12 @@
  */
 package org.primefaces.model.badge;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class DefaultBadgeModel implements BadgeModel, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String value;
     private String severity;

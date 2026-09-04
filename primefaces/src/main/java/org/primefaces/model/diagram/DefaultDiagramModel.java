@@ -27,6 +27,7 @@ import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ import jakarta.faces.model.ListDataModel;
 
 public class DefaultDiagramModel extends ListDataModel<Element> implements DiagramModel, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private final List<Connection> connections;
 
