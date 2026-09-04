@@ -27,7 +27,6 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -110,10 +109,15 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         }
 
         // Reusing getRowKey to retrieve rowData
-        return Optional.ofNullable(getWrappedData()).orElse(List.of()).stream()
-                .filter(item -> rowKey.equals(getRowKey(item)))
-                .findFirst()
-                .orElse(null);
+        List<T> wrappedData = getWrappedData();
+        if (wrappedData != null) {
+            for (T item : wrappedData) {
+                if (rowKey.equals(getRowKey(item))) {
+                    return item;
+                }
+            }
+        }
+        return null;
     }
 
     /**
