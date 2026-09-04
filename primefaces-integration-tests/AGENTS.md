@@ -3,8 +3,8 @@
 Guidance for Coding Agents working inside the `primefaces-integration-tests` module.
 Read the root [`AGENTS.md`](../AGENTS.md) first for repository-wide conventions, and
 [`primefaces-selenium/AGENTS.md`](../primefaces-selenium/AGENTS.md) for the test
-**framework** this module builds on. This file focuses on **how to add a test and keep
-component coverage healthy**.
+**framework** this module builds on. (`CLAUDE.md` here is a symlink to this file.)
+This file focuses on **how to add a test and keep component coverage healthy**.
 
 ## Purpose
 
@@ -28,7 +28,7 @@ Almost every test is three coordinated artifacts that share a numbered name
 |---|---|---|
 | **View** (`.xhtml`) | `src/main/webapp/<component>/` | `datatable/dataTable001.xhtml` |
 | **Backing bean** (CDI) | `src/main/java/.../integrationtests/<component>/` | `DataTable001.java` (`@Named @ViewScoped`) |
-| **Test** (JUnit 5) | `src/test/java/.../integrationtests/<component>/` | `DataTable001Test.java` |
+| **Test** (JUnit Jupiter) | `src/test/java/.../integrationtests/<component>/` | `DataTable001Test.java` |
 
 The view's `getLocation()` / `goTo()` path is **relative to the webapp root** and matches
 the file under `src/main/webapp` (e.g. `datatable/dataTable001.xhtml`). The bean is wired
@@ -59,7 +59,7 @@ into the view by EL name (`#{dataTable001...}`). Backing beans use Lombok `@Data
 
 The `NNN` number is **insertion order, not feature** — the same behavior (filtering,
 selection, …) is spread across many numbered classes, so the suite is hard to navigate by
-*what* it covers. To make it navigable by behavior, `datatable` test classes carry JUnit 5
+*what* it covers. To make it navigable by behavior, `datatable` test classes carry JUnit
 `@Tag`s at the **class level** (a class may carry several). Tags are prefixed with the
 component name (`DataTable-`) so a multi-component run can target one component's behavior.
 JUnit tags may not contain whitespace, so use a hyphen, not `" - "`. Vocabulary currently
@@ -91,6 +91,10 @@ When adding a `datatable` test, tag it with the behavior(s) it exercises. Keep t
 vocabulary small — reuse an existing tag rather than coining a near-synonym. (Currently
 only the `datatable` package is tagged; extend the same `<Component>-<behavior>` scheme to
 other components as needed.)
+
+Beyond the behavior tags, `@Tag("SafariExclude")` (on a class or a method) removes a test
+from the `safari` profile run — use it for scenarios Safari cannot drive reliably
+(downloads, clipboard, some keyboard interactions).
 
 ## Anatomy of a test
 
@@ -146,7 +150,7 @@ void basicAndPaginator(String xhtml) {
 - **Guard every AJAX/navigation interaction.** Use the component wrapper methods (they
   guard internally) or wrap raw clicks with `PrimeSelenium.guardAjax(...)`. Never assert
   immediately after an un-guarded click — the request may still be in flight. See the
-  framework's guard mechanism in [`primefaces-selenium/CLAUDE.md`](../primefaces-selenium/CLAUDE.md).
+  framework's guard mechanism in [`primefaces-selenium/AGENTS.md`](../primefaces-selenium/AGENTS.md).
 - **Assert the widget configuration** via a private `assertConfiguration(JSONObject cfg)`
   that reads `getWidgetConfiguration()` and calls `assertNoJavascriptErrors()`. This
   catches client-side JS errors that wouldn't otherwise fail the test.
@@ -203,9 +207,11 @@ mvn clean jetty:run -Pmojarra-4.0 -f primefaces-integration-tests/pom.xml
 
 - **Faces impl** (exactly one): `mojarra-4.0`, `mojarra-4.1`, `myfaces-4.0`, `myfaces-4.1`.
   Swapping these changes both the dependency and a filtered `facesListener` in `web.xml`.
-- **Browser** (one): `chrome`, `firefox`, `safari` (`safari` forces serial execution).
+- **Browser** (one): `chrome`, `firefox`, `safari` (`safari` forces serial execution and
+  excludes tests tagged `SafariExclude`).
 - **Toggles**: `headless`, `parallel-execution`, `csp` (sets `primefaces.CSP=true`),
-  `client-state-saving` (client state saving), `theme-saga` / `theme-nova`.
+  `client-state-saving` (client state saving), `theme-aura` (CI default) / `theme-saga` /
+  `theme-nova`.
 
 ### How a run actually works
 
@@ -220,7 +226,8 @@ mvn clean jetty:run -Pmojarra-4.0 -f primefaces-integration-tests/pom.xml
 - Config (timeouts, headless, screenshot dir) comes from
   `src/test/resources-filtered/primefaces-selenium/config.properties` (Maven-filtered).
 - On failure, `ScreenshotOnFailureExtension` writes a PNG + context `.txt` to
-  `screenshotDirectory` (defaults to `/tmp/pf_it/`, override via `SCREENSHOT_DIRECTORY`).
+  `screenshotDirectory` — but only when it is set. Export `SCREENSHOT_DIRECTORY` locally
+  to get them (CI uses `/tmp/pf_it/`); left unset, no screenshot is written.
 
 ### `web.xml` is shared
 
@@ -249,7 +256,7 @@ behaviors** are exercised, not just line count.
   expected listeners (assert via `p:messages`), **state surviving an AJAX update**
   (a recurring bug class — see the "must not be lost after update" assertions in
   `DataTable001Test`), and `assertNoJavascriptErrors()`.
-- **CI runs the suite across the Faces-impl matrix and with CSP** (see root `CLAUDE.md` →
+- **CI runs the suite across the Faces-impl matrix and with CSP** (see root [`AGENTS.md`](../AGENTS.md) →
   CI). Write tests that pass on both Mojarra and MyFaces and under CSP: don't rely on
   inline event handlers that CSP blocks, and don't assert impl-specific markup/IDs.
 

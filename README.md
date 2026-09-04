@@ -94,19 +94,18 @@ Version | Status | JSF version | Java version | Documentation
 ##### Release 
 
   ```xml
-  <!-- Java EE / javax.* / JSF 2.3 -->
-  <dependency>
-      <groupId>org.primefaces</groupId>
-      <artifactId>primefaces</artifactId>
-      <version>15.0.6</version>
-  </dependency>
-
   <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>15.0.6</version>
-      <classifier>jakarta</classifier>
+      <version>16.0.0</version>
+  </dependency>
+
+<!-- (Legacy / Security updates only) Java EE / javax.* / JSF 2.3 -->
+  <dependency>
+      <groupId>org.primefaces</groupId>
+      <artifactId>primefaces</artifactId>
+      <version>15.0.18</version>
   </dependency>
   ```
 
@@ -117,7 +116,7 @@ Version | Status | JSF version | Java version | Documentation
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>16.0.0-SNAPSHOT</version>
+      <version>17.0.0-SNAPSHOT</version>
   </dependency>
 
   <repositories>
