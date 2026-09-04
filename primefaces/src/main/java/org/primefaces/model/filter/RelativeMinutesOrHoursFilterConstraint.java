@@ -72,11 +72,16 @@ public class RelativeMinutesOrHoursFilterConstraint implements FilterConstraint 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
         Integer amount = DateFilterUtils.toInteger(filter);
-        if (amount == null) {
+        if (amount == null || amount < 0) {
             return false;
         }
 
         if (value instanceof LocalTime) {
+            // A LocalTime has no date component; windows >= 24h cover the entire cyclic clock.
+            if ((unit == ChronoUnit.HOURS && amount >= 24) || (unit == ChronoUnit.MINUTES && amount >= 24 * 60)) {
+                return true;
+            }
+
             LocalTime timeValue = (LocalTime) value;
             LocalTime now = LocalTime.now(clock);
             LocalTime start = forward ? now : now.minus(amount, unit);
