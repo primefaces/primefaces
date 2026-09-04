@@ -30,7 +30,7 @@
         <sonar.skip>true</sonar.skip>
 
         <!-- dependency versions -->
-        <h2.version>2.3.232</h2.version>
+        <h2.version>2.4.240</h2.version>
         <hibernate-core.version>6.6.0.Final</hibernate-core.version>
         <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
         <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
