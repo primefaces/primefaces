@@ -6,6 +6,7 @@ on:
       - '**/**.md'
     branches:
       - master
+      - 16.X
       - 15.X
   workflow_dispatch:
 
