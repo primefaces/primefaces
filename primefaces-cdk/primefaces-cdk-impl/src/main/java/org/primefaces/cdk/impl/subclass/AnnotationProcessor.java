@@ -399,6 +399,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         w.println("        }");
         w.println();
         w.println("        @Override public String getName()              { return _name; }");
+        w.println("        @Override public String toString()             { return _name; }");
         w.println("        @Override public Class<?> getType()            { return _type; }");
         w.println("        @Override public String getDescription()       { return _description; }");
         w.println("        @Override public boolean isRequired()          { return _required; }");
