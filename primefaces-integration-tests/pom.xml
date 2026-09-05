@@ -38,7 +38,7 @@
         <weld.version>6.0.4.Final</weld.version>
         <jakarta.persistence-api.version>3.2.0</jakarta.persistence-api.version>
         <jetty.version>12.1.12</jetty.version>
-        <lombok.version>1.18.46</lombok.version>
+        <lombok.version>1.18.48</lombok.version>
     </properties>
 
     <dependencies>
