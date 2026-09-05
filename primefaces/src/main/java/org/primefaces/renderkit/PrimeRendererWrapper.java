@@ -55,27 +55,67 @@ public class PrimeRendererWrapper extends RendererWrapper {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        RuntimeException thrown = null;
+
         try {
             super.decode(context, component);
         }
-        finally {
-            cleanupIterationState(context, component);
+        catch (RuntimeException e) {
+            thrown = e;
+        }
+
+        cleanupIterationState(context, component, thrown);
+
+        if (thrown != null) {
+            throw thrown;
         }
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Exception thrown = null;
+
         try {
             super.encodeEnd(context, component);
         }
-        finally {
-            cleanupIterationState(context, component);
+        catch (IOException | RuntimeException e) {
+            thrown = e;
+        }
+
+        cleanupIterationState(context, component, thrown);
+
+        if (thrown instanceof IOException ioException) {
+            throw ioException;
+        }
+        if (thrown instanceof RuntimeException runtimeException) {
+            throw runtimeException;
         }
     }
 
-    private static void cleanupIterationState(FacesContext context, UIComponent component) {
-        if (component instanceof IterationCleanupAware iterationCleanupAware) {
+    /**
+     * Cleans up after the component, without ever hiding the exception which the phase itself threw. A cleanup can
+     * throw in its own right: a table whose value expression blew up halfway through the render throws the same way
+     * again while the cleanup walks its children. The caller needs to see the original, so a cleanup failure is
+     * attached to it as a suppressed exception and only rethrown when the phase itself completed.
+     *
+     * @param context the {@link FacesContext}.
+     * @param component the component which was decoded or encoded.
+     * @param thrown what the phase threw, or {@code null} when it completed.
+     */
+    private static void cleanupIterationState(FacesContext context, UIComponent component, Exception thrown) {
+        if (!(component instanceof IterationCleanupAware iterationCleanupAware)) {
+            return;
+        }
+
+        try {
             iterationCleanupAware.cleanupIterationState(context);
+        }
+        catch (RuntimeException e) {
+            if (thrown == null) {
+                throw e;
+            }
+
+            thrown.addSuppressed(e);
         }
     }
 }

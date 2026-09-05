@@ -94,7 +94,7 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
     public void cleanupIterationState(FacesContext context) {
         super.cleanupIterationState(context);
 
-        resetDynamicColumns(context);
+        resetDynamicColumns();
     }
 
     @Facet(description = "Header content of the treetable.")

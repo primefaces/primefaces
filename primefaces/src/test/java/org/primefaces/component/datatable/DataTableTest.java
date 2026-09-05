@@ -29,8 +29,11 @@ import org.primefaces.component.columns.Columns;
 import org.primefaces.el.MyBean;
 import org.primefaces.el.MyContainer;
 import org.primefaces.mock.FacesContextMock;
+import org.primefaces.renderkit.PrimeRendererWrapper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 import jakarta.el.ExpressionFactory;
 import jakarta.el.ValueExpression;
@@ -80,6 +83,32 @@ class DataTableTest {
         assertEquals(-1, columns.getRowIndex());
         assertFalse(context.getExternalContext().getRequestMap().containsKey("row"));
         assertFalse(context.getExternalContext().getRequestMap().containsKey("col"));
+    }
+
+    /**
+     * DraggableRowsFeature#decode stands the table on the row which was dragged and returns without resetting it, so
+     * the decode has to leave the table standing on no row too. There is no page level reproducer for this: the row
+     * reorder request renders one fragment and nothing renders after it.
+     */
+    @Test
+    void decodeLeavesTheTableStandingOnNoRow() {
+        FacesContext context = new FacesContextMock();
+
+        DataTable table = new DataTable();
+        table.setId("table");
+        table.setVar("row");
+        table.setValue(new ArrayList<>(Arrays.asList("one", "two", "three")));
+
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        params.put(table.getClientId(context) + "_rowreorder", "true");
+        params.put(table.getClientId(context) + "_fromIndex", "0");
+        params.put(table.getClientId(context) + "_toIndex", "2");
+
+        new PrimeRendererWrapper(new DataTableRenderer()).decode(context, table);
+
+        assertEquals(-1, table.getRowIndex());
+        assertEquals(table.getClientId(context), table.getContainerClientId(context));
+        assertFalse(context.getExternalContext().getRequestMap().containsKey("row"));
     }
 
     @Test

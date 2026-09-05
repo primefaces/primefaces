@@ -285,8 +285,6 @@ public class TreeRenderer extends CoreRenderer<Tree> {
             encodeMarkup(context, component);
             encodeScript(context, component);
         }
-
-        // the tree is left standing on the node which was encoded last, UITree#cleanupIterationState resets it
     }
 
     protected void encodeFilteredNodes(FacesContext context, Tree component, TreeNode<?> node, String filteredValue, Locale filterLocale)

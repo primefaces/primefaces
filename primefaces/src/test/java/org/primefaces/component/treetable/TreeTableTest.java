@@ -24,12 +24,16 @@
 package org.primefaces.component.treetable;
 
 import org.primefaces.component.api.UITree;
+import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.mock.CollectingResponseWriter;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import org.primefaces.renderkit.PrimeRendererWrapper;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.faces.context.FacesContext;
@@ -85,5 +89,43 @@ class TreeTableTest {
         assertEquals(treeTable.getClientId(context), treeTable.getContainerClientId(context));
         assertFalse(requestMap.containsKey("node"));
         assertFalse(requestMap.containsKey("col"));
+    }
+
+    /**
+     * The expand, collapse, cell edit, row edit and page features never reach encodeTbody, which is the only place
+     * which used to reset the row key. They all dispatch from TreeTableRenderer#encodeEnd, so encoding the expand
+     * feature covers the shape of all five. There is no page level reproducer: these render one fragment and nothing
+     * renders after them.
+     */
+    @Test
+    void encodeEndOfTheExpandFeatureLeavesTheTreeTableStandingOnNoRow() throws Exception {
+        FacesContext context = new FacesContextMock(new CollectingResponseWriter());
+
+        TreeNode<String> root = new DefaultTreeNode<>();
+        TreeNode<String> one = new DefaultTreeNode<>("one", root);
+        new DefaultTreeNode<>("one-one", one);
+        root.setRowKey(UITree.ROOT_ROW_KEY);
+
+        Column column = new Column();
+        column.setId("col");
+
+        TreeTable treeTable = new TreeTable();
+        treeTable.setId("treeTable");
+        treeTable.setVar("node");
+        treeTable.setValue(root);
+        treeTable.getChildren().add(column);
+        treeTable.buildRowKeys(root);
+        // initFilterBy resolves the global filter through the search expression handler, which the mocks do not have
+        treeTable.setFilterByAsMap(new HashMap<>());
+
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        params.put(treeTable.getClientId(context) + "_encodeFeature", "true");
+        params.put(treeTable.getClientId(context) + "_expand", "0");
+
+        new PrimeRendererWrapper(new TreeTableRenderer()).encodeEnd(context, treeTable);
+
+        assertNull(treeTable.getRowKey());
+        assertEquals(treeTable.getClientId(context), treeTable.getContainerClientId(context));
+        assertFalse(context.getExternalContext().getRequestMap().containsKey("node"));
     }
 }

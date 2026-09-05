@@ -97,7 +97,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     public void cleanupIterationState(FacesContext context) {
         super.cleanupIterationState(context);
 
-        resetDynamicColumns(context);
+        resetDynamicColumns();
     }
 
     @Facet(description = "Empty message content of the datatable.")

@@ -42,6 +42,7 @@ import org.primefaces.model.timeline.TimelineModel;
 import org.primefaces.util.LangUtils;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.faces.component.UIComponent;
@@ -68,6 +69,12 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TimelineRenderer";
 
+    /**
+     * What the request map held under var and varGroup before the encoding replaced it, so that the encoding can put
+     * it back. Null while nothing was replaced.
+     */
+    private Map<String, Object> replacedVars;
+
     public TimelineBase() {
         setRendererType(DEFAULT_RENDERER);
     }
@@ -77,19 +84,53 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         return COMPONENT_FAMILY;
     }
 
-    @Override
-    public void cleanupIterationState(FacesContext context) {
-        // the renderer puts the event it encodes in the request map under var, and the group under varGroup,
-        // so neither may outlive the encoding
+    /**
+     * Puts the event or the group which is being encoded in the request map, remembering what was there before, so
+     * that {@link #cleanupIterationState(FacesContext)} can put it back. Restoring rather than removing matters
+     * because a timeline nested in an outer iteration may share the name with it, and removing would destroy the
+     * outer value.
+     *
+     * @param context the {@link FacesContext}.
+     * @param name the name of the variable, {@code var} or {@code varGroup}. Ignored when blank.
+     * @param value the value to expose under it.
+     */
+    public void setIterationVar(FacesContext context, String name, Object value) {
+        if (LangUtils.isBlank(name)) {
+            return;
+        }
+
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        if (LangUtils.isNotBlank(getVar())) {
-            requestMap.remove(getVar());
+        if (replacedVars == null) {
+            replacedVars = new HashMap<>(2);
+        }
+        if (!replacedVars.containsKey(name)) {
+            replacedVars.put(name, requestMap.get(name));
         }
 
-        if (LangUtils.isNotBlank(getVarGroup())) {
-            requestMap.remove(getVarGroup());
+        requestMap.put(name, value);
+    }
+
+    @Override
+    public void cleanupIterationState(FacesContext context) {
+        // only what the encoding actually replaced is put back, so a decode, or a render which never reached an
+        // event, leaves the request map alone
+        if (replacedVars == null) {
+            return;
         }
+
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        for (Map.Entry<String, Object> replacedVar : replacedVars.entrySet()) {
+            if (replacedVar.getValue() != null) {
+                requestMap.put(replacedVar.getKey(), replacedVar.getValue());
+            }
+            else {
+                requestMap.remove(replacedVar.getKey());
+            }
+        }
+
+        replacedVars = null;
     }
 
     @Facet(description = "Group content of the timeline.")

@@ -54,6 +54,18 @@ class PrimeRendererWrapperTest {
         }
     }
 
+    /**
+     * A component whose own cleanup blows up, the way a table's does when the value expression which already failed
+     * the render fails again while the cleanup walks its children.
+     */
+    private static class ThrowingCleanupComponent extends UIPanel implements IterationCleanupAware {
+
+        @Override
+        public void cleanupIterationState(FacesContext context) {
+            throw new IllegalStateException("cleanup blew up");
+        }
+    }
+
     private static class CountingRenderer extends CoreRenderer<UIComponent> {
 
         private int decodings;
@@ -139,6 +151,46 @@ class PrimeRendererWrapperTest {
 
         assertEquals("boom", thrown.getMessage());
         assertEquals(1, component.cleanups);
+    }
+
+    /**
+     * The render is the interesting one to debug, so its exception has to reach the user. A cleanup which fails in its
+     * own right rides along as a suppressed exception instead of replacing it.
+     */
+    @Test
+    void encodeEndKeepsTheRenderExceptionWhenTheCleanupBlowsUpToo() {
+        FacesContext context = new FacesContextMock();
+
+        Renderer wrapper = new PrimeRendererWrapper(new ThrowingRenderer());
+        IOException thrown = assertThrows(IOException.class, () -> wrapper.encodeEnd(context, new ThrowingCleanupComponent()));
+
+        assertEquals("boom", thrown.getMessage());
+        assertEquals(1, thrown.getSuppressed().length);
+        assertEquals("cleanup blew up", thrown.getSuppressed()[0].getMessage());
+    }
+
+    @Test
+    void encodeEndReportsTheCleanupFailureWhenTheRenderItselfWasFine() {
+        FacesContext context = new FacesContextMock();
+
+        Renderer wrapper = new PrimeRendererWrapper(new CountingRenderer());
+        IllegalStateException thrown =
+                assertThrows(IllegalStateException.class, () -> wrapper.encodeEnd(context, new ThrowingCleanupComponent()));
+
+        assertEquals("cleanup blew up", thrown.getMessage());
+    }
+
+    @Test
+    void decodeKeepsTheDecodeExceptionWhenTheCleanupBlowsUpToo() {
+        FacesContext context = new FacesContextMock();
+
+        Renderer wrapper = new PrimeRendererWrapper(new ThrowingRenderer());
+        IllegalStateException thrown =
+                assertThrows(IllegalStateException.class, () -> wrapper.decode(context, new ThrowingCleanupComponent()));
+
+        assertEquals("boom", thrown.getMessage());
+        assertEquals(1, thrown.getSuppressed().length);
+        assertEquals("cleanup blew up", thrown.getSuppressed()[0].getMessage());
     }
 
     @Test

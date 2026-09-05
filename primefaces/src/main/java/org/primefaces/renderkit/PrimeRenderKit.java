@@ -42,7 +42,12 @@ import jakarta.faces.render.Renderer;
 @SuppressWarnings("rawtypes")
 public class PrimeRenderKit extends RenderKitWrapper {
 
-    private final Map<String, Map<String, Renderer>> wrappers = new ConcurrentHashMap<>();
+    /**
+     * Keyed by the renderer itself, which is an application scoped singleton without an equals of its own. That is one
+     * lookup and no key to build, on a path which {@code UIComponentBase} walks several times per component per
+     * request, and a renderer which is replaced simply becomes a different key.
+     */
+    private final Map<Renderer, Renderer> wrappers = new ConcurrentHashMap<>();
 
     public PrimeRenderKit(RenderKit wrapped) {
         super(wrapped);
@@ -56,25 +61,7 @@ public class PrimeRenderKit extends RenderKitWrapper {
             return renderer;
         }
 
-        // the wrapper is stateless, but a stable instance per family and type keeps renderers comparable by identity
-        Map<String, Renderer> wrappersByType = wrappers.computeIfAbsent(family, k -> new ConcurrentHashMap<>());
-        Renderer wrapper = wrappersByType.get(rendererType);
-
-        if (!(wrapper instanceof PrimeRendererWrapper primeRendererWrapper) || primeRendererWrapper.getWrapped() != renderer) {
-            wrapper = new PrimeRendererWrapper(renderer);
-            wrappersByType.put(rendererType, wrapper);
-        }
-
-        return wrapper;
-    }
-
-    @Override
-    public void addRenderer(String family, String rendererType, Renderer renderer) {
-        Map<String, Renderer> wrappersByType = wrappers.get(family);
-        if (wrappersByType != null) {
-            wrappersByType.remove(rendererType);
-        }
-
-        super.addRenderer(family, rendererType, renderer);
+        // the wrapper is stateless, but a stable instance per renderer keeps renderers comparable by identity
+        return wrappers.computeIfAbsent(renderer, PrimeRendererWrapper::new);
     }
 }
