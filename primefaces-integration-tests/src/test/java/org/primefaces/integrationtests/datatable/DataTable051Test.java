@@ -28,18 +28,18 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.HeaderCell;
+import org.primefaces.selenium.component.model.datatable.Row;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -738,10 +738,12 @@ class DataTable051Test extends AbstractDataTableTest {
     @Order(22)
     @DisplayName("DataTable: date \"today\"/\"yesterday\"/\"tomorrow\" are value-less and hide the input")
     void dateFilterTodayYesterdayTomorrow(Page page) {
-        // Arrange
+        // Arrange - DataTable051#init() seeds exactly one row per day-precision bucket: id 1 = today,
+        // id 2 = yesterday, id 4 = tomorrow. Those three are weekday- and calendar-independent, so they are
+        // asserted as fixed ids rather than recomputed here from LocalDate.now() - a recomputed expectation
+        // is just a second copy of the predicate under test and would agree with it even when it is wrong.
         DataTable dataTable = page.dataTable;
         HeaderCell reviewDateHeader = dataTable.getHeader().getCell("review date").orElseThrow();
-        LocalDate today = LocalDate.now();
 
         // Act
         dataTable.filterMatchMode("review date", "today");
@@ -750,29 +752,19 @@ class DataTable051Test extends AbstractDataTableTest {
         WebElement valueInput = reviewDateHeader.getColumnFilter();
         assertTrue(Objects.requireNonNull(valueInput.getAttribute("class")).contains("ui-helper-hidden"));
         assertFalse(valueInput.isEnabled());
-
-        List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> today.equals(e.getReviewDate()))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIds(dataTable, 1);
 
         // Act
         dataTable.filterMatchMode("review date", "yesterday");
 
         // Assert
-        employeesFiltered = employees.stream()
-                .filter(e -> today.minusDays(1).equals(e.getReviewDate()))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIds(dataTable, 2);
 
         // Act
         dataTable.filterMatchMode("review date", "tomorrow");
 
         // Assert
-        employeesFiltered = employees.stream()
-                .filter(e -> today.plusDays(1).equals(e.getReviewDate()))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIds(dataTable, 4);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -781,44 +773,35 @@ class DataTable051Test extends AbstractDataTableTest {
     @Order(23)
     @DisplayName("DataTable: date \"this week\"/\"last week\"/\"next week\"")
     void dateFilterThisLastNextWeek(Page page) {
-        // Arrange - compute week boundaries the same way DateFilterUtils.startOfWeek() does, rather than
-        // assuming a fixed relationship between "yesterday"/"tomorrow" and "this week" - which day of the week
-        // "today" happens to be when this test runs changes whether they fall in this week or the adjacent one
+        // Arrange - "exactly one week ago/ahead" (ids 5 and 6) always lands in last/next week whichever
+        // weekday the suite runs on, and never in this week; "today" (id 1) is always in this week. Whether
+        // "yesterday" (id 2) and "tomorrow" (id 4) fall in this week or the adjacent one does depend on the
+        // weekday, so they are deliberately left out of the assertions rather than being computed from a
+        // copy of DateFilterUtils' own week arithmetic - such a copy would pass even if that arithmetic
+        // were wrong. Everything a month or more away (ids 11, 533, 901, 902, 903) and the null review
+        // dates (ids 3, 900) are never in any of the three buckets.
         DataTable dataTable = page.dataTable;
-        LocalDate today = LocalDate.now();
-        LocalDate startOfThisWeek = startOfWeek(today);
-        LocalDate endOfThisWeek = startOfThisWeek.plusDays(6);
-        LocalDate startOfLastWeek = startOfThisWeek.minusWeeks(1);
-        LocalDate endOfLastWeek = startOfThisWeek.minusDays(1);
-        LocalDate startOfNextWeek = startOfThisWeek.plusWeeks(1);
-        LocalDate endOfNextWeek = startOfNextWeek.plusDays(6);
 
         // Act
         dataTable.filterMatchMode("review date", "thisWeek");
 
         // Assert
-        List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfThisWeek) && !e.getReviewDate().isAfter(endOfThisWeek))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIdsPresent(dataTable, 1);
+        assertIdsAbsent(dataTable, 3, 5, 6, 11, 533, 900, 901, 902, 903);
 
         // Act
         dataTable.filterMatchMode("review date", "lastWeek");
 
         // Assert
-        employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfLastWeek) && !e.getReviewDate().isAfter(endOfLastWeek))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIdsPresent(dataTable, 5);
+        assertIdsAbsent(dataTable, 1, 3, 4, 6, 11, 533, 900, 901, 902, 903);
 
         // Act
         dataTable.filterMatchMode("review date", "nextWeek");
 
         // Assert
-        employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfNextWeek) && !e.getReviewDate().isAfter(endOfNextWeek))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIdsPresent(dataTable, 6);
+        assertIdsAbsent(dataTable, 1, 2, 3, 5, 11, 533, 900, 901, 902, 903);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -827,42 +810,33 @@ class DataTable051Test extends AbstractDataTableTest {
     @Order(24)
     @DisplayName("DataTable: date \"this month\"/\"last month\"/\"next month\"")
     void dateFilterThisLastNextMonth(Page page) {
-        // Arrange - month boundaries computed dynamically for the same reason as the week test above
+        // Arrange - LocalDate#minusMonths(1)/plusMonths(1) always land in the adjacent calendar month, so
+        // ids 11 and 533 pin last/next month exactly, and neither is ever in this month. Whether the
+        // day- and week-offset rows (ids 2, 4, 5, 6) share today's month depends on today's day-of-month,
+        // so they are left out of the assertions - see the note in dateFilterThisLastNextWeek() for why
+        // they are not recomputed here instead. Id 901 is 100 days back, always 3-4 months away.
         DataTable dataTable = page.dataTable;
-        LocalDate today = LocalDate.now();
-        LocalDate startOfThisMonth = today.withDayOfMonth(1);
-        LocalDate endOfThisMonth = today.withDayOfMonth(today.lengthOfMonth());
-        LocalDate startOfLastMonth = startOfThisMonth.minusMonths(1);
-        LocalDate endOfLastMonth = startOfThisMonth.minusDays(1);
-        LocalDate startOfNextMonth = startOfThisMonth.plusMonths(1);
-        LocalDate endOfNextMonth = startOfNextMonth.withDayOfMonth(startOfNextMonth.lengthOfMonth());
 
         // Act
         dataTable.filterMatchMode("review date", "thisMonth");
 
         // Assert
-        List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfThisMonth) && !e.getReviewDate().isAfter(endOfThisMonth))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIdsPresent(dataTable, 1);
+        assertIdsAbsent(dataTable, 3, 11, 533, 900, 901, 902, 903);
 
         // Act
         dataTable.filterMatchMode("review date", "lastMonth");
 
         // Assert
-        employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfLastMonth) && !e.getReviewDate().isAfter(endOfLastMonth))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIdsPresent(dataTable, 11);
+        assertIdsAbsent(dataTable, 1, 3, 4, 6, 533, 900, 901, 902, 903);
 
         // Act
         dataTable.filterMatchMode("review date", "nextMonth");
 
         // Assert
-        employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(startOfNextMonth) && !e.getReviewDate().isAfter(endOfNextMonth))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIdsPresent(dataTable, 533);
+        assertIdsAbsent(dataTable, 1, 2, 3, 5, 11, 900, 901, 902, 903);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -871,37 +845,32 @@ class DataTable051Test extends AbstractDataTableTest {
     @Order(25)
     @DisplayName("DataTable: date \"this year\"/\"last year\"/\"next year\"")
     void dateFilterThisLastNextYear(Page page) {
-        // Arrange - a full year offset is always safely within its bucket regardless of where "today" falls
-        // within its own year (unlike a quarter offset, which needs care implementation notes)
+        // Arrange - a full year offset (ids 902, 903) is always within its own bucket and never in this
+        // year, and today (id 1) is always in this year. Every row within a month or so of today (ids 2, 4,
+        // 5, 6, 11, 533), plus id 901 at 100 days back, can straddle a year boundary depending on the date
+        // the suite runs on, so they are left out - see dateFilterThisLastNextWeek() for the rationale.
         DataTable dataTable = page.dataTable;
-        LocalDate today = LocalDate.now();
 
         // Act
         dataTable.filterMatchMode("review date", "thisYear");
 
         // Assert
-        List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && e.getReviewDate().getYear() == today.getYear())
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIdsPresent(dataTable, 1);
+        assertIdsAbsent(dataTable, 3, 900, 902, 903);
 
         // Act
         dataTable.filterMatchMode("review date", "lastYear");
 
         // Assert
-        employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && e.getReviewDate().getYear() == today.getYear() - 1)
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIdsPresent(dataTable, 902);
+        assertIdsAbsent(dataTable, 1, 3, 4, 6, 533, 900, 903);
 
         // Act
         dataTable.filterMatchMode("review date", "nextYear");
 
         // Assert
-        employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && e.getReviewDate().getYear() == today.getYear() + 1)
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        assertIdsPresent(dataTable, 903);
+        assertIdsAbsent(dataTable, 1, 2, 3, 5, 11, 900, 901, 902);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -914,29 +883,25 @@ class DataTable051Test extends AbstractDataTableTest {
         // Arrange
         DataTable dataTable = page.dataTable;
         HeaderCell reviewDateHeader = dataTable.getHeader().getCell("review date").orElseThrow();
-        LocalDate today = LocalDate.now();
         dataTable.filterMatchMode("review date", "lastNDays");
 
         // Assert - the value input hints at the expected "number of days" syntax
         assertEquals("e.g., 30", reviewDateHeader.getColumnFilter().getAttribute("placeholder"));
 
-        // Act
-        dataTable.filter("review date", "30");
+        // Act - a 10-day window: wide enough to take in the week-offset rows (ids 5, 6), narrow enough that
+        // the month-offset rows (ids 11, 533) are always outside it. A 30-day window would not be
+        // decidable up front - "one month ago" is 28 to 31 days depending on the month, so id 11 would
+        // drift in and out of the expected set with the calendar.
+        dataTable.filter("review date", "10");
 
-        // Assert - [today - 30, today]
-        List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(today.minusDays(30)) && !e.getReviewDate().isAfter(today))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        // Assert - [today - 10, today]: today, yesterday, and a week ago
+        assertIds(dataTable, 1, 2, 5);
 
         // Act - switch to "next N days" keeping the same typed value
         dataTable.filterMatchMode("review date", "nextNDays");
 
-        // Assert - [today, today + 30]
-        employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(today) && !e.getReviewDate().isAfter(today.plusDays(30)))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        // Assert - [today, today + 10]: today, tomorrow, and a week ahead
+        assertIds(dataTable, 1, 4, 6);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -947,17 +912,14 @@ class DataTable051Test extends AbstractDataTableTest {
     void dateFilterRelativeDate(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        LocalDate today = LocalDate.now();
         dataTable.filterMatchMode("review date", "relativeDate");
 
         // Act
         dataTable.filter("review date", "10");
 
-        // Assert - [today - 10, today + 10]
-        List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> e.getReviewDate() != null && !e.getReviewDate().isBefore(today.minusDays(10)) && !e.getReviewDate().isAfter(today.plusDays(10)))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        // Assert - [today - 10, today + 10], i.e. both directions at once: today, yesterday, tomorrow and a
+        // week either side. The month-offset rows (ids 11, 533) are always outside a 10-day window.
+        assertIds(dataTable, 1, 2, 4, 5, 6);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -1035,7 +997,11 @@ class DataTable051Test extends AbstractDataTableTest {
     @DisplayName("DataTable: time \"last N minutes\"/\"next N minutes\"/\"last N hours\"/\"next N hours\" "
             + "match a bare LocalTime value on a cyclic 24h clock")
     void timeFilterLastNextMinutesAndHours(Page page) {
-        // Arrange
+        // Arrange - DataTable051#init() seeds the check-in times at fixed offsets from its own "now", freshly
+        // on every page load: id 1 = -10min, id 2 = -1h, id 4 = +10min, id 5 = +3h (every other row null).
+        // Each window below therefore has a known membership with at least 20 minutes of slack against the
+        // gap between that page load and this filter request, so the expected ids are fixed rather than
+        // recomputed from LocalTime.now() with a copy of the constraint's own cyclic range logic.
         DataTable dataTable = page.dataTable;
         HeaderCell checkInHeader = dataTable.getHeader().getCell("check-in time").orElseThrow();
         dataTable.filterMatchMode("check-in time", "lastNMinutes");
@@ -1046,52 +1012,27 @@ class DataTable051Test extends AbstractDataTableTest {
         // Act - "last 30 minutes"
         dataTable.filter("check-in time", "30");
 
-        // Assert - mirrors RelativeMinutesOrHoursFilterConstraint#isWithinCyclicRange exactly, since a bare
-        // LocalTime is a cyclic 24h clock and the window can wrap past midnight depending on real "now"
-        {
-            LocalTime now = LocalTime.now();
-            List<Employee> employeesFiltered = employees.stream()
-                    .filter(e -> e.getCheckInTime() != null && isWithinCyclicRange(e.getCheckInTime(), now.minusMinutes(30), now))
-                    .collect(Collectors.toList());
-            assertEmployeeRows(dataTable, employeesFiltered);
-        }
+        // Assert - only -10min is inside; -1h is too far back and both future times are out
+        assertIds(dataTable, 1);
 
         // Act - "next 30 minutes"
         dataTable.filterMatchMode("check-in time", "nextNMinutes");
 
         // Assert
-        {
-            LocalTime now = LocalTime.now();
-            List<Employee> employeesFiltered = employees.stream()
-                    .filter(e -> e.getCheckInTime() != null && isWithinCyclicRange(e.getCheckInTime(), now, now.plusMinutes(30)))
-                    .collect(Collectors.toList());
-            assertEmployeeRows(dataTable, employeesFiltered);
-        }
+        assertIds(dataTable, 4);
 
         // Act - "last 2 hours"
         dataTable.filterMatchMode("check-in time", "lastNHours");
         dataTable.filter("check-in time", "2");
 
-        // Assert
-        {
-            LocalTime now = LocalTime.now();
-            List<Employee> employeesFiltered = employees.stream()
-                    .filter(e -> e.getCheckInTime() != null && isWithinCyclicRange(e.getCheckInTime(), now.minusHours(2), now))
-                    .collect(Collectors.toList());
-            assertEmployeeRows(dataTable, employeesFiltered);
-        }
+        // Assert - now wide enough to take in -1h as well
+        assertIds(dataTable, 1, 2);
 
         // Act - "next 2 hours" (keeps the same typed value "2")
         dataTable.filterMatchMode("check-in time", "nextNHours");
 
-        // Assert
-        {
-            LocalTime now = LocalTime.now();
-            List<Employee> employeesFiltered = employees.stream()
-                    .filter(e -> e.getCheckInTime() != null && isWithinCyclicRange(e.getCheckInTime(), now, now.plusHours(2)))
-                    .collect(Collectors.toList());
-            assertEmployeeRows(dataTable, employeesFiltered);
-        }
+        // Assert - +3h stays outside a 2h window
+        assertIds(dataTable, 4);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -1100,22 +1041,18 @@ class DataTable051Test extends AbstractDataTableTest {
     @Order(32)
     @DisplayName("DataTable: time \"last N minutes\" wraps past midnight on the cyclic 24h clock")
     void timeFilterLastNMinutesWrapsPastMidnight(Page page) {
-        // Arrange - a window wide enough (23h59m) that it wraps past midnight for virtually any time of day the
-        // suite happens to run at - only the ~1-minute window right before midnight would not wrap, which is
-        // negligible for CI purposes. See RelativeMinutesOrHoursFilterConstraint#isWithinCyclicRange.
+        // Arrange - 23h59m back from "now" on a 24h clock covers every time of day except the single minute
+        // that follows "now", so the window wraps past midnight at whatever time of day the suite runs.
         DataTable dataTable = page.dataTable;
         dataTable.filterMatchMode("check-in time", "lastNMinutes");
 
         // Act
         dataTable.filter("check-in time", "1439");
 
-        // Assert
-        LocalTime now = LocalTime.now();
-        LocalTime start = now.minusMinutes(1439);
-        List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> e.getCheckInTime() != null && isWithinCyclicRange(e.getCheckInTime(), start, now))
-                .collect(Collectors.toList());
-        assertEmployeeRows(dataTable, employeesFiltered);
+        // Assert - every seeded check-in time is inside the window, the two in the future (ids 4 at +10min
+        // and 5 at +3h) included. That is only true because the range wraps: a linear implementation would
+        // clamp at "now" and return the two past times alone.
+        assertIds(dataTable, 1, 2, 4, 5);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -1125,7 +1062,10 @@ class DataTable051Test extends AbstractDataTableTest {
     @DisplayName("DataTable: datetime \"last N minutes\"/\"next N minutes\"/\"last N hours\"/"
             + "\"next N hours\" match a full LocalDateTime value using ordinary (linear, non-cyclic) range logic")
     void datetimeFilterLastNextMinutesAndHours(Page page) {
-        // Arrange
+        // Arrange - the last-login timestamps carry the same offsets as the check-in times in
+        // timeFilterLastNextMinutesAndHours() (id 1 = -10min, id 2 = -1h, id 4 = +10min, id 5 = +3h); the
+        // rows DataTable051#init() leaves alone keep EmployeeService's 2021 timestamps (ids 3, 11, 533) or
+        // null (id 6), so they are far outside every window here.
         DataTable dataTable = page.dataTable;
         HeaderCell lastLoginHeader = dataTable.getHeader().getCell("last login").orElseThrow();
         dataTable.filterMatchMode("last login", "lastNMinutes");
@@ -1134,55 +1074,28 @@ class DataTable051Test extends AbstractDataTableTest {
         // Act - "last 30 minutes"
         dataTable.filter("last login", "30");
 
-        // Assert - a full LocalDateTime is linear, not cyclic - ordinary isBefore/isAfter range logic applies
-        {
-            LocalDateTime now = LocalDateTime.now();
-            List<Employee> employeesFiltered = employees.stream()
-                    .filter(e -> e.getLastLoginDateTime() != null
-                            && !e.getLastLoginDateTime().isBefore(now.minusMinutes(30)) && !e.getLastLoginDateTime().isAfter(now))
-                    .collect(Collectors.toList());
-            assertEmployeeRows(dataTable, employeesFiltered);
-        }
+        // Assert - a full LocalDateTime is linear, not cyclic: the window stops at "now" and never wraps,
+        // so unlike the bare-LocalTime case above the future timestamps stay out however wide it gets
+        assertIds(dataTable, 1);
 
         // Act - "next 30 minutes"
         dataTable.filterMatchMode("last login", "nextNMinutes");
 
         // Assert
-        {
-            LocalDateTime now = LocalDateTime.now();
-            List<Employee> employeesFiltered = employees.stream()
-                    .filter(e -> e.getLastLoginDateTime() != null
-                            && !e.getLastLoginDateTime().isBefore(now) && !e.getLastLoginDateTime().isAfter(now.plusMinutes(30)))
-                    .collect(Collectors.toList());
-            assertEmployeeRows(dataTable, employeesFiltered);
-        }
+        assertIds(dataTable, 4);
 
         // Act - "last 2 hours"
         dataTable.filterMatchMode("last login", "lastNHours");
         dataTable.filter("last login", "2");
 
         // Assert
-        {
-            LocalDateTime now = LocalDateTime.now();
-            List<Employee> employeesFiltered = employees.stream()
-                    .filter(e -> e.getLastLoginDateTime() != null
-                            && !e.getLastLoginDateTime().isBefore(now.minusHours(2)) && !e.getLastLoginDateTime().isAfter(now))
-                    .collect(Collectors.toList());
-            assertEmployeeRows(dataTable, employeesFiltered);
-        }
+        assertIds(dataTable, 1, 2);
 
         // Act - "next 2 hours" (keeps the same typed value "2")
         dataTable.filterMatchMode("last login", "nextNHours");
 
         // Assert
-        {
-            LocalDateTime now = LocalDateTime.now();
-            List<Employee> employeesFiltered = employees.stream()
-                    .filter(e -> e.getLastLoginDateTime() != null
-                            && !e.getLastLoginDateTime().isBefore(now) && !e.getLastLoginDateTime().isAfter(now.plusHours(2)))
-                    .collect(Collectors.toList());
-            assertEmployeeRows(dataTable, employeesFiltered);
-        }
+        assertIds(dataTable, 4);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -1820,18 +1733,42 @@ class DataTable051Test extends AbstractDataTableTest {
         PrimeSelenium.waitGui().until(d -> element.isDisplayed());
     }
 
-    private static LocalDate startOfWeek(LocalDate date) {
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        return date.with(TemporalAdjusters.previousOrSame(weekFields.getFirstDayOfWeek()));
+    private List<Integer> ids(DataTable dataTable) {
+        List<Row> rows = dataTable.getRows();
+        return rows == null
+                ? List.of()
+                : rows.stream().map(row -> Integer.parseInt(row.getCell(0).getText().trim())).collect(Collectors.toList());
     }
 
-    // mirrors RelativeMinutesOrHoursFilterConstraint#isWithinCyclicRange exactly - a bare LocalTime has no date
-    // component, so the inclusive [start, end] range wraps past midnight (OR instead of AND) when start > end
-    private static boolean isWithinCyclicRange(LocalTime value, LocalTime start, LocalTime end) {
-        if (!start.isAfter(end)) {
-            return !value.isBefore(start) && !value.isAfter(end);
+    /**
+     * Asserts the ids of the displayed rows exactly, ignoring their order.
+     */
+    private void assertIds(DataTable dataTable, Integer... expected) {
+        assertEquals(new TreeSet<>(Arrays.asList(expected)), new TreeSet<>(ids(dataTable)));
+    }
+
+    /**
+     * Asserts that the displayed rows include these ids, without constraining the rest of the result. For a
+     * calendar-bucket match mode ("this week", "this month", ...) whose membership legitimately depends on the
+     * date the suite runs on, only the rows that are decidable up front can be pinned; see
+     * {@link #dateFilterThisLastNextWeek(Page)}.
+     */
+    private void assertIdsPresent(DataTable dataTable, Integer... expected) {
+        List<Integer> actual = ids(dataTable);
+        for (Integer id : expected) {
+            assertTrue(actual.contains(id), "Expected row " + id + " to be displayed, got: " + actual);
         }
-        return !value.isBefore(start) || !value.isAfter(end);
+    }
+
+    /**
+     * Counterpart to {@link #assertIdsPresent(DataTable, Integer...)} - asserts that none of these ids is
+     * displayed.
+     */
+    private void assertIdsAbsent(DataTable dataTable, Integer... expected) {
+        List<Integer> actual = ids(dataTable);
+        for (Integer id : expected) {
+            assertFalse(actual.contains(id), "Expected row " + id + " NOT to be displayed, got: " + actual);
+        }
     }
 
     public static class Page extends AbstractPrimePage {

@@ -161,6 +161,29 @@ public class HeaderCell extends Cell {
     }
 
     /**
+     * Opens the filter match-mode overlay menu and clicks its leading "Clear" action, which resets this
+     * column's filter value and its match mode back to the column's own configured default, then re-filters.
+     *
+     * @throws NoSuchElementException if the column does not define {@code filterValueType}
+     */
+    public void clearColumnFilter() {
+        WebElement icon = getColumnFilterMatchModeIcon();
+        if (icon == null) {
+            throw new NoSuchElementException("Column '" + this + "' does not define a filter match-mode picker");
+        }
+
+        // opening the menu is a local-only interaction (no AJAX request) - must not be guarded, same as in
+        // setFilterMatchMode()
+        icon.click();
+        WebElement clearLink = getFilterMatchModeMenu(icon).findElement(By.className("ui-column-filter-mode-clear-link"));
+
+        // the "Clear" action resets the value and the mode and then re-filters - see
+        // datatable.widget.js#resetColumnFilter() and the click handler that calls it - so this click,
+        // unlike opening the menu, does carry an AJAX request
+        PrimeSelenium.guardAjax(clearLink).click();
+    }
+
+    /**
      * Resolves a filter match-mode trigger icon's overlay menu via its {@code aria-controls} id - the menu is
      * relocated to {@code document.body} client-side (so scrollable/frozen headers don't clip it), so it is no
      * longer a descendant of this header cell and must be looked up from the driver root.

@@ -4999,7 +4999,23 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         var defaultLink = menu.find('.ui-menuitem-link[data-default="true"]');
 
         th.find('.ui-column-filter:not(:disabled):not([readonly])').val('');
-        th.find('.ui-column-filter-date input, .ui-column-filter-date-range input').val('').trigger('change');
+
+        // Clear the shadow date pickers through their own widgets rather than by writing '' into their
+        // inputs: a DatePicker keeps the selected date in its own state, and the underlying plugin
+        // reformats that state back into the input, so a raw .val('') leaves the old date on screen (and
+        // still highlighted in the overlay) even though the submitted .ui-column-filter input is empty.
+        // setDate(null) goes through the plugin's updateModel(null, null), clearing state and input alike.
+        th.find('.ui-column-filter-date, .ui-column-filter-date-range').each(function() {
+            var picker = $(this).find('.ui-calendar');
+            var widget = picker.length ? PrimeFaces.getWidgetById(picker.attr('id')) : null;
+            if (widget && typeof widget.setDate === 'function') {
+                widget.setDate(null);
+            }
+            else {
+                // no widget (not yet initialized): fall back to emptying the input directly
+                $(this).find('input').val('');
+            }
+        });
 
         // .attr(), not .data() - see the identical note in bindFilterMatchModeMenu()
         hiddenInput.val(defaultLink.attr('data-match-mode'));
@@ -5029,7 +5045,15 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             }
         };
 
-        // reset each filter match-mode picker (value + mode) back to the column's own configured default
+        // plain filter inputs first: a column with no match-mode picker (filterValueType="none", or any
+        // table not using the feature at all) has nothing but this input, and is not covered by the
+        // picker pass below - dropping this step would leave such a column filtered after clearFilters()
+        var standardFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter:not(:disabled):not([readonly])');
+        resetInputFields(standardFilters);
+
+        // then reset each filter match-mode picker (value + mode) back to the column's own configured
+        // default - resetColumnFilter() clears its own column's value input too, so the pass above being
+        // idempotent for those columns is intentional
         var $this = this;
         var standardFilterModeIcons = this.thead.find('> tr > th.ui-filter-column .ui-column-filter-mode-icon:not(:disabled)');
         standardFilterModeIcons.each(function() {

@@ -153,6 +153,23 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
     }
 
     /**
+     * Clears the filter value and the match mode of the column found by its header text, resetting both to
+     * the column's own configured default, and triggers the filter. Requires the column to define
+     * {@code filterValueType}.
+     *
+     * @param headerText the header text to look for
+     */
+    public void clearColumnFilter(String headerText) {
+        Optional<HeaderCell> cell = getHeader().getCell(headerText);
+        if (cell.isPresent()) {
+            cell.get().clearColumnFilter();
+        }
+        else {
+            System.err.println("Header Cell '" + headerText + "' not found.");
+        }
+    }
+
+    /**
      * Removes the current filter at this column index.
      *
      * @param cellIndex the index of the column
