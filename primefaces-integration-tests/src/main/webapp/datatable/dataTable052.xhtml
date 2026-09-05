@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+
+            <p:dataTable id="dynamic" var="lang" value="#{dataTable052.progLanguages}">
+                <p:columns id="cols" var="col" value="#{dataTable052.columns}" headerText="#{col}">
+                    <h:outputText value="#{lang[col]}"/>
+                </p:columns>
+            </p:dataTable>
+
+            <!-- p:columns must not leak its var, so this renders empty and not the last column -->
+            <h:outputText id="afterCols" value="afterCols=[#{col}]"/>
+
+            <p:dataTable id="grouped" var="team" value="#{dataTable052.teams}">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="Stats"/>
+                    </p:row>
+                </p:columnGroup>
+
+                <p:subTable id="stats" var="stat" value="#{team.stats}">
+                    <f:facet name="header">
+                        <h:outputText value="#{team.name}"/>
+                    </f:facet>
+                    <p:column>
+                        <h:outputText value="#{stat}"/>
+                    </p:column>
+                </p:subTable>
+            </p:dataTable>
+
+            <!-- p:subTable must not leak its var, so this renders empty and not the last row -->
+            <h:outputText id="afterSub" value="afterSub=[#{stat}]"/>
+
+            <p:commandButton id="buttonUpdate" value="Update" update="@form"/>
+
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

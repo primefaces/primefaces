@@ -28,6 +28,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.IterationCleanupAware;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
@@ -38,11 +39,15 @@ import org.primefaces.event.timeline.TimelineModificationEvent;
 import org.primefaces.event.timeline.TimelineRangeEvent;
 import org.primefaces.event.timeline.TimelineSelectEvent;
 import org.primefaces.model.timeline.TimelineModel;
+import org.primefaces.util.LangUtils;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.context.FacesContext;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
@@ -58,11 +63,17 @@ import jakarta.faces.component.UIComponentBase;
     @FacesBehaviorEvent(name = "lazyload", event = TimelineLazyLoadEvent.class, description = "Fired when lazy loading is triggered to fetch events."),
     @FacesBehaviorEvent(name = "drop", event = TimelineDragDropEvent.class, description = "Fired when a draggable item is dropped onto the timeline.")
 })
-public abstract class TimelineBase extends UIComponentBase implements Widget, RTLAware, StyleAware {
+public abstract class TimelineBase extends UIComponentBase implements Widget, RTLAware, StyleAware, IterationCleanupAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TimelineRenderer";
+
+    /**
+     * What the request map held under var and varGroup before the encoding replaced it, so that the encoding can put
+     * it back. Null while nothing was replaced.
+     */
+    private Map<String, Object> replacedVars;
 
     public TimelineBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -71,6 +82,55 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    /**
+     * Puts the event or the group which is being encoded in the request map, remembering what was there before, so
+     * that {@link #cleanupIterationState(FacesContext)} can put it back. Restoring rather than removing matters
+     * because a timeline nested in an outer iteration may share the name with it, and removing would destroy the
+     * outer value.
+     *
+     * @param context the {@link FacesContext}.
+     * @param name the name of the variable, {@code var} or {@code varGroup}. Ignored when blank.
+     * @param value the value to expose under it.
+     */
+    public void setIterationVar(FacesContext context, String name, Object value) {
+        if (LangUtils.isBlank(name)) {
+            return;
+        }
+
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        if (replacedVars == null) {
+            replacedVars = new HashMap<>(2);
+        }
+        if (!replacedVars.containsKey(name)) {
+            replacedVars.put(name, requestMap.get(name));
+        }
+
+        requestMap.put(name, value);
+    }
+
+    @Override
+    public void cleanupIterationState(FacesContext context) {
+        // only what the encoding actually replaced is put back, so a decode, or a render which never reached an
+        // event, leaves the request map alone
+        if (replacedVars == null) {
+            return;
+        }
+
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        for (Map.Entry<String, Object> replacedVar : replacedVars.entrySet()) {
+            if (replacedVar.getValue() != null) {
+                requestMap.put(replacedVar.getKey(), replacedVar.getValue());
+            }
+            else {
+                requestMap.remove(replacedVar.getKey());
+            }
+        }
+
+        replacedVars = null;
     }
 
     @Facet(description = "Group content of the timeline.")

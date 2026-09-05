@@ -29,6 +29,11 @@ import org.primefaces.component.columns.Columns;
 import org.primefaces.el.MyBean;
 import org.primefaces.el.MyContainer;
 import org.primefaces.mock.FacesContextMock;
+import org.primefaces.renderkit.PrimeRendererWrapper;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 
 import jakarta.el.ExpressionFactory;
 import jakarta.el.ValueExpression;
@@ -46,6 +51,64 @@ class DataTableTest {
     void allowUnsorting() {
         DataTable table = new DataTable();
         assertFalse(table.isAllowUnsorting());
+    }
+
+    /**
+     * The row the table stands on ends up in the client id of every descendant and puts the row in the request map
+     * under the table's var, and the same holds for the column a p:columns stands on. The scroll, cell edit, row edit
+     * and add row ajax requests never reach encodeTbody, which is the only place which used to reset the row index,
+     * so the reset has to happen after encodeEnd, for every request which encoded the table.
+     */
+    @Test
+    void cleanupIterationStateLeavesTheTableStandingOnNoRowAndNoColumn() {
+        FacesContext context = new FacesContextMock();
+
+        Columns columns = new Columns();
+        columns.setId("cols");
+        columns.setVar("col");
+        columns.setValue(Arrays.asList("id", "name"));
+
+        DataTable table = new DataTable();
+        table.setId("table");
+        table.setVar("row");
+        table.setValue(Arrays.asList("one", "two"));
+        table.getChildren().add(columns);
+
+        table.setRowIndex(1);
+        columns.setRowIndex(1);
+
+        table.cleanupIterationState(context);
+
+        assertEquals(-1, table.getRowIndex());
+        assertEquals(-1, columns.getRowIndex());
+        assertFalse(context.getExternalContext().getRequestMap().containsKey("row"));
+        assertFalse(context.getExternalContext().getRequestMap().containsKey("col"));
+    }
+
+    /**
+     * DraggableRowsFeature#decode stands the table on the row which was dragged and returns without resetting it, so
+     * the decode has to leave the table standing on no row too. There is no page level reproducer for this: the row
+     * reorder request renders one fragment and nothing renders after it.
+     */
+    @Test
+    void decodeLeavesTheTableStandingOnNoRow() {
+        FacesContext context = new FacesContextMock();
+
+        DataTable table = new DataTable();
+        table.setId("table");
+        table.setVar("row");
+        table.setValue(new ArrayList<>(Arrays.asList("one", "two", "three")));
+
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        params.put(table.getClientId(context) + "_rowreorder", "true");
+        params.put(table.getClientId(context) + "_fromIndex", "0");
+        params.put(table.getClientId(context) + "_toIndex", "2");
+
+        new PrimeRendererWrapper(new DataTableRenderer()).decode(context, table);
+
+        assertEquals(-1, table.getRowIndex());
+        assertEquals(table.getClientId(context), table.getContainerClientId(context));
+        assertFalse(context.getExternalContext().getRequestMap().containsKey("row"));
     }
 
     @Test

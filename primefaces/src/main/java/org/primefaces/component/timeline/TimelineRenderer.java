@@ -324,8 +324,8 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
         fsw.write("{id: \"" + EscapeUtils.forJavaScriptBlock(group.getId()) + "\"");
 
         Object data = group.getData();
-        if (LangUtils.isNotBlank(component.getVarGroup()) && data != null) {
-            context.getExternalContext().getRequestMap().put(component.getVarGroup(), data);
+        if (data != null) {
+            component.setIterationVar(context, component.getVarGroup(), data);
         }
         if (FacetUtils.shouldRenderFacet(groupFacet)) {
             String groupRender = encodeAllToString(context, writer, fswHtml, groupFacet);
@@ -481,8 +481,8 @@ public class TimelineRenderer extends CoreRenderer<Timeline> {
         }
 
         Object data = event.getData();
-        if (LangUtils.isNotBlank(component.getVar()) && data != null) {
-            context.getExternalContext().getRequestMap().put(component.getVar(), data);
+        if (data != null) {
+            component.setIterationVar(context, component.getVar(), data);
         }
 
         if (event.getTitle() != null) {

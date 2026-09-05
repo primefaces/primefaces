@@ -47,6 +47,38 @@ import jakarta.faces.context.FacesContext;
 
 public interface ColumnAware {
 
+    /**
+     * Resets every {@link Columns} below this component, so that it no longer stands on the column which was rendered
+     * last. {@link DynamicColumn#applyModel()} is called from a lot of places while a table renders and
+     * {@link DynamicColumn#cleanModel()} matches none of them, so the reset happens once, when the table is done.
+     * <p>
+     * This walks the children itself instead of going through
+     * {@link #forEachColumn(FacesContext, UIComponent, boolean, boolean, boolean, Predicate)}, on purpose. That one
+     * evaluates EL: it visits a {@code ui:repeat} to look for a {@link Column} inside it, which can never hold a
+     * {@link Columns} anyway, and it applies the stateless model of each dynamic column. A cleanup runs after a phase
+     * which may have thrown, so it must not evaluate anything which could throw a second time and bury the original
+     * exception.
+     */
+    default void resetDynamicColumns() {
+        resetDynamicColumns((UIComponent) this);
+    }
+
+    private static void resetDynamicColumns(UIComponent parent) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            UIComponent child = parent.getChildren().get(i);
+
+            if (child instanceof Columns columns) {
+                if (columns.getRowIndex() != -1) {
+                    columns.setRowIndex(-1);
+                }
+            }
+            else if (child instanceof ColumnGroup || child instanceof Row || child instanceof ColumnAware) {
+                // a p:columns can also sit in a column group, below its rows, or in a nested column aware component
+                resetDynamicColumns(child);
+            }
+        }
+    }
+
     default void forEachColumn(Predicate<UIColumn> callback) {
         forEachColumn(true, true, false, callback);
     }

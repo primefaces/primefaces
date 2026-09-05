@@ -264,6 +264,11 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             catch (IOException e) {
                 LOGGER.log(Level.WARNING, e, () -> "Timeline with id " + clientId + " could not be updated, at least one CRUD operation failed");
             }
+            finally {
+                // encodeGroup and encodeEvent put the group and the event in the request map, and this path patches
+                // the widget over JS without re-rendering the timeline, so no encodeEnd follows to clean up after them
+                timeline.cleanupIterationState(context);
+            }
         });
     }
 
