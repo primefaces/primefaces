@@ -47,6 +47,22 @@ import jakarta.faces.context.FacesContext;
 
 public interface ColumnAware {
 
+    /**
+     * Resets every {@link Columns} below this component, so that it no longer stands on the column which was rendered
+     * last. {@link DynamicColumn#applyModel()} is called from a lot of places while a table renders and
+     * {@link DynamicColumn#cleanModel()} matches none of them, so the reset happens once, when the table is done.
+     *
+     * @param context the {@link FacesContext}.
+     */
+    default void resetDynamicColumns(FacesContext context) {
+        forEachColumn(context, (UIComponent) this, false, false, false, column -> {
+            if (column instanceof Columns columns && columns.getRowIndex() != -1) {
+                columns.setRowIndex(-1);
+            }
+            return true;
+        });
+    }
+
     default void forEachColumn(Predicate<UIColumn> callback) {
         forEachColumn(true, true, false, callback);
     }

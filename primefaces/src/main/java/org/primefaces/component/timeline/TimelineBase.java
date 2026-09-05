@@ -28,6 +28,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.IterationCleanupAware;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
@@ -38,11 +39,14 @@ import org.primefaces.event.timeline.TimelineModificationEvent;
 import org.primefaces.event.timeline.TimelineRangeEvent;
 import org.primefaces.event.timeline.TimelineSelectEvent;
 import org.primefaces.model.timeline.TimelineModel;
+import org.primefaces.util.LangUtils;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.context.FacesContext;
 
 @FacesComponentBase
 @FacesBehaviorEvents({
@@ -58,7 +62,7 @@ import jakarta.faces.component.UIComponentBase;
     @FacesBehaviorEvent(name = "lazyload", event = TimelineLazyLoadEvent.class, description = "Fired when lazy loading is triggered to fetch events."),
     @FacesBehaviorEvent(name = "drop", event = TimelineDragDropEvent.class, description = "Fired when a draggable item is dropped onto the timeline.")
 })
-public abstract class TimelineBase extends UIComponentBase implements Widget, RTLAware, StyleAware {
+public abstract class TimelineBase extends UIComponentBase implements Widget, RTLAware, StyleAware, IterationCleanupAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -71,6 +75,21 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    @Override
+    public void cleanupIterationState(FacesContext context) {
+        // the renderer puts the event it encodes in the request map under var, and the group under varGroup,
+        // so neither may outlive the encoding
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        if (LangUtils.isNotBlank(getVar())) {
+            requestMap.remove(getVar());
+        }
+
+        if (LangUtils.isNotBlank(getVarGroup())) {
+            requestMap.remove(getVarGroup());
+        }
     }
 
     @Facet(description = "Group content of the timeline.")
