@@ -42,12 +42,17 @@ import jakarta.faces.render.Renderer;
 @SuppressWarnings("rawtypes")
 public class PrimeRenderKit extends RenderKitWrapper {
 
+    private static final char KEY_SEPARATOR = '\0';
+
     /**
-     * Keyed by the renderer itself, which is an application scoped singleton without an equals of its own. That is one
-     * lookup and no key to build, on a path which {@code UIComponentBase} walks several times per component per
-     * request, and a renderer which is replaced simply becomes a different key.
+     * Keyed by family and renderer type, so that the key space stays bounded by the number of registered renderer
+     * types. Keying by the renderer itself would be one lookup less, but a {@link RenderKitWrapper} further down the
+     * chain is free to build a new renderer per lookup, the way this class does itself, and the map would then grow
+     * by about the component count on every request, forever. The cached wrapper is handed out only while it still
+     * wraps what the delegate returns, which also covers a renderer replaced through
+     * {@link #addRenderer(String, String, Renderer)}.
      */
-    private final Map<Renderer, Renderer> wrappers = new ConcurrentHashMap<>();
+    private final Map<String, PrimeRendererWrapper> wrappers = new ConcurrentHashMap<>();
 
     public PrimeRenderKit(RenderKit wrapped) {
         super(wrapped);
@@ -62,6 +67,14 @@ public class PrimeRenderKit extends RenderKitWrapper {
         }
 
         // the wrapper is stateless, but a stable instance per renderer keeps renderers comparable by identity
-        return wrappers.computeIfAbsent(renderer, PrimeRendererWrapper::new);
+        String key = family + KEY_SEPARATOR + rendererType;
+        PrimeRendererWrapper wrapper = wrappers.get(key);
+
+        if (wrapper == null || wrapper.getWrapped() != renderer) {
+            wrapper = new PrimeRendererWrapper(renderer);
+            wrappers.put(key, wrapper);
+        }
+
+        return wrapper;
     }
 }

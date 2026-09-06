@@ -27,6 +27,7 @@ import org.primefaces.mock.RendererMock;
 
 import java.io.OutputStream;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +40,7 @@ import jakarta.faces.render.ResponseStateManager;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -124,6 +126,49 @@ class PrimeRenderKitTest {
         renderKit.addRenderer("family", "type", replacement);
 
         assertSame(replacement, ((PrimeRendererWrapper) renderKit.getRenderer("family", "type")).getWrapped());
+    }
+
+    /**
+     * A {@link jakarta.faces.render.RenderKitWrapper} in the chain is free to build a new renderer per lookup, the way
+     * this class does itself. The cache has to stay bounded by the number of renderer types even then, because
+     * {@code UIComponentBase} looks a renderer up several times per component per request and the render kit lives as
+     * long as the application does.
+     */
+    @Test
+    void keepsTheCacheBoundedWhenTheDelegateHandsOutANewRendererEveryTime() throws Exception {
+        RenderKitStub wrapped = new RenderKitStub() {
+            @Override
+            public Renderer getRenderer(String family, String rendererType) {
+                return new CoreRenderer<UIComponent>() { };
+            }
+        };
+
+        PrimeRenderKit renderKit = new PrimeRenderKit(wrapped);
+        for (int i = 0; i < 100; i++) {
+            renderKit.getRenderer("family", "type");
+        }
+
+        Field wrappers = PrimeRenderKit.class.getDeclaredField("wrappers");
+        wrappers.setAccessible(true);
+
+        assertEquals(1, ((Map<?, ?>) wrappers.get(renderKit)).size());
+    }
+
+    /**
+     * Two renderer types of the same family are two different renderers, so they may not share a cache entry.
+     */
+    @Test
+    void keepsTheWrappersOfTwoRendererTypesApart() {
+        RenderKitStub wrapped = new RenderKitStub();
+        Renderer one = new CoreRenderer<UIComponent>() { };
+        Renderer two = new CoreRenderer<UIComponent>() { };
+        wrapped.addRenderer("family", "one", one);
+        wrapped.addRenderer("family", "two", two);
+
+        PrimeRenderKit renderKit = new PrimeRenderKit(wrapped);
+
+        assertSame(one, ((PrimeRendererWrapper) renderKit.getRenderer("family", "one")).getWrapped());
+        assertSame(two, ((PrimeRendererWrapper) renderKit.getRenderer("family", "two")).getWrapped());
     }
 
     @Test

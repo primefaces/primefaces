@@ -89,6 +89,8 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
      * that {@link #cleanupIterationState(FacesContext)} can put it back. Restoring rather than removing matters
      * because a timeline nested in an outer iteration may share the name with it, and removing would destroy the
      * outer value.
+     * <p>
+     * NOTE: this is for internal usage only!
      *
      * @param context the {@link FacesContext}.
      * @param name the name of the variable, {@code var} or {@code varGroup}. Ignored when blank.

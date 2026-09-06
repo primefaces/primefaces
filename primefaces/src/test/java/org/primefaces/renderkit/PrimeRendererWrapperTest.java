@@ -82,6 +82,17 @@ class PrimeRendererWrapperTest {
         }
     }
 
+    /**
+     * A component whose own cleanup fails with an {@link Error} rather than with an exception.
+     */
+    private static class ErrorThrowingCleanupComponent extends UIPanel implements IterationCleanupAware {
+
+        @Override
+        public void cleanupIterationState(FacesContext context) {
+            throw new StackOverflowError("cleanup blew up");
+        }
+    }
+
     private static class ThrowingRenderer extends CoreRenderer<UIComponent> {
 
         @Override
@@ -92,6 +103,22 @@ class PrimeRendererWrapperTest {
         @Override
         public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
             throw new IOException("boom");
+        }
+    }
+
+    /**
+     * A render which runs out of stack, the way a deeply nested or accidentally recursive component tree does.
+     */
+    private static class ErrorThrowingRenderer extends CoreRenderer<UIComponent> {
+
+        @Override
+        public void decode(FacesContext context, UIComponent component) {
+            throw new StackOverflowError("boom");
+        }
+
+        @Override
+        public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+            throw new StackOverflowError("boom");
         }
     }
 
@@ -191,6 +218,49 @@ class PrimeRendererWrapperTest {
         assertEquals("boom", thrown.getMessage());
         assertEquals(1, thrown.getSuppressed().length);
         assertEquals("cleanup blew up", thrown.getSuppressed()[0].getMessage());
+    }
+
+    /**
+     * A {@link StackOverflowError} out of a deeply nested render unwinds like any other throwable and the response is
+     * still turned into an error page, so the iteration state has to be cleaned up after it too.
+     */
+    @Test
+    void encodeEndCleansUpWhenTheRendererThrewAnError() {
+        FacesContext context = new FacesContextMock();
+        CleanupAwareComponent component = new CleanupAwareComponent();
+
+        Renderer wrapper = new PrimeRendererWrapper(new ErrorThrowingRenderer());
+        StackOverflowError thrown = assertThrows(StackOverflowError.class, () -> wrapper.encodeEnd(context, component));
+
+        assertEquals("boom", thrown.getMessage());
+        assertEquals(1, component.cleanups);
+    }
+
+    @Test
+    void decodeCleansUpWhenTheRendererThrewAnError() {
+        FacesContext context = new FacesContextMock();
+        CleanupAwareComponent component = new CleanupAwareComponent();
+
+        Renderer wrapper = new PrimeRendererWrapper(new ErrorThrowingRenderer());
+        StackOverflowError thrown = assertThrows(StackOverflowError.class, () -> wrapper.decode(context, component));
+
+        assertEquals("boom", thrown.getMessage());
+        assertEquals(1, component.cleanups);
+    }
+
+    /**
+     * An {@link Error} is not a lesser failure than what the render threw, so it wins rather than riding along as a
+     * suppressed exception.
+     */
+    @Test
+    void encodeEndLetsAnErrorFromTheCleanupWin() {
+        FacesContext context = new FacesContextMock();
+
+        Renderer wrapper = new PrimeRendererWrapper(new ThrowingRenderer());
+        StackOverflowError thrown =
+                assertThrows(StackOverflowError.class, () -> wrapper.encodeEnd(context, new ErrorThrowingCleanupComponent()));
+
+        assertEquals("cleanup blew up", thrown.getMessage());
     }
 
     @Test
