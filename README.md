@@ -17,9 +17,7 @@
 
 PrimeFaces is one of the most popular UI libraries in Jakarta EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more.
 
-### Community Edition (Open Source)
-
-This repository contains the open-source code and issue tracker of **PrimeFaces (community edition)**.
+### License
 
 PrimeFaces is now fully open source and maintained by the community.
 The project has been handed over by PrimeTek to the open-source community, and ongoing development depends on contributors and sponsors.
