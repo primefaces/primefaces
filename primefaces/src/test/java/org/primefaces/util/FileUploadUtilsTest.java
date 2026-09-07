@@ -30,7 +30,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Locale;
 import java.util.stream.Stream;
 
@@ -177,7 +177,7 @@ class FileUploadUtilsTest {
     @Test
     void requireValidFilePath_AbsoluteFile() throws URISyntaxException {
         // Arrange
-        String absolutePath = Paths.get(FileUploadUtilsTest.class.getResource("/test.png").toURI())
+        String absolutePath = Path.of(FileUploadUtilsTest.class.getResource("/test.png").toURI())
                 .toFile().getAbsolutePath();
 
         // Act

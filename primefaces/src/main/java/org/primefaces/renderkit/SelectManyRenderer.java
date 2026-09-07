@@ -55,8 +55,8 @@ public abstract class SelectManyRenderer<T extends UISelectMany & PrimeSelect> e
         Object value = component.getValue();
 
         if (value != null) {
-            if (value instanceof Collection) {
-                return ((Collection) value).toArray();
+            if (value instanceof Collection collection) {
+                return collection.toArray();
             }
             else if (value.getClass().isArray()) {
                 return value;

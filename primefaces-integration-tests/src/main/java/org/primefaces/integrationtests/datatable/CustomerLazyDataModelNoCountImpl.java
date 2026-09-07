@@ -27,6 +27,7 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
+import java.io.Serial;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ import org.apache.commons.collections4.ComparatorUtils;
  */
 public class CustomerLazyDataModelNoCountImpl extends LazyDataModel<Customer> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private List<Customer> datasource;
 

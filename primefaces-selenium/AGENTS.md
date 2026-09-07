@@ -2,7 +2,8 @@
 
 Guidance for Coding Agents working inside the `primefaces-selenium` module. Read the
 root [`AGENTS.md`](../AGENTS.md) first for repository-wide conventions; this file
-adds the detail specific to the Selenium test framework.
+adds the detail specific to the Selenium test framework. (`CLAUDE.md` here is a
+symlink to this file.)
 
 ## Purpose
 
@@ -12,7 +13,8 @@ ready-made component wrappers that real test suites (notably `primefaces-integra
 build on. It is published to Maven Central as a `test`-scoped dependency for downstream
 PrimeFaces users who want to write Selenium tests against their own apps.
 
-It is heavily inspired by Arquillian Graphene and supports JUnit 5 parallel execution.
+It is heavily inspired by Arquillian Graphene and supports JUnit Jupiter (JUnit 6.x)
+parallel execution.
 
 ## Module Layout
 
@@ -20,7 +22,7 @@ This is an aggregator (`pom` packaging) with two published JARs:
 
 | Submodule | Artifact | Contents                                                                                                                                                                                              |
 |---|---|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `primefaces-selenium-core` | `primefaces-selenium-core` | Framework engine: JUnit 5 extensions, page/fragment factories, WebDriver lifecycle, AJAX/HTTP guards, config, SPI hooks. Depends only on Selenium + JUnit + byte-buddy + org.json + webdrivermanager. |
+| `primefaces-selenium-core` | `primefaces-selenium-core` | Framework engine: JUnit Jupiter extensions, page/fragment factories, WebDriver lifecycle, AJAX/HTTP guards, config, SPI hooks. Depends only on Selenium + JUnit + byte-buddy + org.json + webdrivermanager. |
 | `primefaces-selenium-components` | `primefaces-selenium-components` | Component wrappers (e.g. `DataTable`, `DatePicker`, `SelectOneMenu`, …) under `org.primefaces.selenium.component`. Depends on `-core`.                                                                |
 
 `-core` knows nothing about specific components; `-components` knows nothing about the
@@ -41,7 +43,7 @@ deployment/test runner. Keep that dependency direction intact.
   `AbstractPageableData`, etc. specialize further.
 
 ### Injection / test lifecycle (`AbstractPrimePageTest`)
-Tests extend `AbstractPrimePageTest`, which wires four JUnit 5 extensions:
+Tests extend `AbstractPrimePageTest`, which wires four JUnit Jupiter extensions:
 - `BootstrapExtension` — once per JVM, starts the `DeploymentAdapter` (embedded container) and
   registers a shutdown hook.
 - `WebDriverExtension` — creates the WebDriver `@BeforeAll`, quits it `@AfterAll`.
@@ -163,9 +165,10 @@ extends AbstractPrimePage` + `@Order`ed methods pattern.
 
 ## Building & gotchas
 
-- Build: `mvn clean install -f primefaces-selenium/pom.xml` (or `-Pquick` to skip tests/checkstyle).
+- Build: `mvn clean install -f primefaces-selenium/pom.xml` (the `quick` profile lives in
+  `primefaces/pom.xml` and does not apply here — use `-DskipTests -Dcheckstyle.skip` instead).
 - This module is a framework — it has **no executable tests of its own**; you exercise changes by
-  running `primefaces-integration-tests` against it (see the root `CLAUDE.md` integration-test
+  running `primefaces-integration-tests` against it (see the root [`AGENTS.md`](../AGENTS.md) integration-test
   commands).
 - Checkstyle/license rules from the root apply: 160-char lines, 4-space indent, MIT header, English.
 - `byte-buddy` proxying drives the page/fragment/guard magic. If you hit "Could not proxy class …

@@ -27,6 +27,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.DefaultLazyDataModel;
 import org.primefaces.model.LazyDataModel;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -43,7 +44,7 @@ import lombok.Data;
 @Data
 public class DataTable001 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
 
     private List<ProgrammingLanguage> progLanguages;
     private LazyDataModel<ProgrammingLanguage> progLanguagesLazyDataModel;

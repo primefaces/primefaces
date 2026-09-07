@@ -71,8 +71,7 @@ public class ToolbarRenderer extends CoreRenderer<Toolbar> {
         ResponseWriter writer = context.getResponseWriter();
 
         for (UIComponent child : component.getChildren()) {
-            if (child.isRendered() && child instanceof ToolbarGroup) {
-                ToolbarGroup group = (ToolbarGroup) child;
+            if (child.isRendered() && child instanceof ToolbarGroup group) {
 
                 if (component.getChildCount() == 1 && "right".equals(group.getAlign())) {
                     writer.startElement("div", null);
@@ -135,8 +134,7 @@ public class ToolbarRenderer extends CoreRenderer<Toolbar> {
     protected boolean shouldBeRendered(FacesContext facesContext, Toolbar component) {
         if (component.getChildCount() > 0) {
             for (UIComponent child : component.getChildren()) {
-                if (child.isRendered() && child instanceof ToolbarGroup) {
-                    ToolbarGroup toolbarGroup = (ToolbarGroup) child;
+                if (child.isRendered() && child instanceof ToolbarGroup toolbarGroup) {
                     if (toolbarGroup.getChildren().stream().anyMatch(c -> shouldBeRendered(facesContext, c))) {
                         return true;
                     }

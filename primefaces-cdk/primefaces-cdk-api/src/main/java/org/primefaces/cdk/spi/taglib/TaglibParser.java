@@ -138,8 +138,8 @@ public class TaglibParser {
         NodeList children = parent.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node node = children.item(i);
-            if (node instanceof Element && tagName.equals(node.getNodeName())) {
-                return (Element) node;
+            if (node instanceof Element element && tagName.equals(node.getNodeName())) {
+                return element;
             }
         }
         return null;

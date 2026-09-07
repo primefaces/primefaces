@@ -80,8 +80,8 @@ public class IncludesTagHandler extends TagHandler {
 
             int size = 0;
 
-            if (objValue instanceof List) {
-                size = ((List) objValue).size();
+            if (objValue instanceof List list) {
+                size = list.size();
             }
             else if (objValue.getClass().isArray()) {
                 size = ((Object[]) objValue).length;

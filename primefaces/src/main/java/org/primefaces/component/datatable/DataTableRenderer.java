@@ -448,8 +448,8 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             // #11023 account for non-rendered frozen columns
             for (int i = 0; i < columnsCount; i++) {
                 UIColumn column = columns.get(i);
-                if (column instanceof DynamicColumn) {
-                    ((DynamicColumn) column).applyModel();
+                if (column instanceof DynamicColumn dynamicColumn) {
+                    dynamicColumn.applyModel();
                 }
                 if (column.isRendered()) {
                     lastFrozenColumn++;
@@ -702,7 +702,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
         String style = resolveColumnStyle(columnMeta, column);
         String ariaHeaderLabel = resolveColumnAriaHeaderText(context, column);
-        UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
+        UIComponent component = (column instanceof UIComponent uic) ? uic : null;
 
         writer.startElement("th", component);
         writer.writeAttribute("id", clientId, null);
@@ -1356,8 +1356,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
             for (UIComponent child : group.getChildren()) {
                 if (child.isRendered()) {
-                    if (child instanceof Row) {
-                        Row headerRow = (Row) child;
+                    if (child instanceof Row headerRow) {
                         String rowClass = headerRow.getStyleClass();
                         String rowStyle = headerRow.getStyle();
 
@@ -1370,13 +1369,13 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                         }
 
                         for (UIComponent headerRowChild : headerRow.getChildren()) {
-                            if (headerRowChild instanceof Column) {
+                            if (headerRowChild instanceof Column column) {
                                 if (headerRowChild.isRendered()) {
-                                    encodeColumnHeader(context, table, (Column) headerRowChild);
+                                    encodeColumnHeader(context, table, column);
                                 }
                             }
-                            else if (headerRowChild instanceof Columns) {
-                                List<DynamicColumn> dynamicColumns = ((Columns) headerRowChild).getDynamicColumns();
+                            else if (headerRowChild instanceof Columns columns1) {
+                                List<DynamicColumn> dynamicColumns = columns1.getDynamicColumns();
                                 for (DynamicColumn dynaColumn : dynamicColumns) {
                                     dynaColumn.applyModel();
                                     if (dynaColumn.isRendered()) {
@@ -1404,8 +1403,8 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
             for (int i = columnStart; i < columnEnd; i++) {
                 UIColumn column = columns.get(i);
-                if (column instanceof DynamicColumn) {
-                    ((DynamicColumn) column).applyModel();
+                if (column instanceof DynamicColumn dynamicColumn) {
+                    dynamicColumn.applyModel();
                 }
                 encodeColumnHeader(context, table, column);
             }
@@ -1626,8 +1625,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             if (column instanceof Column) {
                 encodeCell(context, table, column, selected, allowSelection, rowIndex);
             }
-            else if (column instanceof DynamicColumn) {
-                DynamicColumn dynamicColumn = (DynamicColumn) column;
+            else if (column instanceof DynamicColumn dynamicColumn) {
                 dynamicColumn.applyModel();
 
                 encodeCell(context, table, dynamicColumn, false, allowSelection, rowIndex);
@@ -1700,7 +1698,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         if (LangUtils.isNotBlank(title)) {
             writer.writeAttribute("title", title, null);
         }
-        UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
+        UIComponent component = (column instanceof UIComponent uic) ? uic : null;
         if (component != null) {
             renderDynamicPassThruAttributes(context, component);
         }
@@ -1763,8 +1761,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
             for (UIComponent child : group.getChildren()) {
                 if (child.isRendered()) {
-                    if (child instanceof Row) {
-                        Row footerRow = (Row) child;
+                    if (child instanceof Row footerRow) {
                         String rowClass = footerRow.getStyleClass();
                         String rowStyle = footerRow.getStyle();
 
@@ -1778,11 +1775,11 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
                         for (UIComponent footerRowChild : footerRow.getChildren()) {
                             if (footerRowChild.isRendered()) {
-                                if (footerRowChild instanceof Column) {
-                                    encodeColumnFooter(context, table, (Column) footerRowChild);
+                                if (footerRowChild instanceof Column column) {
+                                    encodeColumnFooter(context, table, column);
                                 }
-                                else if (footerRowChild instanceof Columns) {
-                                    List<DynamicColumn> dynamicColumns = ((Columns) footerRowChild).getDynamicColumns();
+                                else if (footerRowChild instanceof Columns columns1) {
+                                    List<DynamicColumn> dynamicColumns = columns1.getDynamicColumns();
                                     for (DynamicColumn dynaColumn : dynamicColumns) {
                                         dynaColumn.applyModel();
                                         encodeColumnFooter(context, table, dynaColumn);
@@ -1812,8 +1809,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 if (column instanceof Column) {
                     encodeColumnFooter(context, table, column);
                 }
-                else if (column instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) column;
+                else if (column instanceof DynamicColumn dynamicColumn) {
                     dynamicColumn.applyModel();
 
                     encodeColumnFooter(context, table, dynamicColumn);

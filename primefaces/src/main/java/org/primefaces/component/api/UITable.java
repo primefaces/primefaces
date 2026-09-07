@@ -113,8 +113,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             if (FilterMeta.GLOBAL_FILTER_KEY.equals(entry.getKey())) {
                 UIComponent globalFilterComponent = SearchExpressionUtils.contextlessResolveComponent(
                         context, (UIComponent) this, GLOBAL_FILTER_COMPONENT_ID);
-                if (globalFilterComponent instanceof ValueHolder) {
-                    ((ValueHolder) globalFilterComponent).setValue(entry.getValue().getFilterValue());
+                if (globalFilterComponent instanceof ValueHolder holder) {
+                    holder.setValue(entry.getValue().getFilterValue());
                 }
             }
         }
@@ -123,8 +123,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     default void updateFilterByWithUserFilterBy(FacesContext context, Map<String, FilterMeta> intlFilterBy, Object usrFilterBy) {
 
         Collection<FilterMeta> filterByTmp;
-        if (usrFilterBy instanceof FilterMeta) {
-            filterByTmp = Collections.singletonList((FilterMeta) usrFilterBy);
+        if (usrFilterBy instanceof FilterMeta meta) {
+            filterByTmp = Collections.singletonList(meta);
         }
         else if (!(usrFilterBy instanceof Collection)) {
             throw new FacesException("filterBy expects a single or a collection of FilterMeta");
@@ -167,8 +167,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         UIComponent globalFilterComponent = SearchExpressionUtils.contextlessResolveComponent(
                 context, (UIComponent) this, GLOBAL_FILTER_COMPONENT_ID, hints);
         if (globalFilterComponent != null) {
-            if (globalFilterComponent instanceof ValueHolder) {
-                ((ValueHolder) globalFilterComponent).setValue(globalFilterDefaultValue);
+            if (globalFilterComponent instanceof ValueHolder holder) {
+                holder.setValue(globalFilterDefaultValue);
             }
             FilterMeta globalFilterBy = FilterMeta.of(globalFilterDefaultValue, getGlobalFilterFunction(), isFilterNormalize());
             filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
@@ -211,8 +211,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 return true;
             }
 
-            if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyModel();
+            if (column instanceof DynamicColumn dynamicColumn) {
+                dynamicColumn.applyModel();
             }
 
             EditableValueHolderState editableValueHolderState = column.getFilterValueHolder(context);
@@ -457,8 +457,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default void updateSortByWithUserSortBy(FacesContext context, Map<String, SortMeta> intlSortBy, Object usrSortBy, AtomicBoolean sorted) {
         Collection<SortMeta> sortBy;
-        if (usrSortBy instanceof SortMeta) {
-            sortBy = Collections.singletonList((SortMeta) usrSortBy);
+        if (usrSortBy instanceof SortMeta meta) {
+            sortBy = Collections.singletonList(meta);
         }
         else if (!(usrSortBy instanceof Collection)) {
             throw new FacesException("sortBy expects a single or a collection of SortMeta");
@@ -694,8 +694,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     default boolean hasFooterColumn() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
-            if (child.isRendered() && (child instanceof UIColumn)) {
-                UIColumn column = (UIColumn) child;
+            if (child.isRendered() && (child instanceof UIColumn column)) {
 
                 if (column.getFooterText() != null || FacetUtils.shouldRenderFacet(column.getFacet("footer"))) {
                     return true;

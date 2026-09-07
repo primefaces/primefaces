@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.selectcheckboxmenu;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class SelectChecboxMenu002 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
 
     private List<TestObject> list;
     private List<TestObject> selection;

@@ -40,7 +40,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
@@ -192,7 +191,7 @@ public class FileUploadUtils {
 
     public static Character containsInvalidCharacters(String s) {
         try {
-            Paths.get(s);
+            Path.of(s);
         }
         catch (InvalidPathException e) {
             if (e.getInput() != null && !e.getInput().isEmpty() && e.getIndex() >= 0) {
@@ -406,7 +405,7 @@ public class FileUploadUtils {
     public static <T extends HttpServletRequest> Path getChunkDir(T request) {
         FileUploadChunkDecoder<T> chunkDecoder = getFileUploadChunkDecoder(request);
         String fileKey = chunkDecoder.generateFileInfoKey(request);
-        return Paths.get(chunkDecoder.getUploadDirectory(request), fileKey);
+        return Path.of(chunkDecoder.getUploadDirectory(request), fileKey);
     }
 
     public static <T extends HttpServletRequest> String getWebkitRelativePath(T request) {

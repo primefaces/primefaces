@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.csv;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -37,7 +38,7 @@ import lombok.Data;
 @Data
 public class Csv001 implements Serializable {
 
-    private static final long serialVersionUID = -7732468503458204325L;
+    @Serial private static final long serialVersionUID = -7732468503458204325L;
 
     private String text;
     private Integer integer;

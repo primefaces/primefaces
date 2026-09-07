@@ -28,6 +28,7 @@ import org.primefaces.integrationtests.datatable.ProgrammingLanguageLazyDataMode
 import org.primefaces.integrationtests.datatable.ProgrammingLanguageService;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -42,7 +43,7 @@ import lombok.Data;
 @Data
 public class DataView002 implements Serializable {
 
-    private static final long serialVersionUID = -7957386818872536930L;
+    @Serial private static final long serialVersionUID = -7957386818872536930L;
 
     private ProgrammingLanguageLazyDataModel lazyDataModel;
 

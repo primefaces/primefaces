@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.dialog;
 
 import org.primefaces.event.CloseEvent;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -41,7 +42,7 @@ import lombok.Data;
 @Data
 public class Dialog001 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
 
     private String text1;
     private String text2;

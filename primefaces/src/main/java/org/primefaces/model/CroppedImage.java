@@ -23,11 +23,12 @@
  */
 package org.primefaces.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class CroppedImage implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String originalFilename;
 

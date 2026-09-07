@@ -185,35 +185,34 @@ public class DatePicker extends DatePickerBaseImpl {
 
         ValidationResult validationResult = ValidationResult.OK;
 
-        if (value instanceof LocalDate) {
-            validationResult = validateDateValue(context, (LocalDate) value);
+        if (value instanceof LocalDate date1) {
+            validationResult = validateDateValue(context, date1);
         }
-        else if (value instanceof LocalDateTime) {
+        else if (value instanceof LocalDateTime time) {
             if (isShowTime()) {
-                validationResult = validateDateValue(context, ((LocalDateTime) value).toLocalDate(), ((LocalDateTime) value).toLocalTime());
+                validationResult = validateDateValue(context, time.toLocalDate(), time.toLocalTime());
             }
             else {
-                validationResult = validateDateValue(context, ((LocalDateTime) value).toLocalDate());
+                validationResult = validateDateValue(context, time.toLocalDate());
             }
         }
-        else if (value instanceof YearMonth) {
-            validationResult = validateDateValue(context, ((YearMonth) value).atDay(1));
+        else if (value instanceof YearMonth month) {
+            validationResult = validateDateValue(context, month.atDay(1));
         }
-        else if (value instanceof Date) {
+        else if (value instanceof Date date) {
             if (isShowTime()) {
                 ZoneId zoneId = CalendarUtils.calculateZoneId(getTimeZone());
-                validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, zoneId),
-                        CalendarUtils.convertDate2LocalTime((Date) value, zoneId));
+                validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate(date, zoneId),
+                        CalendarUtils.convertDate2LocalTime(date, zoneId));
             }
             else {
-                validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone())));
+                validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate(date, CalendarUtils.calculateZoneId(getTimeZone())));
             }
         }
         else if (value instanceof List && getSelectionMode().equals("multiple")) {
             //TODO: needs to be validated
         }
-        else if (value instanceof List && getSelectionMode().equals("range")) {
-            List<?> rangeValues = (List<?>) value;
+        else if (value instanceof List<?> rangeValues && getSelectionMode().equals("range")) {
 
             if (rangeValues.get(0) instanceof Comparable) {
                 Comparable startDate = (Comparable) rangeValues.get(0);
@@ -287,15 +286,15 @@ public class DatePicker extends DatePickerBaseImpl {
             if (disabledDates != null) {
 
                 for (Object disabledDate : disabledDates) {
-                    if (disabledDate instanceof LocalDate) {
-                        if (((LocalDate) disabledDate).isEqual(date)) {
+                    if (disabledDate instanceof LocalDate localDate) {
+                        if (localDate.isEqual(date)) {
                             setValid(false);
                             return ValidationResult.INVALID_DISABLED_DATE;
                         }
                     }
-                    else if (disabledDate instanceof Date) {
+                    else if (disabledDate instanceof Date date1) {
                         Calendar c = Calendar.getInstance(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(getTimeZone())), calculateLocale(context));
-                        c.setTime((Date) disabledDate);
+                        c.setTime(date1);
 
                         if (date.getYear() == c.get(Calendar.YEAR) &&
                                 date.getMonthValue() == (c.get(Calendar.MONTH) + 1) &&
@@ -315,15 +314,15 @@ public class DatePicker extends DatePickerBaseImpl {
                 boolean localValid = false;
 
                 for (Object enabledDate : enabledDates) {
-                    if (enabledDate instanceof LocalDate) {
-                        if (((LocalDate) enabledDate).isEqual(date)) {
+                    if (enabledDate instanceof LocalDate localDate1) {
+                        if (localDate1.isEqual(date)) {
                             localValid = true;
                             break;
                         }
                     }
-                    else if (enabledDate instanceof Date) {
+                    else if (enabledDate instanceof Date date11) {
                         Calendar c = Calendar.getInstance(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(getTimeZone())), calculateLocale(context));
-                        c.setTime((Date) enabledDate);
+                        c.setTime(date11);
 
                         if (date.getYear() == c.get(Calendar.YEAR) &&
                                 date.getMonthValue() == (c.get(Calendar.MONTH) + 1) &&

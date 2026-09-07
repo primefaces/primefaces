@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -45,7 +46,7 @@ import java.text.ParsePosition;
  */
 class BigDecimalValidator implements Serializable {
 
-    private static final long serialVersionUID = -670320911490506772L;
+    @Serial private static final long serialVersionUID = -670320911490506772L;
 
     private static final BigDecimalValidator VALIDATOR = new BigDecimalValidator();
 
@@ -109,8 +110,8 @@ class BigDecimalValidator implements Serializable {
      */
     protected BigDecimal processParsedValue(Number value, DecimalFormat formatter) {
         BigDecimal decimal;
-        if (value instanceof Long) {
-            decimal = BigDecimal.valueOf((Long) value);
+        if (value instanceof Long long1) {
+            decimal = BigDecimal.valueOf(long1);
         }
         else {
             decimal = new BigDecimal(value.toString());
@@ -139,8 +140,8 @@ class BigDecimalValidator implements Serializable {
             return -1;
         }
         int scale = minimumFraction;
-        if (format instanceof DecimalFormat) {
-            int multiplier = ((DecimalFormat) format).getMultiplier();
+        if (format instanceof DecimalFormat decimalFormat) {
+            int multiplier = decimalFormat.getMultiplier();
             if (multiplier == 100) { // CHECKSTYLE IGNORE MagicNumber
                 scale += 2; // CHECKSTYLE IGNORE MagicNumber
             }

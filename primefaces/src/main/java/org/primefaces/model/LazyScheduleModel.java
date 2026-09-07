@@ -23,11 +23,12 @@
  */
 package org.primefaces.model;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 public abstract class LazyScheduleModel extends DefaultScheduleModel {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     /**
      * Method to be used when implementing lazy loading, implementers should override to fetch events that belong to a particular period

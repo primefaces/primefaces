@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.model.LazyDataModel;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -40,7 +41,7 @@ import lombok.Data;
 @Data
 public class DataTable037 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
 
     private List<Customer> customers;
 

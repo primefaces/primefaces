@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +41,7 @@ import lombok.Data;
 @Data
 public class SelectOneMenu013 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private List<TestBean> data = new ArrayList<>(Arrays.asList(new TestBean(0, "Zero"),
                 new TestBean(1, "One"), new TestBean(2, "Two")));
 
@@ -52,7 +53,7 @@ public class SelectOneMenu013 implements Serializable {
 
     public static class TestBean implements Serializable {
 
-        private static final long serialVersionUID = 1L;
+        @Serial private static final long serialVersionUID = 1L;
 
         private Integer id;
         private String name;

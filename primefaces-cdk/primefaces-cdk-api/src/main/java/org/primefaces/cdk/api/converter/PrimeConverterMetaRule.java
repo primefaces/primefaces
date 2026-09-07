@@ -67,8 +67,8 @@ public class PrimeConverterMetaRule extends MetaRule {
         public void applyMetadata(FaceletContext ctx, Object instance) {
             StateHelper stateHelper = ((PrimeConverter<?>) instance).getStateHelper();
 
-            if (stateHelper instanceof ValueExpressionStateHelper) {
-                ((ValueExpressionStateHelper) stateHelper).setBinding(this.name, this.attr.getValueExpression(ctx, type));
+            if (stateHelper instanceof ValueExpressionStateHelper helper) {
+                helper.setBinding(this.name, this.attr.getValueExpression(ctx, type));
             }
             else {
                 stateHelper.put(this.name, this.attr.getObject(ctx, type));

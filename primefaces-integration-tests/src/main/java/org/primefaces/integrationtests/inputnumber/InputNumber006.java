@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.inputnumber;
 
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -38,7 +39,7 @@ import lombok.Data;
 @Data
 public class InputNumber006 implements Serializable {
 
-    private static final long serialVersionUID = -3197892739640653975L;
+    @Serial private static final long serialVersionUID = -3197892739640653975L;
     private Integer value;
 
     private Integer value2;

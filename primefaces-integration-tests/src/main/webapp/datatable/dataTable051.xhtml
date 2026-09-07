@@ -12,6 +12,9 @@
     <h:body>
 
         <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
             <style>
                 td, th { white-space: nowrap; font-size: .75rem; }
             </style>
@@ -19,6 +22,18 @@
             <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable051.employees}" var="employee"
                          filteredValue="#{dataTable051.filteredEmployees}" filterEvent="enter" clearFiltersButton="true">
 
+            <p:dataTable id="datatable"
+                         value="#{dataTable051.lazyDataModel}"
+                         lazy="true"
+                         var="country"
+                         selection="#{dataTable051.selectedCountries}"
+                         rowKey="#{country.id}"
+                         paginator="true"
+                         rows="3"
+                         selectionPageOnly="#{dataTable051.selectionPageOnly}"
+            >
+                <p:ajax event="page" update="form:loadCallCount form:fullHistory"/>
+                <p:column selectionBox="true" style="width:16px;text-align:center"/>
                 <f:facet name="header">
                     <div style="display:flex; align-items:center; justify-content:space-between">
                         <span>Employees</span>
@@ -27,19 +42,23 @@
                     </div>
                 </f:facet>
 
+                <p:column headerText="ID" field="id"/>
                 <!-- narrow, fixed-width column (p:dataTable defaults to table-layout: fixed) mirrors the
                      showcase "Activity" column that exposed: the filter match-mode <select>
                      and value <input> must both stay usable side by side even when space is tight. -->
                 <p:column headerText="ID" field="id" filterMatchMode="gt" filterValueType="numeric"
                           converter="jakarta.faces.Integer" style="width:120px"/>
 
+                <p:column headerText="Name" field="name" filterBy="#{country.name}" filterMatchMode="contains"/>
                 <p:column headerText="last name" field="lastName" filterMatchMode="contains" filterValueType="text"/>
 
+                <p:column headerText="Population (M)" field="population"/>
                 <!-- nullable field (Alfred Paul + the two synthetic rows have no salary) so "is (not) null" is
                      distinguishable from "(not) between"/"(not) in list" -->
                 <p:column headerText="salary" field="salary" filterMatchMode="gt" filterValueType="numeric"
                           converter="jakarta.faces.Integer"/>
 
+                <p:column headerText="Continent" field="continent"/>
                 <!-- every mode in the "boolean" preset is value-less (true/false/is null/is not null) -->
                 <p:column headerText="active" field="active" filterValueType="boolean"/>
 
@@ -89,6 +108,14 @@
 
             </p:dataTable>
 
+            <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable051.submit}"/>
+            <p:selectBooleanButton id="toggleSelectPageOnly" value="#{dataTable051.selectionPageOnly}"
+                                   onLabel="Page only" offLabel="All pages">
+                <p:ajax update="@form"/>
+            </p:selectBooleanButton>
+
+            <h:inputHidden id="loadCallCount" value="#{dataTable051.lazyDataModelCallTracker.loadCallCount}"/>
+            <h:inputHidden id="fullHistory" value="#{dataTable051.lazyDataModelCallTracker.fullHistoryString}"/>
             <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
         </h:form>
 

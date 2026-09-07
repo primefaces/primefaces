@@ -65,8 +65,8 @@ public class RSSUtils {
         else {
             reader = new RssReader();
         }
-        if (input instanceof String) {
-            return convert((List<Item>) reader.read((String) input).limit(size).collect(Collectors.toList()));
+        if (input instanceof String string) {
+            return convert((List<Item>) reader.read(string).limit(size).collect(Collectors.toList()));
         }
         return convert((List<Item>) reader.read((InputStream) input).limit(size).collect(Collectors.toList()));
     }
@@ -90,8 +90,7 @@ public class RSSUtils {
             fi.setLink(item.getLink().orElse(Constants.EMPTY_STRING));
             fi.setPubDate(item.getPubDate().orElse(Constants.EMPTY_STRING));
             fi.setTitle(item.getTitle().orElse(Constants.EMPTY_STRING));
-            if (item instanceof ItunesItem) {
-                ItunesItem itunes = (ItunesItem) item;
+            if (item instanceof ItunesItem itunes) {
                 fi.setItunesBlock(itunes.isItunesBlock());
                 fi.setItunesDuration(itunes.getItunesDuration().orElse(Constants.EMPTY_STRING));
                 fi.setItunesEpisode(itunes.getItunesEpisode().orElse(0));

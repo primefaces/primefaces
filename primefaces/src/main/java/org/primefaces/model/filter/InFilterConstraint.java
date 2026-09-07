@@ -23,18 +23,33 @@
  */
 package org.primefaces.model.filter;
 
+import java.io.Serial;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
 
 import jakarta.faces.context.FacesContext;
 
 public class InFilterConstraint extends EqualsFilterConstraint {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
         if (filter == null) {
             return false;
+        }
+
+        Collection<?> collection = null;
+        if (filter.getClass().isArray()) {
+            collection = Arrays.asList((Object[]) filter);
+        }
+        else if (filter instanceof Collection<?> collection1) {
+            collection = collection1;
+        }
+        else {
+            collection = Collections.singletonList(filter);
         }
 
         // typed as free text next to the match-mode dropdown, e.g., "Acme, Globex, Initech" - split on

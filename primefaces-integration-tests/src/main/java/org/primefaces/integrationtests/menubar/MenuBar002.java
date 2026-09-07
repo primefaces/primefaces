@@ -29,6 +29,7 @@ import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -42,7 +43,7 @@ import lombok.Data;
 @Data
 public class MenuBar002 implements Serializable {
 
-    private static final long serialVersionUID = 5366641524856531279L;
+    @Serial private static final long serialVersionUID = 5366641524856531279L;
 
     private MenuModel model;
 

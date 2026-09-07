@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.datatable;
 import org.primefaces.integrationtests.datatable.dt028.Dt028Reference;
 import org.primefaces.integrationtests.datatable.dt028.Dt028ReferenceService;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -43,7 +44,7 @@ import lombok.Data;
 @Data
 public class DataTable028 implements Serializable {
 
-    private static final long serialVersionUID = -2461536509834660314L;
+    @Serial private static final long serialVersionUID = -2461536509834660314L;
 
     private List<Dt028Reference> references;
     private List<Dt028Reference> referencesFiltered;

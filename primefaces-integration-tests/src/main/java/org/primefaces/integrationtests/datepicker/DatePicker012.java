@@ -28,6 +28,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.datepicker.DefaultDateMetadata;
 import org.primefaces.model.datepicker.LazyDateMetadataModel;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -42,7 +43,7 @@ import lombok.Data;
 @Data
 public class DatePicker012 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private LocalDate date1;
     private LocalDate date2;
@@ -69,7 +70,7 @@ public class DatePicker012 implements Serializable {
     }
 
     private static final class SimpleLazyDateMetadataModel extends LazyDateMetadataModel {
-        private static final long serialVersionUID = 1L;
+        @Serial private static final long serialVersionUID = 1L;
         private static final DefaultDateMetadata DISABLED = DefaultDateMetadata.builder()
                 .disabled(true).styleClass("tst-disabled").build();
         private LocalDate disabledDate;

@@ -53,13 +53,15 @@ public class AccessiblityView {
     }
 
     public String getHtmlFragmentDivAsButton() {
-        return "<p:remoteCommand name=\"rc\" update=\"@form\" action=\"#{accessiblityView.someOtherAction()}\"/>\n" +
-                "<div class=\"fancy-button\" onclick=\"rc()\">Click</div>";
+        return """
+                <p:remoteCommand name="rc" update="@form" action="#{accessiblityView.someOtherAction()}"/>
+                <div class="fancy-button" onclick="rc()">Click</div>""";
     }
 
     public String getHtmlFragmentDivAsButtonImproved() {
-        return "<p:remoteCommand name=\"rc\" update=\"@form\" action=\"#{accessiblityView.someOtherAction()}\"/>\n" +
-                "<div class=\"fancy-button\" onclick=\"rc()\" onkeydown=\"rc()\" tabindex=\"0\">Click</div>";
+        return """
+                <p:remoteCommand name="rc" update="@form" action="#{accessiblityView.someOtherAction()}"/>
+                <div class="fancy-button" onclick="rc()" onkeydown="rc()" tabindex="0">Click</div>""";
     }
 
     public boolean isBinary() {

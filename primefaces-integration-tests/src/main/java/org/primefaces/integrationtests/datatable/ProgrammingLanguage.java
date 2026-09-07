@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -34,7 +35,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProgrammingLanguage implements Serializable {
-    private static final long serialVersionUID = 398626647627541586L;
+    @Serial private static final long serialVersionUID = 398626647627541586L;
     private Integer id;
     private String name;
     private Integer firstAppeared;

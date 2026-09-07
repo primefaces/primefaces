@@ -45,8 +45,7 @@ public class UIDataContextCallback implements ContextCallback {
         String[] idTokens = dragId.split(String.valueOf(UINamingContainer.getSeparatorChar(fc)));
         String dataId = idTokens[idTokens.length - 2];
 
-        if (component instanceof UITree) {
-            UITree uiTree = (UITree) component;
+        if (component instanceof UITree uiTree) {
             uiTree.setRowKey(dataId);
             data = uiTree.getRowNode();
             uiTree.setRowKey(null);

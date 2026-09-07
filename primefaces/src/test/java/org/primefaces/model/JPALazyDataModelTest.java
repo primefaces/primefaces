@@ -42,12 +42,17 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Predicate;
 
 import org.junit.jupiter.api.AfterAll;
@@ -55,7 +60,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -109,6 +116,7 @@ class JPALazyDataModelTest {
 
     @BeforeEach
     void setUp() {
+        new FacesContextMock();
         // registers itself as the current FacesContext, which JPALazyDataModel needs for the
         // PropertyDescriptorResolver, the locale and the filter value conversion
         context = new FacesContextMock();
@@ -340,6 +348,13 @@ class JPALazyDataModelTest {
     }
 
     @Test
+    void countExecutesSingleQuery() {
+        Fixture fixture = createMocksForCount();
+
+        int count = fixture.model.count(Collections.emptyMap());
+
+        assertEquals(5, count);
+        Mockito.verify(fixture.countTypedQuery, Mockito.times(1)).getSingleResult();
     void isNextWeek() {
         Set<Long> ids = load(filter("reviewDate", MatchMode.IS_NEXT_WEEK));
         assertTrue(ids.contains(6L), "next week");
@@ -348,6 +363,15 @@ class JPALazyDataModelTest {
     }
 
     @Test
+    void loadExecutesSingleQuery() {
+        Fixture fixture = createMocksForLoad();
+
+        List<TestEntity> result = fixture.loadAndWrap(0, 3);
+
+        assertEquals(3, result.size());
+        Mockito.verify(fixture.entityTypedQuery, Mockito.times(1)).setFirstResult(0);
+        Mockito.verify(fixture.entityTypedQuery, Mockito.times(1)).setMaxResults(3);
+        Mockito.verify(fixture.entityTypedQuery, Mockito.times(1)).getResultList();
     void isThisMonth() {
         Set<Long> ids = load(filter("reviewDate", MatchMode.IS_THIS_MONTH));
         assertTrue(ids.contains(1L), "today");
@@ -356,6 +380,14 @@ class JPALazyDataModelTest {
     }
 
     @Test
+    void getRowDataWithoutConverterResolvesFromWrappedData() {
+        Fixture fixture = createMocksForGetRowDataWithoutConverter();
+
+        TestEntity entity = fixture.model.getRowData("1");
+
+        assertNotNull(entity);
+        assertEquals("1", entity.getId());
+        Mockito.verify(fixture.entityTypedQuery, Mockito.never()).getSingleResult();
     void isNextMonth() {
         Set<Long> ids = load(filter("reviewDate", MatchMode.IS_NEXT_MONTH));
         assertTrue(ids.contains(8L), "next month");
@@ -367,6 +399,33 @@ class JPALazyDataModelTest {
         Set<Long> ids = load(filter("reviewDate", MatchMode.IS_THIS_QUARTER));
         assertTrue(ids.contains(1L), "today");
         assertFalse(ids.contains(7L), "last year");
+    void rowSelectionResolvesFromLastLoadedPage() {
+        // Mirrors the full server-side call sequence of DataTable050Test#rowSelection:
+        // initial render: count() + load(first=0, size=3)
+        // checkbox click decodes selection: getRowData(rowKey=1) + getRowData(rowKey=3)
+        // form submit re-renders table: count() + load(first=0, size=3)
+        Fixture fixture = createMocksForRowSelectionWorkflow();
+
+        // Arrange - initial render
+        fixture.countLoadAndWrap(0, 3);
+
+        // Act - row selection decodes each selected row key via a DB lookup
+        TestEntity entity1 = fixture.model.getRowData("1");
+        TestEntity entity3 = fixture.model.getRowData("3");
+
+        // Assert - selection
+        assertNotNull(entity1);
+        assertEquals("1", entity1.getId());
+        assertNotNull(entity3);
+        assertEquals("3", entity3.getId());
+
+        // Act - form submit re-renders the table
+        fixture.countLoadAndWrap(0, 3);
+
+        // Assert - full call counts over the whole workflow
+        Mockito.verify(fixture.countTypedQuery, Mockito.times(2)).getSingleResult();
+        Mockito.verify(fixture.entityTypedQuery, Mockito.times(2)).getResultList();
+        Mockito.verify(fixture.entityTypedQuery, Mockito.never()).getSingleResult();
     }
 
     @Test
@@ -396,11 +455,103 @@ class JPALazyDataModelTest {
     @Test
     void relativeDate() {
         assertIds(load(filter("reviewDate", MatchMode.RELATIVE_DATE, 3)), 1L, 2L, 4L);
+    @SuppressWarnings("unchecked")
+    void getRowDataWithConverterDoesNotQueryDatabase() {
+        Fixture fixture = createMocksForGetRowDataWithConverter();
+
+        TestEntity entity = fixture.model.getRowData("1");
+
+        assertNotNull(entity);
+        assertEquals("1", entity.getId());
+        Mockito.verify(fixture.entityManager, Mockito.never()).createQuery(Mockito.any(CriteriaQuery.class));
+        Mockito.verify(fixture.criteriaBuilder, Mockito.never()).createQuery(Mockito.any(Class.class));
+    }
+
+    private static JPALazyDataModel<TestEntity> createModel(EntityManager em, Converter<TestEntity> converter) {
+        JPALazyDataModel<TestEntity> model = new JPALazyDataModel<>();
+        JPALazyDataModel.Builder<TestEntity, JPALazyDataModel<TestEntity>> builder =
+                new JPALazyDataModel.Builder<>(model)
+                        .entityClass(TestEntity.class)
+                        .entityManager(() -> em);
+        if (converter != null) {
+            builder.rowKeyConverter(converter);
+        }
+        else {
+            builder.rowKeyField("id")
+                    .rowKeyType(String.class)
+                    .rowKeyProvider(entity -> entity.getId());
+        }
+        builder.build();
+        return model;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static JpaContext createJpaContext() {
+        EntityManager em = Mockito.mock(EntityManager.class);
+        CriteriaBuilder cb = Mockito.mock(CriteriaBuilder.class);
+        Root<TestEntity> root = Mockito.mock(Root.class);
+        Mockito.when(em.getCriteriaBuilder()).thenReturn(cb);
+        return new JpaContext(em, cb, root);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Fixture createMocksForCount() {
+        JpaContext ctx = createJpaContext();
+        CriteriaQuery<Long> countQuery = Mockito.mock(CriteriaQuery.class);
+        TypedQuery<Long> countTypedQuery = Mockito.mock(TypedQuery.class);
+        Expression<Long> countExpression = Mockito.mock(Expression.class);
+
+        Mockito.when(ctx.criteriaBuilder.createQuery(Long.class)).thenReturn(countQuery);
+        Mockito.when(countQuery.from(TestEntity.class)).thenReturn(ctx.root);
+        Mockito.when(ctx.criteriaBuilder.count(ctx.root)).thenReturn(countExpression);
+        Mockito.when(countQuery.select(countExpression)).thenReturn(countQuery);
+        Mockito.when(ctx.entityManager.createQuery(countQuery)).thenReturn(countTypedQuery);
+        Mockito.when(countTypedQuery.getSingleResult()).thenReturn(5L);
+
+        return new Fixture(createModel(ctx.entityManager, null), ctx.entityManager, ctx.criteriaBuilder,
+                countTypedQuery, null, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Fixture createMocksForLoad() {
+        JpaContext ctx = createJpaContext();
+        CriteriaQuery<TestEntity> entityQuery = Mockito.mock(CriteriaQuery.class);
+        TypedQuery<TestEntity> entityTypedQuery = Mockito.mock(TypedQuery.class);
+
+        Mockito.when(ctx.criteriaBuilder.createQuery(TestEntity.class)).thenReturn(entityQuery);
+        Mockito.when(entityQuery.from(TestEntity.class)).thenReturn(ctx.root);
+        Mockito.when(entityQuery.select(ctx.root)).thenReturn(entityQuery);
+        Mockito.when(ctx.entityManager.createQuery(entityQuery)).thenReturn(entityTypedQuery);
+        Mockito.when(entityTypedQuery.getResultList()).thenReturn(Arrays.asList(
+                new TestEntity("1", "a"),
+                new TestEntity("2", "b"),
+                new TestEntity("3", "c")));
+
+        return new Fixture(createModel(ctx.entityManager, null), ctx.entityManager, ctx.criteriaBuilder,
+                null, entityQuery, entityTypedQuery);
     }
 
     @Test
     void lastNDays_unparsableCountMatchesNothing() {
         assertTrue(load(filter("reviewDate", MatchMode.LAST_N_DAYS, "not a number")).isEmpty());
+    @SuppressWarnings("unchecked")
+    private static Fixture createMocksForGetRowDataWithoutConverter() {
+        JpaContext ctx = createJpaContext();
+        CriteriaQuery<TestEntity> entityQuery = Mockito.mock(CriteriaQuery.class);
+        TypedQuery<TestEntity> entityTypedQuery = Mockito.mock(TypedQuery.class);
+
+        Mockito.when(ctx.criteriaBuilder.createQuery(TestEntity.class)).thenReturn(entityQuery);
+        Mockito.when(entityQuery.from(TestEntity.class)).thenReturn(ctx.root);
+        Mockito.when(entityQuery.select(ctx.root)).thenReturn(entityQuery);
+        Mockito.when(ctx.entityManager.createQuery(entityQuery)).thenReturn(entityTypedQuery);
+        Mockito.when(entityTypedQuery.getResultList()).thenReturn(
+                Arrays.asList(new TestEntity("1", "a"), new TestEntity("2", "b"), new TestEntity("3", "c")));
+
+        JPALazyDataModel<TestEntity> model = createModel(ctx.entityManager, null);
+        // Simulate what DataTable does after load(): set wrappedData so getRowData() resolves in-memory
+        model.setWrappedData(model.load(0, 3, Collections.emptyMap(), Collections.emptyMap()));
+
+        return new Fixture(model, ctx.entityManager, ctx.criteriaBuilder, null, entityQuery, entityTypedQuery);
     }
 
     // ------------------------------------------------------------------------------------------------------
@@ -415,6 +566,19 @@ class JPALazyDataModelTest {
         assertFalse(ids.contains(7L), "400 days ago");
         assertFalse(ids.contains(8L), "400 days ahead");
     }
+    @SuppressWarnings("unchecked")
+    private static Fixture createMocksForRowSelectionWorkflow() {
+        JpaContext ctx = createJpaContext();
+        // count query
+        CriteriaQuery<Long> countQuery = Mockito.mock(CriteriaQuery.class);
+        TypedQuery<Long> countTypedQuery = Mockito.mock(TypedQuery.class);
+        Expression<Long> countExpression = Mockito.mock(Expression.class);
+        Mockito.when(ctx.criteriaBuilder.createQuery(Long.class)).thenReturn(countQuery);
+        Mockito.when(countQuery.from(TestEntity.class)).thenReturn(ctx.root);
+        Mockito.when(ctx.criteriaBuilder.count(ctx.root)).thenReturn(countExpression);
+        Mockito.when(countQuery.select(countExpression)).thenReturn(countQuery);
+        Mockito.when(ctx.entityManager.createQuery(countQuery)).thenReturn(countTypedQuery);
+        Mockito.when(countTypedQuery.getSingleResult()).thenReturn(100L);
 
     @Test
     void isToday_legacyDateFieldIncludesEndOfDay() {
@@ -560,10 +724,125 @@ class JPALazyDataModelTest {
     private static class H2RegexModel extends JPALazyDataModel<Employee> {
 
         private static final long serialVersionUID = 1L;
+        // load + getRowData query (share the same CriteriaQuery<TestEntity> mock)
+        CriteriaQuery<TestEntity> entityQuery = Mockito.mock(CriteriaQuery.class);
+        TypedQuery<TestEntity> entityTypedQuery = Mockito.mock(TypedQuery.class);
+        List<TestEntity> page1 = Arrays.asList(new TestEntity("1", "a"), new TestEntity("2", "b"), new TestEntity("3", "c"));
 
-        @Override
-        protected Predicate createRegexPredicate(CriteriaBuilder cb, Expression<String> fieldExpression, String pattern) {
-            return cb.isTrue(cb.function("regexp_like", Boolean.class, fieldExpression, cb.literal(pattern)));
+        Mockito.when(ctx.criteriaBuilder.createQuery(TestEntity.class)).thenReturn(entityQuery);
+        Mockito.when(entityQuery.from(TestEntity.class)).thenReturn(ctx.root);
+        Mockito.when(entityQuery.select(ctx.root)).thenReturn(entityQuery);
+        Mockito.when(ctx.entityManager.createQuery(entityQuery)).thenReturn(entityTypedQuery);
+        Mockito.when(entityTypedQuery.getResultList()).thenReturn(page1);
+
+        return new Fixture(createModel(ctx.entityManager, null), ctx.entityManager, ctx.criteriaBuilder,
+                countTypedQuery, entityQuery, entityTypedQuery);
+    }
+
+    private static Fixture createMocksForGetRowDataWithConverter() {
+        JpaContext ctx = createJpaContext();
+        return new Fixture(createModel(ctx.entityManager, new TestEntityConverter()), ctx.entityManager,
+                ctx.criteriaBuilder, null, null, null);
+    }
+
+    private static class JpaContext {
+        final EntityManager entityManager;
+        final CriteriaBuilder criteriaBuilder;
+        final Root<TestEntity> root;
+
+        JpaContext(EntityManager entityManager, CriteriaBuilder criteriaBuilder, Root<TestEntity> root) {
+            this.entityManager = entityManager;
+            this.criteriaBuilder = criteriaBuilder;
+            this.root = root;
         }
     }
+
+    private static class Fixture {
+        final JPALazyDataModel<TestEntity> model;
+        final EntityManager entityManager;
+        final CriteriaBuilder criteriaBuilder;
+        final TypedQuery<Long> countTypedQuery;
+        final CriteriaQuery<TestEntity> entityQuery;
+        final TypedQuery<TestEntity> entityTypedQuery;
+
+        Fixture(JPALazyDataModel<TestEntity> model, EntityManager entityManager, CriteriaBuilder criteriaBuilder,
+                TypedQuery<Long> countTypedQuery,
+                CriteriaQuery<TestEntity> entityQuery, TypedQuery<TestEntity> entityTypedQuery) {
+            this.model = model;
+            this.entityManager = entityManager;
+            this.criteriaBuilder = criteriaBuilder;
+            this.countTypedQuery = countTypedQuery;
+            this.entityQuery = entityQuery;
+            this.entityTypedQuery = entityTypedQuery;
+        }
+
+        List<TestEntity> loadAndWrap(int first, int pageSize) {
+            // Mirror what DataTable does after load(): set wrappedData so that getRowData()
+            // can resolve row keys in-memory without an extra database query.
+            List<TestEntity> loaded = model.load(first, pageSize, Collections.emptyMap(), Collections.emptyMap());
+            model.setWrappedData(loaded);
+            return loaded;
+        }
+
+        void countLoadAndWrap(int first, int pageSize) {
+            model.count(Collections.emptyMap());
+            loadAndWrap(first, pageSize);
+        }
+    }
+
+    public static class TestEntity {
+        private String id;
+        private String name;
+
+        public TestEntity() {
+        }
+
+        public TestEntity(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+                                private static class TestEntityConverter implements Converter<TestEntity> {
+
+                                    @Override
+                                    public String getAsString(FacesContext context, UIComponent component, TestEntity value) {
+                                        return value == null ? null : value.getId();
+                                    }
+
+                                    @Override
+                                    public TestEntity getAsObject(FacesContext context, UIComponent component, String value) {
+                                        return value == null ? null : new TestEntity(value, "name-" + value);
+                                    }
+                                }
+
+                                /**
+                                 * H2 spells regular expression matching {@code REGEXP_LIKE(value, pattern)}. Note that it - like most
+                                 * database regex functions - matches a substring, while the in-memory {@code MatchesRegexFilterConstraint}
+                                 * requires the whole value to match.
+                                 */
+                                private static class H2RegexModel extends JPALazyDataModel<Employee> {
+
+                                    private static final long serialVersionUID = 1L;
+
+                                    @Override
+                                    protected Predicate createRegexPredicate(CriteriaBuilder cb, Expression<String> fieldExpression, String pattern) {
+                                        return cb.isTrue(cb.function("regexp_like", Boolean.class, fieldExpression, cb.literal(pattern)));
+                                    }
 }

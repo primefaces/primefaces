@@ -50,8 +50,8 @@ public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorW
 
         Object message = attributes.remove(ClientValidationConstraint.ATTR_MESSAGE);
         if (message != null) {
-            if (message instanceof String) {
-                message = interpolator.interpolate((String) message, getContext());
+            if (message instanceof String string) {
+                message = interpolator.interpolate(string, getContext());
             }
             attributes.put(ClientValidationConstraint.ATTR_MESSAGE, message);
         }

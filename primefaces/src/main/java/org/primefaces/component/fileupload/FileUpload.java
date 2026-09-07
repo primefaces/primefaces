@@ -99,27 +99,27 @@ public class FileUpload extends FileUploadBaseImpl {
 
         if (isValid()) {
 
-            if (newValue instanceof UploadedFile) {
-                validateFilename(context, (UploadedFile) newValue);
+            if (newValue instanceof UploadedFile file) {
+                validateFilename(context, file);
             }
-            else if (newValue instanceof UploadedFiles) {
-                for (UploadedFile uploadedFile : ((UploadedFiles) newValue).getFiles()) {
+            else if (newValue instanceof UploadedFiles files) {
+                for (UploadedFile uploadedFile : files.getFiles()) {
                     validateFilename(context, uploadedFile);
                 }
             }
 
             if (isValid()  && ComponentUtils.isRequestSource(this, context)) {
-                if (newValue instanceof UploadedFile) {
+                if (newValue instanceof UploadedFile file1) {
                     int totalFilesCount = 0;
                     if ("advanced".equals(getMode())) {
                         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                         totalFilesCount = Integer.parseInt(params.get(this.getClientId(context) + "_totalFilesCount"));
                     }
 
-                    queueEvent(new FileUploadEvent(this, (UploadedFile) newValue, totalFilesCount));
+                    queueEvent(new FileUploadEvent(this, file1, totalFilesCount));
                 }
-                else if (newValue instanceof UploadedFiles) {
-                    queueEvent(new FilesUploadEvent(this, (UploadedFiles) newValue));
+                else if (newValue instanceof UploadedFiles files1) {
+                    queueEvent(new FilesUploadEvent(this, files1));
                 }
             }
         }

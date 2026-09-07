@@ -32,6 +32,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.PrimitiveIterator;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -63,7 +64,7 @@ public class LazyTimelineView implements Serializable {
     public void onLazyLoad(TimelineLazyLoadEvent e) {
         try {
             // simulate time-consuming loading before adding new events
-            Thread.sleep((long) (1000 * Math.random() + 100));
+            Thread.sleep((long) (1000 * ThreadLocalRandom.current().nextDouble() + 100));
         }
         catch (InterruptedException ex) {
             // ignore

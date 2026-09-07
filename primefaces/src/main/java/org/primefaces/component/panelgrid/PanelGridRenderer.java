@@ -132,7 +132,7 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
                     : PanelGrid.CELL_CLASS;
 
             writer.startElement("div", null);
-            Column column = child instanceof Column ? (Column) child : null;
+            Column column = child instanceof Column c ? c : null;
             if (column != null) {
                 if (column.getId() != null) writer.writeAttribute("id", column.getClientId(context), null);
                 if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
@@ -334,11 +334,11 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
                 i++;
             }
             if (child.isRendered()) {
-                if (child instanceof Row) {
+                if (child instanceof Row row) {
                     String rowStyleClass = i % 2 == 0
                                            ? PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.EVEN_ROW_CLASS
                                            : PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.ODD_ROW_CLASS;
-                    encodeRow(context, (Row) child, "gridcell", rowStyleClass, PanelGrid.CELL_CLASS);
+                    encodeRow(context, row, "gridcell", rowStyleClass, PanelGrid.CELL_CLASS);
                 }
                 else {
                     child.encodeAll(context);
@@ -372,8 +372,7 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
         writer.writeAttribute("class", rowClass, null);
 
         for (UIComponent child : row.getChildren()) {
-            if (child instanceof Column && child.isRendered()) {
-                Column column = (Column) child;
+            if (child instanceof Column column && child.isRendered()) {
                 String userStyleClass = column.getStyleClass();
                 String styleClass = (userStyleClass == null) ? columnClass : columnClass + " " + userStyleClass;
 
@@ -433,11 +432,11 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
             }
 
             Row row = null;
-            if (child instanceof Row) {
+            if (child instanceof Row row1) {
                 if (i > 0) {
                     writer.endElement("div");
                 }
-                row = (Row) child;
+                row = row1;
                 i = 0;
             }
 
@@ -513,7 +512,7 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
             }
 
             writer.startElement("div", null);
-            Column column = child instanceof Column ? (Column) child : null;
+            Column column = child instanceof Column c ? c : null;
             if (column != null) {
                 if (column.getId() != null) writer.writeAttribute("id", column.getClientId(context), null);
                 if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
@@ -544,7 +543,7 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
         }
 
         writer.startElement("div", null);
-        Column column = child instanceof Column ? (Column) child : null;
+        Column column = child instanceof Column c ? c : null;
         if (column != null) {
             if (column.getId() != null) writer.writeAttribute("id", column.getClientId(context), null);
             if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
@@ -579,14 +578,14 @@ public class PanelGridRenderer extends CoreRenderer<PanelGrid> {
             }
             else {
                 context.getAttributes().put(Constants.HELPER_RENDERER, "panelGridFacet");
-                if (facet instanceof Row) {
-                    encodeRow(context, (Row) facet, "columnheader", "ui-widget-header", PanelGrid.CELL_CLASS + " ui-widget-header");
+                if (facet instanceof Row row1) {
+                    encodeRow(context, row1, "columnheader", "ui-widget-header", PanelGrid.CELL_CLASS + " ui-widget-header");
                 }
                 else if (facet instanceof UIPanel) {
                     for (UIComponent child : facet.getChildren()) {
                         if (child.isRendered()) {
-                            if (child instanceof Row) {
-                                encodeRow(context, (Row) child, "columnheader", "ui-widget-header", PanelGrid.CELL_CLASS + " ui-widget-header");
+                            if (child instanceof Row row) {
+                                encodeRow(context, row, "columnheader", "ui-widget-header", PanelGrid.CELL_CLASS + " ui-widget-header");
                             }
                             else {
                                 facet.encodeAll(context);

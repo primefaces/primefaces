@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.confirmdialog;
 
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -37,7 +38,7 @@ import lombok.Data;
 @Data
 public class ConfirmDialog001 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
 
     public void confirm() {
         addMessage("Confirmed", "You have accepted");

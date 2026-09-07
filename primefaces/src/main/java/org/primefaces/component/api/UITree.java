@@ -299,7 +299,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public void buildRowKeys(TreeNode<?> node) {
-        if (node instanceof LazyTreeNode && !((LazyTreeNode) node).isLoaded()) {
+        if (node instanceof LazyTreeNode treeNode && !treeNode.isLoaded()) {
             return;
         }
 
@@ -323,7 +323,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             return;
         }
 
-        if (node instanceof LazyTreeNode && !((LazyTreeNode) node).isLoaded()) {
+        if (node instanceof LazyTreeNode treeNode && !treeNode.isLoaded()) {
             return;
         }
 
@@ -338,7 +338,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public void updateRowKeys(TreeNode<?> node) {
-        if (node instanceof LazyTreeNode && !((LazyTreeNode) node).isLoaded()) {
+        if (node instanceof LazyTreeNode treeNode && !treeNode.isLoaded()) {
             return;
         }
 
@@ -624,8 +624,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
                 if (previousSelections != null) {
                     for (TreeNode<?> node : previousSelections) {
-                        if (node instanceof CheckboxTreeNode) {
-                            ((CheckboxTreeNode<?>) node).setSelected(false, propagateSelectionDown, propagateSelectionUp);
+                        if (node instanceof CheckboxTreeNode<?> treeNode) {
+                            treeNode.setSelected(false, propagateSelectionDown, propagateSelectionUp);
                         }
                         else {
                             node.setSelected(false);
@@ -635,8 +635,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
                 if (selections != null) {
                     for (TreeNode<?> node : selections) {
-                        if (node instanceof CheckboxTreeNode) {
-                            ((CheckboxTreeNode<?>) node).setSelected(true, propagateSelectionDown, propagateSelectionUp);
+                        if (node instanceof CheckboxTreeNode<?> treeNode1) {
+                            treeNode1.setSelected(true, propagateSelectionDown, propagateSelectionUp);
                         }
                         else {
                             node.setSelected(true);
@@ -714,8 +714,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         setRowKey(root, null);
 
         for (UIComponent child : getChildren()) {
-            if (child instanceof UIColumn && child.isRendered()) {
-                UIColumn column = (UIColumn) child;
+            if (child instanceof UIColumn column && child.isRendered()) {
 
                 if (column.getFacetCount() > 0) {
                     for (UIComponent columnFacet : column.getFacets().values()) {
@@ -787,8 +786,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     private void saveDescendantState(UIComponent component, FacesContext context) {
         Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
 
-        if (component instanceof EditableValueHolder) {
-            EditableValueHolder input = (EditableValueHolder) component;
+        if (component instanceof EditableValueHolder input) {
             SavedState state = null;
             String clientId = component.getClientId(context);
 
@@ -838,8 +836,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
         Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
 
-        if (component instanceof EditableValueHolder) {
-            EditableValueHolder input = (EditableValueHolder) component;
+        if (component instanceof EditableValueHolder input) {
             String clientId = component.getClientId(context);
 
             SavedState state = saved.get(clientId);
@@ -963,8 +960,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
         if (getChildCount() > 0) {
             for (UIComponent child : getChildren()) {
-                if (child instanceof Columns) {
-                    Columns columns = (Columns) child;
+                if (child instanceof Columns columns) {
                     for (int i = 0; i < columns.getRowCount(); i++) {
                         columns.setRowIndex(i);
 
@@ -978,8 +974,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                     columns.setRowIndex(-1);
                 }
                 else if (child instanceof UIColumn) {
-                    if (child instanceof UITreeNode) {
-                        UITreeNode uiTreeNode = (UITreeNode) child;
+                    if (child instanceof UITreeNode uiTreeNode) {
                         if (visitNodes && treeNodeType != null && !treeNodeType.equals(uiTreeNode.getType())) {
                             continue;
                         }
@@ -1066,8 +1061,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
                 if (child instanceof org.primefaces.component.api.UIColumn) {
                     if (child.getFacetCount() > 0) {
-                        if (child instanceof Columns) {
-                            Columns columns = (Columns) child;
+                        if (child instanceof Columns columns) {
                             for (int i = 0; i < columns.getRowCount(); i++) {
                                 columns.setRowIndex(i);
                                 boolean value = visitColumnFacets(context, callback, child);
@@ -1085,8 +1079,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                         }
                     }
                 }
-                else if (child instanceof ColumnGroup) {
-                    visitColumnGroup(context, callback, (ColumnGroup) child);
+                else if (child instanceof ColumnGroup group) {
+                    visitColumnGroup(context, callback, group);
                 }
             }
         }

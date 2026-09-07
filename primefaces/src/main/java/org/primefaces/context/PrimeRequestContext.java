@@ -237,8 +237,8 @@ public class PrimeRequestContext {
         if (secure == null) {
             Object request = context.getExternalContext().getRequest();
 
-            if (request instanceof HttpServletRequest) {
-                secure = ((HttpServletRequest) request).isSecure();
+            if (request instanceof HttpServletRequest servletRequest) {
+                secure = servletRequest.isSecure();
             }
             else {
                 try {

@@ -61,8 +61,7 @@ public class DraggableRowsFeature implements DataTableFeature {
             table.setRowIndex(fromIndex);
             Object value = table.getValue();
 
-            if (value instanceof List) {
-                List list = (List) value;
+            if (value instanceof List list) {
 
                 if (toIndex >= fromIndex) {
                     Collections.rotate(list.subList(fromIndex, toIndex + 1), -1);

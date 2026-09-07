@@ -66,15 +66,15 @@ public class PollRenderer extends CoreRenderer<Poll> {
         Object interval = component.getInterval();
 
         long convertedInterval;
-        if (interval instanceof Number) {
-            convertedInterval = ((Number) interval).longValue();
+        if (interval instanceof Number number) {
+            convertedInterval = number.longValue();
         }
-        else if (interval instanceof Duration) {
-            convertedInterval = ((Duration) interval).getSeconds();
+        else if (interval instanceof Duration duration) {
+            convertedInterval = duration.getSeconds();
         }
-        else if (interval instanceof String) {
+        else if (interval instanceof String string) {
             try {
-                convertedInterval = Long.parseLong((String) interval);
+                convertedInterval = Long.parseLong(string);
             }
             catch (NumberFormatException e) {
                 throw new FacesException(interval + " is not a valid long for \"interval\" for p:poll", e);

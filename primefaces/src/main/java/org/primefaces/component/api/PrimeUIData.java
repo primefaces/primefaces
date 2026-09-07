@@ -349,8 +349,7 @@ public abstract class PrimeUIData extends UIDataPatch {
 
                 if (child instanceof UIColumn) {
                     if (child.getFacetCount() > 0) {
-                        if (child instanceof Columns) {
-                            Columns columns = (Columns) child;
+                        if (child instanceof Columns columns) {
                             for (int j = 0; j < columns.getRowCount(); j++) {
                                 columns.setRowIndex(j);
                                 boolean value = visitColumnFacets(context, callback, child);
@@ -369,8 +368,8 @@ public abstract class PrimeUIData extends UIDataPatch {
 
                     }
                 }
-                else if (child instanceof ColumnGroup) {
-                    visitColumnGroup(context, callback, (ColumnGroup) child);
+                else if (child instanceof ColumnGroup group) {
+                    visitColumnGroup(context, callback, group);
                 }
             }
         }
@@ -391,9 +390,8 @@ public abstract class PrimeUIData extends UIDataPatch {
                                 return true;
                             }
                         }
-                        else if (col instanceof Columns) {
+                        else if (col instanceof Columns columns) {
                             if (col.getFacetCount() > 0) {
-                                Columns columns = (Columns) col;
                                 for (int k = 0; k < columns.getRowCount(); k++) {
                                     columns.setRowIndex(k);
 
@@ -459,8 +457,7 @@ public abstract class PrimeUIData extends UIDataPatch {
                     UIComponent kid = getChildren().get(i);
                     if (!((VisitContextImpl) context).isRejected(kid)) {
                         if (requiresColumns) {
-                            if (kid instanceof Columns) {
-                                Columns columns = (Columns) kid;
+                            if (kid instanceof Columns columns) {
                                 for (int j = 0; j < columns.getRowCount(); j++) {
                                     columns.setRowIndex(j);
 

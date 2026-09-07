@@ -27,6 +27,7 @@
                          rows="3"
                          selectionPageOnly="#{dataTable006.selectionPageOnly}"
             >
+                <p:ajax event="page" update="form:loadCallCount form:fullHistory"/>
                 <p:column selectionBox="true" style="width:16px;text-align:center"/>
 
                 <p:column headerText="ID" field="id"/>

@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.timeline;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ import java.util.UUID;
 
 public class TimelineEvent<T> implements Serializable {
 
-    private static final long serialVersionUID = 20130316L;
+    @Serial private static final long serialVersionUID = 20130316L;
 
     /**
      * a unique id for this event.

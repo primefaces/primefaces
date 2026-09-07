@@ -32,8 +32,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Serial;
 import java.io.Serializable;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -50,7 +52,7 @@ import jakarta.inject.Named;
 @ApplicationScoped
 public class PrimeIconsView implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private List<Icon> iconsPrevious;
     private List<Icon> icons;
@@ -72,7 +74,7 @@ public class PrimeIconsView implements Serializable {
                 result.add(new Icon(properties.getString("name"), properties.getInt("code")));
             }
         }
-        catch (IOException | JSONException ex) {
+        catch (IOException | JSONException | URISyntaxException ex) {
             Logger.getLogger(PrimeIconsView.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
@@ -87,8 +89,8 @@ public class PrimeIconsView implements Serializable {
         return sb.toString();
     }
 
-    public JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-        try (InputStream is = new URL(url).openStream()) {
+    public JSONObject readJsonFromUrl(String url) throws IOException, JSONException, URISyntaxException {
+        try (InputStream is = new URI(url).toURL().openStream()) {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
             return new JSONObject(jsonText);

@@ -27,6 +27,7 @@ import org.primefaces.event.timeline.TimelineSelectEvent;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineModel;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -43,7 +44,7 @@ import lombok.Data;
 @Data
 public class Timeline002 implements Serializable {
 
-    private static final long serialVersionUID = 3439663389646247697L;
+    @Serial private static final long serialVersionUID = 3439663389646247697L;
 
     private TimelineModel<String, ?> model;
 

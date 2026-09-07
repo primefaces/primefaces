@@ -26,6 +26,7 @@ package org.primefaces.model.file;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.faces.FacesWrapper;
@@ -37,7 +38,7 @@ import jakarta.faces.context.FacesContext;
  */
 public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedFile>, StateHolder, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private UploadedFile wrapped;
 

@@ -72,8 +72,7 @@ public class SplitterRenderer extends CoreRenderer<Splitter> {
         for (int i = 0; i < childCount; i++) {
             UIComponent child = component.getChildren().get(i);
 
-            if (child instanceof SplitterPanel) {
-                SplitterPanel panel = (SplitterPanel) child;
+            if (child instanceof SplitterPanel panel) {
                 String panelId = encodePanel(context, panel, i);
                 String valueNow = panel.getSize() == null ? "0" : panel.getSize().toString();
                 String minSize = panel.getMinSize() == null ? "0" : panel.getMinSize().toString();

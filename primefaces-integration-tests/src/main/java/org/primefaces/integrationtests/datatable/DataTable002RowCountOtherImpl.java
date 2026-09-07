@@ -23,6 +23,9 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.io.Serial;
+
+
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
@@ -36,7 +39,7 @@ import lombok.Setter;
 @Setter
 public class DataTable002RowCountOtherImpl extends DataTable002 {
 
-    private static final long serialVersionUID = 4266502895860698885L;
+    @Serial private static final long serialVersionUID = 4266502895860698885L;
 
     @PostConstruct
     public void init() {

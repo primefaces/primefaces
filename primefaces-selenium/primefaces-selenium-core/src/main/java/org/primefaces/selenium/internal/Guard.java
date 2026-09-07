@@ -244,9 +244,9 @@ public class Guard {
 
             try {
                 // try WebElement constructor, used e.g. by Select
-                if (target instanceof WrapsElement) {
+                if (target instanceof WrapsElement element) {
                     Constructor<T> ctor = proxyClass.getDeclaredConstructor(WebElement.class);
-                    return ctor.newInstance(((WrapsElement) target).getWrappedElement());
+                    return ctor.newInstance(element.getWrappedElement());
                 }
             }
             catch (NoSuchMethodException ex) {

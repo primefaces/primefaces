@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.datepicker;
 
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -41,7 +42,7 @@ import lombok.Data;
 @Data
 public class DatePicker014 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private OwnDateTime dateTime;
 
@@ -60,7 +61,7 @@ public class DatePicker014 implements Serializable {
 
     public static final class OwnDateTime implements Serializable {
 
-        private static final long serialVersionUID = 1L;
+        @Serial private static final long serialVersionUID = 1L;
         private final int year;
         private final int month;
         private final int day;

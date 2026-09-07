@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.datatable.dt028;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -32,7 +33,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Dt028Reference implements Serializable {
-    private static final long serialVersionUID = 5270872031054180148L;
+    @Serial private static final long serialVersionUID = 5270872031054180148L;
 
     private int id;
     private String domain;

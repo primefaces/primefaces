@@ -27,6 +27,7 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -38,7 +39,7 @@ import jakarta.faces.event.PhaseListener;
 
 public class LifecyclePhaseListener implements PhaseListener {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     public static PhaseInfo getPhaseInfo(PhaseId id, FacesContext facesContext) {
 

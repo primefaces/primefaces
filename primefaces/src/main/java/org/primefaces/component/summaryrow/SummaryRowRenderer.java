@@ -56,8 +56,7 @@ public class SummaryRowRenderer extends CoreRenderer<SummaryRow> {
         }
 
         for (UIComponent kid : component.getChildren()) {
-            if (kid.isRendered() && kid instanceof Column) {
-                Column column = (Column) kid;
+            if (kid.isRendered() && kid instanceof Column column) {
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
 

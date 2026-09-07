@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.datepicker;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ import java.util.Map;
 
 public class DefaultDateMetadataModel implements DateMetadataModel, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private final Map<LocalDate, DateMetadata> dateMetadata;
 

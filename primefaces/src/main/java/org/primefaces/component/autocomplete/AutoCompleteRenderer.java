@@ -538,8 +538,8 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
         // do not render table if empty message and there are no records
         if (items == null
-                || (items instanceof Collection<?> && ((Collection<?>) items).isEmpty())
-                || (items instanceof Map<?, ?> && ((Map<?, ?>) items).isEmpty())) {
+                || (items instanceof Collection<?> collection && collection.isEmpty())
+                || (items instanceof Map<?, ?> map && map.isEmpty())) {
             return;
         }
 

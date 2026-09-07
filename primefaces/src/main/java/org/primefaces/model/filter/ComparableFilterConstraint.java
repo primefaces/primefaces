@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.filter;
 
+import java.io.Serial;
 import java.util.Locale;
 import java.util.function.BiPredicate;
 
@@ -30,7 +31,7 @@ import jakarta.faces.context.FacesContext;
 
 public abstract class ComparableFilterConstraint implements FilterConstraint {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {

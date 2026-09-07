@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.component.datatable.DataTable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -54,7 +55,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class DataTable033 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
 
     private String columnTemplate = "id name country date status activity";
     private List<ColumnModel> columns;
@@ -246,15 +247,15 @@ public class DataTable033 implements Serializable {
         }
 
         private String getName() {
-            return names[(int) (Math.random() * names.length)];
+            return names[(int) (ThreadLocalRandom.current().nextDouble() * names.length)];
         }
 
         private Country getCountry() {
-            return countries[(int) (Math.random() * countries.length)];
+            return countries[(int) (ThreadLocalRandom.current().nextDouble() * countries.length)];
         }
 
         private String getCompany() {
-            return companies[(int) (Math.random() * companies.length)];
+            return companies[(int) (ThreadLocalRandom.current().nextDouble() * companies.length)];
         }
 
         private LocalDate getDate() {
@@ -264,11 +265,11 @@ public class DataTable033 implements Serializable {
         }
 
         private int getActivity() {
-            return (int) (Math.random() * 100);
+            return (int) (ThreadLocalRandom.current().nextDouble() * 100);
         }
 
         private Representative getRepresentative() {
-            return representatives[(int) (Math.random() * representatives.length)];
+            return representatives[(int) (ThreadLocalRandom.current().nextDouble() * representatives.length)];
         }
     }
 }

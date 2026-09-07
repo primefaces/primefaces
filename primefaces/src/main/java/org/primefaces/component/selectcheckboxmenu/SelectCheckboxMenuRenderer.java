@@ -126,8 +126,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
         int idx = -1;
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            if (selectItem instanceof SelectItemGroup) {
-                SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
+            if (selectItem instanceof SelectItemGroup selectItemGroup) {
                 String selectItemGroupLabel = selectItemGroup.getLabel() == null ? Constants.EMPTY_STRING : selectItemGroup.getLabel();
                 for (SelectItem childSelectItem : selectItemGroup.getSelectItems()) {
                     idx++;
@@ -258,8 +257,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
                 SelectItem selectedItem = null;
                 for (int j = 0; j < selectItems.size(); j++) {
                     SelectItem item = selectItems.get(j);
-                    if (item instanceof SelectItemGroup) {
-                        SelectItemGroup group = (SelectItemGroup) item;
+                    if (item instanceof SelectItemGroup group) {
                         for (SelectItem groupItem : group.getSelectItems()) {
                             if (isSelectValueEqual(context, menu, value, groupItem.getValue(), converter)) {
                                 selectedItem = groupItem;
@@ -380,9 +378,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
         if (component.isShowSelectAll()) {
             // determine if any of the items is not selected
             boolean notChecked = selectItems.stream().flatMap(selectItem -> {
-                if (selectItem instanceof SelectItemGroup) {
-                    // convert children to stream
-                    final SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
+                if (selectItem instanceof SelectItemGroup selectItemGroup) {
                     return Stream.of(selectItemGroup.getSelectItems());
                 }
                 else {
@@ -551,8 +547,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
         int totalItems = selectItems.size();
         for (int i = 0; i < totalItems; i++) {
             SelectItem selectItem = selectItems.get(i);
-            if (selectItem instanceof SelectItemGroup) {
-                SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
+            if (selectItem instanceof SelectItemGroup selectItemGroup) {
                 encodeTableOption(context, component, selectItemGroup, columns, idx, totalItems);
 
                 for (SelectItem groupSelectItem : selectItemGroup.getSelectItems()) {

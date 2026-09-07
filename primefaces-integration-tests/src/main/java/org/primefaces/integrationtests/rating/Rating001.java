@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.rating;
 
 import org.primefaces.event.RateEvent;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.faces.application.FacesMessage;
@@ -39,7 +40,7 @@ import lombok.Data;
 @Data
 public class Rating001 implements Serializable {
 
-    private static final long serialVersionUID = -8778258234357429563L;
+    @Serial private static final long serialVersionUID = -8778258234357429563L;
 
     private Integer rating1;
     private Integer rating2 = 3;

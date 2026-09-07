@@ -32,6 +32,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.util.CompositeUtils;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ import jakarta.faces.component.behavior.Behavior;
 
 public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     /**
      * Old value of the cell
@@ -155,8 +156,8 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
         T value = null;
 
         for (UIComponent child : column.getChildren()) {
-            if (child instanceof CellEditor) {
-                UIComponent inputFacet = ((CellEditor) child).getInputFacet();
+            if (child instanceof CellEditor editor) {
+                UIComponent inputFacet = editor.getInputFacet();
 
                 List<Object> values = new ArrayList<>(1);
 

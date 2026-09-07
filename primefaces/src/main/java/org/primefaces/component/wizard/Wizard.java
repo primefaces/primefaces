@@ -135,8 +135,7 @@ public class Wizard extends WizardBaseImpl {
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
 
-        if (event instanceof FlowEvent) {
-            FlowEvent flowEvent = (FlowEvent) event;
+        if (event instanceof FlowEvent flowEvent) {
             FacesContext context = getFacesContext();
             MethodExpression me = getFlowListener();
 

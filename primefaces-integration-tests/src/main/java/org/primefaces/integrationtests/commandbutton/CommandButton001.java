@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.commandbutton;
 
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.faces.view.ViewScoped;
@@ -37,7 +38,7 @@ import lombok.Data;
 @Data
 public class CommandButton001 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     public void submit() {
         TestUtils.addMessage("Submit");

@@ -179,8 +179,7 @@ public abstract class BaseMenuRenderer<T extends AbstractMenu> extends MenuItemA
     }
 
     protected boolean shouldRenderId(MenuElement element) {
-        if (element instanceof UIComponent) {
-            UIComponent component = (UIComponent) element;
+        if (element instanceof UIComponent component) {
             return component.getParent() instanceof MenuButton || shouldWriteId(component);
         }
         else {

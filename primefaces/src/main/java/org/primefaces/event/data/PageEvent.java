@@ -25,12 +25,14 @@ package org.primefaces.event.data;
 
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
+import java.io.Serial;
+
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 
 public class PageEvent extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     /**
      * The current page number.

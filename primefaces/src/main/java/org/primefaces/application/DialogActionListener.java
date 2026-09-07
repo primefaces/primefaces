@@ -45,8 +45,8 @@ public class DialogActionListener implements ActionListener {
     public void processAction(ActionEvent event) throws AbortProcessingException {
         UIComponent source = event.getComponent();
         Map<Object, Object> attrs = event.getFacesContext().getAttributes();
-        if (source instanceof Widget) {
-            attrs.put(Constants.DialogFramework.SOURCE_WIDGET, ((Widget) source).resolveWidgetVar());
+        if (source instanceof Widget widget) {
+            attrs.put(Constants.DialogFramework.SOURCE_WIDGET, widget.resolveWidgetVar());
         }
 
         attrs.put(Constants.DialogFramework.SOURCE_COMPONENT, source.getClientId());

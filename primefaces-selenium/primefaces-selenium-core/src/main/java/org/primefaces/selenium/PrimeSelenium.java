@@ -612,13 +612,12 @@ public final class PrimeSelenium {
     public static Capabilities getCapabilities() {
         WebDriver webDriver = getWebDriver();
 
-        if (webDriver instanceof WebDriverDecorator) {
-            WebDriverDecorator driver = (WebDriverDecorator) webDriver;
+        if (webDriver instanceof WebDriverDecorator driver) {
             webDriver = (WebDriver) driver.getDecoratedDriver().getOriginal();
         }
 
-        if (webDriver instanceof HasCapabilities) {
-            return ((HasCapabilities) webDriver).getCapabilities();
+        if (webDriver instanceof HasCapabilities capabilities) {
+            return capabilities.getCapabilities();
         }
 
         return null;

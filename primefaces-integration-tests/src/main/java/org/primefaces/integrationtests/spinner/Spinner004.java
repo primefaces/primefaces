@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.spinner;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -37,7 +38,7 @@ import lombok.Data;
 @Data
 public class Spinner004 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     private BigDecimal decimal;
 
     @PostConstruct

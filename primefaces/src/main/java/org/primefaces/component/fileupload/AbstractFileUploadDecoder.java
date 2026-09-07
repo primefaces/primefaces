@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
@@ -164,7 +163,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
         }
 
         String chunkname = String.valueOf(contentRange.getPacket());
-        Path chunkFile = Paths.get(path.toFile().getAbsolutePath(), chunkname);
+        Path chunkFile = Path.of(path.toFile().getAbsolutePath(), chunkname);
         try (InputStream is = uploadedFile.getInputStream()) {
             Files.copy(is, chunkFile, StandardCopyOption.REPLACE_EXISTING);
         }
@@ -172,7 +171,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
 
     protected UploadedFile processLastChunk(T request, UploadedFile chunk, Path chunksDir, ContentRange contentRange, Long sizeLimit) throws IOException {
         String fileKey = generateFileInfoKey(request);
-        Path whole = Paths.get(getUploadDirectory(request), "[" + fileKey +  "]" + chunk.getFileName());
+        Path whole = Path.of(getUploadDirectory(request), "[" + fileKey +  "]" + chunk.getFileName());
         Files.deleteIfExists(whole);
         Files.createFile(whole);
 

@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.treetable;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.TreeNode;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -41,7 +42,7 @@ import lombok.Data;
 @Data
 public class TreeTable002 implements Serializable {
 
-    private static final long serialVersionUID = -3735722784072615486L;
+    @Serial private static final long serialVersionUID = -3735722784072615486L;
 
     private TreeNode root;
     private List<SortMeta> sortBy;

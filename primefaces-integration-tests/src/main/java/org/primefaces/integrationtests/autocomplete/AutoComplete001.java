@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ import lombok.Data;
 @Data
 public class AutoComplete001 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
     private String value;
 
     @PostConstruct

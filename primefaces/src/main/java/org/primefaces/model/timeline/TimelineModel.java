@@ -25,6 +25,7 @@ package org.primefaces.model.timeline;
 
 import org.primefaces.component.timeline.TimelineUpdater;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ import java.util.stream.IntStream;
 
 public class TimelineModel<E, G> implements Serializable {
 
-    private static final long serialVersionUID = 20130316L;
+    @Serial private static final long serialVersionUID = 20130316L;
 
     /**
      * list of events

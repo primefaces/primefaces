@@ -35,6 +35,7 @@ import org.primefaces.model.filter.GlobalFilterConstraint;
 import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.LangUtils;
 
+import java.io.Serial;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -65,7 +66,7 @@ public class FilterMeta implements Serializable {
 
     public static final String GLOBAL_FILTER_KEY = "globalFilter";
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private String field;
     private String columnKey;
@@ -94,9 +95,9 @@ public class FilterMeta implements Serializable {
         setFilterValue(filterValue);
     }
 
-    public static FilterMeta of(FacesContext context, UITable<?> table, UIColumn column, boolean normalize) {
-        if (column instanceof DynamicColumn) {
-            ((DynamicColumn) column).applyStatelessModel();
+    public static FilterMeta of(FacesContext context, String var, UIColumn column, boolean normalize) {
+        if (column instanceof DynamicColumn dynamicColumn) {
+            dynamicColumn.applyStatelessModel();
         }
 
         if (!column.isFilterable()) {
@@ -367,9 +368,9 @@ public class FilterMeta implements Serializable {
 
     public static <T> T resetToNullIfEmpty(T filterValue) {
         if (filterValue != null
-                && ((filterValue instanceof String && LangUtils.isBlank((String) filterValue))
-                || (filterValue instanceof Collection && ((Collection<?>) filterValue).isEmpty())
-                || (filterValue instanceof Iterable && !((Iterable<?>) filterValue).iterator().hasNext())
+                && ((filterValue instanceof String string && LangUtils.isBlank(string))
+                || (filterValue instanceof Collection collection && collection.isEmpty())
+                || (filterValue instanceof Iterable && !((Iterable) filterValue).iterator().hasNext())
                 || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0))) {
             filterValue = null;
         }
@@ -449,8 +450,8 @@ public class FilterMeta implements Serializable {
     }
 
     public Object getLocalValue(ELContext elContext, UIColumn column) {
-        if (column instanceof DynamicColumn) {
-            ((DynamicColumn) column).applyStatelessModel();
+        if (column instanceof DynamicColumn dynamicColumn) {
+            dynamicColumn.applyStatelessModel();
         }
         return LangUtils.normalize(filterBy.getValue(elContext), isNormalize());
     }

@@ -213,10 +213,10 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
 
         @Override
         public void invokeContextCallback(FacesContext context, UIComponent target) {
-            if (target instanceof InputHolder) {
+            if (target instanceof InputHolder holder) {
                 // a component may expose a dedicated labelable element (or none) for the "for" attribute,
                 // which can differ from its server-side input client id
-                InputHolder inputHolder = ((InputHolder) target);
+                InputHolder inputHolder = holder;
                 forClientId = inputHolder.getLabelClientId();
                 inputHolder.setAriaLabelledBy(clientId);
             }
@@ -224,8 +224,7 @@ public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
                 forClientId = target.getClientId(context);
             }
 
-            if (target instanceof UIInput) {
-                UIInput input = (UIInput) target;
+            if (target instanceof UIInput input) {
 
                 if (value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
                     ValueExpression ve = label.getValueExpression("value");

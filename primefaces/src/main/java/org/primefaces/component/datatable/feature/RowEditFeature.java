@@ -59,11 +59,11 @@ public class RowEditFeature implements DataTableFeature {
 
                 for (UIColumn column : table.getColumns()) {
                     for (UIComponent grandkid : column.getChildren()) {
-                        if (grandkid instanceof CellEditor) {
-                            UIComponent inputFacet = ((CellEditor) grandkid).getInputFacet();
+                        if (grandkid instanceof CellEditor editor) {
+                            UIComponent inputFacet = editor.getInputFacet();
 
-                            if (inputFacet instanceof EditableValueHolder) {
-                                ((EditableValueHolder) inputFacet).resetValue();
+                            if (inputFacet instanceof EditableValueHolder holder) {
+                                holder.resetValue();
                             }
                             else {
                                 if (visitContext == null) {

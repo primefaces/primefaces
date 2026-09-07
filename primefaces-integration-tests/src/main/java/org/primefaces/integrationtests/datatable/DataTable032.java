@@ -27,6 +27,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -41,7 +42,7 @@ import lombok.Data;
 @Data
 public class DataTable032 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
 
     private ProgrammingLanguageLazyDataModel model;
     private ProgrammingLanguage selection;

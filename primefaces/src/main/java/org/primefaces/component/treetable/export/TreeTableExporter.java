@@ -121,8 +121,7 @@ public abstract class TreeTableExporter<P, O extends ExporterOptions> extends Ta
             }
             else if (Collection.class.isAssignableFrom(selection.getClass())) {
                 for (Object obj : (Collection) selection) {
-                    if (obj instanceof TreeNode) {
-                        TreeNode node = (TreeNode) obj;
+                    if (obj instanceof TreeNode node) {
                         requestMap.put(var, node.getData());
                     }
                     else {

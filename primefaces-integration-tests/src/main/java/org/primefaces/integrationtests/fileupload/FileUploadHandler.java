@@ -28,6 +28,7 @@ import org.primefaces.event.FilesUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -40,7 +41,7 @@ import lombok.Data;
 @RequestScoped
 @Data
 public class FileUploadHandler implements Serializable {
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     @Inject
     private FileUploadView fileUploadView;

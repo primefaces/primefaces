@@ -27,6 +27,7 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.TreeNode;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -40,13 +41,13 @@ import lombok.Data;
 @Data
 public class TreeTable008 implements Serializable {
 
-    private static final long serialVersionUID = -9070796086139839567L;
+    @Serial private static final long serialVersionUID = -9070796086139839567L;
 
     @lombok.Data
     @lombok.AllArgsConstructor
     public static class Data implements Serializable {
 
-        private static final long serialVersionUID = 1L;
+        @Serial private static final long serialVersionUID = 1L;
         private String textA;
         private String textB;
     }

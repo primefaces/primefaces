@@ -100,7 +100,7 @@ public class SliderRenderer extends CoreRenderer<Slider> {
         }
         else {
             UIComponent input = getTarget(context, component, component.getFor());
-            String inputClientId = input instanceof InputHolder ? ((InputHolder) input).getInputClientId() : input.getClientId(context);
+            String inputClientId = input instanceof InputHolder ih ? ih.getInputClientId() : input.getClientId(context);
 
             wb.attr("value", ComponentUtils.getValueToRender(context, input))
                     .attr("input", inputClientId);

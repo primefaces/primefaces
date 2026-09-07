@@ -114,8 +114,7 @@ public class MenuRenderer extends BaseMenuRenderer<Menu> {
 
         for (MenuElement element : elements) {
             if (element.isRendered()) {
-                if (element instanceof MenuItem) {
-                    MenuItem menuItem = (MenuItem) element;
+                if (element instanceof MenuItem menuItem) {
 
                     String containerStyle = getStyleBuilder(context)
                             .add(menuItem.getContainerStyle())
@@ -140,11 +139,11 @@ public class MenuRenderer extends BaseMenuRenderer<Menu> {
                     encodeMenuItem(context, component, menuItem, "-1");
                     writer.endElement("li");
                 }
-                else if (element instanceof Submenu) {
-                    encodeSubmenu(context, component, (Submenu) element);
+                else if (element instanceof Submenu submenu) {
+                    encodeSubmenu(context, component, submenu);
                 }
-                else if (element instanceof Separator) {
-                    encodeSeparator(context, (Separator) element);
+                else if (element instanceof Separator separator) {
+                    encodeSeparator(context, separator);
                 }
             }
         }

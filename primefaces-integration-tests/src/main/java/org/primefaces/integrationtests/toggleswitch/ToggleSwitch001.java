@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.toggleswitch;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.faces.application.FacesMessage;
@@ -37,7 +38,7 @@ import lombok.Data;
 @Data
 public class ToggleSwitch001 implements Serializable {
 
-    private static final long serialVersionUID = -7518459955779385834L;
+    @Serial private static final long serialVersionUID = -7518459955779385834L;
     private boolean value;
 
     public void addMessage() {

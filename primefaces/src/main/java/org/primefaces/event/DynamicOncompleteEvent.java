@@ -26,6 +26,8 @@ package org.primefaces.event;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.AjaxSource;
 
+import java.io.Serial;
+
 import jakarta.el.ValueExpression;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.event.PhaseId;
@@ -36,7 +38,7 @@ import jakarta.faces.event.PhaseId;
  */
 public class DynamicOncompleteEvent extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     public DynamicOncompleteEvent(UIComponent component, AjaxSource ajaxSource, PhaseId phaseId) {
         super(component, (event) -> {

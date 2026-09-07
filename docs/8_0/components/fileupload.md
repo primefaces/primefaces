@@ -253,6 +253,12 @@ uses graceful degradation so that iframe is used for transport, detailed file in
 and a gif animation is displayed instead of progress bar. It is suggested to offer simple uploader as a
 fallback.
 
+## Configuration for Tomcat since June 2025 (>= 9.0.106, >= 10.1.42, >= 11.0.8)
+> maxPartCount limits the total number of parts in a multi-part request and maxPartHeaderSize limits the size of the headers provided with each part.
+
+See https://tomcat.apache.org/tomcat-11.0-doc/config/http.html#Common_Attributes for additional information.
+
+
 ## Filter Configuration
 
 Filter configuration is required if you are using commons uploader only. Two configuration options

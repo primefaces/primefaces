@@ -23,12 +23,13 @@
  */
 package org.primefaces.model.map;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Symbol implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     /**
      * Path defining the shape of the symbol. You can define a custom path using SVG path notation. Note: Vector paths

@@ -80,9 +80,9 @@ public class MenuItemAwareRenderer<T extends UIComponent> extends OutcomeTargetR
 
         // #1 first check for assigned server side callbacks
         submitting = menuitem.getFunction() != null || LangUtils.isNotBlank(menuitem.getCommand());
-        if (!submitting && menuitem instanceof UIMenuItem) {
-            submitting = ((UIMenuItem) menuitem).getActionExpression() != null
-                    || ((UIMenuItem) menuitem).getActionListeners().length > 0;
+        if (!submitting && menuitem instanceof UIMenuItem item) {
+            submitting = item.getActionExpression() != null
+                    || item.getActionListeners().length > 0;
         }
 
         // 2# AJAX
@@ -182,10 +182,10 @@ public class MenuItemAwareRenderer<T extends UIComponent> extends OutcomeTargetR
         String style = separator.getStyle();
         String styleClass;
 
-        if (separator instanceof Divider) {
-            String layout = ((Divider) separator).getLayout();
-            String align = ((Divider) separator).getAlign();
-            String type = ((Divider) separator).getType();
+        if (separator instanceof Divider divider) {
+            String layout = divider.getLayout();
+            String align = divider.getAlign();
+            String type = divider.getType();
             boolean isHorizontal = "horizontal".equals(layout);
             boolean isVertical = "vertical".equals(layout);
             styleClass = getStyleClassBuilder(context)
@@ -225,8 +225,8 @@ public class MenuItemAwareRenderer<T extends UIComponent> extends OutcomeTargetR
     }
 
     protected void setConfirmationScript(FacesContext context, MenuItem item) {
-        if (item instanceof ClientBehaviorHolder) {
-            Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) item).getClientBehaviors();
+        if (item instanceof ClientBehaviorHolder holder) {
+            Map<String, List<ClientBehavior>> behaviors = holder.getClientBehaviors();
             List<ClientBehavior> clickBehaviors = (behaviors == null) ? null : behaviors.get("click");
 
             if (clickBehaviors != null && !clickBehaviors.isEmpty()) {
@@ -256,8 +256,8 @@ public class MenuItemAwareRenderer<T extends UIComponent> extends OutcomeTargetR
             if (Objects.equals(menuId, id)) {
                 return (MenuItem) element;
             }
-            if (element instanceof MenuGroup) {
-                MenuItem result = findMenuItemById(((MenuGroup) element).getElements(), id);
+            if (element instanceof MenuGroup group) {
+                MenuItem result = findMenuItemById(group.getElements(), id);
                 if (result != null) {
                     return result;
                 }
@@ -345,8 +345,7 @@ public class MenuItemAwareRenderer<T extends UIComponent> extends OutcomeTargetR
     }
 
     protected boolean shouldBeRendered(FacesContext context, MenuElement menuElement) {
-        if (menuElement instanceof MenuGroup) {
-            MenuGroup group = (MenuGroup) menuElement;
+        if (menuElement instanceof MenuGroup group) {
             return group.getElements().stream().anyMatch(me -> shouldBeRendered(context, me));
         }
         else if (menuElement instanceof Separator) {
@@ -354,15 +353,13 @@ public class MenuItemAwareRenderer<T extends UIComponent> extends OutcomeTargetR
         }
         else {
             try {
-                if (menuElement instanceof UIComponent) {
-                    UIComponent component = (UIComponent) menuElement;
+                if (menuElement instanceof UIComponent component) {
                     component.pushComponentToEL(context, component);
                 }
                 return menuElement.isRendered();
             }
             finally {
-                if (menuElement instanceof UIComponent) {
-                    UIComponent component = (UIComponent) menuElement;
+                if (menuElement instanceof UIComponent component) {
                     component.popComponentFromEL(context);
                 }
             }

@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.core.head;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -36,7 +37,7 @@ import lombok.Data;
 @Data
 public class CoreHead003 implements Serializable {
 
-    private static final long serialVersionUID = 8797995450720503195L;
+    @Serial private static final long serialVersionUID = 8797995450720503195L;
 
     private boolean visible;
 

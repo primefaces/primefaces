@@ -27,12 +27,13 @@ import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
 public class UITableState implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private Map<String, SortMeta> sortBy;
 

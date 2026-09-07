@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.dataview;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguage;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguageService;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -41,7 +42,7 @@ import lombok.Data;
 @Data
 public class DataView001 implements Serializable {
 
-    private static final long serialVersionUID = -4977977244229602028L;
+    @Serial private static final long serialVersionUID = -4977977244229602028L;
 
     private List<ProgrammingLanguage> progLanguages;
 

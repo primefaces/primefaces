@@ -42,8 +42,7 @@ public class ColumnTogglerRenderer extends CoreRenderer<ColumnToggler> {
     public void decode(FacesContext context, ColumnToggler component) {
         UIComponent dataSource = component.getDataSourceComponent();
 
-        if (dataSource instanceof UITable) {
-            UITable<?> table = (UITable<?>) dataSource;
+        if (dataSource instanceof UITable<?> table) {
             table.decodeColumnTogglerState(context);
         }
 

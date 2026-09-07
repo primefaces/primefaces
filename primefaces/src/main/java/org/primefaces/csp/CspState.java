@@ -133,8 +133,8 @@ public class CspState {
      */
     protected boolean isForward(FacesContext context) {
         Object request = context.getExternalContext().getRequest();
-        if (request instanceof HttpServletRequest) {
-            return ((HttpServletRequest) request).getAttribute("jakarta.servlet.forward.request_uri") != null;
+        if (request instanceof HttpServletRequest servletRequest) {
+            return servletRequest.getAttribute("jakarta.servlet.forward.request_uri") != null;
         }
         return false;
     }

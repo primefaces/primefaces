@@ -73,9 +73,9 @@ public class TabMenuRenderer extends BaseMenuRenderer<TabMenu> {
         int i = 0;
         if (elements != null && !elements.isEmpty()) {
             for (Object element : elements) {
-                if (element instanceof MenuElement) {
-                    if (((MenuElement) element).isRendered() && (element instanceof MenuItem)) {
-                        encodeItem(context, component, (MenuItem) element, (i == activeIndex));
+                if (element instanceof MenuElement menuElement) {
+                    if (menuElement.isRendered() && (element instanceof MenuItem item)) {
+                        encodeItem(context, component, item, (i == activeIndex));
                         i++;
                     }
                 }

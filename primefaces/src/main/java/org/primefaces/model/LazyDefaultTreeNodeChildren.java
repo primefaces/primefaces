@@ -23,9 +23,11 @@
  */
 package org.primefaces.model;
 
+import java.io.Serial;
+
 public class LazyDefaultTreeNodeChildren<T> extends DefaultTreeNodeChildren<T> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     // serialization
     public LazyDefaultTreeNodeChildren() {

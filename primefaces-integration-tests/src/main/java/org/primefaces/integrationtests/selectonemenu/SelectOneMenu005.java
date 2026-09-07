@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -36,7 +37,7 @@ import lombok.Data;
 @Data
 public class SelectOneMenu005 implements Serializable {
 
-    private static final long serialVersionUID = -7798312444085660208L;
+    @Serial private static final long serialVersionUID = -7798312444085660208L;
 
     private String console = "";
 

@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.map;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ import java.util.Objects;
  */
 public class MarkerLabel implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     /**
      * The text to be displayed in the label.

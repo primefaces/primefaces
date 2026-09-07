@@ -115,10 +115,10 @@ public class ShowcaseUtil {
 
     private static void attach(UIComponent component, FileContent file) {
         if (component.isRendered()) {
-            if (component instanceof Tab) {
+            if (component instanceof Tab tab) {
                 String flatten = (String) component.getAttributes().get("flatten");
                 FileContent content = getFileContent(
-                        ((Tab) component).getTitle(),
+                        tab.getTitle(),
                         flatten == null ? false : Boolean.valueOf(flatten));
                 file.getAttached().add(content);
             }

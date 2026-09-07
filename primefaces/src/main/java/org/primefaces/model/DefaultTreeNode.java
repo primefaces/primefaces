@@ -23,6 +23,7 @@
  */
 package org.primefaces.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
 
     public static final String DEFAULT_TYPE = "default";
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
 
     protected String type;
@@ -99,8 +100,8 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     }
 
     public void setChildren(List<TreeNode<T>> children) {
-        if (children instanceof TreeNodeChildren) {
-            this.children = (TreeNodeChildren) children;
+        if (children instanceof TreeNodeChildren nodeChildren) {
+            this.children = nodeChildren;
         }
         else {
             this.children = initChildren();

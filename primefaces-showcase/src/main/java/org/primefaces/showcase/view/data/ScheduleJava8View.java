@@ -43,6 +43,7 @@ import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import jakarta.annotation.PostConstruct;
@@ -206,7 +207,7 @@ public class ScheduleJava8View implements Serializable {
 
     public LocalDateTime getRandomDateTime(LocalDateTime base) {
         LocalDateTime dateTime = base.withMinute(0).withSecond(0).withNano(0);
-        return dateTime.plusDays(((int) (Math.random() * 30)));
+        return dateTime.plusDays(((int) (ThreadLocalRandom.current().nextDouble() * 30)));
     }
 
     public ScheduleModel getEventModel() {

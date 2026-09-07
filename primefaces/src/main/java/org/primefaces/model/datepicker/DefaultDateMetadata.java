@@ -23,12 +23,13 @@
  */
 package org.primefaces.model.datepicker;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class DefaultDateMetadata implements DateMetadata, Serializable {
 
-    private static final long serialVersionUID = 2L;
+    @Serial private static final long serialVersionUID = 2L;
 
     private boolean disabled;
 

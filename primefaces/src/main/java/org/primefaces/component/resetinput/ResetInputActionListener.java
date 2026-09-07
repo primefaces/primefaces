@@ -27,6 +27,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -41,7 +42,7 @@ import jakarta.faces.event.ActionListener;
 
 public class ResetInputActionListener implements ActionListener, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private ValueExpression target;
     private ValueExpression clearModel;

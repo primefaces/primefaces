@@ -23,13 +23,14 @@
  */
 package org.primefaces.model;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 public class DefaultTreeNodeChildren<T> extends ArrayList<TreeNode<T>> implements TreeNodeChildren<T> {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     protected TreeNode<T> parent;
 

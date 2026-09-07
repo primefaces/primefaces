@@ -23,6 +23,7 @@
  */
 package org.primefaces.event.timeline;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 import jakarta.faces.component.UIComponent;
@@ -30,7 +31,7 @@ import jakarta.faces.component.behavior.Behavior;
 
 public class TimelineDragDropEvent<T> extends TimelineAddEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     /**
      * client ID of the dragged component

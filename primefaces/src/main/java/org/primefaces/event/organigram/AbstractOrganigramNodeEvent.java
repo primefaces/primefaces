@@ -26,6 +26,8 @@ package org.primefaces.event.organigram;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.OrganigramNode;
 
+import java.io.Serial;
+
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
 
@@ -34,7 +36,7 @@ import jakarta.faces.component.behavior.Behavior;
  */
 public class AbstractOrganigramNodeEvent extends AbstractAjaxBehaviorEvent {
 
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
 
     private final OrganigramNode organigramNode;
 

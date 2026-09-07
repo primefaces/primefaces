@@ -28,6 +28,7 @@ import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -43,7 +44,7 @@ import lombok.Data;
 @Data
 public class CascadeSelect003 implements Serializable {
 
-    private static final long serialVersionUID = -5339070563799128801L;
+    @Serial private static final long serialVersionUID = -5339070563799128801L;
 
     @Inject
     private RealDriverService driverService;

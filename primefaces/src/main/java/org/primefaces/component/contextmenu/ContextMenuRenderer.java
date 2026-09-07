@@ -51,8 +51,8 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         if (target != null) {
             wb.attr("target", target.getClientId(context));
 
-            if (target instanceof Widget) {
-                wb.attr("targetWidgetVar", ((Widget) target).resolveWidgetVar(context));
+            if (target instanceof Widget widget) {
+                wb.attr("targetWidgetVar", widget.resolveWidgetVar(context));
             }
         }
 
