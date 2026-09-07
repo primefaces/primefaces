@@ -30,14 +30,14 @@
         <sonar.skip>true</sonar.skip>
 
         <!-- dependency versions -->
-        <h2.version>2.4.240</h2.version>
+        <h2.version>2.5.250</h2.version>
         <hibernate-core.version>6.6.0.Final</hibernate-core.version>
         <hibernate-validator.version>9.1.3.Final</hibernate-validator.version>
         <resteasy.version>7.0.4.Final</resteasy.version>
         <jakarta.version>11.0.0</jakarta.version>
         <weld.version>6.0.4.Final</weld.version>
         <jakarta.persistence-api.version>3.2.0</jakarta.persistence-api.version>
-        <jetty.version>12.1.12</jetty.version>
+        <jetty.version>12.1.13</jetty.version>
         <lombok.version>1.18.48</lombok.version>
     </properties>
 

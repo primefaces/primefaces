@@ -355,6 +355,39 @@
         display: none;
     }
 
+    /* Keep column filters usable in reflow mode: stack the filterable header
+       cells instead of hiding the whole thead. */
+    .ui-datatable-reflow thead th.ui-filter-column {
+        box-sizing: border-box;
+        display: block;
+        float: left;
+        clear: left;
+        width: 100% !important;
+        border: 0 none;
+        text-align: left;
+    }
+
+    .ui-datatable-reflow thead th.ui-filter-column .ui-column-title {
+        display: block;
+        font-weight: bold;
+        margin: 0 0 .4em 0;
+        padding: 0;
+    }
+
+    .ui-datatable-reflow thead th.ui-filter-column .ui-sortable-column-icon,
+    .ui-datatable-reflow thead th.ui-filter-column .ui-sortable-column-badge,
+    .ui-datatable-reflow thead th.ui-filter-column .ui-column-resizer {
+        display: none;
+    }
+
+    .ui-datatable-reflow thead th.ui-filter-column .ui-column-filter,
+    .ui-datatable-reflow thead th.ui-filter-column .ui-column-customfilter {
+        display: block;
+        box-sizing: border-box;
+        width: 100% !important;
+        margin: 0;
+    }
+
     .ui-datatable-reflow .ui-datatable-data td[role="gridcell"]:not(.ui-helper-hidden) {
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
