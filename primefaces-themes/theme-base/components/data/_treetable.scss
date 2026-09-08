@@ -232,6 +232,26 @@ body {
       background: $datatableResizerHelperBg;
     }
 
+    // Striping is done with :nth-child because expanding or collapsing a node adds and
+    // removes rows on the client, which would leave renderer assigned odd/even classes stale.
+    &.ui-treetable-striped {
+      .ui-treetable-data {
+        > tr:nth-child(even) {
+          background: $datatableBodyRowOddBg;
+
+          &.ui-state-hover {
+            background: $datatableBodyRowHoverBg;
+            color: $datatableBodyRowTextHoverColor;
+          }
+
+          &.ui-state-highlight {
+            background: $highlightBg;
+            color: $highlightTextColor;
+          }
+        }
+      }
+    }
+
     &.ui-treetable-sm {
       thead {
         > tr {

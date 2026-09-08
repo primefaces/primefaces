@@ -78,6 +78,8 @@ body {
         .ui-listbox-outline {
           @include focused-listitem();
         }
+
+        @include advanced-table-modifiers('.ui-selectlistbox-item');
       }
     }
   }

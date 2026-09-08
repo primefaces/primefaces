@@ -146,7 +146,10 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
 
         if (customContent) {
             writer.startElement("table", null);
-            writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
+            writer.writeAttribute("class", getStyleClassBuilder(context)
+                    .add(SelectManyMenu.LIST_CLASS)
+                    .add(component.getAdvancedStyleClass())
+                    .build(), null);
             writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
             writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "" + component.isMetaKeySelection(), null);
             writer.startElement("tbody", null);

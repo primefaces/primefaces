@@ -118,6 +118,7 @@ public class TreeTable extends TreeTableBaseImpl {
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
     public static final String GRIDLINES_CLASS = "ui-treetable-gridlines";
+    public static final String STRIPED_ROWS_CLASS = "ui-treetable-striped";
     public static final String SMALL_SIZE_CLASS = "ui-treetable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-treetable-lg";
 

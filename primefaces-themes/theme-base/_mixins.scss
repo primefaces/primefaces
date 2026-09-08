@@ -252,3 +252,60 @@
 @function shade($color, $percentage) {
     @return color.mix(#000, $color, $weight: $percentage, $method: null);
 }
+
+// Generic table modifiers shared by the "advanced" (column based) layout of the input
+// components that render a table: AutoComplete, SelectOneMenu, SelectOneListbox and
+// SelectManyMenu. Opted in per component through the advancedStyleClass attribute, so that
+// "ui-table-gridlines", "ui-table-striped", "ui-table-sm" and "ui-table-lg" mean the same
+// thing everywhere. Include it on the table element itself and pass the component's row
+// selector, which the padding rules need in order to outrank the base cell padding.
+@mixin advanced-table-modifiers($rowSelector) {
+    &.ui-table-gridlines {
+        > thead > tr > th {
+            border: $datatableHeaderCellBorder;
+            border-width: 1px;
+        }
+
+        > tbody > tr#{$rowSelector} > td {
+            border: $datatableBodyRowBorder;
+            border-width: 1px;
+        }
+    }
+
+    &.ui-table-striped {
+        > tbody > tr#{$rowSelector}:nth-child(even) {
+            background: $datatableBodyRowOddBg;
+
+            // Re-declared because the striped selector outranks the base state rules.
+            &.ui-state-hover {
+                background: $inputListItemHoverBg;
+                color: $inputListItemTextHoverColor;
+            }
+
+            &.ui-state-highlight {
+                background: $inputListItemHighlightBg;
+                color: $inputListItemHighlightTextColor;
+            }
+        }
+    }
+
+    &.ui-table-sm {
+        > thead > tr > th {
+            @include scaledPadding($datatableHeaderCellPadding, $datatableScaleSm);
+        }
+
+        > tbody > tr#{$rowSelector} > td {
+            @include scaledPadding($datatableBodyCellPadding, $datatableScaleSm);
+        }
+    }
+
+    &.ui-table-lg {
+        > thead > tr > th {
+            @include scaledPadding($datatableHeaderCellPadding, $datatableScaleLg);
+        }
+
+        > tbody > tr#{$rowSelector} > td {
+            @include scaledPadding($datatableBodyCellPadding, $datatableScaleLg);
+        }
+    }
+}

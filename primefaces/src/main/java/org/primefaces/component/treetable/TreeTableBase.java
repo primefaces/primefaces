@@ -203,6 +203,9 @@ public abstract class TreeTableBase extends UITree implements Widget, Pageable, 
     @Property(defaultValue = "false", description = "When enables, cell borders are displayed.")
     public abstract boolean isShowGridlines();
 
+    @Property(defaultValue = "false", description = "Whether to display striped rows to visually separate content.")
+    public abstract boolean isStripedRows();
+
     @Property(defaultValue = "regular", description = "Size of the table content, valid values are \"small\", \"regular\" and \"large\".")
     public abstract String getSize();
 
