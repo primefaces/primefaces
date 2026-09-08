@@ -25,10 +25,12 @@ package org.primefaces.integrationtests.datatable;
 
 import org.primefaces.integrationtests.jpa.H2RegexJPALazyDataModel;
 import org.primefaces.integrationtests.jpa.JpaEmployee;
+import org.primefaces.integrationtests.jpa.JpaEmployeeEm;
 import org.primefaces.integrationtests.jpa.JpaEmployeeRepository;
 import org.primefaces.model.JPALazyDataModel;
 import org.primefaces.model.LazyDataModel;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
@@ -47,9 +49,11 @@ import jakarta.persistence.EntityManager;
 @ViewScoped
 public class DataTable053 implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Inject
+    @JpaEmployeeEm
     private EntityManager entityManager;
 
     @Inject
@@ -59,11 +63,11 @@ public class DataTable053 implements Serializable {
 
     @PostConstruct
     public void init() {
-        // rewrite the fixture per view, so the relative date/time match modes stay assertable however long
+        // rewrite the fixture per view, so the relative date/time match modes stay assertable, however, long
         // the application has been running
         repository.reseed(entityManager);
 
-        // H2RegexJPALazyDataModel rather than a plain JPALazyDataModel: "matches regex" is the one match mode
+        // H2RegexJPALazyDataModel rather than a plain JPALazyDataModel: "matches regex" is the one-match mode
         // without a portable JPA translation, so the model has to bring the regex function of its database
         lazyModel = new JPALazyDataModel.Builder<JpaEmployee, H2RegexJPALazyDataModel<JpaEmployee>>(new H2RegexJPALazyDataModel<>())
                 .entityClass(JpaEmployee.class)

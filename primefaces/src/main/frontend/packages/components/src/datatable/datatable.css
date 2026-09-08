@@ -30,7 +30,7 @@
    present - puts them on one row instead of the button's own block-level line sitting above whatever the
    facet renders. The facet's own top-level element (whatever the developer declared) is always this flex
    row's last/only other child, so it's the one stretched to fill the remaining width - if it lays its own
-   content out with e.g. `justify-content: space-between`, that still ends up pinned to this row's far edges. */
+   content out with e.g., `justify-content: space-between`, that still ends up pinned to this row's far edges. */
 .ui-datatable .ui-datatable-header-with-clear-filters {
     display: flex;
     align-items: center;
@@ -157,8 +157,21 @@
    header rather than as a dropdown competing with the value input for space in a narrow column. */
 .ui-datatable .ui-column-filter-mode-icon {
     display: inline-flex;
-    margin: -3px 0 -3px 2px;
-    padding: 0;
+    /* Real horizontal padding, with NO negative horizontal margin to cancel it. This button sits inside the
+       sortable <th>, so a click landing beside the glyph falls through to the header's own sort handler and
+       sorts the column instead of opening the match-mode menu. The padding turns those pixels into dead
+       space owned by this button, which both makes the glyph easy to hit and puts visible separation between
+       it and the sort icon on its left. Cancelling the padding with negative margins (as a first attempt did)
+       looks tidy but achieves neither: the gap stays as tight as before AND the button ends up overlapping
+       the sort icon, stealing its clicks. Only the vertical margin is negative, cancelling the vertical
+       padding so the taller hit area does not grow the header row.
+
+       The padding is asymmetric on purpose. To the right sits this column's active-mode badge, which belongs
+       with this icon (it shows which mode is applied, and clicking it opens this very menu), so it is kept
+       close; to the left sits the sort icon, an unrelated control, so that gap is the wider of the two. Losing
+       hit area on the right costs nothing, because the badge forwards its own clicks here anyway. */
+    margin: -6px 0;
+    padding: 3px 3px 3px 8px;
     border: 0;
     background: transparent;
     cursor: pointer;
@@ -177,7 +190,9 @@
    selected mode by datatable.widget.js#updateFilterMatchModeIconState(). */
 .ui-datatable .ui-column-filter-mode-active-icon {
     display: inline-flex;
-    margin-left: 2px;
+    /* no margin of its own: the trigger's own 3px right padding is the whole gap, which reads as "these two
+       belong together" against the wider gap to the sort icon - see .ui-column-filter-mode-icon */
+    margin-left: 0;
     vertical-align: middle;
     font-size: .875rem;
     font-weight: 700;

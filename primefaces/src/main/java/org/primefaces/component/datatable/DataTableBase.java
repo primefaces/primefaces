@@ -254,8 +254,9 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     @Property(description = "Table-wide default for the column's \"filterValueType\", applied to every filterable column"
             + " that doesn't set one itself. Accepts exactly the same values (\"numeric\", \"text\", \"date\", \"time\","
-            + " \"datetime\", \"boolean\", \"enum\", \"array\", \"none\", or an explicit comma separated list of match"
-            + " modes). Set to \"none\" to turn the end user's match-mode dropdown off for the whole table in one place,"
+            + " \"datetime\", \"boolean\", \"enum\", \"array\", \"none\", the \"shortcuts\" token, or an explicit comma"
+            + " separated list of match modes - e.g., \"date,shortcuts\" to give every date column the relative"
+            + " predicates). Set to \"none\" to turn the end user's match-mode dropdown off for the whole table in one place,"
             + " while individual columns may still opt back in via their own \"filterValueType\". When not set, each"
             + " column's type is auto-derived from its Java type as before.")
     public abstract String getFilterValueType();

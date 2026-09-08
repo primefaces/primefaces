@@ -29,7 +29,6 @@ import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 import org.openqa.selenium.By;
@@ -89,7 +88,7 @@ public class HeaderCell extends Cell {
     }
 
     /**
-     * Gets the currently selected match-mode operator for this column, e.g. "gt" or "equals".
+     * Gets the currently selected match-mode operator for this column, e.g., "gt" or "equals".
      *
      * @return the current value of the hidden input carrying the selected match mode, or {@code null} if the
      *         column does not define {@code filterValueType}
@@ -107,9 +106,13 @@ public class HeaderCell extends Cell {
     }
 
     /**
-     * Opens the filter match-mode overlay menu, collects every option's visible label, then closes it again.
-     * {@link WebElement#getText()} returns an empty string for a CSS-hidden element, so the menu must briefly be
-     * opened to read its (otherwise correct, always-present) option text.
+     * Collects every match mode option's label for this column, in declaration order.
+     * <p>
+     * Read straight out of the DOM instead of by opening the menu: the option text is always rendered, and it
+     * is only {@link WebElement#getText()} that hides it (that returns an empty string for a CSS-hidden
+     * element). Never opening the menu also means never having to close it again - which used to take a
+     * scripted click, because a menu taller than the viewport is flipped back over its own trigger by jQuery
+     * UI's {@code collision: 'flipfit'} and then swallowed the closing click.
      *
      * @return the labels of every match mode offered for this column, in declaration order
      */
@@ -119,30 +122,21 @@ public class HeaderCell extends Cell {
             throw new NoSuchElementException("Column '" + this + "' does not define a filter match-mode picker");
         }
 
-        // opening the menu is a local-only interaction (no AJAX request) - must not be guarded
-        icon.click();
-        WebElement menu = getFilterMatchModeMenu(icon);
         // scoped to the label span, not the whole link's text - a link's own text would also pick up its
         // symbol glyph (see MatchMode#symbol()); [data-match-mode] excludes the trailing "Clear" action row,
         // which isn't a selectable mode and has no such attribute
-        List<String> labels = menu.findElements(By.cssSelector(".ui-menuitem-link[data-match-mode] .ui-column-filter-mode-menuitem-label")).stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
-        // closed via a scripted click, not icon.click(): the menu deliberately has no max-height (see
-        // datatable.css#ui-column-filter-mode-menu), so the date/datetime presets' 28-32 items make it taller
-        // than the viewport, and jQuery UI's collision:'flipfit' then shifts it back up over its own trigger.
-        // A real click would be intercepted by whichever menu item now sits on top of the icon. Dispatching the
-        // click on the element itself skips the hit test while still running the widget's own toggle handler.
-        PrimeSelenium.executeScript("arguments[0].click();", icon);
-
-        return labels;
+        return PrimeSelenium.executeScript(
+                "return Array.from(arguments[0].querySelectorAll("
+                        + "'.ui-menuitem-link[data-match-mode] .ui-column-filter-mode-menuitem-label'))"
+                        + ".map(function(label) { return label.textContent.trim(); });",
+                getFilterMatchModeMenu(icon));
     }
 
     /**
      * Opens the filter match-mode overlay menu, clicks the option matching the given operator, and triggers the
      * filter.
      *
-     * @param matchModeOperator the operator value of the match mode option to select, e.g. "gt" or "equals"
+     * @param matchModeOperator the operator value of the match mode option to select, e.g., "gt" or "equals"
      */
     public void setFilterMatchMode(String matchModeOperator) {
         WebElement icon = getColumnFilterMatchModeIcon();

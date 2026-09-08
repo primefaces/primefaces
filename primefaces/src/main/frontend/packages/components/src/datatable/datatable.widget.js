@@ -922,14 +922,24 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         menu.appendTo(document.body);
 
         var closeTimeout = null;
+        var openTimeout = null;
+        // whether the menu currently on screen was opened by the cursor resting on the trigger, as opposed to
+        // a deliberate click or keypress - see the click handler for why that has to be told apart
+        var openedByHover = false;
 
         var closeMenu = function() {
             clearTimeout(closeTimeout);
+            clearTimeout(openTimeout);
             menu.addClass('ui-helper-hidden');
             icon.attr('aria-expanded', 'false');
         };
 
-        var openMenu = function() {
+        /**
+         * @param {boolean} [focusSelected] move focus onto the selected item - wanted when the user opened the
+         *   menu deliberately (click, Enter, ArrowDown), but NOT on hover: the cursor merely passing over a
+         *   header would otherwise pull focus out of whatever input is being typed into.
+         */
+        var openMenu = function(focusSelected) {
             menu.removeClass('ui-helper-hidden').css('z-index', PrimeFaces.nextZindex()).position({
                 my: 'right top',
                 at: 'right bottom',
@@ -937,7 +947,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 collision: 'flipfit'
             });
             icon.attr('aria-expanded', 'true');
-            menu.find('.ui-menuitem-link[aria-checked="true"]').trigger('focus');
+            if (focusSelected) {
+                menu.find('.ui-menuitem-link[aria-checked="true"]').trigger('focus');
+            }
         };
 
         // close once the mouse leaves both the icon and the menu - a short delay (rather than closing
@@ -952,12 +964,43 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         icon.add(menu).off('.dataTableFilterModeHover')
             .on('mouseleave.dataTableFilterModeHover', scheduleClose)
             .on('mouseenter.dataTableFilterModeHover', cancelScheduledClose);
+        // Resting the cursor on the trigger opens the menu, so the modes are reachable without clicking at
+        // all; the pair above closes it again once the cursor leaves both the trigger and the menu.
+        //
+        // Deliberately on a delay rather than on the bare mouseenter: this menu is a full overlay that covers
+        // the header and the filter inputs beneath it, so opening it the instant the cursor crosses the icon
+        // - on its way to the input next door, say - would drop a panel in front of whatever the user was
+        // reaching for and swallow their click. The delay tells "resting here" from "passing through": short
+        // enough to feel immediate, long enough that merely crossing the icon does not open anything.
+        var scheduleOpen = function() {
+            clearTimeout(openTimeout);
+            openTimeout = setTimeout(function() {
+                if (menu.hasClass('ui-helper-hidden')) {
+                    openedByHover = true;
+                    openMenu(false);
+                }
+            }, 150);
+        };
+        icon.on('mouseenter.dataTableFilterModeHover', scheduleOpen)
+            .on('mouseleave.dataTableFilterModeHover', function() {
+                clearTimeout(openTimeout);
+            });
 
         icon.off('.dataTableFilterMode').on('click.dataTableFilterMode', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            clearTimeout(openTimeout);
             if (menu.hasClass('ui-helper-hidden')) {
-                openMenu();
+                openedByHover = false;
+                openMenu(true);
+            }
+            else if (openedByHover) {
+                // a click is always preceded by the cursor arriving on the trigger, so the hover handler above
+                // has just opened this menu. Toggling it shut here would make the menu impossible to open by
+                // clicking - it would flash open and closed - so treat the click as the deliberate follow-up
+                // it is: keep the menu open and move focus in, exactly as if the click had opened it.
+                openedByHover = false;
+                menu.find('.ui-menuitem-link[aria-checked="true"]').trigger('focus');
             }
             else {
                 closeMenu();
@@ -969,7 +1012,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 case 'Space':
                 case 'ArrowDown':
                     e.preventDefault();
-                    openMenu();
+                    openedByHover = false;
+                    openMenu(true);
                     break;
                 case 'Escape':
                     closeMenu();
@@ -1057,7 +1101,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      */
     updateFilterMatchModeIconState(icon, menu, selectedLink) {
         // `[data-default="true"]` (see DataTableRenderer#encodeFilterMatchModeMenu) marks the column's own
-        // configured default - NOT necessarily the first item in the list (e.g. a numeric column's list always
+        // configured default - NOT necessarily the first item in the list (e.g., a numeric column's list always
         // starts with "Equals", but its configured default via filterMatchMode may be "gt")
         var active = selectedLink.length > 0 && !selectedLink.is(menu.find('.ui-menuitem-link[data-default="true"]'));
 
@@ -1140,7 +1184,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      *   (possibly different) match mode right now - as opposed to the initial/re-init sync pass in
      *   {@link setupFiltering}, which runs for whatever mode the server already rendered as selected. Only in
      *   the former case is it safe to blank a picker-driven value input: doing so unconditionally would also
-     *   wipe out a value the server legitimately just rendered - e.g. right after `filter()` triggers a full
+     *   wipe out a value the server legitimately just rendered - e.g., right after `filter()` triggers a full
      *   widget re-render for a `partialUpdate="false"` table, which re-runs this same sync pass on fresh markup
      *   that already has the correct value baked in.
      */
@@ -1156,8 +1200,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
 
         var valueInput = th.find('.ui-column-filter');
         // which of the three widgets is active right now, so the *next* call can tell whether the user's
-        // switch actually changed the value's shape (e.g. "lt" -> "between" goes from a single date to a
-        // "date1,date2" pair) or merely picked a different mode that still uses the same one (e.g. "lt" ->
+        // switch actually changed the value's shape (e.g., "lt" -> "between" goes from a single date to a
+        // "date1,date2" pair) or merely picked a different mode that still uses the same one (e.g., "lt" ->
         // "lte" both stay on the single-date picker) - only the former should discard the existing value
         var previousWidget = valueInput.data('activeValueWidget');
         var currentWidget = !requiresValue ? null : (showDate ? 'date' : (showDateRange ? 'dateRange' : 'plain'));

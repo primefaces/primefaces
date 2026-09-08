@@ -35,10 +35,10 @@ import org.primefaces.model.filter.GlobalFilterConstraint;
 import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.LangUtils;
 
-import java.io.Serial;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.time.Instant;
@@ -95,7 +95,7 @@ public class FilterMeta implements Serializable {
         setFilterValue(filterValue);
     }
 
-    public static FilterMeta of(FacesContext context, String var, UIColumn column, boolean normalize) {
+    public static FilterMeta of(FacesContext context, UITable<?> table, UIColumn column, boolean normalize) {
         if (column instanceof DynamicColumn dynamicColumn) {
             dynamicColumn.applyStatelessModel();
         }
@@ -162,7 +162,7 @@ public class FilterMeta implements Serializable {
      * picker, and - more subtly - a {@code filterFunction} would have its {@link org.primefaces.model.filter.FunctionFilterConstraint}
      * silently discarded, since {@link UITable#updateFilterByValuesWithFilterRequest} unconditionally rebuilds
      * the constraint from the submitted match mode whenever a column's match mode becomes selectable at all
-     * ({@code isMatchModeSelectable()} - i.e. non-empty {@code matchModeOptions}). Both cases return {@code null},
+     * ({@code isMatchModeSelectable()} - i.e., non-empty {@code matchModeOptions}). Both cases return {@code null},
      * ahead of the table-level default, which must not be able to break such a column either.
      * Failing all of the above, the type is auto-derived from the column's actual Java type - see
      * {@link #resolveColumnJavaType(FacesContext, UITable, UIColumn)}. The {@code "numeric"}/{@code "date"}/
@@ -175,7 +175,7 @@ public class FilterMeta implements Serializable {
      * configured type (column- or table-level) is the page author's own deliberate choice, just as it was before
      * the table-level attribute existed. In every case where the auto-derived type doesn't apply, fall back to {@code "text"} only
      * if doing so wouldn't silently change the column's own already-working, explicitly configured
-     * {@code filterMatchMode} (e.g. {@code "gte"} isn't offered by the {@code "text"} preset) - otherwise return
+     * {@code filterMatchMode} (e.g., {@code "gte"} isn't offered by the {@code "text"} preset) - otherwise return
      * {@code null} rather than risk silently downgrading (or, per the above, breaking) it.
      *
      * @return a preset keyword (or explicit comma-separated match-mode list) suitable for
@@ -209,8 +209,8 @@ public class FilterMeta implements Serializable {
 
     /**
      * Resolves the match modes actually offered for a column: the curated preset for its {@link #resolveFilterValueType}
-     * (e.g. {@link MatchMode#TEXT_MATCH_MODES}), plus - if the column also declares an explicit {@code filterMatchMode}
-     * that isn't already one of that preset's own entries (e.g. {@code "exact"}, which no preset offers, having
+     * (e.g., {@link MatchMode#TEXT_MATCH_MODES}), plus - if the column also declares an explicit {@code filterMatchMode}
+     * that isn't already one of that preset's own entries (e.g., {@code "exact"}, which no preset offers, having
      * predated the preset system) - that operator too, so it isn't silently discarded in favor of the preset's
      * own first entry. Prepended, since it's the column's own configured default, not just one more option.
      * <p>
@@ -249,12 +249,12 @@ public class FilterMeta implements Serializable {
     /**
      * Reflects the column's own leaf property type against the table's row type, without needing any live row
      * data (works even for an empty table): the table's own {@code value} expression is resolved first (its EL
-     * root is a real bean, e.g. {@code #{bean.customers}}, unlike the column's {@code filterBy}/{@code field}
+     * root is a real bean, e.g., {@code #{bean.customers}}, unlike the column's {@code filterBy}/{@code field}
      * expression, whose root is the per-row {@code var} - unbound at this point in the lifecycle), then
      * {@link LangUtils#getTypeFromCollectionProperty(Object, String)} reads the row element type reflectively
      * off that getter's generic signature (the same technique {@code BaseCalendarRenderer#resolveDateType()}
      * already uses for a multi-select date picker), and finally the column's field path (dot-separated for
-     * nested properties, e.g. {@code "country.name"}) is walked against that row type via {@link Introspector}.
+     * nested properties, e.g., {@code "country.name"}) is walked against that row type via {@link Introspector}.
      *
      * @return the resolved type, or {@code null} if it can't be determined (computed/non-property {@code filterBy},
      * no row type, unresolvable path segment, ...)

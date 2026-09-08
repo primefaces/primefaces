@@ -184,6 +184,17 @@ public enum MatchMode {
     GLOBAL("global", "pi-globe", "⊛");
 
     /**
+     * {@code filterValueType} token that opts a column out of the match-mode dropdown entirely.
+     */
+    public static final String NONE_TOKEN = "none";
+
+    /**
+     * {@code filterValueType} token that adds the opt-in relative predicates of the preset it accompanies -
+     * see {@link #parseOptions(String)}.
+     */
+    public static final String SHORTCUTS_TOKEN = "shortcuts";
+
+    /**
      * Preset of match modes offered for a numeric {@code filterValueType="numeric"} column filter.
      */
     public static final List<MatchMode> NUMERIC_MATCH_MODES = List.of(
@@ -198,11 +209,22 @@ public enum MatchMode {
             IS_EMPTY, NOT_EMPTY, IS_NULL, NOT_NULL, MATCHES_REGEX, IN, NOT_IN);
 
     /**
-     * Preset of match modes offered for a {@code filterValueType="date"} column filter.
+     * Preset of match modes offered for a {@code filterValueType="date"} column filter: the comparators that
+     * work off a date the end user picks or types. The calendar shortcuts ("today", "this week", ...) are
+     * deliberately NOT part of this preset - a column opts into those with the {@code "shortcuts"} token
+     * (see {@link #DATE_SHORTCUT_MATCH_MODES} and {@link #parseOptions(String)}), which keeps the default
+     * menu short enough to fit on screen.
      */
     public static final List<MatchMode> DATE_MATCH_MODES = List.of(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
-            BETWEEN, NOT_BETWEEN, IS_EMPTY, NOT_EMPTY,
+            BETWEEN, NOT_BETWEEN, IS_EMPTY, NOT_EMPTY);
+
+    /**
+     * Opt-in calendar shortcuts for a {@code "date"}/{@code "datetime"} column - value-less predicates
+     * resolved against the clock at filter time, plus the three that take a plain number of days. Added to a
+     * column's menu by the {@code "shortcuts"} token, e.g., {@code filterValueType="date,shortcuts"}.
+     */
+    public static final List<MatchMode> DATE_SHORTCUT_MATCH_MODES = List.of(
             IS_TODAY, IS_YESTERDAY, IS_TOMORROW,
             IS_THIS_WEEK, IS_LAST_WEEK, IS_NEXT_WEEK,
             IS_THIS_MONTH, IS_LAST_MONTH, IS_NEXT_MONTH,
@@ -229,24 +251,36 @@ public enum MatchMode {
             ARRAY_CONTAINS, ARRAY_NOT_CONTAINS, CONTAINS_ANY, CONTAINS_ALL, CONTAINS_NONE, IS_EMPTY, NOT_EMPTY);
 
     /**
-     * Preset of match modes offered for a {@code filterValueType="time"} column filter.
+     * Preset of match modes offered for a {@code filterValueType="time"} column filter. As with
+     * {@link #DATE_MATCH_MODES}, the relative windows are opt-in via {@code "shortcuts"} - see
+     * {@link #TIME_SHORTCUT_MATCH_MODES}.
      */
     public static final List<MatchMode> TIME_MATCH_MODES = List.of(
             EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
-            BETWEEN, NOT_BETWEEN, IS_EMPTY, NOT_EMPTY,
+            BETWEEN, NOT_BETWEEN, IS_EMPTY, NOT_EMPTY);
+
+    /**
+     * Opt-in relative windows for a {@code "time"}/{@code "datetime"} column, e.g.
+     * {@code filterValueType="time,shortcuts"}.
+     */
+    public static final List<MatchMode> TIME_SHORTCUT_MATCH_MODES = List.of(
             LAST_N_MINUTES, NEXT_N_MINUTES, LAST_N_HOURS, NEXT_N_HOURS);
 
     /**
-     * Preset of match modes offered for a {@code filterValueType="datetime"} column filter.
-         */
-    public static final List<MatchMode> DATETIME_MATCH_MODES;
+     * Preset of match modes offered for a {@code filterValueType="datetime"} column filter - the same
+     * comparators as {@link #DATE_MATCH_MODES}, since a datetime is picked or typed the same way.
+     */
+    public static final List<MatchMode> DATETIME_MATCH_MODES = DATE_MATCH_MODES;
+
+    /**
+     * Opt-in shortcuts for a {@code "datetime"} column: the calendar shortcuts of a date column plus the
+     * time-of-day windows, since a datetime carries both. Added by {@code filterValueType="datetime,shortcuts"}.
+     */
+    public static final List<MatchMode> DATETIME_SHORTCUT_MATCH_MODES;
     static {
-        List<MatchMode> modes = new ArrayList<>(DATE_MATCH_MODES);
-        modes.add(LAST_N_MINUTES);
-        modes.add(NEXT_N_MINUTES);
-        modes.add(LAST_N_HOURS);
-        modes.add(NEXT_N_HOURS);
-        DATETIME_MATCH_MODES = Collections.unmodifiableList(modes);
+        List<MatchMode> modes = new ArrayList<>(DATE_SHORTCUT_MATCH_MODES);
+        modes.addAll(TIME_SHORTCUT_MATCH_MODES);
+        DATETIME_SHORTCUT_MATCH_MODES = Collections.unmodifiableList(modes);
     }
 
     private final String operator;
@@ -306,22 +340,28 @@ public enum MatchMode {
     }
 
     /**
-     * An example hint for the syntax the filter value {@code <input>} expects, shown as its placeholder while
-     * this match mode is selected (e.g., {@code "min,max"} for {@link #BETWEEN}).
+     * Message key of an example hint for the syntax the filter value {@code <input>} expects, shown as its
+     * placeholder while this match mode is selected (e.g., "min,max" for {@link #BETWEEN}). Only three shapes
+     * exist, so the modes share one key each rather than carrying one key per mode.
+     * <p>
+     * A key rather than the text itself: the hint reaches the end user, so it is localized like the match
+     * mode labels next to it - resolved through {@code MessageFactory} by
+     * {@code DataTableRenderer#encodeFilterMatchModeMenu()} and {@code #encodeFilterInput()}, which have the
+     * {@code FacesContext} this enum does not.
      *
-     * @return the placeholder hint, or {@code null} if this match mode expects a single plain value
+     * @return the placeholder hint's message key, or {@code null} if this match mode expects a single plain value
      */
-    public String placeholderHint() {
+    public String placeholderHintKey() {
         switch (this) {
             case BETWEEN:
             case NOT_BETWEEN:
-                return "min,max";
+                return "primefaces.datatable.filterMatchMode.placeholderHint.RANGE";
             case IN:
             case NOT_IN:
             case CONTAINS_ANY:
             case CONTAINS_ALL:
             case CONTAINS_NONE:
-                return "value1, value2, ...";
+                return "primefaces.datatable.filterMatchMode.placeholderHint.LIST";
             case LAST_N_DAYS:
             case NEXT_N_DAYS:
             case RELATIVE_DATE:
@@ -329,7 +369,7 @@ public enum MatchMode {
             case NEXT_N_MINUTES:
             case LAST_N_HOURS:
             case NEXT_N_HOURS:
-                return "e.g., 30";
+                return "primefaces.datatable.filterMatchMode.placeholderHint.COUNT";
             default:
                 return null;
         }
@@ -351,23 +391,88 @@ public enum MatchMode {
     /**
      * Resolves the list of match modes an end user may pick from a column's filter match-mode dropdown.
      * <p>
-     * Accepts either one of the shorthand keywords {@code "numeric"}, {@code "text"}, {@code "date"},
-     * {@code "boolean"}, {@code "time"}, {@code "datetime"}, {@code "enum"} or {@code "array"}, which expand to
-     * a curated preset of {@link MatchMode}s; an explicit comma-separated list of match mode operators
-     * (e.g., {@code "equals,notEquals,lt,gt,lte,gte"}); or {@code "none"}, which opts a column out of the
-     * dropdown even though its {@code filterValueType} would otherwise be auto-derived from its Java type.
+     * The value is a comma-separated list whose entries are resolved left to right and concatenated, skipping
+     * anything already present, so order in equals order in the menu. Each entry is one of:
+     * <ul>
+     *   <li>a preset keyword - {@code "numeric"}, {@code "text"}, {@code "date"}, {@code "time"},
+     *       {@code "datetime"}, {@code "boolean"}, {@code "enum"} or {@code "array"};</li>
+     *   <li>{@code "shortcuts"}, which adds the opt-in relative predicates matching the preset keyword used
+     *       alongside it: {@link #DATE_SHORTCUT_MATCH_MODES} for {@code "date"},
+     *       {@link #TIME_SHORTCUT_MATCH_MODES} for {@code "time"} and both for {@code "datetime"} (also the
+     *       fallback when the list names no preset at all, e.g., a hand-written operator list). They are opt-in
+     *       because there are 18 to 22 of them - always-on they made the menu taller than the viewport;</li>
+     *   <li>a single match mode operator, e.g., {@code "equals"} or {@code "lt"}.</li>
+     * </ul>
+     * {@code "none"} anywhere in the list wins outright and opts the column out of the dropdown, even though
+     * its {@code filterValueType} would otherwise be auto-derived from its Java type.
+     * <p>
+     * So {@code "date"} yields the ten date comparators, {@code "date,shortcuts"} those plus every calendar
+     * shortcut, and {@code "date,today,thisWeek"} those plus exactly two of them.
      *
      * @param filterValueType the value of the column's {@code filterValueType} attribute
      * @return the resolved, ordered list of selectable match modes; empty if {@code filterValueType} is blank or {@code "none"}
+     * @throws UnsupportedOperationException if an entry is neither a keyword nor a known match mode operator
      */
     public static List<MatchMode> parseOptions(String filterValueType) {
         if (LangUtils.isBlank(filterValueType)) {
             return Collections.emptyList();
         }
 
-        switch (filterValueType.trim()) {
-            case "none":
-                return Collections.emptyList();
+        List<String> tokens = Arrays.stream(filterValueType.split(","))
+                .map(String::trim)
+                .filter(LangUtils::isNotBlank)
+                .collect(Collectors.toList());
+        if (tokens.contains(NONE_TOKEN)) {
+            return Collections.emptyList();
+        }
+
+        // resolved up front rather than as the loop reaches it, so "shortcuts,date" behaves like
+        // "date,shortcuts" - which preset it belongs to is a property of the whole list, not of the position
+        List<MatchMode> shortcuts = resolveShortcuts(tokens);
+
+        List<MatchMode> options = new ArrayList<>();
+        for (String token : tokens) {
+            if (SHORTCUTS_TOKEN.equals(token)) {
+                addAllAbsent(options, shortcuts);
+                continue;
+            }
+
+            List<MatchMode> preset = presetOf(token);
+            // MatchMode.of() throws on an unknown operator, which is what we want: a typo in filterValueType
+            // should surface at render time, not silently render a menu missing an entry
+            addAllAbsent(options, preset != null ? preset : Collections.singletonList(MatchMode.of(token)));
+        }
+        return options;
+    }
+
+    /**
+     * Whether a {@code filterValueType} names the given preset keyword. Callers that need to know a column's
+     * value SHAPE - which labels to use, whether to render a shadow date picker - must ask this rather than
+     * compare the attribute to the keyword, since the value is a list: {@code "date,shortcuts"} is every bit
+     * as much a date column as a plain {@code "date"}.
+     *
+     * @param filterValueType the value of the column's {@code filterValueType} attribute, may be {@code null}
+     * @param keyword the preset keyword to look for, e.g., {@code "date"}
+     * @return {@code true} if the keyword is one of the comma-separated entries
+     */
+    public static boolean hasKeyword(String filterValueType, String keyword) {
+        if (LangUtils.isBlank(filterValueType)) {
+            return false;
+        }
+        for (String token : filterValueType.split(",")) {
+            if (keyword.equals(token.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * The preset a keyword expands to, or {@code null} if the token is not a preset keyword (so the caller can
+     * fall back to reading it as a single match mode operator).
+     */
+    private static List<MatchMode> presetOf(String token) {
+        switch (token) {
             case "numeric":
                 return NUMERIC_MATCH_MODES;
             case "text":
@@ -385,11 +490,29 @@ public enum MatchMode {
             case "datetime":
                 return DATETIME_MATCH_MODES;
             default:
-                return Arrays.stream(filterValueType.split(","))
-                        .map(String::trim)
-                        .filter(LangUtils::isNotBlank)
-                        .map(MatchMode::of)
-                        .collect(Collectors.toList());
+                return null;
+        }
+    }
+
+    /**
+     * Which shortcut group {@code "shortcuts"} stands for in this list: the date one next to {@code "date"},
+     * the time one next to {@code "time"}, and both next to {@code "datetime"} or when no preset keyword is
+     * named at all (a hand-written operator list, where the superset is the useful reading).
+     */
+    private static List<MatchMode> resolveShortcuts(List<String> tokens) {
+        boolean date = tokens.contains("date");
+        boolean time = tokens.contains("time");
+        if (tokens.contains("datetime") || (date && time) || (!date && !time)) {
+            return DATETIME_SHORTCUT_MATCH_MODES;
+        }
+        return date ? DATE_SHORTCUT_MATCH_MODES : TIME_SHORTCUT_MATCH_MODES;
+    }
+
+    private static void addAllAbsent(List<MatchMode> target, List<MatchMode> toAdd) {
+        for (MatchMode mode : toAdd) {
+            if (!target.contains(mode)) {
+                target.add(mode);
+            }
         }
     }
 }

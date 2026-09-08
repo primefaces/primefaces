@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +39,14 @@ import lombok.Data;
  * Backs {@code dataTable052.xhtml} - the table-level {@code filterValueType} default. The fixture is
  * deliberately the plain, unmodified {@link EmployeeService} data: this scenario is about which columns
  * get a match-mode picker at all, not about exercising individual match modes (that is
- * {@link DataTable051}'s job), so no synthetic null/blank rows are needed.
+ * {@link DataTable055}'s job), so no synthetic null/blank rows are needed.
  */
 @Named
 @ViewScoped
 @Data
 public class DataTable052 implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private List<Employee> employees;

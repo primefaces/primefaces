@@ -23,6 +23,7 @@
         <sonar.skip>true</sonar.skip>
         <resteasy.version>7.0.4.Final</resteasy.version>
         <hibernate-validator.version>9.1.3.Final</hibernate-validator.version>
+        <hibernate.version>7.1.0.Final</hibernate.version>
         <jakarta.version>11.0.0</jakarta.version>
         <weld.version>6.0.4.Final</weld.version>
     </properties>
@@ -44,6 +45,15 @@
                  <version>2.21.4</version>
                  <scope>import</scope>
                  <type>pom</type>
+            </dependency>
+            <!-- chartjs-java-model 3.x pulls Jackson 3 (tools.jackson.core), which needs the 2.22 annotations -
+                 JsonApplyView only exists there. The BOM above manages jackson-annotations down to 2.21, which
+                 makes LandingData's doughnut chart fail with NoClassDefFoundError and takes the whole landing
+                 page down. Pinned after the import so it wins. -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.22</version>
             </dependency>   
         </dependencies>
     </dependencyManagement>

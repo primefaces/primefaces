@@ -860,7 +860,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         MatchMode selected = findFilterMatchModeForColumn(component, column, matchModeOptions);
         // the column's own configured default - same resolution FilterMeta#of() uses - not just
         // matchModeOptions.get(0): a numeric column's list always starts with "Equals", but its actual
-        // configured default (via filterMatchMode, e.g. "gt") is often a different, later entry in that list,
+        // configured default (via filterMatchMode, e.g., "gt") is often a different, later entry in that list,
         // and comparing against the raw list order would spuriously mark it "active" on a fresh, untouched load
         MatchMode columnDefault = matchModeOptions.contains(MatchMode.of(column.getFilterMatchMode()))
                 ? MatchMode.of(column.getFilterMatchMode())
@@ -872,10 +872,8 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
         // "date"/"time"/"datetime" render the 6 shared comparators as "Is"/"Before"/"After"/...; "enum" renders
         // equals/notEquals/in/notIn as "Is"/"Is Not"/"Is Any Of"/"Is None Of" - see resolveMatchModeMessageKey()
-        String trimmedFilterValueType = filterValueType == null ? null : filterValueType.trim();
-        boolean dateStyleLabels = "date".equals(trimmedFilterValueType) || "time".equals(trimmedFilterValueType)
-                || "datetime".equals(trimmedFilterValueType);
-        boolean enumStyleLabels = "enum".equals(trimmedFilterValueType);
+        boolean dateStyleLabels = isDateLike(filterValueType);
+        boolean enumStyleLabels = MatchMode.hasKeyword(filterValueType, "enum");
         String selectedLabel = MessageFactory.getMessage(context, resolveMatchModeMessageKey(selected, dateStyleLabels, enumStyleLabels));
 
         writer.startElement("input", null);
@@ -961,9 +959,12 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             // written as a literal "true"/"false" string - a Boolean value is special-cased by ResponseWriter
             // impls as a plain HTML boolean attribute (name="name" if true, omitted otherwise)
             writer.writeAttribute("data-requires-value", String.valueOf(matchMode.requiresValue()), null);
-            if (matchMode.placeholderHint() != null) {
-                // read by datatable.widget.js to hint the expected value syntax, e.g., "min,max" for "between"
-                writer.writeAttribute("data-placeholder-hint", matchMode.placeholderHint(), null);
+            String matchModePlaceholderHintKey = matchMode.placeholderHintKey();
+            if (matchModePlaceholderHintKey != null) {
+                // read by datatable.widget.js to hint the expected value syntax, e.g., "min,max" for "between" -
+                // localized here, since the widget swaps it in client-side when the user picks another mode
+                writer.writeAttribute("data-placeholder-hint",
+                        MessageFactory.getMessage(context, matchModePlaceholderHintKey), null);
             }
             String valueWidget = resolveFilterValueWidget(matchMode, filterValueType);
             if (valueWidget != null) {
@@ -1021,7 +1022,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         MatchMode selected = matchModeOptions.isEmpty() ? null : findFilterMatchModeForColumn(component, column, matchModeOptions);
         // the match-mode picker itself (icon + overlay menu) is rendered in the header, next to the sort icons -
         // see encodeFilterMatchModeMenu() - so this filter row is always just the value input, full width
-        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected, filterValueType);
+        encodeFilterInput(context, column, writer, disableTabbing, filterId, filterStyleClass, filterValue, selected, filterValueType);
         encodeDateFilterWidgets(context, column, filterId, filterValueType);
     }
 
@@ -1040,9 +1041,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
      * untouched - a safe, non-regressing fallback, not a new failure mode.
      */
     protected void encodeDateFilterWidgets(FacesContext context, UIColumn column, String filterId, String filterValueType) throws IOException {
-        String trimmed = filterValueType == null ? null : filterValueType.trim();
-        boolean dateLike = "date".equals(trimmed) || "time".equals(trimmed) || "datetime".equals(trimmed);
-        if (!dateLike) {
+        if (!isDateLike(filterValueType)) {
             return;
         }
 
@@ -1055,7 +1054,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             return;
         }
 
-        boolean timeOnly = "time".equals(trimmed);
+        boolean timeOnly = MatchMode.hasKeyword(filterValueType, "time");
         encodeDatePickerFilterWidget(context, filterId, pattern, false, timeOnly);
         encodeDatePickerFilterWidget(context, filterId, pattern, true, timeOnly);
     }
@@ -1110,7 +1109,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
     /**
      * Resolves which value-input widget the client should show for a given match mode: {@code null} for a
-     * value-less mode (e.g. "is empty" - the input stays hidden, unchanged from today), {@code "numeric"} for a
+     * value-less mode (e.g., "is empty" - the input stays hidden, unchanged from today), {@code "numeric"} for a
      * plain (optionally digit-restricted) text input - including the day/minute/hour COUNT modes (e.g.
      * "last N days") even on a "date"/"time"/"datetime" column, since those take a number, not a date -
      * {@code "date"} for a single-value comparator on a date-ish column, or {@code "dateRange"} for
@@ -1118,6 +1117,17 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
      * today's plain input, signalled here as {@code null} (the same as value-less) since the client only needs to
      * distinguish "show the plain input" from "show one of the shadow date pickers".
      */
+    /**
+     * Whether the column's value is date-shaped - a date, a time of day or both - and so gets the
+     * date-flavored match mode labels ("Is"/"Before"/"After" rather than "Equals"/"Less Than"/"Greater Than")
+     * and a shadow DatePicker instead of a plain text input.
+     */
+    protected boolean isDateLike(String filterValueType) {
+        return MatchMode.hasKeyword(filterValueType, "date")
+                || MatchMode.hasKeyword(filterValueType, "time")
+                || MatchMode.hasKeyword(filterValueType, "datetime");
+    }
+
     protected String resolveFilterValueWidget(MatchMode matchMode, String filterValueType) {
         if (!matchMode.requiresValue()) {
             return null;
@@ -1136,9 +1146,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 break;
         }
 
-        String trimmed = filterValueType == null ? null : filterValueType.trim();
-        boolean dateLike = "date".equals(trimmed) || "time".equals(trimmed) || "datetime".equals(trimmed);
-        if (dateLike) {
+        if (isDateLike(filterValueType)) {
             return matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN ? "dateRange" : "date";
         }
 
@@ -1194,11 +1202,12 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         return matchModeOptions.get(0);
     }
 
-    protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
+    protected void encodeFilterInput(FacesContext context, UIColumn column, ResponseWriter writer, boolean disableTabbing,
         String filterId, String filterStyleClass, Object filterValue, MatchMode selected, String filterValueType) throws IOException {
 
         boolean requiresValue = selected == null || selected.requiresValue();
-        String placeholderHint = selected == null ? null : selected.placeholderHint();
+        String placeholderHintKey = selected == null ? null : selected.placeholderHintKey();
+        String placeholderHint = placeholderHintKey == null ? null : MessageFactory.getMessage(context, placeholderHintKey);
 
         filterStyleClass = filterStyleClass == null
                            ? DataTable.COLUMN_INPUT_FILTER_CLASS

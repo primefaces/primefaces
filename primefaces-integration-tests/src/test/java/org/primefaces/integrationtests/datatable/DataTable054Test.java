@@ -55,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * DataTable: clearing a filter match-mode picker again - the per-column "Clear" action inside the picker's own
  * overlay menu and the table-wide {@code clearFiltersButton} - and {@code filterValueType} on
  * {@code p:columns}, where the value comes from a dynamic column model instead of a literal attribute.
- * {@link DataTable051Test} covers the individual match modes and {@link DataTable052Test} the table-level
+ * {@link DataTable055Test} covers the individual match modes and {@link DataTable052Test} the table-level
  * versus column-level precedence.
  */
 @Tag("DataTable-filter")

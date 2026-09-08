@@ -56,7 +56,7 @@
                     </p:column>
 
                     <p:column headerText="Join Date" field="joinDate" filterMatchMode="equals"
-                              filterValueType="date" converter="#{dtLazyJpaView.joinDateConverter}"/>
+                              filterValueType="date,shortcuts" converter="#{dtLazyJpaView.joinDateConverter}"/>
 
                     <p:column headerText="VIP" field="vip" filterValueType="boolean"/>
 
@@ -68,10 +68,10 @@
                               sortable="false"/>
 
                     <p:column headerText="Check-in Time" field="checkInTime" filterMatchMode="equals"
-                              filterValueType="time" converter="#{dtLazyJpaView.checkInTimeConverter}"/>
+                              filterValueType="time,shortcuts" converter="#{dtLazyJpaView.checkInTimeConverter}"/>
 
                     <p:column headerText="Last Contact" field="lastContact" filterMatchMode="equals"
-                              filterValueType="datetime" converter="#{dtLazyJpaView.lastContactConverter}"/>
+                              filterValueType="datetime,shortcuts" converter="#{dtLazyJpaView.lastContactConverter}"/>
 
                 </p:dataTable>
             </h:form>

@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * DataTable: the filterValueType match modes on a lazy table backed by
- * {@link org.primefaces.model.JPALazyDataModel} - dataTable051.xhtml covers the very same modes against an
+ * {@link org.primefaces.model.JPALazyDataModel} - dataTable055.xhtml covers the very same modes against an
  * in-memory List, so what is asserted here is that each of them also survives the trip through a criteria
  * query and the database.
  * <p>
@@ -225,7 +225,7 @@ class DataTable053Test extends AbstractDataTableTest {
         // Assert
         assertIds(dataTable, 3);
 
-        // Act - "all" is the "no filter selected" placeholder of a preset without a value taking mode
+        // Act - "all" is the "no filter selected" placeholder of a preset without a value-taking mode
         dataTable.filterMatchMode("active", "all");
 
         // Assert
@@ -395,7 +395,7 @@ class DataTable053Test extends AbstractDataTableTest {
         // Arrange
         DataTable dataTable = page.dataTable;
 
-        // Act - "contains", the configured default of the tags column
+        // Act - "contains", the configured default of the tag column
         dataTable.filter("tags", "java");
 
         // Assert

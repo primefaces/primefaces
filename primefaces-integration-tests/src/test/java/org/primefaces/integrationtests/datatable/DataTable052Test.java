@@ -45,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * DataTable: the table-level {@code filterValueType}, the single place to switch the end user's filter
  * match-mode picker off (or force one type) for every column of a table at once, instead of repeating the
- * column-level attribute on each of them. {@link DataTable051Test} covers the column-level attribute and the
+ * column-level attribute on each of them. {@link DataTable055Test} covers the column-level attribute and the
  * individual match modes themselves; this class covers only the precedence between the two levels and the
  * auto-derivation they override.
  */

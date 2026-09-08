@@ -108,9 +108,6 @@ import jakarta.faces.model.ListDataModel;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-// for the shadow date/date-range filter-value pickers a date-ish filterable column renders (see
-// DataTableRenderer#encodeDateFilterWidgets()) - must be a static dependency, not added dynamically during
-// encode, since by the time that code runs <h:head> has already finished rendering on a full page load
 @ResourceDependency(library = "primefaces", name = "datepicker/datepicker.js")
 public class DataTable extends DataTableBaseImpl {
 
@@ -185,7 +182,7 @@ public class DataTable extends DataTableBaseImpl {
      *  the facet renders. */
     public static final String HEADER_WITH_CLEAR_FILTERS_CLASS = "ui-datatable-header-with-clear-filters";
     /** Marker class on the shadow single-date {@code DatePicker} wrapper shown for a "date"/"time"/"datetime"
-     *  column while a single-value comparator (e.g. "equals") is selected; hidden otherwise. Deliberately
+     *  column while a single-value comparator (e.g., "equals") is selected; hidden otherwise. Deliberately
      *  rendered WITHOUT {@code ui-helper-hidden} here - the underlying jQuery-UI-style DatePicker plugin doesn't
      *  reliably attach to a {@code display:none} element, so the initial sync pass in datatable.widget.js (part
      *  of the same setup that runs right after every DatePicker on the page has finished its own init) is what
@@ -857,12 +854,12 @@ public class DataTable extends DataTableBaseImpl {
                                             }
                                         }
                                         else {
-                                            process(context, rowChild, phaseId);        //e.g. ui:repeat
+                                            process(context, rowChild, phaseId);        //e.g., ui:repeat
                                         }
                                     }
                                 }
                                 else {
-                                    process(context, columnGroupChild, phaseId);        //e.g. ui:repeat
+                                    process(context, columnGroupChild, phaseId);        //e.g., ui:repeat
                                 }
                             }
                         }

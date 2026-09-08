@@ -60,6 +60,9 @@ public class FilterView implements Serializable {
     // demo data for the "Filter Match Mode Presets" card - one column per filterValueType preset
     private List<Customer> customersPresets;
 
+    // demo data for the "Opting Into the Relative Date Shortcuts" card - three views of one date field
+    private List<Customer> customersShortcuts;
+
     // demo data for the "Turning the Match Mode Picker Off Table-Wide" card - table-level filterValueType
     private List<Customer> customersTableLevel;
 
@@ -70,6 +73,8 @@ public class FilterView implements Serializable {
     private List<Customer> filteredCustomers3;
 
     private List<Customer> filteredCustomersPresets;
+
+    private List<Customer> filteredCustomersShortcuts;
 
     private List<Customer> filteredCustomersTableLevel;
 
@@ -84,6 +89,7 @@ public class FilterView implements Serializable {
         customers2 = service.getCustomers(50);
         customers3 = service.getCustomers(10);
         customersPresets = service.getCustomers(10);
+        customersShortcuts = service.getCustomers(10);
         customersTableLevel = service.getCustomers(10);
 
         filterBy = new ArrayList<>();
@@ -161,6 +167,18 @@ public class FilterView implements Serializable {
 
     public void setFilteredCustomersPresets(List<Customer> filteredCustomersPresets) {
         this.filteredCustomersPresets = filteredCustomersPresets;
+    }
+
+    public List<Customer> getCustomersShortcuts() {
+        return customersShortcuts;
+    }
+
+    public List<Customer> getFilteredCustomersShortcuts() {
+        return filteredCustomersShortcuts;
+    }
+
+    public void setFilteredCustomersShortcuts(List<Customer> filteredCustomersShortcuts) {
+        this.filteredCustomersShortcuts = filteredCustomersShortcuts;
     }
 
     public List<Customer> getCustomersTableLevel() {

@@ -63,11 +63,12 @@ public class JpaEmployeeRepository {
 
     @Produces
     @RequestScoped
+    @JpaEmployeeEm
     public EntityManager produceEntityManager() {
         return entityManagerFactory.createEntityManager();
     }
 
-    public void closeEntityManager(@Disposes EntityManager entityManager) {
+    public void closeEntityManager(@Disposes @JpaEmployeeEm EntityManager entityManager) {
         if (entityManager.isOpen()) {
             entityManager.close();
         }

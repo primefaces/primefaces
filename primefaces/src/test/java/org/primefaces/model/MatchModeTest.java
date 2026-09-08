@@ -23,6 +23,7 @@
  */
 package org.primefaces.model;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MatchModeTest {
+
+    private static final String RANGE_HINT = "primefaces.datatable.filterMatchMode.placeholderHint.RANGE";
+    private static final String LIST_HINT = "primefaces.datatable.filterMatchMode.placeholderHint.LIST";
+    private static final String COUNT_HINT = "primefaces.datatable.filterMatchMode.placeholderHint.COUNT";
 
     /** Every value-less MatchMode - the value <input> is hidden while any of these is selected. */
     private static final List<MatchMode> VALUE_LESS_MODES = List.of(
@@ -93,35 +98,35 @@ class MatchModeTest {
 
     @Test
     void placeholderHint_definedForMultiValueModes() {
-        assertEquals("min,max", MatchMode.BETWEEN.placeholderHint());
-        assertEquals("min,max", MatchMode.NOT_BETWEEN.placeholderHint());
-        assertEquals("value1, value2, ...", MatchMode.IN.placeholderHint());
-        assertEquals("value1, value2, ...", MatchMode.NOT_IN.placeholderHint());
-        assertEquals("e.g., 30", MatchMode.LAST_N_DAYS.placeholderHint());
-        assertEquals("e.g., 30", MatchMode.NEXT_N_DAYS.placeholderHint());
-        assertEquals("e.g., 30", MatchMode.RELATIVE_DATE.placeholderHint());
-        assertEquals("e.g., 30", MatchMode.LAST_N_MINUTES.placeholderHint());
-        assertEquals("e.g., 30", MatchMode.NEXT_N_MINUTES.placeholderHint());
-        assertEquals("e.g., 30", MatchMode.LAST_N_HOURS.placeholderHint());
-        assertEquals("e.g., 30", MatchMode.NEXT_N_HOURS.placeholderHint());
-        assertEquals("value1, value2, ...", MatchMode.CONTAINS_ANY.placeholderHint());
-        assertEquals("value1, value2, ...", MatchMode.CONTAINS_ALL.placeholderHint());
-        assertEquals("value1, value2, ...", MatchMode.CONTAINS_NONE.placeholderHint());
+        assertEquals(RANGE_HINT, MatchMode.BETWEEN.placeholderHintKey());
+        assertEquals(RANGE_HINT, MatchMode.NOT_BETWEEN.placeholderHintKey());
+        assertEquals(LIST_HINT, MatchMode.IN.placeholderHintKey());
+        assertEquals(LIST_HINT, MatchMode.NOT_IN.placeholderHintKey());
+        assertEquals(COUNT_HINT, MatchMode.LAST_N_DAYS.placeholderHintKey());
+        assertEquals(COUNT_HINT, MatchMode.NEXT_N_DAYS.placeholderHintKey());
+        assertEquals(COUNT_HINT, MatchMode.RELATIVE_DATE.placeholderHintKey());
+        assertEquals(COUNT_HINT, MatchMode.LAST_N_MINUTES.placeholderHintKey());
+        assertEquals(COUNT_HINT, MatchMode.NEXT_N_MINUTES.placeholderHintKey());
+        assertEquals(COUNT_HINT, MatchMode.LAST_N_HOURS.placeholderHintKey());
+        assertEquals(COUNT_HINT, MatchMode.NEXT_N_HOURS.placeholderHintKey());
+        assertEquals(LIST_HINT, MatchMode.CONTAINS_ANY.placeholderHintKey());
+        assertEquals(LIST_HINT, MatchMode.CONTAINS_ALL.placeholderHintKey());
+        assertEquals(LIST_HINT, MatchMode.CONTAINS_NONE.placeholderHintKey());
     }
 
     @Test
     void placeholderHint_undefinedForArrayContains() {
         // single-value modes, like EQUALS - no special hint needed
-        assertNull(MatchMode.ARRAY_CONTAINS.placeholderHint());
-        assertNull(MatchMode.ARRAY_NOT_CONTAINS.placeholderHint());
+        assertNull(MatchMode.ARRAY_CONTAINS.placeholderHintKey());
+        assertNull(MatchMode.ARRAY_NOT_CONTAINS.placeholderHintKey());
     }
 
     @Test
     void placeholderHint_undefinedForSingleValueModes() {
-        assertNull(MatchMode.EQUALS.placeholderHint());
-        assertNull(MatchMode.CONTAINS.placeholderHint());
-        assertNull(MatchMode.IS_EMPTY.placeholderHint());
-        assertNull(MatchMode.IS_TODAY.placeholderHint());
+        assertNull(MatchMode.EQUALS.placeholderHintKey());
+        assertNull(MatchMode.CONTAINS.placeholderHintKey());
+        assertNull(MatchMode.IS_EMPTY.placeholderHintKey());
+        assertNull(MatchMode.IS_TODAY.placeholderHintKey());
     }
 
     @Test
@@ -223,21 +228,46 @@ class MatchModeTest {
         assertEquals(
                 List.of(MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN,
                         MatchMode.LESS_THAN_EQUALS, MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS,
-                        MatchMode.BETWEEN, MatchMode.NOT_BETWEEN, MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY,
-                        MatchMode.IS_TODAY, MatchMode.IS_YESTERDAY, MatchMode.IS_TOMORROW,
-                        MatchMode.IS_THIS_WEEK, MatchMode.IS_LAST_WEEK, MatchMode.IS_NEXT_WEEK,
-                        MatchMode.IS_THIS_MONTH, MatchMode.IS_LAST_MONTH, MatchMode.IS_NEXT_MONTH,
-                        MatchMode.IS_THIS_QUARTER, MatchMode.IS_LAST_QUARTER, MatchMode.IS_NEXT_QUARTER,
-                        MatchMode.IS_THIS_YEAR, MatchMode.IS_LAST_YEAR, MatchMode.IS_NEXT_YEAR,
-                        MatchMode.LAST_N_DAYS, MatchMode.NEXT_N_DAYS, MatchMode.RELATIVE_DATE),
+                        MatchMode.BETWEEN, MatchMode.NOT_BETWEEN, MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY),
                 MatchMode.parseOptions("date"));
     }
 
     @Test
-    void datePreset_has28Modes() {
-        // 10 reused (6 comparators + between/not between + is (not) empty) + 18 new
-        // (15 value-less relative-date predicates + last/next N days + relative date)
-        assertEquals(28, MatchMode.DATE_MATCH_MODES.size());
+    void datePreset_has10Modes_andNoShortcuts() {
+        // just the comparators a typed/picked date needs; the 18 calendar shortcuts are opt-in
+        assertEquals(10, MatchMode.DATE_MATCH_MODES.size());
+        assertFalse(MatchMode.DATE_MATCH_MODES.contains(MatchMode.IS_TODAY));
+        assertFalse(MatchMode.DATE_MATCH_MODES.contains(MatchMode.LAST_N_DAYS));
+        assertFalse(MatchMode.DATE_MATCH_MODES.contains(MatchMode.RELATIVE_DATE));
+    }
+
+    @Test
+    void parseOptions_dateWithShortcuts_appendsTheCalendarShortcuts() {
+        List<MatchMode> options = MatchMode.parseOptions("date,shortcuts");
+
+        assertEquals(28, options.size());
+        assertEquals(MatchMode.DATE_MATCH_MODES, options.subList(0, 10));
+        assertEquals(MatchMode.DATE_SHORTCUT_MATCH_MODES, options.subList(10, 28));
+        // a bare LocalDate has no time component, so the minute/hour windows stay out
+        assertFalse(options.contains(MatchMode.LAST_N_MINUTES));
+    }
+
+    @Test
+    void parseOptions_shortcutsToken_resolvesItsGroupRegardlessOfPosition() {
+        // the token's POSITION still decides where the group lands in the menu (entries are concatenated
+        // left to right), but which group it stands for is read off the whole list
+        assertEquals(
+                new HashSet<>(MatchMode.parseOptions("date,shortcuts")),
+                new HashSet<>(MatchMode.parseOptions("shortcuts,date")));
+        assertEquals(MatchMode.IS_TODAY, MatchMode.parseOptions("shortcuts,date").get(0));
+    }
+
+    @Test
+    void parseOptions_individualShortcutsCanBePickedInsteadOfTheWholeGroup() {
+        assertEquals(12, MatchMode.parseOptions("date,today,thisWeek").size());
+        assertEquals(
+                List.of(MatchMode.IS_TODAY, MatchMode.IS_THIS_WEEK),
+                MatchMode.parseOptions("date,today,thisWeek").subList(10, 12));
     }
 
     @Test
@@ -246,32 +276,63 @@ class MatchModeTest {
         assertEquals(
                 List.of(MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN,
                         MatchMode.LESS_THAN_EQUALS, MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS,
-                        MatchMode.BETWEEN, MatchMode.NOT_BETWEEN, MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY,
-                        MatchMode.LAST_N_MINUTES, MatchMode.NEXT_N_MINUTES, MatchMode.LAST_N_HOURS, MatchMode.NEXT_N_HOURS),
+                        MatchMode.BETWEEN, MatchMode.NOT_BETWEEN, MatchMode.IS_EMPTY, MatchMode.NOT_EMPTY),
                 MatchMode.parseOptions("time"));
     }
 
     @Test
-    void timePreset_has14Modes_andNoCalendarPredicates() {
-        // 10 reused (6 comparators + between/not between + is (not) empty) + the 4 new
-        // minute/hour modes. No day/week/month/... predicates - a bare LocalTime has no date component.
-        assertEquals(14, MatchMode.TIME_MATCH_MODES.size());
-        assertFalse(MatchMode.TIME_MATCH_MODES.contains(MatchMode.IS_TODAY));
-        assertFalse(MatchMode.TIME_MATCH_MODES.contains(MatchMode.LAST_N_DAYS));
+    void timePreset_has10Modes_andNoShortcuts() {
+        assertEquals(10, MatchMode.TIME_MATCH_MODES.size());
+        assertFalse(MatchMode.TIME_MATCH_MODES.contains(MatchMode.LAST_N_MINUTES));
+    }
+
+    @Test
+    void parseOptions_timeWithShortcuts_appendsOnlyTheMinuteAndHourWindows() {
+        List<MatchMode> options = MatchMode.parseOptions("time,shortcuts");
+
+        assertEquals(14, options.size());
+        assertEquals(MatchMode.TIME_SHORTCUT_MATCH_MODES, options.subList(10, 14));
+        // no day/week/month/... predicates - a bare LocalTime has no date component
+        assertFalse(options.contains(MatchMode.IS_TODAY));
+        assertFalse(options.contains(MatchMode.LAST_N_DAYS));
     }
 
     @Test
     void parseOptions_datetimeKeyword_returnsDatetimePreset() {
         assertEquals(MatchMode.DATETIME_MATCH_MODES, MatchMode.parseOptions("datetime"));
+        assertEquals(10, MatchMode.parseOptions("datetime").size());
     }
 
     @Test
-    void datetimePreset_has32Modes_andIncludesEveryDateOptionPlusTheFourNewModes() {
-        // every DATE_MATCH_MODES mode (28) plus last/next N minutes/hours (4)
-        assertEquals(32, MatchMode.DATETIME_MATCH_MODES.size());
-        assertTrue(MatchMode.DATETIME_MATCH_MODES.containsAll(MatchMode.DATE_MATCH_MODES));
-        assertTrue(MatchMode.DATETIME_MATCH_MODES.containsAll(List.of(
-                MatchMode.LAST_N_MINUTES, MatchMode.NEXT_N_MINUTES, MatchMode.LAST_N_HOURS, MatchMode.NEXT_N_HOURS)));
+    void parseOptions_datetimeWithShortcuts_appendsBothShortcutGroups() {
+        // a datetime carries both a date and a time-of-day, so it gets the calendar shortcuts (18) and the
+        // minute/hour windows (4) on top of the 10 comparators
+        List<MatchMode> options = MatchMode.parseOptions("datetime,shortcuts");
+
+        assertEquals(32, options.size());
+        assertTrue(options.containsAll(MatchMode.DATE_MATCH_MODES));
+        assertTrue(options.containsAll(MatchMode.DATE_SHORTCUT_MATCH_MODES));
+        assertTrue(options.containsAll(MatchMode.TIME_SHORTCUT_MATCH_MODES));
+    }
+
+    @Test
+    void parseOptions_shortcutsWithoutAPresetKeyword_fallsBackToBothGroups() {
+        // a hand-written operator list has no keyword to key off, so "shortcuts" means the superset
+        List<MatchMode> options = MatchMode.parseOptions("equals,shortcuts");
+
+        assertEquals(MatchMode.EQUALS, options.get(0));
+        assertEquals(1 + MatchMode.DATETIME_SHORTCUT_MATCH_MODES.size(), options.size());
+    }
+
+    @Test
+    void parseOptions_duplicatesAreCollapsed() {
+        assertEquals(MatchMode.parseOptions("date"), MatchMode.parseOptions("date,date,equals"));
+    }
+
+    @Test
+    void parseOptions_noneAnywhereInTheListWins() {
+        assertTrue(MatchMode.parseOptions("date,shortcuts,none").isEmpty());
+        assertTrue(MatchMode.parseOptions("none").isEmpty());
     }
 
     @Test
@@ -286,6 +347,16 @@ class MatchModeTest {
         assertEquals(
                 List.of(MatchMode.EQUALS, MatchMode.NOT_EQUALS),
                 MatchMode.parseOptions(" equals , notEquals "));
+    }
+
+    @Test
+    void parseOptions_matchesTheThreeConfigurationsTheShowcaseDocuments() {
+        // the "Opting Into the Relative Date Shortcuts" card in the showcase's filter.xhtml puts these three
+        // side by side on one date field and tells the reader to expect "ten entries, twenty-eight, and
+        // thirteen" - keep those numbers honest
+        assertEquals(10, MatchMode.parseOptions("date").size());
+        assertEquals(28, MatchMode.parseOptions("date,shortcuts").size());
+        assertEquals(13, MatchMode.parseOptions("date,today,thisWeek,lastNDays").size());
     }
 
     @Test

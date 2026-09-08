@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ import lombok.Value;
 @Data
 public class DataTable054 implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private List<Employee> employees;
@@ -60,12 +62,12 @@ public class DataTable054 implements Serializable {
 
     @PostConstruct
     public void init() {
-        // the unmodified fixture is enough here - unlike DataTable051, this view is about clearing a filter
+        // the unmodified fixture is enough here - unlike DataTable055, this view is about clearing a filter
         // and about the dynamic-column plumbing, not about the individual match modes, so no row needs a
         // synthetic null/blank/relative-date value
         employees = new ArrayList<>(service.getEmployees());
 
-        // the date column needs a couple of known values so a picked date actually filters something -
+        // the date column needs a couple of known values, so a picked date actually filters something -
         // computed against today so they never go stale
         LocalDate today = LocalDate.now();
         employees.get(0).setReviewDate(today);              // id 1, Mike Master
@@ -82,7 +84,7 @@ public class DataTable054 implements Serializable {
 
     /**
      * Explicit fixed-pattern converter (not the locale-dependent default) so a date typed or picked as text
-     * parses unambiguously - same rationale as DataTable051.
+     * parses unambiguously - same rationale as DataTable055.
      */
     public DateTimeConverter getReviewDateConverter() {
         DateTimeConverter converter = new DateTimeConverter();
@@ -93,10 +95,11 @@ public class DataTable054 implements Serializable {
 
     @Value
     public static class ColumnModel implements Serializable {
+        @Serial
         private static final long serialVersionUID = 1L;
-        private String header;
-        private String property;
-        private String filterMatchMode;
-        private String filterValueType;
+        String header;
+        String property;
+        String filterMatchMode;
+        String filterValueType;
     }
 }
