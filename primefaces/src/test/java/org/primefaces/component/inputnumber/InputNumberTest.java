@@ -284,4 +284,40 @@ class InputNumberTest {
         assertFalse(renderer.isIntegral(context, inputNumber, null));
     }
 
+    @Test
+    void getPadControlAcceptsKeywordsAndPositiveIntegers() {
+        when(inputNumber.getPadControl()).thenReturn("true");
+        assertEquals("true", renderer.getPadControl(inputNumber));
+        when(inputNumber.getPadControl()).thenReturn("false");
+        assertEquals("false", renderer.getPadControl(inputNumber));
+        when(inputNumber.getPadControl()).thenReturn("floats");
+        assertEquals("floats", renderer.getPadControl(inputNumber));
+        when(inputNumber.getPadControl()).thenReturn("1");
+        assertEquals("1", renderer.getPadControl(inputNumber));
+        when(inputNumber.getPadControl()).thenReturn("15");
+        assertEquals("15", renderer.getPadControl(inputNumber));
+        when(inputNumber.getPadControl()).thenReturn(null);
+        assertNull(renderer.getPadControl(inputNumber));
+    }
+
+    /**
+     * GitHub #15211: AutoNumeric rejects 0, so fail server side with a meaningful message.
+     */
+    @Test
+    void getPadControlRejectsZero() {
+        when(inputNumber.getPadControl()).thenReturn("0");
+        FacesException thrown = assertThrows(FacesException.class, () -> renderer.getPadControl(inputNumber));
+        assertTrue(thrown.getMessage().contains("[0] given"), thrown.getMessage());
+    }
+
+    @Test
+    void getPadControlRejectsNegativeAndNonNumericValues() {
+        when(inputNumber.getPadControl()).thenReturn("-1");
+        assertThrows(FacesException.class, () -> renderer.getPadControl(inputNumber));
+        when(inputNumber.getPadControl()).thenReturn("2.5");
+        assertThrows(FacesException.class, () -> renderer.getPadControl(inputNumber));
+        when(inputNumber.getPadControl()).thenReturn("yes");
+        assertThrows(FacesException.class, () -> renderer.getPadControl(inputNumber));
+    }
+
 }
