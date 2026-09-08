@@ -5021,8 +5021,56 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Clears all table filters and shows all rows that may have been hidden by filters.
+     * Clears all table filters and shows all rows that filters may have hidden.
      */
+    clearFilters() {
+        var resetInputFields = function(inputFields) {
+            inputFields.val('');
+        };
+
+        var resetWidget = function(widgetElement) {
+            const selector = ':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])';
+            var widget = PrimeFaces.getWidgetById(widgetElement.attr('id'));
+            if (widget && typeof widget.resetValue === 'function') {
+                widget.resetValue(true);
+            } else if (widgetElement.is(selector)) {
+                resetInputFields(widgetElement);
+            } else {
+                resetInputFields($(this).find(selector));
+            }
+        };
+
+        // plain filter inputs first: a column with no match-mode picker (filterValueType="none", or any
+        // table not using the feature at all) has nothing but this input, and is not covered by the
+        // picker pass below - dropping this step would leave such a column filtered after clearFilters()
+        var standardFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter:not(:disabled):not([readonly])');
+        resetInputFields(standardFilters);
+
+        // then reset each filter match-mode picker (value + mode) back to the column's own configured
+        // default - resetColumnFilter() clears its own column's value input too, so the pass above being
+        // idempotent for those columns is intentional
+        var $this = this;
+        var standardFilterModeIcons = this.thead.find('> tr > th.ui-filter-column .ui-column-filter-mode-icon:not(:disabled)');
+        standardFilterModeIcons.each(function() {
+            $this.resetColumnFilter($(this));
+        });
+
+        var customFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter');
+        customFilters.each(function() {
+            var widgetElement = $(this).find('.ui-widget');
+            if (widgetElement.length > 0) {
+                resetWidget(widgetElement);
+            } else {
+                resetInputFields($(this).find(':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])'));
+            }
+        });
+
+        var globalFilter = $(this.jqId + '\\:globalFilter');
+        resetInputFields(globalFilter);
+
+        this.filter();
+    }
+
     /**
      * Resets a single column's filter match-mode picker back to the column's own configured default: clears
      * the value input (and the shadow single/range date pickers - see
@@ -5070,54 +5118,6 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         // "is empty") was selected before the reset - sync the value input's hidden/disabled state back
         $this.toggleFilterValueInput(th, defaultLink, true);
         $this.updateFilterMatchModeIconState(icon, menu, defaultLink);
-    }
-
-    clearFilters() {
-        var resetInputFields = function(inputFields) {
-            inputFields.val('');
-        };
-
-        var resetWidget = function(widgetElement) {
-            const selector = ':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])';
-            var widget = PrimeFaces.getWidgetById(widgetElement.attr('id'));
-            if (widget && typeof widget.resetValue === 'function') {
-                widget.resetValue(true);
-            } else if (widgetElement.is(selector)) {
-                resetInputFields(widgetElement);
-            } else {
-                resetInputFields($(this).find(selector));
-            }
-        };
-
-        // plain filter inputs first: a column with no match-mode picker (filterValueType="none", or any
-        // table not using the feature at all) has nothing but this input, and is not covered by the
-        // picker pass below - dropping this step would leave such a column filtered after clearFilters()
-        var standardFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter:not(:disabled):not([readonly])');
-        resetInputFields(standardFilters);
-
-        // then reset each filter match-mode picker (value + mode) back to the column's own configured
-        // default - resetColumnFilter() clears its own column's value input too, so the pass above being
-        // idempotent for those columns is intentional
-        var $this = this;
-        var standardFilterModeIcons = this.thead.find('> tr > th.ui-filter-column .ui-column-filter-mode-icon:not(:disabled)');
-        standardFilterModeIcons.each(function() {
-            $this.resetColumnFilter($(this));
-        });
-
-        var customFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter');
-        customFilters.each(function() {
-            var widgetElement = $(this).find('.ui-widget');
-            if (widgetElement.length > 0) {
-                resetWidget(widgetElement);
-            } else {
-                resetInputFields($(this).find(':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])'));
-            }
-        });
-
-        var globalFilter = $(this.jqId + '\\:globalFilter');
-        resetInputFields(globalFilter);
-
-        this.filter();
     }
 
     /**
