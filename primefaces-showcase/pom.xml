@@ -368,7 +368,7 @@
                 <dependency>
                     <groupId>org.glassfish</groupId>
                     <artifactId>jakarta.faces</artifactId>
-                    <version>4.0.24</version>
+                    <version>4.1.16</version>
                 </dependency>
             </dependencies>
             <build>
@@ -383,7 +383,7 @@
                 <dependency>
                     <groupId>org.glassfish</groupId>
                     <artifactId>jakarta.faces</artifactId>
-                    <version>4.1.15</version>
+                    <version>4.1.16</version>
                 </dependency>
                 <dependency>
                     <groupId>jakarta.enterprise</groupId>
