@@ -141,7 +141,7 @@
                             <td class="colFirst"><a href="#caretPositionOnFocus"><code>caretPositionOnFocus</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Caret position on focus. Options: 'start', 'end', 'min', 'max'.</td>
+                    </td><td class="colLast">Defines where the caret should be positioned on focus. Options: 'start', 'end', 'decimalLeft', 'decimalRight'.</td>
                         </tr>
                         <tr id="converter" class="rowColor">
                             <td class="colFirst"><a href="#converter"><code>converter</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -159,13 +159,13 @@
                             <td class="colFirst"><a href="#decimalPlaces"><code>decimalPlaces</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Number of decimal places to display.</td>
+                    </td><td class="colLast">Number of decimal places. If the value is a Byte/Short/Integer/Long/BigInteger it defaults to 0.Default is 2.</td>
                         </tr>
                         <tr id="decimalPlacesRawValue" class="altColor">
                             <td class="colFirst"><a href="#decimalPlacesRawValue"><code>decimalPlacesRawValue</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
-                    </td><td class="colLast">Raw value for decimal places.</td>
+                    </td><td class="colLast">Specifies the number of decimal places to retain for the raw value, while decimalPlaces is used for the displayed value. If left as null, the decimalPlaces value is used. Note: setting this to fewer decimal places than those displayed may cause user confusion.</td>
                         </tr>
                         <tr id="decimalSeparator" class="rowColor">
                             <td class="colFirst"><a href="#decimalSeparator"><code>decimalSeparator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -177,7 +177,7 @@
                             <td class="colFirst"><a href="#decimalSeparatorAlternative"><code>decimalSeparatorAlternative</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Alternative decimal separator character.</td>
+                    </td><td class="colLast">Allows declaring an alternative decimal separator which is automatically replaced by decimalSeparator when typed.</td>
                         </tr>
                         <tr id="dir" class="rowColor">
                             <td class="colFirst"><a href="#dir"><code>dir</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -195,7 +195,7 @@
                             <td class="colFirst"><a href="#emptyValue"><code>emptyValue</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Empty value behavior. Options: 'focus', 'blur', 'always', 'never'.Default is focus.</td>
+                    </td><td class="colLast">Defines what to display when the input value is empty. Options: 'empty' (or null) to display nothing, 'focus' to display the symbol on focus, 'press' to display the symbol while a key is pressed, 'always' to always display the symbol, 'min' or 'max' to display the minValue/maxValue, 'zero' to display zero, or a string representing a number.Default is focus.</td>
                         </tr>
                         <tr id="id" class="altColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -219,13 +219,13 @@
                             <td class="colFirst"><a href="#inputStyle"><code>inputStyle</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Inline style for the input element.</td>
+                    </td><td class="colLast">Inline style of the input element.</td>
                         </tr>
                         <tr id="inputStyleClass" class="altColor">
                             <td class="colFirst"><a href="#inputStyleClass"><code>inputStyleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">CSS class for the input element.</td>
+                    </td><td class="colLast">Style class of the input element.</td>
                         </tr>
                         <tr id="label" class="rowColor">
                             <td class="colFirst"><a href="#label"><code>label</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -243,7 +243,7 @@
                             <td class="colFirst"><a href="#leadingZero"><code>leadingZero</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Leading zero behavior. Options: 'allow', 'deny', 'keep'.Default is allow.</td>
+                    </td><td class="colLast">Controls leading zero behavior. Options: 'allow' to allow the leading zero while typing and remove it on focus out, 'deny' to prevent the leading zero from being entered, 'keep' to allow and keep the leading zero.Default is allow.</td>
                         </tr>
                         <tr id="maxlength" class="altColor">
                             <td class="colFirst"><a href="#maxlength"><code>maxlength</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -255,25 +255,25 @@
                             <td class="colFirst"><a href="#maxValue"><code>maxValue</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Maximum value allowed.</td>
+                    </td><td class="colLast">Maximum value allowed. WARNING: if maxValue is lower than 0, you effectively prevent your users from entirely deleting the content of their input.Default is 10000000000000.</td>
                         </tr>
                         <tr id="minValue" class="altColor">
                             <td class="colFirst"><a href="#minValue"><code>minValue</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Minimum value allowed.</td>
+                    </td><td class="colLast">Minimum value allowed. WARNING: if minValue is greater than 0, you effectively prevent your users from entirely deleting the content of their input.Default is -10000000000000.</td>
                         </tr>
                         <tr id="modifyValueOnUpDownArrow" class="rowColor">
                             <td class="colFirst"><a href="#modifyValueOnUpDownArrow"><code>modifyValueOnUpDownArrow</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
-                    </td><td class="colLast">When enabled, up/down arrow keys modify the value.Default is true.</td>
+                    </td><td class="colLast">Allows the user to increment or decrement the element value with the up and down arrow keys.Default is true.</td>
                         </tr>
                         <tr id="modifyValueOnWheel" class="altColor">
                             <td class="colFirst"><a href="#modifyValueOnWheel"><code>modifyValueOnWheel</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
-                    </td><td class="colLast">When enabled, mouse wheel modifies the value.Default is true.</td>
+                    </td><td class="colLast">Allows the user to increment or decrement the element value with the mouse wheel.Default is true.</td>
                         </tr>
                         <tr id="onblur" class="rowColor">
                             <td class="colFirst"><a href="#onblur"><code>onblur</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -465,7 +465,7 @@
                             <td class="colFirst"><a href="#padControl"><code>padControl</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Padding control. Options: 'true', 'false', 'floats'.Default is true.</td>
+                    </td><td class="colLast">Allow padding the decimal places with zeros. If set to 'true' it will always pad the decimal places with zeros, and never if set to 'false'. If set to 'floats', padding is only done when there are some decimals (up to the number of decimal places from the decimalPlaces attribute). If set to an integer greater than 0, padding will use that number for adding the zeros; 0 is not a valid value.Default is true.</td>
                         </tr>
                         <tr id="placeholder" class="rowColor">
                             <td class="colFirst"><a href="#placeholder"><code>placeholder</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -507,19 +507,19 @@
                             <td class="colFirst"><a href="#roundMethod"><code>roundMethod</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Rounding method. Options: 'S' for standard, 'A' for away from zero, 'C' for ceiling, 'F' for floor, 'D' for down, 'U' for up.Default is S.</td>
+                    </td><td class="colLast">Controls the rounding method. Options: 'S' for round-half-up symmetric, 'A' for round-half-up asymmetric, 's' for round-half-down symmetric, 'a' for round-half-down asymmetric, 'B' for round-half-even (banker's rounding), 'U' for round up (away from zero), 'D' for round down (toward zero), 'C' for round to ceiling (toward positive infinity), 'F' for round to floor (toward negative infinity), 'N05' or 'CHF' for round to the nearest 0.05, 'U05' for round up to the next 0.05, 'D05' for round down to the next 0.05.Default is S.</td>
                         </tr>
                         <tr id="selectOnFocus" class="altColor">
                             <td class="colFirst"><a href="#selectOnFocus"><code>selectOnFocus</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
-                    </td><td class="colLast">When enabled, selects all text on focus.Default is true.</td>
+                    </td><td class="colLast">Defines if the element value should be selected on focus.Default is true.</td>
                         </tr>
                         <tr id="signPosition" class="rowColor">
                             <td class="colFirst"><a href="#signPosition"><code>signPosition</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Position of the sign. Options: 'p' for prefix, 's' for suffix.</td>
+                    </td><td class="colLast">Placement of the negative/positive sign relative to the symbolPosition option. The sign is placed on either side of the symbolPosition, which can be placed on either side of the numbers. Options: 'p' for prefix, 's' for suffix, 'l' for left, 'r' for right.</td>
                         </tr>
                         <tr id="size" class="altColor">
                             <td class="colFirst"><a href="#size"><code>size</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -549,13 +549,13 @@
                             <td class="colFirst"><a href="#symbol"><code>symbol</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Currency symbol to display.</td>
+                    </td><td class="colLast">Desired symbol or unit to display, e.g. '$' or ' kg'.Default is none.</td>
                         </tr>
                         <tr id="symbolPosition" class="rowColor">
                             <td class="colFirst"><a href="#symbolPosition"><code>symbolPosition</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Position of the symbol. Options: 'p' for prefix, 's' for suffix.</td>
+                    </td><td class="colLast">Position of the symbol. Options: 'p' for prefix, 's' for suffix.Default is p.</td>
                         </tr>
                         <tr id="tabindex" class="altColor">
                             <td class="colFirst"><a href="#tabindex"><code>tabindex</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
