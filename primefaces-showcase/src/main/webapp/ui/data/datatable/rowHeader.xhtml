@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="primefaces"
+    xmlns:f="jakarta.faces.core"
+    template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">RowHeader</span>
+    </ui:define>
+
+    <ui:define name="description">
+        A column can be marked as a row header, rendering its body cells as &lt;th scope="row"&gt; instead of
+        &lt;td&gt; so assistive technologies can associate each row with its header, per the
+        <a href="https://www.w3.org/WAI/tutorials/tables/two-headers/" target="_blank" rel="noopener">WAI table accessibility guidelines</a>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable" />
+    <ui:param name="widgetLink" value="DataTable-1"/>
+    <ui:param name="tagName" value="dataTable" />
+
+    <ui:define name="implementation">
+        <h:form>
+            <div class="card">
+                <p:dataTable var="product" value="#{dtBasicView.products}">
+                    <p:column headerText="Code" rowHeader="true">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

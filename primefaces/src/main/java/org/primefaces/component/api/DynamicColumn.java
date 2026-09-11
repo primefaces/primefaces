@@ -304,6 +304,11 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
+    public boolean isRowHeader() {
+        return columns.isRowHeader();
+    }
+
+    @Override
     public Object getExportHeaderValue() {
         return columns.getExportHeaderValue();
     }
