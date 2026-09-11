@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.texteditor;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.faces.view.ViewScoped;
@@ -36,7 +35,7 @@ import lombok.Data;
 @Data
 public class TextEditor005 implements Serializable {
 
-    @Serial private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private String value;
 
