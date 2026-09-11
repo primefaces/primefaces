@@ -12,7 +12,7 @@
     <ui:define name="description">
         A column can be marked as a row header, rendering its body cells as &lt;th scope="row"&gt; instead of
         &lt;td&gt; so assistive technologies can associate each row with its header, per the
-        <a href="https://www.w3.org/WAI/tutorials/tables/two-headers/" target="_blank" rel="noopener">WAI table accessibility guidelines</a>.
+        <a href="https://www.w3.org/WAI/tutorials/tables/two-headers/" target="_blank" rel="noopener">WAI tables with two headers tutorial</a>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datatable" />
@@ -22,21 +22,73 @@
     <ui:define name="implementation">
         <h:form>
             <div class="card">
-                <p:dataTable var="product" value="#{dtBasicView.products}">
-                    <p:column headerText="Code" rowHeader="true">
-                        <h:outputText value="#{product.code}" />
+                <p:dataTable var="slot" value="#{dtRowHeaderView.slots}">
+                    <f:facet name="header">
+                        Delivery slots:
+                    </f:facet>
+
+                    <p:column headerText="" rowHeader="true">
+                        <h:outputText value="#{slot.time}" />
                     </p:column>
 
-                    <p:column headerText="Name">
-                        <h:outputText value="#{product.name}" />
+                    <p:column headerText="Monday">
+                        <h:outputText value="#{slot.monday}" />
                     </p:column>
 
-                    <p:column headerText="Category">
-                        <h:outputText value="#{product.category}" />
+                    <p:column headerText="Tuesday">
+                        <h:outputText value="#{slot.tuesday}" />
                     </p:column>
 
-                    <p:column headerText="Quantity">
-                        <h:outputText value="#{product.quantity}" />
+                    <p:column headerText="Wednesday">
+                        <h:outputText value="#{slot.wednesday}" />
+                    </p:column>
+
+                    <p:column headerText="Thursday">
+                        <h:outputText value="#{slot.thursday}" />
+                    </p:column>
+
+                    <p:column headerText="Friday">
+                        <h:outputText value="#{slot.friday}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <p:dataTable var="holiday" value="#{dtRowHeaderView.holidays}">
+                    <f:facet name="header">
+                        Holidays taken in the last six months
+                    </f:facet>
+
+                    <p:column headerText="ID">
+                        <h:outputText value="#{holiday.id}" />
+                    </p:column>
+
+                    <p:column headerText="Name" rowHeader="true">
+                        <h:outputText value="#{holiday.name}" />
+                    </p:column>
+
+                    <p:column headerText="July">
+                        <h:outputText value="#{holiday.july}" />
+                    </p:column>
+
+                    <p:column headerText="August">
+                        <h:outputText value="#{holiday.august}" />
+                    </p:column>
+
+                    <p:column headerText="September">
+                        <h:outputText value="#{holiday.september}" />
+                    </p:column>
+
+                    <p:column headerText="October">
+                        <h:outputText value="#{holiday.october}" />
+                    </p:column>
+
+                    <p:column headerText="November">
+                        <h:outputText value="#{holiday.november}" />
+                    </p:column>
+
+                    <p:column headerText="December">
+                        <h:outputText value="#{holiday.december}" />
                     </p:column>
                 </p:dataTable>
             </div>
