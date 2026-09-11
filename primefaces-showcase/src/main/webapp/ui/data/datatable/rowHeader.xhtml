@@ -20,8 +20,9 @@
     <ui:param name="tagName" value="dataTable" />
 
     <ui:define name="implementation">
-        <h:form>
-            <div class="card">
+        <div class="card">
+            <h5>Table with header cells in the top row and first column</h5>
+            <h:form>
                 <p:dataTable var="slot" value="#{dtRowHeaderView.slots}">
                     <f:facet name="header">
                         Delivery slots:
@@ -51,9 +52,12 @@
                         <h:outputText value="#{slot.friday}" />
                     </p:column>
                 </p:dataTable>
-            </div>
+            </h:form>
+        </div>
 
-            <div class="card">
+        <div class="card">
+            <h5>Table with an offset column of header cells</h5>
+            <h:form>
                 <p:dataTable var="holiday" value="#{dtRowHeaderView.holidays}" reflow="true">
                     <f:facet name="header">
                         Holidays taken in the last six months
@@ -91,8 +95,8 @@
                         <h:outputText value="#{holiday.december}" />
                     </p:column>
                 </p:dataTable>
-            </div>
-        </h:form>
+            </h:form>
+        </div>
     </ui:define>
 
 </ui:composition>
