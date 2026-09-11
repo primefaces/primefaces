@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:p="primefaces">
+    <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+        <h:head>
+
+    </h:head>
+        <h:body>
+            <h:form id="form">
+                <p:messages id="msgs" showDetail="true">
+                    <p:autoUpdate/>
+                </p:messages>
+
+                <!-- GitHub #15221 / #15222: an item with an empty label must still be announced by a screen reader -->
+                <p:selectOneMenu id="selectonemenu" value="#{selectOneMenu014.option}">
+                    <f:selectItem itemLabel="" itemValue=""/>
+                    <f:selectItem itemLabel="Ja" itemValue="true"/>
+                    <f:selectItem itemLabel="Nein" itemValue="false"/>
+                </p:selectOneMenu>
+
+                <!-- same, but with a placeholder: the placeholder is the visible and announced text -->
+                <p:selectOneMenu id="placeholder" value="#{selectOneMenu014.optionWithPlaceholder}" placeholder="Choose One">
+                    <f:selectItem itemLabel="" itemValue=""/>
+                    <f:selectItem itemLabel="Ja" itemValue="true"/>
+                    <f:selectItem itemLabel="Nein" itemValue="false"/>
+                </p:selectOneMenu>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>
