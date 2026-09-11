@@ -120,10 +120,12 @@ body {
         color: $datatableBodyRowTextColor;
         transition: $transition;
 
-        > td {
+        > td, > th {
           padding: $datatableBodyCellPadding;
           border: $datatableBodyRowBorder;
           border-width: $datatableBodyCellBorderWidth;
+          font-weight: normal;
+          text-align: left;
 
           &.ui-datatable-subtable-header {
             background: $panelHeaderBg;
