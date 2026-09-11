@@ -310,7 +310,7 @@ body {
 
       .ui-datatable-data {
         > tr {
-          > td {
+          > td, > th {
             padding: list.nth($datatableBodyCellPadding,1) * $datatableScaleSm list.nth($datatableBodyCellPadding,2) * $datatableScaleSm;
           }
         }
@@ -345,7 +345,7 @@ body {
 
       .ui-datatable-data {
         > tr {
-          > td {
+          > td, > th {
             padding: list.nth($datatableBodyCellPadding,1) * $datatableScaleLg list.nth($datatableBodyCellPadding,2) * $datatableScaleLg;
           }
         }
@@ -375,7 +375,7 @@ body {
 
       .ui-datatable-data {
         > tr {
-          > td {
+          > td, > th {
             border-width: 1px;
           }
         }
