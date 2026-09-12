@@ -90,7 +90,9 @@ public class SelectionFeature implements TreeTableFeature {
             table.setRowKey(root, null); //cleanup
         }
 
-        if (table.isCheckboxSelectionMode() && isSelectionRequest(context, clientId)) {
+        // the descendants are sent back to the client to be added to the selection, so they must only be collected
+        // when the selection actually propagates down - like TreeRenderer does for the Tree, see #9925
+        if (table.isCheckboxSelectionMode() && isSelectionRequest(context, clientId) && table.isPropagateSelectionDown()) {
             String selectedNodeRowKey = params.get(clientId + "_instantSelection");
             table.setRowKey(root, selectedNodeRowKey);
             TreeNode selectedNode = table.getRowNode();
