@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIData;
 import jakarta.faces.component.visit.VisitContext;
 import jakarta.faces.component.visit.VisitResult;
 import jakarta.faces.context.FacesContext;
@@ -314,6 +315,10 @@ public interface ColumnAware {
 
         Map<String, ColumnMeta> columnMeta = getColumnMeta();
 
+        // features like live scroll or row editing encode single rows, so the table might still be positioned on a row
+        // when the columns are collected - the row index must not leak into the lookup, see #14991
+        int rowIndex = this instanceof UIData uiData ? uiData.getRowIndex() : -1;
+
         // sort by displayOrder
         columns.sort((c1, c2) -> {
             if (c1 instanceof DynamicColumn column1) {
@@ -321,7 +326,7 @@ public interface ColumnAware {
             }
 
             Integer dp1 = c1.getDisplayPriority();
-            ColumnMeta cm1 = columnMeta.get(c1.getColumnKey());
+            ColumnMeta cm1 = columnMeta.get(getColumnMetaKey(c1, rowIndex));
             if (cm1 != null && cm1.getDisplayPriority() != null) {
                 dp1 = cm1.getDisplayPriority();
             }
@@ -331,7 +336,7 @@ public interface ColumnAware {
             }
 
             Integer dp2 = c2.getDisplayPriority();
-            ColumnMeta cm2 = columnMeta.get(c2.getColumnKey());
+            ColumnMeta cm2 = columnMeta.get(getColumnMetaKey(c2, rowIndex));
             if (cm2 != null && cm2.getDisplayPriority() != null) {
                 dp2 = cm2.getDisplayPriority();
             }
@@ -340,6 +345,18 @@ public interface ColumnAware {
         });
 
         return columns;
+    }
+
+    /**
+     * The {@link ColumnMeta} is keyed by the row-less client id of the column, while {@link UIColumn#getColumnKey()} is
+     * the plain client id, which contains the row index as soon as the table is positioned on a row.
+     *
+     * @param column the column to resolve the key for
+     * @param rowIndex the row the table is currently positioned on, or <code>-1</code>
+     * @return the key to look up the {@link ColumnMeta} of the given column
+     */
+    private String getColumnMetaKey(UIColumn column, int rowIndex) {
+        return rowIndex == -1 ? column.getColumnKey() : column.getColumnKey((UIComponent) this, rowIndex);
     }
 
     default int getColumnsCount() {
