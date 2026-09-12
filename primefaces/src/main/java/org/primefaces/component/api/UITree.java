@@ -318,6 +318,14 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
+    /**
+     * Collects the rowKeys of all descendants of the given node, which the checkbox selection propagates down to.
+     * A non-selectable node and its whole subtree are skipped, just like {@link CheckboxTreeNode} does when the
+     * selection is propagated down on the model, see #14798.
+     *
+     * @param node the node to collect the descendants of
+     * @param keys the list to add the collected rowKeys to
+     */
     public void populateRowKeys(TreeNode<?> node, List<String> keys) {
         if (node == null) {
             return;
@@ -331,6 +339,9 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
                 TreeNode<?> childNode = node.getChildren().get(i);
+                if (!childNode.isSelectable()) {
+                    continue;
+                }
                 keys.add(childNode.getRowKey());
                 populateRowKeys(childNode, keys);
             }
