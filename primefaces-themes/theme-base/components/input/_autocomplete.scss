@@ -105,6 +105,17 @@ body {
       padding: $inputListPadding;
       border: 0 none;
 
+      &.ui-autocomplete-table {
+        > thead tr th {
+          background: $panelHeaderBg;
+          border: $datatableHeaderCellBorder;
+          color: $panelHeaderTextColor;
+          font-weight: $panelHeaderFontWeight;
+        }
+
+        @include advanced-table-modifiers('.ui-autocomplete-row');
+      }
+
       .ui-autocomplete-item {
         border: $inputListItemBorder;
         margin: $inputListItemMargin;

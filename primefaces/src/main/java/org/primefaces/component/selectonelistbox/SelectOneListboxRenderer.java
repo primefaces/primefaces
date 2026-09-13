@@ -142,7 +142,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox
         int totalItems = selectItems.size();
         if (customContent) {
             writer.startElement("table", null);
-            writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
+            writer.writeAttribute("class", getStyleClassBuilder(context)
+                    .add(SelectOneListbox.LIST_CLASS)
+                    .add(component.getAdvancedStyleClass())
+                    .build(), null);
             writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
             writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
             writer.startElement("tbody", null);

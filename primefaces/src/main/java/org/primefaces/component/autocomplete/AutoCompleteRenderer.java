@@ -558,7 +558,10 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         }
 
         writer.startElement("table", component);
-        writer.writeAttribute("class", AutoComplete.TABLE_CLASS, null);
+        writer.writeAttribute("class", getStyleClassBuilder(context)
+                .add(AutoComplete.TABLE_CLASS)
+                .add(component.getAdvancedStyleClass())
+                .build(), null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
 
         if (hasHeader) {

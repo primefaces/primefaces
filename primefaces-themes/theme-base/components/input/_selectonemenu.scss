@@ -124,6 +124,8 @@ body {
           color: $panelHeaderTextColor;
           font-weight: $panelHeaderFontWeight;
         }
+
+        @include advanced-table-modifiers('.ui-selectonemenu-row');
       }
 
       .ui-selectonemenu-item {
