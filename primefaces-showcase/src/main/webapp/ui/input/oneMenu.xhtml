@@ -165,6 +165,59 @@
                 </div>
             </h:form>
         </div>
+
+        <div class="card">
+            <h5 class="mt-0">Empty Item Label</h5>
+            <p>
+                An item with an empty <code>itemLabel</code> has no text for a screen reader to announce. Such an item
+                is rendered with the localized <code>nullLabel</code> ARIA label ("Not Selected"), both in the options
+                list and on the closed menu once it is selected. A label that only looks blank, such as a single space,
+                and a <code>noSelectionOption</code> item are treated the same way. When a <code>placeholder</code> is
+                set, the placeholder is the visible text and is announced instead. With
+                <code>hideNoSelectionOption="true"</code> the no-selection item is not rendered at all, so there is
+                nothing left to announce.
+            </p>
+            <h:form>
+                <div class="ui-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="@next" value="Empty Item Label"/>
+                        <p:selectOneMenu id="emptyItem" value="#{selectOneMenuView.emptyItem}">
+                            <f:selectItem itemLabel="" itemValue=""/>
+                            <f:selectItem itemLabel="Yes" itemValue="true"/>
+                            <f:selectItem itemLabel="No" itemValue="false"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="@next" value="Blank Item Label"/>
+                        <p:selectOneMenu id="blankItem" value="#{selectOneMenuView.blankItem}">
+                            <f:selectItem itemLabel=" " itemValue=""/>
+                            <f:selectItem itemLabel="Yes" itemValue="true"/>
+                            <f:selectItem itemLabel="No" itemValue="false"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="@next" value="Empty Item Label with Placeholder"/>
+                        <p:selectOneMenu id="emptyItemPlaceholder" value="#{selectOneMenuView.emptyItemWithPlaceholder}"
+                                         placeholder="Choose One">
+                            <f:selectItem itemLabel="" itemValue=""/>
+                            <f:selectItem itemLabel="Yes" itemValue="true"/>
+                            <f:selectItem itemLabel="No" itemValue="false"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="@next" value="Empty NoSelection Option"/>
+                        <p:selectOneMenu id="emptyNoSelectionItem" value="#{selectOneMenuView.emptyNoSelectionItem}">
+                            <f:selectItem itemLabel="" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Yes" itemValue="true"/>
+                            <f:selectItem itemLabel="No" itemValue="false"/>
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+            </h:form>
+        </div>
     </ui:define>
 
 </ui:composition>
